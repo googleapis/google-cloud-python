@@ -16,6 +16,7 @@
 
 import functools
 
+from google.api.core import page_iterator
 from google.cloud.gapic.pubsub.v1.publisher_client import PublisherClient
 from google.cloud.gapic.pubsub.v1.subscriber_client import SubscriberClient
 from google.gax import CallOptions
@@ -35,7 +36,6 @@ from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import GAXIterator
 from google.cloud.pubsub import __version__
 from google.cloud.pubsub._helpers import subscription_name_from_path
 from google.cloud.pubsub.snapshot import Snapshot
@@ -88,7 +88,8 @@ class _PublisherAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_topics(
             path, page_size=page_size, options=options)
-        return GAXIterator(self._client, page_iter, _item_to_topic)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_topic)
 
     def topic_create(self, topic_path):
         """API call:  create a topic
@@ -223,8 +224,8 @@ class _PublisherAPI(object):
                 raise NotFound(topic_path)
             raise
 
-        iterator = GAXIterator(self._client, page_iter,
-                               _item_to_subscription_for_topic)
+        iterator = page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_subscription_for_topic)
         iterator.topic = topic
         return iterator
 
@@ -278,7 +279,8 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_sub_for_client, topics=topics)
-        return GAXIterator(self._client, page_iter, item_to_value)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, item_to_value)
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None,
@@ -559,7 +561,8 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_snapshot_for_client, topics=topics)
-        return GAXIterator(self._client, page_iter, item_to_value)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, item_to_value)
 
     def snapshot_create(self, snapshot_path, subscription_path):
         """API call:  create a snapshot
