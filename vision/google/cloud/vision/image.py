@@ -155,7 +155,7 @@ class Image(object):
 
         features = [Feature(x, limit) for x in FeatureTypes.__dict__.keys() if x[:1] != '_']
         annotations = self.detect(features)
-        return annotation[0]
+        return annotations[0]
 
     def detect_crop_hints(self, aspect_ratios=None, limit=10):
         """Detect crop hints in image.
