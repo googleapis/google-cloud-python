@@ -14,12 +14,11 @@
 
 """Client for interacting with the Google Cloud DNS API."""
 
-
+from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
 
 from google.cloud.dns._http import Connection
 from google.cloud.dns.zone import ManagedZone
-from google.cloud.iterator import HTTPIterator
 
 
 class Client(ClientWithProject):
@@ -91,9 +90,13 @@ class Client(ClientWithProject):
                   belonging to this project.
         """
         path = '/projects/%s/managedZones' % (self.project,)
-        return HTTPIterator(
-            client=self, path=path, item_to_value=_item_to_zone,
-            items_key='managedZones', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_zone,
+            items_key='managedZones',
+            page_token=page_token,
             max_results=max_results)
 
     def zone(self, name, dns_name=None, description=None):

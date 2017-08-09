@@ -16,11 +16,11 @@
 
 import six
 
+from google.api.core import page_iterator
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.dns.changes import Changes
 from google.cloud.dns.resource_record_set import ResourceRecordSet
-from google.cloud.iterator import HTTPIterator
 
 
 class ManagedZone(object):
@@ -347,10 +347,14 @@ class ManagedZone(object):
         client = self._require_client(client)
         path = '/projects/%s/managedZones/%s/rrsets' % (
             self.project, self.name)
-        iterator = HTTPIterator(
-            client=client, path=path,
-            item_to_value=_item_to_resource_record_set, items_key='rrsets',
-            page_token=page_token, max_results=max_results)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_resource_record_set,
+            items_key='rrsets',
+            page_token=page_token,
+            max_results=max_results)
         iterator.zone = self
         return iterator
 
@@ -381,9 +385,13 @@ class ManagedZone(object):
         client = self._require_client(client)
         path = '/projects/%s/managedZones/%s/changes' % (
             self.project, self.name)
-        iterator = HTTPIterator(
-            client=client, path=path, item_to_value=_item_to_changes,
-            items_key='changes', page_token=page_token,
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_changes,
+            items_key='changes',
+            page_token=page_token,
             max_results=max_results)
         iterator.zone = self
         return iterator
