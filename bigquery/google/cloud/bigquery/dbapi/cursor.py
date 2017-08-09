@@ -100,7 +100,7 @@ class Cursor(object):
             total_rows = num_dml_affected_rows
         self.rowcount = total_rows
 
-    def execute(self, operation, parameters=None):
+    def execute(self, operation, parameters=None, job_id=None):
         """Prepare and execute a database operation.
 
         .. note::
@@ -128,12 +128,17 @@ class Cursor(object):
         :type parameters: Mapping[str, Any] or Sequence[Any]
         :param parameters:
             (Optional) dictionary or sequence of parameter values.
+
+        :type job_id: str
+        :param job_id: (Optional) The job_id to use. If not set, a job ID
+            is generated at random.
         """
         self._query_results = None
         self._page_token = None
         self._has_fetched_all_rows = False
         client = self.connection._client
-        job_id = str(uuid.uuid4())
+        if job_id is None:
+            job_id = str(uuid.uuid4())
 
         # The DB-API uses the pyformat formatting, since the way BigQuery does
         # query parameters was not one of the standard options. Convert both

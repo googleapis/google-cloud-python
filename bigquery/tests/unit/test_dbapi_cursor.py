@@ -170,6 +170,14 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0], (1,))
 
+    def test_execute_custom_job_id(self):
+        from google.cloud.bigquery.dbapi import connect
+        client = self._mock_client(rows=[], num_dml_affected_rows=0)
+        connection = connect(client)
+        cursor = connection.cursor()
+        cursor.execute('SELECT 1;', job_id='foo')
+        self.assertEqual(client.run_async_query.mock_calls[0][1][0], 'foo')
+
     def test_execute_w_dml(self):
         from google.cloud.bigquery.dbapi import connect
         connection = connect(
