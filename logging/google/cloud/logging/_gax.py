@@ -16,6 +16,7 @@
 
 import functools
 
+from google.api.core import page_iterator
 from google.cloud.gapic.logging.v2.config_service_v2_client import (
     ConfigServiceV2Client)
 from google.cloud.gapic.logging.v2.logging_service_v2_client import (
@@ -37,7 +38,6 @@ from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import GAXIterator
 from google.cloud.logging import __version__
 from google.cloud.logging._helpers import entry_from_resource
 from google.cloud.logging.sink import Sink
@@ -101,7 +101,8 @@ class _LoggingAPI(object):
         loggers = {}
         item_to_value = functools.partial(
             _item_to_entry, loggers=loggers)
-        return GAXIterator(self._client, page_iter, item_to_value)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, item_to_value)
 
     def write_entries(self, entries, logger_name=None, resource=None,
                       labels=None):
@@ -188,7 +189,8 @@ class _SinksAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_sinks(path, page_size=page_size,
                                              options=options)
-        return GAXIterator(self._client, page_iter, _item_to_sink)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_sink)
 
     def sink_create(self, project, sink_name, filter_, destination):
         """API call:  create a sink resource.
@@ -341,7 +343,8 @@ class _MetricsAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_log_metrics(
             path, page_size=page_size, options=options)
-        return GAXIterator(self._client, page_iter, _item_to_metric)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_metric)
 
     def metric_create(self, project, metric_name, filter_, description):
         """API call:  create a metric resource.
