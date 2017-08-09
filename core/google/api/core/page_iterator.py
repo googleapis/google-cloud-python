@@ -256,6 +256,9 @@ class HTTPIterator(Iterator):
 
     Args:
         client (google.cloud.client.Client): The API client.
+        api_request (Callable): The function to use to make API requests.
+            Generally, this will be
+            :meth:`google.cloud._http.JSONConnection.api_request`.
         path (str): The method path to query for the list of items.
         item_to_value (Callable[Iterator, Any]): Callable to convert an item
             from the type in the JSON response into a native object. Will
@@ -283,13 +286,14 @@ class HTTPIterator(Iterator):
     _RESERVED_PARAMS = frozenset([_PAGE_TOKEN, _MAX_RESULTS])
     _HTTP_METHOD = 'GET'
 
-    def __init__(self, client, path, item_to_value,
+    def __init__(self, client, api_request, path, item_to_value,
                  items_key=_DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
                  page_start=_do_nothing_page_start):
         super(HTTPIterator, self).__init__(
             client, item_to_value, page_token=page_token,
             max_results=max_results)
+        self.api_request = api_request
         self.path = path
         self._items_key = items_key
         self.extra_params = extra_params
@@ -368,12 +372,12 @@ class HTTPIterator(Iterator):
         """
         params = self._get_query_params()
         if self._HTTP_METHOD == 'GET':
-            return self.client._connection.api_request(
+            return self.api_request(
                 method=self._HTTP_METHOD,
                 path=self.path,
                 query_params=params)
         elif self._HTTP_METHOD == 'POST':
-            return self.client._connection.api_request(
+            return self.api_request(
                 method=self._HTTP_METHOD,
                 path=self.path,
                 data=params)

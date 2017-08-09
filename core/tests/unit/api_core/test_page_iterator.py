@@ -19,13 +19,10 @@ import pytest
 import six
 
 from google.api.core import page_iterator
-import google.cloud.client
-import google.cloud._http
 
 
 def test__do_nothing_page_start():
-    result = page_iterator._do_nothing_page_start(None, None, None)
-    assert result is None
+    assert page_iterator._do_nothing_page_start(None, None, None) is None
 
 
 class TestPage(object):
@@ -110,11 +107,11 @@ class TestIterator(object):
     def test_pages_property_restart(self):
         iterator = PageIteratorImpl(None, None)
 
-        iterator.pages
+        assert iterator.pages
 
         # Make sure we cannot restart.
         with pytest.raises(ValueError):
-            iterator.pages
+            assert iterator.pages
 
     def test__page_iter_increment(self):
         iterator = PageIteratorImpl(None, None)
@@ -198,7 +195,7 @@ class TestIterator(object):
     def test___iter___restart_after_page(self):
         iterator = PageIteratorImpl(None, None)
 
-        iterator.pages
+        assert iterator.pages
 
         # Make sure we cannot restart after starting the page iterator
         with pytest.raises(ValueError):
@@ -211,7 +208,8 @@ class TestHTTPIterator(object):
         client = mock.sentinel.client
         path = '/foo'
         iterator = page_iterator.HTTPIterator(
-            client, path, mock.sentinel.item_to_value)
+            client, mock.sentinel.api_request,
+            path, mock.sentinel.item_to_value)
 
         assert not iterator._started
         assert iterator.client is client
@@ -232,26 +230,18 @@ class TestHTTPIterator(object):
         with pytest.raises(ValueError):
             page_iterator.HTTPIterator(
                 mock.sentinel.client,
+                mock.sentinel.api_request,
                 mock.sentinel.path,
                 mock.sentinel.item_to_value,
                 extra_params=extra_params)
-
-    @staticmethod
-    def _make_client(response):
-        connection = mock.create_autospec(
-            google.cloud._http.JSONConnection, instance=True)
-        connection.api_request.return_value = response
-        client = mock.create_autospec(google.cloud.client.Client, instance=True)
-        client._connection = connection
-        return client
 
     def test_iterate(self):
         path = '/foo'
         item1 = {'name': '1'}
         item2 = {'name': '2'}
-        client = self._make_client({'items': [item1, item2]})
+        api_request = mock.Mock(return_value={'items': [item1, item2]})
         iterator = page_iterator.HTTPIterator(
-            client, path=path,
+            mock.sentinel.client, api_request, path=path,
             item_to_value=page_iterator._item_to_value_identity)
 
         assert iterator.num_results == 0
@@ -269,12 +259,13 @@ class TestHTTPIterator(object):
         with pytest.raises(StopIteration):
             six.next(items_iter)
 
-        client._connection.api_request.assert_called_once_with(
+        api_request.assert_called_once_with(
             method='GET', path=path, query_params={})
 
     def test__has_next_page_new(self):
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value)
 
@@ -285,6 +276,7 @@ class TestHTTPIterator(object):
     def test__has_next_page_without_token(self):
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value)
 
@@ -297,6 +289,7 @@ class TestHTTPIterator(object):
     def test__has_next_page_w_number_w_token(self):
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value)
 
@@ -310,6 +303,7 @@ class TestHTTPIterator(object):
     def test__has_next_page_w_max_results_not_done(self):
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value,
             max_results=3,
@@ -326,6 +320,7 @@ class TestHTTPIterator(object):
 
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value,
             max_results=3,
@@ -342,6 +337,7 @@ class TestHTTPIterator(object):
     def test__get_query_params_no_token(self):
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value)
 
@@ -350,6 +346,7 @@ class TestHTTPIterator(object):
     def test__get_query_params_w_token(self):
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value)
         iterator.next_page_token = 'token'
@@ -361,6 +358,7 @@ class TestHTTPIterator(object):
         max_results = 3
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value,
             max_results=max_results)
@@ -375,6 +373,7 @@ class TestHTTPIterator(object):
         extra_params = {'key': 'val'}
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value,
             extra_params=extra_params)
@@ -384,9 +383,9 @@ class TestHTTPIterator(object):
     def test__get_next_page_response_with_post(self):
         path = '/foo'
         page_response = {'items': ['one', 'two']}
-        client = self._make_client(page_response)
+        api_request = mock.Mock(return_value=page_response)
         iterator = page_iterator.HTTPIterator(
-            client, path=path,
+            mock.sentinel.client, api_request, path=path,
             item_to_value=page_iterator._item_to_value_identity)
         iterator._HTTP_METHOD = 'POST'
 
@@ -394,12 +393,13 @@ class TestHTTPIterator(object):
 
         assert response == page_response
 
-        client._connection.api_request.assert_called_once_with(
+        api_request.assert_called_once_with(
             method='POST', path=path, data={})
 
     def test__get_next_page_bad_http_method(self):
         iterator = page_iterator.HTTPIterator(
             mock.sentinel.client,
+            mock.sentinel.api_request,
             mock.sentinel.path,
             mock.sentinel.item_to_value)
         iterator._HTTP_METHOD = 'NOT-A-VERB'
@@ -420,7 +420,7 @@ class GAXPageIterator(object):
     __next__ = next
 
 
-class Test_GAXIterator(object):
+class TestGAXIterator(object):
 
     def test_constructor(self):
         client = mock.sentinel.client
