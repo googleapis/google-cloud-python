@@ -348,7 +348,9 @@ class TestPubsub(unittest.TestCase):
 
         # There is no GET method for snapshot, so check existence using
         # list
-        retry = RetryResult(lambda result: result, max_tries=4)
+        def retry_predicate(result):
+            return len(result) > len(before_snapshots)
+        retry = RetryResult(retry_predicate, max_tries=5)
         after_snapshots = retry(_consume_snapshots)(Config.CLIENT)
         self.assertEqual(len(before_snapshots) + 1, len(after_snapshots))
 
@@ -360,7 +362,6 @@ class TestPubsub(unittest.TestCase):
 
         with self.assertRaises(Conflict):
             snapshot.create()
-
 
     def test_seek(self):
         TOPIC_NAME = 'seek-e2e' + unique_resource_id('-')
