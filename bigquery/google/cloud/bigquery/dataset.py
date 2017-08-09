@@ -567,7 +567,8 @@ class Dataset(object):
             path=path,
             item_to_value=_item_to_table,
             items_key='tables',
-            page_token=page_token, max_results=max_results)
+            page_token=page_token,
+            max_results=max_results)
         result.dataset = self
         return result
 

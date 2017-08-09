@@ -187,10 +187,10 @@ class Iterator(object):
     def __iter__(self):
         """Iterator for each item returned.
 
-        returns:
+        Returns:
             types.GeneratorType[Any]: A generator of items from the API.
 
-        raises:
+        Raises:
             ValueError: If the iterator has already been started.
         """
         if self._started:
