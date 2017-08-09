@@ -22,12 +22,12 @@ import json
 import google.auth.credentials
 import six
 
+from google.api.core import page_iterator
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.iam import Policy
-from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
@@ -338,10 +338,15 @@ class Bucket(_PropertyMixin):
 
         client = self._require_client(client)
         path = self.path + '/o'
-        iterator = HTTPIterator(
-            client=client, path=path, item_to_value=_item_to_blob,
-            page_token=page_token, max_results=max_results,
-            extra_params=extra_params, page_start=_blobs_page_start)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_blob,
+            page_token=page_token,
+            max_results=max_results,
+            extra_params=extra_params,
+            page_start=_blobs_page_start)
         iterator.bucket = self
         iterator.prefixes = set()
         return iterator

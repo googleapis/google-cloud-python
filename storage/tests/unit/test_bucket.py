@@ -1190,14 +1190,14 @@ class Test_Bucket(unittest.TestCase):
         self.assertRaises(ValueError, bucket.make_public, recursive=True)
 
     def test_page_empty_response(self):
-        from google.cloud.iterator import Page
+        from google.api.core import page_iterator
 
         connection = _Connection()
         client = _Client(connection)
         name = 'name'
         bucket = self._make_one(client=client, name=name)
         iterator = bucket.list_blobs()
-        page = Page(iterator, (), None)
+        page = page_iterator.Page(iterator, (), None)
         iterator._page = page
         blobs = list(page)
         self.assertEqual(blobs, [])

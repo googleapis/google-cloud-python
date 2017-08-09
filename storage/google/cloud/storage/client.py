@@ -15,10 +15,10 @@
 """Client for interacting with the Google Cloud Storage API."""
 
 
+from google.api.core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import HTTPIterator
 from google.cloud.storage._http import Connection
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
@@ -269,9 +269,13 @@ class Client(ClientWithProject):
         if fields is not None:
             extra_params['fields'] = fields
 
-        return HTTPIterator(
-            client=self, path='/b', item_to_value=_item_to_bucket,
-            page_token=page_token, max_results=max_results,
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path='/b',
+            item_to_value=_item_to_bucket,
+            page_token=page_token,
+            max_results=max_results,
             extra_params=extra_params)
 
 
