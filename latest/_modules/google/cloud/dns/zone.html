@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.dns.zone &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.dns.zone &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,11 +58,11 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.dns.changes</span> <span class="k">import</span> <span class="n">Changes</span>
 <span class="kn">from</span> <span class="nn">google.cloud.dns.resource_record_set</span> <span class="k">import</span> <span class="n">ResourceRecordSet</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 
 
 <div class="viewcode-block" id="ManagedZone"><a class="viewcode-back" href="../../../../dns/zone.html#google.cloud.dns.zone.ManagedZone">[docs]</a><span class="k">class</span> <span class="nc">ManagedZone</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -382,17 +382,21 @@
 <span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
 <span class="sd">            ``client`` stored on the current zone.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of :class:`~.resource_record_set.ResourceRecordSet`</span>
 <span class="sd">                  belonging to this zone.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones/</span><span class="si">%s</span><span class="s1">/rrsets&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_resource_record_set</span><span class="p">,</span> <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rrsets&#39;</span><span class="p">,</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_resource_record_set</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rrsets&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
@@ -416,16 +420,20 @@
 <span class="sd">            (Optional) the client to use.  If not passed, falls back to the</span>
 <span class="sd">            ``client`` stored on the current zone.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of :class:`~.changes.Changes`</span>
 <span class="sd">                  belonging to this zone.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/managedZones/</span><span class="si">%s</span><span class="s1">/changes&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_changes</span><span class="p">,</span>
-            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;changes&#39;</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_changes</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;changes&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">iterator</span></div></div>
@@ -434,7 +442,7 @@
 <span class="k">def</span> <span class="nf">_item_to_resource_record_set</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON resource record set value to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type resource: dict</span>
@@ -449,7 +457,7 @@
 <span class="k">def</span> <span class="nf">_item_to_changes</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON &quot;changes&quot; value to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type resource: dict</span>

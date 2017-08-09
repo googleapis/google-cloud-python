@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -59,6 +59,7 @@
 
 <span class="kn">import</span> <span class="nn">re</span>
 
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">operation</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">instance_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="p">(</span>
@@ -68,7 +69,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">Cluster</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">DEFAULT_SERVE_NODES</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.table</span> <span class="k">import</span> <span class="n">Table</span>
-<span class="kn">from</span> <span class="nn">google.cloud.future</span> <span class="k">import</span> <span class="n">operation</span>
 
 
 <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span> <span class="o">=</span> <span class="s1">&#39;see-existing-cluster&#39;</span>
@@ -222,7 +222,7 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="c1"># NOTE: This does not compare the configuration values, such as</span>
         <span class="c1">#       the display_name. Instead, it only compares</span>
         <span class="c1">#       identifying values instance ID and client. This is</span>
@@ -233,7 +233,7 @@
                 <span class="n">other</span><span class="o">.</span><span class="n">_client</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="Instance.reload"><a class="viewcode-back" href="../../../../bigtable/instance.html#google.cloud.bigtable.instance.Instance.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload the metadata for this instance.&quot;&quot;&quot;</span>

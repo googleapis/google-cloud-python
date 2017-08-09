@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -64,12 +64,12 @@
 <span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_NOW</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.iam</span> <span class="k">import</span> <span class="n">Policy</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._helpers</span> <span class="k">import</span> <span class="n">_validate_name</span>
@@ -82,7 +82,7 @@
 <span class="k">def</span> <span class="nf">_blobs_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Grab prefixes after a :class:`~google.cloud.iterator.Page` started.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type page: :class:`~google.cloud.iterator.Page`</span>
@@ -103,7 +103,7 @@
 <span class="sd">        This assumes that the ``bucket`` attribute has been</span>
 <span class="sd">        added to the iterator after being created.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type item: dict</span>
@@ -358,7 +358,7 @@
 <span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`</span>
 <span class="sd">                  in this bucket matching the arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -380,10 +380,15 @@
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_blob</span><span class="p">,</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">page_start</span><span class="o">=</span><span class="n">_blobs_page_start</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_blob</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span>
+            <span class="n">page_start</span><span class="o">=</span><span class="n">_blobs_page_start</span><span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">iterator</span></div>

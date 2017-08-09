@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -61,6 +61,7 @@
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">six.moves</span> <span class="k">import</span> <span class="n">http_client</span>
 
+<span class="kn">import</span> <span class="nn">google.api.core.future.polling</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
@@ -73,7 +74,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">UDFResourcesProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_EnumProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_TypedProperty</span>
-<span class="kn">import</span> <span class="nn">google.cloud.future.polling</span>
 
 <span class="n">_DONE_STATE</span> <span class="o">=</span> <span class="s1">&#39;DONE&#39;</span>
 <span class="n">_STOPPED_REASON</span> <span class="o">=</span> <span class="s1">&#39;stopped&#39;</span>
@@ -182,7 +182,7 @@
     <span class="n">WRITE_EMPTY</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span></div>
 
 
-<span class="k">class</span> <span class="nc">_AsyncJob</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">future</span><span class="o">.</span><span class="n">polling</span><span class="o">.</span><span class="n">PollingFuture</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_AsyncJob</span><span class="p">(</span><span class="n">google</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">future</span><span class="o">.</span><span class="n">polling</span><span class="o">.</span><span class="n">PollingFuture</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for asynchronous jobs.</span>
 
 <span class="sd">    :type name: str</span>
@@ -538,7 +538,7 @@
 
 <span class="sd">        This always returns False. It&#39;s not possible to check if a job was</span>
 <span class="sd">        cancelled in the API. This method is here to satisfy the interface</span>
-<span class="sd">        for :class:`google.cloud.future.Future`.</span>
+<span class="sd">        for :class:`google.api.core.future.Future`.</span>
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: False</span>
@@ -560,6 +560,7 @@
     <span class="n">_field_delimiter</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_ignore_unknown_values</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_max_bad_records</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_null_marker</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_quote_character</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_skip_leading_rows</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_source_format</span> <span class="o">=</span> <span class="kc">None</span>
@@ -714,6 +715,11 @@
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">null_marker</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;null_marker&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">quote_character</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;quote_character&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote</span>
@@ -752,6 +758,8 @@
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ignore_unknown_values</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_bad_records</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;maxBadRecords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_bad_records</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_marker</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;nullMarker&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">null_marker</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quote_character</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s1">&#39;quote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quote_character</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,10 +57,10 @@
 <span class="sd">&quot;&quot;&quot;Client for interacting with the Google Cloud Storage API.&quot;&quot;&quot;</span>
 
 
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_LocalStack</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.batch</span> <span class="k">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.bucket</span> <span class="k">import</span> <span class="n">Bucket</span>
@@ -297,7 +297,7 @@
 <span class="sd">            response with just the next page token and the language of each</span>
 <span class="sd">            bucket returned: &#39;items/id,nextPageToken&#39;</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">                  belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -311,16 +311,20 @@
         <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
-        <span class="k">return</span> <span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_bucket</span><span class="p">,</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/b&#39;</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_bucket</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_item_to_bucket</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON bucket to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type item: dict</span>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.client &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.spanner.client &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -66,6 +66,7 @@
 <span class="sd">  :class:`~google.cloud.spanner.database.Database`</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">INITIAL_PAGE</span>
 <span class="c1"># pylint: disable=line-too-long</span>
 <span class="kn">from</span> <span class="nn">google.cloud.gapic.spanner_admin_database.v1.database_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
@@ -76,7 +77,6 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">GAXIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="k">import</span> <span class="n">__version__</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner.instance</span> <span class="k">import</span> <span class="n">DEFAULT_NODE_COUNT</span>
@@ -236,7 +236,7 @@
 <span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: (Optional) Token for fetching next page of results.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
 <span class="sd">            Iterator of</span>
 <span class="sd">            :class:`~google.cloud.spanner.instance.InstanceConfig`</span>
@@ -249,7 +249,8 @@
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span>
             <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">GAXIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance_config</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">_GAXIterator</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance_config</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span>
                  <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -299,7 +300,7 @@
 <span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: (Optional) Token for fetching next page of results.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
 <span class="sd">            Iterator of :class:`~google.cloud.spanner.instance.Instance`</span>
 <span class="sd">            resources within the client&#39;s project.</span>
@@ -311,14 +312,15 @@
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span>
             <span class="n">path</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">GAXIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">_GAXIterator</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_item_to_instance_config</span><span class="p">(</span>
         <span class="n">iterator</span><span class="p">,</span> <span class="n">config_pb</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
     <span class="sd">&quot;&quot;&quot;Convert an instance config protobuf to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type config_pb:</span>
@@ -334,7 +336,7 @@
 <span class="k">def</span> <span class="nf">_item_to_instance</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert an instance protobuf to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`</span>

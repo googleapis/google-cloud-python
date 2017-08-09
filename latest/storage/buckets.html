@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud fe757be documentation</title>
+    <title>Buckets &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -223,7 +223,7 @@ dict via the setter.  E.g.:</p>
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates current bucket.</p>
 <p>If the bucket already exists, will raise
-<a class="reference internal" href="../core/modules.html#google.cloud.exceptions.Conflict" title="google.cloud.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Conflict</span></code></a>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Conflict</span></code>.</p>
 <p>This implements “storage.buckets.insert”.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -251,9 +251,9 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <code class="docutils literal"><span class="pre">force=True</span></code> is passed, this will first attempt to delete all the
 objects / blobs in the bucket (i.e. try to empty the bucket).</p>
 <p>If the bucket doesn’t exist, this will raise
-<a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a>.  If the bucket is not empty
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code>.  If the bucket is not empty
 (and <code class="docutils literal"><span class="pre">force=False</span></code>), will raise
-<a class="reference internal" href="../core/modules.html#google.cloud.exceptions.Conflict" title="google.cloud.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Conflict</span></code></a>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Conflict</span></code>.</p>
 <p>If <code class="docutils literal"><span class="pre">force=True</span></code> and the bucket contains more than 256 objects / blobs
 this will cowardly refuse to delete the objects (or the bucket). This
 is to prevent accidental bucket deletion and to prevent extremely long
@@ -283,7 +283,7 @@ contains more than 256 objects / blobs.</p>
 <code class="descname">delete_blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.delete_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.delete_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a blob from the current bucket.</p>
 <p>If the blob isn’t found (backend 404), raises a
-<a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code>.</p>
 <p>For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
@@ -310,7 +310,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code></a> (to suppress
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code> (to suppress
 the exception, call <code class="docutils literal"><span class="pre">delete_blobs</span></code>, passing a no-op
 <code class="docutils literal"><span class="pre">on_error</span></code> callback, e.g.:</p>
 </td>
@@ -336,14 +336,14 @@ the exception, call <code class="docutils literal"><span class="pre">delete_blob
 blob names to delete.</li>
 <li><strong>on_error</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) – (Optional) Takes single argument: <code class="docutils literal"><span class="pre">blob</span></code>. Called
 called once for each blob raising
-<a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">NotFound</span></code></a>;
+<code class="xref py py-class docutils literal"><span class="pre">NotFound</span></code>;
 otherwise, the exception is propagated.</li>
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) – (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.NotFound" title="google.cloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">NotFound</span></code></a> (if
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">NotFound</span></code> (if
 <cite>on_error</cite> is not passed).</p>
 </td>
 </tr>
@@ -692,7 +692,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/iterators.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of all <a class="reference internal" href="blobs.html#google.cloud.storage.blob.Blob" title="google.cloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a>

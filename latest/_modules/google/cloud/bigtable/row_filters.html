@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row_filters &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.bigtable.row_filters &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -72,10 +72,7 @@
 <span class="sd">    .. note::</span>
 
 <span class="sd">        This class is a do-nothing base class for all row filters.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 
 
 <span class="k">class</span> <span class="nc">_BoolFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -90,8 +87,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">flag</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 
 <div class="viewcode-block" id="SinkFilter"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.SinkFilter">[docs]</a><span class="k">class</span> <span class="nc">SinkFilter</span><span class="p">(</span><span class="n">_BoolFilter</span><span class="p">):</span>
@@ -166,8 +166,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">regex</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 
 <div class="viewcode-block" id="RowKeyRegexFilter"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.RowKeyRegexFilter">[docs]</a><span class="k">class</span> <span class="nc">RowKeyRegexFilter</span><span class="p">(</span><span class="n">_RegexFilter</span><span class="p">):</span>
@@ -215,8 +218,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">sample</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="RowSampleFilter.to_pb"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.RowSampleFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
@@ -299,12 +305,12 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">start</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">end</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="TimestampRange.to_pb"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.TimestampRange.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the :class:`TimestampRange` to a protobuf.</span>
@@ -334,8 +340,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">range_</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="TimestampRangeFilter.to_pb"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.TimestampRangeFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
@@ -409,12 +418,15 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">column_family_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">start_column</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_column</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">end_column</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_column</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">inclusive_start</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_start</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">inclusive_end</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_end</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="ColumnRangeFilter.to_pb"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.ColumnRangeFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
@@ -527,11 +539,14 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">start_value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_value</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">end_value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_value</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">inclusive_start</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_start</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">inclusive_end</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_end</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="ValueRangeFilter.to_pb"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.ValueRangeFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
@@ -575,8 +590,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">num_cells</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_cells</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 
 <div class="viewcode-block" id="CellsRowOffsetFilter"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.CellsRowOffsetFilter">[docs]</a><span class="k">class</span> <span class="nc">CellsRowOffsetFilter</span><span class="p">(</span><span class="n">_CellCountFilter</span><span class="p">):</span>
@@ -673,8 +691,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="ApplyLabelFilter.to_pb"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.ApplyLabelFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
@@ -703,8 +724,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">filters</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 
 <div class="viewcode-block" id="RowFilterChain"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.RowFilterChain">[docs]</a><span class="k">class</span> <span class="nc">RowFilterChain</span><span class="p">(</span><span class="n">_FilterCombination</span><span class="p">):</span>
@@ -790,10 +814,13 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">base_filter</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_filter</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">true_filter</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">true_filter</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">false_filter</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">false_filter</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="ConditionalRowFilter.to_pb"><a class="viewcode-back" href="../../../../bigtable/row-filters.html#google.cloud.bigtable.row_filters.ConditionalRowFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>

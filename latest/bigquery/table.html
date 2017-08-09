@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Tables &#8212; google-cloud fe757be documentation</title>
+    <title>Tables &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -229,7 +229,7 @@ back to the <code class="docutils literal"><span class="pre">client</span></code
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/iterators.html#google.cloud.iterator.Iterator" title="google.cloud.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of row data <code class="xref py py-class docutils literal"><span class="pre">tuple`s.</span> <span class="pre">During</span> <span class="pre">each</span> <span class="pre">page,</span> <span class="pre">the</span>
@@ -623,9 +623,10 @@ schema.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>file_obj</strong> (<em>file</em>) – A file handle opened in binary mode for reading.</li>
-<li><strong>source_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – one of ‘CSV’ or ‘NEWLINE_DELIMITED_JSON’.
-job configuration option; see
-<code class="xref py py-meth docutils literal"><span class="pre">google.cloud.bigquery.job.LoadJob()</span></code></li>
+<li><strong>source_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Any supported format. The full list of supported
+formats is documented under the
+<code class="docutils literal"><span class="pre">configuration.extract.destinationFormat</span></code> property on this page:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs</a></li>
 <li><strong>rewind</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, seek to the beginning of the file handle before
 writing the file.</li>
 <li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The number of bytes to read from the file handle.

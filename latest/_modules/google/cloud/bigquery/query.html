@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.query &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.bigquery.query &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,7 +58,7 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_TypedProperty</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_from_json</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
@@ -456,7 +456,7 @@
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current dataset.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of row data :class:`tuple`s. During each page, the</span>
 <span class="sd">                  iterator will have the ``total_rows`` attribute set,</span>
 <span class="sd">                  which counts the total number of rows **in the result</span>
@@ -477,13 +477,16 @@
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;timeoutMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timeout_ms</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/queries/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-                                <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
-                                <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span>
-                                <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-                                <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-                                <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start_query</span><span class="p">,</span>
-                                <span class="n">extra_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start_query</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">query_result</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="c1"># Over-ride the key used to retrieve the next page token.</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">_NEXT_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;pageToken&#39;</span>
@@ -499,7 +502,7 @@
 <span class="sd">        added to the iterator after being created, which</span>
 <span class="sd">        should be done by the caller.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type page: :class:`~google.cloud.iterator.Page`</span>

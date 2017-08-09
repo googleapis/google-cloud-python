@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.runtimeconfig.config &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.runtimeconfig.config &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,10 +56,10 @@
 
 <span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud RuntimeConfig configs.&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.runtimeconfig._helpers</span> <span class="k">import</span> <span class="n">config_name_from_full_name</span>
 <span class="kn">from</span> <span class="nn">google.cloud.runtimeconfig.variable</span> <span class="k">import</span> <span class="n">Variable</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 
 
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../../../runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -274,16 +274,21 @@
 <span class="sd">            (Optional) The client to use.  If not passed, falls back to the</span>
 <span class="sd">            ``client`` stored on the current config.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
 <span class="sd">            Iterator of :class:`~google.cloud.runtimeconfig.variable.Variable`</span>
 <span class="sd">            belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/variables&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">),</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_variable</span><span class="p">,</span> <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;variables&#39;</span><span class="p">,</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">page_size</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_variable</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;variables&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">page_size</span><span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">_MAX_RESULTS</span> <span class="o">=</span> <span class="s1">&#39;pageSize&#39;</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">iterator</span></div></div>
@@ -292,7 +297,7 @@
 <span class="k">def</span> <span class="nf">_item_to_variable</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON variable to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type resource: dict</span>

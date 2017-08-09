@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.column_family &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.bigtable.column_family &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -79,10 +79,7 @@
 <span class="sd">        A string ``gc_expression`` can also be used with API requests, but</span>
 <span class="sd">        that value would be superceded by a ``gc_rule``. As a result, we</span>
 <span class="sd">        don&#39;t support that feature and instead support via native classes.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="MaxVersionsGCRule"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.MaxVersionsGCRule">[docs]</a><span class="k">class</span> <span class="nc">MaxVersionsGCRule</span><span class="p">(</span><span class="n">GarbageCollectionRule</span><span class="p">):</span>
@@ -97,8 +94,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">max_num_versions</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_num_versions</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="MaxVersionsGCRule.to_pb"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.MaxVersionsGCRule.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the garbage collection rule to a protobuf.</span>
@@ -121,8 +121,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">max_age</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_age</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="MaxAgeGCRule.to_pb"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.MaxAgeGCRule.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the garbage collection rule to a protobuf.</span>
@@ -146,8 +149,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">rules</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="GCRuleUnion.to_pb"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.GCRuleUnion.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the union into a single GC rule as a protobuf.</span>
@@ -172,8 +178,11 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">rules</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="GCRuleIntersection.to_pb"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.GCRuleIntersection.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the intersection into a single GC rule as a protobuf.</span>
@@ -232,13 +241,13 @@
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">column_family_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_table</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">gc_rule</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">gc_rule</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
 <div class="viewcode-block" id="ColumnFamily.to_pb"><a class="viewcode-back" href="../../../../bigtable/column-family.html#google.cloud.bigtable.column_family.ColumnFamily.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the column family to a protobuf.</span>

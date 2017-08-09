@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Jobs &#8212; google-cloud fe757be documentation</title>
+    <title>Jobs &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -152,7 +152,7 @@ is complete.</td>
 <dd><p>Check if the job has been cancelled.</p>
 <p>This always returns False. It’s not possible to check if a job was
 cancelled in the API. This method is here to satisfy the interface
-for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+for <code class="xref py py-class docutils literal"><span class="pre">google.api.core.future.Future</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -415,7 +415,7 @@ a <a class="reference external" href="https://docs.python.org/3/library/exceptio
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This instance.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code> if the job
 failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
 given timeout.</td>
 </tr>
@@ -622,7 +622,7 @@ is complete.</td>
 <dd><p>Check if the job has been cancelled.</p>
 <p>This always returns False. It’s not possible to check if a job was
 cancelled in the API. This method is here to satisfy the interface
-for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+for <code class="xref py py-class docutils literal"><span class="pre">google.api.core.future.Future</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -906,7 +906,7 @@ a <a class="reference external" href="https://docs.python.org/3/library/exceptio
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This instance.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code> if the job
 failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
 given timeout.</td>
 </tr>
@@ -1106,7 +1106,7 @@ is complete.</td>
 <dd><p>Check if the job has been cancelled.</p>
 <p>This always returns False. It’s not possible to check if a job was
 cancelled in the API. This method is here to satisfy the interface
-for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+for <code class="xref py py-class docutils literal"><span class="pre">google.api.core.future.Future</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1365,6 +1365,13 @@ configuration for the dataset.</li>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.null_marker">
+<code class="descname">null_marker</code><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.null_marker" title="Permalink to this definition">#</a></dt>
+<dd><p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker</a></p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.bigquery.job.LoadTableFromStorageJob.output_bytes">
 <code class="descname">output_bytes</code><a class="headerlink" href="#google.cloud.bigquery.job.LoadTableFromStorageJob.output_bytes" title="Permalink to this definition">#</a></dt>
 <dd><p>Count of bytes saved to destination table.</p>
@@ -1468,7 +1475,7 @@ a <a class="reference external" href="https://docs.python.org/3/library/exceptio
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This instance.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code> if the job
 failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
 given timeout.</td>
 </tr>
@@ -1694,7 +1701,7 @@ is complete.</td>
 <dd><p>Check if the job has been cancelled.</p>
 <p>This always returns False. It’s not possible to check if a job was
 cancelled in the API. This method is here to satisfy the interface
-for <code class="xref py py-class docutils literal"><span class="pre">google.cloud.future.Future</span></code>.</p>
+for <code class="xref py py-class docutils literal"><span class="pre">google.api.core.future.Future</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2022,7 +2029,7 @@ a <a class="reference external" href="https://docs.python.org/3/library/exceptio
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The query results.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.exceptions.GoogleCloudError" title="google.cloud.exceptions.GoogleCloudError"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code></a> if the job
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code> if the job
 failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
 given timeout.</td>
 </tr>

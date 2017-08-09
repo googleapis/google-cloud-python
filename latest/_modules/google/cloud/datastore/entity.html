@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.entity &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.datastore.entity &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -171,8 +171,9 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_ensure_tuple_or_list</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_ensure_tuple_or_list</span><span class="p">(</span>
             <span class="s1">&#39;exclude_from_indexes&#39;</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="p">))</span>
+        <span class="sd">&quot;&quot;&quot;Names of fields which are *not* to be indexed for this entity.&quot;&quot;&quot;</span>
         <span class="c1"># NOTE: This will be populated when parsing a protobuf in</span>
         <span class="c1">#       google.cloud.datastore.helpers.entity_from_protobuf.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_meanings</span> <span class="o">=</span> <span class="p">{}</span>
@@ -187,10 +188,10 @@
 <span class="sd">        :returns: True if the entities compare equal, else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">key</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="ow">and</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_meanings</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_meanings</span> <span class="ow">and</span>
                 <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
 
@@ -203,7 +204,7 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: False if the entities compare equal, else True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -217,15 +218,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">kind</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">exclude_from_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Names of fields which are *not* to be indexed for this entity.</span>
-
-<span class="sd">        :rtype: sequence of field names</span>
-<span class="sd">        :returns: The set of fields excluded from indexes.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>

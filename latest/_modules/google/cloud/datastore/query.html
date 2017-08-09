@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.query &#8212; google-cloud fe757be documentation</title>
+    <title>google.cloud.datastore.query &#8212; google-cloud a1942ba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'fe757be',
+        VERSION:     'a1942ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,9 +58,8 @@
 
 <span class="kn">import</span> <span class="nn">base64</span>
 
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_ensure_tuple_or_list</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span> <span class="k">as</span> <span class="n">BaseIterator</span>
-<span class="kn">from</span> <span class="nn">google.cloud.iterator</span> <span class="k">import</span> <span class="n">Page</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
@@ -415,7 +414,7 @@
             <span class="n">start_cursor</span><span class="o">=</span><span class="n">start_cursor</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="n">end_cursor</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../../datastore/queries.html#google.cloud.datastore.query.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="n">BaseIterator</span><span class="p">):</span>
+<div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../../datastore/queries.html#google.cloud.datastore.query.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represent the state of a given execution of a Query.</span>
 
 <span class="sd">    :type query: :class:`~google.cloud.datastore.query.Query`</span>
@@ -541,7 +540,7 @@
             <span class="n">query</span><span class="o">=</span><span class="n">query_pb</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">entity_pbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_query_results</span><span class="p">(</span><span class="n">response_pb</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_pb_from_query</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
@@ -613,7 +612,7 @@
 <span class="k">def</span> <span class="nf">_item_to_entity</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">entity_pb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a raw protobuf entity to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.cloud.iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type entity_pb:</span>
