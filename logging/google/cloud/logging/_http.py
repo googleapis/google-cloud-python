@@ -16,8 +16,8 @@
 
 import functools
 
+from google.api.core import page_iterator
 from google.cloud import _http
-from google.cloud.iterator import HTTPIterator
 
 from google.cloud.logging import __version__
 from google.cloud.logging._helpers import entry_from_resource
@@ -115,10 +115,14 @@ class _LoggingAPI(object):
         loggers = {}
         item_to_value = functools.partial(
             _item_to_entry, loggers=loggers)
-        iterator = HTTPIterator(
-            client=self._client, path=path,
-            item_to_value=item_to_value, items_key='entries',
-            page_token=page_token, extra_params=extra_params)
+        iterator = page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=item_to_value,
+            items_key='entries',
+            page_token=page_token,
+            extra_params=extra_params)
         # This method uses POST to make a read-only request.
         iterator._HTTP_METHOD = 'POST'
         return iterator
@@ -216,10 +220,14 @@ class _SinksAPI(object):
             extra_params['pageSize'] = page_size
 
         path = '/projects/%s/sinks' % (project,)
-        return HTTPIterator(
-            client=self._client, path=path,
-            item_to_value=_item_to_sink, items_key='sinks',
-            page_token=page_token, extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_sink,
+            items_key='sinks',
+            page_token=page_token,
+            extra_params=extra_params)
 
     def sink_create(self, project, sink_name, filter_, destination):
         """API call:  create a sink resource.
@@ -356,10 +364,14 @@ class _MetricsAPI(object):
             extra_params['pageSize'] = page_size
 
         path = '/projects/%s/metrics' % (project,)
-        return HTTPIterator(
-            client=self._client, path=path,
-            item_to_value=_item_to_metric, items_key='metrics',
-            page_token=page_token, extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_metric,
+            items_key='metrics',
+            page_token=page_token,
+            extra_params=extra_params)
 
     def metric_create(self, project, metric_name, filter_, description=None):
         """API call:  create a metric resource.
