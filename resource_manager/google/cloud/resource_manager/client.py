@@ -15,8 +15,8 @@
 """A Client for interacting with the Resource Manager API."""
 
 
+from google.api.core import page_iterator
 from google.cloud.client import Client as BaseClient
-from google.cloud.iterator import HTTPIterator
 
 from google.cloud.resource_manager._http import Connection
 from google.cloud.resource_manager.project import Project
@@ -164,9 +164,13 @@ class Client(BaseClient):
         if filter_params is not None:
             extra_params['filter'] = filter_params
 
-        return HTTPIterator(
-            client=self, path='/projects', item_to_value=_item_to_project,
-            items_key='projects', extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path='/projects',
+            item_to_value=_item_to_project,
+            items_key='projects',
+            extra_params=extra_params)
 
 
 def _item_to_project(iterator, resource):
