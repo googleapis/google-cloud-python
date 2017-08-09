@@ -247,6 +247,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                              config['maxBadRecords'])
         else:
             self.assertIsNone(job.max_bad_records)
+        if 'nullMarker' in config:
+            self.assertEqual(job.null_marker,
+                             config['nullMarker'])
+        else:
+            self.assertIsNone(job.null_marker)
         if 'quote' in config:
             self.assertEqual(job.quote_character,
                              config['quote'])
@@ -288,6 +293,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertIsNone(job.field_delimiter)
         self.assertIsNone(job.ignore_unknown_values)
         self.assertIsNone(job.max_bad_records)
+        self.assertIsNone(job.null_marker)
         self.assertIsNone(job.quote_character)
         self.assertIsNone(job.skip_leading_rows)
         self.assertIsNone(job.source_format)
@@ -592,6 +598,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             'fieldDelimiter': '|',
             'ignoreUnknownValues': True,
             'maxBadRecords': 100,
+            'nullMarker': r'\N',
             'quote': "'",
             'skipLeadingRows': 1,
             'sourceFormat': 'CSV',
@@ -619,6 +626,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         job.field_delimiter = '|'
         job.ignore_unknown_values = True
         job.max_bad_records = 100
+        job.null_marker = r'\N'
         job.quote_character = "'"
         job.skip_leading_rows = 1
         job.source_format = 'CSV'
