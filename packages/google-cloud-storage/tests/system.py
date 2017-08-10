@@ -127,7 +127,7 @@ class TestStorageBuckets(unittest.TestCase):
 
         new_labels = {'another-label': 'another-value'}
         bucket.labels = new_labels
-        bucket.update()
+        bucket.patch()
         self.assertEqual(bucket.labels, new_labels)
 
         bucket.labels = {}
