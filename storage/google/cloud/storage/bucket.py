@@ -125,6 +125,15 @@ class Bucket(_PropertyMixin):
         """The client bound to this bucket."""
         return self._client
 
+    def _set_properties(self, value):
+        """Set the properties for the current object.
+
+        :type value: dict or :class:`google.cloud.storage.batch._FutureDict`
+        :param value: The properties to be set.
+        """
+        self._label_removals.clear()
+        return super(Bucket, self)._set_properties(value)
+
     def blob(self, blob_name, chunk_size=None, encryption_key=None):
         """Factory constructor for blob object.
 
