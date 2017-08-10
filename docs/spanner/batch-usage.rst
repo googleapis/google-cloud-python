@@ -99,7 +99,6 @@ table.  Existing rows have values for the supplied columns overwritten;  other
 column values are set to null.
 
 .. code:: python
-
     batch.replace(
         'citizens', columns=['email', 'first_name', 'last_name', 'age'],
         values=[
