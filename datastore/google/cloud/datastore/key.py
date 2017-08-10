@@ -307,6 +307,11 @@ class Key(object):
         argument to ``ndb.Key(urlsafe=...)``. The base64 encoded values
         will have padding removed.
 
+        .. note::
+
+            The string returned by ``to_legacy_urlsafe`` is equivalent, but
+            not identical, to the string returned by ``ndb``.
+
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.
         """
