@@ -1043,7 +1043,8 @@ class Table(object):
                          skip_leading_rows=None,
                          write_disposition=None,
                          client=None,
-                         job_name=None):
+                         job_name=None,
+                         null_marker=None):
         """Upload the contents of this table from a file-like object.
 
         :type file_obj: file
@@ -1116,6 +1117,9 @@ class Table(object):
         :param job_name: Optional. The id of the job. Generated if not
                          explicitly passed in.
 
+        :type null_marker: str
+        :param null_marker: Optional. A custom null marker (example: "\\N")
+
         :rtype: :class:`~google.cloud.bigquery.jobs.LoadTableFromStorageJob`
 
         :returns: the job instance used to load the data (e.g., for
@@ -1135,7 +1139,7 @@ class Table(object):
                                 encoding, field_delimiter,
                                 ignore_unknown_values, max_bad_records,
                                 quote_character, skip_leading_rows,
-                                write_disposition, job_name)
+                                write_disposition, job_name, null_marker)
 
         try:
             created_json = self._do_upload(
@@ -1157,7 +1161,8 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
                             quote_character,
                             skip_leading_rows,
                             write_disposition,
-                            job_name):
+                            job_name,
+                            null_marker):
     """Helper for :meth:`Table.upload_from_file`."""
     load_config = metadata['configuration']['load']
 
@@ -1193,6 +1198,9 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
 
     if job_name is not None:
         load_config['jobReference'] = {'jobId': job_name}
+
+    if null_marker is not None:
+        load_config['nullMarker'] = null_marker
 
 
 def _parse_schema_resource(info):
