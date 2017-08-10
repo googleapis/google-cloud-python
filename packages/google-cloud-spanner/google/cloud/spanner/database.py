@@ -15,6 +15,7 @@
 """User friendly container for Cloud Spanner Database."""
 
 import re
+import threading
 
 import google.auth.credentials
 from google.gax.errors import GaxError
@@ -79,6 +80,7 @@ class Database(object):
         self.database_id = database_id
         self._instance = instance
         self._ddl_statements = _check_ddl_statements(ddl_statements)
+        self._local = threading.local()
 
         if pool is None:
             pool = BurstyPool()
@@ -332,8 +334,20 @@ class Database(object):
         :rtype: :class:`datetime.datetime`
         :returns: timestamp of committed transaction
         """
-        with SessionCheckout(self._pool) as session:
-            return session.run_in_transaction(func, *args, **kw)
+        # Sanity check: Is there a transaction already running?
+        # If there is, then raise a red flag. Otherwise, mark that this one
+        # is running.
+        if getattr(self._local, 'transaction_running', False):
+            raise RuntimeError('Spanner does not support nested transactions.')
+        self._local.transaction_running = True
+
+        # Check out a session and run the function in a transaction; once
+        # done, flip the sanity check bit back.
+        try:
+            with SessionCheckout(self._pool) as session:
+                return session.run_in_transaction(func, *args, **kw)
+        finally:
+            self._local.transaction_running = False
 
     def batch(self):
         """Return an object which wraps a batch.
