@@ -804,7 +804,7 @@ class TestBigQuery(unittest.TestCase):
 
         Config.CURSOR.execute(
             query_template.format(dataset_name, table_name),
-            job_id='test_dbapi_w_dml_{}'.format(str(uuid.uuid4())))
+            job_id='test_dbapi_w_dml_{}'.format(unique_resource_id()))
         self.assertEqual(Config.CURSOR.rowcount, 1)
         self.assertIsNone(Config.CURSOR.fetchone())
 
