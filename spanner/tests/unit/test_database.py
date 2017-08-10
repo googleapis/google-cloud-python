@@ -223,7 +223,7 @@ class TestDatabase(_BaseTest):
                 self._scopes = scopes
                 self._source = source
 
-            def requires_scopes(self): # pragma: NO COVER
+            def requires_scopes(self):  # pragma: NO COVER
                 return True
 
             def with_scopes(self, scopes):
@@ -674,13 +674,17 @@ class TestDatabase(_BaseTest):
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
+        # Define the inner function.
+        inner = mock.Mock(spec=())
+
         # Define the nested transaction.
         def nested_unit_of_work():
-            return database.run_in_transaction(lambda: None) # pragma: NO COVER
+            return database.run_in_transaction(inner)
 
         # Attempting to run this transaction should raise RuntimeError.
         with self.assertRaises(RuntimeError):
             database.run_in_transaction(nested_unit_of_work)
+        self.assertEqual(inner.call_count, 0)
 
     def test_batch(self):
         from google.cloud.spanner.database import BatchCheckout
@@ -920,7 +924,7 @@ class _Session(object):
     _rows = ()
 
     def __init__(self, database=None, name=_BaseTest.SESSION_NAME,
-                       run_transaction_function=False):
+                 run_transaction_function=False):
         self._database = database
         self.name = name
         self._run_transaction_function = run_transaction_function
