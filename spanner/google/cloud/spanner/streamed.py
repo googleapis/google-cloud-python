@@ -16,6 +16,7 @@
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
+from google.cloud import exceptions
 from google.cloud.proto.spanner.v1 import type_pb2
 import six
 
@@ -179,7 +180,7 @@ class StreamedResultSet(object):
         """
         answer = self.one_or_none()
         if answer is None:
-            raise NotFound('No rows matched the given query.')
+            raise exceptions.NotFound('No rows matched the given query.')
         return answer
 
     def one_or_none(self):
