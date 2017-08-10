@@ -142,6 +142,8 @@ class _PropertyMixin(object):
         # to work properly w/ 'noAcl'.
         update_properties = {key: self._properties[key]
                              for key in self._changes}
+
+        # Make the API call.
         api_response = client._connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'}, _target_object=self)
