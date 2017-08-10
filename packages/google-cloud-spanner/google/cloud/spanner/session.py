@@ -249,6 +249,7 @@ class Session(object):
 
         if self._transaction is not None:
             self._transaction._rolled_back = True
+            del self._transaction
 
         txn = self._transaction = Transaction(self)
         return txn

@@ -24,11 +24,23 @@ from google.cloud.spanner.batch import _BatchBase
 
 
 class Transaction(_SnapshotBase, _BatchBase):
-    """Implement read-write transaction semantics for a session."""
+    """Implement read-write transaction semantics for a session.
+
+    :type session: :class:`~google.cloud.spanner.session.Session`
+    :param session: the session used to perform the commit
+
+    :raises ValueError: if session has an existing transaction
+    """
     committed = None
     """Timestamp at which the transaction was successfully committed."""
     _rolled_back = False
     _multi_use = True
+
+    def __init__(self, session):
+        if session._transaction is not None:
+            raise ValueError("Session has existing transaction.")
+
+        super(Transaction, self).__init__(session)
 
     def _check_state(self):
         """Helper for :meth:`commit` et al.
