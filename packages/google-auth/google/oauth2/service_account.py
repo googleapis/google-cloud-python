@@ -117,7 +117,7 @@ class Credentials(credentials.Signing,
     """
 
     def __init__(self, signer, service_account_email, token_uri, scopes=None,
-                 subject=None, additional_claims=None):
+                 subject=None, project_id=None, additional_claims=None):
         """
         Args:
             signer (google.auth.crypt.Signer): The signer used to sign JWTs.
@@ -127,6 +127,8 @@ class Credentials(credentials.Signing,
             token_uri (str): The OAuth 2.0 Token URI.
             subject (str): For domain-wide delegation, the email address of the
                 user to for which to request delegated access.
+            project_id  (str): Project ID associated with the service account
+                credential.
             additional_claims (Mapping[str, str]): Any additional claims for
                 the JWT assertion used in the authorization grant.
 
@@ -141,6 +143,7 @@ class Credentials(credentials.Signing,
         self._signer = signer
         self._service_account_email = service_account_email
         self._subject = subject
+        self._project_id = project_id
         self._token_uri = token_uri
 
         if additional_claims is not None:
@@ -167,7 +170,8 @@ class Credentials(credentials.Signing,
         return cls(
             signer,
             service_account_email=info['client_email'],
-            token_uri=info['token_uri'], **kwargs)
+            token_uri=info['token_uri'],
+            project_id=info.get('project_id'), **kwargs)
 
     @classmethod
     def from_service_account_info(cls, info, **kwargs):
@@ -211,6 +215,11 @@ class Credentials(credentials.Signing,
         return self._service_account_email
 
     @property
+    def project_id(self):
+        """Project ID associated with this credential."""
+        return self._project_id
+
+    @property
     def requires_scopes(self):
         """Checks if the credentials requires scopes.
 
@@ -227,6 +236,7 @@ class Credentials(credentials.Signing,
             scopes=scopes,
             token_uri=self._token_uri,
             subject=self._subject,
+            project_id=self._project_id,
             additional_claims=self._additional_claims.copy())
 
     def with_subject(self, subject):
@@ -245,6 +255,7 @@ class Credentials(credentials.Signing,
             scopes=self._scopes,
             token_uri=self._token_uri,
             subject=subject,
+            project_id=self._project_id,
             additional_claims=self._additional_claims.copy())
 
     def with_claims(self, additional_claims):
@@ -268,6 +279,7 @@ class Credentials(credentials.Signing,
             scopes=self._scopes,
             token_uri=self._token_uri,
             subject=self._subject,
+            project_id=self._project_id,
             additional_claims=new_additional_claims)
 
     def _make_authorization_grant_assertion(self):

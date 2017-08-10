@@ -74,6 +74,7 @@ class TestCredentials(object):
             additional_claims=additional_claims)
 
         assert credentials.service_account_email == info['client_email']
+        assert credentials.project_id == info['project_id']
         assert credentials._signer.key_id == info['private_key_id']
         assert credentials._token_uri == info['token_uri']
         assert credentials._scopes == scopes
@@ -87,6 +88,7 @@ class TestCredentials(object):
             SERVICE_ACCOUNT_JSON_FILE)
 
         assert credentials.service_account_email == info['client_email']
+        assert credentials.project_id == info['project_id']
         assert credentials._signer.key_id == info['private_key_id']
         assert credentials._token_uri == info['token_uri']
 
@@ -101,6 +103,7 @@ class TestCredentials(object):
             scopes=scopes, additional_claims=additional_claims)
 
         assert credentials.service_account_email == info['client_email']
+        assert credentials.project_id == info['project_id']
         assert credentials._signer.key_id == info['private_key_id']
         assert credentials._token_uri == info['token_uri']
         assert credentials._scopes == scopes
