@@ -45,12 +45,22 @@ fails if the result set is too large,
 
 .. code:: python
 
-    result = snapshot.read(
-        table='table-name', columns=['first_name', 'last_name', 'age'],
-        key_set=['phred@example.com', 'bharney@example.com'])
+    with database.snapshot() as snapshot:
+        result = snapshot.read(
+            table='table-name', columns=['first_name', 'last_name', 'age'],
+            key_set=['phred@example.com', 'bharney@example.com'])
 
-    for row in result.rows:
-        print(row)
+        for row in result.rows:
+            print(row)
+
+.. note::
+
+   The result set returned by
+   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
+   iterated after the snapshot's session has been returned to the database's
+   session pool.  Therefore, unless your application creates sessions
+   manually, perform all iteration within the context of  the
+   ``with database.snapshot()`` block.
 
 .. note::
 
@@ -68,14 +78,24 @@ fails if the result set is too large,
 
 .. code:: python
 
-    QUERY = (
-        'SELECT e.first_name, e.last_name, p.telephone '
-        'FROM employees as e, phones as p '
-        'WHERE p.employee_id == e.employee_id')
-    result = snapshot.execute_sql(QUERY)
+    with database.snapshot() as snapshot:
+        QUERY = (
+            'SELECT e.first_name, e.last_name, p.telephone '
+            'FROM employees as e, phones as p '
+            'WHERE p.employee_id == e.employee_id')
+        result = snapshot.execute_sql(QUERY)
 
-    for row in result.rows:
-        print(row)
+        for row in result.rows:
+            print(row)
+
+.. note::
+
+   The result set returned by
+   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
+   iterated after the snapshot's session has been returned to the database's
+   session pool.  Therefore, unless your application creates sessions
+   manually, perform all iteration within the context of  the
+   ``with database.snapshot()`` block.
 
 
 Next Step
