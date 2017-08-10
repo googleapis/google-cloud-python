@@ -223,7 +223,7 @@ class TestDatabase(_BaseTest):
                 self._scopes = scopes
                 self._source = source
 
-            def requires_scopes(self): # pragma: NO COVER
+            def requires_scopes(self):  # pragma: NO COVER
                 return True
 
             def with_scopes(self, scopes):
@@ -663,6 +663,29 @@ class TestDatabase(_BaseTest):
         self.assertEqual(session._retried,
                          (_unit_of_work, (SINCE,), {'until': UNTIL}))
 
+    def test_run_in_transaction_nested(self):
+        from datetime import datetime
+
+        # Perform the various setup tasks.
+        instance = _Instance(self.INSTANCE_NAME, client=_Client())
+        pool = _Pool()
+        session = _Session(run_transaction_function=True)
+        session._committed = datetime.now()
+        pool.put(session)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        # Define the inner function.
+        inner = mock.Mock(spec=())
+
+        # Define the nested transaction.
+        def nested_unit_of_work():
+            return database.run_in_transaction(inner)
+
+        # Attempting to run this transaction should raise RuntimeError.
+        with self.assertRaises(RuntimeError):
+            database.run_in_transaction(nested_unit_of_work)
+        self.assertEqual(inner.call_count, 0)
+
     def test_batch(self):
         from google.cloud.spanner.database import BatchCheckout
 
@@ -900,11 +923,15 @@ class _Session(object):
 
     _rows = ()
 
-    def __init__(self, database=None, name=_BaseTest.SESSION_NAME):
+    def __init__(self, database=None, name=_BaseTest.SESSION_NAME,
+                 run_transaction_function=False):
         self._database = database
         self.name = name
+        self._run_transaction_function = run_transaction_function
 
     def run_in_transaction(self, func, *args, **kw):
+        if self._run_transaction_function:
+            func(*args, **kw)
         self._retried = (func, args, kw)
         return self._committed
 
