@@ -169,6 +169,48 @@ class StreamedResultSet(object):
             while iter_rows:
                 yield iter_rows.pop(0)
 
+    def one(self):
+        """Return exactly one result, or raise an exception.
+
+        :raises: :exc:`NotFound`: If there are no results.
+        :raises: :exc:`ValueError`: If there are multiple results.
+        :raises: :exc:`RuntimeError`: If consumption has already occurred,
+            in whole or in part.
+        """
+        answer = self.one_or_none()
+        if answer is None:
+            raise NotFound('No rows matched the given query.')
+        return answer
+
+    def one_or_none(self):
+        """Return exactly one result, or None if there are no results.
+
+        :raises: :exc:`ValueError`: If there are multiple results.
+        :raises: :exc:`RuntimeError`: If consumption has already occurred,
+            in whole or in part.
+        """
+        # Sanity check: Has consumption of this query already started?
+        # If it has, then this is an exception.
+        if self._metadata is not None:
+            raise RuntimeError('Can not call `.one` or `.one_or_none` after '
+                               'stream consumption has already started.')
+
+        # Consume the first result of the stream.
+        # If there is no first result, then return None.
+        iterator = iter(self)
+        try:
+            answer = next(iterator)
+        except StopIteration:
+            return None
+
+        # Attempt to consume more. This should no-op; if we get additional
+        # rows, then this is an error case.
+        try:
+            next(iterator)
+            raise ValueError('Expected one result; got more.')
+        except StopIteration:
+            return answer
+
 
 class Unmergeable(ValueError):
     """Unable to merge two values.
