@@ -99,7 +99,6 @@ table.  Existing rows have values for the supplied columns overwritten;  other
 column values are set to null.
 
 .. code:: python
-
     batch.replace(
         'citizens', columns=['email', 'first_name', 'last_name', 'age'],
         values=[
@@ -124,8 +123,14 @@ rows do not cause errors.
 
 .. code:: python
 
-    batch.delete('citizens',
-        keyset['bharney@example.com', 'nonesuch@example.com'])
+    from google.cloud.spanner.keyset import KeySet
+
+    to_delete = KeySet(keys=[
+        ('bharney@example.com',)
+        ('nonesuch@example.com',)
+    ])
+
+    batch.delete('citizens', to_delete)
 
 
 Commit changes for a Batch
@@ -151,6 +156,13 @@ if the ``with`` block exits without raising an exception.
 
 .. code:: python
 
+    from google.cloud.spanner.keyset import KeySet
+
+    to_delete = KeySet(keys=[
+        ('bharney@example.com',)
+        ('nonesuch@example.com',)
+    ])
+
     with session.batch() as batch:
 
         batch.insert(
@@ -169,8 +181,7 @@ if the ``with`` block exits without raising an exception.
 
         ...
 
-        batch.delete('citizens',
-            keyset['bharney@example.com', 'nonesuch@example.com'])
+        batch.delete('citizens', to_delete)
 
 
 Next Step
