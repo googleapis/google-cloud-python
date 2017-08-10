@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Keys &#8212; google-cloud a1942ba documentation</title>
+    <title>Keys &#8212; google-cloud 87a46a8 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'a1942ba',
+        VERSION:     '87a46a8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -315,6 +315,11 @@ datastore “Key” used within Google App Engine (a so-called
 “Reference”). The returned string can be used as the <code class="docutils literal"><span class="pre">urlsafe</span></code>
 argument to <code class="docutils literal"><span class="pre">ndb.Key(urlsafe=...)</span></code>. The base64 encoded values
 will have padding removed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The string returned by <code class="docutils literal"><span class="pre">to_legacy_urlsafe</span></code> is equivalent, but
+not identical, to the string returned by <code class="docutils literal"><span class="pre">ndb</span></code>.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

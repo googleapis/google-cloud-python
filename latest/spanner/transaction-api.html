@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transaction API &#8212; google-cloud a1942ba documentation</title>
+    <title>Transaction API &#8212; google-cloud 87a46a8 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'a1942ba',
+        VERSION:     '87a46a8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,6 +49,16 @@
 <em class="property">class </em><code class="descclassname">google.cloud.spanner.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.transaction.Transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.snapshot._SnapshotBase</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.batch._BatchBase</span></code></p>
 <p>Implement read-write transaction semantics for a session.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="session-api.html#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session used to perform the commit</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if session has an existing transaction</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="google.cloud.spanner.transaction.Transaction.begin">
 <code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/transaction.html#Transaction.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.transaction.Transaction.begin" title="Permalink to this definition">#</a></dt>

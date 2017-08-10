@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.key &#8212; google-cloud a1942ba documentation</title>
+    <title>google.cloud.datastore.key &#8212; google-cloud 87a46a8 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'a1942ba',
+        VERSION:     '87a46a8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -348,6 +348,11 @@
 <span class="sd">        &quot;Reference&quot;). The returned string can be used as the ``urlsafe``</span>
 <span class="sd">        argument to ``ndb.Key(urlsafe=...)``. The base64 encoded values</span>
 <span class="sd">        will have padding removed.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The string returned by ``to_legacy_urlsafe`` is equivalent, but</span>
+<span class="sd">            not identical, to the string returned by ``ndb``.</span>
 
 <span class="sd">        :rtype: bytes</span>
 <span class="sd">        :returns: A bytestring containing the key encoded as URL-safe base64.</span>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Tables &#8212; google-cloud a1942ba documentation</title>
+    <title>Tables &#8212; google-cloud 87a46a8 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'a1942ba',
+        VERSION:     '87a46a8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -615,7 +615,7 @@ schema.</td>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.table.Table.upload_from_file">
-<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>source_format</em>, <em>rewind=False</em>, <em>size=None</em>, <em>num_retries=6</em>, <em>allow_jagged_rows=None</em>, <em>allow_quoted_newlines=None</em>, <em>create_disposition=None</em>, <em>encoding=None</em>, <em>field_delimiter=None</em>, <em>ignore_unknown_values=None</em>, <em>max_bad_records=None</em>, <em>quote_character=None</em>, <em>skip_leading_rows=None</em>, <em>write_disposition=None</em>, <em>client=None</em>, <em>job_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Table.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.upload_from_file" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>source_format</em>, <em>rewind=False</em>, <em>size=None</em>, <em>num_retries=6</em>, <em>allow_jagged_rows=None</em>, <em>allow_quoted_newlines=None</em>, <em>create_disposition=None</em>, <em>encoding=None</em>, <em>field_delimiter=None</em>, <em>ignore_unknown_values=None</em>, <em>max_bad_records=None</em>, <em>quote_character=None</em>, <em>skip_leading_rows=None</em>, <em>write_disposition=None</em>, <em>client=None</em>, <em>job_name=None</em>, <em>null_marker=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Table.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Table.upload_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this table from a file-like object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -658,6 +658,7 @@ filesystem this won’t be possible.)</li>
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current table.</li>
 <li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional. The id of the job. Generated if not
 explicitly passed in.</li>
+<li><strong>null_marker</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Optional. A custom null marker (example: “N”)</li>
 </ul>
 </td>
 </tr>
