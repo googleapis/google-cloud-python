@@ -313,68 +313,6 @@ class Database(object):
         """
         return Session(self)
 
-    def read(self, table, columns, keyset, index='', limit=0,
-             resume_token=b''):
-        """Perform a ``StreamingRead`` API request for rows in a table.
-
-        :type table: str
-        :param table: name of the table from which to fetch data
-
-        :type columns: list of str
-        :param columns: names of columns to be retrieved
-
-        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`
-        :param keyset: keys / ranges identifying rows to be retrieved
-
-        :type index: str
-        :param index: (Optional) name of index to use, rather than the
-                      table's primary key
-
-        :type limit: int
-        :param limit: (Optional) maxiumn number of rows to return
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted read
-
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
-        :returns: a result set instance which can be used to consume rows.
-        """
-        with SessionCheckout(self._pool) as session:
-            return session.read(
-                table, columns, keyset, index, limit, resume_token)
-
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=b''):
-        """Perform an ``ExecuteStreamingSql`` API request.
-
-        :type sql: str
-        :param sql: SQL query statement
-
-        :type params: dict, {str -> column value}
-        :param params: values for parameter replacement.  Keys must match
-                       the names used in ``sql``.
-
-        :type param_types:
-            dict, {str -> :class:`google.spanner.v1.type_pb2.TypeCode`}
-        :param param_types: (Optional) explicit types for one or more param
-                            values;  overrides default type detection on the
-                            back-end.
-
-        :type query_mode:
-            :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See
-            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted query
-
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
-        :returns: a result set instance which can be used to consume rows.
-        """
-        with SessionCheckout(self._pool) as session:
-            return session.execute_sql(
-                sql, params, param_types, query_mode, resume_token)
-
     def run_in_transaction(self, func, *args, **kw):
         """Perform a unit of work in a transaction, retrying on abort.
 

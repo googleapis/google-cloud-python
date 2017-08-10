@@ -621,21 +621,6 @@ class TestDatabase(_BaseTest):
         self.assertIs(session.session_id, None)
         self.assertIs(session._database, database)
 
-    def test_execute_sql_defaults(self):
-        QUERY = 'SELECT * FROM employees'
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        session._execute_result = []
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        rows = list(database.execute_sql(QUERY))
-
-        self.assertEqual(rows, [])
-        self.assertEqual(session._executed, (QUERY, None, None, None, b''))
-
     def test_run_in_transaction_wo_args(self):
         import datetime
 
@@ -677,38 +662,6 @@ class TestDatabase(_BaseTest):
         self.assertEqual(committed, NOW)
         self.assertEqual(session._retried,
                          (_unit_of_work, (SINCE,), {'until': UNTIL}))
-
-    def test_read(self):
-        from google.cloud.spanner.keyset import KeySet
-
-        TABLE_NAME = 'citizens'
-        COLUMNS = ['email', 'first_name', 'last_name', 'age']
-        KEYS = ['bharney@example.com', 'phred@example.com']
-        KEYSET = KeySet(keys=KEYS)
-        INDEX = 'email-address-index'
-        LIMIT = 20
-        TOKEN = b'DEADBEEF'
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        rows = list(database.read(
-            TABLE_NAME, COLUMNS, KEYSET, INDEX, LIMIT, TOKEN))
-
-        self.assertEqual(rows, [])
-
-        (table, columns, key_set, index, limit,
-         resume_token) = session._read_with
-
-        self.assertEqual(table, TABLE_NAME)
-        self.assertEqual(columns, COLUMNS)
-        self.assertEqual(key_set, KEYSET)
-        self.assertEqual(index, INDEX)
-        self.assertEqual(limit, LIMIT)
-        self.assertEqual(resume_token, TOKEN)
 
     def test_batch(self):
         from google.cloud.spanner.database import BatchCheckout
@@ -951,17 +904,9 @@ class _Session(object):
         self._database = database
         self.name = name
 
-    def execute_sql(self, sql, params, param_types, query_mode, resume_token):
-        self._executed = (sql, params, param_types, query_mode, resume_token)
-        return iter(self._rows)
-
     def run_in_transaction(self, func, *args, **kw):
         self._retried = (func, args, kw)
         return self._committed
-
-    def read(self, table, columns, keyset, index, limit, resume_token):
-        self._read_with = (table, columns, keyset, index, limit, resume_token)
-        return iter(self._rows)
 
 
 class _SessionPB(object):

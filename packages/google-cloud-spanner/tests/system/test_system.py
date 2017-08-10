@@ -297,7 +297,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self.assertEqual(len(temp_db.ddl_statements), len(DDL_STATEMENTS))
 
-    def test_db_batch_insert_then_db_snapshot_read_and_db_read(self):
+    def test_db_batch_insert_then_db_snapshot_read(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -310,10 +310,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self._check_row_data(from_snap)
 
-        from_db = list(self._db.read(self.TABLE, self.COLUMNS, self.ALL))
-        self._check_row_data(from_db)
-
-    def test_db_run_in_transaction_then_db_execute_sql(self):
+    def test_db_run_in_transaction_then_snapshot_execute_sql(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -329,7 +326,8 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self._db.run_in_transaction(_unit_of_work, test=self)
 
-        rows = list(self._db.execute_sql(self.SQL))
+        with self._db.snapshot() as after:
+            rows = list(after.execute_sql(self.SQL))
         self._check_row_data(rows)
 
     def test_db_run_in_transaction_twice(self):
@@ -346,7 +344,8 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self._db.run_in_transaction(_unit_of_work, test=self)
         self._db.run_in_transaction(_unit_of_work, test=self)
 
-        rows = list(self._db.execute_sql(self.SQL))
+        with self._db.snapshot() as after:
+            rows = list(after.execute_sql(self.SQL))
         self._check_row_data(rows)
 
 
@@ -1085,7 +1084,8 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
 
     def _verify_one_column(self, table_desc):
         sql = 'SELECT chunk_me FROM {}'.format(table_desc.table)
-        rows = list(self._db.execute_sql(sql))
+        with self._db.snapshot() as snapshot:
+            rows = list(snapshot.execute_sql(sql))
         self.assertEqual(len(rows), table_desc.row_count)
         expected = table_desc.value()
         for row in rows:
@@ -1093,7 +1093,8 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
 
     def _verify_two_columns(self, table_desc):
         sql = 'SELECT chunk_me, chunk_me_2 FROM {}'.format(table_desc.table)
-        rows = list(self._db.execute_sql(sql))
+        with self._db.snapshot() as snapshot:
+            rows = list(snapshot.execute_sql(sql))
         self.assertEqual(len(rows), table_desc.row_count)
         expected = table_desc.value()
         for row in rows:
