@@ -35,9 +35,9 @@ mission-critical online transaction processing (OLTP) applications. With Cloud
 Spanner you enjoy all the traditional benefits of a relational database; but
 unlike any other relational database service, Cloud Spanner scales
 horizontally to hundreds or thousands of servers to handle the biggest
-transactional workloads. (`Learn more`_)
+transactional workloads. (`About Cloud Spanner`_)
 
-.. _Learn more: https://cloud.google.com/spanner/
+.. _About Cloud Spanner: https://cloud.google.com/spanner/
 
 
 Executing Arbitrary SQL in a Transaction
