@@ -212,7 +212,7 @@ Configuring a session pool for a database
 -----------------------------------------
 
 Under the covers, the ``snapshot``, ``batch``, and ``run_in_transaction``
-methods use a pool of :class:`~google.cloud.spanner.session.Session`` objects
+methods use a pool of :class:`~google.cloud.spanner.session.Session` objects
 to manage their communication with the back-end.  You can configure
 one of the pools manually to control the number of sessions, timeouts, etc.,
 and then passing it to the :class:`~google.cloud.spanner.database.Database`
