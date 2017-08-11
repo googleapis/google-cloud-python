@@ -621,6 +621,55 @@ class TestDatabase(_BaseTest):
         self.assertIs(session.session_id, None)
         self.assertIs(session._database, database)
 
+    def test_snapshot_defaults(self):
+        from google.cloud.spanner.database import SnapshotCheckout
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        session = _Session()
+        pool.put(session)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        checkout = database.snapshot()
+        self.assertIsInstance(checkout, SnapshotCheckout)
+        self.assertIs(checkout._database, database)
+        self.assertEqual(checkout._kw, {})
+
+    def test_snapshot_w_read_timestamp_and_multi_use(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud.spanner.database import SnapshotCheckout
+
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        session = _Session()
+        pool.put(session)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        checkout = database.snapshot(read_timestamp=now, multi_use=True)
+
+        self.assertIsInstance(checkout, SnapshotCheckout)
+        self.assertIs(checkout._database, database)
+        self.assertEqual(
+            checkout._kw, {'read_timestamp': now, 'multi_use': True})
+
+    def test_batch(self):
+        from google.cloud.spanner.database import BatchCheckout
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        session = _Session()
+        pool.put(session)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        checkout = database.batch()
+        self.assertIsInstance(checkout, BatchCheckout)
+        self.assertIs(checkout._database, database)
+
     def test_run_in_transaction_wo_args(self):
         import datetime
 
@@ -685,55 +734,6 @@ class TestDatabase(_BaseTest):
         with self.assertRaises(RuntimeError):
             database.run_in_transaction(nested_unit_of_work)
         self.assertEqual(inner.call_count, 0)
-
-    def test_batch(self):
-        from google.cloud.spanner.database import BatchCheckout
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.batch()
-        self.assertIsInstance(checkout, BatchCheckout)
-        self.assertIs(checkout._database, database)
-
-    def test_snapshot_defaults(self):
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot()
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertIs(checkout._database, database)
-        self.assertEqual(checkout._kw, {})
-
-    def test_snapshot_w_read_timestamp_and_multi_use(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(read_timestamp=now, multi_use=True)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertIs(checkout._database, database)
-        self.assertEqual(
-            checkout._kw, {'read_timestamp': now, 'multi_use': True})
 
 
 class TestBatchCheckout(_BaseTest):
