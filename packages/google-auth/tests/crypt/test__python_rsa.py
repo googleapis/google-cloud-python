@@ -22,10 +22,10 @@ import rsa
 import six
 
 from google.auth import _helpers
-from google.auth import crypt
+from google.auth.crypt import _python_rsa
 
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
 
 # To generate privatekey.pem, privatekey.pub, and public_cert.pem:
 #   $ openssl req -new -newkey rsa:1024 -x509 -nodes -out public_cert.pem \
@@ -41,12 +41,6 @@ with open(os.path.join(DATA_DIR, 'privatekey.pub'), 'rb') as fh:
 
 with open(os.path.join(DATA_DIR, 'public_cert.pem'), 'rb') as fh:
     PUBLIC_CERT_BYTES = fh.read()
-
-# To generate other_cert.pem:
-#   $ openssl req -new -newkey rsa:1024 -x509 -nodes -out other_cert.pem
-
-with open(os.path.join(DATA_DIR, 'other_cert.pem'), 'rb') as fh:
-    OTHER_CERT_BYTES = fh.read()
 
 # To generate pem_from_pkcs12.pem and privatekey.p12:
 #   $ openssl pkcs12 -export -out privatekey.p12 -inkey privatekey.pem \
@@ -67,72 +61,50 @@ with open(SERVICE_ACCOUNT_JSON_FILE, 'r') as fh:
     SERVICE_ACCOUNT_INFO = json.load(fh)
 
 
-def test_verify_signature():
-    to_sign = b'foo'
-    signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
-    signature = signer.sign(to_sign)
-
-    assert crypt.verify_signature(
-        to_sign, signature, PUBLIC_CERT_BYTES)
-
-    # List of certs
-    assert crypt.verify_signature(
-        to_sign, signature, [OTHER_CERT_BYTES, PUBLIC_CERT_BYTES])
-
-
-def test_verify_signature_failure():
-    to_sign = b'foo'
-    signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
-    signature = signer.sign(to_sign)
-
-    assert not crypt.verify_signature(
-        to_sign, signature, OTHER_CERT_BYTES)
-
-
 class TestRSAVerifier(object):
     def test_verify_success(self):
         to_sign = b'foo'
-        signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
+        signer = _python_rsa.RSASigner.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 
-        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
+        verifier = _python_rsa.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
         assert verifier.verify(to_sign, actual_signature)
 
     def test_verify_unicode_success(self):
         to_sign = u'foo'
-        signer = crypt.RSASigner.from_string(PRIVATE_KEY_BYTES)
+        signer = _python_rsa.RSASigner.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 
-        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
+        verifier = _python_rsa.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
         assert verifier.verify(to_sign, actual_signature)
 
     def test_verify_failure(self):
-        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
+        verifier = _python_rsa.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
         bad_signature1 = b''
         assert not verifier.verify(b'foo', bad_signature1)
         bad_signature2 = b'a'
         assert not verifier.verify(b'foo', bad_signature2)
 
     def test_from_string_pub_key(self):
-        verifier = crypt.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
-        assert isinstance(verifier, crypt.RSAVerifier)
+        verifier = _python_rsa.RSAVerifier.from_string(PUBLIC_KEY_BYTES)
+        assert isinstance(verifier, _python_rsa.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_key_unicode(self):
         public_key = _helpers.from_bytes(PUBLIC_KEY_BYTES)
-        verifier = crypt.RSAVerifier.from_string(public_key)
-        assert isinstance(verifier, crypt.RSAVerifier)
+        verifier = _python_rsa.RSAVerifier.from_string(public_key)
+        assert isinstance(verifier, _python_rsa.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_cert(self):
-        verifier = crypt.RSAVerifier.from_string(PUBLIC_CERT_BYTES)
-        assert isinstance(verifier, crypt.RSAVerifier)
+        verifier = _python_rsa.RSAVerifier.from_string(PUBLIC_CERT_BYTES)
+        assert isinstance(verifier, _python_rsa.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_cert_unicode(self):
         public_cert = _helpers.from_bytes(PUBLIC_CERT_BYTES)
-        verifier = crypt.RSAVerifier.from_string(public_cert)
-        assert isinstance(verifier, crypt.RSAVerifier)
+        verifier = _python_rsa.RSAVerifier.from_string(public_cert)
+        assert isinstance(verifier, _python_rsa.RSAVerifier)
         assert isinstance(verifier._pubkey, rsa.key.PublicKey)
 
     def test_from_string_pub_cert_failure(self):
@@ -144,32 +116,32 @@ class TestRSAVerifier(object):
 
         with load_pem_patch as load_pem:
             with pytest.raises(ValueError):
-                crypt.RSAVerifier.from_string(cert_bytes)
+                _python_rsa.RSAVerifier.from_string(cert_bytes)
             load_pem.assert_called_once_with(cert_bytes, 'CERTIFICATE')
 
 
 class TestRSASigner(object):
     def test_from_string_pkcs1(self):
-        signer = crypt.RSASigner.from_string(PKCS1_KEY_BYTES)
-        assert isinstance(signer, crypt.RSASigner)
+        signer = _python_rsa.RSASigner.from_string(PKCS1_KEY_BYTES)
+        assert isinstance(signer, _python_rsa.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs1_unicode(self):
         key_bytes = _helpers.from_bytes(PKCS1_KEY_BYTES)
-        signer = crypt.RSASigner.from_string(key_bytes)
-        assert isinstance(signer, crypt.RSASigner)
+        signer = _python_rsa.RSASigner.from_string(key_bytes)
+        assert isinstance(signer, _python_rsa.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs8(self):
-        signer = crypt.RSASigner.from_string(PKCS8_KEY_BYTES)
-        assert isinstance(signer, crypt.RSASigner)
+        signer = _python_rsa.RSASigner.from_string(PKCS8_KEY_BYTES)
+        assert isinstance(signer, _python_rsa.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs8_extra_bytes(self):
         key_bytes = PKCS8_KEY_BYTES
         _, pem_bytes = pem.readPemBlocksFromFile(
             six.StringIO(_helpers.from_bytes(key_bytes)),
-            crypt._PKCS8_MARKER)
+            _python_rsa._PKCS8_MARKER)
 
         key_info, remaining = None, 'extra'
         decode_patch = mock.patch(
@@ -179,44 +151,44 @@ class TestRSASigner(object):
 
         with decode_patch as decode:
             with pytest.raises(ValueError):
-                crypt.RSASigner.from_string(key_bytes)
+                _python_rsa.RSASigner.from_string(key_bytes)
             # Verify mock was called.
             decode.assert_called_once_with(
-                pem_bytes, asn1Spec=crypt._PKCS8_SPEC)
+                pem_bytes, asn1Spec=_python_rsa._PKCS8_SPEC)
 
     def test_from_string_pkcs8_unicode(self):
         key_bytes = _helpers.from_bytes(PKCS8_KEY_BYTES)
-        signer = crypt.RSASigner.from_string(key_bytes)
-        assert isinstance(signer, crypt.RSASigner)
+        signer = _python_rsa.RSASigner.from_string(key_bytes)
+        assert isinstance(signer, _python_rsa.RSASigner)
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_string_pkcs12(self):
         with pytest.raises(ValueError):
-            crypt.RSASigner.from_string(PKCS12_KEY_BYTES)
+            _python_rsa.RSASigner.from_string(PKCS12_KEY_BYTES)
 
     def test_from_string_bogus_key(self):
         key_bytes = 'bogus-key'
         with pytest.raises(ValueError):
-            crypt.RSASigner.from_string(key_bytes)
+            _python_rsa.RSASigner.from_string(key_bytes)
 
     def test_from_service_account_info(self):
-        signer = crypt.RSASigner.from_service_account_info(
+        signer = _python_rsa.RSASigner.from_service_account_info(
             SERVICE_ACCOUNT_INFO)
 
         assert signer.key_id == SERVICE_ACCOUNT_INFO[
-            crypt._JSON_FILE_PRIVATE_KEY_ID]
+            _python_rsa._JSON_FILE_PRIVATE_KEY_ID]
         assert isinstance(signer._key, rsa.key.PrivateKey)
 
     def test_from_service_account_info_missing_key(self):
         with pytest.raises(ValueError) as excinfo:
-            crypt.RSASigner.from_service_account_info({})
+            _python_rsa.RSASigner.from_service_account_info({})
 
-        assert excinfo.match(crypt._JSON_FILE_PRIVATE_KEY)
+        assert excinfo.match(_python_rsa._JSON_FILE_PRIVATE_KEY)
 
     def test_from_service_account_file(self):
-        signer = crypt.RSASigner.from_service_account_file(
+        signer = _python_rsa.RSASigner.from_service_account_file(
             SERVICE_ACCOUNT_JSON_FILE)
 
         assert signer.key_id == SERVICE_ACCOUNT_INFO[
-            crypt._JSON_FILE_PRIVATE_KEY_ID]
+            _python_rsa._JSON_FILE_PRIVATE_KEY_ID]
         assert isinstance(signer._key, rsa.key.PrivateKey)
