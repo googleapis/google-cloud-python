@@ -315,6 +315,36 @@ class Database(object):
         """
         return Session(self)
 
+    def snapshot(self, **kw):
+        """Return an object which wraps a snapshot.
+
+        The wrapper *must* be used as a context manager, with the snapshot
+        as the value returned by the wrapper.
+
+        See
+        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
+
+        :type kw: dict
+        :param kw:
+            Passed through to
+            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
+
+        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
+        :returns: new wrapper
+        """
+        return SnapshotCheckout(self, **kw)
+
+    def batch(self):
+        """Return an object which wraps a batch.
+
+        The wrapper *must* be used as a context manager, with the batch
+        as the value returned by the wrapper.
+
+        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`
+        :returns: new wrapper
+        """
+        return BatchCheckout(self)
+
     def run_in_transaction(self, func, *args, **kw):
         """Perform a unit of work in a transaction, retrying on abort.
 
@@ -348,36 +378,6 @@ class Database(object):
                 return session.run_in_transaction(func, *args, **kw)
         finally:
             self._local.transaction_running = False
-
-    def batch(self):
-        """Return an object which wraps a batch.
-
-        The wrapper *must* be used as a context manager, with the batch
-        as the value returned by the wrapper.
-
-        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`
-        :returns: new wrapper
-        """
-        return BatchCheckout(self)
-
-    def snapshot(self, **kw):
-        """Return an object which wraps a snapshot.
-
-        The wrapper *must* be used as a context manager, with the snapshot
-        as the value returned by the wrapper.
-
-        See
-        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
-
-        :type kw: dict
-        :param kw:
-            Passed through to
-            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
-
-        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
-        :returns: new wrapper
-        """
-        return SnapshotCheckout(self, **kw)
 
 
 class BatchCheckout(object):
