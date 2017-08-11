@@ -58,8 +58,12 @@ def _load_credentials_from_file(filename):
 
     Raises:
         google.auth.exceptions.DefaultCredentialsError: if the file is in the
-            wrong format.
+            wrong format or is missing.
     """
+    if not os.path.exists(filename):
+        raise exceptions.DefaultCredentialsError(
+            'File {} was not found.'.format(filename))
+
     with io.open(filename, 'r') as file_obj:
         try:
             info = json.load(file_obj)

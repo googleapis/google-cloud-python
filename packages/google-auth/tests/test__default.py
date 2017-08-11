@@ -43,6 +43,13 @@ LOAD_FILE_PATCH = mock.patch(
         mock.sentinel.credentials, mock.sentinel.project_id), autospec=True)
 
 
+def test__load_credentials_from_missing_file():
+    with pytest.raises(exceptions.DefaultCredentialsError) as excinfo:
+        _default._load_credentials_from_file('')
+
+    assert excinfo.match(r'not found')
+
+
 def test__load_credentials_from_file_invalid_json(tmpdir):
     jsonfile = tmpdir.join('invalid.json')
     jsonfile.write('{')
