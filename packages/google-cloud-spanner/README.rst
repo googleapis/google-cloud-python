@@ -57,20 +57,27 @@ as a callback to ``database.run_in_transaction``:
         # The use of @parameters is recommended rather than doing your
         # own string interpolation; this provides protections against
         # SQL injection attacks.
-        query = """UPDATE people
-            SET anniversary = @uxts
+        query = """SELECT anniversary FROM people
             WHERE id = @person_id"""
 
         # When executing the SQL statement, the query and parameters are sent
         # as separate arguments. When using parameters, you must specify
         # both the parameters themselves and their types.
-        transaction.execute_sql(
+        row = transaction.execute_sql(
             query=query,
-            params={'person_id': person_id, 'uxts': unix_timestamp},
+            params={'person_id': person_id},
             param_types={
                 'person_id': types.INT64_PARAM_TYPE,
-                'uxts': types.INT64_PARAM_TYPE,
             },
+        ).one()
+
+        # Now perform an update on the data.
+        old_anniversary = row[0]
+        new_anniversary = _compute_anniversary(old_anniversary, years)
+        transaction.update(
+            'people',
+            ['person_id', 'anniversary'],
+            [person_id, new_anniversary],
         )
 
     # Actually run the `update_anniversary` function in a transaction.
@@ -140,4 +147,4 @@ Learn More
 See the ``google-cloud-python`` API `Cloud Spanner documentation`_ to learn how
 to connect to Cloud Spanner using this Client Library.
 
-.. _Cloud Spanner documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/usage.html
+.. _Cloud Spanner documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/usage.html
