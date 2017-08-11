@@ -28,6 +28,7 @@ from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.iam import Policy
+from google.cloud.storage import _signing
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
@@ -1112,16 +1113,7 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         credentials = client._base_connection.credentials
-
-        if not isinstance(credentials, google.auth.credentials.Signing):
-            auth_uri = ('https://google-cloud-python.readthedocs.io/en/latest/'
-                        'core/auth.html?highlight=authentication#setting-up-'
-                        'a-service-account')
-            raise AttributeError(
-                'you need a private key to sign credentials.'
-                'the credentials you are currently using %s '
-                'just contains a token. see %s for more '
-                'details.' % (type(credentials), auth_uri))
+        _signing.ensure_signed_credentials(credentials)
 
         if expiration is None:
             expiration = _NOW() + datetime.timedelta(hours=1)
