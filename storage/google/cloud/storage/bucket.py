@@ -19,7 +19,6 @@ import copy
 import datetime
 import json
 
-import google.auth.credentials
 import six
 
 from google.api.core import page_iterator
