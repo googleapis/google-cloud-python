@@ -35,6 +35,7 @@ from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 
 
+JOB_TIMEOUT = 120  # 2 minutes
 WHERE = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -381,8 +382,7 @@ class TestBigQuery(unittest.TestCase):
                 )
 
         # Retry until done.
-        retry = RetryInstanceState(_job_done, max_tries=8)
-        retry(job.reload)()
+        job.result(timeout=JOB_TIMEOUT)
 
         self.assertEqual(job.output_rows, len(ROWS))
 
@@ -419,8 +419,7 @@ class TestBigQuery(unittest.TestCase):
             )
 
         # Retry until done.
-        retry = RetryInstanceState(_job_done, max_tries=8)
-        retry(job.reload)()
+        job.result(timeout=JOB_TIMEOUT)
 
         self.assertEqual(job.output_rows, len(ROWS))
 
@@ -770,8 +769,7 @@ class TestBigQuery(unittest.TestCase):
                 )
 
         # Retry until done.
-        retry = RetryInstanceState(_job_done, max_tries=8)
-        retry(job.reload)()
+        job.result(timeout=JOB_TIMEOUT)
         self._fetch_single_page(table)
 
     def test_sync_query_w_dml(self):
@@ -799,7 +797,9 @@ class TestBigQuery(unittest.TestCase):
             WHERE greeting = 'Hello World'
             """
 
-        Config.CURSOR.execute(query_template.format(dataset_name, table_name))
+        Config.CURSOR.execute(
+            query_template.format(dataset_name, table_name),
+            job_id='test_dbapi_w_dml_{}'.format(unique_resource_id()))
         self.assertEqual(Config.CURSOR.rowcount, 1)
         self.assertIsNone(Config.CURSOR.fetchone())
 
@@ -1086,7 +1086,7 @@ class TestBigQuery(unittest.TestCase):
             str(uuid.uuid4()), 'SELECT 1')
         query_job.use_legacy_sql = False
 
-        iterator = query_job.result().fetch_data()
+        iterator = query_job.result(timeout=JOB_TIMEOUT).fetch_data()
         rows = list(iterator)
         self.assertEqual(rows, [(1,)])
 
