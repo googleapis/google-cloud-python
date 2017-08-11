@@ -45,6 +45,18 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
 
+    def test_clone(self):
+        PROJECT = 'PROJECT'
+        OTHER_PROJECT = 'OTHER-PROJECT'
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+
+        cloned = client._clone(OTHER_PROJECT)
+        self.assertEqual(cloned.project, OTHER_PROJECT)
+        self.assertIs(cloned._credentials, creds)
+        self.assertIs(cloned._http, http)
+
     def test_list_projects_defaults(self):
         import six
         from google.cloud.bigquery.client import Project

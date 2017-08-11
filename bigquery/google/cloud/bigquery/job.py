@@ -14,6 +14,7 @@
 
 """Define API Jobs."""
 
+import copy
 import threading
 
 import six
@@ -325,6 +326,11 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
 
         # For Future interface
         self._set_future_result()
+
+    def _job_statistics(self):
+        """Helper for properties derived from job statistics."""
+        statistics = self._properties.get('statistics', {})
+        return statistics.get(self._JOB_TYPE, {})
 
     @classmethod
     def _get_resource_config(cls, resource):
@@ -965,6 +971,20 @@ class ExtractTableToStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract.printHeader
     """
 
+    @property
+    def destination_uri_file_counts(self):
+        """Return file counts from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.extract.destinationUriFileCounts
+
+        :rtype: int or None
+        :returns: number of DML rows affectd by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._job_statistics()
+        return query_stats.get('destinationUriFileCounts')
+
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
         if self.compression is not None:
@@ -1277,6 +1297,170 @@ class QueryJob(_AsyncJob):
         job = cls(name, query, client=client)
         job._set_properties(resource)
         return job
+
+    @property
+    def query_plan(self):
+        """Return query plan from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.queryPlan
+
+        :rtype: list of dict
+        :returns: mappings describing the query plan, or an empty list
+                  if the query has not yet completed.
+        """
+        query_stats = self._job_statistics()
+        plan_entries = query_stats.get('queryPlan', ())
+        return [copy.deepcopy(entry) for entry in plan_entries]
+
+    @property
+    def total_bytes_processed(self):
+        """Return total bytes processed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesProcessed
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._job_statistics()
+        return query_stats.get('totalBytesProcessed')
+
+    @property
+    def total_bytes_billed(self):
+        """Return total bytes billed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesBilled
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._job_statistics()
+        return query_stats.get('totalBytesBilled')
+
+    @property
+    def billing_tier(self):
+        """Return billing tier from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.billingTier
+
+        :rtype: int or None
+        :returns: billing tier used by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._job_statistics()
+        return query_stats.get('billingTier')
+
+    @property
+    def cache_hit(self):
+        """Return billing tier from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.cacheHit
+
+        :rtype: bool or None
+        :returns: whether the query results were returned from cache, or None
+                  if job is not yet complete.
+        """
+        query_stats = self._job_statistics()
+        return query_stats.get('cacheHit')
+
+    @property
+    def referenced_tables(self):
+        """Return referenced tables from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.referencedTables
+
+        :rtype: list of dict
+        :returns: mappings describing the query plan, or an empty list
+                  if the query has not yet completed.
+        """
+        tables = []
+        client = self._require_client(None)
+        query_stats = self._job_statistics()
+        clients_by_project = {client.project: client}
+        datasets_by_project_name = {}
+
+        for table in query_stats.get('referencedTables', ()):
+
+            t_project = table['projectId']
+            t_client = clients_by_project.get(t_project)
+            if t_client is None:
+                t_client = client._clone(t_project)
+                clients_by_project[t_project] = t_client
+
+            ds_name = table['datasetId']
+            t_dataset = datasets_by_project_name.get((t_project, ds_name))
+            if t_dataset is None:
+                t_dataset = t_client.dataset(ds_name)
+                datasets_by_project_name[(t_project, ds_name)] = t_dataset
+
+            t_name = table['tableId']
+            tables.append(t_dataset.table(t_name))
+
+        return tables
+
+    @property
+    def schema(self):
+        """Return schema from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.schema
+
+        :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField`
+        :returns: fields describing the query's result set, or an empty list
+                  if the query has not yet completed.
+        """
+        query_stats = self._job_statistics()
+        return _parse_schema_resource(query_stats.get('schema', {}))
+
+    @property
+    def num_dml_affected_rows(self):
+        """Return total bytes billed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows
+
+        :rtype: int or None
+        :returns: number of DML rows affectd by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._job_statistics()
+        return query_stats.get('numDmlAffectedRows')
+
+    @property
+    def undeclared_query_paramters(self):
+        """Return undeclared query parameters from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParamters
+
+        :rtype: list of dict
+        :returns: mappings describing the undeclared parameters, or an empty
+                  list if the query has not yet completed.
+        """
+        query_stats = self._job_statistics()
+        undeclared = query_stats.get('undeclaredQueryParamters', ())
+        return [copy.deepcopy(parameter) for parameter in undeclared]
+
+    @property
+    def statement_type(self):
+        """Return statement type from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.statementType
+
+        :rtype: str or None
+        :returns: type of statement used by the job, or None if job is not
+                  yet complete.
+        """
+        query_stats = self._job_statistics()
+        return query_stats.get('statementType')
 
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.

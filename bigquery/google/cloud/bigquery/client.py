@@ -82,6 +82,17 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
 
+    def _clone(self, project):
+        """Create a new client for another project.
+
+        Helper for creating dataset / table instances in remote projects.
+
+        :rtype: :class:`Client`
+        :returns: a new instance, bound to the supplied project, using
+                  the same credentials / http object as this instance.
+        """
+        return self.__class__(project, self._credentials, self._http)
+
     def list_projects(self, max_results=None, page_token=None):
         """List projects for the project associated with this client.
 
