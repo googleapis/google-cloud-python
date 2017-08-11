@@ -53,7 +53,7 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         with self.assertRaises(AttributeError):
-            _ = streamed.fields
+            streamed.fields
 
     @staticmethod
     def _make_scalar_field(name, type_):
@@ -243,13 +243,24 @@ class TestStreamedResultSet(unittest.TestCase):
             self._make_scalar_field('image', 'BYTES'),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(u'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\n')
-        chunk = self._make_value(u'B3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n')
+        streamed._pending_chunk = self._make_value(
+            u'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA'
+            u'6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\n',
+        )
+        chunk = self._make_value(
+            u'B3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExF'
+            u'MG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n',
+        )
 
         merged = streamed._merge_chunk(chunk)
 
-        self.assertEqual(merged.string_value, u'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n')
-        self.assertIsNone(streamed._pending_chunk)     
+        self.assertEqual(
+            merged.string_value,
+            u'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAAL'
+            u'EwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0'
+            u'FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n',
+        )
+        self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_bool(self):
         iterator = _MockCancellableIterator()
@@ -590,6 +601,48 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._merge_values(TO_MERGE)
         self.assertEqual(streamed.rows, [VALUES[0:3], VALUES[3:6]])
         self.assertEqual(streamed._current_row, VALUES[6:])
+
+    def test_one_or_none_no_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertIsNone(streamed.one_or_none())
+
+    def test_one_or_none_single_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._rows = ['foo']
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertEqual(streamed.one_or_none(), 'foo')
+
+    def test_one_or_none_multiple_values(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._rows = ['foo', 'bar']
+        with self.assertRaises(ValueError):
+            streamed.one_or_none()
+
+    def test_one_or_none_consumed_stream(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._metadata = object()
+        with self.assertRaises(RuntimeError):
+            streamed.one_or_none()
+
+    def test_one_single_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._rows = ['foo']
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertEqual(streamed.one(), 'foo')
+
+    def test_one_no_value(self):
+        from google.cloud import exceptions
+
+        iterator = _MockCancellableIterator(['foo'])
+        streamed = self._make_one(iterator)
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            with self.assertRaises(exceptions.NotFound):
+                streamed.one()
 
     def test_consume_next_empty(self):
         iterator = _MockCancellableIterator()
