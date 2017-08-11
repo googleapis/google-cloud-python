@@ -504,56 +504,64 @@ class Client(ClientWithProject):
 
         .. testsetup:: query
 
-           from google.cloud import datastore
+            import os
+            import uuid
 
-           client = datastore.Client()
-           query = client.query(kind='_Doctest')
+            from google.cloud import datastore
 
-           def do_something(entity):
-               pass
+            unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
+            client = datastore.Client(namespace='ns{}'.format(unique))
+            query = client.query(kind='_Doctest')
+
+            def do_something(entity):
+                pass
 
         .. doctest:: query
 
-           >>> query = client.query(kind='MyKind')
-           >>> query.add_filter('property', '=', 'val')
+            >>> query = client.query(kind='MyKind')
+            >>> query.add_filter('property', '=', 'val')
 
         Using the query iterator
 
         .. doctest:: query
 
-           >>> query_iter = query.fetch()
-           >>> for entity in query_iter:
-           ...     do_something(entity)
+            >>> query_iter = query.fetch()
+            >>> for entity in query_iter:
+            ...     do_something(entity)
 
         or manually page through results
 
         .. testsetup:: query-page
 
-           from google.cloud import datastore
-           from tests.system.test_system import Config  # system tests
+            import os
+            import uuid
 
-           client = datastore.Client()
+            from google.cloud import datastore
+            from tests.system.test_system import Config  # system tests
 
-           key = client.key('_Doctest')
-           entity1 = datastore.Entity(key=key)
-           entity1['foo'] = 1337
-           entity2 = datastore.Entity(key=key)
-           entity2['foo'] = 42
-           Config.TO_DELETE.extend([entity1, entity2])
-           client.put_multi([entity1, entity2])
+            unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
+            client = datastore.Client(namespace='ns{}'.format(unique))
 
-           query = client.query(kind='_Doctest')
-           cursor = None
+            key = client.key('_Doctest')
+            entity1 = datastore.Entity(key=key)
+            entity1['foo'] = 1337
+            entity2 = datastore.Entity(key=key)
+            entity2['foo'] = 42
+            Config.TO_DELETE.extend([entity1, entity2])
+            client.put_multi([entity1, entity2])
+
+            query = client.query(kind='_Doctest')
+            cursor = None
 
         .. doctest:: query-page
 
-           >>> query_iter = query.fetch(start_cursor=cursor)
-           >>> pages = query_iter.pages
-           >>>
-           >>> first_page = next(pages)
-           >>> first_page_entities = list(first_page)
-           >>> query_iter.next_page_token
-           b'...'
+            >>> query_iter = query.fetch(start_cursor=cursor)
+            >>> pages = query_iter.pages
+            >>>
+            >>> first_page = next(pages)
+            >>> first_page_entities = list(first_page)
+            >>> query_iter.next_page_token
+            b'...'
 
         :type kwargs: dict
         :param kwargs: Parameters for initializing and instance of
