@@ -25,6 +25,23 @@ from google.cloud import _helpers
 NOW = datetime.datetime.utcnow  # To be replaced by tests.
 
 
+def ensure_signed_credentials(credentials):
+    """Raise AttributeError if the credentials are unsigned.
+
+    :type credentials: :class:`google.auth.credentials.Signer`
+    :param credentials: The credentials used to create a private key
+                        for signing text.
+    """
+    if not isinstance(credentials, google.auth.credentials.Signing):
+        auth_uri = ('https://google-cloud-python.readthedocs.io/en/latest/'
+                    'core/auth.html?highlight=authentication#setting-up-'
+                    'a-service-account')
+        raise AttributeError('you need a private key to sign credentials.'
+                             'the credentials you are currently using %s '
+                             'just contains a token. see %s for more '
+                             'details.' % (type(credentials), auth_uri))
+
+
 def get_signed_query_params(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
@@ -44,15 +61,7 @@ def get_signed_query_params(credentials, expiration, string_to_sign):
     :returns: Query parameters matching the signing credentials with a
               signed payload.
     """
-    if not isinstance(credentials, google.auth.credentials.Signing):
-        auth_uri = ('https://google-cloud-python.readthedocs.io/en/latest/'
-                    'core/auth.html?highlight=authentication#setting-up-'
-                    'a-service-account')
-        raise AttributeError('you need a private key to sign credentials.'
-                             'the credentials you are currently using %s '
-                             'just contains a token. see %s for more '
-                             'details.' % (type(credentials), auth_uri))
-
+    ensure_signed_credentials(credentials)
     signature_bytes = credentials.sign_bytes(string_to_sign)
     signature = base64.b64encode(signature_bytes)
     service_account_name = credentials.signer_email
