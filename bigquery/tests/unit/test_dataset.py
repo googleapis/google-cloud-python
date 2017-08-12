@@ -17,13 +17,13 @@ import unittest
 import mock
 
 
-class TestAccessGrant(unittest.TestCase):
+class TestAccessEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessEntry
 
-        return AccessGrant
+        return AccessEntry
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -129,7 +129,7 @@ class TestDataset(unittest.TestCase):
                 {'role': 'READER', 'specialGroup': 'projectReaders'}],
         }
 
-    def _verifyAccessGrants(self, access_grants, resource):
+    def _verifyAccessEntry(self, access_grants, resource):
         r_grants = []
         for r_grant in resource['access']:
             role = r_grant.pop('role')
@@ -179,7 +179,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.location, resource.get('location'))
 
         if 'access' in resource:
-            self._verifyAccessGrants(dataset.access_grants, resource)
+            self._verifyAccessEntry(dataset.access_grants, resource)
         else:
             self.assertEqual(dataset.access_grants, [])
 
@@ -206,10 +206,10 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.location)
 
     def test_ctor_explicit(self):
-        from google.cloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessEntry
 
-        phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
-        bharney = AccessGrant('OWNER', 'userByEmail', 'bharney@example.com')
+        phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
+        bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
         grants = [phred, bharney]
         OTHER_PROJECT = 'foo-bar-123'
         client = _Client(self.PROJECT)
@@ -242,21 +242,21 @@ class TestDataset(unittest.TestCase):
             dataset.access_grants = object()
 
     def test_access_grants_setter_invalid_field(self):
-        from google.cloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessEntry
 
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
-        phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
+        phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         with self.assertRaises(ValueError):
             dataset.access_grants = [phred, object()]
 
     def test_access_grants_setter(self):
-        from google.cloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessEntry
 
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
-        phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
-        bharney = AccessGrant('OWNER', 'userByEmail', 'bharney@example.com')
+        phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
+        bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
         dataset.access_grants = [phred, bharney]
         self.assertEqual(dataset.access_grants, [phred, bharney])
 
@@ -383,7 +383,7 @@ class TestDataset(unittest.TestCase):
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_create_w_alternate_client(self):
-        from google.cloud.bigquery.dataset import AccessGrant
+        from google.cloud.bigquery.dataset import AccessEntry
 
         PATH = 'projects/%s/datasets' % self.PROJECT
         USER_EMAIL = 'phred@example.com'
@@ -406,12 +406,12 @@ class TestDataset(unittest.TestCase):
             'tableId': 'northern-hemisphere',
         }
         dataset.access_grants = [
-            AccessGrant('OWNER', 'userByEmail', USER_EMAIL),
-            AccessGrant('OWNER', 'groupByEmail', GROUP_EMAIL),
-            AccessGrant('READER', 'domain', 'foo.com'),
-            AccessGrant('READER', 'specialGroup', 'projectReaders'),
-            AccessGrant('WRITER', 'specialGroup', 'projectWriters'),
-            AccessGrant(None, 'view', VIEW),
+            AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
+            AccessEntry('OWNER', 'groupByEmail', GROUP_EMAIL),
+            AccessEntry('READER', 'domain', 'foo.com'),
+            AccessEntry('READER', 'specialGroup', 'projectReaders'),
+            AccessEntry('WRITER', 'specialGroup', 'projectWriters'),
+            AccessEntry(None, 'view', VIEW),
         ]
 
         dataset.create(client=CLIENT2)

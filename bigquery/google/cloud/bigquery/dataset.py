@@ -21,7 +21,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
 
 
-class AccessGrant(object):
+class AccessEntry(object):
     """Represent grant of an access role to an entity.
 
     Every entry in the access list will have exactly one of
@@ -76,7 +76,7 @@ class AccessGrant(object):
         self.entity_id = entity_id
 
     def __eq__(self, other):
-        if not isinstance(other, AccessGrant):
+        if not isinstance(other, AccessEntry):
             return NotImplemented
         return (
             self.role == other.role and
@@ -87,7 +87,7 @@ class AccessGrant(object):
         return not self == other
 
     def __repr__(self):
-        return '<AccessGrant: role=%s, %s=%s>' % (
+        return '<AccessEntry: role=%s, %s=%s>' % (
             self.role, self.entity_type, self.entity_id)
 
 
@@ -104,7 +104,7 @@ class Dataset(object):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-    :type access_grants: list of :class:`AccessGrant`
+    :type access_grants: list of :class:`AccessEntry`
     :param access_grants: roles granted to entities for this dataset
 
     :type project: str
@@ -144,7 +144,7 @@ class Dataset(object):
     def access_grants(self):
         """Dataset's access grants.
 
-        :rtype: list of :class:`AccessGrant`
+        :rtype: list of :class:`AccessEntry`
         :returns: roles granted to entities for this dataset
         """
         return list(self._access_grants)
@@ -153,14 +153,14 @@ class Dataset(object):
     def access_grants(self, value):
         """Update dataset's access grants
 
-        :type value: list of :class:`AccessGrant`
+        :type value: list of :class:`AccessEntry`
         :param value: roles granted to entities for this dataset
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not an AccessGrant
+                 any item in the sequence is not an AccessEntry
         """
-        if not all(isinstance(field, AccessGrant) for field in value):
-            raise ValueError('Values must be AccessGrant instances')
+        if not all(isinstance(field, AccessEntry) for field in value):
+            raise ValueError('Values must be AccessEntry instances')
         self._access_grants = tuple(value)
 
     @property
@@ -350,7 +350,7 @@ class Dataset(object):
         :type access: list of mappings
         :param access: each mapping represents a single access grant.
 
-        :rtype: list of :class:`AccessGrant`
+        :rtype: list of :class:`AccessEntry`
         :returns: a list of parsed grants.
         :raises: :class:`ValueError` if a grant in ``access`` has more keys
                  than ``role`` and one additional key.
@@ -363,7 +363,7 @@ class Dataset(object):
             if len(grant) != 0:
                 raise ValueError('Grant has unexpected keys remaining.', grant)
             result.append(
-                AccessGrant(role, entity_type, entity_id))
+                AccessEntry(role, entity_type, entity_id))
         return result
 
     def _set_properties(self, api_response):
