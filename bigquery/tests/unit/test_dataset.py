@@ -129,7 +129,7 @@ class TestDataset(unittest.TestCase):
                 {'role': 'READER', 'specialGroup': 'projectReaders'}],
         }
 
-    def _verifyAccessEntry(self, access_grants, resource):
+    def _verify_access_entry(self, access_grants, resource):
         r_grants = []
         for r_grant in resource['access']:
             role = r_grant.pop('role')
@@ -144,7 +144,7 @@ class TestDataset(unittest.TestCase):
             self.assertEqual(a_grant.entity_type, r_grant['entity_type'])
             self.assertEqual(a_grant.entity_id, r_grant['entity_id'])
 
-    def _verifyReadonlyResourceProperties(self, dataset, resource):
+    def _verify_readonly_resource_properties(self, dataset, resource):
 
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
@@ -165,9 +165,9 @@ class TestDataset(unittest.TestCase):
         else:
             self.assertIsNone(dataset.self_link)
 
-    def _verifyResourceProperties(self, dataset, resource):
+    def _verify_resource_properties(self, dataset, resource):
 
-        self._verifyReadonlyResourceProperties(dataset, resource)
+        self._verify_readonly_resource_properties(dataset, resource)
 
         if 'defaultTableExpirationMs' in resource:
             self.assertEqual(dataset.default_table_expiration_ms,
@@ -179,7 +179,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.location, resource.get('location'))
 
         if 'access' in resource:
-            self._verifyAccessEntry(dataset.access_grants, resource)
+            self._verify_access_entry(dataset.access_grants, resource)
         else:
             self.assertEqual(dataset.access_grants, [])
 
@@ -329,7 +329,7 @@ class TestDataset(unittest.TestCase):
         klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
@@ -337,7 +337,7 @@ class TestDataset(unittest.TestCase):
         klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(dataset._client, client)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test__parse_access_grants_w_unknown_entity_type(self):
         ACCESS = [
@@ -380,7 +380,7 @@ class TestDataset(unittest.TestCase):
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
         }
         self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_create_w_alternate_client(self):
         from google.cloud.bigquery.dataset import AccessEntry
@@ -438,7 +438,7 @@ class TestDataset(unittest.TestCase):
             ],
         }
         self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_create_w_missing_output_properties(self):
         # In the wild, the resource returned from 'dataset.create' sometimes
@@ -463,7 +463,7 @@ class TestDataset(unittest.TestCase):
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
         }
         self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
@@ -509,7 +509,7 @@ class TestDataset(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_reload_w_alternate_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
@@ -527,7 +527,7 @@ class TestDataset(unittest.TestCase):
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_patch_w_invalid_expiration(self):
         RESOURCE = self._makeResource()
@@ -560,7 +560,7 @@ class TestDataset(unittest.TestCase):
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_patch_w_alternate_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
@@ -589,7 +589,7 @@ class TestDataset(unittest.TestCase):
             'location': LOCATION,
         }
         self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_update_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
@@ -617,7 +617,7 @@ class TestDataset(unittest.TestCase):
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_update_w_alternate_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
@@ -648,7 +648,7 @@ class TestDataset(unittest.TestCase):
             'location': 'EU',
         }
         self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        self._verify_resource_properties(dataset, RESOURCE)
 
     def test_delete_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
