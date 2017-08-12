@@ -28,7 +28,10 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import ArrayQueryParameter
 from google.cloud.bigquery._helpers import QueryParametersProperty
+from google.cloud.bigquery._helpers import ScalarQueryParameter
+from google.cloud.bigquery._helpers import StructQueryParameter
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
@@ -1415,6 +1418,36 @@ class QueryJob(_AsyncJob):
             tables.append(t_dataset.table(t_name))
 
         return tables
+
+    @property
+    def undeclared_query_paramters(self):
+        """Return undeclared query parameters from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParamters
+
+        :rtype:
+            list of
+            :class:`~google.cloud.bigquery._helpers.AbstractQueryParameter`
+        :returns: undeclared parameters, or an empty list if the query has
+                  not yet completed.
+        """
+        parameters = []
+        undeclared = self._job_statistics().get('undeclaredQueryParamters', ())
+
+        for parameter in undeclared:
+            p_type = parameter['parameterType']
+
+            if 'arrayType' in p_type:
+                klass = ArrayQueryParameter
+            elif 'structTypes' in p_type:
+                klass = StructQueryParameter
+            else:
+                klass = ScalarQueryParameter
+
+            parameters.append(klass.from_api_repr(parameter))
+
+        return parameters
 
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.

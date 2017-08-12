@@ -1845,6 +1845,81 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(remote.project, 'other-project-123')
         self.assertIs(remote._dataset._client, client)
 
+    def test_undeclared_query_paramters(self):
+        from google.cloud.bigquery._helpers import ArrayQueryParameter
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud.bigquery._helpers import StructQueryParameter
+
+        undeclared = [{
+            'name': 'my_scalar',
+            'parameterType': {
+                'type': 'STRING',
+            },
+            'parameterValue': {
+                'value': 'value',
+            },
+        }, {
+            'name': 'my_array',
+            'parameterType': {
+                'type': 'ARRAY',
+                'arrayType': {
+                    'type': 'INT64',
+                },
+            },
+            'parameterValue': {
+                'arrayValues': [
+                    {'value': '1066'},
+                    {'value': '1745'},
+                ],
+            },
+        }, {
+            'name': 'my_struct',
+            'parameterType': {
+                'type': 'STRUCT',
+                'structTypes': [{
+                    'name': 'count',
+                    'type': {
+                        'type': 'INT64',
+                    }
+                }],
+            },
+            'parameterValue': {
+                'structValues': {
+                    'count': {
+                        'value': '123',
+                    },
+                }
+            },
+        }]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.undeclared_query_paramters, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.undeclared_query_paramters, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.undeclared_query_paramters, [])
+
+        query_stats['undeclaredQueryParamters'] = undeclared
+
+        scalar, array, struct = job.undeclared_query_paramters
+
+        self.assertIsInstance(scalar, ScalarQueryParameter)
+        self.assertEqual(scalar.name, 'my_scalar')
+        self.assertEqual(scalar.type_, 'STRING')
+        self.assertEqual(scalar.value, 'value')
+
+        self.assertIsInstance(array, ArrayQueryParameter)
+        self.assertEqual(array.name, 'my_array')
+        self.assertEqual(array.array_type, 'INT64')
+        self.assertEqual(array.values, [1066, 1745])
+
+        self.assertIsInstance(struct, StructQueryParameter)
+        self.assertEqual(struct.name, 'my_struct')
+        self.assertEqual(struct.struct_types, {'count': 'INT64'})
+        self.assertEqual(struct.struct_values, {'count': 123})
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
