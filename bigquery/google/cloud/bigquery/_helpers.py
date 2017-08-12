@@ -662,6 +662,18 @@ class StructQueryParameter(AbstractQueryParameter):
         return resource
 
 
+def _query_param_from_api_repr(resource):
+    """Helper:  construct concrete query parameter from JSON resource."""
+    qp_type = resource['parameterType']
+    if 'arrayType' in qp_type:
+        klass = ArrayQueryParameter
+    elif 'structTypes' in qp_type:
+        klass = StructQueryParameter
+    else:
+        klass = ScalarQueryParameter
+    return klass.from_api_repr(resource)
+
+
 class QueryParametersProperty(object):
     """Custom property type, holding query parameter instances."""
 

@@ -1528,6 +1528,82 @@ class Test_StructQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
 
+class Test__query_param_from_api_repr(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(resource):
+        from google.cloud.bigquery._helpers import _query_param_from_api_repr
+
+        return _query_param_from_api_repr(resource)
+
+    def test_w_scalar(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {'type': 'INT64'},
+            'parameterValue': {'value': '123'},
+        }
+
+        parameter = self._call_fut(RESOURCE)
+
+        self.assertIsInstance(parameter, ScalarQueryParameter)
+        self.assertEqual(parameter.name, 'foo')
+        self.assertEqual(parameter.type_, 'INT64')
+        self.assertEqual(parameter.value, 123)
+
+    def test_w_array(self):
+        from google.cloud.bigquery._helpers import ArrayQueryParameter
+
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'ARRAY',
+                'arrayType': {'type': 'INT64'},
+            },
+            'parameterValue': {
+                'arrayValues': [
+                    {'value': '123'},
+                ]},
+        }
+
+        parameter = self._call_fut(RESOURCE)
+
+        self.assertIsInstance(parameter, ArrayQueryParameter)
+        self.assertEqual(parameter.name, 'foo')
+        self.assertEqual(parameter.array_type, 'INT64')
+        self.assertEqual(parameter.values, [123])
+
+    def test_w_struct(self):
+        from google.cloud.bigquery._helpers import StructQueryParameter
+
+        RESOURCE = {
+            'name': 'foo',
+            'parameterType': {
+                'type': 'STRUCT',
+                'structTypes': [
+                    {'name': 'foo', 'type': {'type': 'STRING'}},
+                    {'name': 'bar', 'type': {'type': 'INT64'}},
+                ],
+            },
+            'parameterValue': {
+                'structValues': {
+                    'foo': {'value': 'Foo'},
+                    'bar': {'value': '123'},
+                }
+            },
+        }
+
+        parameter = self._call_fut(RESOURCE)
+
+        self.assertIsInstance(parameter, StructQueryParameter)
+        self.assertEqual(parameter.name, 'foo')
+        self.assertEqual(
+            parameter.struct_types, {'foo': 'STRING', 'bar': 'INT64'})
+        self.assertEqual(parameter.struct_values, {'foo': 'Foo', 'bar': 123})
+
+
+
 class Test_QueryParametersProperty(unittest.TestCase):
 
     @staticmethod
