@@ -1190,6 +1190,23 @@ class TestExtractJob(unittest.TestCase, _Base):
         self.assertIsNone(job.field_delimiter)
         self.assertIsNone(job.print_header)
 
+    def test_destination_uri_file_counts(self):
+        file_counts = 23
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
+                             client)
+        self.assertIsNone(job.destination_uri_file_counts)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.destination_uri_file_counts)
+
+        extract_stats = statistics['extract'] = {}
+        self.assertIsNone(job.destination_uri_file_counts)
+
+        extract_stats['destinationUriFileCounts'] = file_counts
+        self.assertEqual(job.destination_uri_file_counts, file_counts)
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         client = _Client(self.PROJECT)
