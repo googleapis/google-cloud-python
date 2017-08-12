@@ -1312,6 +1312,19 @@ class QueryJob(_AsyncJob):
         """
         return self._job_statistics().get('totalBytesProcessed')
 
+    @property
+    def total_bytes_billed(self):
+        """Return total bytes billed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesBilled
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        return self._job_statistics().get('totalBytesBilled')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
