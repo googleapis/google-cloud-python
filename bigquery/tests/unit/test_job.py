@@ -1761,6 +1761,21 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['cacheHit'] = True
         self.assertTrue(job.cache_hit)
 
+    def test_num_dml_affected_rows(self):
+        num_rows = 1234
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.num_dml_affected_rows)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.num_dml_affected_rows)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.num_dml_affected_rows)
+
+        query_stats['numDmlAffectedRows'] = num_rows
+        self.assertEqual(job.num_dml_affected_rows, num_rows)
+    
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
