@@ -1338,6 +1338,19 @@ class QueryJob(_AsyncJob):
         """
         return self._job_statistics().get('billingTier')
 
+    @property
+    def cache_hit(self):
+        """Return billing tier from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.cacheHit
+
+        :rtype: bool or None
+        :returns: whether the query results were returned from cache, or None
+                  if job is not yet complete.
+        """
+        return self._job_statistics().get('cacheHit')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 

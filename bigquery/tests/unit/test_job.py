@@ -1747,6 +1747,20 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['billingTier'] = billing_tier
         self.assertEqual(job.billing_tier, billing_tier)
 
+    def test_cache_hit(self):
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.cache_hit)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.cache_hit)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.cache_hit)
+
+        query_stats['cacheHit'] = True
+        self.assertTrue(job.cache_hit)
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
