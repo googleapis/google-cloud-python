@@ -1299,6 +1299,19 @@ class QueryJob(_AsyncJob):
         plan_entries = self._job_statistics().get('queryPlan', ())
         return [QueryPlanEntry.from_api_repr(entry) for entry in plan_entries]
 
+    @property
+    def total_bytes_processed(self):
+        """Return total bytes processed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesProcessed
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        return self._job_statistics().get('totalBytesProcessed')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 

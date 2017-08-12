@@ -1702,6 +1702,21 @@ class TestQueryJob(unittest.TestCase, _Base):
                 self.assertEqual(f_step.kind, e_step['kind'])
                 self.assertEqual(f_step.substeps, e_step['substeps'])
 
+    def test_total_bytes_processed(self):
+        total_bytes = 1234
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.total_bytes_processed)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.total_bytes_processed)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.total_bytes_processed)
+
+        query_stats['totalBytesProcessed'] = total_bytes
+        self.assertEqual(job.total_bytes_processed, total_bytes)
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
