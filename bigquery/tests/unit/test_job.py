@@ -143,24 +143,24 @@ class _Base(object):
             self.assertIsNone(job.user_email)
 
 
-class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
+class TestLoadJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import LoadJob
 
-        return LoadTableFromStorageJob
+        return LoadJob
 
     def _setUpConstants(self):
-        super(TestLoadTableFromStorageJob, self)._setUpConstants()
+        super(TestLoadJob, self)._setUpConstants()
         self.INPUT_FILES = 2
         self.INPUT_BYTES = 12345
         self.OUTPUT_BYTES = 23456
         self.OUTPUT_ROWS = 345
 
     def _makeResource(self, started=False, ended=False):
-        resource = super(TestLoadTableFromStorageJob, self)._makeResource(
+        resource = super(TestLoadJob, self)._makeResource(
             started, ended)
         config = resource['configuration']['load']
         config['sourceUris'] = [self.SOURCE1]
@@ -2098,15 +2098,15 @@ class _Table(object):
     def name(self):
         if self._name is not None:
             return self._name
-        return TestLoadTableFromStorageJob.TABLE_NAME
+        return TestLoadJob.TABLE_NAME
 
     @property
     def project(self):
-        return TestLoadTableFromStorageJob.PROJECT
+        return TestLoadJob.PROJECT
 
     @property
     def dataset_name(self):
-        return TestLoadTableFromStorageJob.DS_NAME
+        return TestLoadJob.DS_NAME
 
 
 class _Connection(object):

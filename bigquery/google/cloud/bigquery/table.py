@@ -1120,7 +1120,7 @@ class Table(object):
         :type null_marker: str
         :param null_marker: Optional. A custom null marker (example: "\\N")
 
-        :rtype: :class:`~google.cloud.bigquery.jobs.LoadTableFromStorageJob`
+        :rtype: :class:`~google.cloud.bigquery.jobs.LoadJob`
 
         :returns: the job instance used to load the data (e.g., for
                   querying status). Note that the job is already started:

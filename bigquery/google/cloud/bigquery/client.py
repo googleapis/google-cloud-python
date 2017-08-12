@@ -20,7 +20,7 @@ from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractTableToStorageJob
-from google.cloud.bigquery.job import LoadTableFromStorageJob
+from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.query import QueryResults
 
@@ -169,7 +169,7 @@ class Client(ClientWithProject):
         :param resource: one job resource from API response
 
         :rtype: One of:
-                :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`,
+                :class:`google.cloud.bigquery.job.LoadJob`,
                 :class:`google.cloud.bigquery.job.CopyJob`,
                 :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`,
                 :class:`google.cloud.bigquery.job.QueryJob`,
@@ -178,7 +178,7 @@ class Client(ClientWithProject):
         """
         config = resource['configuration']
         if 'load' in config:
-            return LoadTableFromStorageJob.from_api_repr(resource, self)
+            return LoadJob.from_api_repr(resource, self)
         elif 'copy' in config:
             return CopyJob.from_api_repr(resource, self)
         elif 'extract' in config:
@@ -253,11 +253,10 @@ class Client(ClientWithProject):
         :param source_uris: URIs of data files to be loaded; in format
                             ``gs://<bucket_name>/<object_name_or_glob>``.
 
-        :rtype: :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`
-        :returns: a new ``LoadTableFromStorageJob`` instance
+        :rtype: :class:`google.cloud.bigquery.job.LoadJob`
+        :returns: a new ``LoadJob`` instance
         """
-        return LoadTableFromStorageJob(job_name, destination, source_uris,
-                                       client=self)
+        return LoadJob(job_name, destination, source_uris, client=self)
 
     def copy_table(self, job_name, destination, *sources):
         """Construct a job for copying one or more tables into another table.

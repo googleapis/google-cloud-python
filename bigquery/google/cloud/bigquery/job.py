@@ -525,8 +525,8 @@ class _LoadConfiguration(object):
     _write_disposition = None
 
 
-class LoadTableFromStorageJob(_AsyncJob):
-    """Asynchronous job for loading data into a table from CloudStorage.
+class LoadJob(_AsyncJob):
+    """Asynchronous job for loading data into a table from remote URI.
 
     :type name: str
     :param name: the name of the job
@@ -535,8 +535,10 @@ class LoadTableFromStorageJob(_AsyncJob):
     :param destination: Table into which data is to be loaded.
 
     :type source_uris: sequence of string
-    :param source_uris: URIs of one or more data files to be loaded, in
-                        format ``gs://<bucket_name>/<object_name_or_glob>``.
+    :param source_uris:
+        URIs of one or more data files to be loaded.  See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris
+        for supported URI formats.
 
     :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
@@ -550,7 +552,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     _JOB_TYPE = 'load'
 
     def __init__(self, name, destination, source_uris, client, schema=()):
-        super(LoadTableFromStorageJob, self).__init__(name, client)
+        super(LoadJob, self).__init__(name, client)
         self.destination = destination
         self.source_uris = source_uris
         self._configuration = _LoadConfiguration()
@@ -775,7 +777,7 @@ class LoadTableFromStorageJob(_AsyncJob):
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`
+        :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: Job parsed from ``resource``.
         """
         name, config = cls._get_resource_config(resource)
