@@ -751,6 +751,14 @@ class Test_TypedProperty(unittest.TestCase):
         self.assertEqual(wrapper.attr, 42)
         self.assertEqual(wrapper._configuration._attr, 42)
 
+        wrapper.attr = None
+        self.assertIsNone(wrapper.attr)
+        self.assertIsNone(wrapper._configuration._attr)
+
+        wrapper.attr = 23
+        self.assertEqual(wrapper.attr, 23)
+        self.assertEqual(wrapper._configuration._attr, 23)
+
         del wrapper.attr
         self.assertIsNone(wrapper.attr)
         self.assertIsNone(wrapper._configuration._attr)
@@ -913,6 +921,17 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.name, 'foo')
         self.assertEqual(param.type_, 'INT64')
         self.assertEqual(param.value, 123)
+
+    def test___eq__(self):
+        param = self._make_one(name='foo', type_='INT64', value=123)
+        self.assertEqual(param, param)
+        self.assertNotEqual(param, object())
+        alias = self._make_one(name='bar', type_='INT64', value=123)
+        self.assertNotEqual(param, alias)
+        wrong_type = self._make_one(name='foo', type_='FLOAT64', value=123.0)
+        self.assertNotEqual(param, wrong_type)
+        wrong_val = self._make_one(name='foo', type_='INT64', value=234)
+        self.assertNotEqual(param, wrong_val)
 
     def test_positional(self):
         klass = self._get_target_class()
@@ -1145,6 +1164,19 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         self.assertEqual(param.array_type, 'INT64')
         self.assertEqual(param.values, [1, 2])
 
+    def test___eq__(self):
+        param = self._make_one(name='foo', array_type='INT64', values=[123])
+        self.assertEqual(param, param)
+        self.assertNotEqual(param, object())
+        alias = self._make_one(name='bar', array_type='INT64', values=[123])
+        self.assertNotEqual(param, alias)
+        wrong_type = self._make_one(
+            name='foo', array_type='FLOAT64', values=[123.0])
+        self.assertNotEqual(param, wrong_type)
+        wrong_val = self._make_one(
+            name='foo', array_type='INT64', values=[234])
+        self.assertNotEqual(param, wrong_val)
+
     def test_positional(self):
         klass = self._get_target_class()
         param = klass.positional(array_type='INT64', values=[1, 2])
@@ -1318,6 +1350,21 @@ class Test_StructQueryParameter(unittest.TestCase):
         self.assertEqual(param.name, 'foo')
         self.assertEqual(param.struct_types, {'bar': 'INT64', 'baz': 'STRING'})
         self.assertEqual(param.struct_values, {'bar': 123, 'baz': 'abc'})
+
+    def test___eq__(self):
+        sub_1 = _make_subparam('bar', 'INT64', 123)
+        sub_2 = _make_subparam('baz', 'STRING', 'abc')
+        sub_3 = _make_subparam('baz', 'STRING', 'def')
+        sub_1_float = _make_subparam('bar', 'FLOAT64', 123.0)
+        param = self._make_one('foo', sub_1, sub_2)
+        self.assertEqual(param, param)
+        self.assertNotEqual(param, object())
+        alias = self._make_one('bar', sub_1, sub_2)
+        self.assertNotEqual(param, alias)
+        wrong_type = self._make_one( 'foo', sub_1_float, sub_2)
+        self.assertNotEqual(param, wrong_type)
+        wrong_val = self._make_one('foo', sub_2, sub_3)
+        self.assertNotEqual(param, wrong_val)
 
     def test_positional(self):
         sub_1 = _make_subparam('bar', 'INT64', 123)
