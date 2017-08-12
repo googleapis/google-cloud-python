@@ -1110,19 +1110,19 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
-class TestExtractTableToStorageJob(unittest.TestCase, _Base):
+class TestExtractJob(unittest.TestCase, _Base):
     JOB_TYPE = 'extract'
     SOURCE_TABLE = 'source_table'
     DESTINATION_URI = 'gs://bucket_name/object_name'
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import ExtractJob
 
-        return ExtractTableToStorageJob
+        return ExtractJob
 
     def _makeResource(self, started=False, ended=False):
-        resource = super(TestExtractTableToStorageJob, self)._makeResource(
+        resource = super(TestExtractJob, self)._makeResource(
             started, ended)
         config = resource['configuration']['extract']
         config['sourceTable'] = {

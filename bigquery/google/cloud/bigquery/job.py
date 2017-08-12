@@ -921,7 +921,7 @@ class _ExtractConfiguration(object):
     _print_header = None
 
 
-class ExtractTableToStorageJob(_AsyncJob):
+class ExtractJob(_AsyncJob):
     """Asynchronous job: extract data from a table into Cloud Storage.
 
     :type name: str
@@ -942,7 +942,7 @@ class ExtractTableToStorageJob(_AsyncJob):
     _JOB_TYPE = 'extract'
 
     def __init__(self, name, source, destination_uris, client):
-        super(ExtractTableToStorageJob, self).__init__(name, client)
+        super(ExtractJob, self).__init__(name, client)
         self.source = source
         self.destination_uris = destination_uris
         self._configuration = _ExtractConfiguration()
@@ -1020,7 +1020,7 @@ class ExtractTableToStorageJob(_AsyncJob):
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`
+        :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: Job parsed from ``resource``.
         """
         name, config = cls._get_resource_config(resource)

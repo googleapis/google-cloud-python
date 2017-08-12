@@ -212,7 +212,7 @@ class TestClient(unittest.TestCase):
         import six
         from google.cloud.bigquery.job import LoadJob
         from google.cloud.bigquery.job import CopyJob
-        from google.cloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import ExtractJob
         from google.cloud.bigquery.job import QueryJob
 
         PROJECT = 'PROJECT'
@@ -225,7 +225,7 @@ class TestClient(unittest.TestCase):
         JOB_TYPES = {
             'load_job': LoadJob,
             'copy_job': CopyJob,
-            'extract_job': ExtractTableToStorageJob,
+            'extract_job': ExtractJob,
             'query_job': QueryJob,
         }
         PATH = 'projects/%s/jobs' % PROJECT
@@ -470,7 +470,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(job.destination, destination)
 
     def test_extract_table_to_storage(self):
-        from google.cloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import ExtractJob
 
         PROJECT = 'PROJECT'
         JOB = 'job_name'
@@ -483,7 +483,7 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         job = client.extract_table_to_storage(JOB, source, DESTINATION)
-        self.assertIsInstance(job, ExtractTableToStorageJob)
+        self.assertIsInstance(job, ExtractJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.source, source)

@@ -19,7 +19,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import CopyJob
-from google.cloud.bigquery.job import ExtractTableToStorageJob
+from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.query import QueryResults
@@ -171,7 +171,7 @@ class Client(ClientWithProject):
         :rtype: One of:
                 :class:`google.cloud.bigquery.job.LoadJob`,
                 :class:`google.cloud.bigquery.job.CopyJob`,
-                :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`,
+                :class:`google.cloud.bigquery.job.ExtractJob`,
                 :class:`google.cloud.bigquery.job.QueryJob`,
                 :class:`google.cloud.bigquery.job.RunSyncQueryJob`
         :returns: the job instance, constructed via the resource
@@ -182,7 +182,7 @@ class Client(ClientWithProject):
         elif 'copy' in config:
             return CopyJob.from_api_repr(resource, self)
         elif 'extract' in config:
-            return ExtractTableToStorageJob.from_api_repr(resource, self)
+            return ExtractJob.from_api_repr(resource, self)
         elif 'query' in config:
             return QueryJob.from_api_repr(resource, self)
         raise ValueError('Cannot parse job resource')
@@ -295,11 +295,10 @@ class Client(ClientWithProject):
                                  table data is to be extracted; in format
                                  ``gs://<bucket_name>/<object_name_or_glob>``.
 
-        :rtype: :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`
-        :returns: a new ``ExtractTableToStorageJob`` instance
+        :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
+        :returns: a new ``ExtractJob`` instance
         """
-        return ExtractTableToStorageJob(job_name, source, destination_uris,
-                                        client=self)
+        return ExtractJob(job_name, source, destination_uris, client=self)
 
     def run_async_query(self, job_name, query,
                         udf_resources=(), query_parameters=()):
