@@ -1364,6 +1364,19 @@ class QueryJob(_AsyncJob):
         """
         return self._job_statistics().get('numDmlAffectedRows')
 
+    @property
+    def statement_type(self):
+        """Return statement type from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.statementType
+
+        :rtype: str or None
+        :returns: type of statement used by the job, or None if job is not
+                  yet complete.
+        """
+        return self._job_statistics().get('statementType')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
