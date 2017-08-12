@@ -29,10 +29,10 @@ class TestAccessEntry(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
-        self.assertEqual(grant.role, 'OWNER')
-        self.assertEqual(grant.entity_type, 'userByEmail')
-        self.assertEqual(grant.entity_id, 'phred@example.com')
+        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        self.assertEqual(entry.role, 'OWNER')
+        self.assertEqual(entry.entity_type, 'userByEmail')
+        self.assertEqual(entry.entity_id, 'phred@example.com')
 
     def test_ctor_bad_entity_type(self):
         with self.assertRaises(ValueError):
@@ -48,10 +48,10 @@ class TestAccessEntry(unittest.TestCase):
         role = None
         entity_type = 'view'
         entity_id = object()
-        grant = self._make_one(role, entity_type, entity_id)
-        self.assertEqual(grant.role, role)
-        self.assertEqual(grant.entity_type, entity_type)
-        self.assertEqual(grant.entity_id, entity_id)
+        entry = self._make_one(role, entity_type, entity_id)
+        self.assertEqual(entry.role, role)
+        self.assertEqual(entry.entity_type, entity_type)
+        self.assertEqual(entry.entity_id, entity_id)
 
     def test_ctor_nonview_without_role(self):
         role = None
@@ -60,29 +60,29 @@ class TestAccessEntry(unittest.TestCase):
             self._make_one(role, entity_type, None)
 
     def test___eq___role_mismatch(self):
-        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         other = self._make_one('WRITER', 'userByEmail', 'phred@example.com')
-        self.assertNotEqual(grant, other)
+        self.assertNotEqual(entry, other)
 
     def test___eq___entity_type_mismatch(self):
-        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         other = self._make_one('OWNER', 'groupByEmail', 'phred@example.com')
-        self.assertNotEqual(grant, other)
+        self.assertNotEqual(entry, other)
 
     def test___eq___entity_id_mismatch(self):
-        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         other = self._make_one('OWNER', 'userByEmail', 'bharney@example.com')
-        self.assertNotEqual(grant, other)
+        self.assertNotEqual(entry, other)
 
     def test___eq___hit(self):
-        grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
+        entry = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         other = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
-        self.assertEqual(grant, other)
+        self.assertEqual(entry, other)
 
     def test__eq___type_mismatch(self):
-        grant = self._make_one('OWNER', 'userByEmail', 'silly@example.com')
-        self.assertNotEqual(grant, object())
-        self.assertEqual(grant, mock.ANY)
+        entry = self._make_one('OWNER', 'userByEmail', 'silly@example.com')
+        self.assertNotEqual(entry, object())
+        self.assertEqual(entry, mock.ANY)
 
 
 class TestDataset(unittest.TestCase):
@@ -129,20 +129,21 @@ class TestDataset(unittest.TestCase):
                 {'role': 'READER', 'specialGroup': 'projectReaders'}],
         }
 
-    def _verify_access_entry(self, access_grants, resource):
-        r_grants = []
-        for r_grant in resource['access']:
-            role = r_grant.pop('role')
-            for entity_type, entity_id in sorted(r_grant.items()):
-                r_grants.append({'role': role,
-                                 'entity_type': entity_type,
-                                 'entity_id': entity_id})
+    def _verify_access_entry(self, access_entries, resource):
+        r_entries = []
+        for r_entry in resource['access']:
+            role = r_entry.pop('role')
+            for entity_type, entity_id in sorted(r_entry.items()):
+                r_entries.append({
+                    'role': role,
+                    'entity_type': entity_type,
+                    'entity_id': entity_id})
 
-        self.assertEqual(len(access_grants), len(r_grants))
-        for a_grant, r_grant in zip(access_grants, r_grants):
-            self.assertEqual(a_grant.role, r_grant['role'])
-            self.assertEqual(a_grant.entity_type, r_grant['entity_type'])
-            self.assertEqual(a_grant.entity_id, r_grant['entity_id'])
+        self.assertEqual(len(access_entries), len(r_entries))
+        for a_entry, r_entry in zip(access_entries, r_entries):
+            self.assertEqual(a_entry.role, r_entry['role'])
+            self.assertEqual(a_entry.entity_type, r_entry['entity_type'])
+            self.assertEqual(a_entry.entity_id, r_entry['entity_id'])
 
     def _verify_readonly_resource_properties(self, dataset, resource):
 
@@ -179,9 +180,9 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(dataset.location, resource.get('location'))
 
         if 'access' in resource:
-            self._verify_access_entry(dataset.access_grants, resource)
+            self._verify_access_entry(dataset.access_entries, resource)
         else:
-            self.assertEqual(dataset.access_grants, [])
+            self.assertEqual(dataset.access_entries, [])
 
     def test_ctor_defaults(self):
         client = _Client(self.PROJECT)
@@ -192,7 +193,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(
             dataset.path,
             '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME))
-        self.assertEqual(dataset.access_grants, [])
+        self.assertEqual(dataset.access_entries, [])
 
         self.assertIsNone(dataset.created)
         self.assertIsNone(dataset.dataset_id)
@@ -210,11 +211,11 @@ class TestDataset(unittest.TestCase):
 
         phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
-        grants = [phred, bharney]
+        entries = [phred, bharney]
         OTHER_PROJECT = 'foo-bar-123'
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client,
-                                 access_grants=grants,
+                                 access_entries=entries,
                                  project=OTHER_PROJECT)
         self.assertEqual(dataset.name, self.DS_NAME)
         self.assertIs(dataset._client, client)
@@ -222,7 +223,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(
             dataset.path,
             '/projects/%s/datasets/%s' % (OTHER_PROJECT, self.DS_NAME))
-        self.assertEqual(dataset.access_grants, grants)
+        self.assertEqual(dataset.access_entries, entries)
 
         self.assertIsNone(dataset.created)
         self.assertIsNone(dataset.dataset_id)
@@ -235,30 +236,30 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.location)
 
-    def test_access_grants_setter_non_list(self):
+    def test_access_entries_setter_non_list(self):
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
         with self.assertRaises(TypeError):
-            dataset.access_grants = object()
+            dataset.access_entries = object()
 
-    def test_access_grants_setter_invalid_field(self):
+    def test_access_entries_setter_invalid_field(self):
         from google.cloud.bigquery.dataset import AccessEntry
 
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
         phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         with self.assertRaises(ValueError):
-            dataset.access_grants = [phred, object()]
+            dataset.access_entries = [phred, object()]
 
-    def test_access_grants_setter(self):
+    def test_access_entries_setter(self):
         from google.cloud.bigquery.dataset import AccessEntry
 
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client)
         phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
-        dataset.access_grants = [phred, bharney]
-        self.assertEqual(dataset.access_grants, [phred, bharney])
+        dataset.access_entries = [phred, bharney]
+        self.assertEqual(dataset.access_entries, [phred, bharney])
 
     def test_default_table_expiration_ms_setter_bad_value(self):
         client = _Client(self.PROJECT)
@@ -339,16 +340,16 @@ class TestDataset(unittest.TestCase):
         self.assertIs(dataset._client, client)
         self._verify_resource_properties(dataset, RESOURCE)
 
-    def test__parse_access_grants_w_unknown_entity_type(self):
+    def test__parse_access_entries_w_unknown_entity_type(self):
         ACCESS = [
             {'role': 'READER', 'unknown': 'UNKNOWN'},
         ]
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client=client)
         with self.assertRaises(ValueError):
-            dataset._parse_access_grants(ACCESS)
+            dataset._parse_access_entries(ACCESS)
 
-    def test__parse_access_grants_w_extra_keys(self):
+    def test__parse_access_entries_w_extra_keys(self):
         USER_EMAIL = 'phred@example.com'
         ACCESS = [
             {
@@ -360,7 +361,7 @@ class TestDataset(unittest.TestCase):
         client = _Client(self.PROJECT)
         dataset = self._make_one(self.DS_NAME, client=client)
         with self.assertRaises(ValueError):
-            dataset._parse_access_grants(ACCESS)
+            dataset._parse_access_entries(ACCESS)
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
@@ -405,7 +406,7 @@ class TestDataset(unittest.TestCase):
             'datasetId': 'starry-skies',
             'tableId': 'northern-hemisphere',
         }
-        dataset.access_grants = [
+        dataset.access_entries = [
             AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
             AccessEntry('OWNER', 'groupByEmail', GROUP_EMAIL),
             AccessEntry('READER', 'domain', 'foo.com'),
