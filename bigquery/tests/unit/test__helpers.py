@@ -1361,7 +1361,7 @@ class Test_StructQueryParameter(unittest.TestCase):
         self.assertNotEqual(param, object())
         alias = self._make_one('bar', sub_1, sub_2)
         self.assertNotEqual(param, alias)
-        wrong_type = self._make_one( 'foo', sub_1_float, sub_2)
+        wrong_type = self._make_one('foo', sub_1_float, sub_2)
         self.assertNotEqual(param, wrong_type)
         wrong_val = self._make_one('foo', sub_2, sub_3)
         self.assertNotEqual(param, wrong_val)
@@ -1601,7 +1601,6 @@ class Test__query_param_from_api_repr(unittest.TestCase):
         self.assertEqual(
             parameter.struct_types, {'foo': 'STRING', 'bar': 'INT64'})
         self.assertEqual(parameter.struct_values, {'foo': 'Foo', 'bar': 123})
-
 
 
 class Test_QueryParametersProperty(unittest.TestCase):

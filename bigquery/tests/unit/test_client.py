@@ -208,6 +208,70 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(ValueError):
             client.job_from_resource({'configuration': {'nonesuch': {}}})
 
+    def test_get_job_miss_w_explict_project(self):
+        from google.cloud.exceptions import NotFound
+
+        PROJECT = 'PROJECT'
+        OTHER_PROJECT = 'OTHER_PROJECT'
+        JOB_ID = 'NONESUCH'
+        creds = _make_credentials()
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection()
+
+        with self.assertRaises(NotFound):
+            client.get_job(JOB_ID, project=OTHER_PROJECT)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/OTHER_PROJECT/jobs/NONESUCH')
+        self.assertEqual(req['query_params'], {'projection': 'full'})
+
+    def test_get_job_hit(self):
+        from google.cloud.bigquery.job import QueryJob
+
+        PROJECT = 'PROJECT'
+        JOB_ID = 'query_job'
+        DATASET = 'test_dataset'
+        QUERY_DESTINATION_TABLE = 'query_destination_table'
+        QUERY = 'SELECT * from test_dataset:test_table'
+        ASYNC_QUERY_DATA = {
+            'id': '{}:{}'.format(PROJECT, JOB_ID),
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'query_job',
+            },
+            'state': 'DONE',
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': QUERY_DESTINATION_TABLE,
+                    },
+                    'createDisposition': 'CREATE_IF_NEEDED',
+                    'writeDisposition': 'WRITE_TRUNCATE',
+                }
+            },
+        }
+        creds = _make_credentials()
+        client = self._make_one(PROJECT, creds)
+        conn = client._connection = _Connection(ASYNC_QUERY_DATA)
+
+        job = client.get_job(JOB_ID)
+
+        self.assertIsInstance(job, QueryJob)
+        self.assertEqual(job.name, JOB_ID)
+        self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
+        self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs/query_job')
+        self.assertEqual(req['query_params'], {'projection': 'full'})
+
     def test_list_jobs_defaults(self):
         import six
         from google.cloud.bigquery.job import LoadJob
@@ -607,6 +671,11 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
+
+        if len(self._responses) == 0:
+            raise NotFound("miss")
+
         response, self._responses = self._responses[0], self._responses[1:]
         return response

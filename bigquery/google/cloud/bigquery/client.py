@@ -187,6 +187,35 @@ class Client(ClientWithProject):
             return QueryJob.from_api_repr(resource, self)
         raise ValueError('Cannot parse job resource')
 
+    def get_job(self, job_name, project=None):
+        """Fetch a job for the project associated with this client.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
+
+        :type job_name: str
+        :param job_name: Name of the job.
+
+        :type project: str
+        :param project:
+            project ID owning the job (defaults to the client's project)
+
+        :rtype: :class:`~google.cloud.bigquery.job._AsyncJob`
+        :returns:
+            Concrete job instance, based on the resource returned by the API.
+        """
+        extra_params = {'projection': 'full'}
+
+        if project is None:
+            project = self.project
+
+        path = '/projects/{}/jobs/{}'.format(project, job_name)
+
+        resource = self._connection.api_request(
+            method='GET', path=path, query_params=extra_params)
+
+        return self.job_from_resource(resource)
+
     def list_jobs(self, max_results=None, page_token=None, all_users=None,
                   state_filter=None):
         """List jobs for the project associated with this client.

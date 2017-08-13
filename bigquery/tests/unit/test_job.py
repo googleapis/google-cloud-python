@@ -2030,7 +2030,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
     def test_begin_w_bound_client(self):
+        from google.cloud.bigquery.dataset import Dataset
+
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
+        DS_NAME = 'DATASET'
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -2039,9 +2042,13 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
+
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        job.default_dataset = Dataset(DS_NAME, client)
 
         job.begin()
+
+        self.assertIsNone(job.default_dataset)
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -2054,7 +2061,11 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
             'configuration': {
                 'query': {
-                    'query': self.QUERY
+                    'query': self.QUERY,
+                    'defaultDataset': {
+                        'projectId': self.PROJECT,
+                        'datasetId': DS_NAME,
+                    },
                 },
             },
         }
