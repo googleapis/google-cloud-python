@@ -55,6 +55,7 @@ how to create a bucket.
 
     from google.cloud import storage
     client = storage.Client()
+    # https://console.cloud.google.com/storage/browser/[bucket-id]/
     bucket = client.get_bucket('bucket-id-here')
     # Then do other things...
     blob = bucket.get_blob('remote/path/to/file.txt')
@@ -64,6 +65,6 @@ how to create a bucket.
     blob2.upload_from_filename(filename='/local/path.txt')
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg
-   :target: https://pypi.org/project/google-cloud-storage/
+   :target: https://pypi.org/project/google-cloud-storage
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-storage.svg
-   :target: https://pypi.org/project/google-cloud-storage/
+   :target: https://pypi.org/project/google-cloud-storage
