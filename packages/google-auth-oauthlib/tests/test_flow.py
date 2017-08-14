@@ -160,6 +160,7 @@ class TestInstalledAppFlow(object):
             client_secret=CLIENT_SECRETS_INFO['web']['client_secret'],
             code=mock.sentinel.code)
 
+    @pytest.mark.webtest
     @mock.patch('google_auth_oauthlib.flow.webbrowser', autospec=True)
     def test_run_local_server(
             self, webbrowser_mock, instance, mock_fetch_token):
