@@ -26,6 +26,11 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 REQUIREMENTS = [
     'six',
 ]
+EXTRAS_REQUIRE = {
+    'requests': [
+        'requests >= 2.18.0, < 3.0.0dev',
+    ],
+}
 
 setuptools.setup(
     name='google-resumable-media',
@@ -43,6 +48,7 @@ setuptools.setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIRE,
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
