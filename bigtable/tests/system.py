@@ -322,7 +322,7 @@ class TestTableAdminAPI(unittest.TestCase):
             stderr=subprocess.PIPE,
         )
 
-        (endpoint, port) = server.stdout.readline().rstrip("\n").split(":")
+        (endpoint, port) = server.stdout.readline().encode("utf-8").rstrip("\n").split(":")
         os.environ["BIGTABLE_EMULATOR_HOST"] = endpoint + ":" + port
         client = Client(project="client", admin=True)
         instance = Instance("instance", client)
