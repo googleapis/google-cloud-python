@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import concurrent.futures
+from functools import partial
 import json
 import os
 
@@ -165,11 +166,12 @@ class TestInstalledAppFlow(object):
     def test_run_local_server(
             self, webbrowser_mock, instance, mock_fetch_token):
         auth_redirect_url = urllib.parse.urljoin(
-            'http://localhost:8080',
+            'http://localhost:60452',
             self.REDIRECT_REQUEST_PATH)
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            future = pool.submit(instance.run_local_server)
+            future = pool.submit(partial(
+                instance.run_local_server, port=60452))
 
             while not future.done():
                 try:
