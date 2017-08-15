@@ -25,7 +25,7 @@ from google.api.core import exceptions
 from google.api.core.helpers import datetime_helpers
 
 _LOGGER = logging.getLogger(__name__)
-_DEFAULT_JITTER_AMOUNT = 0.2
+_DEFAULT_MAX_JITTER = 0.2
 
 
 def if_exception_type(*exception_types):
@@ -50,12 +50,21 @@ def if_exception_type(*exception_types):
 if_transient_error = if_exception_type((
     exceptions.InternalServerError,
     exceptions.TooManyRequests))
-"""A predicate that checks if an exception is a transient API error."""
+"""A predicate that checks if an exception is a transient API error.
+
+The following server errors are considered transient:
+
+- :class:`google.api.core.exceptions.InternalServerError` - HTTP 500, gRPC
+    ``INTERNAL(13)`` and its subclasses.
+- :class:`google.api.core.exceptions.TooManyRequests` - HTTP 429
+- :class:`google.api.core.exceptions.ResourceExhausted` - gRPC
+    ``RESOURCE_EXHAUSTED(8)``
+"""
 # pylint: enable=invalid-name
 
 
 def exponential_sleep_generator(
-        initial, maximum, multiplier=2, jitter=_DEFAULT_JITTER_AMOUNT):
+        initial, maximum, multiplier=2, jitter=_DEFAULT_MAX_JITTER):
     """Generates sleep intervals based on the exponential back-off algorithm.
 
     This implements the `Truncated Exponential Back-off`_ algorithm.
