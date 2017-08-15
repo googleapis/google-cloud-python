@@ -177,10 +177,10 @@ class Batch(base.BaseBatch):
         response = self.client.api.publish(
             self._topic,
             self.messages,
-            options=gax.CallOptions(**{
-                'grpc.max_message_length': 20 * (1024 ** 2) + 1,
-                'grpc.max_receive_message_length': 20 * (1024 ** 2) + 1,
-            }),
+            # options=gax.CallOptions(**{
+            #     'grpc.max_message_length': 20 * (1024 ** 2) + 1,
+            #     'grpc.max_receive_message_length': 20 * (1024 ** 2) + 1,
+            # }),
         )
         end = time.time()
         logging.getLogger().debug('gRPC Publish took {sec} seconds.'.format(
