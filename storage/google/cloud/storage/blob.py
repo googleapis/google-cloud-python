@@ -246,7 +246,7 @@ class Blob(_PropertyMixin):
             service account from a JSON file rather than a GCE service account.
 
         .. _Issue 50: https://github.com/GoogleCloudPlatform/\
-                       google-auth-library-python/issues/50
+                      google-auth-library-python/issues/50
 
         If you have a blob that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
