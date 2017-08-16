@@ -40,6 +40,29 @@ class GoogleAPIError(Exception):
     pass
 
 
+@six.python_2_unicode_compatible
+class RetryError(GoogleAPIError):
+    """Raised when a function has exhausted all of its available retries.
+
+    Args:
+        message (str): The exception message.
+        cause (Exception): The last exception raised when retring the
+            function.
+    """
+    def __init__(self, message, cause):
+        super(RetryError, self).__init__(message)
+        self.message = message
+        self._cause = cause
+
+    @property
+    def cause(self):
+        """The last exception raised when retrying the function."""
+        return self._cause
+
+    def __str__(self):
+        return '{}, last exception: {}'.format(self.message, self.cause)
+
+
 class _GoogleAPICallErrorMeta(type):
     """Metaclass for registering GoogleAPICallError subclasses."""
     def __new__(mcs, name, bases, class_dict):
