@@ -468,6 +468,14 @@ a {
     width: 2em;
 }
 
+.btn-docs {
+    background-color: #3cba54;
+}
+
+.btn-docs:hover {
+    background-color: #65cd78;
+}
+
 .btn-docs img {
     background-color: #fff;
     border: 1px solid transparent;
