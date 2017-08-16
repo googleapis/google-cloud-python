@@ -43,7 +43,7 @@ def _blobs_page_start(iterator, page, response):
     :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type page: :class:`~google.cloud.iterator.Page`
+    :type page: :class:`~google.cloud.api.core.page_iterator.Page`
     :param page: The page that was just created.
 
     :type response: dict
