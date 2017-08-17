@@ -12,9 +12,52 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Helpers for retrying functions with exponential back-off."""
+"""Helpers for retrying functions with exponential back-off.
+
+The :cls:`Retry` decorator can be used to retry functions that raise exceptions
+using exponential backoff. Because a exponential sleep algorithm is used,
+the retry is limited by a `deadline`. The deadline is the maxmimum amount of
+time a method can block. This is used instead of total number of retries
+because it is difficult to ascertain the amount of time a function can block
+when using total number of retries and exponential backoff.
+
+By default, this decorator will retry transient
+API errors (see :func:`if_transient_error`). For example:
+
+.. code-block:: python
+
+    @retry.Retry()
+    def call_flaky_rpc():
+        return client.flaky_rpc()
+
+    # Will retry flaky_rpc() if it raises transient API errors.
+    result = call_flaky_rpc()
+
+You can pass a custom predicate to retry on different exceptions, such as
+waiting for an eventually consistent item to be available:
+
+.. code-block:: python
+
+    @retry.Retry(predicate=if_exception_type(exceptions.NotFound))
+    def check_if_exists():
+        return client.does_thing_exist()
+
+    is_available = check_if_exists()
+
+Some client library methods apply retry automatically. These methods can accept
+a ``retry`` parameter that allows you to configure the behavior:
+
+.. code-block:: python
+
+    my_retry = retry.Retry(deadline=60)
+    result = client.some_method(retry=my_retry)
+
+"""
+
+from __future__ import unicode_literals
 
 import datetime
+import functools
 import logging
 import random
 import time
@@ -25,7 +68,10 @@ from google.api.core import exceptions
 from google.api.core.helpers import datetime_helpers
 
 _LOGGER = logging.getLogger(__name__)
-_DEFAULT_MAX_JITTER = 0.2
+_DEFAULT_INITIAL_DELAY = 1.0
+_DEFAULT_MAXIMUM_DELAY = 60.0
+_DEFAULT_DELAY_MULTIPLIER = 2.0
+_DEFAULT_DEADLINE = 60.0 * 2.0
 
 
 def if_exception_type(*exception_types):
@@ -38,10 +84,10 @@ def if_exception_type(*exception_types):
         Callable[Exception]: A predicate that returns True if the provided
             exception is of the given type(s).
     """
-    def inner(exception):
+    def if_exception_type_predicate(exception):
         """Bound predicate for checking an exception type."""
         return isinstance(exception, exception_types)
-    return inner
+    return if_exception_type_predicate
 
 
 # pylint: disable=invalid-name
@@ -64,7 +110,7 @@ The following server errors are considered transient:
 
 
 def exponential_sleep_generator(
-        initial, maximum, multiplier=2, jitter=_DEFAULT_MAX_JITTER):
+        initial, maximum, multiplier=_DEFAULT_DELAY_MULTIPLIER):
     """Generates sleep intervals based on the exponential back-off algorithm.
 
     This implements the `Truncated Exponential Back-off`_ algorithm.
@@ -77,16 +123,16 @@ def exponential_sleep_generator(
             be greater than 0.
         maximum (float): The maximum about of time to delay.
         multiplier (float): The multiplier applied to the delay.
-        jitter (float): The maximum about of randomness to apply to the delay.
 
     Yields:
         float: successive sleep intervals.
     """
     delay = initial
     while True:
-        yield delay
-        delay = min(
-            delay * multiplier + random.uniform(0, jitter), maximum)
+        # Introduce jitter by yielding a delay that is uniformly distributed
+        # to average out to the delay time.
+        yield min(random.uniform(0.0, delay * 2.0), maximum)
+        delay = delay * multiplier
 
 
 def retry_target(target, predicate, sleep_generator, deadline):
@@ -146,3 +192,120 @@ def retry_target(target, predicate, sleep_generator, deadline):
         time.sleep(sleep)
 
     raise ValueError('Sleep generator stopped yielding sleep values.')
+
+
+@six.python_2_unicode_compatible
+class Retry(object):
+    """Exponential retry decorator.
+
+    This class is a decorator used to add exponential back-off retry behavior
+    to an RPC call.
+
+    Although the default behavior is to retry transient API errors, a
+    different predicate can be provided to retry other exceptions.
+
+    Args:
+        predicate (Callable[Exception]): A callable that should return ``True``
+            if the given exception is retryable.
+        initial (float): The minimum about of time to delay in seconds. This
+            must be greater than 0.
+        maximum (float): The maximum about of time to delay in seconds.
+        multiplier (float): The multiplier applied to the delay.
+        deadline (float): How long to keep retrying in seconds.
+    """
+    def __init__(
+            self,
+            predicate=if_transient_error,
+            initial=_DEFAULT_INITIAL_DELAY,
+            maximum=_DEFAULT_MAXIMUM_DELAY,
+            multiplier=_DEFAULT_DELAY_MULTIPLIER,
+            deadline=_DEFAULT_DEADLINE):
+        self._predicate = predicate
+        self._initial = initial
+        self._multiplier = multiplier
+        self._maximum = maximum
+        self._deadline = deadline
+
+    def __call__(self, func):
+        """Wrap a callable with retry behavior.
+
+        Args:
+            func (Callable): The callable to add retry behavior to.
+
+        Returns:
+            Callable: A callable that will invoke ``func`` with retry
+                behavior.
+        """
+        @six.wraps(func)
+        def retry_wrapped_func(*args, **kwargs):
+            """A wrapper that calls target function with retry."""
+            target = functools.partial(func, *args, **kwargs)
+            sleep_generator = exponential_sleep_generator(
+                self._initial, self._maximum, multiplier=self._multiplier)
+            return retry_target(
+                target,
+                self._predicate,
+                sleep_generator,
+                self._deadline)
+
+        return retry_wrapped_func
+
+    def with_deadline(self, deadline):
+        """Return a copy of this retry with the given deadline.
+
+        Args:
+            deadline (float): How long to keep retrying.
+
+        Returns:
+            Retry: A new retry instance with the given deadline.
+        """
+        return Retry(
+            predicate=self._predicate,
+            initial=self._initial,
+            maximum=self._maximum,
+            multiplier=self._multiplier,
+            deadline=deadline)
+
+    def with_predicate(self, predicate):
+        """Return a copy of this retry with the given predicate.
+
+        Args:
+            predicate (Callable[Exception]): A callable that should return
+                ``True`` if the given exception is retryable.
+
+        Returns:
+            Retry: A new retry instance with the given predicate.
+        """
+        return Retry(
+            predicate=predicate,
+            initial=self._initial,
+            maximum=self._maximum,
+            multiplier=self._multiplier,
+            deadline=self._deadline)
+
+    def with_delay(
+            self, initial=None, maximum=None, multiplier=None):
+        """Return a copy of this retry with the given delay options.
+
+        Args:
+            initial (float): The minimum about of time to delay. This must
+                be greater than 0.
+            maximum (float): The maximum about of time to delay.
+            multiplier (float): The multiplier applied to the delay.
+
+        Returns:
+            Retry: A new retry instance with the given predicate.
+        """
+        return Retry(
+            predicate=self._predicate,
+            initial=initial if initial is not None else self._initial,
+            maximum=maximum if maximum is not None else self._maximum,
+            multiplier=multiplier if maximum is not None else self._multiplier,
+            deadline=self._deadline)
+
+    def __str__(self):
+        return (
+            '<Retry predicate={}, initial={:.1f}, maximum={:.1f}, '
+            'multiplier={:.1f}, deadline={:.1f}>'.format(
+                self._predicate, self._initial, self._maximum,
+                self._multiplier, self._deadline))
