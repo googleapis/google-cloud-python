@@ -57,6 +57,11 @@ class PollingFuture(base.Future):
         # pylint: disable=redundant-returns-doc, missing-raises-doc
         raise NotImplementedError()
 
+    def _done_or_raise(self):
+        """Check if the future is done and raise if it's not."""
+        if not self.done():
+            raise _OperationNotComplete()
+
     def running(self):
         """True if the operation is currently running."""
         return not self.done()
@@ -71,17 +76,12 @@ class PollingFuture(base.Future):
         if self._result_set:
             return
 
-        def done_or_raise():
-            """Checks if the future is done and raises if it's not."""
-            if not self.done():
-                raise _OperationNotComplete()
-
         retry_ = retry.Retry(
             predicate=retry.if_exception_type(_OperationNotComplete),
             deadline=timeout)
 
         try:
-            retry_(done_or_raise)()
+            retry_(self._done_or_raise)()
         except exceptions.RetryError:
             raise concurrent.futures.TimeoutError(
                 'Operation did not complete within the designated '
