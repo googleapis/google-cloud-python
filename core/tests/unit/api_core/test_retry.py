@@ -14,6 +14,7 @@
 
 import datetime
 import itertools
+import re
 
 import mock
 import pytest
@@ -45,27 +46,28 @@ def test_if_transient_error():
 
 def test_exponential_sleep_generator_base_2():
     gen = retry.exponential_sleep_generator(
-        1, 60, 2, jitter=0.0)
+        1, 60, multiplier=2, jitter=0.0)
 
     result = list(itertools.islice(gen, 8))
     assert result == [1, 2, 4, 8, 16, 32, 60, 60]
 
 
-@mock.patch('random.uniform')
+@mock.patch('random.uniform', autospec=True)
 def test_exponential_sleep_generator_jitter(uniform):
     uniform.return_value = 1
     gen = retry.exponential_sleep_generator(
-        1, 60, 2, jitter=2.2)
+        1, 60, multiplier=2, jitter=2.2)
 
     result = list(itertools.islice(gen, 7))
     assert result == [1, 3, 7, 15, 31, 60, 60]
     uniform.assert_called_with(0.0, 2.2)
 
 
-@mock.patch('time.sleep')
+@mock.patch('time.sleep', autospec=True)
 @mock.patch(
     'google.api.core.helpers.datetime_helpers.utcnow',
-    return_value=datetime.datetime.min)
+    return_value=datetime.datetime.min,
+    autospec=True)
 def test_retry_target_success(utcnow, sleep):
     predicate = retry.if_exception_type(ValueError)
     call_count = [0]
@@ -83,10 +85,11 @@ def test_retry_target_success(utcnow, sleep):
     sleep.assert_has_calls([mock.call(0), mock.call(1)])
 
 
-@mock.patch('time.sleep')
+@mock.patch('time.sleep', autospec=True)
 @mock.patch(
     'google.api.core.helpers.datetime_helpers.utcnow',
-    return_value=datetime.datetime.min)
+    return_value=datetime.datetime.min,
+    autospec=True)
 def test_retry_target_non_retryable_error(utcnow, sleep):
     predicate = retry.if_exception_type(ValueError)
     exception = TypeError()
@@ -99,9 +102,9 @@ def test_retry_target_non_retryable_error(utcnow, sleep):
     sleep.assert_not_called()
 
 
-@mock.patch('time.sleep')
+@mock.patch('time.sleep', autospec=True)
 @mock.patch(
-    'google.api.core.helpers.datetime_helpers.utcnow')
+    'google.api.core.helpers.datetime_helpers.utcnow', autospec=True)
 def test_retry_target_deadline_exceeded(utcnow, sleep):
     predicate = retry.if_exception_type(ValueError)
     exception = ValueError('meep')
@@ -127,3 +130,97 @@ def test_retry_target_bad_sleep_generator():
     with pytest.raises(ValueError, match='Sleep generator'):
         retry.retry_target(
             mock.sentinel.target, mock.sentinel.predicate, [], None)
+
+
+class TestRetry(object):
+    def test_constructor_defaults(self):
+        retry_ = retry.Retry()
+        assert retry_._predicate == retry.if_transient_error
+        assert retry_._initial == 1
+        assert retry_._maximum == 60
+        assert retry_._multiplier == 2
+        assert retry_._jitter == retry._DEFAULT_MAX_JITTER
+        assert retry_._deadline == 120
+
+    def test_constructor_options(self):
+        retry_ = retry.Retry(
+            predicate=mock.sentinel.predicate,
+            initial=1,
+            maximum=2,
+            multiplier=3,
+            jitter=4,
+            deadline=5)
+        assert retry_._predicate == mock.sentinel.predicate
+        assert retry_._initial == 1
+        assert retry_._maximum == 2
+        assert retry_._multiplier == 3
+        assert retry_._jitter == 4
+        assert retry_._deadline == 5
+
+    def test_with_deadline(self):
+        retry_ = retry.Retry()
+        new_retry = retry_.with_deadline(42)
+        assert retry_ is not new_retry
+        assert new_retry._deadline == 42
+
+    def test_with_predicate(self):
+        retry_ = retry.Retry()
+        new_retry = retry_.with_predicate(mock.sentinel.predicate)
+        assert retry_ is not new_retry
+        assert new_retry._predicate == mock.sentinel.predicate
+
+    def test_with_delay_noop(self):
+        retry_ = retry.Retry()
+        new_retry = retry_.with_delay()
+        assert retry_ is not new_retry
+        assert new_retry._initial == retry_._initial
+        assert new_retry._maximum == retry_._maximum
+        assert new_retry._multiplier == retry_._multiplier
+        assert new_retry._jitter == retry_._jitter
+
+    def test_with_delay(self):
+        retry_ = retry.Retry()
+        new_retry = retry_.with_delay(
+            initial=1, maximum=2, multiplier=3, jitter=4)
+        assert retry_ is not new_retry
+        assert new_retry._initial == 1
+        assert new_retry._maximum == 2
+        assert new_retry._multiplier == 3
+        assert new_retry._jitter == 4
+
+    def test___str__(self):
+        retry_ = retry.Retry()
+        assert re.match((
+            r'<Retry predicate=<function.*?if_exception_type.*?>, '
+            r'initial=1.0, maximum=60.0, multiplier=2.0, jitter=0.2, '
+            r'deadline=120.0>'),
+            str(retry_))
+
+    @mock.patch('time.sleep', autospec=True)
+    def test___call___and_execute_success(self, sleep):
+        retry_ = retry.Retry()
+        target = mock.Mock(spec=['__call__'], return_value=42)
+
+        decorated = retry_(target)
+        target.assert_not_called()
+
+        result = decorated('meep')
+
+        assert result == 42
+        target.assert_called_once_with('meep')
+        sleep.assert_not_called()
+
+    @mock.patch('time.sleep', autospec=True)
+    def test___call___and_execute_retry(self, sleep):
+        retry_ = retry.Retry(predicate=retry.if_exception_type(ValueError))
+        target = mock.Mock(spec=['__call__'], side_effect=[ValueError(), 42])
+
+        decorated = retry_(target)
+        target.assert_not_called()
+
+        result = decorated('meep')
+
+        assert result == 42
+        assert target.call_count == 2
+        target.assert_has_calls([mock.call('meep'), mock.call('meep')])
+        sleep.assert_called_once_with(retry_._initial)
