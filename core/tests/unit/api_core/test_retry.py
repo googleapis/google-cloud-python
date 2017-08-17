@@ -200,6 +200,8 @@ class TestRetry(object):
     def test___call___and_execute_success(self, sleep):
         retry_ = retry.Retry()
         target = mock.Mock(spec=['__call__'], return_value=42)
+        # __name__ is needed by functools.partial.
+        target.__name__ = 'target'
 
         decorated = retry_(target)
         target.assert_not_called()
@@ -214,6 +216,8 @@ class TestRetry(object):
     def test___call___and_execute_retry(self, sleep):
         retry_ = retry.Retry(predicate=retry.if_exception_type(ValueError))
         target = mock.Mock(spec=['__call__'], side_effect=[ValueError(), 42])
+        # __name__ is needed by functools.partial.
+        target.__name__ = 'target'
 
         decorated = retry_(target)
         target.assert_not_called()
