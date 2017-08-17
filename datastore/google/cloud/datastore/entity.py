@@ -181,6 +181,19 @@ class Entity(dict):
         if self.key:
             return self.key.kind
 
+    @property
+    def id(self):
+        """Get the id of the current entity.
+
+        .. note::
+          This relies entirely on the :class:`gcloud.datastore.key.Key`
+          set on the entity.  That means that we're not storing the id
+          of the entity at all, just the properties and a pointer to a
+          Key which knows its Id.
+        """
+        if self.key:
+            return self.key.id
+
     def __repr__(self):
         if self.key:
             return '<Entity%s %s>' % (self.key._flat_path,
