@@ -60,6 +60,10 @@ REQUIREMENTS = [
     'tenacity >= 4.0.0, <5.0.0dev'
 ]
 
+EXTRAS_REQUIREMENTS = {
+    ':python_version<"3.2"': ['futures >= 3.0.0'],
+}
+
 setup(
     name='google-cloud-core',
     version='0.26.0',
@@ -72,5 +76,6 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIREMENTS,
     **SETUP_BASE
 )
