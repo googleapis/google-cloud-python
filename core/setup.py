@@ -76,6 +76,6 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
-    extras_requires=EXTRAS_REQUIREMENTS,
+    extras_require=EXTRAS_REQUIREMENTS,
     **SETUP_BASE
 )
