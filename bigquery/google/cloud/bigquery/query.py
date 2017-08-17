@@ -77,6 +77,12 @@ class QueryResults(object):
         self._job = None
 
     @classmethod
+    def from_api_repr(cls, api_response, client):
+        instance = cls(None, client)
+        instance._set_properties(api_response)
+        return instance
+
+    @classmethod
     def from_query_job(cls, job):
         """Factory: construct from an existing job.
 
