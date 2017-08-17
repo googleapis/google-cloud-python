@@ -154,20 +154,13 @@ class Cursor(object):
             query_parameters=query_parameters)
         query_job.use_legacy_sql = False
 
+        # Wait for the query to finish.
         try:
-            query_results = query_job.result()
+            query_job = query_job.result()
         except google.cloud.exceptions.GoogleCloudError:
             raise exceptions.DatabaseError(query_job.errors)
 
-        # Force the iterator to run because the query_results doesn't
-        # have the total_rows populated. See:
-        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3506
-        query_iterator = query_results.fetch_data()
-        try:
-            six.next(iter(query_iterator))
-        except StopIteration:
-            pass
-
+        query_results = query_job.query_results()
         self._query_data = iter(
             query_results.fetch_data(max_results=self.arraysize))
         self._set_rowcount(query_results)
