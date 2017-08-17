@@ -61,7 +61,7 @@ REQUIREMENTS = [
 ]
 
 EXTRAS_REQUIREMENTS = {
-    ':python_version<"3.2"': ['futures=>3.0.0'],
+    ':python_version<"3.2"': ['futures >= 3.0.0'],
 }
 
 setup(
