@@ -14,7 +14,7 @@
 
 """Helpers for retrying functions with exponential back-off.
 
-The :cls`Retry` decorator can be used to retry functions that raise exceptions
+The :cls:`Retry` decorator can be used to retry functions that raise exceptions
 using exponential backoff. Because a exponential sleep algorithm is used,
 the retry is limited by a `deadline`. The deadline is the maxmimum amount of
 time a method can block. This is used instead of total number of retries
@@ -71,7 +71,6 @@ _LOGGER = logging.getLogger(__name__)
 _DEFAULT_INITIAL_DELAY = 1.0
 _DEFAULT_MAXIMUM_DELAY = 60.0
 _DEFAULT_DELAY_MULTIPLIER = 2.0
-_DEFAULT_MAX_JITTER = 0.2
 _DEFAULT_DEADLINE = 60.0 * 2.0
 
 
@@ -111,8 +110,7 @@ The following server errors are considered transient:
 
 
 def exponential_sleep_generator(
-        initial, maximum, multiplier=_DEFAULT_DELAY_MULTIPLIER,
-        max_jitter=_DEFAULT_MAX_JITTER):
+        initial, maximum, multiplier=_DEFAULT_DELAY_MULTIPLIER):
     """Generates sleep intervals based on the exponential back-off algorithm.
 
     This implements the `Truncated Exponential Back-off`_ algorithm.
@@ -125,17 +123,16 @@ def exponential_sleep_generator(
             be greater than 0.
         maximum (float): The maximum about of time to delay.
         multiplier (float): The multiplier applied to the delay.
-        max_jitter (float): The maximum about of randomness to apply to the
-            delay.
 
     Yields:
         float: successive sleep intervals.
     """
     delay = initial
     while True:
-        yield delay
-        delay = min(
-            delay * multiplier + random.uniform(0, max_jitter), maximum)
+        # Introduce jitter by yielding a delay that is uniformly distributed
+        # to average out to the delay time.
+        yield min(random.uniform(0.0, delay * 2.0), maximum)
+        delay = delay * multiplier
 
 
 def retry_target(target, predicate, sleep_generator, deadline):
@@ -214,8 +211,6 @@ class Retry(object):
             must be greater than 0.
         maximum (float): The maximum about of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
-        jitter (float): The maximum about of randomness to apply to the delay
-            in seconds.
         deadline (float): How long to keep retrying in seconds.
     """
     def __init__(
@@ -224,13 +219,11 @@ class Retry(object):
             initial=_DEFAULT_INITIAL_DELAY,
             maximum=_DEFAULT_MAXIMUM_DELAY,
             multiplier=_DEFAULT_DELAY_MULTIPLIER,
-            max_jitter=_DEFAULT_MAX_JITTER,
             deadline=_DEFAULT_DEADLINE):
         self._predicate = predicate
         self._initial = initial
         self._multiplier = multiplier
         self._maximum = maximum
-        self._max_jitter = max_jitter
         self._deadline = deadline
 
     def __call__(self, func):
@@ -248,8 +241,7 @@ class Retry(object):
             """A wrapper that calls target function with retry."""
             target = functools.partial(func, *args, **kwargs)
             sleep_generator = exponential_sleep_generator(
-                self._initial, self._maximum,
-                multiplier=self._multiplier, max_jitter=self._max_jitter)
+                self._initial, self._maximum, multiplier=self._multiplier)
             return retry_target(
                 target,
                 self._predicate,
@@ -259,7 +251,7 @@ class Retry(object):
         return retry_wrapped_func
 
     def with_deadline(self, deadline):
-        """Returns a copy of this retry with the given deadline.
+        """Return a copy of this retry with the given deadline.
 
         Args:
             deadline (float): How long to keep retrying.
@@ -272,11 +264,10 @@ class Retry(object):
             initial=self._initial,
             maximum=self._maximum,
             multiplier=self._multiplier,
-            max_jitter=self._max_jitter,
             deadline=deadline)
 
     def with_predicate(self, predicate):
-        """Returns a copy of this retry with the given predicate.
+        """Return a copy of this retry with the given predicate.
 
         Args:
             predicate (Callable[Exception]): A callable that should return
@@ -290,21 +281,17 @@ class Retry(object):
             initial=self._initial,
             maximum=self._maximum,
             multiplier=self._multiplier,
-            max_jitter=self._max_jitter,
             deadline=self._deadline)
 
     def with_delay(
-            self, initial=None, maximum=None, multiplier=None,
-            max_jitter=None):
-        """Returns a copy of this retry with the given delay options.
+            self, initial=None, maximum=None, multiplier=None):
+        """Return a copy of this retry with the given delay options.
 
         Args:
             initial (float): The minimum about of time to delay. This must
                 be greater than 0.
             maximum (float): The maximum about of time to delay.
             multiplier (float): The multiplier applied to the delay.
-            max_jitter (float): The maximum about of randomness to apply to the
-                delay.
 
         Returns:
             Retry: A new retry instance with the given predicate.
@@ -314,13 +301,11 @@ class Retry(object):
             initial=initial if initial is not None else self._initial,
             maximum=maximum if maximum is not None else self._maximum,
             multiplier=multiplier if maximum is not None else self._multiplier,
-            max_jitter=(
-                max_jitter if max_jitter is not None else self._max_jitter),
             deadline=self._deadline)
 
     def __str__(self):
         return (
             '<Retry predicate={}, initial={:.1f}, maximum={:.1f}, '
-            'multiplier={:.1f}, max_jitter={:.1f}, deadline={:.1f}>'.format(
+            'multiplier={:.1f}, deadline={:.1f}>'.format(
                 self._predicate, self._initial, self._maximum,
-                self._multiplier, self._max_jitter, self._deadline))
+                self._multiplier, self._deadline))

@@ -44,23 +44,15 @@ def test_if_transient_error():
     assert not retry.if_transient_error(exceptions.InvalidArgument(''))
 
 
-def test_exponential_sleep_generator_base_2():
+# Make uniform return half of its maximum, which will be the calculated
+# sleep time.
+@mock.patch('random.uniform', autospec=True, side_effect=lambda m, n: n/2.0)
+def test_exponential_sleep_generator_base_2(uniform):
     gen = retry.exponential_sleep_generator(
-        1, 60, multiplier=2, max_jitter=0.0)
+        1, 60, multiplier=2)
 
     result = list(itertools.islice(gen, 8))
     assert result == [1, 2, 4, 8, 16, 32, 60, 60]
-
-
-@mock.patch('random.uniform', autospec=True)
-def test_exponential_sleep_generator_jitter(uniform):
-    uniform.return_value = 1
-    gen = retry.exponential_sleep_generator(
-        1, 60, multiplier=2, max_jitter=2.2)
-
-    result = list(itertools.islice(gen, 7))
-    assert result == [1, 3, 7, 15, 31, 60, 60]
-    uniform.assert_called_with(0.0, 2.2)
 
 
 @mock.patch('time.sleep', autospec=True)
@@ -139,7 +131,6 @@ class TestRetry(object):
         assert retry_._initial == 1
         assert retry_._maximum == 60
         assert retry_._multiplier == 2
-        assert retry_._max_jitter == retry._DEFAULT_MAX_JITTER
         assert retry_._deadline == 120
 
     def test_constructor_options(self):
@@ -148,14 +139,12 @@ class TestRetry(object):
             initial=1,
             maximum=2,
             multiplier=3,
-            max_jitter=4,
-            deadline=5)
+            deadline=4)
         assert retry_._predicate == mock.sentinel.predicate
         assert retry_._initial == 1
         assert retry_._maximum == 2
         assert retry_._multiplier == 3
-        assert retry_._max_jitter == 4
-        assert retry_._deadline == 5
+        assert retry_._deadline == 4
 
     def test_with_deadline(self):
         retry_ = retry.Retry()
@@ -176,24 +165,21 @@ class TestRetry(object):
         assert new_retry._initial == retry_._initial
         assert new_retry._maximum == retry_._maximum
         assert new_retry._multiplier == retry_._multiplier
-        assert new_retry._max_jitter == retry_._max_jitter
 
     def test_with_delay(self):
         retry_ = retry.Retry()
         new_retry = retry_.with_delay(
-            initial=1, maximum=2, multiplier=3, max_jitter=4)
+            initial=1, maximum=2, multiplier=3)
         assert retry_ is not new_retry
         assert new_retry._initial == 1
         assert new_retry._maximum == 2
         assert new_retry._multiplier == 3
-        assert new_retry._max_jitter == 4
 
     def test___str__(self):
         retry_ = retry.Retry()
         assert re.match((
             r'<Retry predicate=<function.*?if_exception_type.*?>, '
-            r'initial=1.0, maximum=60.0, multiplier=2.0, max_jitter=0.2, '
-            r'deadline=120.0>'),
+            r'initial=1.0, maximum=60.0, multiplier=2.0, deadline=120.0>'),
             str(retry_))
 
     @mock.patch('time.sleep', autospec=True)
@@ -212,8 +198,12 @@ class TestRetry(object):
         target.assert_called_once_with('meep')
         sleep.assert_not_called()
 
+    # Make uniform return half of its maximum, which will be the calculated
+    # sleep time.
+    @mock.patch(
+        'random.uniform', autospec=True, side_effect=lambda m, n: n/2.0)
     @mock.patch('time.sleep', autospec=True)
-    def test___call___and_execute_retry(self, sleep):
+    def test___call___and_execute_retry(self, sleep, uniform):
         retry_ = retry.Retry(predicate=retry.if_exception_type(ValueError))
         target = mock.Mock(spec=['__call__'], side_effect=[ValueError(), 42])
         # __name__ is needed by functools.partial.
