@@ -8,7 +8,7 @@ Idiomatic Python client for `Stackdriver Trace API`_
 
 .. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Stackdriver Trace API: https://cloud.google.com/trace
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/trace-usage
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/trace-usage
 .. _Product Documentation:  https://cloud.google.com/trace
 
 Quick Start
@@ -22,7 +22,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable the trace api.:  https://cloud.google.com/trace
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/google-cloud-auth
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/google-cloud-auth
 
 Installation
 ~~~~~~~~~~~~

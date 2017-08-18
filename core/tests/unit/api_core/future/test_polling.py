@@ -19,7 +19,7 @@ import time
 import mock
 import pytest
 
-from google.cloud.future import polling
+from google.api.core.future import polling
 
 
 class PollingFutureImpl(polling.PollingFuture):

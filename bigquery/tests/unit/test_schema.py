@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestSchemaField(unittest.TestCase):
 
@@ -59,6 +61,47 @@ class TestSchemaField(unittest.TestCase):
         self.assertIs(field._fields[0], sub_field1)
         self.assertIs(field._fields[1], sub_field2)
 
+    def test_to_api_repr(self):
+        field = self._make_one('foo', 'INTEGER', 'NULLABLE')
+        self.assertEqual(field.to_api_repr(), {
+            'mode': 'nullable',
+            'name': 'foo',
+            'type': 'integer',
+        })
+
+    def test_to_api_repr_with_subfield(self):
+        subfield = self._make_one('bar', 'INTEGER', 'NULLABLE')
+        field = self._make_one('foo', 'RECORD', 'REQUIRED', fields=(subfield,))
+        self.assertEqual(field.to_api_repr(), {
+            'fields': [{
+                'mode': 'nullable',
+                'name': 'bar',
+                'type': 'integer',
+            }],
+            'mode': 'required',
+            'name': 'foo',
+            'type': 'record',
+        })
+
+    def test_from_api_repr(self):
+        field = self._get_target_class().from_api_repr({
+            'fields': [{
+                'mode': 'nullable',
+                'name': 'bar',
+                'type': 'integer',
+            }],
+            'mode': 'required',
+            'name': 'foo',
+            'type': 'record',
+        })
+        self.assertEqual(field.name, 'foo')
+        self.assertEqual(field.field_type, 'RECORD')
+        self.assertEqual(field.mode, 'REQUIRED')
+        self.assertEqual(len(field.fields), 1)
+        self.assertEqual(field.fields[0].name, 'bar')
+        self.assertEqual(field.fields[0].field_type, 'INTEGER')
+        self.assertEqual(field.fields[0].mode, 'NULLABLE')
+
     def test_name_property(self):
         name = 'lemon-ness'
         schema_field = self._make_one(name, 'INTEGER')
@@ -101,7 +144,7 @@ class TestSchemaField(unittest.TestCase):
         field = self._make_one('test', 'STRING')
         other = object()
         self.assertNotEqual(field, other)
-        self.assertIs(field.__eq__(other), NotImplemented)
+        self.assertEqual(field, mock.ANY)
 
     def test___eq___name_mismatch(self):
         field = self._make_one('test', 'STRING')
@@ -155,7 +198,7 @@ class TestSchemaField(unittest.TestCase):
         field = self._make_one('toast', 'INTEGER')
         other = object()
         self.assertNotEqual(field, other)
-        self.assertIs(field.__ne__(other), NotImplemented)
+        self.assertEqual(field, mock.ANY)
 
     def test___ne___same_value(self):
         field1 = self._make_one('test', 'TIMESTAMP', mode='REPEATED')

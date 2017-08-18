@@ -16,9 +16,8 @@
 
 import base64
 
+from google.api.core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
-from google.cloud.iterator import Iterator as BaseIterator
-from google.cloud.iterator import Page
 
 from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
 from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
@@ -373,7 +372,7 @@ class Query(object):
             start_cursor=start_cursor, end_cursor=end_cursor)
 
 
-class Iterator(BaseIterator):
+class Iterator(page_iterator.Iterator):
     """Represent the state of a given execution of a Query.
 
     :type query: :class:`~google.cloud.datastore.query.Query`
@@ -499,7 +498,7 @@ class Iterator(BaseIterator):
             query=query_pb,
         )
         entity_pbs = self._process_query_results(response_pb)
-        return Page(self, entity_pbs, self._item_to_value)
+        return page_iterator.Page(self, entity_pbs, self._item_to_value)
 
 
 def _pb_from_query(query):
@@ -571,7 +570,7 @@ def _pb_from_query(query):
 def _item_to_entity(iterator, entity_pb):
     """Convert a raw protobuf entity to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type entity_pb:

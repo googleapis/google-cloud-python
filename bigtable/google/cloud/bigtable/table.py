@@ -142,12 +142,12 @@ class Table(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.table_id == self.table_id and
                 other._instance == self._instance)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def create(self, initial_split_keys=None, column_families=()):
         """Creates this table.
@@ -257,7 +257,7 @@ class Table(object):
         return rows_data.rows[row_key]
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None):
+                  filter_=None, end_inclusive=False):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -280,13 +280,17 @@ class Table(object):
                         specified row(s). If unset, reads every column in
                         each row.
 
+        :type end_inclusive: bool
+        :param end_inclusive: (Optional) Whether the ``end_key`` should be
+                      considered inclusive. The default is False (exclusive).
+
         :rtype: :class:`.PartialRowsData`
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit)
+            limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
         response_iterator = client._data_stub.ReadRows(request_pb)
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
@@ -360,7 +364,7 @@ class Table(object):
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, limit=None):
+                        filter_=None, limit=None, end_inclusive=False):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -388,6 +392,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                   rows' worth of results. The default (zero) is to return
                   all results.
 
+    :type end_inclusive: bool
+    :param end_inclusive: (Optional) Whether the ``end_key`` should be
+                  considered inclusive. The default is False (exclusive).
+
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -403,7 +411,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         if start_key is not None:
             range_kwargs['start_key_closed'] = _to_bytes(start_key)
         if end_key is not None:
-            range_kwargs['end_key_open'] = _to_bytes(end_key)
+            end_key_key = 'end_key_open'
+            if end_inclusive:
+                end_key_key = 'end_key_closed'
+            range_kwargs[end_key_key] = _to_bytes(end_key)
     if filter_ is not None:
         request_kwargs['filter'] = filter_.to_pb()
     if limit is not None:

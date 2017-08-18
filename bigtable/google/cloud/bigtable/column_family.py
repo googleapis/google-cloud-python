@@ -39,9 +39,6 @@ class GarbageCollectionRule(object):
         don't support that feature and instead support via native classes.
     """
 
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
 
 class MaxVersionsGCRule(GarbageCollectionRule):
     """Garbage collection limiting the number of versions of a cell.
@@ -55,8 +52,11 @@ class MaxVersionsGCRule(GarbageCollectionRule):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.max_num_versions == self.max_num_versions
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the garbage collection rule to a protobuf.
@@ -79,8 +79,11 @@ class MaxAgeGCRule(GarbageCollectionRule):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.max_age == self.max_age
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the garbage collection rule to a protobuf.
@@ -104,8 +107,11 @@ class GCRuleUnion(GarbageCollectionRule):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.rules == self.rules
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the union into a single GC rule as a protobuf.
@@ -130,8 +136,11 @@ class GCRuleIntersection(GarbageCollectionRule):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.rules == self.rules
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the intersection into a single GC rule as a protobuf.
@@ -190,13 +199,13 @@ class ColumnFamily(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.column_family_id == self.column_family_id and
                 other._table == self._table and
                 other.gc_rule == self.gc_rule)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def to_pb(self):
         """Converts the column family to a protobuf.

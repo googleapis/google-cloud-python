@@ -9,7 +9,7 @@ Python Client for Google Cloud Speech
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/speech/
 
 Quick Start
 -----------
@@ -41,7 +41,7 @@ and receive a text transcription from the Cloud Speech API service.
 See the ``google-cloud-python`` API `speech documentation`_ to learn how to
 connect to the Google Cloud Speech API using this Client Library.
 
-.. _speech documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/speech/usage.html
+.. _speech documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/speech/
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-speech.svg
    :target: https://pypi.org/project/google-cloud-speech/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-speech.svg

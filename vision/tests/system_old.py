@@ -332,17 +332,23 @@ class TestVisionClientFace(BaseVisionTestCase):
 
 
 class TestVisionClientLabel(BaseVisionTestCase):
+
     DESCRIPTIONS = (
-        'car',
-        'vehicle',
-        'land vehicle',
-        'automotive design',
-        'wheel',
         'automobile make',
-        'luxury vehicle',
-        'sports car',
-        'performance car',
+        'automotive design',
         'automotive exterior',
+        'automotive wheel system',
+        'car',
+        'land vehicle',
+        'luxury vehicle',
+        'motor vehicle',
+        'muscle car',
+        'performance car',
+        'personal luxury car',
+        'rim',
+        'sports car',
+        'vehicle',
+        'wheel',
     )
 
     def setUp(self):

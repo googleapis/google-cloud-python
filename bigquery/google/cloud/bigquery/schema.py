@@ -43,6 +43,25 @@ class SchemaField(object):
         self._description = description
         self._fields = tuple(fields)
 
+    @classmethod
+    def from_api_repr(cls, api_repr):
+        """Return a ``SchemaField`` object deserialized from a dictionary.
+
+        Args:
+            api_repr (Mapping[str, str]): The serialized representation
+                of the SchemaField, such as what is output by
+                :meth:`to_api_repr`.
+
+        Returns:
+            SchemaField: The ``SchemaField`` object.
+        """
+        return cls(
+            field_type=api_repr['type'].upper(),
+            fields=[cls.from_api_repr(f) for f in api_repr.get('fields', ())],
+            mode=api_repr['mode'].upper(),
+            name=api_repr['name'],
+        )
+
     @property
     def name(self):
         """str: The name of the field."""
@@ -84,6 +103,28 @@ class SchemaField(object):
         """
         return self._fields
 
+    def to_api_repr(self):
+        """Return a dictionary representing this schema field.
+
+        Returns:
+            dict: A dictionary representing the SchemaField in a serialized
+                form.
+        """
+        # Put together the basic representation. See http://bit.ly/2hOAT5u.
+        answer = {
+            'mode': self.mode.lower(),
+            'name': self.name,
+            'type': self.field_type.lower(),
+        }
+
+        # If this is a RECORD type, then sub-fields are also included,
+        # add this to the serialized representation.
+        if self.field_type.upper() == 'RECORD':
+            answer['fields'] = [f.to_api_repr() for f in self.fields]
+
+        # Done; return the serialized dictionary.
+        return answer
+
     def _key(self):
         """A tuple key that unique-ly describes this field.
 
@@ -101,16 +142,12 @@ class SchemaField(object):
         )
 
     def __eq__(self, other):
-        if isinstance(other, SchemaField):
-            return self._key() == other._key()
-        else:
+        if not isinstance(other, SchemaField):
             return NotImplemented
+        return self._key() == other._key()
 
     def __ne__(self, other):
-        if isinstance(other, SchemaField):
-            return self._key() != other._key()
-        else:
-            return NotImplemented
+        return not self == other
 
     def __hash__(self):
         return hash(self._key())

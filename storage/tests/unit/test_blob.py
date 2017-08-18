@@ -375,13 +375,20 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(download_url, expected_url)
 
     @staticmethod
-    def _mock_requests_response(status_code, headers, content=b''):
+    def _mock_requests_response(
+            status_code, headers, content=b'', stream=False):
         import requests
 
         response = requests.Response()
         response.status_code = status_code
         response.headers.update(headers)
-        response._content = content
+        if stream:
+            response.raw = io.BytesIO(content)
+            response._content = False
+        else:
+            response.raw = None
+            response._content = content
+
         response.request = requests.Request(
             'POST', 'http://example.com').prepare()
         return response
@@ -429,7 +436,9 @@ class Test_Blob(unittest.TestCase):
         transport.request.return_value = self._mock_requests_response(
             http_client.OK,
             {'content-length': '6', 'content-range': 'bytes 0-5/6'},
-            content=b'abcdef')
+            content=b'abcdef',
+            stream=True,
+        )
         file_obj = io.BytesIO()
         download_url = 'http://test.invalid'
         headers = {}
@@ -438,7 +447,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(file_obj.getvalue(), b'abcdef')
 
         transport.request.assert_called_once_with(
-            'GET', download_url, data=None, headers=headers)
+            'GET', download_url, data=None, headers=headers, stream=True)
 
     def test__do_download_chunked(self):
         blob_name = 'blob-name'
@@ -493,7 +502,7 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(file_obj.tell(), 0)
         # Check that the transport was called once.
         transport.request.assert_called_once_with(
-            'GET', blob.media_link, data=None, headers={})
+            'GET', blob.media_link, data=None, headers={}, stream=True)
 
     def test_download_to_file_wo_media_link(self):
         blob_name = 'blob-name'
@@ -535,7 +544,9 @@ class Test_Blob(unittest.TestCase):
             single_chunk_response = self._mock_requests_response(
                 http_client.OK,
                 {'content-length': '6', 'content-range': 'bytes 0-5/6'},
-                content=b'abcdef')
+                content=b'abcdef',
+                stream=True,
+            )
             transport.request.side_effect = [single_chunk_response]
 
         file_obj = io.BytesIO()
@@ -546,7 +557,7 @@ class Test_Blob(unittest.TestCase):
             self._check_session_mocks(client, transport, media_link)
         else:
             transport.request.assert_called_once_with(
-                'GET', media_link, data=None, headers={})
+                'GET', media_link, data=None, headers={}, stream=True)
 
     def test_download_to_file_default(self):
         self._download_to_file_helper()

@@ -15,7 +15,9 @@
 """User friendly container for Cloud Spanner Database."""
 
 import re
+import threading
 
+import google.auth.credentials
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.cloud.gapic.spanner.v1.spanner_client import SpannerClient
@@ -33,6 +35,9 @@ from google.cloud.spanner.pool import BurstyPool
 from google.cloud.spanner.snapshot import Snapshot
 from google.cloud.spanner.pool import SessionCheckout
 # pylint: enable=ungrouped-imports
+
+
+SPANNER_DATA_SCOPE = 'https://www.googleapis.com/auth/spanner.data'
 
 
 _DATABASE_NAME_RE = re.compile(
@@ -75,6 +80,7 @@ class Database(object):
         self.database_id = database_id
         self._instance = instance
         self._ddl_statements = _check_ddl_statements(ddl_statements)
+        self._local = threading.local()
 
         if pool is None:
             pool = BurstyPool()
@@ -154,18 +160,24 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
+            credentials = self._instance._client.credentials
+            if isinstance(credentials, google.auth.credentials.Scoped):
+                credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             self._spanner_api = SpannerClient(
-                lib_name='gccl', lib_version=__version__)
+                lib_name='gccl',
+                lib_version=__version__,
+                credentials=credentials,
+            )
         return self._spanner_api
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.database_id == self.database_id and
                 other._instance == self._instance)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def create(self):
         """Create this database within its instance
@@ -175,7 +187,7 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase
 
-        :rtype: :class:`~google.cloud.future.operation.Operation`
+        :rtype: :class:`~google.api.core.operation.Operation`
         :returns: a future used to poll the status of the create request
         :raises Conflict: if the database already exists
         :raises NotFound: if the instance owning the database does not exist
@@ -259,7 +271,7 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
-        :rtype: :class:`google.cloud.future.operation.Operation`
+        :rtype: :class:`google.api.core.operation.Operation`
         :returns: an operation instance
         :raises NotFound: if the database does not exist
         :raises GaxError:
@@ -303,67 +315,35 @@ class Database(object):
         """
         return Session(self)
 
-    def read(self, table, columns, keyset, index='', limit=0,
-             resume_token=b''):
-        """Perform a ``StreamingRead`` API request for rows in a table.
+    def snapshot(self, **kw):
+        """Return an object which wraps a snapshot.
 
-        :type table: str
-        :param table: name of the table from which to fetch data
+        The wrapper *must* be used as a context manager, with the snapshot
+        as the value returned by the wrapper.
 
-        :type columns: list of str
-        :param columns: names of columns to be retrieved
+        See
+        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
-        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`
-        :param keyset: keys / ranges identifying rows to be retrieved
+        :type kw: dict
+        :param kw:
+            Passed through to
+            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
 
-        :type index: str
-        :param index: (Optional) name of index to use, rather than the
-                      table's primary key
-
-        :type limit: int
-        :param limit: (Optional) maxiumn number of rows to return
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted read
-
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
-        :returns: a result set instance which can be used to consume rows.
+        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
+        :returns: new wrapper
         """
-        with SessionCheckout(self._pool) as session:
-            return session.read(
-                table, columns, keyset, index, limit, resume_token)
+        return SnapshotCheckout(self, **kw)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=b''):
-        """Perform an ``ExecuteStreamingSql`` API request.
+    def batch(self):
+        """Return an object which wraps a batch.
 
-        :type sql: str
-        :param sql: SQL query statement
+        The wrapper *must* be used as a context manager, with the batch
+        as the value returned by the wrapper.
 
-        :type params: dict, {str -> column value}
-        :param params: values for parameter replacement.  Keys must match
-                       the names used in ``sql``.
-
-        :type param_types:
-            dict, {str -> :class:`google.spanner.v1.type_pb2.TypeCode`}
-        :param param_types: (Optional) explicit types for one or more param
-                            values;  overrides default type detection on the
-                            back-end.
-
-        :type query_mode:
-            :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See
-            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted query
-
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
-        :returns: a result set instance which can be used to consume rows.
+        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`
+        :returns: new wrapper
         """
-        with SessionCheckout(self._pool) as session:
-            return session.execute_sql(
-                sql, params, param_types, query_mode, resume_token)
+        return BatchCheckout(self)
 
     def run_in_transaction(self, func, *args, **kw):
         """Perform a unit of work in a transaction, retrying on abort.
@@ -384,38 +364,20 @@ class Database(object):
         :rtype: :class:`datetime.datetime`
         :returns: timestamp of committed transaction
         """
-        with SessionCheckout(self._pool) as session:
-            return session.run_in_transaction(func, *args, **kw)
+        # Sanity check: Is there a transaction already running?
+        # If there is, then raise a red flag. Otherwise, mark that this one
+        # is running.
+        if getattr(self._local, 'transaction_running', False):
+            raise RuntimeError('Spanner does not support nested transactions.')
+        self._local.transaction_running = True
 
-    def batch(self):
-        """Return an object which wraps a batch.
-
-        The wrapper *must* be used as a context manager, with the batch
-        as the value returned by the wrapper.
-
-        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`
-        :returns: new wrapper
-        """
-        return BatchCheckout(self)
-
-    def snapshot(self, **kw):
-        """Return an object which wraps a snapshot.
-
-        The wrapper *must* be used as a context manager, with the snapshot
-        as the value returned by the wrapper.
-
-        See
-        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
-
-        :type kw: dict
-        :param kw:
-            Passed through to
-            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
-
-        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
-        :returns: new wrapper
-        """
-        return SnapshotCheckout(self, **kw)
+        # Check out a session and run the function in a transaction; once
+        # done, flip the sanity check bit back.
+        try:
+            with SessionCheckout(self._pool) as session:
+                return session.run_in_transaction(func, *args, **kw)
+        finally:
+            self._local.transaction_running = False
 
 
 class BatchCheckout(object):

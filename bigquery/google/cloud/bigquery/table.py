@@ -23,10 +23,10 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+from google.api.core import page_iterator
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
-from google.cloud.iterator import HTTPIterator
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
@@ -712,7 +712,7 @@ class Table(object):
         :param client: (Optional) The client to use.  If not passed, falls
                        back to the ``client`` stored on the current dataset.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
                   which counts the total number of rows **in the table**
@@ -724,14 +724,48 @@ class Table(object):
 
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
-        iterator = HTTPIterator(client=client, path=path,
-                                item_to_value=_item_to_row, items_key='rows',
-                                page_token=page_token, max_results=max_results,
-                                page_start=_rows_page_start)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_row,
+            items_key='rows',
+            page_token=page_token,
+            max_results=max_results,
+            page_start=_rows_page_start)
         iterator.schema = self._schema
         # Over-ride the key used to retrieve the next page token.
         iterator._NEXT_TOKEN = 'pageToken'
         return iterator
+
+    def row_from_mapping(self, mapping):
+        """Convert a mapping to a row tuple using the schema.
+
+        :type mapping: dict
+        :param mapping: Mapping of row data: must contain keys for all
+               required fields in the schema.  Keys which do not correspond
+               to a field in the schema are ignored.
+
+        :rtype: tuple
+        :returns: Tuple whose elements are ordered according to the table's
+                  schema.
+        :raises: ValueError if table's schema is not set
+        """
+        if len(self._schema) == 0:
+            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
+        row = []
+        for field in self.schema:
+            if field.mode == 'REQUIRED':
+                row.append(mapping[field.name])
+            elif field.mode == 'REPEATED':
+                row.append(mapping.get(field.name, ()))
+            elif field.mode == 'NULLABLE':
+                row.append(mapping.get(field.name))
+            else:
+                raise ValueError(
+                    "Unknown field mode: {}".format(field.mode))
+        return tuple(row)
 
     def insert_data(self,
                     rows,
@@ -1009,16 +1043,18 @@ class Table(object):
                          skip_leading_rows=None,
                          write_disposition=None,
                          client=None,
-                         job_name=None):
+                         job_name=None,
+                         null_marker=None):
         """Upload the contents of this table from a file-like object.
 
         :type file_obj: file
         :param file_obj: A file handle opened in binary mode for reading.
 
         :type source_format: str
-        :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
-                              job configuration option; see
-                              :meth:`google.cloud.bigquery.job.LoadJob`
+        :param source_format: Any supported format. The full list of supported
+            formats is documented under the
+            ``configuration.extract.destinationFormat`` property on this page:
+            https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs
 
         :type rewind: bool
         :param rewind: If True, seek to the beginning of the file handle before
@@ -1081,6 +1117,9 @@ class Table(object):
         :param job_name: Optional. The id of the job. Generated if not
                          explicitly passed in.
 
+        :type null_marker: str
+        :param null_marker: Optional. A custom null marker (example: "\\N")
+
         :rtype: :class:`~google.cloud.bigquery.jobs.LoadTableFromStorageJob`
 
         :returns: the job instance used to load the data (e.g., for
@@ -1100,7 +1139,7 @@ class Table(object):
                                 encoding, field_delimiter,
                                 ignore_unknown_values, max_bad_records,
                                 quote_character, skip_leading_rows,
-                                write_disposition, job_name)
+                                write_disposition, job_name, null_marker)
 
         try:
             created_json = self._do_upload(
@@ -1122,7 +1161,8 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
                             quote_character,
                             skip_leading_rows,
                             write_disposition,
-                            job_name):
+                            job_name,
+                            null_marker):
     """Helper for :meth:`Table.upload_from_file`."""
     load_config = metadata['configuration']['load']
 
@@ -1158,6 +1198,9 @@ def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
 
     if job_name is not None:
         load_config['jobReference'] = {'jobId': job_name}
+
+    if null_marker is not None:
+        load_config['nullMarker'] = null_marker
 
 
 def _parse_schema_resource(info):

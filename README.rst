@@ -12,7 +12,7 @@ Google Cloud Python Client
 -  `Read The Docs Documentation`_
 
 .. _Homepage: https://googlecloudplatform.github.io/google-cloud-python/
-.. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/
+.. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
 The following client libraries have **GA** support:
@@ -33,6 +33,7 @@ The following client libraries have **beta** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
+-  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
 
@@ -50,7 +51,6 @@ Cloud Platform services:
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
--  `Google Cloud Speech`_ (`Speech README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 

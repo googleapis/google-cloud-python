@@ -47,6 +47,12 @@ class TestTransaction(unittest.TestCase):
         session._transaction = transaction
         return transaction
 
+    def test_ctor_session_w_existing_txn(self):
+        session = _Session()
+        session._transaction = object()
+        with self.assertRaises(ValueError):
+            transaction = self._make_one(session)
+
     def test_ctor_defaults(self):
         session = _Session()
         transaction = self._make_one(session)

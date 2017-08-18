@@ -15,7 +15,7 @@
 
 import mock
 
-from google.cloud.future import operation
+from google.api.core import operation
 from google.longrunning import operations_pb2
 from google.protobuf import struct_pb2
 from google.rpc import code_pb2

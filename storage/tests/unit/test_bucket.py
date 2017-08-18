@@ -710,6 +710,33 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNot(bucket._properties['labels'], LABELS)
         self.assertIn('labels', bucket._changes)
 
+    def test_labels_setter_with_removal(self):
+        # Make sure the bucket labels look correct and follow the expected
+        # public structure.
+        bucket = self._make_one(name='name')
+        self.assertEqual(bucket.labels, {})
+        bucket.labels = {'color': 'red', 'flavor': 'cherry'}
+        self.assertEqual(bucket.labels, {'color': 'red', 'flavor': 'cherry'})
+        bucket.labels = {'color': 'red'}
+        self.assertEqual(bucket.labels, {'color': 'red'})
+
+        # Make sure that a patch call correctly removes the flavor label.
+        client = mock.NonCallableMock(spec=('_connection',))
+        client._connection = mock.NonCallableMock(spec=('api_request',))
+        bucket.patch(client=client)
+        client._connection.api_request.assert_called()
+        _, _, kwargs = client._connection.api_request.mock_calls[0]
+        self.assertEqual(len(kwargs['data']['labels']), 2)
+        self.assertEqual(kwargs['data']['labels']['color'], 'red')
+        self.assertIsNone(kwargs['data']['labels']['flavor'])
+
+        # A second patch call should be a no-op for labels.
+        client._connection.api_request.reset_mock()
+        bucket.patch(client=client)
+        client._connection.api_request.assert_called()
+        _, _, kwargs = client._connection.api_request.mock_calls[0]
+        self.assertNotIn('labels', kwargs['data'])
+
     def test_get_logging_w_prefix(self):
         NAME = 'name'
         LOG_BUCKET = 'logs'
@@ -1190,14 +1217,14 @@ class Test_Bucket(unittest.TestCase):
         self.assertRaises(ValueError, bucket.make_public, recursive=True)
 
     def test_page_empty_response(self):
-        from google.cloud.iterator import Page
+        from google.api.core import page_iterator
 
         connection = _Connection()
         client = _Client(connection)
         name = 'name'
         bucket = self._make_one(client=client, name=name)
         iterator = bucket.list_blobs()
-        page = Page(iterator, (), None)
+        page = page_iterator.Page(iterator, (), None)
         iterator._page = page
         blobs = list(page)
         self.assertEqual(blobs, [])
