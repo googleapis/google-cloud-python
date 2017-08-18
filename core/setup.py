@@ -57,7 +57,6 @@ REQUIREMENTS = [
     'requests >= 2.18.0, < 3.0.0dev',
     'setuptools >= 34.0.0',
     'six',
-    'tenacity >= 4.0.0, <5.0.0dev'
 ]
 
 EXTRAS_REQUIREMENTS = {
