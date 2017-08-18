@@ -268,9 +268,9 @@ class TestClient(unittest.TestCase):
 
     def test_list_jobs_defaults(self):
         import six
-        from google.cloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import LoadJob
         from google.cloud.bigquery.job import CopyJob
-        from google.cloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import ExtractJob
         from google.cloud.bigquery.job import QueryJob
 
         PROJECT = 'PROJECT'
@@ -281,9 +281,9 @@ class TestClient(unittest.TestCase):
         SOURCE_URI = 'gs://test_bucket/src_object*'
         DESTINATION_URI = 'gs://test_bucket/dst_object*'
         JOB_TYPES = {
-            'load_job': LoadTableFromStorageJob,
+            'load_job': LoadJob,
             'copy_job': CopyJob,
-            'extract_job': ExtractTableToStorageJob,
+            'extract_job': ExtractJob,
             'query_job': QueryJob,
         }
         PATH = 'projects/%s/jobs' % PROJECT
@@ -400,13 +400,13 @@ class TestClient(unittest.TestCase):
 
     def test_list_jobs_load_job_wo_sourceUris(self):
         import six
-        from google.cloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import LoadJob
 
         PROJECT = 'PROJECT'
         DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
         JOB_TYPES = {
-            'load_job': LoadTableFromStorageJob,
+            'load_job': LoadJob,
         }
         PATH = 'projects/%s/jobs' % PROJECT
         TOKEN = 'TOKEN'
@@ -487,7 +487,7 @@ class TestClient(unittest.TestCase):
                           'stateFilter': 'done'})
 
     def test_load_table_from_storage(self):
-        from google.cloud.bigquery.job import LoadTableFromStorageJob
+        from google.cloud.bigquery.job import LoadJob
 
         PROJECT = 'PROJECT'
         JOB = 'job_name'
@@ -500,7 +500,7 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         destination = dataset.table(DESTINATION)
         job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
-        self.assertIsInstance(job, LoadTableFromStorageJob)
+        self.assertIsInstance(job, LoadJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
@@ -528,7 +528,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(job.destination, destination)
 
     def test_extract_table_to_storage(self):
-        from google.cloud.bigquery.job import ExtractTableToStorageJob
+        from google.cloud.bigquery.job import ExtractJob
 
         PROJECT = 'PROJECT'
         JOB = 'job_name'
@@ -541,7 +541,7 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         job = client.extract_table_to_storage(JOB, source, DESTINATION)
-        self.assertIsInstance(job, ExtractTableToStorageJob)
+        self.assertIsInstance(job, ExtractJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.source, source)
