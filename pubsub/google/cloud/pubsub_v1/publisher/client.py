@@ -39,8 +39,8 @@ class Client(object):
     get sensible defaults.
 
     Args:
-        batch_settings (~.pubsub_v1.types.BatchSettings): The settings
-            for batch publishing.
+        batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
+            settings for batch publishing.
         batch_class (class): A class that describes how to handle
             batches. You may subclass the
             :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
@@ -76,8 +76,8 @@ class Client(object):
 
         Args:
             topic (str): A string representing the topic.
-            message (~.pubsub_v1.types.PubsubMessage): The message that will
-                be committed.
+            message (~google.cloud.pubsub_v1.types.PubsubMessage): The message
+                that will be committed.
             create (bool): Whether to create a new batch if no batch is
                 found. Defaults to True.
             autocommit (bool): Whether to autocommit this batch.
@@ -128,16 +128,15 @@ class Client(object):
             >>> response = client.publish(topic, data, username='guido')
 
         Args:
-            topic (~.pubsub_v1.types.Topic): The topic to publish
-                messages to.
+            topic (str): The topic to publish messages to.
             data (bytes): A bytestring representing the message body. This
                 must be a bytestring.
             attrs (Mapping[str, str]): A dictionary of attributes to be
                 sent as metadata. (These may be text strings or byte strings.)
 
         Returns:
-            ~.pubsub_v1.publisher.futures.Future: An object conforming
-                to the ``concurrent.futures.Future`` interface.
+            ~concurrent.futures.Future: An object conforming to the
+            ``concurrent.futures.Future`` interface.
         """
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.

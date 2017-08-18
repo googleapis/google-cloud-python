@@ -1,6 +1,8 @@
-Pub/Sub Batch API
-=================
+:orphan:
 
-.. automodule:: google.cloud.pubsub_v1.client.batch.thread
+Batch API
+=========
+
+.. automodule:: google.cloud.pubsub_v1.publisher.batch.thread
   :members:
   :inherited-members:
