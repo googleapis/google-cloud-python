@@ -57,8 +57,11 @@ REQUIREMENTS = [
     'requests >= 2.18.0, < 3.0.0dev',
     'setuptools >= 34.0.0',
     'six',
-    'tenacity >= 4.0.0, <5.0.0dev'
 ]
+
+EXTRAS_REQUIREMENTS = {
+    ':python_version<"3.2"': ['futures >= 3.0.0'],
+}
 
 setup(
     name='google-cloud-core',
@@ -72,5 +75,6 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIREMENTS,
     **SETUP_BASE
 )
