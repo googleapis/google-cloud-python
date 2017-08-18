@@ -747,6 +747,16 @@ class TestBigQuery(unittest.TestCase):
             row = Config.CURSOR.fetchone()
             self.assertIsNone(row)
 
+    def test_dbapi_fetchall(self):
+        query = 'SELECT * FROM UNNEST([(1, 2), (3, 4), (5, 6)])'
+
+        for arraysize in range(1, 5):
+            Config.CURSOR.execute(query)
+            self.assertEqual(Config.CURSOR.rowcount, 3, "expected 3 rows")
+            Config.CURSOR.arraysize = arraysize
+            rows = Config.CURSOR.fetchall()
+            self.assertEqual(rows, [(1, 2), (3, 4), (5, 6)])
+
     def _load_table_for_dml(self, rows, dataset_name, table_name):
         from google.cloud._testing import _NamedTemporaryFile
 
