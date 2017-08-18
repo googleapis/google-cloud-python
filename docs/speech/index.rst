@@ -266,8 +266,8 @@ If ``interim_results`` is set to :data:`True`, interim results
     ...     requests = [speech.types.StreamingRecognizeRequest(
     ...         audio_content=stream.read(),
     ...     )]
-    ... config=speech.types.StreamingRecognitionConfig(config=config)
-    ... responses = client.streaming_recognize(config,requests)
+    >>> config = speech.types.StreamingRecognitionConfig(config=config)
+    >>> responses = client.streaming_recognize(config,requests)
     >>> for response in responses:
     ...     for result in response:
     ...         for alternative in result.alternatives:
