@@ -16,14 +16,16 @@
 
 import abc
 import concurrent.futures
-import functools
-import operator
 
-import six
-import tenacity
-
+from google.api.core import exceptions
+from google.api.core import retry
 from google.api.core.future import _helpers
 from google.api.core.future import base
+
+
+class _OperationNotComplete(Exception):
+    """Private exception used for polling via retry."""
+    pass
 
 
 class PollingFuture(base.Future):
@@ -55,6 +57,11 @@ class PollingFuture(base.Future):
         # pylint: disable=redundant-returns-doc, missing-raises-doc
         raise NotImplementedError()
 
+    def _done_or_raise(self):
+        """Check if the future is done and raise if it's not."""
+        if not self.done():
+            raise _OperationNotComplete()
+
     def running(self):
         """True if the operation is currently running."""
         return not self.done()
@@ -69,29 +76,16 @@ class PollingFuture(base.Future):
         if self._result_set:
             return
 
-        retry_on = tenacity.retry_if_result(
-            functools.partial(operator.is_not, True))
-        # Use exponential backoff with jitter.
-        wait_on = (
-            tenacity.wait_exponential(multiplier=1, max=10) +
-            tenacity.wait_random(0, 1))
-
-        if timeout is None:
-            retry = tenacity.retry(retry=retry_on, wait=wait_on)
-        else:
-            retry = tenacity.retry(
-                retry=retry_on,
-                wait=wait_on,
-                stop=tenacity.stop_after_delay(timeout))
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(_OperationNotComplete),
+            deadline=timeout)
 
         try:
-            retry(self.done)()
-        except tenacity.RetryError as exc:
-            six.raise_from(
-                concurrent.futures.TimeoutError(
-                    'Operation did not complete within the designated '
-                    'timeout.'),
-                exc)
+            retry_(self._done_or_raise)()
+        except exceptions.RetryError:
+            raise concurrent.futures.TimeoutError(
+                'Operation did not complete within the designated '
+                'timeout.')
 
     def result(self, timeout=None):
         """Get the result of the operation, blocking if necessary.
