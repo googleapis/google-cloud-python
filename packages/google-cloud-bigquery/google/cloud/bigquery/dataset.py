@@ -536,7 +536,7 @@ class Dataset(object):
         """API call:  delete the dataset via a DELETE request.
 
         See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
