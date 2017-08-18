@@ -142,8 +142,26 @@ class _PropertyMixin(object):
         # to work properly w/ 'noAcl'.
         update_properties = {key: self._properties[key]
                              for key in self._changes}
+
+        # Make the API call.
         api_response = client._connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
+            query_params={'projection': 'full'}, _target_object=self)
+        self._set_properties(api_response)
+
+    def update(self, client=None):
+        """Sends all properties in a PUT request.
+
+        Updates the ``_properties`` with the response from the backend.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
+        """
+        client = self._require_client(client)
+        api_response = client._connection.api_request(
+            method='PUT', path=self.path, data=self._properties,
             query_params={'projection': 'full'}, _target_object=self)
         self._set_properties(api_response)
 

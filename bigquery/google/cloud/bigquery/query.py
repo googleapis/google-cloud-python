@@ -16,7 +16,7 @@
 
 import six
 
-from google.cloud.iterator import HTTPIterator
+from google.api.core import page_iterator
 from google.cloud.bigquery._helpers import _TypedProperty
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
@@ -414,7 +414,7 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
                   which counts the total number of rows **in the result
@@ -435,13 +435,16 @@ class QueryResults(object):
             params['timeoutMs'] = timeout_ms
 
         path = '/projects/%s/queries/%s' % (self.project, self.name)
-        iterator = HTTPIterator(client=client, path=path,
-                                item_to_value=_item_to_row,
-                                items_key='rows',
-                                page_token=page_token,
-                                max_results=max_results,
-                                page_start=_rows_page_start_query,
-                                extra_params=params)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_row,
+            items_key='rows',
+            page_token=page_token,
+            max_results=max_results,
+            page_start=_rows_page_start_query,
+            extra_params=params)
         iterator.query_result = self
         # Over-ride the key used to retrieve the next page token.
         iterator._NEXT_TOKEN = 'pageToken'
@@ -457,7 +460,7 @@ def _rows_page_start_query(iterator, page, response):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type page: :class:`~google.cloud.iterator.Page`

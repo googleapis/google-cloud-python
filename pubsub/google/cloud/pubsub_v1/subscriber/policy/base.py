@@ -21,6 +21,8 @@ import time
 
 import six
 
+from google import gax
+
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import consumer
 from google.cloud.pubsub_v1.subscriber import histogram
@@ -174,7 +176,12 @@ class BasePolicy(object):
                 and blocks if there are no outstanding requests (until such
                 time as there are).
         """
-        return self._client.api.streaming_pull(request_generator)
+        return self._client.api.streaming_pull(
+            request_generator,
+            options=gax.CallOptions(**{
+                'grpc.max_receive_message_length': 20 * (1024 ** 2) + 1,
+            }),
+        )
 
     def drop(self, ack_id, byte_size):
         """Remove the given ack ID from lease management.

@@ -9,7 +9,7 @@ Python Client for Google Cloud Bigtable
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/bigtable/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/bigtable/usage.html
 
 Quick Start
 -----------

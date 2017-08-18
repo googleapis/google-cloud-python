@@ -114,6 +114,26 @@ class TestStorageBuckets(unittest.TestCase):
                            if bucket.name in buckets_to_create]
         self.assertEqual(len(created_buckets), len(buckets_to_create))
 
+    def test_bucket_update_labels(self):
+        bucket_name = 'update-labels' + unique_resource_id('-')
+        bucket = retry_429(Config.CLIENT.create_bucket)(bucket_name)
+        self.case_buckets_to_delete.append(bucket_name)
+        self.assertTrue(bucket.exists())
+
+        updated_labels = {'test-label': 'label-value'}
+        bucket.labels = updated_labels
+        bucket.update()
+        self.assertEqual(bucket.labels, updated_labels)
+
+        new_labels = {'another-label': 'another-value'}
+        bucket.labels = new_labels
+        bucket.patch()
+        self.assertEqual(bucket.labels, new_labels)
+
+        bucket.labels = {}
+        bucket.update()
+        self.assertEqual(bucket.labels, {})
+
 
 class TestStorageFiles(unittest.TestCase):
 

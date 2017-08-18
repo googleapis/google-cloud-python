@@ -14,7 +14,7 @@ Overview
 
     .. code-block:: bash
 
-        $ gcloud beta auth application-default login
+        $ gcloud auth application-default login
 
     Note that this command generates credentials for client libraries. To authenticate the CLI itself, use:
 

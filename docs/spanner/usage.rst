@@ -8,12 +8,10 @@ Spanner
   client-usage
   instance-usage
   database-usage
-  session-crud-usage
-  session-implicit-txn-usage
-  session-pool-usage
   batch-usage
   snapshot-usage
   transaction-usage
+  advanced-session-pool-topics
 
   client-api
   instance-api

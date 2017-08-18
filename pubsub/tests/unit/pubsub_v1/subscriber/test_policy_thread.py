@@ -29,7 +29,7 @@ from google.cloud.pubsub_v1.subscriber.policy import thread
 
 def create_policy():
     client = subscriber.Client()
-    return thread.Policy(client, 'sub_name')
+    return thread.Policy(client, 'sub_name_c')
 
 
 def test_init():

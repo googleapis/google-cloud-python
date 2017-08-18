@@ -52,14 +52,14 @@ SETUP_BASE = {
 }
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.25.0, < 0.26dev',
-    'google-gax >= 0.15.13, < 0.16dev',
+    'google-cloud-core >= 0.26.0, < 0.27dev',
+    'google-gax >= 0.15.14, < 0.16dev',
     'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
 
 setup(
     name='google-cloud-speech',
-    version='0.27.1',
+    version='0.28.0',
     description='Python Client for Google Cloud Speech',
     long_description=README,
     namespace_packages=[

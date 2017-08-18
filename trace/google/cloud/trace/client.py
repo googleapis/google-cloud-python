@@ -144,7 +144,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Traces that match the specified filter conditions.
         """
         if project_id is None:

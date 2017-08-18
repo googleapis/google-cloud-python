@@ -19,6 +19,7 @@ import threading
 import six
 from six.moves import http_client
 
+import google.api.core.future.polling
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
@@ -31,7 +32,6 @@ from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
 from google.cloud.bigquery._helpers import _TypedProperty
-import google.cloud.future.polling
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
@@ -98,14 +98,12 @@ class Compression(_EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
     NONE = 'NONE'
-    ALLOWED = (GZIP, NONE)
 
 
 class CreateDisposition(_EnumProperty):
     """Pseudo-enum for ``create_disposition`` properties."""
     CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
     CREATE_NEVER = 'CREATE_NEVER'
-    ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
 
 
 class DestinationFormat(_EnumProperty):
@@ -113,21 +111,18 @@ class DestinationFormat(_EnumProperty):
     CSV = 'CSV'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
     AVRO = 'AVRO'
-    ALLOWED = (CSV, NEWLINE_DELIMITED_JSON, AVRO)
 
 
 class Encoding(_EnumProperty):
     """Pseudo-enum for ``encoding`` properties."""
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
-    ALLOWED = (UTF_8, ISO_8559_1)
 
 
 class QueryPriority(_EnumProperty):
     """Pseudo-enum for ``QueryJob.priority`` property."""
     INTERACTIVE = 'INTERACTIVE'
     BATCH = 'BATCH'
-    ALLOWED = (INTERACTIVE, BATCH)
 
 
 class SourceFormat(_EnumProperty):
@@ -136,7 +131,6 @@ class SourceFormat(_EnumProperty):
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
     AVRO = 'AVRO'
-    ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON, AVRO)
 
 
 class WriteDisposition(_EnumProperty):
@@ -144,10 +138,9 @@ class WriteDisposition(_EnumProperty):
     WRITE_APPEND = 'WRITE_APPEND'
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
     WRITE_EMPTY = 'WRITE_EMPTY'
-    ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
 
 
-class _AsyncJob(google.cloud.future.polling.PollingFuture):
+class _AsyncJob(google.api.core.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
     :type name: str
@@ -503,7 +496,7 @@ class _AsyncJob(google.cloud.future.polling.PollingFuture):
 
         This always returns False. It's not possible to check if a job was
         cancelled in the API. This method is here to satisfy the interface
-        for :class:`google.cloud.future.Future`.
+        for :class:`google.api.core.future.Future`.
 
         :rtype: bool
         :returns: False
@@ -525,6 +518,7 @@ class _LoadConfiguration(object):
     _field_delimiter = None
     _ignore_unknown_values = None
     _max_bad_records = None
+    _null_marker = None
     _quote_character = None
     _skip_leading_rows = None
     _source_format = None
@@ -679,6 +673,11 @@ class LoadTableFromStorageJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
     """
 
+    null_marker = _TypedProperty('null_marker', six.string_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker
+    """
+
     quote_character = _TypedProperty('quote_character', six.string_types)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
@@ -717,6 +716,8 @@ class LoadTableFromStorageJob(_AsyncJob):
             configuration['ignoreUnknownValues'] = self.ignore_unknown_values
         if self.max_bad_records is not None:
             configuration['maxBadRecords'] = self.max_bad_records
+        if self.null_marker is not None:
+            configuration['nullMarker'] = self.null_marker
         if self.quote_character is not None:
             configuration['quote'] = self.quote_character
         if self.skip_leading_rows is not None:

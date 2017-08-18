@@ -77,7 +77,7 @@ class TestLanguage(unittest.TestCase):
         # Other mentions may occur, e.g. "painter".
         self.assertIn(entity1.name, [str(i) for i in entity1.mentions])
         self.assertEqual(entity1.metadata['wikipedia_url'],
-                         'http://en.wikipedia.org/wiki/Caravaggio')
+                         'https://en.wikipedia.org/wiki/Caravaggio')
         self.assertIsInstance(entity1.metadata, dict)
         # Verify entity 2.
         self.assertEqual(entity2.name, self.NAME2)
@@ -85,7 +85,7 @@ class TestLanguage(unittest.TestCase):
         self.assertGreater(entity2.salience, 0.0)
         self.assertEqual([str(i) for i in entity2.mentions], [entity2.name])
         self.assertEqual(entity2.metadata['wikipedia_url'],
-                         'http://en.wikipedia.org/wiki/Italy')
+                         'https://en.wikipedia.org/wiki/Italy')
         self.assertIsInstance(entity2.metadata, dict)
         # Verify entity 3.
         self.assertEqual(entity3.name, self.NAME3)
@@ -93,7 +93,7 @@ class TestLanguage(unittest.TestCase):
         self.assertIn(entity3.entity_type, choices)
         self.assertGreater(entity3.salience, 0.0)
         self.assertEqual([str(i) for i in entity3.mentions], [entity3.name])
-        wiki_url = ('http://en.wikipedia.org/wiki/'
+        wiki_url = ('https://en.wikipedia.org/wiki/'
                     'The_Calling_of_St_Matthew_(Caravaggio)')
         self.assertEqual(entity3.metadata['wikipedia_url'], wiki_url)
         self.assertIsInstance(entity3.metadata, dict)
@@ -122,7 +122,7 @@ class TestLanguage(unittest.TestCase):
         positive_msg = 'Jogging is fun'
         document = Config.CLIENT.document_from_text(positive_msg)
         sentiment = document.analyze_sentiment().sentiment
-        self.assertEqual(sentiment.score, 0.5)
+        self.assertTrue(0.0 < sentiment.score < 1.0)
         self.assertTrue(0.0 < sentiment.magnitude < 1.5)
 
     def _verify_token(self, token, text_content, part_of_speech, lemma):

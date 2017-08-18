@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.labels, labels)
 
     def test_list_projects_return_type(self):
-        from google.cloud.iterator import HTTPIterator
+        from google.api.core import page_iterator
 
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
@@ -96,7 +96,7 @@ class TestClient(unittest.TestCase):
         client._connection = _Connection({})
 
         results = client.list_projects()
-        self.assertIsInstance(results, HTTPIterator)
+        self.assertIsInstance(results, page_iterator.HTTPIterator)
 
     def test_list_projects_no_paging(self):
         credentials = _make_credentials()
@@ -227,12 +227,12 @@ class TestClient(unittest.TestCase):
         })
 
     def test_page_empty_response(self):
-        from google.cloud.iterator import Page
+        from google.api.core import page_iterator
 
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
         iterator = client.list_projects()
-        page = Page(iterator, (), None)
+        page = page_iterator.Page(iterator, (), None)
         iterator._page = page
         self.assertEqual(page.num_items, 0)
         self.assertEqual(page.remaining, 0)

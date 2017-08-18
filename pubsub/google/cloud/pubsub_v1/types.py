@@ -34,7 +34,7 @@ BatchSettings = collections.namedtuple('BatchSettings',
 )
 BatchSettings.__new__.__defaults__ = (
     1024 * 1024 * 5,  # max_bytes: 5 MB
-    1.0,              # max_latency: 1.0 seconds
+    0.05,             # max_latency: 0.05 seconds
     1000,             # max_messages: 1,000
 )
 

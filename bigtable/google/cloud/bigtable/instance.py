@@ -17,6 +17,7 @@
 
 import re
 
+from google.api.core import operation
 from google.cloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
 from google.cloud.bigtable._generated import (
@@ -26,7 +27,6 @@ from google.cloud.bigtable._generated import (
 from google.cloud.bigtable.cluster import Cluster
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.table import Table
-from google.cloud.future import operation
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
@@ -180,7 +180,7 @@ class Instance(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         # NOTE: This does not compare the configuration values, such as
         #       the display_name. Instead, it only compares
         #       identifying values instance ID and client. This is
@@ -191,7 +191,7 @@ class Instance(object):
                 other._client == self._client)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def reload(self):
         """Reload the metadata for this instance."""

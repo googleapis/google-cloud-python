@@ -54,21 +54,27 @@ REQUIREMENTS = [
     'googleapis-common-protos >= 1.3.4',
     'protobuf >= 3.0.0',
     'google-auth >= 0.4.0, < 2.0.0dev',
-    'requests >= 2.4.0, < 3.0.0dev',
+    'requests >= 2.18.0, < 3.0.0dev',
+    'setuptools >= 34.0.0',
     'six',
-    'tenacity >= 4.0.0, <5.0.0dev'
 ]
+
+EXTRAS_REQUIREMENTS = {
+    ':python_version<"3.2"': ['futures >= 3.0.0'],
+}
 
 setup(
     name='google-cloud-core',
-    version='0.25.0',
+    version='0.26.0',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
+        'google.api',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIREMENTS,
     **SETUP_BASE
 )

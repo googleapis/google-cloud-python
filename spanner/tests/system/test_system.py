@@ -57,6 +57,8 @@ else:
                                  'google-cloud-python-systest')
 DATABASE_ID = 'test_database'
 EXISTING_INSTANCES = []
+COUNTERS_TABLE = 'counters'
+COUNTERS_COLUMNS = ('name', 'value')
 
 
 class Config(object):
@@ -295,7 +297,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self.assertEqual(len(temp_db.ddl_statements), len(DDL_STATEMENTS))
 
-    def test_db_batch_insert_then_db_snapshot_read_and_db_read(self):
+    def test_db_batch_insert_then_db_snapshot_read(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -308,10 +310,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self._check_row_data(from_snap)
 
-        from_db = list(self._db.read(self.TABLE, self.COLUMNS, self.ALL))
-        self._check_row_data(from_db)
-
-    def test_db_run_in_transaction_then_db_execute_sql(self):
+    def test_db_run_in_transaction_then_snapshot_execute_sql(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -327,7 +326,8 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self._db.run_in_transaction(_unit_of_work, test=self)
 
-        rows = list(self._db.execute_sql(self.SQL))
+        with self._db.snapshot() as after:
+            rows = list(after.execute_sql(self.SQL))
         self._check_row_data(rows)
 
     def test_db_run_in_transaction_twice(self):
@@ -344,7 +344,8 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         self._db.run_in_transaction(_unit_of_work, test=self)
         self._db.run_in_transaction(_unit_of_work, test=self)
 
-        rows = list(self._db.execute_sql(self.SQL))
+        with self._db.snapshot() as after:
+            rows = list(after.execute_sql(self.SQL))
         self._check_row_data(rows)
 
 
@@ -359,11 +360,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         'eye_d',
         'description',
         'exactly_hwhen',
-    )
-    COUNTERS_TABLE = 'counters'
-    COUNTERS_COLUMNS = (
-        'name',
-        'value',
     )
     SOME_DATE = datetime.date(2011, 1, 17)
     SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
@@ -554,9 +550,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         with session.batch() as batch:
             batch.insert_or_update(
-                self.COUNTERS_TABLE,
-                self.COUNTERS_COLUMNS,
-                [[pkey, INITIAL_VALUE]])
+                COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, INITIAL_VALUE]])
 
         # We don't want to run the threads' transactions in the current
         # session, which would fail.
@@ -582,7 +576,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         keyset = KeySet(keys=[(pkey,)])
         rows = list(session.read(
-            self.COUNTERS_TABLE, self.COUNTERS_COLUMNS, keyset))
+            COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
         self.assertEqual(len(rows), 1)
         _, value = rows[0]
         self.assertEqual(value, INITIAL_VALUE + len(threads))
@@ -590,13 +584,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def _read_w_concurrent_update(self, transaction, pkey):
         keyset = KeySet(keys=[(pkey,)])
         rows = list(transaction.read(
-            self.COUNTERS_TABLE, self.COUNTERS_COLUMNS, keyset))
+            COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
         self.assertEqual(len(rows), 1)
         pkey, value = rows[0]
         transaction.update(
-            self.COUNTERS_TABLE,
-            self.COUNTERS_COLUMNS,
-            [[pkey, value + 1]])
+            COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
 
     def test_transaction_read_w_concurrent_updates(self):
         PKEY = 'read_w_concurrent_updates'
@@ -613,14 +605,47 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(len(rows), 1)
         pkey, value = rows[0]
         transaction.update(
-                self.COUNTERS_TABLE,
-                self.COUNTERS_COLUMNS,
-                [[pkey, value + 1]])
+            COUNTERS_TABLE, COUNTERS_COLUMNS, [[pkey, value + 1]])
 
     def test_transaction_query_w_concurrent_updates(self):
         PKEY = 'query_w_concurrent_updates'
         self._transaction_concurrency_helper(
             self._query_w_concurrent_update, PKEY)
+
+    def test_transaction_read_w_abort(self):
+
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+
+        trigger = _ReadAbortTrigger()
+
+        with session.batch() as batch:
+            batch.delete(COUNTERS_TABLE, self.ALL)
+            batch.insert(
+                COUNTERS_TABLE,
+                COUNTERS_COLUMNS,
+                [[trigger.KEY1, 0], [trigger.KEY2, 0]])
+
+        provoker = threading.Thread(
+            target=trigger.provoke_abort, args=(self._db,))
+        handler = threading.Thread(
+            target=trigger.handle_abort, args=(self._db,))
+
+        provoker.start()
+        trigger.provoker_started.wait()
+
+        handler.start()
+        trigger.handler_done.wait()
+
+        provoker.join()
+        handler.join()
+
+        rows = list(session.read(COUNTERS_TABLE, COUNTERS_COLUMNS, self.ALL))
+        self._check_row_data(
+            rows, expected=[[trigger.KEY1, 1], [trigger.KEY2, 1]])
 
     @staticmethod
     def _row_data(max_index):
@@ -1059,7 +1084,8 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
 
     def _verify_one_column(self, table_desc):
         sql = 'SELECT chunk_me FROM {}'.format(table_desc.table)
-        rows = list(self._db.execute_sql(sql))
+        with self._db.snapshot() as snapshot:
+            rows = list(snapshot.execute_sql(sql))
         self.assertEqual(len(rows), table_desc.row_count)
         expected = table_desc.value()
         for row in rows:
@@ -1067,7 +1093,8 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
 
     def _verify_two_columns(self, table_desc):
         sql = 'SELECT chunk_me, chunk_me_2 FROM {}'.format(table_desc.table)
-        rows = list(self._db.execute_sql(sql))
+        with self._db.snapshot() as snapshot:
+            rows = list(snapshot.execute_sql(sql))
         self.assertEqual(len(rows), table_desc.row_count)
         expected = table_desc.value()
         for row in rows:
@@ -1103,3 +1130,64 @@ class _DatabaseDropper(object):
 
     def delete(self):
         self._db.drop()
+
+
+class _ReadAbortTrigger(object):
+    """Helper for tests provoking abort-during-read."""
+
+    KEY1 = 'key1'
+    KEY2 = 'key2'
+
+    def __init__(self):
+        self.provoker_started = threading.Event()
+        self.provoker_done = threading.Event()
+        self.handler_running = threading.Event()
+        self.handler_done = threading.Event()
+
+    def _provoke_abort_unit_of_work(self, transaction):
+        keyset = KeySet(keys=[(self.KEY1,)])
+        rows = list(
+            transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset))
+
+        assert len(rows) == 1
+        row = rows[0]
+        value = row[1]
+
+        self.provoker_started.set()
+
+        self.handler_running.wait()
+
+        transaction.update(
+            COUNTERS_TABLE, COUNTERS_COLUMNS, [[self.KEY1, value + 1]])
+
+    def provoke_abort(self, database):
+        database.run_in_transaction(self._provoke_abort_unit_of_work)
+        self.provoker_done.set()
+
+    def _handle_abort_unit_of_work(self, transaction):
+        keyset_1 = KeySet(keys=[(self.KEY1,)])
+        rows_1 = list(
+            transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset_1))
+
+        assert len(rows_1) == 1
+        row_1 = rows_1[0]
+        value_1 = row_1[1]
+
+        self.handler_running.set()
+
+        self.provoker_done.wait()
+
+        keyset_2 = KeySet(keys=[(self.KEY2,)])
+        rows_2 = list(
+            transaction.read(COUNTERS_TABLE, COUNTERS_COLUMNS, keyset_2))
+
+        assert len(rows_2) == 1
+        row_2 = rows_2[0]
+        value_2 = row_2[1]
+
+        transaction.update(
+            COUNTERS_TABLE, COUNTERS_COLUMNS, [[self.KEY2, value_1 + value_2]])
+
+    def handle_abort(self, database):
+        database.run_in_transaction(self._handle_abort_unit_of_work)
+        self.handler_done.set()

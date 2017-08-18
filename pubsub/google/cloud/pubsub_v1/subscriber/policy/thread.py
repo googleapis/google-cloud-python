@@ -129,5 +129,7 @@ class Policy(base.BasePolicy):
         """
         for msg in response.received_messages:
             logger.debug('New message received from Pub/Sub: %r', msg)
+            logger.debug(self._callback)
             message = Message(msg.message, msg.ack_id, self._request_queue)
-            self._executor.submit(self._callback, message)
+            future = self._executor.submit(self._callback, message)
+            logger.debug('Result: %s' % future.result())

@@ -32,9 +32,6 @@ class RowFilter(object):
         This class is a do-nothing base class for all row filters.
     """
 
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
 
 class _BoolFilter(RowFilter):
     """Row filter that uses a boolean flag.
@@ -48,8 +45,11 @@ class _BoolFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.flag == self.flag
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class SinkFilter(_BoolFilter):
@@ -124,8 +124,11 @@ class _RegexFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.regex == self.regex
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class RowKeyRegexFilter(_RegexFilter):
@@ -173,8 +176,11 @@ class RowSampleFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.sample == self.sample
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the row filter to a protobuf.
@@ -257,12 +263,12 @@ class TimestampRange(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.start == self.start and
                 other.end == self.end)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def to_pb(self):
         """Converts the :class:`TimestampRange` to a protobuf.
@@ -292,8 +298,11 @@ class TimestampRangeFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.range_ == self.range_
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the row filter to a protobuf.
@@ -367,12 +376,15 @@ class ColumnRangeFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.column_family_id == self.column_family_id and
                 other.start_column == self.start_column and
                 other.end_column == self.end_column and
                 other.inclusive_start == self.inclusive_start and
                 other.inclusive_end == self.inclusive_end)
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the row filter to a protobuf.
@@ -485,11 +497,14 @@ class ValueRangeFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.start_value == self.start_value and
                 other.end_value == self.end_value and
                 other.inclusive_start == self.inclusive_start and
                 other.inclusive_end == self.inclusive_end)
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the row filter to a protobuf.
@@ -533,8 +548,11 @@ class _CellCountFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.num_cells == self.num_cells
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class CellsRowOffsetFilter(_CellCountFilter):
@@ -631,8 +649,11 @@ class ApplyLabelFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.label == self.label
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the row filter to a protobuf.
@@ -661,8 +682,11 @@ class _FilterCombination(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other.filters == self.filters
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class RowFilterChain(_FilterCombination):
@@ -748,10 +772,13 @@ class ConditionalRowFilter(RowFilter):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.base_filter == self.base_filter and
                 other.true_filter == self.true_filter and
                 other.false_filter == self.false_filter)
+
+    def __ne__(self, other):
+        return not self == other
 
     def to_pb(self):
         """Converts the row filter to a protobuf.

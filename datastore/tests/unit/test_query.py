@@ -488,7 +488,7 @@ class TestIterator(unittest.TestCase):
             iterator._process_query_results(response_pb)
 
     def _next_page_helper(self, txn_id=None):
-        from google.cloud.iterator import Page
+        from google.api.core import page_iterator
         from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.proto.datastore.v1 import entity_pb2
         from google.cloud.proto.datastore.v1 import query_pb2
@@ -509,7 +509,7 @@ class TestIterator(unittest.TestCase):
         iterator = self._make_one(query, client)
 
         page = iterator._next_page()
-        self.assertIsInstance(page, Page)
+        self.assertIsInstance(page, page_iterator.Page)
         self.assertIs(page._parent, iterator)
 
         partition_id = entity_pb2.PartitionId(project_id=project)

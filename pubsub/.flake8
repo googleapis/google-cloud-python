@@ -4,9 +4,3 @@ exclude =
   .git,
   *.pyc,
   conf.py
-
-ignore =
-  # Allow "under-indented" continuation lines.
-  E124,
-  # Allow closing parentheses to column-match the opening call.
-  E128

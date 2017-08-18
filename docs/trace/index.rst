@@ -1,5 +1,6 @@
 .. gapic-google-cloud-trace-v1 sphinx documentation master file
 
+:orphan:
 
 GAPIC library for the Stackdriver Trace API
 =============================================================================================================

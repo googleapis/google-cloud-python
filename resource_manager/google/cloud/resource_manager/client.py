@@ -15,8 +15,8 @@
 """A Client for interacting with the Resource Manager API."""
 
 
+from google.api.core import page_iterator
 from google.cloud.client import Client as BaseClient
-from google.cloud.iterator import HTTPIterator
 
 from google.cloud.resource_manager._http import Connection
 from google.cloud.resource_manager.project import Project
@@ -151,7 +151,7 @@ class Client(BaseClient):
                           single page. If not passed, defaults to a value set
                           by the API.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of all
                   :class:`~google.cloud.resource_manager.project.Project`.
                   that the current user has access to.
@@ -164,15 +164,19 @@ class Client(BaseClient):
         if filter_params is not None:
             extra_params['filter'] = filter_params
 
-        return HTTPIterator(
-            client=self, path='/projects', item_to_value=_item_to_project,
-            items_key='projects', extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path='/projects',
+            item_to_value=_item_to_project,
+            items_key='projects',
+            extra_params=extra_params)
 
 
 def _item_to_project(iterator, resource):
     """Convert a JSON project to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict
