@@ -599,6 +599,13 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
+    def test_get_query_results(self):
+        job_id = 'test-get-query-results-' + str(uuid.uuid4())
+        query_job = Config.CLIENT.run_async_query(job_id, 'SELECT 1')
+        query_job.begin()
+        results = Config.CLIENT.get_query_results(job_id)
+        self.assertEqual(results.total_rows, 1)
+
     def test_sync_query_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
