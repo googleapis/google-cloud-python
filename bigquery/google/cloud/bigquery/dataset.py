@@ -21,7 +21,7 @@ from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
 
 
-class AccessGrant(object):
+class AccessEntry(object):
     """Represent grant of an access role to an entity.
 
     Every entry in the access list will have exactly one of
@@ -76,7 +76,7 @@ class AccessGrant(object):
         self.entity_id = entity_id
 
     def __eq__(self, other):
-        if not isinstance(other, AccessGrant):
+        if not isinstance(other, AccessEntry):
             return NotImplemented
         return (
             self.role == other.role and
@@ -87,7 +87,7 @@ class AccessGrant(object):
         return not self == other
 
     def __repr__(self):
-        return '<AccessGrant: role=%s, %s=%s>' % (
+        return '<AccessEntry: role=%s, %s=%s>' % (
             self.role, self.entity_type, self.entity_id)
 
 
@@ -104,22 +104,22 @@ class Dataset(object):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-    :type access_grants: list of :class:`AccessGrant`
-    :param access_grants: roles granted to entities for this dataset
+    :type access_entries: list of :class:`AccessEntry`
+    :param access_entries: roles granted to entities for this dataset
 
     :type project: str
     :param project: (Optional) project ID for the dataset (defaults to
                     the project of the client).
     """
 
-    _access_grants = None
+    _access_entries = None
 
-    def __init__(self, name, client, access_grants=(), project=None):
+    def __init__(self, name, client, access_entries=(), project=None):
         self.name = name
         self._client = client
         self._properties = {}
         # Let the @property do validation.
-        self.access_grants = access_grants
+        self.access_entries = access_entries
         self._project = project or client.project
 
     @property
@@ -141,27 +141,27 @@ class Dataset(object):
         return '/projects/%s/datasets/%s' % (self.project, self.name)
 
     @property
-    def access_grants(self):
-        """Dataset's access grants.
+    def access_entries(self):
+        """Dataset's access entries.
 
-        :rtype: list of :class:`AccessGrant`
+        :rtype: list of :class:`AccessEntry`
         :returns: roles granted to entities for this dataset
         """
-        return list(self._access_grants)
+        return list(self._access_entries)
 
-    @access_grants.setter
-    def access_grants(self, value):
-        """Update dataset's access grants
+    @access_entries.setter
+    def access_entries(self, value):
+        """Update dataset's access entries
 
-        :type value: list of :class:`AccessGrant`
+        :type value: list of :class:`AccessEntry`
         :param value: roles granted to entities for this dataset
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not an AccessGrant
+                 any item in the sequence is not an AccessEntry
         """
-        if not all(isinstance(field, AccessGrant) for field in value):
-            raise ValueError('Values must be AccessGrant instances')
-        self._access_grants = tuple(value)
+        if not all(isinstance(field, AccessEntry) for field in value):
+            raise ValueError('Values must be AccessEntry instances')
+        self._access_entries = tuple(value)
 
     @property
     def created(self):
@@ -341,29 +341,29 @@ class Dataset(object):
         return client
 
     @staticmethod
-    def _parse_access_grants(access):
-        """Parse a resource fragment into a set of access grants.
+    def _parse_access_entries(access):
+        """Parse a resource fragment into a set of access entries.
 
         ``role`` augments the entity type and present **unless** the entity
         type is ``view``.
 
         :type access: list of mappings
-        :param access: each mapping represents a single access grant.
+        :param access: each mapping represents a single access entry.
 
-        :rtype: list of :class:`AccessGrant`
-        :returns: a list of parsed grants.
-        :raises: :class:`ValueError` if a grant in ``access`` has more keys
+        :rtype: list of :class:`AccessEntry`
+        :returns: a list of parsed entries.
+        :raises: :class:`ValueError` if a entry in ``access`` has more keys
                  than ``role`` and one additional key.
         """
         result = []
-        for grant in access:
-            grant = grant.copy()
-            role = grant.pop('role', None)
-            entity_type, entity_id = grant.popitem()
-            if len(grant) != 0:
-                raise ValueError('Grant has unexpected keys remaining.', grant)
+        for entry in access:
+            entry = entry.copy()
+            role = entry.pop('role', None)
+            entity_type, entity_id = entry.popitem()
+            if len(entry) != 0:
+                raise ValueError('Entry has unexpected keys remaining.', entry)
             result.append(
-                AccessGrant(role, entity_type, entity_id))
+                AccessEntry(role, entity_type, entity_id))
         return result
 
     def _set_properties(self, api_response):
@@ -375,7 +375,7 @@ class Dataset(object):
         self._properties.clear()
         cleaned = api_response.copy()
         access = cleaned.pop('access', ())
-        self.access_grants = self._parse_access_grants(access)
+        self.access_entries = self._parse_access_entries(access)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
@@ -386,12 +386,12 @@ class Dataset(object):
         self._properties.update(cleaned)
 
     def _build_access_resource(self):
-        """Generate a resource fragment for dataset's access grants."""
+        """Generate a resource fragment for dataset's access entries."""
         result = []
-        for grant in self.access_grants:
-            info = {grant.entity_type: grant.entity_id}
-            if grant.role is not None:
-                info['role'] = grant.role
+        for entry in self.access_entries:
+            info = {entry.entity_type: entry.entity_id}
+            if entry.role is not None:
+                info['role'] = entry.role
             result.append(info)
         return result
 
@@ -414,7 +414,7 @@ class Dataset(object):
         if self.location is not None:
             resource['location'] = self.location
 
-        if len(self.access_grants) > 0:
+        if len(self.access_entries) > 0:
             resource['access'] = self._build_access_resource()
 
         return resource
