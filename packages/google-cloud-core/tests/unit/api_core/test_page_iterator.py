@@ -408,6 +408,90 @@ class TestHTTPIterator(object):
             iterator._get_next_page_response()
 
 
+class TestGRPCIterator(object):
+
+    def test_constructor(self):
+        client = mock.sentinel.client
+        items_field = 'items'
+        iterator = page_iterator.GRPCIterator(
+            client, mock.sentinel.method, mock.sentinel.request, items_field)
+
+        assert not iterator._started
+        assert iterator.client is client
+        assert iterator.max_results is None
+        assert iterator._method == mock.sentinel.method
+        assert iterator._request == mock.sentinel.request
+        assert iterator._items_field == items_field
+        assert iterator._item_to_value is page_iterator._item_to_value_identity
+        assert (iterator._request_token_field ==
+                page_iterator.GRPCIterator._DEFAULT_REQUEST_TOKEN_FIELD)
+        assert (iterator._response_token_field ==
+                page_iterator.GRPCIterator._DEFAULT_RESPONSE_TOKEN_FIELD)
+        # Changing attributes.
+        assert iterator.page_number == 0
+        assert iterator.next_page_token is None
+        assert iterator.num_results == 0
+
+    def test_constructor_options(self):
+        client = mock.sentinel.client
+        items_field = 'items'
+        request_field = 'request'
+        response_field = 'response'
+        iterator = page_iterator.GRPCIterator(
+            client, mock.sentinel.method, mock.sentinel.request, items_field,
+            item_to_value=mock.sentinel.item_to_value,
+            request_token_field=request_field,
+            response_token_field=response_field,
+            max_results=42)
+
+        assert iterator.client is client
+        assert iterator.max_results == 42
+        assert iterator._method == mock.sentinel.method
+        assert iterator._request == mock.sentinel.request
+        assert iterator._items_field == items_field
+        assert iterator._item_to_value is mock.sentinel.item_to_value
+        assert iterator._request_token_field == request_field
+        assert iterator._response_token_field == response_field
+
+    def test_iterate(self):
+        request = mock.Mock(spec=['page_token'], page_token=None)
+        response1 = mock.Mock(items=['a', 'b'], next_page_token='1')
+        response2 = mock.Mock(items=['c'], next_page_token='2')
+        response3 = mock.Mock(items=['d'], next_page_token='')
+        method = mock.Mock(side_effect=[response1, response2, response3])
+        iterator = page_iterator.GRPCIterator(
+            mock.sentinel.client, method, request, 'items')
+
+        assert iterator.num_results == 0
+
+        items = list(iterator)
+        assert items == ['a', 'b', 'c', 'd']
+
+        method.assert_called_with(request)
+        assert method.call_count == 3
+        assert request.page_token == '2'
+
+    def test_iterate_with_max_results(self):
+        request = mock.Mock(spec=['page_token'], page_token=None)
+        response1 = mock.Mock(items=['a', 'b'], next_page_token='1')
+        response2 = mock.Mock(items=['c'], next_page_token='2')
+        response3 = mock.Mock(items=['d'], next_page_token='')
+        method = mock.Mock(side_effect=[response1, response2, response3])
+        iterator = page_iterator.GRPCIterator(
+            mock.sentinel.client, method, request, 'items', max_results=3)
+
+        assert iterator.num_results == 0
+
+        items = list(iterator)
+
+        assert items == ['a', 'b', 'c']
+        assert iterator.num_results == 3
+
+        method.assert_called_with(request)
+        assert method.call_count == 2
+        assert request.page_token is '1'
+
+
 class GAXPageIterator(object):
     """Fake object that matches gax.PageIterator"""
     def __init__(self, pages, page_token=None):
