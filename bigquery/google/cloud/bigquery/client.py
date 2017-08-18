@@ -162,6 +162,41 @@ class Client(ClientWithProject):
         """
         return Dataset(dataset_name, client=self, project=project)
 
+    def get_query_results(self, job_id, project=None, timeout_ms=None):
+        """Get the query results object for a query job.
+
+        :type job_id: str
+        :param job_id: Name of the query job.
+
+        :type project: str
+        :param project:
+            (Optional) project ID for the query job (defaults to the project of
+            the client).
+
+        :type timeout_ms: int
+        :param timeout_ms:
+            (Optional) number of milliseconds the the API call should wait for
+            the query to complete before the request times out.
+
+        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
+        :returns: a new ``QueryResults`` instance
+        """
+
+        extra_params = {'maxResults': 0}
+
+        if project is None:
+            project = self.project
+
+        if timeout_ms is not None:
+            extra_params['timeoutMs'] = timeout_ms
+
+        path = '/projects/{}/queries/{}'.format(project, job_id)
+
+        resource = self._connection.api_request(
+            method='GET', path=path, query_params=extra_params)
+
+        return QueryResults.from_api_repr(resource, self)
+
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
 
