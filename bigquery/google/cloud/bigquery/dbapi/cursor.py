@@ -191,7 +191,6 @@ class Cursor(object):
             self._query_data = iter(
                 self._query_results.fetch_data(max_results=size))
 
-
     def fetchone(self):
         """Fetch a single row from the results of the last ``execute*()`` call.
 
