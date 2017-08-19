@@ -1094,7 +1094,7 @@ class TestBigQuery(unittest.TestCase):
         query.use_legacy_sql = False
         query.run()
 
-        iterator = query.fetch_data()
+        iterator = query.fetch_data(max_results=100)
         rows = list(iterator)
         self.assertEqual(len(rows), LIMIT)
 
