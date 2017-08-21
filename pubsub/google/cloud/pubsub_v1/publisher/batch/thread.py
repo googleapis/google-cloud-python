@@ -154,9 +154,11 @@ class Batch(base.BaseBatch):
         # Update the status.
         self._status = 'in-flight'
 
-        # Begin the request to publish these messages.
+        # Sanity check: If there are no messages, no-op.
         if len(self._messages) == 0:
             return
+
+        # Begin the request to publish these messages.
         response = self.client.api.publish(
             self._topic,
             self.messages,
@@ -176,9 +178,9 @@ class Batch(base.BaseBatch):
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
         self._status = self.Status.SUCCESS
-        for message_id, fut in zip(response.message_ids, self._futures):
-            self.message_ids[hash(fut)] = message_id
-            fut._trigger()
+        for message_id, future in zip(response.message_ids, self._futures):
+            self.message_ids[hash(future)] = message_id
+            future._trigger()
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
