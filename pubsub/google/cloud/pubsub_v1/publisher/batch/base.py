@@ -32,6 +32,19 @@ class BaseBatch(object):
     This class defines the interface for the Batch implementation;
     subclasses may be passed as the ``batch_class`` argument to
     :class:`~.pubsub_v1.client.PublisherClient`.
+
+    The batching behavior works like this: When the
+    :class:`~.pubsub_v1.publisher.client.Client` is asked to publish a new
+    message, it requires a batch. The client will see if there is an
+    already-opened batch for the given topic; if there is, then the message
+    is sent to that batch. If there is not, then a new batch is created
+    and the message put there.
+
+    When a new batch is created, it automatically starts a timer counting
+    down to the maximum latency before the batch should commit.
+    Essentially, if enough time passes, the batch automatically commits
+    regardless of how much is in it. However, if either the message count or
+    size thresholds are encountered first, then the batch will commit early.
     """
     def __len__(self):
         """Return the number of messages currently in the batch."""
