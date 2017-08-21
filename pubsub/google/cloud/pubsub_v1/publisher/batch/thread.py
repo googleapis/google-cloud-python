@@ -17,16 +17,14 @@ from __future__ import absolute_import
 import logging
 import threading
 import time
-import uuid
-
-from google import gax
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
+from google.cloud.pubsub_v1.publisher import futures
 from google.cloud.pubsub_v1.publisher.batch import base
 
 
-class Batch(base.BaseBatch):
+class Batch(base.Batch):
     """A batch of messages.
 
     The batch is the internal group of messages which are either awaiting
@@ -71,33 +69,22 @@ class Batch(base.BaseBatch):
         self._settings = settings
         self._status = self.Status.ACCEPTING_MESSAGES
         self._topic = topic
-        self.message_ids = {}
 
-        # This is purely internal tracking.
+        # If max latency is specified, start a thread to monitor the batch and
+        # commit when the max latency is reached.
         self._thread = None
-
-        # Continually monitor the thread until it is time to commit the
-        # batch, or the batch is explicitly committed.
         if autocommit and self._settings.max_latency < float('inf'):
             self._thread = threading.Thread(target=self.monitor)
             self._thread.start()
 
     @property
     def client(self):
-        """Return the client used to create this batch.
-
-        Returns:
-            ~.pubsub_v1.client.PublisherClient: A publisher client.
-        """
+        """~.pubsub_v1.client.PublisherClient: A publisher client."""
         return self._client
 
     @property
     def messages(self):
-        """Return the messages currently in the batch.
-
-        Returns:
-            Sequence: The messages currently in the batch.
-        """
+        """Sequence: The messages currently in the batch."""
         return self._messages
 
     @property
@@ -167,20 +154,16 @@ class Batch(base.BaseBatch):
         # Update the status.
         self._status = 'in-flight'
 
-        # Begin the request to publish these messages.
+        # Sanity check: If there are no messages, no-op.
         if len(self._messages) == 0:
             return
 
-        # Make the actual GRPC request.
+        # Begin the request to publish these messages.
         # Log how long the underlying request takes.
         start = time.time()
         response = self.client.api.publish(
             self._topic,
             self.messages,
-            # options=gax.CallOptions(**{
-            #     'grpc.max_message_length': 20 * (1024 ** 2) + 1,
-            #     'grpc.max_receive_message_length': 20 * (1024 ** 2) + 1,
-            # }),
         )
         end = time.time()
         logging.getLogger().debug('gRPC Publish took {sec} seconds.'.format(
@@ -193,17 +176,18 @@ class Batch(base.BaseBatch):
         # Sanity check: If the number of message IDs is not equal to the
         # number of futures I have, then something went wrong.
         if len(response.message_ids) != len(self._futures):
-            raise exceptions.PublishError(
-                'Some messages were not successfully published.',
-            )
+            for future in self._futures:
+                future.set_exception(exceptions.PublishError(
+                    'Some messages were not successfully published.',
+                ))
+            return
 
         # Iterate over the futures on the queue and return the response IDs.
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
         self._status = self.Status.SUCCESS
         for message_id, future in zip(response.message_ids, self._futures):
-            self.message_ids[hash(future)] = message_id
-            future._trigger()
+            future.set_result(message_id)
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -238,8 +222,8 @@ class Batch(base.BaseBatch):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.batch.mp.Future: An object conforming to the
-                :class:`concurrent.futures.Future` interface.
+            ~.pubsub_v1.publisher.futures.Future: An object conforming to
+                the :class:`concurrent.futures.Future` interface.
         """
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
@@ -254,147 +238,6 @@ class Batch(base.BaseBatch):
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
-        f = Future(self)
+        f = futures.Future()
         self._futures.append(f)
         return f
-
-
-class Future(object):
-    """Encapsulation of the asynchronous execution of an action.
-
-    This object is returned from asychronous Pub/Sub calls, and is the
-    interface to determine the status of those calls.
-
-    This object should not be created directly, but is returned by other
-    methods in this library.
-
-    Args:
-        batch (`~.Batch`): The batch object that is committing
-            this message.
-    """
-    def __init__(self, batch):
-        self._batch = batch
-        self._callbacks = []
-        self._hash = hash(uuid.uuid4())
-
-    def __hash__(self):
-        return self._hash
-
-    def cancel(self):
-        """Publishes in Pub/Sub currently may not be canceled.
-
-        This method always returns False.
-        """
-        return False
-
-    def cancelled(self):
-        """Publishes in Pub/Sub currently may not be canceled.
-
-        This method always returns False.
-        """
-        return False
-
-    def running(self):
-        """Publishes in Pub/Sub currently may not be canceled.
-
-        This method always returns True.
-        """
-        return True
-
-    def done(self):
-        """Return True if the publish has completed, False otherwise.
-
-        This still returns True in failure cases; checking :meth:`result` or
-        :meth:`exception` is the canonical way to assess success or failure.
-        """
-        return self._batch.status in (
-            self._batch.Status.SUCCESS,
-            self._batch.Status.ERROR,
-        )
-
-    def result(self, timeout=None):
-        """Return the message ID, or raise an exception.
-
-        This blocks until the message has successfully been published, and
-        returns the message ID.
-
-        Args:
-            timeout (int|float): The number of seconds before this call
-                times out and raises TimeoutError.
-
-        Returns:
-            str: The message ID.
-
-        Raises:
-            ~.pubsub_v1.TimeoutError: If the request times out.
-            Exception: For undefined exceptions in the underlying
-                call execution.
-        """
-        # Attempt to get the exception if there is one.
-        # If there is not one, then we know everything worked, and we can
-        # return an appropriate value.
-        err = self.exception(timeout=timeout)
-        if err is None:
-            return self._batch.message_ids[hash(self)]
-        raise err
-
-    def exception(self, timeout=None, _wait=1):
-        """Return the exception raised by the call, if any.
-
-        This blocks until the message has successfully been published, and
-        returns the exception. If the call succeeded, return None.
-
-        Args:
-            timeout (int|float): The number of seconds before this call
-                times out and raises TimeoutError.
-
-        Raises:
-            TimeoutError: If the request times out.
-
-        Returns:
-            Exception: The exception raised by the call, if any.
-        """
-        # If no timeout was specified, use inf.
-        if timeout is None:
-            timeout = float('inf')
-
-        # If the batch completed successfully, this should return None.
-        if self._batch.status == 'success':
-            return None
-
-        # If this batch had an error, this should return it.
-        if self._batch.status == 'error':
-            return self._batch.error
-
-        # If the timeout has been exceeded, raise TimeoutError.
-        if timeout <= 0:
-            raise exceptions.TimeoutError('Timed out waiting for exception.')
-
-        # Wait a little while and try again.
-        time.sleep(_wait)
-        return self.exception(
-            timeout=timeout - _wait,
-            _wait=min(_wait * 2, timeout, 60),
-        )
-
-    def add_done_callback(self, fn):
-        """Attach the provided callable to the future.
-
-        The provided function is called, with this future as its only argument,
-        when the future finishes running.
-        """
-        if self.done():
-            fn(self)
-        self._callbacks.append(fn)
-
-    def _trigger(self):
-        """Trigger all callbacks registered to this Future.
-
-        This method is called internally by the batch once the batch
-        completes.
-
-        Args:
-            message_id (str): The message ID, as a string.
-        """
-        for callback in self._callbacks:
-            callback(self)

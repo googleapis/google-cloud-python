@@ -15,13 +15,12 @@
 from __future__ import absolute_import
 
 import abc
-import collections
 
 import six
 
 
 @six.add_metaclass(abc.ABCMeta)
-class BaseBatch(object):
+class Batch(object):
     """The base batching class for Pub/Sub publishing.
 
     Although the :class:`~.pubsub_v1.publisher.batch.thread.Batch` class, based
@@ -32,30 +31,23 @@ class BaseBatch(object):
     This class defines the interface for the Batch implementation;
     subclasses may be passed as the ``batch_class`` argument to
     :class:`~.pubsub_v1.client.PublisherClient`.
+
+    The batching behavior works like this: When the
+    :class:`~.pubsub_v1.publisher.client.Client` is asked to publish a new
+    message, it requires a batch. The client will see if there is an
+    already-opened batch for the given topic; if there is, then the message
+    is sent to that batch. If there is not, then a new batch is created
+    and the message put there.
+
+    When a new batch is created, it automatically starts a timer counting
+    down to the maximum latency before the batch should commit.
+    Essentially, if enough time passes, the batch automatically commits
+    regardless of how much is in it. However, if either the message count or
+    size thresholds are encountered first, then the batch will commit early.
     """
     def __len__(self):
         """Return the number of messages currently in the batch."""
         return len(self.messages)
-
-    @property
-    @abc.abstractmethod
-    def client(self):
-        """Return the client used to create this batch.
-
-        Returns:
-            ~.pubsub_v1.client.PublisherClient: A publisher client.
-        """
-        raise NotImplementedError
-
-    @property
-    @abc.abstractmethod
-    def client(self):
-        """Return the client used to create this batch.
-
-        Returns:
-            ~.pubsub_v1.client.PublisherClient: A publisher client.
-        """
-        raise NotImplementedError
 
     @property
     @abc.abstractmethod
@@ -151,21 +143,3 @@ class BaseBatch(object):
         ACCEPTING_MESSAGES = 'accepting messages'
         ERROR = 'error'
         SUCCESS = 'success'
-
-
-class RejectionBatch(object):
-    """A fake batch-like object that refuses to accept any message.
-
-    This is used by the client to do single-op checks for batch
-    existence.
-    """
-    def will_accept(self, message):
-        """Return False.
-
-        Args:
-            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
-
-        Returns:
-            bool: Whether this batch can accept the message. It never can.
-        """
-        return False

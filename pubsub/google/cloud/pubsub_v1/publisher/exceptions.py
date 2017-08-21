@@ -12,9 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class PublishError(RuntimeError):
+from __future__ import absolute_import
+
+from google.api.core.exceptions import GoogleAPICallError
+from google.api.core.exceptions import GoogleAPIError
+
+
+class PublishError(GoogleAPICallError):
     pass
 
 
-class TimeoutError(RuntimeError):
+class TimeoutError(GoogleAPIError):
     pass
