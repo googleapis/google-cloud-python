@@ -19,14 +19,13 @@ import threading
 import time
 import uuid
 
-from google import gax
-
+import google.api.core.future
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher.batch import base
 
 
-class Batch(base.BaseBatch):
+class Batch(base.Batch):
     """A batch of messages.
 
     The batch is the internal group of messages which are either awaiting
@@ -73,31 +72,21 @@ class Batch(base.BaseBatch):
         self._topic = topic
         self.message_ids = {}
 
-        # This is purely internal tracking.
+        # If max latency is specified, start a thread to monitor the batch and
+        # commit when the max latency is reached.
         self._thread = None
-
-        # Continually monitor the thread until it is time to commit the
-        # batch, or the batch is explicitly committed.
         if autocommit and self._settings.max_latency < float('inf'):
             self._thread = threading.Thread(target=self.monitor)
             self._thread.start()
 
     @property
     def client(self):
-        """Return the client used to create this batch.
-
-        Returns:
-            ~.pubsub_v1.client.PublisherClient: A publisher client.
-        """
+        """~.pubsub_v1.client.PublisherClient: A publisher client."""
         return self._client
 
     @property
     def messages(self):
-        """Return the messages currently in the batch.
-
-        Returns:
-            Sequence: The messages currently in the batch.
-        """
+        """Sequence: The messages currently in the batch."""
         return self._messages
 
     @property
@@ -167,20 +156,16 @@ class Batch(base.BaseBatch):
         # Update the status.
         self._status = 'in-flight'
 
-        # Begin the request to publish these messages.
+        # Sanity check: If there are no messages, no-op.
         if len(self._messages) == 0:
             return
 
-        # Make the actual GRPC request.
+        # Begin the request to publish these messages.
         # Log how long the underlying request takes.
         start = time.time()
         response = self.client.api.publish(
             self._topic,
             self.messages,
-            # options=gax.CallOptions(**{
-            #     'grpc.max_message_length': 20 * (1024 ** 2) + 1,
-            #     'grpc.max_receive_message_length': 20 * (1024 ** 2) + 1,
-            # }),
         )
         end = time.time()
         logging.getLogger().debug('gRPC Publish took {sec} seconds.'.format(
@@ -259,7 +244,7 @@ class Batch(base.BaseBatch):
         return f
 
 
-class Future(object):
+class Future(google.api.core.future.Future):
     """Encapsulation of the asynchronous execution of an action.
 
     This object is returned from asychronous Pub/Sub calls, and is the
