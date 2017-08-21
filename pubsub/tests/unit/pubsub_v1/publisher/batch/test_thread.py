@@ -121,14 +121,18 @@ def test_blocking_commit_no_messages():
 
 def test_blocking_commit_wrong_messageid_length():
     batch = create_batch()
-    batch.publish({'data': b'blah blah blah'})
-    batch.publish({'data': b'blah blah blah blah'})
+    futures = (
+        batch.publish({'data': b'blah blah blah'}),
+        batch.publish({'data': b'blah blah blah blah'}),
+    )
 
     # Set up a PublishResponse that only returns one message ID.
     with mock.patch.object(type(batch.client.api), 'publish') as publish:
         publish.return_value = types.PublishResponse(message_ids=['a'])
-        with pytest.raises(exceptions.PublishError):
-            batch._commit()
+        batch._commit()
+    for future in futures:
+        assert future.done()
+        assert isinstance(future.exception(), exceptions.PublishError)
 
 
 def test_monitor():
