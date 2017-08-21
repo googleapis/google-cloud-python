@@ -11,12 +11,11 @@ import sys
 install_requires = [
     'google-gax>=0.15.7, <0.16dev',
     'oauth2client>=2.0.0, <4.0dev',
-    'proto-google-cloud-dlp-v2beta1[grpc]>=0.15.4, <0.16dev',
     'googleapis-common-protos[grpc]>=1.5.2, <2.0dev',
 ]
 
 setup(
-    name='gapic-google-cloud-dlp-v2beta1',
+    name='google-cloud-dlp',
     version='0.15.4',
     author='Google Inc',
     author_email='googleapis-packages@google.com',
@@ -39,5 +38,5 @@ setup(
     install_requires=install_requires,
     license='Apache-2.0',
     packages=find_packages(),
-    namespace_packages=['google', 'google.cloud'],
+    namespace_packages=['google.cloud.proto.privacy.dlp', 'google.cloud.proto.privacy', 'google.cloud.proto', 'google.cloud', 'google'],
     url='https://github.com/googleapis/googleapis')

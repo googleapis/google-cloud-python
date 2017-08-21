@@ -15,15 +15,15 @@
 import time
 import unittest
 
-from google.cloud import dlp_v2beta1
-from google.cloud.dlp_v2beta1 import enums
+from google.cloud import dlp
+from google.cloud.dlp import enums
 from google.cloud.proto.privacy.dlp.v2beta1 import dlp_pb2
 
 
 class TestSystemDlpService(unittest.TestCase):
     def test_inspect_content(self):
 
-        client = dlp_v2beta1.DlpServiceClient()
+        client = dlp.DlpServiceClient()
         min_likelihood = enums.Likelihood.POSSIBLE
         inspect_config = {'min_likelihood': min_likelihood}
         type_ = 'text/plain'

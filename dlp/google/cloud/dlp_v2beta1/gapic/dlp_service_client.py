@@ -154,7 +154,7 @@ class DlpServiceClient(object):
 
         # Finally, track the GAPIC package version.
         metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'gapic-google-cloud-dlp-v2beta1', ).version
+            'google-cloud-dlp', ).version
 
         # Load the configuration defaults.
         default_client_config = json.loads(

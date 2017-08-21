@@ -67,8 +67,8 @@ DlpServiceClient
 
 .. code:: py
 
-  from google.cloud import dlp_v2beta1
-  client = dlp_v2beta1.DlpServiceClient()
+  from google.cloud import dlp
+  client = dlp.DlpServiceClient()
   name = 'EMAIL_ADDRESS'
   info_types_element = {'name': name}
   info_types = [info_types_element]
