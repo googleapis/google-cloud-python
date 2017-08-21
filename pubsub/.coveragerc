@@ -1,5 +1,9 @@
 [run]
 branch = True
+source =
+  google.cloud.pubsub
+  google.cloud.pubsub_v1
+  tests.unit
 
 [report]
 fail_under = 100
@@ -9,3 +13,5 @@ exclude_lines =
     pragma: NO COVER
     # Ignore debug-only repr
     def __repr__
+    # Ignore abstract methods
+    raise NotImplementedError
