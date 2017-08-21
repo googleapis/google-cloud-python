@@ -18,6 +18,7 @@ import threading
 import time
 import uuid
 
+import google.api.core.future
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher.batch import base
@@ -236,7 +237,7 @@ class Batch(base.Batch):
         return f
 
 
-class Future(object):
+class Future(google.api.core.future.Future):
     """Encapsulation of the asynchronous execution of an action.
 
     This object is returned from asychronous Pub/Sub calls, and is the
