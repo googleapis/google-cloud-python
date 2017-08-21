@@ -16,7 +16,6 @@ from __future__ import absolute_import
 
 import threading
 import time
-import uuid
 
 import google.api.core.future
 from google.cloud.pubsub_v1 import types
@@ -69,7 +68,6 @@ class Batch(base.Batch):
         self._settings = settings
         self._status = self.Status.ACCEPTING_MESSAGES
         self._topic = topic
-        self.message_ids = {}
 
         # If max latency is specified, start a thread to monitor the batch and
         # commit when the max latency is reached.
@@ -171,17 +169,18 @@ class Batch(base.Batch):
         # Sanity check: If the number of message IDs is not equal to the
         # number of futures I have, then something went wrong.
         if len(response.message_ids) != len(self._futures):
-            raise exceptions.PublishError(
-                'Some messages were not successfully published.',
-            )
+            for future in self._futures:
+                future.set_exception(exceptions.PublishError(
+                    'Some messages were not successfully published.',
+                ))
+            return
 
         # Iterate over the futures on the queue and return the response IDs.
         # We are trusting that there is a 1:1 mapping, and raise an exception
         # if not.
         self._status = self.Status.SUCCESS
         for message_id, future in zip(response.message_ids, self._futures):
-            self.message_ids[hash(future)] = message_id
-            future._trigger()
+            future.set_result(message_id)
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -216,8 +215,8 @@ class Batch(base.Batch):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.batch.mp.Future: An object conforming to the
-                :class:`concurrent.futures.Future` interface.
+            ~.pubsub_v1.publisher.batch.thread.Future: An object conforming to
+                the :class:`concurrent.futures.Future` interface.
         """
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
@@ -232,7 +231,7 @@ class Batch(base.Batch):
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
-        f = Future(self)
+        f = Future()
         self._futures.append(f)
         return f
 
@@ -245,18 +244,9 @@ class Future(google.api.core.future.Future):
 
     This object should not be created directly, but is returned by other
     methods in this library.
-
-    Args:
-        batch (`~.Batch`): The batch object that is committing
-            this message.
     """
-    def __init__(self, batch):
-        self._batch = batch
+    def __init__(self):
         self._callbacks = []
-        self._hash = hash(uuid.uuid4())
-
-    def __hash__(self):
-        return self._hash
 
     def cancel(self):
         """Publishes in Pub/Sub currently may not be canceled.
@@ -285,10 +275,7 @@ class Future(google.api.core.future.Future):
         This still returns True in failure cases; checking :meth:`result` or
         :meth:`exception` is the canonical way to assess success or failure.
         """
-        return self._batch.status in (
-            self._batch.Status.SUCCESS,
-            self._batch.Status.ERROR,
-        )
+        return self._exception is not None or self._result is not None
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -297,7 +284,7 @@ class Future(google.api.core.future.Future):
         returns the message ID.
 
         Args:
-            timeout (int|float): The number of seconds before this call
+            timeout (Union[int, float]): The number of seconds before this call
                 times out and raises TimeoutError.
 
         Returns:
@@ -313,7 +300,7 @@ class Future(google.api.core.future.Future):
         # return an appropriate value.
         err = self.exception(timeout=timeout)
         if err is None:
-            return self._batch.message_ids[hash(self)]
+            return self._result
         raise err
 
     def exception(self, timeout=None, _wait=1):
@@ -323,7 +310,7 @@ class Future(google.api.core.future.Future):
         returns the exception. If the call succeeded, return None.
 
         Args:
-            timeout (int|float): The number of seconds before this call
+            timeout (Union[int, float]): The number of seconds before this call
                 times out and raises TimeoutError.
 
         Raises:
@@ -337,16 +324,16 @@ class Future(google.api.core.future.Future):
             timeout = float('inf')
 
         # If the batch completed successfully, this should return None.
-        if self._batch.status == 'success':
+        if self._result is not None:
             return None
 
         # If this batch had an error, this should return it.
-        if self._batch.status == 'error':
-            return self._batch.error
+        if self._exception is not None:
+            return self._exception
 
         # If the timeout has been exceeded, raise TimeoutError.
         if timeout <= 0:
-            raise exceptions.TimeoutError('Timed out waiting for exception.')
+            raise exceptions.TimeoutError('Timed out waiting for result.')
 
         # Wait a little while and try again.
         time.sleep(_wait)
@@ -364,6 +351,34 @@ class Future(google.api.core.future.Future):
         if self.done():
             fn(self)
         self._callbacks.append(fn)
+
+    def set_result(self, result):
+        """Set the result of the future to the provided result.
+
+        Args:
+            result (str): The message ID.
+        """
+        # Sanity check: A future can only complete once.
+        if self._result is not None or self._exception is not None:
+            raise RuntimeError('set_result can only be called once.')
+
+        # Set the result and trigger the future.
+        self._result = result
+        self._trigger()
+
+    def set_exception(self, exception):
+        """Set the result of the future to the given exception.
+
+        Args:
+            exception (:exc:`Exception`): The exception raised.
+        """
+        # Sanity check: A future can only complete once.
+        if self._result is not None or self._exception is not None:
+            raise RuntimeError('set_exception can only be called once.')
+
+        # Set the exception and trigger the future.
+        self._exception = exception
+        self._trigger()
 
     def _trigger(self):
         """Trigger all callbacks registered to this Future.
