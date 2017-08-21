@@ -88,9 +88,9 @@ class TestQueryResults(unittest.TestCase):
                 self.assertEqual(found.mode, expected['mode'])
                 self.assertEqual(found.description,
                                  expected.get('description'))
-                self.assertEqual(found.fields, expected.get('fields'))
+                self.assertEqual(found.fields, expected.get('fields', ()))
         else:
-            self.assertIsNone(query.schema)
+            self.assertEqual(query.schema, ())
 
     def _verifyRows(self, query, resource):
         expected = resource.get('rows')
@@ -166,7 +166,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertIsNone(query.page_token)
         self.assertEqual(query.query_parameters, [])
         self.assertEqual(query.rows, [])
-        self.assertIsNone(query.schema)
+        self.assertEqual(query.schema, ())
         self.assertIsNone(query.total_rows)
         self.assertIsNone(query.total_bytes_processed)
         self.assertEqual(query.udf_resources, [])
@@ -654,6 +654,8 @@ class TestQueryResults(unittest.TestCase):
         self.assertRaises(ValueError, query.fetch_data)
 
     def test_fetch_data_w_bound_client(self):
+        import six
+
         PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
         BEFORE = self._makeResource(complete=False)
         AFTER = self._makeResource(complete=True)
@@ -665,7 +667,11 @@ class TestQueryResults(unittest.TestCase):
         query._set_properties(BEFORE)
         self.assertFalse(query.complete)
 
-        rows, total_rows, page_token = query.fetch_data()
+        iterator = query.fetch_data()
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertTrue(query.complete)
         self.assertEqual(len(rows), 4)
@@ -682,6 +688,8 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_fetch_data_w_alternate_client(self):
+        import six
+
         PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
         MAX = 10
         TOKEN = 'TOKEN'
@@ -698,9 +706,13 @@ class TestQueryResults(unittest.TestCase):
         query._set_properties(BEFORE)
         self.assertFalse(query.complete)
 
-        rows, total_rows, page_token = query.fetch_data(
+        iterator = query.fetch_data(
             client=client2, max_results=MAX, page_token=TOKEN,
             start_index=START, timeout_ms=TIMEOUT)
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
 
         self.assertTrue(query.complete)
         self.assertEqual(len(rows), 4)

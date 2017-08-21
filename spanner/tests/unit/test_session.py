@@ -39,8 +39,8 @@ class TestSession(unittest.TestCase):
     def test_constructor(self):
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
-        self.assertTrue(session.session_id is None)
-        self.assertTrue(session._database is database)
+        self.assertIs(session.session_id, None)
+        self.assertIs(session._database, database)
 
     def test___lt___(self):
         database = _Database(self.DATABASE_NAME)
@@ -223,8 +223,23 @@ class TestSession(unittest.TestCase):
         snapshot = session.snapshot()
 
         self.assertIsInstance(snapshot, Snapshot)
+        self.assertIs(snapshot._session, session)
+        self.assertTrue(snapshot._strong)
+        self.assertFalse(snapshot._multi_use)
+
+    def test_snapshot_created_w_multi_use(self):
+        from google.cloud.spanner.snapshot import Snapshot
+
+        database = _Database(self.DATABASE_NAME)
+        session = self._make_one(database)
+        session._session_id = 'DEADBEEF'  # emulate 'session.create()'
+
+        snapshot = session.snapshot(multi_use=True)
+
+        self.assertIsInstance(snapshot, Snapshot)
         self.assertTrue(snapshot._session is session)
         self.assertTrue(snapshot._strong)
+        self.assertTrue(snapshot._multi_use)
 
     def test_read_not_created(self):
         from google.cloud.spanner.keyset import KeySet
@@ -352,7 +367,7 @@ class TestSession(unittest.TestCase):
         batch = session.batch()
 
         self.assertIsInstance(batch, Batch)
-        self.assertTrue(batch._session is session)
+        self.assertIs(batch._session, session)
 
     def test_transaction_not_created(self):
         database = _Database(self.DATABASE_NAME)
@@ -371,8 +386,8 @@ class TestSession(unittest.TestCase):
         transaction = session.transaction()
 
         self.assertIsInstance(transaction, Transaction)
-        self.assertTrue(transaction._session is session)
-        self.assertTrue(session._transaction is transaction)
+        self.assertIs(transaction._session, session)
+        self.assertIs(session._transaction, transaction)
 
     def test_transaction_w_existing_txn(self):
         database = _Database(self.DATABASE_NAME)
@@ -382,7 +397,7 @@ class TestSession(unittest.TestCase):
         existing = session.transaction()
         another = session.transaction()  # invalidates existing txn
 
-        self.assertTrue(session._transaction is another)
+        self.assertIs(session._transaction, another)
         self.assertTrue(existing._rolled_back)
 
     def test_retry_transaction_w_commit_error_txn_already_begun(self):
@@ -403,7 +418,7 @@ class TestSession(unittest.TestCase):
         session = self._make_one(database)
         session._session_id = 'DEADBEEF'
         begun_txn = session._transaction = Transaction(session)
-        begun_txn._id = b'FACEDACE'
+        begun_txn._transaction_id = b'FACEDACE'
 
         called_with = []
 
@@ -498,16 +513,16 @@ class TestSession(unittest.TestCase):
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            return 42
 
-        committed = session.run_in_transaction(
+        return_value = session.run_in_transaction(
             unit_of_work, 'abc', some_arg='def')
 
-        self.assertEqual(committed, now)
         self.assertIsNone(session._transaction)
         self.assertEqual(len(called_with), 1)
         txn, args, kw = called_with[0]
         self.assertIsInstance(txn, Transaction)
-        self.assertEqual(txn.committed, committed)
+        self.assertEqual(return_value, 42)
         self.assertEqual(args, ('abc',))
         self.assertEqual(kw, {'some_arg': 'def'})
 
@@ -546,18 +561,15 @@ class TestSession(unittest.TestCase):
         def unit_of_work(txn, *args, **kw):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            return 'answer'
 
-        committed = session.run_in_transaction(
+        return_value = session.run_in_transaction(
             unit_of_work, 'abc', some_arg='def')
 
-        self.assertEqual(committed, now)
         self.assertEqual(len(called_with), 2)
         for index, (txn, args, kw) in enumerate(called_with):
             self.assertIsInstance(txn, Transaction)
-            if index == 1:
-                self.assertEqual(txn.committed, committed)
-            else:
-                self.assertIsNone(txn.committed)
+            self.assertEqual(return_value, 'answer')
             self.assertEqual(args, ('abc',))
             self.assertEqual(kw, {'some_arg': 'def'})
 
@@ -606,17 +618,15 @@ class TestSession(unittest.TestCase):
         time_module = _FauxTimeModule()
 
         with _Monkey(MUT, time=time_module):
-            committed = session.run_in_transaction(
-                unit_of_work, 'abc', some_arg='def')
+            session.run_in_transaction(unit_of_work, 'abc', some_arg='def')
 
         self.assertEqual(time_module._slept,
                          RETRY_SECONDS + RETRY_NANOS / 1.0e9)
-        self.assertEqual(committed, now)
         self.assertEqual(len(called_with), 2)
         for index, (txn, args, kw) in enumerate(called_with):
             self.assertIsInstance(txn, Transaction)
             if index == 1:
-                self.assertEqual(txn.committed, committed)
+                self.assertEqual(txn.committed, now)
             else:
                 self.assertIsNone(txn.committed)
             self.assertEqual(args, ('abc',))
@@ -673,9 +683,8 @@ class TestSession(unittest.TestCase):
         time_module = _FauxTimeModule()
 
         with _Monkey(MUT, time=time_module):
-            committed = session.run_in_transaction(unit_of_work)
+            session.run_in_transaction(unit_of_work)
 
-        self.assertEqual(committed, now)
         self.assertEqual(time_module._slept,
                          RETRY_SECONDS + RETRY_NANOS / 1.0e9)
         self.assertEqual(len(called_with), 2)

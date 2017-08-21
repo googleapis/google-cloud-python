@@ -38,7 +38,7 @@ Assigning to '{}' is deprecated.  Replace with 'policy[{}] = members."""
 class Policy(collections.MutableMapping):
     """IAM Policy
 
-    See:
+    See
     https://cloud.google.com/iam/reference/rest/v1/Policy
 
     :type etag: str
@@ -226,14 +226,14 @@ class Policy(collections.MutableMapping):
         if self.version is not None:
             resource['version'] = self.version
 
-        if len(self._bindings) > 0:
+        if self._bindings:
             bindings = resource['bindings'] = []
             for role, members in sorted(self._bindings.items()):
-                if len(members) > 0:
+                if members:
                     bindings.append(
                         {'role': role, 'members': sorted(set(members))})
 
-            if len(bindings) == 0:
+            if not bindings:
                 del resource['bindings']
 
         return resource

@@ -9,13 +9,6 @@ Base Client
   :show-inheritance:
   :inherited-members:
 
-Credentials Helpers
-~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: google.cloud.credentials
-  :members:
-  :show-inheritance:
-
 Exceptions
 ~~~~~~~~~~
 

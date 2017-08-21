@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import six
 
 
 def _make_credentials():
@@ -40,13 +41,13 @@ class TestClient(unittest.TestCase):
     TIMEOUT_SECONDS = 80
     USER_AGENT = 'you-sir-age-int'
 
-    def _getTargetClass(self):
+    def _get_target_class(self):
         from google.cloud.spanner.client import Client
 
         return Client
 
     def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+        return self._get_target_class()(*args, **kwargs)
 
     def _constructor_test_helper(self, expected_scopes, creds,
                                  user_agent=None,
@@ -60,7 +61,7 @@ class TestClient(unittest.TestCase):
         expected_creds = expected_creds or creds.with_scopes.return_value
         self.assertIs(client._credentials, expected_creds)
 
-        self.assertTrue(client._credentials is expected_creds)
+        self.assertIs(client._credentials, expected_creds)
         if expected_scopes is not None:
             creds.with_scopes.assert_called_once_with(expected_scopes)
 
@@ -70,9 +71,9 @@ class TestClient(unittest.TestCase):
     def test_constructor_default_scopes(self):
         from google.cloud.spanner import client as MUT
 
-        expected_scopes = [
+        expected_scopes = (
             MUT.SPANNER_ADMIN_SCOPE,
-        ]
+        )
         creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds)
 
@@ -80,26 +81,24 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner import client as MUT
 
         CUSTOM_USER_AGENT = 'custom-application'
-        expected_scopes = [
+        expected_scopes = (
             MUT.SPANNER_ADMIN_SCOPE,
-        ]
+        )
         creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds,
                                       user_agent=CUSTOM_USER_AGENT)
 
     def test_constructor_implicit_credentials(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
-
         creds = _make_credentials()
 
-        def mock_get_credentials():
-            return creds
-
-        with _Monkey(MUT, get_credentials=mock_get_credentials):
+        patch = mock.patch(
+            'google.auth.default', return_value=(creds, None))
+        with patch as default:
             self._constructor_test_helper(
                 None, None,
                 expected_creds=creds.with_scopes.return_value)
+
+        default.assert_called_once_with()
 
     def test_constructor_credentials_wo_create_scoped(self):
         creds = _make_credentials()
@@ -146,66 +145,79 @@ class TestClient(unittest.TestCase):
                              __version__)
 
     def test_instance_admin_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
+        from google.cloud.spanner import __version__
+        from google.cloud.spanner.client import SPANNER_ADMIN_SCOPE
 
-        creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds)
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
-        class _Client(object):
-            def __init__(self, *args, **kwargs):
-                self.args = args
-                self.kwargs = kwargs
+        patch = mock.patch('google.cloud.spanner.client.InstanceAdminClient')
 
-        with _Monkey(MUT, InstanceAdminClient=_Client):
+        with patch as instance_admin_client:
             api = client.instance_admin_api
 
-        self.assertTrue(isinstance(api, _Client))
+        self.assertIs(api, instance_admin_client.return_value)
+
+        # API instance is cached
         again = client.instance_admin_api
-        self.assertTrue(again is api)
-        self.assertEqual(api.kwargs['lib_name'], 'gccl')
-        self.assertIs(api.kwargs['credentials'], client.credentials)
+        self.assertIs(again, api)
+
+        instance_admin_client.assert_called_once_with(
+            lib_name='gccl',
+            lib_version=__version__,
+            credentials=credentials.with_scopes.return_value)
+
+        credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_database_admin_api(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import client as MUT
+        from google.cloud.spanner import __version__
+        from google.cloud.spanner.client import SPANNER_ADMIN_SCOPE
 
-        creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds)
+        credentials = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=credentials)
+        expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
-        class _Client(object):
-            def __init__(self, *args, **kwargs):
-                self.args = args
-                self.kwargs = kwargs
+        patch = mock.patch('google.cloud.spanner.client.DatabaseAdminClient')
 
-        with _Monkey(MUT, DatabaseAdminClient=_Client):
+        with patch as database_admin_client:
             api = client.database_admin_api
 
-        self.assertTrue(isinstance(api, _Client))
+        self.assertIs(api, database_admin_client.return_value)
+
+        # API instance is cached
         again = client.database_admin_api
-        self.assertTrue(again is api)
-        self.assertEqual(api.kwargs['lib_name'], 'gccl')
-        self.assertIs(api.kwargs['credentials'], client.credentials)
+        self.assertIs(again, api)
+
+        database_admin_client.assert_called_once_with(
+            lib_name='gccl',
+            lib_version=__version__,
+            credentials=credentials.with_scopes.return_value)
+
+        credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_copy(self):
-        credentials = _Credentials('value')
+        credentials = _make_credentials()
+        # Make sure it "already" is scoped.
+        credentials.requires_scopes = False
+
         client = self._make_one(
             project=self.PROJECT,
             credentials=credentials,
             user_agent=self.USER_AGENT)
 
         new_client = client.copy()
-        self.assertEqual(new_client._credentials, client._credentials)
+        self.assertIs(new_client._credentials, client._credentials)
         self.assertEqual(new_client.project, client.project)
         self.assertEqual(new_client.user_agent, client.user_agent)
 
     def test_credentials_property(self):
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
-        self.assertTrue(client.credentials is credentials)
+        self.assertIs(client.credentials, credentials.with_scopes.return_value)
 
     def test_project_name_property(self):
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         project_name = 'projects/' + self.PROJECT
         self.assertEqual(client.project_name, project_name)
@@ -215,7 +227,7 @@ class TestClient(unittest.TestCase):
         from google.gax import INITIAL_PAGE
         from google.cloud.spanner.client import InstanceConfig
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
@@ -236,20 +248,19 @@ class TestClient(unittest.TestCase):
         project, page_size, options = api._listed_instance_configs
         self.assertEqual(project, self.PATH)
         self.assertEqual(page_size, None)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
         self.assertEqual(
             options.kwargs['metadata'],
             [('google-cloud-resource-prefix', client.project_name)])
 
     def test_list_instance_configs_w_paging(self):
-        import six
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.spanner.client import InstanceConfig
 
         SIZE = 15
         TOKEN_RETURNED = 'TOKEN_RETURNED'
         TOKEN_PASSED = 'TOKEN_PASSED'
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
@@ -282,7 +293,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
         from google.cloud.spanner.instance import Instance
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         instance = client.instance(self.INSTANCE_ID)
@@ -292,12 +303,12 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(instance.configuration_name)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertEqual(instance.node_count, DEFAULT_NODE_COUNT)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_instance_factory_explicit(self):
         from google.cloud.spanner.instance import Instance
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
 
         instance = client.instance(self.INSTANCE_ID, self.CONFIGURATION_NAME,
@@ -309,14 +320,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.configuration_name, self.CONFIGURATION_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
-        self.assertTrue(instance._client is client)
+        self.assertIs(instance._client, client)
 
     def test_list_instances_wo_paging(self):
         from google.cloud._testing import _GAXPageIterator
         from google.gax import INITIAL_PAGE
         from google.cloud.spanner.instance import Instance
 
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
@@ -342,20 +353,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project, self.PATH)
         self.assertEqual(filter_, 'name:TEST')
         self.assertEqual(page_size, None)
-        self.assertTrue(options.page_token is INITIAL_PAGE)
+        self.assertIs(options.page_token, INITIAL_PAGE)
         self.assertEqual(
             options.kwargs['metadata'],
             [('google-cloud-resource-prefix', client.project_name)])
 
     def test_list_instances_w_paging(self):
-        import six
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.spanner.instance import Instance
 
         SIZE = 15
         TOKEN_RETURNED = 'TOKEN_RETURNED'
         TOKEN_PASSED = 'TOKEN_PASSED'
-        credentials = _Credentials()
+        credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client.connection = object()
         api = client._instance_admin_api = _FauxInstanceAdminAPI()
@@ -389,22 +399,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             options.kwargs['metadata'],
             [('google-cloud-resource-prefix', client.project_name)])
-
-
-class _Credentials(object):
-
-    scopes = None
-
-    def __init__(self, access_token=None):
-        self._access_token = access_token
-        self._tokens = []
-
-    def create_scoped(self, scope):
-        self.scopes = scope
-        return self
-
-    def __eq__(self, other):
-        return self._access_token == other._access_token
 
 
 class _FauxInstanceAdminAPI(object):

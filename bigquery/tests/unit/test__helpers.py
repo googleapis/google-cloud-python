@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class Test_not_null(unittest.TestCase):
 
@@ -765,7 +767,7 @@ class Test_EnumProperty(unittest.TestCase):
     def test_it(self):
 
         class Sub(self._get_target_class()):
-            ALLOWED = ('FOO', 'BAR', 'BAZ')
+            pass
 
         class Configuration(object):
             _attr = None
@@ -777,9 +779,6 @@ class Test_EnumProperty(unittest.TestCase):
                 self._configuration = Configuration()
 
         wrapper = Wrapper()
-        with self.assertRaises(ValueError):
-            wrapper.attr = 'BOGUS'
-
         wrapper.attr = 'FOO'
         self.assertEqual(wrapper.attr, 'FOO')
         self.assertEqual(wrapper._configuration._attr, 'FOO')
@@ -817,6 +816,18 @@ class Test_UDFResourcesProperty(unittest.TestCase):
         _, klass = self._descriptor_and_klass()
         instance = klass()
         self.assertEqual(instance.udf_resources, [])
+
+    def test_resource_equality(self):
+        from google.cloud.bigquery._helpers import UDFResource
+
+        resource1a = UDFResource('resourceUri', 'gs://bucket/file.js')
+        resource1b = UDFResource('resourceUri', 'gs://bucket/file.js')
+        resource2 = UDFResource('resourceUri', 'gs://bucket/other.js')
+
+        self.assertEqual(resource1a, resource1b)
+        self.assertNotEqual(resource1a, resource2)
+        self.assertNotEqual(resource1a, object())
+        self.assertEqual(resource1a, mock.ANY)
 
     def test_instance_getter_w_non_empty_list(self):
         from google.cloud.bigquery._helpers import UDFResource

@@ -8,12 +8,10 @@ Spanner
   client-usage
   instance-usage
   database-usage
-  session-crud-usage
-  session-implicit-txn-usage
-  session-pool-usage
   batch-usage
   snapshot-usage
   transaction-usage
+  advanced-session-pool-topics
 
   client-api
   instance-api
@@ -40,5 +38,4 @@ In the hierarchy of API concepts
 
 .. _Cloud Spanner: https://cloud.google.com/spanner/docs/
 .. _gRPC: http://www.grpc.io/
-.. _grpcio: https://pypi.python.org/pypi/grpcio
-
+.. _grpcio: https://pypi.org/project/grpcio/

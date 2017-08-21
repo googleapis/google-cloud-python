@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,6 +25,9 @@ def unit_tests(session, python_version):
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
 
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-' + python_version
+
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov')
     session.install('-e', '.')
@@ -36,6 +39,10 @@ def unit_tests(session, python_version):
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'setup'
+
     session.install('docutils', 'pygments')
     session.run(
         'python', 'setup.py', 'check', '--restructuredtext', '--strict')
