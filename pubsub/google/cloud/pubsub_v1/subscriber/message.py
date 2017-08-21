@@ -29,12 +29,13 @@ class Message(object):
     :class:`~.pubsub_v1.subscriber.consumer.BaseConsumer`.)
 
     .. note::
+
         Messages in Google Cloud Pub/Sub are opaque blobs of bytes. This
         means that the ``data`` attribute will consistently be a
         :class:`bytes` object. If you want a text string, you should
         use :meth:`bytes.decode`.
 
-    Properties:
+    Attributes:
         message_id (str): The message ID. In general, you should not need
             to use this directly.
         data (bytes): The data in the message.

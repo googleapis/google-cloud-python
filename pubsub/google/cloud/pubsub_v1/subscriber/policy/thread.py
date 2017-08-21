@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 class Policy(base.BasePolicy):
-    """A consumer class based on :class:``threading.Thread``.
+    """A consumer class based on :class:`threading.Thread`.
 
     This consumer handles the connection to the Pub/Sub service and all of
     the concurrency needs.
@@ -45,8 +45,8 @@ class Policy(base.BasePolicy):
             subscription (str): The name of the subscription. The canonical
                 format for this is
                 ``projects/{project}/subscriptions/{subscription}``.
-            flow_control (~.pubsub_v1.types.FlowControl): The flow control
-                settings.
+            flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow
+                control settings.
         """
         # Default the callback to a no-op; it is provided by `.open`.
         self._callback = lambda message: None

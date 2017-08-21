@@ -861,16 +861,14 @@ class SubscriberClient(object):
             Format is ``projects/{project}/snapshots/{snap}``.
           subscription (string): The subscription whose backlog the snapshot retains.
             Specifically, the created snapshot is guaranteed to retain:
-             (a) The existing backlog on the subscription. More precisely, this is
-            ::
 
+               - The existing backlog on the subscription. More precisely, this is
                  defined as the messages in the subscription's backlog that are
                  unacknowledged upon the successful completion of the
-                 `CreateSnapshot` request; as well as:
-             (b) Any messages published to the subscription's topic following the
-            ::
-
+                 `CreateSnapshot` request
+               - Any messages published to the subscription's topic following the
                  successful completion of the CreateSnapshot request.
+
             Format is ``projects/{project}/subscriptions/{sub}``.
           options (:class:`google.gax.CallOptions`): Overrides the default
             settings for this call, e.g, timeout, retries etc.
