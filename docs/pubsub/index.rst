@@ -105,9 +105,9 @@ use of a callback.
 To learn more, consult the :doc:`subscriber documentation <subscriber/index>`.
 
 
-*************
-API Reference
-*************
+**********
+Learn More
+**********
 
 .. toctree::
   :maxdepth: 3

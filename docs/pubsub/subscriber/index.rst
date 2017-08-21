@@ -64,8 +64,56 @@ This will return an object with an
 this method will actually begin consumption of the subscription.
 
 
-Learn More
-----------
+Subscription Callbacks
+----------------------
+
+Because subscriptions in this Pub/Sub client are opened asychronously,
+processing the messages that are yielded by the subscription is handled
+through **callbacks**.
+
+The basic idea: Define a function that takes one argument; this argument
+will be a :class:`~.pubsub_v1.subscriber.message.Message` instance. This
+function should do whatever processing is necessary. At the end, the
+function should :meth:`~.pubsub_v1.subscriber.message.Message.ack` the
+message.
+
+When you call :meth:`~.pubsub_v1.subscriber.policy.thread.Policy.open`, you
+must pass the callback that will be used.
+
+Here is an example:
+
+.. code-block:: python
+
+    # Define the callback.
+    # Note that the callback is defined *before* the subscription is opened.
+    def callback(message):
+        do_something_with(message)  # Replace this with your acutal logic.
+        message.ack()
+
+    # Open the subscription, passing the callback.
+    subscription.open(callback)
+
+Explaining Ack
+--------------
+
+In Pub/Sub, the term **ack** stands for "acknowledge". You should ack a
+message when your processing of that message *has completed*. When you ack
+a message, you are telling Pub/Sub that you do not need to see it again.
+
+It might be tempting to ack messages immediately on receipt. While there
+are valid use cases for this, in general it is unwise. The reason why: If
+there is some error or edge case in your processing logic, and processing
+of the message fails, you will have already told Pub/Sub that you successfully
+processed the message. By contrast, if you ack only upon completion, then
+Pub/Sub will eventually re-deliver the unacknowledged message.
+
+It is also possible to **nack** a message, which is the opposite. When you
+nack, it tells Pub/Sub that you are unable or unwilling to deal with the
+message, and that the service should redeliver it.
+
+
+API Reference
+-------------
 
 .. toctree::
   :maxdepth: 2
