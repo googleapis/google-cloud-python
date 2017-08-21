@@ -16,14 +16,19 @@ import mock
 
 import pytest
 
+from google.auth import credentials
 from google.cloud.gapic.pubsub.v1 import publisher_client
-
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 
 
+def create_client():
+    creds = mock.Mock(spec=credentials.Credentials)
+    return publisher.Client(credentials=creds)
+
+
 def test_init():
-    client = publisher.Client()
+    client = create_client()
 
     # A plain client should have an `api` (the underlying GAPIC) and a
     # batch settings object, which should have the defaults.
@@ -35,7 +40,7 @@ def test_init():
 
 def test_batch_accepting():
     """Establish that an existing batch is returned if it accepts messages."""
-    client = publisher.Client()
+    client = create_client()
     message = types.PubsubMessage(data=b'foo')
 
     # At first, there are no batches, so this should return a new batch
@@ -52,7 +57,7 @@ def test_batch_accepting():
 
 
 def test_batch_without_autocreate():
-    client = publisher.Client()
+    client = create_client()
     message = types.PubsubMessage(data=b'foo')
 
     # If `create=False` is sent, then when the batch is not found, None
@@ -64,7 +69,7 @@ def test_batch_without_autocreate():
 
 
 def test_publish():
-    client = publisher.Client()
+    client = create_client()
 
     # Use a mock in lieu of the actual batch class; set the mock up to claim
     # indiscriminately that it accepts all messages.
@@ -92,7 +97,7 @@ def test_publish():
 
 
 def test_publish_data_not_bytestring_error():
-    client = publisher.Client()
+    client = create_client()
     with pytest.raises(TypeError):
         client.publish('topic_name', u'This is a text string.')
     with pytest.raises(TypeError):
@@ -100,7 +105,7 @@ def test_publish_data_not_bytestring_error():
 
 
 def test_publish_attrs_bytestring():
-    client = publisher.Client()
+    client = create_client()
 
     # Use a mock in lieu of the actual batch class; set the mock up to claim
     # indiscriminately that it accepts all messages.
@@ -118,13 +123,13 @@ def test_publish_attrs_bytestring():
 
 
 def test_publish_attrs_type_error():
-    client = publisher.Client()
+    client = create_client()
     with pytest.raises(TypeError):
         client.publish('topic_name', b'foo', answer=42)
 
 
 def test_gapic_instance_method():
-    client = publisher.Client()
+    client = create_client()
     with mock.patch.object(client.api, '_create_topic', autospec=True) as ct:
         client.create_topic('projects/foo/topics/bar')
         assert ct.call_count == 1
@@ -133,6 +138,6 @@ def test_gapic_instance_method():
 
 
 def test_gapic_class_method():
-    client = publisher.Client()
+    client = create_client()
     answer = client.topic_path('foo', 'bar')
     assert answer == 'projects/foo/topics/bar'

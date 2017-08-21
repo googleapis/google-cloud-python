@@ -14,6 +14,9 @@
 
 from __future__ import absolute_import
 
+import mock
+
+from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher.batch.thread import Batch
@@ -29,7 +32,8 @@ def create_batch(status=None, settings=types.BatchSettings()):
     Returns:
         ~.pubsub_v1.publisher.batch.thread.Batch: The batch object
     """
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     batch = Batch(client, 'topic_name', settings, autocommit=False)
     if status:
         batch._status = status
