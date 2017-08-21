@@ -70,11 +70,9 @@ class Batch(base.BaseBatch):
         self._topic = topic
         self.message_ids = {}
 
-        # This is purely internal tracking.
+        # If max latency is specified, start a thread to monitor the batch and
+        # commit when the max latency is reached.
         self._thread = None
-
-        # Continually monitor the thread until it is time to commit the
-        # batch, or the batch is explicitly committed.
         if autocommit and self._settings.max_latency < float('inf'):
             self._thread = threading.Thread(target=self.monitor)
             self._thread.start()
