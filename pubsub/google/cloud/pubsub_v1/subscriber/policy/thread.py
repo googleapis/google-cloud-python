@@ -88,7 +88,8 @@ class Policy(base.BasePolicy):
         # Start the thread to pass the requests.
         logger.debug('Starting callback requests worker.')
         self._callback = callback
-        self._consumer.helper_threads.start('callback requests worker',
+        self._consumer.helper_threads.start(
+            'callback requests worker',
             self._request_queue,
             self._callback_requests,
         )
