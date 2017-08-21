@@ -23,7 +23,7 @@ from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher.batch import base
 
 
-class Batch(base.BaseBatch):
+class Batch(base.Batch):
     """A batch of messages.
 
     The batch is the internal group of messages which are either awaiting

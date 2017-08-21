@@ -21,7 +21,7 @@ import six
 
 
 @six.add_metaclass(abc.ABCMeta)
-class BaseBatch(object):
+class Batch(object):
     """The base batching class for Pub/Sub publishing.
 
     Although the :class:`~.pubsub_v1.publisher.batch.thread.Batch` class, based
@@ -49,26 +49,6 @@ class BaseBatch(object):
     def __len__(self):
         """Return the number of messages currently in the batch."""
         return len(self.messages)
-
-    @property
-    @abc.abstractmethod
-    def client(self):
-        """Return the client used to create this batch.
-
-        Returns:
-            ~.pubsub_v1.client.PublisherClient: A publisher client.
-        """
-        raise NotImplementedError
-
-    @property
-    @abc.abstractmethod
-    def client(self):
-        """Return the client used to create this batch.
-
-        Returns:
-            ~.pubsub_v1.client.PublisherClient: A publisher client.
-        """
-        raise NotImplementedError
 
     @property
     @abc.abstractmethod
