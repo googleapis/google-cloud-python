@@ -275,6 +275,8 @@ class HTTPIterator(Iterator):
             signature takes the :class:`Iterator` that started the page,
             the :class:`Page` that was started and the dictionary containing
             the page response.
+        next_token (str): The name of the field used in the response for page
+            tokens.
 
     .. autoattribute:: pages
     """
@@ -283,13 +285,13 @@ class HTTPIterator(Iterator):
     _PAGE_TOKEN = 'pageToken'
     _MAX_RESULTS = 'maxResults'
     _NEXT_TOKEN = 'nextPageToken'
-    _RESERVED_PARAMS = frozenset([_PAGE_TOKEN, _MAX_RESULTS])
+    _RESERVED_PARAMS = frozenset([_PAGE_TOKEN])
     _HTTP_METHOD = 'GET'
 
     def __init__(self, client, api_request, path, item_to_value,
                  items_key=_DEFAULT_ITEMS_KEY,
                  page_token=None, max_results=None, extra_params=None,
-                 page_start=_do_nothing_page_start):
+                 page_start=_do_nothing_page_start, next_token=_NEXT_TOKEN):
         super(HTTPIterator, self).__init__(
             client, item_to_value, page_token=page_token,
             max_results=max_results)
@@ -298,6 +300,7 @@ class HTTPIterator(Iterator):
         self._items_key = items_key
         self.extra_params = extra_params
         self._page_start = page_start
+        self._next_token = next_token
         # Verify inputs / provide defaults.
         if self.extra_params is None:
             self.extra_params = {}
@@ -327,7 +330,7 @@ class HTTPIterator(Iterator):
             items = response.get(self._items_key, ())
             page = Page(self, items, self._item_to_value)
             self._page_start(self, page, response)
-            self.next_page_token = response.get(self._NEXT_TOKEN)
+            self.next_page_token = response.get(self._next_token)
             return page
         else:
             return None

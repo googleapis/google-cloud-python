@@ -52,8 +52,7 @@ class Cursor(object):
         # a single row at a time.
         self.arraysize = 1
         self._query_data = None
-        self._page_token = None
-        self._has_fetched_all_rows = True
+        self._query_results = None
 
     def close(self):
         """No-op."""
@@ -133,9 +132,8 @@ class Cursor(object):
         :param job_id: (Optional) The job_id to use. If not set, a job ID
             is generated at random.
         """
+        self._query_data = None
         self._query_results = None
-        self._page_token = None
-        self._has_fetched_all_rows = False
         client = self.connection._client
         if job_id is None:
             job_id = str(uuid.uuid4())
@@ -161,8 +159,7 @@ class Cursor(object):
             raise exceptions.DatabaseError(query_job.errors)
 
         query_results = query_job.query_results()
-        self._query_data = iter(
-            query_results.fetch_data(max_results=self.arraysize))
+        self._query_results = query_results
         self._set_rowcount(query_results)
         self._set_description(query_results.schema)
 
@@ -178,6 +175,22 @@ class Cursor(object):
         for parameters in seq_of_parameters:
             self.execute(operation, parameters)
 
+    def _try_fetch(self, size=None):
+        """Try to start fetching data, if not yet started.
+
+        Mutates self to indicate that iteration has started.
+        """
+        if self._query_results is None:
+            raise exceptions.InterfaceError(
+                'No query results: execute() must be called before fetch.')
+
+        if size is None:
+            size = self.arraysize
+
+        if self._query_data is None:
+            self._query_data = iter(
+                self._query_results.fetch_data(max_results=size))
+
     def fetchone(self):
         """Fetch a single row from the results of the last ``execute*()`` call.
 
@@ -188,10 +201,7 @@ class Cursor(object):
         :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`
             if called before ``execute()``.
         """
-        if self._query_data is None:
-            raise exceptions.InterfaceError(
-                'No query results: execute() must be called before fetch.')
-
+        self._try_fetch()
         try:
             return six.next(self._query_data)
         except StopIteration:
@@ -215,17 +225,17 @@ class Cursor(object):
         :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`
             if called before ``execute()``.
         """
-        if self._query_data is None:
-            raise exceptions.InterfaceError(
-                'No query results: execute() must be called before fetch.')
         if size is None:
             size = self.arraysize
 
+        self._try_fetch(size=size)
         rows = []
+
         for row in self._query_data:
             rows.append(row)
             if len(rows) >= size:
                 break
+
         return rows
 
     def fetchall(self):
@@ -236,9 +246,7 @@ class Cursor(object):
         :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`
             if called before ``execute()``.
         """
-        if self._query_data is None:
-            raise exceptions.InterfaceError(
-                'No query results: execute() must be called before fetch.')
+        self._try_fetch()
         return [row for row in self._query_data]
 
     def setinputsizes(self, sizes):
