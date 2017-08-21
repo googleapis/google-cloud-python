@@ -1085,6 +1085,7 @@ class QueryJob(_AsyncJob):
         self.udf_resources = udf_resources
         self.query_parameters = query_parameters
         self._configuration = _AsyncQueryConfiguration()
+        self._query_results = None
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
     """See
@@ -1284,23 +1285,25 @@ class QueryJob(_AsyncJob):
         :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
         :returns: results instance
         """
-        from google.cloud.bigquery.query import QueryResults
-        return QueryResults.from_query_job(self)
+        if not self._query_results:
+            self._query_results = self._client.get_query_results(self.name)
+        return self._query_results
 
-    def result(self, timeout=None):
-        """Start the job and wait for it to complete and get the result.
+    def done(self):
+        """Refresh the job and checks if it is complete.
 
-        :type timeout: int
-        :param timeout: How long to wait for job to complete before raising
-            a :class:`TimeoutError`.
-
-        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
-        :returns: The query results.
-
-        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
-            failed or  :class:`TimeoutError` if the job did not complete in the
-            given timeout.
+        :rtype: bool
+        :returns: True if the job is complete, False otherwise.
         """
-        super(QueryJob, self).result(timeout=timeout)
-        # Return a QueryResults instance instead of returning the job.
-        return self.query_results()
+        # Do not refresh is the state is already done, as the job will not
+        # change once complete.
+        if self.state != _DONE_STATE:
+            self._query_results = self._client.get_query_results(self.name)
+
+            # Only reload the job once we know the query is complete.
+            # This will ensure that fields such as the destination table are
+            # correctly populated.
+            if self._query_results.complete:
+                self.reload()
+
+        return self.state == _DONE_STATE

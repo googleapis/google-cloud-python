@@ -1093,7 +1093,8 @@ class TestBigQuery(unittest.TestCase):
             str(uuid.uuid4()), 'SELECT 1')
         query_job.use_legacy_sql = False
 
-        iterator = query_job.result(timeout=JOB_TIMEOUT).fetch_data()
+        query_job = query_job.result(timeout=JOB_TIMEOUT)
+        iterator = query_job.query_results().fetch_data()
         rows = list(iterator)
         self.assertEqual(rows, [(1,)])
 
