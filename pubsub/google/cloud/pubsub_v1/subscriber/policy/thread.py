@@ -63,7 +63,7 @@ class Policy(base.BasePolicy):
 
         # Also maintain a request queue and an executor.
         logger.debug('Creating callback requests thread (not starting).')
-        self._executor = futures.ThreadPoolExecutor()
+        self._executor = futures.ThreadPoolExecutor(max_workers=10)
         self._callback_requests = helper_threads.QueueCallbackThread(
             self._request_queue,
             self.on_callback_request,

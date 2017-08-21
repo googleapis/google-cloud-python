@@ -20,6 +20,7 @@ import mock
 
 import pytest
 
+from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import helper_threads
@@ -28,7 +29,8 @@ from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def create_policy():
-    client = subscriber.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
     return thread.Policy(client, 'sub_name_c')
 
 

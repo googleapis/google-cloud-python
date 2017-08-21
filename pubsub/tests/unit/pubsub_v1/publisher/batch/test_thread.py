@@ -19,10 +19,16 @@ import mock
 
 import pytest
 
+from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher.batch.thread import Batch
+
+
+def create_client():
+    creds = mock.Mock(spec=credentials.Credentials)
+    return publisher.Client(credentials=creds)
 
 
 def create_batch(autocommit=False, **batch_settings):
@@ -38,14 +44,14 @@ def create_batch(autocommit=False, **batch_settings):
     Returns:
         ~.pubsub_v1.publisher.batch.thread.Batch: A batch object.
     """
-    client = publisher.Client()
+    client = create_client()
     settings = types.BatchSettings(**batch_settings)
     return Batch(client, 'topic_name', settings, autocommit=autocommit)
 
 
 def test_init():
     """Establish that a monitor thread is usually created on init."""
-    client = publisher.Client()
+    client = create_client()
 
     # Do not actually create a thread, but do verify that one was created;
     # it should be running the batch's "monitor" method (which commits the
@@ -64,7 +70,7 @@ def test_init_infinite_latency():
 
 
 def test_client():
-    client = publisher.Client()
+    client = create_client()
     settings = types.BatchSettings()
     batch = Batch(client, 'topic_name', settings, autocommit=False)
     assert batch.client is client

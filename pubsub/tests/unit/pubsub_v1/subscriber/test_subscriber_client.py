@@ -14,23 +14,29 @@
 
 import mock
 
+from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
+def create_client():
+    creds = mock.Mock(spec=credentials.Credentials)
+    return subscriber.Client(credentials=creds)
+
+
 def test_init():
-    client = subscriber.Client()
+    client = create_client()
     assert client._policy_class is thread.Policy
 
 
 def test_subscribe():
-    client = subscriber.Client()
+    client = create_client()
     subscription = client.subscribe('sub_name_a')
     assert isinstance(subscription, thread.Policy)
 
 
 def test_subscribe_with_callback():
-    client = subscriber.Client()
+    client = create_client()
     callback = mock.Mock()
     with mock.patch.object(thread.Policy, 'open') as open_:
         subscription = client.subscribe('sub_name_b', callback)

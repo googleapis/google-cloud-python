@@ -18,6 +18,7 @@ import mock
 
 import pytest
 
+from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import consumer
@@ -26,7 +27,8 @@ from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def create_consumer():
-    client = subscriber.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
     subscription = client.subscribe('sub_name_e')
     return consumer.Consumer(policy=subscription)
 

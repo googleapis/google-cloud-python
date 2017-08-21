@@ -16,13 +16,15 @@ import time
 
 import mock
 
+from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def create_policy(flow_control=types.FlowControl()):
-    client = subscriber.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
     return thread.Policy(client, 'sub_name_d', flow_control=flow_control)
 
 
