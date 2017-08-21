@@ -1,7 +1,7 @@
 Python Client for DLP API (`Alpha`_)
 ==================================================================================================
 
-Idiomatic Python client for `DLP API`_
+`DLP API`_: The Google Data Loss Prevention API provides methods for detection of privacy-sensitive fragments in text, images, and Google Cloud Platform storage repositories.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -17,11 +17,11 @@ Quick Start
 In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
-2. `Enable the monitoring api.`_
+2. `Enable the DLP API.`_
 3. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
-.. _Enable the dlp api.:  https://cloud.google.com/dlp
+.. _Enable the DLP API.:  https://cloud.google.com/dlp
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/google-cloud-auth
 
 Installation
@@ -58,6 +58,26 @@ Windows
     virtualenv <your-env>
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install gapic-google-cloud-dlp-v2beta1
+
+Preview
+~~~~~~~
+
+DlpServiceClient
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: py
+
+  from google.cloud import dlp_v2beta1
+  client = dlp_v2beta1.DlpServiceClient()
+  name = 'EMAIL_ADDRESS'
+  info_types_element = {'name': name}
+  info_types = [info_types_element]
+  inspect_config = {'info_types': info_types}
+  type_ = 'text/plain'
+  value = 'My email is example@example.com.'
+  items_element = {'type': type_, 'value': value}
+  items = [items_element]
+  response = client.inspect_content(inspect_config, items)
 
 Next Steps
 ~~~~~~~~~~

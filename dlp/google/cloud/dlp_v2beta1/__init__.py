@@ -14,15 +14,17 @@
 
 from __future__ import absolute_import
 
-from google.cloud.gapic.privacy.dlp.v2beta1.dlp_service_client import DlpServiceClient
-from google.cloud.gapic.privacy.dlp.v2beta1 import enums
-
 from google.cloud.dlp_v2beta1 import types
+from google.cloud.dlp_v2beta1.gapic import dlp_service_client
+from google.cloud.dlp_v2beta1.gapic import enums
 
+
+class DlpServiceClient(dlp_service_client.DlpServiceClient):
+    __doc__ = dlp_service_client.DlpServiceClient.__doc__
+    enums = enums
 
 
 __all__ = (
     'enums',
     'types',
-    'DlpServiceClient',
-)
+    'DlpServiceClient', )

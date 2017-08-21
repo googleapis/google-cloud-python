@@ -17,8 +17,9 @@ import mock
 import unittest
 
 from google.gax import errors
+from google.rpc import status_pb2
 
-from google.cloud.gapic.privacy.dlp.v2beta1 import dlp_service_client
+from google.cloud import dlp_v2beta1
 from google.cloud.proto.privacy.dlp.v2beta1 import dlp_pb2
 from google.cloud.proto.privacy.dlp.v2beta1 import storage_pb2
 from google.longrunning import operations_pb2
@@ -35,14 +36,21 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        inspect_config = dlp_pb2.InspectConfig()
-        items = []
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
 
         # Mock response
-        expected_response = dlp_pb2.InspectContentResponse()
+        expected_response = {}
+        expected_response = dlp_pb2.InspectContentResponse(**expected_response)
         grpc_stub.InspectContent.return_value = expected_response
 
         response = client.inspect_content(inspect_config, items)
@@ -66,11 +74,17 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        inspect_config = dlp_pb2.InspectConfig()
-        items = []
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
 
         # Mock exception response
         grpc_stub.InspectContent.side_effect = CustomException()
@@ -84,15 +98,29 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        inspect_config = dlp_pb2.InspectConfig()
-        items = []
-        replace_configs = []
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
+        name_2 = 'EMAIL_ADDRESS'
+        info_type = {'name': name_2}
+        replace_with = 'REDACTED'
+        replace_configs_element = {
+            'info_type': info_type,
+            'replace_with': replace_with
+        }
+        replace_configs = [replace_configs_element]
 
         # Mock response
-        expected_response = dlp_pb2.RedactContentResponse()
+        expected_response = {}
+        expected_response = dlp_pb2.RedactContentResponse(**expected_response)
         grpc_stub.RedactContent.return_value = expected_response
 
         response = client.redact_content(inspect_config, items,
@@ -119,12 +147,25 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        inspect_config = dlp_pb2.InspectConfig()
-        items = []
-        replace_configs = []
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
+        name_2 = 'EMAIL_ADDRESS'
+        info_type = {'name': name_2}
+        replace_with = 'REDACTED'
+        replace_configs_element = {
+            'info_type': info_type,
+            'replace_with': replace_with
+        }
+        replace_configs = [replace_configs_element]
 
         # Mock exception response
         grpc_stub.RedactContent.side_effect = CustomException()
@@ -138,22 +179,31 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        inspect_config = dlp_pb2.InspectConfig()
-        storage_config = storage_pb2.StorageConfig()
-        output_config = dlp_pb2.OutputStorageConfig()
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        url = 'gs://example_bucket/example_file.png'
+        file_set = {'url': url}
+        cloud_storage_options = {'file_set': file_set}
+        storage_config = {'cloud_storage_options': cloud_storage_options}
+        output_config = {}
 
         # Mock response
-        name = 'name3373707'
-        done = True
-        expected_response = operations_pb2.Operation(name=name, done=done)
-        grpc_stub.CreateInspectOperation.return_value = expected_response
+        name_2 = 'name2-1052831874'
+        expected_response = {'name': name_2}
+        expected_response = dlp_pb2.InspectOperationResult(**expected_response)
+        operation = operations_pb2.Operation(
+            name='operations/test_create_inspect_operation', done=True)
+        operation.response.Pack(expected_response)
+        grpc_stub.CreateInspectOperation.return_value = operation
 
         response = client.create_inspect_operation(
             inspect_config, storage_config, output_config)
-        self.assertEqual(expected_response, response)
+        self.assertEqual(expected_response, response.result())
 
         grpc_stub.CreateInspectOperation.assert_called_once()
         args, kwargs = grpc_stub.CreateInspectOperation.call_args
@@ -168,25 +218,36 @@ class TestDlpServiceClient(unittest.TestCase):
             output_config=output_config)
         self.assertEqual(expected_request, actual_request)
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
     @mock.patch('google.gax.config.create_stub', spec=True)
     def test_create_inspect_operation_exception(self, mock_create_stub):
         # Mock gRPC layer
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        inspect_config = dlp_pb2.InspectConfig()
-        storage_config = storage_pb2.StorageConfig()
-        output_config = dlp_pb2.OutputStorageConfig()
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        url = 'gs://example_bucket/example_file.png'
+        file_set = {'url': url}
+        cloud_storage_options = {'file_set': file_set}
+        storage_config = {'cloud_storage_options': cloud_storage_options}
+        output_config = {}
 
         # Mock exception response
-        grpc_stub.CreateInspectOperation.side_effect = CustomException()
+        error = status_pb2.Status()
+        operation = operations_pb2.Operation(
+            name='operations/test_create_inspect_operation_exception',
+            done=True)
+        operation.error.CopyFrom(error)
+        grpc_stub.CreateInspectOperation.return_value = operation
 
-        self.assertRaises(errors.GaxError, client.create_inspect_operation,
-                          inspect_config, storage_config, output_config)
+        response = client.create_inspect_operation(
+            inspect_config, storage_config, output_config)
+        self.assertEqual(error, response.exception())
 
     @mock.patch('google.gax.config.create_stub', spec=True)
     def test_list_inspect_findings(self, mock_create_stub):
@@ -194,15 +255,16 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
         name = client.result_path('[RESULT]')
 
         # Mock response
         next_page_token = 'nextPageToken-1530815211'
+        expected_response = {'next_page_token': next_page_token}
         expected_response = dlp_pb2.ListInspectFindingsResponse(
-            next_page_token=next_page_token)
+            **expected_response)
         grpc_stub.ListInspectFindings.return_value = expected_response
 
         response = client.list_inspect_findings(name)
@@ -225,7 +287,7 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
         name = client.result_path('[RESULT]')
@@ -241,14 +303,15 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        category = 'category50511102'
-        language_code = 'languageCode-412800396'
+        category = 'PII'
+        language_code = 'en'
 
         # Mock response
-        expected_response = dlp_pb2.ListInfoTypesResponse()
+        expected_response = {}
+        expected_response = dlp_pb2.ListInfoTypesResponse(**expected_response)
         grpc_stub.ListInfoTypes.return_value = expected_response
 
         response = client.list_info_types(category, language_code)
@@ -272,11 +335,11 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        category = 'category50511102'
-        language_code = 'languageCode-412800396'
+        category = 'PII'
+        language_code = 'en'
 
         # Mock exception response
         grpc_stub.ListInfoTypes.side_effect = CustomException()
@@ -290,13 +353,15 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        language_code = 'languageCode-412800396'
+        language_code = 'en'
 
         # Mock response
-        expected_response = dlp_pb2.ListRootCategoriesResponse()
+        expected_response = {}
+        expected_response = dlp_pb2.ListRootCategoriesResponse(
+            **expected_response)
         grpc_stub.ListRootCategories.return_value = expected_response
 
         response = client.list_root_categories(language_code)
@@ -320,10 +385,10 @@ class TestDlpServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = dlp_service_client.DlpServiceClient()
+        client = dlp_v2beta1.DlpServiceClient()
 
         # Mock request
-        language_code = 'languageCode-412800396'
+        language_code = 'en'
 
         # Mock exception response
         grpc_stub.ListRootCategories.side_effect = CustomException()

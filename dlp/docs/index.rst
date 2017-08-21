@@ -20,7 +20,7 @@ APIs
 
 .. autosummary::
 
-   google.cloud.gapic.privacy.dlp.v2beta1.dlp_service_client
+   google.cloud.dlp_v2beta1.gapic.dlp_service_client
 
 
 Contents

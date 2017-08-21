@@ -14,16 +14,16 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/proto/privacy/dlp/v2beta1/storage.proto',
   package='google.privacy.dlp.v2beta1',
   syntax='proto3',
-  serialized_pb=_b('\n4google/cloud/proto/privacy/dlp/v2beta1/storage.proto\x12\x1agoogle.privacy.dlp.v2beta1\x1a\x1cgoogle/api/annotations.proto\"\x18\n\x08InfoType\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1e\n\x07\x46ieldId\x12\x13\n\x0b\x63olumn_name\x18\x01 \x01(\t\"7\n\x0bPartitionId\x12\x12\n\nproject_id\x18\x02 \x01(\t\x12\x14\n\x0cnamespace_id\x18\x04 \x01(\t\"\x1e\n\x0eKindExpression\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11PropertyReference\x12\x0c\n\x04name\x18\x02 \x01(\t\"M\n\nProjection\x12?\n\x08property\x18\x01 \x01(\x0b\x32-.google.privacy.dlp.v2beta1.PropertyReference\"\xc7\x01\n\x10\x44\x61tastoreOptions\x12=\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\'.google.privacy.dlp.v2beta1.PartitionId\x12\x38\n\x04kind\x18\x02 \x01(\x0b\x32*.google.privacy.dlp.v2beta1.KindExpression\x12:\n\nprojection\x18\x03 \x03(\x0b\x32&.google.privacy.dlp.v2beta1.Projection\"x\n\x13\x43loudStorageOptions\x12I\n\x08\x66ile_set\x18\x01 \x01(\x0b\x32\x37.google.privacy.dlp.v2beta1.CloudStorageOptions.FileSet\x1a\x16\n\x07\x46ileSet\x12\x0b\n\x03url\x18\x01 \x01(\t\" \n\x10\x43loudStoragePath\x12\x0c\n\x04path\x18\x01 \x01(\t\"\xb4\x01\n\rStorageConfig\x12I\n\x11\x64\x61tastore_options\x18\x02 \x01(\x0b\x32,.google.privacy.dlp.v2beta1.DatastoreOptionsH\x00\x12P\n\x15\x63loud_storage_options\x18\x03 \x01(\x0b\x32/.google.privacy.dlp.v2beta1.CloudStorageOptionsH\x00\x42\x06\n\x04type\":\n\x0f\x43loudStorageKey\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x03\"C\n\x0c\x44\x61tastoreKey\x12\x33\n\nentity_key\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2beta1.Key\"\xc5\x01\n\x03Key\x12=\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\'.google.privacy.dlp.v2beta1.PartitionId\x12\x39\n\x04path\x18\x02 \x03(\x0b\x32+.google.privacy.dlp.v2beta1.Key.PathElement\x1a\x44\n\x0bPathElement\x12\x0c\n\x04kind\x18\x01 \x01(\t\x12\x0c\n\x02id\x18\x02 \x01(\x03H\x00\x12\x0e\n\x04name\x18\x03 \x01(\tH\x00\x42\t\n\x07id_type\"\xa0\x01\n\tRecordKey\x12H\n\x11\x63loud_storage_key\x18\x01 \x01(\x0b\x32+.google.privacy.dlp.v2beta1.CloudStorageKeyH\x00\x12\x41\n\rdatastore_key\x18\x02 \x01(\x0b\x32(.google.privacy.dlp.v2beta1.DatastoreKeyH\x00\x42\x06\n\x04typeBm\n\x1e\x63om.google.privacy.dlp.v2beta1B\nDlpStorageP\x01Z=google.golang.org/genproto/googleapis/privacy/dlp/v2beta1;dlpb\x06proto3')
+  serialized_pb=_b('\n4google/cloud/proto/privacy/dlp/v2beta1/storage.proto\x12\x1agoogle.privacy.dlp.v2beta1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x18\n\x08InfoType\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1e\n\x07\x46ieldId\x12\x13\n\x0b\x63olumn_name\x18\x01 \x01(\t\"7\n\x0bPartitionId\x12\x12\n\nproject_id\x18\x02 \x01(\t\x12\x14\n\x0cnamespace_id\x18\x04 \x01(\t\"\x1e\n\x0eKindExpression\x12\x0c\n\x04name\x18\x01 \x01(\t\"!\n\x11PropertyReference\x12\x0c\n\x04name\x18\x02 \x01(\t\"M\n\nProjection\x12?\n\x08property\x18\x01 \x01(\x0b\x32-.google.privacy.dlp.v2beta1.PropertyReference\"\xc7\x01\n\x10\x44\x61tastoreOptions\x12=\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\'.google.privacy.dlp.v2beta1.PartitionId\x12\x38\n\x04kind\x18\x02 \x01(\x0b\x32*.google.privacy.dlp.v2beta1.KindExpression\x12:\n\nprojection\x18\x03 \x03(\x0b\x32&.google.privacy.dlp.v2beta1.Projection\"x\n\x13\x43loudStorageOptions\x12I\n\x08\x66ile_set\x18\x01 \x01(\x0b\x32\x37.google.privacy.dlp.v2beta1.CloudStorageOptions.FileSet\x1a\x16\n\x07\x46ileSet\x12\x0b\n\x03url\x18\x01 \x01(\t\" \n\x10\x43loudStoragePath\x12\x0c\n\x04path\x18\x01 \x01(\t\"\x96\x01\n\x0f\x42igQueryOptions\x12\x42\n\x0ftable_reference\x18\x01 \x01(\x0b\x32).google.privacy.dlp.v2beta1.BigQueryTable\x12?\n\x12identifying_fields\x18\x02 \x03(\x0b\x32#.google.privacy.dlp.v2beta1.FieldId\"\xfe\x01\n\rStorageConfig\x12I\n\x11\x64\x61tastore_options\x18\x02 \x01(\x0b\x32,.google.privacy.dlp.v2beta1.DatastoreOptionsH\x00\x12P\n\x15\x63loud_storage_options\x18\x03 \x01(\x0b\x32/.google.privacy.dlp.v2beta1.CloudStorageOptionsH\x00\x12H\n\x11\x62ig_query_options\x18\x04 \x01(\x0b\x32+.google.privacy.dlp.v2beta1.BigQueryOptionsH\x00\x42\x06\n\x04type\":\n\x0f\x43loudStorageKey\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x03\"C\n\x0c\x44\x61tastoreKey\x12\x33\n\nentity_key\x18\x01 \x01(\x0b\x32\x1f.google.privacy.dlp.v2beta1.Key\"\xc5\x01\n\x03Key\x12=\n\x0cpartition_id\x18\x01 \x01(\x0b\x32\'.google.privacy.dlp.v2beta1.PartitionId\x12\x39\n\x04path\x18\x02 \x03(\x0b\x32+.google.privacy.dlp.v2beta1.Key.PathElement\x1a\x44\n\x0bPathElement\x12\x0c\n\x04kind\x18\x01 \x01(\t\x12\x0c\n\x02id\x18\x02 \x01(\x03H\x00\x12\x0e\n\x04name\x18\x03 \x01(\tH\x00\x42\t\n\x07id_type\"\xa0\x01\n\tRecordKey\x12H\n\x11\x63loud_storage_key\x18\x01 \x01(\x0b\x32+.google.privacy.dlp.v2beta1.CloudStorageKeyH\x00\x12\x41\n\rdatastore_key\x18\x02 \x01(\x0b\x32(.google.privacy.dlp.v2beta1.DatastoreKeyH\x00\x42\x06\n\x04type\"I\n\rBigQueryTable\x12\x12\n\nproject_id\x18\x01 \x01(\t\x12\x12\n\ndataset_id\x18\x02 \x01(\t\x12\x10\n\x08table_id\x18\x03 \x01(\tB\x88\x01\n\x1e\x63om.google.privacy.dlp.v2beta1B\nDlpStorageP\x01Z=google.golang.org/genproto/googleapis/privacy/dlp/v2beta1;dlp\xaa\x02\x18Google.Cloud.Dlp.V2Beta1b\x06proto3')
   ,
-  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
 
 
@@ -54,8 +54,8 @@ _INFOTYPE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=114,
-  serialized_end=138,
+  serialized_start=147,
+  serialized_end=171,
 )
 
 
@@ -85,8 +85,8 @@ _FIELDID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=140,
-  serialized_end=170,
+  serialized_start=173,
+  serialized_end=203,
 )
 
 
@@ -123,8 +123,8 @@ _PARTITIONID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=172,
-  serialized_end=227,
+  serialized_start=205,
+  serialized_end=260,
 )
 
 
@@ -154,8 +154,8 @@ _KINDEXPRESSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=229,
-  serialized_end=259,
+  serialized_start=262,
+  serialized_end=292,
 )
 
 
@@ -185,8 +185,8 @@ _PROPERTYREFERENCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=261,
-  serialized_end=294,
+  serialized_start=294,
+  serialized_end=327,
 )
 
 
@@ -216,8 +216,8 @@ _PROJECTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=296,
-  serialized_end=373,
+  serialized_start=329,
+  serialized_end=406,
 )
 
 
@@ -261,8 +261,8 @@ _DATASTOREOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=376,
-  serialized_end=575,
+  serialized_start=409,
+  serialized_end=608,
 )
 
 
@@ -292,8 +292,8 @@ _CLOUDSTORAGEOPTIONS_FILESET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=675,
-  serialized_end=697,
+  serialized_start=708,
+  serialized_end=730,
 )
 
 _CLOUDSTORAGEOPTIONS = _descriptor.Descriptor(
@@ -322,8 +322,8 @@ _CLOUDSTORAGEOPTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=577,
-  serialized_end=697,
+  serialized_start=610,
+  serialized_end=730,
 )
 
 
@@ -353,8 +353,46 @@ _CLOUDSTORAGEPATH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=699,
-  serialized_end=731,
+  serialized_start=732,
+  serialized_end=764,
+)
+
+
+_BIGQUERYOPTIONS = _descriptor.Descriptor(
+  name='BigQueryOptions',
+  full_name='google.privacy.dlp.v2beta1.BigQueryOptions',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='table_reference', full_name='google.privacy.dlp.v2beta1.BigQueryOptions.table_reference', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='identifying_fields', full_name='google.privacy.dlp.v2beta1.BigQueryOptions.identifying_fields', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=767,
+  serialized_end=917,
 )
 
 
@@ -379,6 +417,13 @@ _STORAGECONFIG = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='big_query_options', full_name='google.privacy.dlp.v2beta1.StorageConfig.big_query_options', index=2,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -394,8 +439,8 @@ _STORAGECONFIG = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2beta1.StorageConfig.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=734,
-  serialized_end=914,
+  serialized_start=920,
+  serialized_end=1174,
 )
 
 
@@ -432,8 +477,8 @@ _CLOUDSTORAGEKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=916,
-  serialized_end=974,
+  serialized_start=1176,
+  serialized_end=1234,
 )
 
 
@@ -463,8 +508,8 @@ _DATASTOREKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=976,
-  serialized_end=1043,
+  serialized_start=1236,
+  serialized_end=1303,
 )
 
 
@@ -511,8 +556,8 @@ _KEY_PATHELEMENT = _descriptor.Descriptor(
       name='id_type', full_name='google.privacy.dlp.v2beta1.Key.PathElement.id_type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1175,
-  serialized_end=1243,
+  serialized_start=1435,
+  serialized_end=1503,
 )
 
 _KEY = _descriptor.Descriptor(
@@ -548,8 +593,8 @@ _KEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1046,
-  serialized_end=1243,
+  serialized_start=1306,
+  serialized_end=1503,
 )
 
 
@@ -589,8 +634,53 @@ _RECORDKEY = _descriptor.Descriptor(
       name='type', full_name='google.privacy.dlp.v2beta1.RecordKey.type',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1246,
-  serialized_end=1406,
+  serialized_start=1506,
+  serialized_end=1666,
+)
+
+
+_BIGQUERYTABLE = _descriptor.Descriptor(
+  name='BigQueryTable',
+  full_name='google.privacy.dlp.v2beta1.BigQueryTable',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='project_id', full_name='google.privacy.dlp.v2beta1.BigQueryTable.project_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='dataset_id', full_name='google.privacy.dlp.v2beta1.BigQueryTable.dataset_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='table_id', full_name='google.privacy.dlp.v2beta1.BigQueryTable.table_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1668,
+  serialized_end=1741,
 )
 
 _PROJECTION.fields_by_name['property'].message_type = _PROPERTYREFERENCE
@@ -599,14 +689,20 @@ _DATASTOREOPTIONS.fields_by_name['kind'].message_type = _KINDEXPRESSION
 _DATASTOREOPTIONS.fields_by_name['projection'].message_type = _PROJECTION
 _CLOUDSTORAGEOPTIONS_FILESET.containing_type = _CLOUDSTORAGEOPTIONS
 _CLOUDSTORAGEOPTIONS.fields_by_name['file_set'].message_type = _CLOUDSTORAGEOPTIONS_FILESET
+_BIGQUERYOPTIONS.fields_by_name['table_reference'].message_type = _BIGQUERYTABLE
+_BIGQUERYOPTIONS.fields_by_name['identifying_fields'].message_type = _FIELDID
 _STORAGECONFIG.fields_by_name['datastore_options'].message_type = _DATASTOREOPTIONS
 _STORAGECONFIG.fields_by_name['cloud_storage_options'].message_type = _CLOUDSTORAGEOPTIONS
+_STORAGECONFIG.fields_by_name['big_query_options'].message_type = _BIGQUERYOPTIONS
 _STORAGECONFIG.oneofs_by_name['type'].fields.append(
   _STORAGECONFIG.fields_by_name['datastore_options'])
 _STORAGECONFIG.fields_by_name['datastore_options'].containing_oneof = _STORAGECONFIG.oneofs_by_name['type']
 _STORAGECONFIG.oneofs_by_name['type'].fields.append(
   _STORAGECONFIG.fields_by_name['cloud_storage_options'])
 _STORAGECONFIG.fields_by_name['cloud_storage_options'].containing_oneof = _STORAGECONFIG.oneofs_by_name['type']
+_STORAGECONFIG.oneofs_by_name['type'].fields.append(
+  _STORAGECONFIG.fields_by_name['big_query_options'])
+_STORAGECONFIG.fields_by_name['big_query_options'].containing_oneof = _STORAGECONFIG.oneofs_by_name['type']
 _DATASTOREKEY.fields_by_name['entity_key'].message_type = _KEY
 _KEY_PATHELEMENT.containing_type = _KEY
 _KEY_PATHELEMENT.oneofs_by_name['id_type'].fields.append(
@@ -634,15 +730,26 @@ DESCRIPTOR.message_types_by_name['Projection'] = _PROJECTION
 DESCRIPTOR.message_types_by_name['DatastoreOptions'] = _DATASTOREOPTIONS
 DESCRIPTOR.message_types_by_name['CloudStorageOptions'] = _CLOUDSTORAGEOPTIONS
 DESCRIPTOR.message_types_by_name['CloudStoragePath'] = _CLOUDSTORAGEPATH
+DESCRIPTOR.message_types_by_name['BigQueryOptions'] = _BIGQUERYOPTIONS
 DESCRIPTOR.message_types_by_name['StorageConfig'] = _STORAGECONFIG
 DESCRIPTOR.message_types_by_name['CloudStorageKey'] = _CLOUDSTORAGEKEY
 DESCRIPTOR.message_types_by_name['DatastoreKey'] = _DATASTOREKEY
 DESCRIPTOR.message_types_by_name['Key'] = _KEY
 DESCRIPTOR.message_types_by_name['RecordKey'] = _RECORDKEY
+DESCRIPTOR.message_types_by_name['BigQueryTable'] = _BIGQUERYTABLE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 InfoType = _reflection.GeneratedProtocolMessageType('InfoType', (_message.Message,), dict(
   DESCRIPTOR = _INFOTYPE,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Type of information detected by the API.
+  
+  
+  Attributes:
+      name:
+          Name of the information type.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.InfoType)
   ))
 _sym_db.RegisterMessage(InfoType)
@@ -650,6 +757,14 @@ _sym_db.RegisterMessage(InfoType)
 FieldId = _reflection.GeneratedProtocolMessageType('FieldId', (_message.Message,), dict(
   DESCRIPTOR = _FIELDID,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """General identifier of a data field in a storage service.
+  
+  
+  Attributes:
+      column_name:
+          Name describing the field.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.FieldId)
   ))
 _sym_db.RegisterMessage(FieldId)
@@ -657,6 +772,21 @@ _sym_db.RegisterMessage(FieldId)
 PartitionId = _reflection.GeneratedProtocolMessageType('PartitionId', (_message.Message,), dict(
   DESCRIPTOR = _PARTITIONID,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Datastore partition ID. A partition ID identifies a grouping of
+  entities. The grouping is always by project and namespace, however the
+  namespace ID may be empty.
+  
+  A partition ID contains several dimensions: project ID and namespace ID.
+  
+  
+  Attributes:
+      project_id:
+          The ID of the project to which the entities belong.
+      namespace_id:
+          If not empty, the ID of the namespace to which the entities
+          belong.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.PartitionId)
   ))
 _sym_db.RegisterMessage(PartitionId)
@@ -664,6 +794,14 @@ _sym_db.RegisterMessage(PartitionId)
 KindExpression = _reflection.GeneratedProtocolMessageType('KindExpression', (_message.Message,), dict(
   DESCRIPTOR = _KINDEXPRESSION,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """A representation of a Datastore kind.
+  
+  
+  Attributes:
+      name:
+          The name of the kind.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.KindExpression)
   ))
 _sym_db.RegisterMessage(KindExpression)
@@ -671,6 +809,15 @@ _sym_db.RegisterMessage(KindExpression)
 PropertyReference = _reflection.GeneratedProtocolMessageType('PropertyReference', (_message.Message,), dict(
   DESCRIPTOR = _PROPERTYREFERENCE,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """A reference to a property relative to the Datastore kind expressions.
+  
+  
+  Attributes:
+      name:
+          The name of the property. If name includes "."s, it may be
+          interpreted as a property name path.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.PropertyReference)
   ))
 _sym_db.RegisterMessage(PropertyReference)
@@ -678,6 +825,14 @@ _sym_db.RegisterMessage(PropertyReference)
 Projection = _reflection.GeneratedProtocolMessageType('Projection', (_message.Message,), dict(
   DESCRIPTOR = _PROJECTION,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """A representation of a Datastore property in a projection.
+  
+  
+  Attributes:
+      property:
+          The property to project.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.Projection)
   ))
 _sym_db.RegisterMessage(Projection)
@@ -685,6 +840,21 @@ _sym_db.RegisterMessage(Projection)
 DatastoreOptions = _reflection.GeneratedProtocolMessageType('DatastoreOptions', (_message.Message,), dict(
   DESCRIPTOR = _DATASTOREOPTIONS,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Options defining a data set within Google Cloud Datastore.
+  
+  
+  Attributes:
+      partition_id:
+          A partition ID identifies a grouping of entities. The grouping
+          is always by project and namespace, however the namespace ID
+          may be empty.
+      kind:
+          The kind to process.
+      projection:
+          Properties to scan. If none are specified, all properties will
+          be scanned by default.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.DatastoreOptions)
   ))
 _sym_db.RegisterMessage(DatastoreOptions)
@@ -694,11 +864,24 @@ CloudStorageOptions = _reflection.GeneratedProtocolMessageType('CloudStorageOpti
   FileSet = _reflection.GeneratedProtocolMessageType('FileSet', (_message.Message,), dict(
     DESCRIPTOR = _CLOUDSTORAGEOPTIONS_FILESET,
     __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+    ,
+    __doc__ = """Set of files to scan.
+    """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.CloudStorageOptions.FileSet)
     ))
   ,
   DESCRIPTOR = _CLOUDSTORAGEOPTIONS,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Options defining a file or a set of files (path ending with \*) within a
+  Google Cloud Storage bucket.
+  
+  
+  Attributes:
+      url:
+          The url, in the format ``gs://<bucket>/<path>``. Trailing
+          wildcard in the path is allowed.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.CloudStorageOptions)
   ))
 _sym_db.RegisterMessage(CloudStorageOptions)
@@ -707,13 +890,52 @@ _sym_db.RegisterMessage(CloudStorageOptions.FileSet)
 CloudStoragePath = _reflection.GeneratedProtocolMessageType('CloudStoragePath', (_message.Message,), dict(
   DESCRIPTOR = _CLOUDSTORAGEPATH,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """A location in Cloud Storage.
+  
+  
+  Attributes:
+      path:
+          The url, in the format of ``gs://bucket/<path>``.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.CloudStoragePath)
   ))
 _sym_db.RegisterMessage(CloudStoragePath)
 
+BigQueryOptions = _reflection.GeneratedProtocolMessageType('BigQueryOptions', (_message.Message,), dict(
+  DESCRIPTOR = _BIGQUERYOPTIONS,
+  __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Options defining BigQuery table and row identifiers.
+  
+  
+  Attributes:
+      table_reference:
+          Complete BigQuery table reference.
+      identifying_fields:
+          References to fields uniquely identifying rows within the
+          table. Nested fields in the format, like
+          ``person.birthdate.year``, are allowed.
+  """,
+  # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.BigQueryOptions)
+  ))
+_sym_db.RegisterMessage(BigQueryOptions)
+
 StorageConfig = _reflection.GeneratedProtocolMessageType('StorageConfig', (_message.Message,), dict(
   DESCRIPTOR = _STORAGECONFIG,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Shared message indicating Cloud storage type.
+  
+  
+  Attributes:
+      datastore_options:
+          Google Cloud Datastore options specification.
+      cloud_storage_options:
+          Google Cloud Storage options specification.
+      big_query_options:
+          BigQuery options specification.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.StorageConfig)
   ))
 _sym_db.RegisterMessage(StorageConfig)
@@ -721,6 +943,16 @@ _sym_db.RegisterMessage(StorageConfig)
 CloudStorageKey = _reflection.GeneratedProtocolMessageType('CloudStorageKey', (_message.Message,), dict(
   DESCRIPTOR = _CLOUDSTORAGEKEY,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Record key for a finding in a Cloud Storage file.
+  
+  
+  Attributes:
+      file_path:
+          Path to the file.
+      start_offset:
+          Byte offset of the referenced data in the file.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.CloudStorageKey)
   ))
 _sym_db.RegisterMessage(CloudStorageKey)
@@ -728,6 +960,14 @@ _sym_db.RegisterMessage(CloudStorageKey)
 DatastoreKey = _reflection.GeneratedProtocolMessageType('DatastoreKey', (_message.Message,), dict(
   DESCRIPTOR = _DATASTOREKEY,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Record key for a finding in Cloud Datastore.
+  
+  
+  Attributes:
+      entity_key:
+          Datastore entity key.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.DatastoreKey)
   ))
 _sym_db.RegisterMessage(DatastoreKey)
@@ -737,11 +977,54 @@ Key = _reflection.GeneratedProtocolMessageType('Key', (_message.Message,), dict(
   PathElement = _reflection.GeneratedProtocolMessageType('PathElement', (_message.Message,), dict(
     DESCRIPTOR = _KEY_PATHELEMENT,
     __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+    ,
+    __doc__ = """A (kind, ID/name) pair used to construct a key path.
+    
+    If either name or ID is set, the element is complete. If neither is set,
+    the element is incomplete.
+    """,
     # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.Key.PathElement)
     ))
   ,
   DESCRIPTOR = _KEY,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """A unique identifier for a Datastore entity. If a key's partition ID or
+  any of its path kinds or names are reserved/read-only, the key is
+  reserved/read-only. A reserved/read-only key is forbidden in certain
+  documented contexts.
+  
+  
+  Attributes:
+      kind:
+          The kind of the entity. A kind matching regex ``__.*__`` is
+          reserved/read-only. A kind must not contain more than 1500
+          bytes when UTF-8 encoded. Cannot be ``""``.
+      id_type:
+          The type of ID.
+      id:
+          The auto-allocated ID of the entity. Never equal to zero.
+          Values less than zero are discouraged and may not be supported
+          in the future.
+      name:
+          The name of the entity. A name matching regex ``__.*__`` is
+          reserved/read-only. A name must not be more than 1500 bytes
+          when UTF-8 encoded. Cannot be ``""``.
+      partition_id:
+          Entities are partitioned into subsets, currently identified by
+          a project ID and namespace ID. Queries are scoped to a single
+          partition.
+      path:
+          The entity path. An entity path consists of one or more
+          elements composed of a kind and a string or numerical
+          identifier, which identify entities. The first element
+          identifies a *root entity*, the second element identifies a
+          *child* of the root entity, the third element identifies a
+          child of the second entity, and so forth. The entities
+          identified by all prefixes of the path are called the
+          element's *ancestors*.  A path can never be empty, and a path
+          can have at most 100 elements.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.Key)
   ))
 _sym_db.RegisterMessage(Key)
@@ -750,13 +1033,41 @@ _sym_db.RegisterMessage(Key.PathElement)
 RecordKey = _reflection.GeneratedProtocolMessageType('RecordKey', (_message.Message,), dict(
   DESCRIPTOR = _RECORDKEY,
   __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Message for a unique key indicating a record that contains a finding.
+  """,
   # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.RecordKey)
   ))
 _sym_db.RegisterMessage(RecordKey)
 
+BigQueryTable = _reflection.GeneratedProtocolMessageType('BigQueryTable', (_message.Message,), dict(
+  DESCRIPTOR = _BIGQUERYTABLE,
+  __module__ = 'google.cloud.proto.privacy.dlp.v2beta1.storage_pb2'
+  ,
+  __doc__ = """Message defining the location of a BigQuery table. A table is uniquely
+  identified by its project\_id, dataset\_id, and table\_name. Within a
+  query a table is often referenced with a string in the format of:
+  ``<project_id>:<dataset_id>.<table_id>`` or
+  ``<project_id>.<dataset_id>.<table_id>``.
+  
+  
+  Attributes:
+      project_id:
+          The Google Cloud Platform project ID of the project containing
+          the table. If omitted, project ID is inferred from the API
+          call.
+      dataset_id:
+          Dataset ID of the table.
+      table_id:
+          Name of the table.
+  """,
+  # @@protoc_insertion_point(class_scope:google.privacy.dlp.v2beta1.BigQueryTable)
+  ))
+_sym_db.RegisterMessage(BigQueryTable)
+
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036com.google.privacy.dlp.v2beta1B\nDlpStorageP\001Z=google.golang.org/genproto/googleapis/privacy/dlp/v2beta1;dlp'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\036com.google.privacy.dlp.v2beta1B\nDlpStorageP\001Z=google.golang.org/genproto/googleapis/privacy/dlp/v2beta1;dlp\252\002\030Google.Cloud.Dlp.V2Beta1'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.

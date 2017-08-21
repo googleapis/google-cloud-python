@@ -12,15 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
+import time
+import unittest
 
+from google.cloud import dlp_v2beta1
 from google.cloud.dlp_v2beta1 import enums
-from google.cloud.dlp_v2beta1 import types
-from google.cloud.dlp_v2beta1 import DlpServiceClient
+from google.cloud.proto.privacy.dlp.v2beta1 import dlp_pb2
 
 
-__all__ = (
-    'enums',
-    'types',
-    'DlpServiceClient',
-)
+class TestSystemDlpService(unittest.TestCase):
+    def test_inspect_content(self):
+
+        client = dlp_v2beta1.DlpServiceClient()
+        min_likelihood = enums.Likelihood.POSSIBLE
+        inspect_config = {'min_likelihood': min_likelihood}
+        type_ = 'text/plain'
+        value = 'my phone number is 215-512-1212'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
+        response = client.inspect_content(inspect_config, items)
