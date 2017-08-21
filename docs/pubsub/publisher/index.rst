@@ -38,7 +38,7 @@ Therefore, a very basic publishing call looks like:
 .. note::
 
     The message data in Pub/Sub is an opaque blob of bytes, and as such, you
-    _must_ send a ``bytes`` object in Python 3 (``str`` object in Python 2).
+    *must* send a ``bytes`` object in Python 3 (``str`` object in Python 2).
     If you send a text string (``str`` in Python 3, ``unicode`` in Python 2),
     the method will raise :exc:`TypeError`.
 
