@@ -440,6 +440,9 @@ class QueryResults(object):
         if timeout_ms is not None:
             params['timeoutMs'] = timeout_ms
 
+        if max_results is not None:
+            params['maxResults'] = max_results
+
         path = '/projects/%s/queries/%s' % (self.project, self.name)
         iterator = page_iterator.HTTPIterator(
             client=client,
@@ -448,12 +451,10 @@ class QueryResults(object):
             item_to_value=_item_to_row,
             items_key='rows',
             page_token=page_token,
-            max_results=max_results,
             page_start=_rows_page_start_query,
+            next_token='pageToken',
             extra_params=params)
         iterator.query_result = self
-        # Over-ride the key used to retrieve the next page token.
-        iterator._NEXT_TOKEN = 'pageToken'
         return iterator
 
 

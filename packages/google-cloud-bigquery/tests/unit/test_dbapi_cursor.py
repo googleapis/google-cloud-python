@@ -141,8 +141,8 @@ class TestCursor(unittest.TestCase):
                     (7, 8, 9),
                 ]))
         cursor = connection.cursor()
-        cursor.arraysize = 2
         cursor.execute('SELECT a, b, c;')
+        cursor.arraysize = 2
         rows = cursor.fetchmany()
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[0], (1, 2, 3))

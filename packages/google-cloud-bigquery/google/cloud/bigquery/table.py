@@ -722,6 +722,11 @@ class Table(object):
         if len(self._schema) == 0:
             raise ValueError(_TABLE_HAS_NO_SCHEMA)
 
+        params = {}
+
+        if max_results is not None:
+            params['maxResults'] = max_results
+
         client = self._require_client(client)
         path = '%s/data' % (self.path,)
         iterator = page_iterator.HTTPIterator(
@@ -731,11 +736,10 @@ class Table(object):
             item_to_value=_item_to_row,
             items_key='rows',
             page_token=page_token,
-            max_results=max_results,
-            page_start=_rows_page_start)
+            page_start=_rows_page_start,
+            next_token='pageToken',
+            extra_params=params)
         iterator.schema = self._schema
-        # Over-ride the key used to retrieve the next page token.
-        iterator._NEXT_TOKEN = 'pageToken'
         return iterator
 
     def row_from_mapping(self, mapping):
