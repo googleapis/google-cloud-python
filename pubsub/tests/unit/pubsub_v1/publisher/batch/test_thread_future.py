@@ -18,89 +18,51 @@ import mock
 
 import pytest
 
-from google.cloud.pubsub_v1 import publisher
-from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher.batch.thread import Batch
 from google.cloud.pubsub_v1.publisher.batch.thread import Future
 
 
-def create_batch(status=None):
-    """Create a batch object, which does not commit.
-
-    Args:
-        status (str): If provided, the batch's internal status will be set
-            to the provided status.
-
-    Returns:
-        ~.pubsub_v1.publisher.batch.thread.Batch: The batch object
-    """
-    client = publisher.Client()
-    batch_settings = types.BatchSettings()
-    batch = Batch(client, 'topic_name', batch_settings, autocommit=False)
-    if status:
-        batch._status = status
-    return batch
-
-
-def create_future(batch=None):
-    """Create a Future object to test.
-
-    Args:
-        ~.pubsub_v1.publisher.batch.thread.Batch: A batch object, such
-            as one returned from :meth:`create_batch`. If none is provided,
-            a batch will be automatically created.
-
-    Returns:
-        ~.pubsub_v1.publisher.batch.thread.Future: The Future object (the
-            class being tested in this module).
-    """
-    if batch is None:
-        batch = create_batch()
-    return Future(batch=batch)
-
-
 def test_cancel():
-    assert create_future().cancel() is False
+    assert Future().cancel() is False
 
 
 def test_cancelled():
-    assert create_future().cancelled() is False
+    assert Future().cancelled() is False
 
 
 def test_running():
-    assert create_future().running() is True
+    assert Future().running() is True
 
 
 def test_done():
-    batch = create_batch()
-    future = create_future(batch=batch)
+    future = Future()
     assert future.done() is False
-    batch._status = batch.Status.SUCCESS
-    assert future._batch.status == 'success'
+    future.set_result('12345')
     assert future.done() is True
 
 
 def test_exception_no_error():
-    batch = create_batch(status='success')
-    future = create_future(batch=batch)
+    future = Future()
+    future.set_result('12345')
     assert future.exception() is None
 
 
 def test_exception_with_error():
-    batch = create_batch(status='error')
-    batch.error = RuntimeError('Something really bad happened.')
-    future = create_future(batch=batch)
+    future = Future()
+    error = RuntimeError('Something really bad happened.')
+    future.set_exception(error)
 
     # Make sure that the exception that is returned is the batch's error.
     # Also check the type to ensure the batch's error did not somehow
     # change internally.
-    assert future.exception() is batch.error
+    assert future.exception() is error
     assert isinstance(future.exception(), RuntimeError)
+    with pytest.raises(RuntimeError):
+        future.result()
 
 
 def test_exception_timeout():
-    future = create_future()
+    future = Future()
     with mock.patch.object(time, 'sleep') as sleep:
         with pytest.raises(exceptions.TimeoutError):
             future.exception(timeout=10)
@@ -113,22 +75,20 @@ def test_exception_timeout():
 
 
 def test_result_no_error():
-    batch = create_batch(status='success')
-    future = create_future(batch=batch)
-    batch.message_ids[hash(future)] = '42'
+    future = Future()
+    future.set_result('42')
     assert future.result() == '42'
 
 
 def test_result_with_error():
-    batch = create_batch(status='error')
-    batch.error = RuntimeError('Something really bad happened.')
-    future = create_future(batch=batch)
+    future = Future()
+    future.set_exception(RuntimeError('Something really bad happened.'))
     with pytest.raises(RuntimeError):
         future.result()
 
 
 def test_add_done_callback_pending_batch():
-    future = create_future()
+    future = Future()
     callback = mock.Mock()
     future.add_done_callback(callback)
     assert len(future._callbacks) == 1
@@ -137,17 +97,31 @@ def test_add_done_callback_pending_batch():
 
 
 def test_add_done_callback_completed_batch():
-    batch = create_batch(status='success')
-    future = create_future(batch=batch)
+    future = Future()
+    future.set_result('12345')
     callback = mock.Mock(spec=())
     future.add_done_callback(callback)
     callback.assert_called_once_with(future)
 
 
 def test_trigger():
-    future = create_future()
+    future = Future()
     callback = mock.Mock(spec=())
     future.add_done_callback(callback)
     assert callback.call_count == 0
-    future._trigger()
+    future.set_result('12345')
     callback.assert_called_once_with(future)
+
+
+def test_set_result_once_only():
+    future = Future()
+    future.set_result('12345')
+    with pytest.raises(RuntimeError):
+        future.set_result('67890')
+
+
+def test_set_exception_once_only():
+    future = Future()
+    future.set_exception(ValueError('wah wah'))
+    with pytest.raises(RuntimeError):
+        future.set_exception(TypeError('other wah wah'))
