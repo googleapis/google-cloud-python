@@ -42,7 +42,8 @@ class TestCursor(unittest.TestCase):
         mock_job = mock.create_autospec(job.QueryJob)
         mock_job.error_result = None
         mock_job.state = 'DONE'
-        mock_job.result.return_value = self._mock_results(
+        mock_job.result.return_value = mock_job
+        mock_job.query_results.return_value = self._mock_results(
             rows=rows, schema=schema,
             num_dml_affected_rows=num_dml_affected_rows)
         return mock_job

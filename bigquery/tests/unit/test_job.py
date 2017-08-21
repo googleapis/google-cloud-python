@@ -171,6 +171,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         }
 
         if ended:
+            resource['status'] = {'state': 'DONE'}
             resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
             resource['statistics']['load']['inputFileBytes'] = self.INPUT_BYTES
             resource['statistics']['load']['outputBytes'] = self.OUTPUT_BYTES
@@ -309,6 +310,37 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client,
                              schema=[full_name, age])
         self.assertEqual(job.schema, [full_name, age])
+
+    def test_done(self):
+        client = _Client(self.PROJECT)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+        self.assertTrue(job.done())
+
+    def test_result(self):
+        client = _Client(self.PROJECT)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        result = job.result()
+
+        self.assertIs(result, job)
+
+    def test_result_invokes_begins(self):
+        begun_resource = self._makeResource()
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(begun_resource, done_resource)
+        client = _Client(self.PROJECT, connection=connection)
+        table = _Table()
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+
+        job.result()
+
+        self.assertEqual(len(connection._requested), 2)
+        begin_request,  reload_request = connection._requested
+        self.assertEqual(begin_request['method'], 'POST')
+        self.assertEqual(reload_request['method'], 'GET')
 
     def test_schema_setter_non_list(self):
         client = _Client(self.PROJECT)
@@ -1421,6 +1453,10 @@ class TestQueryJob(unittest.TestCase, _Base):
             started, ended)
         config = resource['configuration']['query']
         config['query'] = self.QUERY
+
+        if ended:
+            resource['status'] = {'state': 'DONE'}
+
         return resource
 
     def _verifyBooleanResourceProperties(self, job, config):
@@ -1640,40 +1676,60 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertTrue(job.cancelled())
 
+    def test_done(self):
+        client = _Client(self.PROJECT)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+        self.assertTrue(job.done())
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
-        client = _Client(self.PROJECT)
+        query_resource = {'jobComplete': True}
+        connection = _Connection(query_resource)
+        client = _Client(self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
         results = job.query_results()
         self.assertIsInstance(results, QueryResults)
-        self.assertIs(results._job, job)
 
-    def test_result(self):
+    def test_query_results_w_cached_value(self):
         from google.cloud.bigquery.query import QueryResults
 
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
-        job._properties['status'] = {'state': 'DONE'}
+        query_results = QueryResults(None, client)
+        job._query_results = query_results
+
+        results = job.query_results()
+
+        self.assertIs(results, query_results)
+
+    def test_result(self):
+        client = _Client(self.PROJECT)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
 
         result = job.result()
 
-        self.assertIsInstance(result, QueryResults)
-        self.assertIs(result._job, job)
+        self.assertIs(result, job)
 
     def test_result_invokes_begins(self):
         begun_resource = self._makeResource()
+        incomplete_resource = {'jobComplete': False}
+        query_resource = {'jobComplete': True}
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
-        connection = _Connection(begun_resource, done_resource)
+        connection = _Connection(
+            begun_resource, incomplete_resource, query_resource, done_resource)
         client = _Client(self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
 
         job.result()
 
-        self.assertEqual(len(connection._requested), 2)
-        begin_request, reload_request = connection._requested
+        self.assertEqual(len(connection._requested), 4)
+        begin_request, _, query_request, reload_request = connection._requested
         self.assertEqual(begin_request['method'], 'POST')
+        self.assertEqual(query_request['method'], 'GET')
         self.assertEqual(reload_request['method'], 'GET')
 
     def test_result_error(self):
@@ -2087,6 +2143,12 @@ class _Client(object):
         from google.cloud.bigquery.dataset import Dataset
 
         return Dataset(name, client=self)
+
+    def get_query_results(self, job_id):
+        from google.cloud.bigquery.query import QueryResults
+
+        resource = self._connection.api_request(method='GET')
+        return QueryResults.from_api_repr(resource, self)
 
 
 class _Table(object):
