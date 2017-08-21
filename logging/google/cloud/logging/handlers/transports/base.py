@@ -22,7 +22,7 @@ class Transport(object):
     client and name object, and must override :meth:`send`.
     """
 
-    def send(self, record, message, resource=None):
+    def send(self, record, message, resource=None, labels=None):
         """Transport send to be implemented by subclasses.
 
         :type record: :class:`logging.LogRecord`
@@ -34,6 +34,9 @@ class Transport(object):
 
         :type resource: :class:`~google.cloud.logging.resource.Resource`
         :param resource: (Optional) Monitored resource of the entry.
+
+        :type labels: dict
+        :param labels: (Optional) Mapping of labels for the entry.
         """
         raise NotImplementedError
 

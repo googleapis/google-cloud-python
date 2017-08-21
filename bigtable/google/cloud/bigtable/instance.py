@@ -17,6 +17,7 @@
 
 import re
 
+from google.api.core import operation
 from google.cloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
 from google.cloud.bigtable._generated import (
@@ -26,17 +27,11 @@ from google.cloud.bigtable._generated import (
 from google.cloud.bigtable.cluster import Cluster
 from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from google.cloud.bigtable.table import Table
-from google.cloud.operation import Operation
-from google.cloud.operation import register_type
 
 
 _EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
-
-
-register_type(messages_v2_pb2.CreateInstanceMetadata)
-register_type(data_v2_pb2.Instance)
 
 
 def _prepare_create_request(instance):
@@ -185,7 +180,7 @@ class Instance(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         # NOTE: This does not compare the configuration values, such as
         #       the display_name. Instead, it only compares
         #       identifying values instance ID and client. This is
@@ -196,7 +191,7 @@ class Instance(object):
                 other._client == self._client)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def reload(self):
         """Reload the metadata for this instance."""
@@ -232,10 +227,12 @@ class Instance(object):
         # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb = self._client._instance_stub.CreateInstance(request_pb)
 
-        operation = Operation.from_pb(operation_pb, self._client)
-        operation.target = self
-        operation.caller_metadata['request_type'] = 'CreateInstance'
-        return operation
+        operation_future = operation.from_grpc(
+            operation_pb,
+            self._client._operations_stub,
+            data_v2_pb2.Instance,
+            metadata_type=messages_v2_pb2.CreateInstanceMetadata)
+        return operation_future
 
     def update(self):
         """Update this instance.

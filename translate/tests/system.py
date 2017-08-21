@@ -56,7 +56,7 @@ class TestTranslate(unittest.TestCase):
         values = ['hvala ti', 'dankon',
                   'Me llamo Jeff', 'My name is Jeff']
         translations = Config.CLIENT.translate(
-            values, target_language='de', model=translate.NMT)
+            values, target_language='de', model='nmt')
         self.assertEqual(len(values), len(translations))
 
         self.assertEqual(

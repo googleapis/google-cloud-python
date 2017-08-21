@@ -307,7 +307,7 @@ Retrieve the results:
 .. code-block:: python
 
    >>> results = job.results()
-   >>> rows, total_count, token = query.fetch_data()  # API requet
+   >>> rows, total_count, token = query.fetch_data()  # API request
    >>> while True:
    ...     do_something_with(rows)
    ...     if token is None:

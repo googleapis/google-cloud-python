@@ -188,7 +188,7 @@ class ACL(object):
         'bucketOwnerRead',
         'bucketOwnerFullControl',
     ])
-    """See:
+    """See
     https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
     """
 

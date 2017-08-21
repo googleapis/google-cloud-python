@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestLabelValueType(unittest.TestCase):
 
@@ -108,9 +110,13 @@ class TestLabelDescriptor(unittest.TestCase):
         KEY = 'response_code'
         VALUE_TYPE = 'INT64'
         DESCRIPTION = 'HTTP status code for the request.'
-        descriptor1 = self._make_one(key=KEY, value_type=VALUE_TYPE,
-                                     description=DESCRIPTION)
+        descriptor1a = self._make_one(key=KEY, value_type=VALUE_TYPE,
+                                      description=DESCRIPTION)
+        descriptor1b = self._make_one(key=KEY, value_type=VALUE_TYPE,
+                                      description=DESCRIPTION)
         descriptor2 = self._make_one(key=KEY, value_type=VALUE_TYPE,
-                                     description=DESCRIPTION)
-        self.assertTrue(descriptor1 == descriptor2)
-        self.assertFalse(descriptor1 != descriptor2)
+                                     description=DESCRIPTION + 'foo')
+        self.assertEqual(descriptor1a, descriptor1b)
+        self.assertNotEqual(descriptor1a, descriptor2)
+        self.assertNotEqual(descriptor1a, object())
+        self.assertEqual(descriptor1a, mock.ANY)

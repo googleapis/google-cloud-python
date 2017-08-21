@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""User friendly container for Google Cloud Bigtable Table."""
+"""User-friendly container for Google Cloud Bigtable Table."""
+
+
+import six
 
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
@@ -27,6 +30,19 @@ from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
+
+
+# Maximum number of mutations in bulk (MutateRowsRequest message):
+# https://cloud.google.com/bigtable/docs/reference/data/rpc/google.bigtable.v2#google.bigtable.v2.MutateRowRequest
+_MAX_BULK_MUTATIONS = 100000
+
+
+class TableMismatchError(ValueError):
+    """Row from another table."""
+
+
+class TooManyMutationsError(ValueError):
+    """The number of mutations for bulk request is too big."""
 
 
 class Table(object):
@@ -126,12 +142,12 @@ class Table(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.table_id == self.table_id and
                 other._instance == self._instance)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def create(self, initial_split_keys=None, column_families=()):
         """Creates this table.
@@ -165,7 +181,7 @@ class Table(object):
             table_pb = table_v2_pb2.Table()
             for col_fam in column_families:
                 curr_id = col_fam.column_family_id
-                table_pb.column_families[curr_id].MergeFrom(col_fam.to_pb())
+                table_pb.column_families[curr_id].CopyFrom(col_fam.to_pb())
 
         request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
             initial_splits=initial_split_keys or [],
@@ -241,7 +257,7 @@ class Table(object):
         return rows_data.rows[row_key]
 
     def read_rows(self, start_key=None, end_key=None, limit=None,
-                  filter_=None):
+                  filter_=None, end_inclusive=False):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -264,17 +280,50 @@ class Table(object):
                         specified row(s). If unset, reads every column in
                         each row.
 
+        :type end_inclusive: bool
+        :param end_inclusive: (Optional) Whether the ``end_key`` should be
+                      considered inclusive. The default is False (exclusive).
+
         :rtype: :class:`.PartialRowsData`
         :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
                   the streamed results.
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            limit=limit)
+            limit=limit, end_inclusive=end_inclusive)
         client = self._instance._client
         response_iterator = client._data_stub.ReadRows(request_pb)
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
+
+    def mutate_rows(self, rows):
+        """Mutates multiple rows in bulk.
+
+        The method tries to update all specified rows.
+        If some of the rows weren't updated, it would not remove mutations.
+        They can be applied to the row separately.
+        If row mutations finished successfully, they would be cleaned up.
+
+        :type rows: list
+        :param rows: List or other iterable of :class:`.DirectRow` instances.
+
+        :rtype: list
+        :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
+                  corresponding to success or failure of each row mutation
+                  sent. These will be in the same order as the `rows`.
+        """
+        mutate_rows_request = _mutate_rows_request(self.name, rows)
+        client = self._instance._client
+        responses = client._data_stub.MutateRows(mutate_rows_request)
+
+        responses_statuses = [
+            None for _ in six.moves.xrange(len(mutate_rows_request.entries))]
+        for response in responses:
+            for entry in response.entries:
+                responses_statuses[entry.index] = entry.status
+                if entry.status.code == 0:
+                    rows[entry.index].clear()
+        return responses_statuses
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -315,7 +364,7 @@ class Table(object):
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, limit=None):
+                        filter_=None, limit=None, end_inclusive=False):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -343,6 +392,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                   rows' worth of results. The default (zero) is to return
                   all results.
 
+    :type end_inclusive: bool
+    :param end_inclusive: (Optional) Whether the ``end_key`` should be
+                  considered inclusive. The default is False (exclusive).
+
     :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
@@ -358,7 +411,10 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         if start_key is not None:
             range_kwargs['start_key_closed'] = _to_bytes(start_key)
         if end_key is not None:
-            range_kwargs['end_key_open'] = _to_bytes(end_key)
+            end_key_key = 'end_key_open'
+            if end_inclusive:
+                end_key_key = 'end_key_closed'
+            range_kwargs[end_key_key] = _to_bytes(end_key)
     if filter_ is not None:
         request_kwargs['filter'] = filter_.to_pb()
     if limit is not None:
@@ -373,3 +429,67 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
         message.rows.row_ranges.add(**range_kwargs)
 
     return message
+
+
+def _mutate_rows_request(table_name, rows):
+    """Creates a request to mutate rows in a table.
+
+    :type table_name: str
+    :param table_name: The name of the table to write to.
+
+    :type rows: list
+    :param rows: List or other iterable of :class:`.DirectRow` instances.
+
+    :rtype: :class:`data_messages_v2_pb2.MutateRowsRequest`
+    :returns: The ``MutateRowsRequest`` protobuf corresponding to the inputs.
+    :raises: :exc:`~.table.TooManyMutationsError` if the number of mutations is
+             greater than 100,000
+    """
+    request_pb = data_messages_v2_pb2.MutateRowsRequest(table_name=table_name)
+    mutations_count = 0
+    for row in rows:
+        _check_row_table_name(table_name, row)
+        _check_row_type(row)
+        entry = request_pb.entries.add()
+        entry.row_key = row.row_key
+        # NOTE: Since `_check_row_type` has verified `row` is a `DirectRow`,
+        #  the mutations have no state.
+        for mutation in row._get_mutations(None):
+            mutations_count += 1
+            entry.mutations.add().CopyFrom(mutation)
+    if mutations_count > _MAX_BULK_MUTATIONS:
+        raise TooManyMutationsError('Maximum number of mutations is %s' %
+                                    (_MAX_BULK_MUTATIONS,))
+    return request_pb
+
+
+def _check_row_table_name(table_name, row):
+    """Checks that a row belongs to a table.
+
+    :type table_name: str
+    :param table_name: The name of the table.
+
+    :type row: :class:`.Row`
+    :param row: An instance of :class:`.Row` subclasses.
+
+    :raises: :exc:`~.table.TableMismatchError` if the row does not belong to
+             the table.
+    """
+    if row.table.name != table_name:
+        raise TableMismatchError(
+            'Row %s is a part of %s table. Current table: %s' %
+            (row.row_key, row.table.name, table_name))
+
+
+def _check_row_type(row):
+    """Checks that a row is an instance of :class:`.DirectRow`.
+
+    :type row: :class:`.Row`
+    :param row: An instance of :class:`.Row` subclasses.
+
+    :raises: :class:`TypeError <exceptions.TypeError>` if the row is not an
+             instance of DirectRow.
+    """
+    if not isinstance(row, DirectRow):
+        raise TypeError('Bulk processing can not be applied for '
+                        'conditional or append mutations.')

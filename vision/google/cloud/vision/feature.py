@@ -18,7 +18,7 @@
 class FeatureTypes(object):
     """Feature Types to indication which annotations to perform.
 
-    See:
+    See
     https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Type
     """
     CROP_HINTS = 'CROP_HINTS'
@@ -44,7 +44,7 @@ class Feature(object):
     :param max_results: Number of results to return for the specified
                         feature type.
 
-    See:
+    See
     https://cloud.google.com/vision/docs/reference/rest/v1/images/annotate#Feature
     """
     def __init__(self, feature_type, max_results=1):

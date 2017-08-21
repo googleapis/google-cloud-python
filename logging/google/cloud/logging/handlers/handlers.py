@@ -46,7 +46,7 @@ class CloudLoggingHandler(logging.StreamHandler):
                  to 'python'. The name of the Python logger will be represented
                  in the ``python_logger`` field.
 
-    :type transport: type
+    :type transport: :class:`type`
     :param transport: Class for creating new transport objects. It should
                       extend from the base :class:`.Transport` type and
                       implement :meth`.Transport.send`. Defaults to
@@ -56,6 +56,9 @@ class CloudLoggingHandler(logging.StreamHandler):
     :type resource: :class:`~google.cloud.logging.resource.Resource`
     :param resource: (Optional) Monitored resource of the entry, defaults
                      to the global resource type.
+
+    :type labels: dict
+    :param labels: (Optional) Mapping of labels for the entry.
 
     Example:
 
@@ -79,25 +82,31 @@ class CloudLoggingHandler(logging.StreamHandler):
     def __init__(self, client,
                  name=DEFAULT_LOGGER_NAME,
                  transport=BackgroundThreadTransport,
-                 resource=_GLOBAL_RESOURCE):
+                 resource=_GLOBAL_RESOURCE,
+                 labels=None):
         super(CloudLoggingHandler, self).__init__()
         self.name = name
         self.client = client
         self.transport = transport(client, name)
         self.resource = resource
+        self.labels = labels
 
     def emit(self, record):
         """Actually log the specified logging record.
 
         Overrides the default emit behavior of ``StreamHandler``.
 
-        See: https://docs.python.org/2/library/logging.html#handler-objects
+        See https://docs.python.org/2/library/logging.html#handler-objects
 
         :type record: :class:`logging.LogRecord`
         :param record: The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record, message, resource=self.resource)
+        self.transport.send(
+            record,
+            message,
+            resource=self.resource,
+            labels=self.labels)
 
 
 def setup_logging(handler, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS,

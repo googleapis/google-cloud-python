@@ -40,13 +40,17 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(conn.build_api_url(method), uri)
 
     def test_extra_headers(self):
+        import requests
+
         from google.cloud import _http as base_http
         from google.cloud.language import _http as MUT
 
-        http = mock.Mock(spec=['request'])
-        response = mock.Mock(status=200, spec=['status'])
+        http = mock.create_autospec(requests.Session, instance=True)
+        response = requests.Response()
+        response.status_code = 200
         data = b'brent-spiner'
-        http.request.return_value = response, data
+        response._content = data
+        http.request.return_value = response
         client = mock.Mock(_http=http, spec=['_http'])
 
         conn = self._make_one(client)
@@ -56,15 +60,14 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(result, data)
 
         expected_headers = {
-            'Content-Length': str(len(req_data)),
             'Accept-Encoding': 'gzip',
             base_http.CLIENT_INFO_HEADER: MUT._CLIENT_INFO,
             'User-Agent': conn.USER_AGENT,
         }
         expected_uri = conn.build_api_url('/rainbow')
         http.request.assert_called_once_with(
-            body=req_data,
+            data=req_data,
             headers=expected_headers,
             method='GET',
-            uri=expected_uri,
+            url=expected_uri,
         )

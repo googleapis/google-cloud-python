@@ -15,9 +15,22 @@
 
 import unittest
 
-from google.cloud.spanner import __version__
+import mock
 
 from google.cloud._testing import _GAXBaseAPI
+
+from google.cloud.spanner import __version__
+
+
+def _make_credentials():  # pragma: NO COVER
+    import google.auth.credentials
+
+    class _CredentialsWithScopes(
+            google.auth.credentials.Credentials,
+            google.auth.credentials.Scoped):
+        pass
+
+    return mock.Mock(spec=_CredentialsWithScopes)
 
 
 class _BaseTest(unittest.TestCase):
@@ -50,7 +63,7 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance)
 
         self.assertEqual(database.database_id, self.DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIsInstance(database._pool, BurstyPool)
         # BurstyPool does not create sessions during 'bind()'.
@@ -61,7 +74,7 @@ class TestDatabase(_BaseTest):
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         self.assertEqual(database.database_id, self.DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIs(database._pool, pool)
         self.assertIs(pool._bound, database)
@@ -89,7 +102,7 @@ class TestDatabase(_BaseTest):
             self.DATABASE_ID, instance, ddl_statements=DDL_STATEMENTS,
             pool=pool)
         self.assertEqual(database.database_id, self.DATABASE_ID)
-        self.assertTrue(database._instance is instance)
+        self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), DDL_STATEMENTS)
 
     def test_from_pb_bad_database_name(self):
@@ -176,30 +189,72 @@ class TestDatabase(_BaseTest):
         expected_name = self.DATABASE_NAME
         self.assertEqual(database.name, expected_name)
 
-    def test_spanner_api_property(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.spanner import database as MUT
-
+    def test_spanner_api_property_w_scopeless_creds(self):
         client = _Client()
+        credentials = client.credentials = object()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        _client = object()
-        _clients = [_client]
+        patch = mock.patch('google.cloud.spanner.database.SpannerClient')
 
-        def _mock_spanner_client(*args, **kwargs):
-            self.assertIsInstance(args, tuple)
-            self.assertEqual(kwargs['lib_name'], 'gccl')
-            self.assertEqual(kwargs['lib_version'], __version__)
-            return _clients.pop(0)
-
-        with _Monkey(MUT, SpannerClient=_mock_spanner_client):
+        with patch as spanner_client:
             api = database.spanner_api
-            self.assertTrue(api is _client)
-            # API instance is cached
-            again = database.spanner_api
-            self.assertTrue(again is api)
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        spanner_client.assert_called_once_with(
+            lib_name='gccl',
+            lib_version=__version__,
+            credentials=credentials)
+
+    def test_spanner_api_w_scoped_creds(self):
+        import google.auth.credentials
+        from google.cloud.spanner.database import SPANNER_DATA_SCOPE
+
+        class _CredentialsWithScopes(
+                google.auth.credentials.Scoped):
+
+            def __init__(self, scopes=(), source=None):
+                self._scopes = scopes
+                self._source = source
+
+            def requires_scopes(self):  # pragma: NO COVER
+                return True
+
+            def with_scopes(self, scopes):
+                return self.__class__(scopes, self)
+
+        expected_scopes = (SPANNER_DATA_SCOPE,)
+        client = _Client()
+        credentials = client.credentials = _CredentialsWithScopes()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        patch = mock.patch('google.cloud.spanner.database.SpannerClient')
+
+        with patch as spanner_client:
+            api = database.spanner_api
+
+        self.assertIs(api, spanner_client.return_value)
+
+        # API instance is cached
+        again = database.spanner_api
+        self.assertIs(again, api)
+
+        self.assertEqual(len(spanner_client.call_args_list), 1)
+        called_args, called_kw = spanner_client.call_args
+        self.assertEqual(called_args, ())
+        self.assertEqual(called_kw['lib_name'], 'gccl')
+        self.assertEqual(called_kw['lib_version'], __version__)
+        scoped = called_kw['credentials']
+        self.assertEqual(scoped._scopes, expected_scopes)
+        self.assertIs(scoped._source, credentials)
 
     def test___eq__(self):
         instance = _Instance(self.INSTANCE_NAME)
@@ -312,8 +367,6 @@ class TestDatabase(_BaseTest):
         future = database.create()
 
         self.assertIs(future, op_future)
-        self.assertEqual(future.caller_metadata,
-                         {'request_type': 'CreateDatabase'})
 
         (parent, create_statement, extra_statements,
          options) = api._created_database
@@ -493,8 +546,6 @@ class TestDatabase(_BaseTest):
         future = database.update_ddl(DDL_STATEMENTS)
 
         self.assertIs(future, op_future)
-        self.assertEqual(future.caller_metadata,
-                         {'request_type': 'UpdateDatabaseDdl'})
 
         name, statements, op_id, options = api._updated_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
@@ -567,23 +618,57 @@ class TestDatabase(_BaseTest):
         session = database.session()
 
         self.assertTrue(isinstance(session, Session))
-        self.assertTrue(session.session_id is None)
-        self.assertTrue(session._database is database)
+        self.assertIs(session.session_id, None)
+        self.assertIs(session._database, database)
 
-    def test_execute_sql_defaults(self):
-        QUERY = 'SELECT * FROM employees'
+    def test_snapshot_defaults(self):
+        from google.cloud.spanner.database import SnapshotCheckout
+
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         session = _Session()
         pool.put(session)
-        session._execute_result = []
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        rows = list(database.execute_sql(QUERY))
+        checkout = database.snapshot()
+        self.assertIsInstance(checkout, SnapshotCheckout)
+        self.assertIs(checkout._database, database)
+        self.assertEqual(checkout._kw, {})
 
-        self.assertEqual(rows, [])
-        self.assertEqual(session._executed, (QUERY, None, None, None, b''))
+    def test_snapshot_w_read_timestamp_and_multi_use(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud.spanner.database import SnapshotCheckout
+
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        session = _Session()
+        pool.put(session)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        checkout = database.snapshot(read_timestamp=now, multi_use=True)
+
+        self.assertIsInstance(checkout, SnapshotCheckout)
+        self.assertIs(checkout._database, database)
+        self.assertEqual(
+            checkout._kw, {'read_timestamp': now, 'multi_use': True})
+
+    def test_batch(self):
+        from google.cloud.spanner.database import BatchCheckout
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        session = _Session()
+        pool.put(session)
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+
+        checkout = database.batch()
+        self.assertIsInstance(checkout, BatchCheckout)
+        self.assertIs(checkout._database, database)
 
     def test_run_in_transaction_wo_args(self):
         import datetime
@@ -627,155 +712,28 @@ class TestDatabase(_BaseTest):
         self.assertEqual(session._retried,
                          (_unit_of_work, (SINCE,), {'until': UNTIL}))
 
-    def test_read(self):
-        from google.cloud.spanner.keyset import KeySet
+    def test_run_in_transaction_nested(self):
+        from datetime import datetime
 
-        TABLE_NAME = 'citizens'
-        COLUMNS = ['email', 'first_name', 'last_name', 'age']
-        KEYS = ['bharney@example.com', 'phred@example.com']
-        KEYSET = KeySet(keys=KEYS)
-        INDEX = 'email-address-index'
-        LIMIT = 20
-        TOKEN = b'DEADBEEF'
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        # Perform the various setup tasks.
+        instance = _Instance(self.INSTANCE_NAME, client=_Client())
         pool = _Pool()
-        session = _Session()
+        session = _Session(run_transaction_function=True)
+        session._committed = datetime.now()
         pool.put(session)
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        rows = list(database.read(
-            TABLE_NAME, COLUMNS, KEYSET, INDEX, LIMIT, TOKEN))
+        # Define the inner function.
+        inner = mock.Mock(spec=())
 
-        self.assertEqual(rows, [])
+        # Define the nested transaction.
+        def nested_unit_of_work():
+            return database.run_in_transaction(inner)
 
-        (table, columns, key_set, index, limit,
-         resume_token) = session._read_with
-
-        self.assertEqual(table, TABLE_NAME)
-        self.assertEqual(columns, COLUMNS)
-        self.assertEqual(key_set, KEYSET)
-        self.assertEqual(index, INDEX)
-        self.assertEqual(limit, LIMIT)
-        self.assertEqual(resume_token, TOKEN)
-
-    def test_batch(self):
-        from google.cloud.spanner.database import BatchCheckout
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.batch()
-        self.assertIsInstance(checkout, BatchCheckout)
-        self.assertTrue(checkout._database is database)
-
-    def test_snapshot_defaults(self):
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot()
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-    def test_snapshot_w_read_timestamp(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(read_timestamp=now)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
-        self.assertEqual(checkout._read_timestamp, now)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-    def test_snapshot_w_min_read_timestamp(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(min_read_timestamp=now)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertEqual(checkout._min_read_timestamp, now)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-    def test_snapshot_w_max_staleness(self):
-        import datetime
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(max_staleness=staleness)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertEqual(checkout._max_staleness, staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-    def test_snapshot_w_exact_staleness(self):
-        import datetime
-        from google.cloud.spanner.database import SnapshotCheckout
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        pool = _Pool()
-        session = _Session()
-        pool.put(session)
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
-
-        checkout = database.snapshot(exact_staleness=staleness)
-
-        self.assertIsInstance(checkout, SnapshotCheckout)
-        self.assertTrue(checkout._database is database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertEqual(checkout._exact_staleness, staleness)
+        # Attempting to run this transaction should raise RuntimeError.
+        with self.assertRaises(RuntimeError):
+            database.run_in_transaction(nested_unit_of_work)
+        self.assertEqual(inner.call_count, 0)
 
 
 class TestBatchCheckout(_BaseTest):
@@ -788,7 +746,7 @@ class TestBatchCheckout(_BaseTest):
     def test_ctor(self):
         database = _Database(self.DATABASE_NAME)
         checkout = self._make_one(database)
-        self.assertTrue(checkout._database is database)
+        self.assertIs(checkout._database, database)
 
     def test_context_mgr_success(self):
         import datetime
@@ -865,21 +823,19 @@ class TestSnapshotCheckout(_BaseTest):
         pool.put(session)
 
         checkout = self._make_one(database)
-        self.assertTrue(checkout._database is database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
+        self.assertIs(checkout._database, database)
+        self.assertEqual(checkout._kw, {})
 
         with checkout as snapshot:
             self.assertIsNone(pool._session)
             self.assertIsInstance(snapshot, Snapshot)
             self.assertIs(snapshot._session, session)
             self.assertTrue(snapshot._strong)
+            self.assertFalse(snapshot._multi_use)
 
         self.assertIs(pool._session, session)
 
-    def test_ctor_w_read_timestamp(self):
+    def test_ctor_w_read_timestamp_and_multi_use(self):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner.snapshot import Snapshot
@@ -890,99 +846,17 @@ class TestSnapshotCheckout(_BaseTest):
         pool = database._pool = _Pool()
         pool.put(session)
 
-        checkout = self._make_one(database, read_timestamp=now)
-        self.assertTrue(checkout._database is database)
-        self.assertEqual(checkout._read_timestamp, now)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-        with checkout as snapshot:
-            self.assertIsNone(pool._session)
-            self.assertIsInstance(snapshot, Snapshot)
-            self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
-            self.assertEqual(snapshot._read_timestamp, now)
-
-        self.assertIs(pool._session, session)
-
-    def test_ctor_w_min_read_timestamp(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud.spanner.snapshot import Snapshot
-
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
-        database = _Database(self.DATABASE_NAME)
-        session = _Session(database)
-        pool = database._pool = _Pool()
-        pool.put(session)
-
-        checkout = self._make_one(database, min_read_timestamp=now)
-        self.assertTrue(checkout._database is database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertEqual(checkout._min_read_timestamp, now)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-        with checkout as snapshot:
-            self.assertIsNone(pool._session)
-            self.assertIsInstance(snapshot, Snapshot)
-            self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
-            self.assertEqual(snapshot._min_read_timestamp, now)
-
-        self.assertIs(pool._session, session)
-
-    def test_ctor_w_max_staleness(self):
-        import datetime
-        from google.cloud.spanner.snapshot import Snapshot
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        database = _Database(self.DATABASE_NAME)
-        session = _Session(database)
-        pool = database._pool = _Pool()
-        pool.put(session)
-
-        checkout = self._make_one(database, max_staleness=staleness)
-        self.assertTrue(checkout._database is database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertEqual(checkout._max_staleness, staleness)
-        self.assertIsNone(checkout._exact_staleness)
-
-        with checkout as snapshot:
-            self.assertIsNone(pool._session)
-            self.assertIsInstance(snapshot, Snapshot)
-            self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
-            self.assertEqual(snapshot._max_staleness, staleness)
-
-        self.assertIs(pool._session, session)
-
-    def test_ctor_w_exact_staleness(self):
-        import datetime
-        from google.cloud.spanner.snapshot import Snapshot
-
-        staleness = datetime.timedelta(seconds=1, microseconds=234567)
-        database = _Database(self.DATABASE_NAME)
-        session = _Session(database)
-        pool = database._pool = _Pool()
-        pool.put(session)
-
-        checkout = self._make_one(database, exact_staleness=staleness)
-
+        checkout = self._make_one(database, read_timestamp=now, multi_use=True)
         self.assertIs(checkout._database, database)
-        self.assertIsNone(checkout._read_timestamp)
-        self.assertIsNone(checkout._min_read_timestamp)
-        self.assertIsNone(checkout._max_staleness)
-        self.assertEqual(checkout._exact_staleness, staleness)
+        self.assertEqual(checkout._kw,
+                         {'read_timestamp': now, 'multi_use': True})
 
         with checkout as snapshot:
             self.assertIsNone(pool._session)
             self.assertIsInstance(snapshot, Snapshot)
             self.assertIs(snapshot._session, session)
-            self.assertFalse(snapshot._strong)
-            self.assertEqual(snapshot._exact_staleness, staleness)
+            self.assertEqual(snapshot._read_timestamp, now)
+            self.assertTrue(snapshot._multi_use)
 
         self.assertIs(pool._session, session)
 
@@ -1049,21 +923,17 @@ class _Session(object):
 
     _rows = ()
 
-    def __init__(self, database=None, name=_BaseTest.SESSION_NAME):
+    def __init__(self, database=None, name=_BaseTest.SESSION_NAME,
+                 run_transaction_function=False):
         self._database = database
         self.name = name
-
-    def execute_sql(self, sql, params, param_types, query_mode, resume_token):
-        self._executed = (sql, params, param_types, query_mode, resume_token)
-        return iter(self._rows)
+        self._run_transaction_function = run_transaction_function
 
     def run_in_transaction(self, func, *args, **kw):
+        if self._run_transaction_function:
+            func(*args, **kw)
         self._retried = (func, args, kw)
         return self._committed
-
-    def read(self, table, columns, keyset, index, limit, resume_token):
-        self._read_with = (table, columns, keyset, index, limit, resume_token)
-        return iter(self._rows)
 
 
 class _SessionPB(object):
