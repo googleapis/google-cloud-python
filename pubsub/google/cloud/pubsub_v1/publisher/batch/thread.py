@@ -79,20 +79,12 @@ class Batch(base.BaseBatch):
 
     @property
     def client(self):
-        """Return the client used to create this batch.
-
-        Returns:
-            ~.pubsub_v1.client.PublisherClient: A publisher client.
-        """
+        """~.pubsub_v1.client.PublisherClient: A publisher client."""
         return self._client
 
     @property
     def messages(self):
-        """Return the messages currently in the batch.
-
-        Returns:
-            Sequence: The messages currently in the batch.
-        """
+        """Sequence: The messages currently in the batch."""
         return self._messages
 
     @property
