@@ -19,7 +19,7 @@ import mock
 import pytest
 
 from google.cloud.pubsub_v1.publisher import exceptions
-from google.cloud.pubsub_v1.publisher.batch.thread import Future
+from google.cloud.pubsub_v1.publisher.futures import Future
 
 
 def test_cancel():
