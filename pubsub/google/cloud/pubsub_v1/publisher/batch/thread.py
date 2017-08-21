@@ -18,9 +18,9 @@ import logging
 import threading
 import time
 
-import google.api.core.future
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
+from google.cloud.pubsub_v1.publisher import futures
 from google.cloud.pubsub_v1.publisher.batch import base
 
 
@@ -222,7 +222,7 @@ class Batch(base.Batch):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.batch.thread.Future: An object conforming to
+            ~.pubsub_v1.publisher.futures.Future: An object conforming to
                 the :class:`concurrent.futures.Future` interface.
         """
         # Coerce the type, just in case.
@@ -238,163 +238,6 @@ class Batch(base.Batch):
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
-        f = Future()
+        f = futures.Future()
         self._futures.append(f)
         return f
-
-
-class Future(google.api.core.future.Future):
-    """Encapsulation of the asynchronous execution of an action.
-
-    This object is returned from asychronous Pub/Sub calls, and is the
-    interface to determine the status of those calls.
-
-    This object should not be created directly, but is returned by other
-    methods in this library.
-    """
-    def __init__(self):
-        self._callbacks = []
-
-    def cancel(self):
-        """Publishes in Pub/Sub currently may not be canceled.
-
-        This method always returns False.
-        """
-        return False
-
-    def cancelled(self):
-        """Publishes in Pub/Sub currently may not be canceled.
-
-        This method always returns False.
-        """
-        return False
-
-    def running(self):
-        """Publishes in Pub/Sub currently may not be canceled.
-
-        This method always returns True.
-        """
-        return True
-
-    def done(self):
-        """Return True if the publish has completed, False otherwise.
-
-        This still returns True in failure cases; checking :meth:`result` or
-        :meth:`exception` is the canonical way to assess success or failure.
-        """
-        return self._exception is not None or self._result is not None
-
-    def result(self, timeout=None):
-        """Return the message ID, or raise an exception.
-
-        This blocks until the message has successfully been published, and
-        returns the message ID.
-
-        Args:
-            timeout (Union[int, float]): The number of seconds before this call
-                times out and raises TimeoutError.
-
-        Returns:
-            str: The message ID.
-
-        Raises:
-            ~.pubsub_v1.TimeoutError: If the request times out.
-            Exception: For undefined exceptions in the underlying
-                call execution.
-        """
-        # Attempt to get the exception if there is one.
-        # If there is not one, then we know everything worked, and we can
-        # return an appropriate value.
-        err = self.exception(timeout=timeout)
-        if err is None:
-            return self._result
-        raise err
-
-    def exception(self, timeout=None, _wait=1):
-        """Return the exception raised by the call, if any.
-
-        This blocks until the message has successfully been published, and
-        returns the exception. If the call succeeded, return None.
-
-        Args:
-            timeout (Union[int, float]): The number of seconds before this call
-                times out and raises TimeoutError.
-
-        Raises:
-            TimeoutError: If the request times out.
-
-        Returns:
-            Exception: The exception raised by the call, if any.
-        """
-        # If no timeout was specified, use inf.
-        if timeout is None:
-            timeout = float('inf')
-
-        # If the batch completed successfully, this should return None.
-        if self._result is not None:
-            return None
-
-        # If this batch had an error, this should return it.
-        if self._exception is not None:
-            return self._exception
-
-        # If the timeout has been exceeded, raise TimeoutError.
-        if timeout <= 0:
-            raise exceptions.TimeoutError('Timed out waiting for result.')
-
-        # Wait a little while and try again.
-        time.sleep(_wait)
-        return self.exception(
-            timeout=timeout - _wait,
-            _wait=min(_wait * 2, timeout, 60),
-        )
-
-    def add_done_callback(self, fn):
-        """Attach the provided callable to the future.
-
-        The provided function is called, with this future as its only argument,
-        when the future finishes running.
-        """
-        if self.done():
-            fn(self)
-        self._callbacks.append(fn)
-
-    def set_result(self, result):
-        """Set the result of the future to the provided result.
-
-        Args:
-            result (str): The message ID.
-        """
-        # Sanity check: A future can only complete once.
-        if self._result is not None or self._exception is not None:
-            raise RuntimeError('set_result can only be called once.')
-
-        # Set the result and trigger the future.
-        self._result = result
-        self._trigger()
-
-    def set_exception(self, exception):
-        """Set the result of the future to the given exception.
-
-        Args:
-            exception (:exc:`Exception`): The exception raised.
-        """
-        # Sanity check: A future can only complete once.
-        if self._result is not None or self._exception is not None:
-            raise RuntimeError('set_exception can only be called once.')
-
-        # Set the exception and trigger the future.
-        self._exception = exception
-        self._trigger()
-
-    def _trigger(self):
-        """Trigger all callbacks registered to this Future.
-
-        This method is called internally by the batch once the batch
-        completes.
-
-        Args:
-            message_id (str): The message ID, as a string.
-        """
-        for callback in self._callbacks:
-            callback(self)
