@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 
 import abc
-import collections
 
 import six
 
@@ -144,21 +143,3 @@ class Batch(object):
         ACCEPTING_MESSAGES = 'accepting messages'
         ERROR = 'error'
         SUCCESS = 'success'
-
-
-class RejectionBatch(object):
-    """A fake batch-like object that refuses to accept any message.
-
-    This is used by the client to do single-op checks for batch
-    existence.
-    """
-    def will_accept(self, message):
-        """Return False.
-
-        Args:
-            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
-
-        Returns:
-            bool: Whether this batch can accept the message. It never can.
-        """
-        return False

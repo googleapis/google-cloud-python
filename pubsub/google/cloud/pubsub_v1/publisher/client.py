@@ -23,7 +23,6 @@ from google.cloud.gapic.pubsub.v1 import publisher_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher.batch import base
 from google.cloud.pubsub_v1.publisher.batch import thread
 
 
@@ -65,10 +64,6 @@ class Client(object):
         self._batch_class = batch_class
         self._batches = {}
 
-        # Instantiate the "rejection batch", which is used for single-op
-        # acceptance checks if no batch is present.
-        self._rejection = base.RejectionBatch()
-
     def batch(self, topic, message, create=True, autocommit=True):
         """Return the current batch for the provided topic.
 
@@ -88,18 +83,20 @@ class Client(object):
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
-        if not self._batches.get(topic, self._rejection).will_accept(message):
+        batch = self._batches.get(topic, None)
+        if not batch or not batch.will_accept(message):
             if not create:
                 return None
-            self._batches[topic] = self._batch_class(
+            batch = self._batch_class(
                 autocommit=autocommit,
                 client=self,
                 settings=self.batch_settings,
                 topic=topic,
             )
+            self._batches[topic] = batch
 
         # Simply return the appropriate batch.
-        return self._batches[topic]
+        return batch
 
     def publish(self, topic, data, **attrs):
         """Publish a single message.
