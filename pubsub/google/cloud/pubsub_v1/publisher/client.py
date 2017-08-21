@@ -87,7 +87,7 @@ class Client(object):
         # and place it on the batches dictionary.
         with self._batch_lock:
             batch = self._batches.get(topic, None)
-            if not batch or not batch.will_accept(message):
+            if batch is None or not batch.will_accept(message):
                 if not create:
                     return None
                 batch = self._batch_class(

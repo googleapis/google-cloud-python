@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
+
 from google.api.core.exceptions import GoogleAPICallError
 from google.api.core.exceptions import GoogleAPIError
 
