@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 import copy
 import pkg_resources
+import threading
 
 import six
 
@@ -62,6 +63,7 @@ class Client(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_class = batch_class
+        self._batch_lock = threading.Lock()
         self._batches = {}
 
     def batch(self, topic, message, create=True, autocommit=True):
@@ -83,17 +85,18 @@ class Client(object):
         """
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
-        batch = self._batches.get(topic, None)
-        if not batch or not batch.will_accept(message):
-            if not create:
-                return None
-            batch = self._batch_class(
-                autocommit=autocommit,
-                client=self,
-                settings=self.batch_settings,
-                topic=topic,
-            )
-            self._batches[topic] = batch
+        with self._batch_lock:
+            batch = self._batches.get(topic, None)
+            if not batch or not batch.will_accept(message):
+                if not create:
+                    return None
+                batch = self._batch_class(
+                    autocommit=autocommit,
+                    client=self,
+                    settings=self.batch_settings,
+                    topic=topic,
+                )
+                self._batches[topic] = batch
 
         # Simply return the appropriate batch.
         return batch
