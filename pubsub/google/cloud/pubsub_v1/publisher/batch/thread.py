@@ -154,7 +154,7 @@ class Batch(base.Batch):
         self._status = 'in-flight'
 
         # Sanity check: If there are no messages, no-op.
-        if len(self._messages) == 0:
+        if not self._messages:
             return
 
         # Begin the request to publish these messages.
