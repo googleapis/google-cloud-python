@@ -23,7 +23,7 @@ import pytest
 from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import helper_threads
+from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
@@ -48,7 +48,7 @@ def test_close():
     assert 'callback request worker' not in policy._consumer.helper_threads
 
 
-@mock.patch.object(helper_threads.HelperThreadRegistry, 'start')
+@mock.patch.object(_helper_threads.HelperThreadRegistry, 'start')
 @mock.patch.object(threading.Thread, 'start')
 def test_open(thread_start, htr_start):
     policy = create_policy()

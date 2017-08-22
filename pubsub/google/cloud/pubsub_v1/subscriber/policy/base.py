@@ -21,11 +21,9 @@ import time
 
 import six
 
-from google import gax
-
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import consumer
-from google.cloud.pubsub_v1.subscriber import histogram
+from google.cloud.pubsub_v1.subscriber import _histogram
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +70,7 @@ class BasePolicy(object):
         self._ack_deadline = 10
         self._last_histogram_size = 0
         self.flow_control = flow_control
-        self.histogram = histogram.Histogram(data=histogram_data)
+        self.histogram = _histogram.Histogram(data=histogram_data)
 
         # These are for internal flow control tracking.
         # They should not need to be used by subclasses.
