@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import threading
 import time
 
 import mock
@@ -63,15 +64,10 @@ def test_exception_with_error():
 
 def test_exception_timeout():
     future = Future()
-    with mock.patch.object(time, 'sleep') as sleep:
+    with mock.patch.object(threading.Event, 'wait') as wait:
+        wait.return_value = False
         with pytest.raises(exceptions.TimeoutError):
             future.exception(timeout=10)
-
-        # The sleep should have been called with 1, 2, 4, then 3 seconds
-        # (the first three due to linear backoff, then the last one because
-        # only three seconds were left before the timeout was to be hit).
-        assert sleep.call_count == 4
-        assert sleep.mock_calls[0]
 
 
 def test_result_no_error():

@@ -159,15 +159,13 @@ def test_monitor_already_committed():
     batch = create_batch(max_latency=5.0)
     batch._status = 'something else'
     with mock.patch.object(time, 'sleep') as sleep:
-        with mock.patch.object(type(batch), '_commit') as _commit:
-            batch.monitor()
+        batch.monitor()
 
-            # The monitor should have waited the given latency.
-            sleep.assert_called_once_with(5.0)
+        # The monitor should have waited the given latency.
+        sleep.assert_called_once_with(5.0)
 
-            # Since the batch was no longer accepting messages, the
-            # commit function should *not* have been called.
-            assert _commit.call_count == 0
+        # The status should not have changed.
+        assert batch._status == 'something else'
 
 
 def test_publish():
