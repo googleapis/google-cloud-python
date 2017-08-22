@@ -72,6 +72,7 @@ class Batch(base.Batch):
         # If max latency is specified, start a thread to monitor the batch and
         # commit when the max latency is reached.
         self._thread = None
+        self._commit_lock = threading.Lock()
         if autocommit and self._settings.max_latency < float('inf'):
             self._thread = threading.Thread(target=self.monitor)
             self._thread.start()
@@ -150,37 +151,43 @@ class Batch(base.Batch):
             This method blocks. The :meth:`commit` method is the non-blocking
             version, which calls this one.
         """
-        # Update the status.
-        self._status = 'in-flight'
+        with self._commit_lock:
+            # If, in the intervening period, the batch started to be committed,
+            # or completed a commit, then no-op at this point.
+            if self._status != self.Status.ACCEPTING_MESSAGES:
+                return
 
-        # Sanity check: If there are no messages, no-op.
-        if not self._messages:
-            return
+            # Update the status.
+            self._status = 'in-flight'
 
-        # Begin the request to publish these messages.
-        response = self.client.api.publish(
-            self._topic,
-            self.messages,
-        )
+            # Sanity check: If there are no messages, no-op.
+            if not self._messages:
+                return
 
-        # We got a response from Pub/Sub; denote that we are processing.
-        self._status = 'processing results'
+            # Begin the request to publish these messages.
+            response = self.client.api.publish(
+                self._topic,
+                self.messages,
+            )
 
-        # Sanity check: If the number of message IDs is not equal to the
-        # number of futures I have, then something went wrong.
-        if len(response.message_ids) != len(self._futures):
-            for future in self._futures:
-                future.set_exception(exceptions.PublishError(
-                    'Some messages were not successfully published.',
-                ))
-            return
+            # We got a response from Pub/Sub; denote that we are processing.
+            self._status = 'processing results'
 
-        # Iterate over the futures on the queue and return the response IDs.
-        # We are trusting that there is a 1:1 mapping, and raise an exception
-        # if not.
-        self._status = self.Status.SUCCESS
-        for message_id, future in zip(response.message_ids, self._futures):
-            future.set_result(message_id)
+            # Sanity check: If the number of message IDs is not equal to the
+            # number of futures I have, then something went wrong.
+            if len(response.message_ids) != len(self._futures):
+                for future in self._futures:
+                    future.set_exception(exceptions.PublishError(
+                        'Some messages were not successfully published.',
+                    ))
+                return
+
+            # Iterate over the futures on the queue and return the response
+            # IDs. We are trusting that there is a 1:1 mapping, and raise an
+            # exception if not.
+            self._status = self.Status.SUCCESS
+            for message_id, future in zip(response.message_ids, self._futures):
+                future.set_result(message_id)
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -193,11 +200,6 @@ class Batch(base.Batch):
         #
         # Sleep for however long we should be waiting.
         time.sleep(self._settings.max_latency)
-
-        # If, in the intervening period, the batch started to be committed,
-        # then no-op at this point.
-        if self._status != self.Status.ACCEPTING_MESSAGES:
-            return
 
         # Commit.
         return self._commit()
