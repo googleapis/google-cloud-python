@@ -14,8 +14,10 @@
 
 from __future__ import absolute_import
 
+import time
 import uuid
 
+import mock
 import six
 
 from google import auth
@@ -29,7 +31,7 @@ def _resource_name(resource_type):
         resource_type (str): The resource for which a name is being
             generated. Should be singular (e.g. "topic", "subscription")
     """
-    return 'projects/{project}/{resource_type}s/st-{random}'.format(
+    return 'projects/{project}/{resource_type}s/st-n{random}'.format(
         project=auth.default()[1],
         random=str(uuid.uuid4())[0:8],
         resource_type=resource_type,
@@ -56,3 +58,49 @@ def test_publish_messages():
             assert isinstance(result, (six.text_type, six.binary_type))
     finally:
         publisher.delete_topic(topic_name)
+
+
+def test_subscribe_to_messages():
+    publisher = pubsub_v1.PublisherClient()
+    subscriber = pubsub_v1.SubscriberClient()
+    topic_name = _resource_name('topic')
+    sub_name = _resource_name('subscription')
+
+    try:
+        # Create a topic.
+        publisher.create_topic(topic_name)
+
+        # Subscribe to the topic. This must happen before the messages
+        # are published.
+        subscriber.create_subscription(sub_name, topic_name)
+        subscription = subscriber.subscribe(sub_name)
+
+        # Publish some messages.
+        futures = [publisher.publish(
+            topic_name,
+            b'Wooooo! The claaaaaw!',
+            num=str(i),
+        ) for i in range(0, 50)]
+
+        # Make sure the publish completes.
+        [f.result() for f in futures]
+
+        # The callback should process the message numbers to prove
+        # that we got everything at least once.
+        callback = mock.Mock(wraps=lambda message: message.ack())
+
+        # Actually open the subscription and hold it open for a few seconds.
+        subscription.open(callback)
+        for second in range(0,10):
+            time.sleep(1)
+
+            # The callback should have fired at least fifty times, but it
+            # may take some time.
+            if callback.call_count >= 50:
+                return
+
+        # Okay, we took too long; fail out.
+        assert callback.call_count >= 50
+    finally:
+        publisher.delete_topic(topic_name)
+        subscriber.delete_subscription(sub_name)
