@@ -282,38 +282,38 @@ class BasePolicy(object):
             implementing your own policy, you _should_ call this method
             in an appropriate form of subprocess.
         """
-        # Sanity check: Should this infinitely-recursive loop quit?
-        if not self._consumer.active:
-            return
+        while True:
+            # Sanity check: Should this infinitely loop quit?
+            if not self._consumer.active:
+                return
 
-        # Determine the appropriate duration for the lease.
-        # This is based off of how long previous messages have taken to ack,
-        # with a sensible default and within the ranges allowed by Pub/Sub.
-        p99 = self.histogram.percentile(99)
-        logger.debug('The current p99 value is %d seconds.' % p99)
+            # Determine the appropriate duration for the lease. This is
+            # based off of how long previous messages have taken to ack, with
+            # a sensible default and within the ranges allowed by Pub/Sub.
+            p99 = self.histogram.percentile(99)
+            logger.debug('The current p99 value is %d seconds.' % p99)
 
-        # Create a streaming pull request.
-        # We do not actually call `modify_ack_deadline` over and over because
-        # it is more efficient to make a single request.
-        ack_ids = list(self.managed_ack_ids)
-        logger.debug('Renewing lease for %d ack IDs.' % len(ack_ids))
-        if len(ack_ids) > 0 and self._consumer.active:
-            request = types.StreamingPullRequest(
-                modify_deadline_ack_ids=ack_ids,
-                modify_deadline_seconds=[p99] * len(ack_ids),
-            )
-            self._consumer.send_request(request)
+            # Create a streaming pull request.
+            # We do not actually call `modify_ack_deadline` over and over
+            # because it is more efficient to make a single request.
+            ack_ids = list(self.managed_ack_ids)
+            logger.debug('Renewing lease for %d ack IDs.' % len(ack_ids))
+            if len(ack_ids) > 0 and self._consumer.active:
+                request = types.StreamingPullRequest(
+                    modify_deadline_ack_ids=ack_ids,
+                    modify_deadline_seconds=[p99] * len(ack_ids),
+                )
+                self._consumer.send_request(request)
 
-        # Now wait an appropriate period of time and do this again.
-        #
-        # We determine the appropriate period of time based on a random
-        # period between 0 seconds and 90% of the lease. This use of
-        # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
-        # where there are many clients.
-        snooze = random.uniform(0.0, p99 * 0.9)
-        logger.debug('Snoozing lease management for %f seconds.' % snooze)
-        time.sleep(snooze)
-        self.maintain_leases()
+            # Now wait an appropriate period of time and do this again.
+            #
+            # We determine the appropriate period of time based on a random
+            # period between 0 seconds and 90% of the lease. This use of
+            # jitter (http://bit.ly/2s2ekL7) helps decrease contention in cases
+            # where there are many clients.
+            snooze = random.uniform(0.0, p99 * 0.9)
+            logger.debug('Snoozing lease management for %f seconds.' % snooze)
+            time.sleep(snooze)
 
     def modify_ack_deadline(self, ack_id, seconds):
         """Modify the ack deadline for the given ack_id.
