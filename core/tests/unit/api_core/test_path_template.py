@@ -29,7 +29,7 @@ from google.api.core import path_template
     # Basic named params
     ['/v1/{name}', [], {'name': 'parent'}, '/v1/parent'],
     ['/v1/{name=**}', [], {'name': 'parent/child'}, '/v1/parent/child'],
-    # Named params with a pattern
+    # Named params with a sub-template
     ['/v1/{name=parent/*}', [], {'name': 'parent/child'}, '/v1/parent/child'],
     ['/v1/{name=parent/**}', [], {'name': 'parent/child/object'},
      '/v1/parent/child/object'],
@@ -39,7 +39,7 @@ from google.api.core import path_template
     ['/v1/{parent}/*/{child}/*', ['a', 'b'],
      {'parent': 'parent', 'child': 'child'}, '/v1/parent/a/child/b'],
     ['/v1/{name}/**', ['a/b'], {'name': 'parent'}, '/v1/parent/a/b'],
-    # Combining positional and named params with patterns
+    # Combining positional and named params with sub-templates.
     ['/v1/{name=parent/*}/*', ['a'], {'name': 'parent/child'},
      '/v1/parent/child/a'],
     ['/v1/*/{name=parent/**}', ['a'], {'name': 'parent/child/object'},
@@ -69,7 +69,7 @@ def test_expanded_failure(tmpl, args, kwargs, exc_match):
     # Single segement named template, but multi segment value
     ['v1/{name}', 'v1/a/b'],
     ['v1/{name}/{value}', 'v1/a/b/c'],
-    # Named value with a pattern but invalid value
+    # Named value with a sub-template but invalid value
     ['v1/{name=parent/*}', 'v1/grandparent/child'],
 ])
 def test_validate_failure(tmpl, path):

@@ -40,7 +40,7 @@ import six
 # - "{name=*}: same as above.
 # - "{name=**}": a multi-segment wildcard named variable, for example
 #   "shelf/{name=**}"
-# - "{name=/path/*/**}": a multi-segment named variable with a pattern.
+# - "{name=/path/*/**}": a multi-segment named variable with a sub-template.
 _VARIABLE_RE = re.compile(r"""
     (  # Capture the entire variable expression
         (?P<positional>\*\*?)  # Match & capture * and ** positional variables.
@@ -48,7 +48,7 @@ _VARIABLE_RE = re.compile(r"""
         # Match & capture named variables {name}
         {
             (?P<name>.+?)
-            # Optionally match and capture the named variable's pattern.
+            # Optionally match and capture the named variable's template.
             (?:=(?P<template>.+?))?
         }
     )
@@ -77,8 +77,6 @@ def _expand_variable_match(positional_vars, named_vars, match):
     """
     positional = match.group('positional')
     name = match.group('name')
-    # Note: truthy-falsy because match groups will be an empty string instead
-    # of None.
     if name is not None:
         try:
             return six.text_type(named_vars[name])
@@ -143,8 +141,6 @@ def _replace_variable_with_pattern(match):
     positional = match.group('positional')
     name = match.group('name')
     template = match.group('template')
-    # Note: truthy-falsy because match groups will be an empty string instead
-    # of None.
     if name is not None:
         if not template:
             return _SINGLE_SEGEMENT_PATTERN.format(name)
