@@ -74,7 +74,8 @@ class Client(ClientWithProject):
     """
 
     SCOPE = ('https://www.googleapis.com/auth/bigquery',
-             'https://www.googleapis.com/auth/cloud-platform')
+             'https://www.googleapis.com/auth/cloud-platform',
+             'https://www.googleapis.com/auth/drive')
     """The scopes required for authenticating as a BigQuery consumer."""
 
     def __init__(self, project=None, credentials=None, _http=None):
