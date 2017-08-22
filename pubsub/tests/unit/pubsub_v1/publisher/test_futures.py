@@ -64,10 +64,8 @@ def test_exception_with_error():
 
 def test_exception_timeout():
     future = Future()
-    with mock.patch.object(threading.Event, 'wait') as wait:
-        wait.return_value = False
-        with pytest.raises(exceptions.TimeoutError):
-            future.exception(timeout=10)
+    with pytest.raises(exceptions.TimeoutError):
+        future.exception(timeout=0.01)
 
 
 def test_result_no_error():
