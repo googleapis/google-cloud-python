@@ -55,6 +55,12 @@ jobs:
               nox -f datastore/nox.py
             fi
       - run:
+          name: Run tests - google.cloud.dlp
+          command: |
+            if [[ -n $(grep dlp ~/target_packages)  ]]; then
+              nox -f dlp/nox.py
+            fi
+      - run:
           name: Run tests - google.cloud.dns
           command: |
             if [[ -n $(grep dns ~/target_packages) ]]; then

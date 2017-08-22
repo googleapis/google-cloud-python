@@ -14,6 +14,8 @@
 
 from __future__ import absolute_import
 
+import os
+
 import nox
 
 
@@ -25,12 +27,43 @@ def unit_tests(session, python_version):
     # Run unit tests against all supported versions of Python.
     session.interpreter = 'python{}'.format(python_version)
 
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-' + python_version
+
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('mock', 'pytest')
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet', 'tests/')
+    session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
+
+
+@nox.session
+@nox.parametrize('python_version', ['2.7', '3.6'])
+def system_tests(session, python_version):
+    """Run the system test suite."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(python_version)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'sys-' + python_version
+
+    # Install all test dependencies, then install this package in-place.
+    session.install('pytest')
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run(
+        'py.test',
+        '--quiet',
+        os.path.join('tests', 'system'),
+        *session.posargs)
+
 
 @nox.session
 def lint_setup_py(session):
