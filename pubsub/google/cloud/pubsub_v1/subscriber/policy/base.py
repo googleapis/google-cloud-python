@@ -22,7 +22,7 @@ import time
 import six
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import consumer
+from google.cloud.pubsub_v1.subscriber import _consumer
 from google.cloud.pubsub_v1.subscriber import _histogram
 
 logger = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ class BasePolicy(object):
         """
         self._client = client
         self._subscription = subscription
-        self._consumer = consumer.Consumer(self)
+        self._consumer = _consumer.Consumer(self)
         self._ack_deadline = 10
         self._last_histogram_size = 0
         self.flow_control = flow_control
