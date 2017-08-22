@@ -22,7 +22,7 @@ from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import consumer
-from google.cloud.pubsub_v1.subscriber import helper_threads
+from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -57,7 +57,7 @@ def test_request_generator_thread():
     assert request.ack_ids == ['i']
 
     # The poison pill should stop the loop.
-    consumer.send_request(helper_threads.STOP)
+    consumer.send_request(_helper_threads.STOP)
     with pytest.raises(StopIteration):
         next(generator)
 

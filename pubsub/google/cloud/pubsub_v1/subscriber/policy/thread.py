@@ -22,7 +22,7 @@ import threading
 import grpc
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.subscriber import helper_threads
+from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
 
@@ -64,7 +64,7 @@ class Policy(base.BasePolicy):
         # Also maintain a request queue and an executor.
         logger.debug('Creating callback requests thread (not starting).')
         self._executor = futures.ThreadPoolExecutor(max_workers=10)
-        self._callback_requests = helper_threads.QueueCallbackThread(
+        self._callback_requests = _helper_threads.QueueCallbackThread(
             self._request_queue,
             self.on_callback_request,
         )

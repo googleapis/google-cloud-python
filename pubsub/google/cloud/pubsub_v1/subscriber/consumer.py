@@ -120,7 +120,7 @@ import logging
 import queue
 import threading
 
-from google.cloud.pubsub_v1.subscriber import helper_threads
+from google.cloud.pubsub_v1.subscriber import _helper_threads
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -179,7 +179,7 @@ class Consumer(object):
         self._exiting = threading.Event()
 
         self.active = False
-        self.helper_threads = helper_threads.HelperThreadRegistry()
+        self.helper_threads = _helper_threads.HelperThreadRegistry()
         """:cls:`_helper_threads.HelperThreads`: manages the helper threads.
             The policy may use this to schedule its own helper threads.
         """
@@ -210,7 +210,7 @@ class Consumer(object):
         # are none. This can and must block to keep the stream open.
         while True:
             request = self._request_queue.get()
-            if request == helper_threads.STOP:
+            if request == _helper_threads.STOP:
                 _LOGGER.debug('Request generator signaled to stop.')
                 break
 
