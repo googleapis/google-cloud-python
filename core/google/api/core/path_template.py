@@ -73,7 +73,8 @@ def _expand_variable_match(positional_vars, named_vars, match):
 
     Raises:
         ValueError: If a positional or named variable is required by the
-            template but not specified.
+            template but not specified or if an unexpected template expression
+            is encountered.
     """
     positional = match.group('positional')
     name = match.group('name')
@@ -119,7 +120,8 @@ def expand(tmpl, *args, **kwargs):
 
     Raises:
         ValueError: If a positional or named variable is required by the
-            template but not specified.
+            template but not specified or if an unexpected template expression
+            is encountered.
     """
     replacer = functools.partial(_expand_variable_match, list(args), kwargs)
     return _VARIABLE_RE.sub(replacer, tmpl)

@@ -37,7 +37,7 @@ from google.api.core import path_template
     ['/v1/*/{name}', ['a'], {'name': 'parent'}, '/v1/a/parent'],
     ['/v1/{name}/*', ['a'], {'name': 'parent'}, '/v1/parent/a'],
     ['/v1/{parent}/*/{child}/*', ['a', 'b'],
-     {'parent': 'parent', 'child': 'child'}, '/v1/parent/a/child/b'],
+     {'parent': 'thor', 'child': 'thorson'}, '/v1/thor/a/thorson/b'],
     ['/v1/{name}/**', ['a/b'], {'name': 'parent'}, '/v1/parent/a/b'],
     # Combining positional and named params with sub-templates.
     ['/v1/{name=parent/*}/*', ['a'], {'name': 'parent/child'},
