@@ -51,10 +51,10 @@ FlowControl.__new__.__defaults__ = (
 )
 
 
-names = ['BatchSettings', 'FlowControl']
+_names = ['BatchSettings', 'FlowControl']
 for name, message in get_messages(pubsub_pb2).items():
     setattr(sys.modules[__name__], name, message)
-    names.append(name)
+    _names.append(name)
 
 
-__all__ = tuple(sorted(names))
+__all__ = tuple(sorted(_names))
