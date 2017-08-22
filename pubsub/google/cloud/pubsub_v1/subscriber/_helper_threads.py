@@ -27,7 +27,8 @@ __all__ = (
 
 _LOGGER = logging.getLogger(__name__)
 
-_HelperThread = collections.namedtuple('HelperThreads',
+_HelperThread = collections.namedtuple(
+    'HelperThreads',
     ['name', 'thread', 'queue'],
 )
 
@@ -117,8 +118,12 @@ class QueueCallbackThread(object):
             if item == STOP:
                 break
 
-            # This doesn't presently deal with exceptions that bubble up
-            # through the callback. If there is an error here, the thread will
-            # exit and no further queue items will be processed. We could
-            # potentially capture errors, log them, and then continue on.
-            self._callback(item)
+            # Run the callback. If any exceptions occur, log them and
+            # continue.
+            try:
+                self._callback(item)
+            except Exception as exc:
+                _LOGGER.error('{class_}: {message}'.format(
+                    class_=exc.__class__.__name__,
+                    message=str(exc),
+                ))
