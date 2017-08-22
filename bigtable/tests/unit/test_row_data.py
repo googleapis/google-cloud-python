@@ -709,7 +709,7 @@ def _generate_cell_chunks(chunk_text_pbs):
 def _parse_readrows_acceptance_tests(filename):
     """Parse acceptance tests from JSON
 
-    See:
+    See
     https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/\
     4d3185662ca61bc9fa1bdf1ec0166f6e5ecf86c6/bigtable-client-core/src/\
     test/resources/com/google/cloud/bigtable/grpc/scanner/v2/

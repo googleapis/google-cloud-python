@@ -20,7 +20,7 @@ from google.cloud.exceptions import NotFound
 class Sink(object):
     """Sinks represent filtered exports for log entries.
 
-    See:
+    See
     https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks
 
     :type name: str
@@ -106,7 +106,7 @@ class Sink(object):
     def create(self, client=None):
         """API call:  create the sink via a PUT request
 
-        See:
+        See
         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.sinks/create
 
         :type client: :class:`~google.cloud.logging.client.Client` or

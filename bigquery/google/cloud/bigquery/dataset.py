@@ -15,10 +15,10 @@
 """Define API Datasets."""
 import six
 
+from google.api.core import page_iterator
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
-from google.cloud.iterator import HTTPIterator
 
 
 class AccessGrant(object):
@@ -76,10 +76,15 @@ class AccessGrant(object):
         self.entity_id = entity_id
 
     def __eq__(self, other):
+        if not isinstance(other, AccessGrant):
+            return NotImplemented
         return (
             self.role == other.role and
             self.entity_type == other.entity_type and
             self.entity_id == other.entity_id)
+
+    def __ne__(self, other):
+        return not self == other
 
     def __repr__(self):
         return '<AccessGrant: role=%s, %s=%s>' % (
@@ -89,7 +94,7 @@ class AccessGrant(object):
 class Dataset(object):
     """Datasets are containers for tables.
 
-    See:
+    See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
     :type name: str
@@ -364,7 +369,7 @@ class Dataset(object):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: httplib2.Response
+        :type api_response: dict
         :param api_response: response returned from an API call.
         """
         self._properties.clear()
@@ -417,7 +422,7 @@ class Dataset(object):
     def create(self, client=None):
         """API call:  create the dataset via a PUT request.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
@@ -530,8 +535,8 @@ class Dataset(object):
     def delete(self, client=None):
         """API call:  delete the dataset via a DELETE request.
 
-        See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
 
         :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
@@ -544,7 +549,7 @@ class Dataset(object):
     def list_tables(self, max_results=None, page_token=None):
         """List tables for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
 
         :type max_results: int
@@ -556,14 +561,19 @@ class Dataset(object):
                            datasets. If not passed, the API will return the
                            first page of datasets.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
                   contained within the current dataset.
         """
         path = '/projects/%s/datasets/%s/tables' % (self.project, self.name)
-        result = HTTPIterator(client=self._client, path=path,
-                              item_to_value=_item_to_table, items_key='tables',
-                              page_token=page_token, max_results=max_results)
+        result = page_iterator.HTTPIterator(
+            client=self._client,
+            api_request=self._client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_table,
+            items_key='tables',
+            page_token=page_token,
+            max_results=max_results)
         result.dataset = self
         return result
 
@@ -585,7 +595,7 @@ class Dataset(object):
 def _item_to_table(iterator, resource):
     """Convert a JSON table to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict

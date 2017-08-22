@@ -16,6 +16,7 @@
 
 import functools
 
+from google.api.core import page_iterator
 from google.cloud.gapic.pubsub.v1.publisher_client import PublisherClient
 from google.cloud.gapic.pubsub.v1.subscriber_client import SubscriberClient
 from google.gax import CallOptions
@@ -35,12 +36,14 @@ from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import GAXIterator
 from google.cloud.pubsub import __version__
 from google.cloud.pubsub._helpers import subscription_name_from_path
 from google.cloud.pubsub.snapshot import Snapshot
 from google.cloud.pubsub.subscription import Subscription
 from google.cloud.pubsub.topic import Topic
+
+_CONFLICT_ERROR_CODES = (
+    StatusCode.FAILED_PRECONDITION, StatusCode.ALREADY_EXISTS)
 
 
 class _PublisherAPI(object):
@@ -60,7 +63,7 @@ class _PublisherAPI(object):
     def list_topics(self, project, page_size=0, page_token=None):
         """List topics for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         :type project: str
@@ -75,7 +78,7 @@ class _PublisherAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
                   accessible to the current API.
         """
@@ -85,12 +88,13 @@ class _PublisherAPI(object):
         path = 'projects/%s' % (project,)
         page_iter = self._gax_api.list_topics(
             path, page_size=page_size, options=options)
-        return GAXIterator(self._client, page_iter, _item_to_topic)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_topic)
 
     def topic_create(self, topic_path):
         """API call:  create a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/create
 
         :type topic_path: str
@@ -105,7 +109,7 @@ class _PublisherAPI(object):
         try:
             topic_pb = self._gax_api.create_topic(topic_path)
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+            if exc_to_code(exc.cause) in _CONFLICT_ERROR_CODES:
                 raise Conflict(topic_path)
             raise
         return {'name': topic_pb.name}
@@ -113,7 +117,7 @@ class _PublisherAPI(object):
     def topic_get(self, topic_path):
         """API call:  retrieve a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/get
 
         :type topic_path: str
@@ -136,7 +140,7 @@ class _PublisherAPI(object):
     def topic_delete(self, topic_path):
         """API call:  delete a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/delete
 
         :type topic_path: str
@@ -153,7 +157,7 @@ class _PublisherAPI(object):
     def topic_publish(self, topic_path, messages, timeout=30):
         """API call:  publish one or more messages to a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/publish
 
         :type topic_path: str
@@ -186,7 +190,7 @@ class _PublisherAPI(object):
     def topic_list_subscriptions(self, topic, page_size=0, page_token=None):
         """API call:  list subscriptions bound to a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics.subscriptions/list
 
         :type topic: :class:`~google.cloud.pubsub.topic.Topic`
@@ -201,7 +205,7 @@ class _PublisherAPI(object):
                            If not passed, the API will return the first page
                            of subscriptions.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current API.
@@ -220,8 +224,8 @@ class _PublisherAPI(object):
                 raise NotFound(topic_path)
             raise
 
-        iterator = GAXIterator(self._client, page_iter,
-                               _item_to_subscription_for_topic)
+        iterator = page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_subscription_for_topic)
         iterator.topic = topic
         return iterator
 
@@ -242,7 +246,7 @@ class _SubscriberAPI(object):
     def list_subscriptions(self, project, page_size=0, page_token=None):
         """List subscriptions for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/list
 
         :type project: str
@@ -257,7 +261,7 @@ class _SubscriberAPI(object):
                            If not passed, the API will return the first page
                            of subscriptions.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current API.
@@ -275,7 +279,8 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_sub_for_client, topics=topics)
-        return GAXIterator(self._client, page_iter, item_to_value)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, item_to_value)
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None,
@@ -283,7 +288,7 @@ class _SubscriberAPI(object):
                             message_retention_duration=None):
         """API call:  create a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create
 
         :type subscription_path: str
@@ -337,7 +342,7 @@ class _SubscriberAPI(object):
                 retain_acked_messages=retain_acked_messages,
                 message_retention_duration=message_retention_duration)
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+            if exc_to_code(exc.cause) in _CONFLICT_ERROR_CODES:
                 raise Conflict(topic_path)
             raise
         return MessageToDict(sub_pb)
@@ -345,7 +350,7 @@ class _SubscriberAPI(object):
     def subscription_get(self, subscription_path):
         """API call:  retrieve a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/get
 
         :type subscription_path: str
@@ -367,7 +372,7 @@ class _SubscriberAPI(object):
     def subscription_delete(self, subscription_path):
         """API call:  delete a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/delete
 
         :type subscription_path: str
@@ -386,7 +391,7 @@ class _SubscriberAPI(object):
                                         push_endpoint):
         """API call:  update push config of a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: str
@@ -411,7 +416,7 @@ class _SubscriberAPI(object):
                           max_messages=1):
         """API call:  retrieve messages for a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: str
@@ -452,7 +457,7 @@ class _SubscriberAPI(object):
     def subscription_acknowledge(self, subscription_path, ack_ids):
         """API call:  acknowledge retrieved messages
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: str
@@ -474,7 +479,7 @@ class _SubscriberAPI(object):
                                          ack_deadline):
         """API call:  update ack deadline for retrieved messages
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type subscription_path: str
@@ -500,7 +505,7 @@ class _SubscriberAPI(object):
     def subscription_seek(self, subscription_path, time=None, snapshot=None):
         """API call:  seek a subscription
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/seek
 
         :type subscription_path: str
@@ -524,7 +529,7 @@ class _SubscriberAPI(object):
     def list_snapshots(self, project, page_size=0, page_token=None):
         """List snapshots for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list
 
         :type project: str
@@ -539,7 +544,7 @@ class _SubscriberAPI(object):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
                   accessible to the current API.
         """
@@ -556,12 +561,13 @@ class _SubscriberAPI(object):
         topics = {}
         item_to_value = functools.partial(
             _item_to_snapshot_for_client, topics=topics)
-        return GAXIterator(self._client, page_iter, item_to_value)
+        return page_iterator._GAXIterator(
+            self._client, page_iter, item_to_value)
 
     def snapshot_create(self, snapshot_path, subscription_path):
         """API call:  create a snapshot
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/create
 
         :type snapshot_path: str
@@ -584,7 +590,7 @@ class _SubscriberAPI(object):
             snapshot_pb = self._gax_api.create_snapshot(
                 snapshot_path, subscription_path)
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+            if exc_to_code(exc.cause) in _CONFLICT_ERROR_CODES:
                 raise Conflict(snapshot_path)
             elif exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(subscription_path)
@@ -594,7 +600,7 @@ class _SubscriberAPI(object):
     def snapshot_delete(self, snapshot_path):
         """API call:  delete a topic
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/delete
 
         :type snapshot_path: str
@@ -706,7 +712,7 @@ def make_gax_subscriber_api(credentials=None, host=None):
 def _item_to_topic(iterator, resource):
     """Convert a protobuf topic to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: :class:`.pubsub_pb2.Topic`
@@ -722,7 +728,7 @@ def _item_to_topic(iterator, resource):
 def _item_to_subscription_for_topic(iterator, subscription_path):
     """Convert a subscription name to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type subscription_path: str
@@ -743,12 +749,12 @@ def _item_to_sub_for_client(iterator, sub_pb, topics):
 
        This method does not have the correct signature to be used as
        the ``item_to_value`` argument to
-       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       :class:`~google.api.core.page_iterator.Iterator`. It is intended to be
        patched with a mutable topics argument that can be updated
        on subsequent calls. For an example, see how the method is
        used above in :meth:`_SubscriberAPI.list_subscriptions`.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type sub_pb: :class:`.pubsub_pb2.Subscription`
@@ -773,12 +779,12 @@ def _item_to_snapshot_for_client(iterator, snapshot_pb, topics):
 
        This method does not have the correct signature to be used as
        the ``item_to_value`` argument to
-       :class:`~google.cloud.iterator.Iterator`. It is intended to be
+       :class:`~google.api.core.page_iterator.Iterator`. It is intended to be
        patched with a mutable topics argument that can be updated
        on subsequent calls. For an example, see how the method is
        used above in :meth:`_SubscriberAPI.list_snapshots`.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type sub_pb: :class:`.pubsub_pb2.Snapshot`

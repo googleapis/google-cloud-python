@@ -14,6 +14,8 @@
 
 import unittest
 
+import mock
+
 
 class TestAccessGrant(unittest.TestCase):
 
@@ -76,6 +78,11 @@ class TestAccessGrant(unittest.TestCase):
         grant = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         other = self._make_one('OWNER', 'userByEmail', 'phred@example.com')
         self.assertEqual(grant, other)
+
+    def test__eq___type_mismatch(self):
+        grant = self._make_one('OWNER', 'userByEmail', 'silly@example.com')
+        self.assertNotEqual(grant, object())
+        self.assertEqual(grant, mock.ANY)
 
 
 class TestDataset(unittest.TestCase):

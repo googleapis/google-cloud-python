@@ -21,6 +21,7 @@ class TestRow(unittest.TestCase):
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.row import Row
+
         return Row
 
     def _make_one(self, *args, **kwargs):

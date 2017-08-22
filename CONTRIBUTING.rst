@@ -21,7 +21,7 @@ In order to add a feature to ``google-cloud-python``:
   documentation (in ``docs/``).
 
 - The feature must work fully on the following CPython versions:  2.7,
-  3.4, and 3.5 on both UNIX and Windows.
+  3.4, 3.5, and 3.6 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -57,7 +57,7 @@ You'll have to create a development environment to hack on
 Now your local repo is set up such that you will push changes to your GitHub
 repo, from which you can submit a pull request.
 
-To work on the codebase and run the tests, we recommend using ``tox``,
+To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
 .. _repo: https://github.com/GoogleCloudPlatform/google-cloud-python
@@ -68,11 +68,15 @@ Using a custom ``virtualenv``
 - To create a virtualenv in which to install ``google-cloud-python``::
 
     $ cd ${HOME}/hack-on-google-cloud-python
-    $ virtualenv --python python2.7 ${ENV_NAME}
+    $ virtualenv --python python3.6 ${ENV_NAME}
 
   You can choose which Python version you want to use by passing a ``--python``
-  flag to ``virtualenv``.  For example, ``virtualenv --python python2.7``
-  chooses the Python 2.7 interpreter to be installed.
+  flag to ``virtualenv``.  For example, ``virtualenv --python python3.6``
+  chooses the Python 3.6 interpreter to be installed.
+
+  .. note::
+      We recommend developing in Python 3, and using the test suite to
+      ensure compatibility with Python 2.
 
 - From here on in within these instructions, the
   ``${HOME}/hack-on-google-cloud-python/${ENV_NAME}`` virtual environment you
@@ -91,43 +95,32 @@ Using a custom ``virtualenv``
   Unfortunately using ``setup.py develop`` is not possible with this
   project, because it uses `namespace packages`_.
 
-Using ``tox``
+Using ``nox``
 =============
 
-- To test your changes, run unit tests with ``tox``::
+We use `nox`_ to instrument our tests.
 
-    $ tox -e py27
-    $ tox -e py34
+- To test your changes, run unit tests with ``nox``::
+
+    $ nox -f datastore/nox.py -s "unit_tests(python_version='2.7')"
+    $ nox -f datastore/nox.py -s "unit_tests(python_version='3.4')"
     $ ...
 
-- If you'd like to poke around your code in an interpreter, let
-  ``tox`` install the environment of your choice::
+  .. note::
 
-    $ # Install only; without running tests
-    $ tox -e ${ENV} --recreate --notest
+    The unit tests and system tests are contained in the individual
+    ``nox.py`` files in each directory; substitute ``datastore`` in the
+    example above with the package of your choice.
 
-  After doing this, you can activate the virtual environment and
-  use the interpreter from that environment::
-
-    $ source .tox/${ENV}/bin/activate
-    (ENV) $ .tox/${ENV}/bin/python
-
-  Unfortunately, your changes to the source tree won't be picked up
-  by the ``tox`` environment, so if you make changes, you'll need
-  to again ``--recreate`` the environment.
-
-- To run unit tests on a restricted set of packages::
-
-    $ tox -e py27 -- core datastore
 
   Alternatively, you can just navigate directly to the package you are
   currently developing and run tests there::
 
     $ export GIT_ROOT=$(pwd)
-    $ cd ${GIT_ROOT}/core/
-    $ tox -e py27
     $ cd ${GIT_ROOT}/datastore/
-    $ tox -e py27
+    $ nox -s "unit_tests(python_version='3.6')"
+
+.. nox: https://pypi.org/project/nox-automation/
 
 Note on Editable Installs / Develop Mode
 ========================================
@@ -162,13 +155,13 @@ On Debian/Ubuntu::
 Coding Style
 ************
 
-- PEP8 compliance, with exceptions defined in ``tox.ini``.
-  If you have ``tox`` installed, you can test that you have not introduced
+- PEP8 compliance, with exceptions defined in the linter configuration.
+  If you have ``nox`` installed, you can test that you have not introduced
   any non-compliant code via::
 
-   $ tox -e lint
+   $ nox -s lint
 
-- In order to make ``tox -e lint`` run faster, you can set some environment
+- In order to make ``nox -s lint`` run faster, you can set some environment
   variables::
 
    export GOOGLE_CLOUD_TESTING_REMOTE="upstream"
@@ -185,49 +178,20 @@ Exceptions to PEP8:
   "Function-Under-Test"), which is PEP8-incompliant, but more readable.
   Some also use a local variable, ``MUT`` (short for "Module-Under-Test").
 
-*************
-Running Tests
-*************
-
-- To run all tests for ``google-cloud-python`` on a single Python version, run
-  ``py.test`` from your development virtualenv (See
-  `Using a Development Checkout`_ above).
-
-.. _Using a Development Checkout: #using-a-development-checkout
-
-- To run the full set of ``google-cloud-python`` tests on all platforms, install
-  ``tox`` (https://tox.readthedocs.io/en/latest/) into a system Python.  The
-  ``tox`` console script will be installed into the scripts location for that
-  Python.  While ``cd``'-ed to the ``google-cloud-python`` checkout root
-  directory (it contains ``tox.ini``), invoke the ``tox`` console script.
-  This will read the ``tox.ini`` file and execute the tests on multiple
-  Python versions and platforms; while it runs, it creates a ``virtualenv`` for
-  each version/platform combination.  For example::
-
-   $ sudo --set-home /usr/bin/pip install tox
-   $ cd ${HOME}/hack-on-google-cloud-python/
-   $ /usr/bin/tox
-
-.. _Using a Development Checkout: #using-a-development-checkout
-
 ********************
 Running System Tests
 ********************
 
-- To run system tests you can execute::
+- To run system tests for a given package, you can execute::
 
-   $ tox -e system-tests
-   $ tox -e system-tests3
+   $ nox -f datastore/nox.py -s "system_tests(python_version='3.6')"
+   $ nox -f datastore/nox.py -s "system_tests(python_version='2.7')"
 
-  or run only system tests for a particular package via::
+  .. note::
 
-   $ python system_tests/run_system_test.py --package {package}
-   $ python3 system_tests/run_system_test.py --package {package}
-
-  To run a subset of the system tests::
-
-   $ tox -e system-tests -- datastore storage
-   $ python system_tests/attempt_system_tests.py datastore storage
+      System tests are only configured to run under Python 2.7 and
+      Python 3.6. For expediency, we do not run them in older versions
+      of Python 3.
 
   This alone will not run the tests. You'll need to change some local
   auth settings and change some configuration in your project to
@@ -242,8 +206,12 @@ Running System Tests
     can be downloaded directly from the developer's console by clicking
     "Generate new JSON key". See private key
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
-    for more details. In order for Logging system tests to work, the Service Account
-    will also have to be made a project Owner. This can be changed under "IAM & Admin".
+    for more details.
+
+  - In order for Logging system tests to work, the Service Account
+    will also have to be made a project ``Owner``. This can be changed under
+    "IAM & Admin". Additionally, ``cloud-logs@google.com`` must be given
+    ``Editor`` permissions on the project.
 
 - Examples of these can be found in ``system_tests/local_test_setup.sample``. We
   recommend copying this to ``system_tests/local_test_setup``, editing the
@@ -270,90 +238,21 @@ Running System Tests
 - For datastore query tests, you'll need stored data in your dataset.
   To populate this data, run::
 
-   $ python system_tests/populate_datastore.py
+   $ python datastore/tests/system/utils/populate_datastore.py
 
 - If you make a mistake during development (i.e. a failing test that
   prevents clean-up) you can clear all system test data from your
   datastore instance via::
 
-   $ python system_tests/clear_datastore.py
+   $ python datastore/tests/system/utils/clear_datastore.py
 
-System Test Emulators
-=====================
-
-- System tests can also be run against local `emulators`_ that mock
-  the production services. To run the system tests with the
-  ``datastore`` emulator::
-
-   $ tox -e datastore-emulator
-   $ GOOGLE_CLOUD_DISABLE_GRPC=true tox -e datastore-emulator
-
-  This also requires that the ``gcloud`` command line tool is
-  installed. If you'd like to run them directly (outside of a
-  ``tox`` environment), first start the emulator and
-  take note of the process ID::
-
-   $ gcloud beta emulators datastore start --no-legacy 2>&1 > log.txt &
-   [1] 33333
-
-  then determine the environment variables needed to interact with
-  the emulator::
-
-   $ gcloud beta emulators datastore env-init
-   export DATASTORE_LOCAL_HOST=localhost:8417
-   export DATASTORE_HOST=http://localhost:8417
-   export DATASTORE_DATASET=google-cloud-settings-app-id
-   export DATASTORE_PROJECT_ID=google-cloud-settings-app-id
-
-  using these environment variables run the emulator::
-
-   $ DATASTORE_HOST=http://localhost:8471 \
-   >   DATASTORE_DATASET=google-cloud-settings-app-id \
-   >   GOOGLE_CLOUD_NO_PRINT=true \
-   >   python system_tests/run_system_test.py \
-   >   --package=datastore --ignore-requirements
-
-  and after completion stop the emulator and any child
-  processes it spawned::
-
-   $ kill -- -33333
-
-.. _emulators: https://cloud.google.com/sdk/gcloud/reference/beta/emulators/
-
-- To run the system tests with the ``pubsub`` emulator::
-
-   $ tox -e pubsub-emulator
-   $ GOOGLE_CLOUD_DISABLE_GRPC=true tox -e pubsub-emulator
-
-  If you'd like to run them directly (outside of a ``tox`` environment), first
-  start the emulator and take note of the process ID::
-
-   $ gcloud beta emulators pubsub start 2>&1 > log.txt &
-   [1] 44444
-
-  then determine the environment variables needed to interact with
-  the emulator::
-
-   $ gcloud beta emulators pubsub env-init
-   export PUBSUB_EMULATOR_HOST=localhost:8897
-
-  using these environment variables run the emulator::
-
-   $ PUBSUB_EMULATOR_HOST=localhost:8897 \
-   >   python system_tests/run_system_test.py \
-   >   --package=pubsub
-
-  and after completion stop the emulator and any child
-  processes it spawned::
-
-   $ kill -- -44444
 
 *************
 Test Coverage
 *************
 
 - The codebase *must* have 100% test statement coverage after each commit.
-  You can test coverage via ``tox -e cover``.
+  You can test coverage via ``nox -s cover``.
 
 ******************************************************
 Documentation Coverage and Building HTML Documentation
@@ -386,10 +285,10 @@ using to develop ``google-cloud-python``):
 #. Open the ``docs/_build/html/index.html`` file to see the resulting HTML
    rendering.
 
-As an alternative to 1. and 2. above, if you have ``tox`` installed, you
+As an alternative to 1. and 2. above, if you have ``nox`` installed, you
 can build the docs via::
 
-   $ tox -e docs
+   $ nox -s docs
 
 ********************************************
 Note About ``README`` as it pertains to PyPI
@@ -402,29 +301,17 @@ instead of
 ``https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.python.org/pypi/google-cloud
+.. _description on PyPI: https://pypi.org/project/google-cloud/
 
-********************************************
-Travis Configuration and Build Optimizations
-********************************************
+**********************
+CircleCI Configuration
+**********************
 
-All build scripts in the ``.travis.yml`` configuration file which have
-Python dependencies are specified in the ``tox.ini`` configuration.
-They are executed in the Travis build via ``tox -e ${ENV}`` where
+All build scripts in the ``.circleci/config.yml`` configuration file which have
+Python dependencies are specified in the ``nox.py`` configuration.
+They are executed in the Travis build via ``nox -s ${ENV}`` where
 ``${ENV}`` is the environment being tested.
 
-If new ``tox`` environments are added to be run in a Travis build, they
-should be listed in ``[tox].envlist`` as a default environment.
-
-We speed up builds by using the Travis `caching feature`_.
-
-.. _caching feature: https://docs.travis-ci.com/user/caching/#pip-cache
-
-We intentionally **do not** cache the ``.tox/`` directory. Instead, we
-allow the ``tox`` environments to be re-built for every build. This
-way, we'll always get the latest versions of our dependencies and any
-caching or wheel optimization to be done will be handled automatically
-by ``pip``.
 
 *************************
 Supported Python Versions
@@ -435,14 +322,16 @@ We support:
 -  `Python 2.7`_
 -  `Python 3.4`_
 -  `Python 3.5`_
+-  `Python 3.6`_
 
 .. _Python 2.7: https://docs.python.org/2.7/
 .. _Python 3.4: https://docs.python.org/3.4/
 .. _Python 3.5: https://docs.python.org/3.5/
+.. _Python 3.6: https://docs.python.org/3.6/
 
-Supported versions can be found in our ``tox.ini`` `config`_.
+Supported versions can be found in our ``nox.py`` `config`_.
 
-.. _config: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/tox.ini
+.. _config: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/nox.py
 
 We explicitly decided not to support `Python 2.5`_ due to `decreased usage`_
 and lack of continuous integration `support`_.
@@ -475,17 +364,23 @@ This library follows `Semantic Versioning`_.
 
 .. _Semantic Versioning: http://semver.org/
 
-It is currently in major version zero (``0.y.z``), which means that anything
-may change at any time and the public API should not be considered
+Some packages are currently in major version zero (``0.y.z``), which means that
+anything may change at any time and the public API should not be considered
 stable.
 
 ******************************
 Contributor License Agreements
 ******************************
 
-Before we can accept your pull requests you'll need to sign a Contributor License Agreement (CLA):
+Before we can accept your pull requests you'll need to sign a Contributor
+License Agreement (CLA):
 
-- **If you are an individual writing original source code** and **you own the intellectual property**, then you'll need to sign an `individual CLA <https://developers.google.com/open-source/cla/individual>`__.
-- **If you work for a company that wants to allow you to contribute your work**, then you'll need to sign a `corporate CLA <https://developers.google.com/open-source/cla/corporate>`__.
+- **If you are an individual writing original source code** and **you own the
+  intellectual property**, then you'll need to sign an
+  `individual CLA <https://developers.google.com/open-source/cla/individual>`__.
+- **If you work for a company that wants to allow you to contribute your work**,
+  then you'll need to sign a
+  `corporate CLA <https://developers.google.com/open-source/cla/corporate>`__.
 
-You can sign these electronically (just scroll to the bottom). After that, we'll be able to accept your pull requests.
+You can sign these electronically (just scroll to the bottom). After that,
+we'll be able to accept your pull requests.

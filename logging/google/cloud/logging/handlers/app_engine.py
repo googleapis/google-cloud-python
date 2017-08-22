@@ -20,6 +20,7 @@ and labels for App Engine logs.
 
 import os
 
+from google.cloud.logging.handlers._helpers import get_trace_id
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging.resource import Resource
@@ -30,6 +31,8 @@ _GAE_PROJECT_ENV = 'GCLOUD_PROJECT'
 _GAE_SERVICE_ENV = 'GAE_SERVICE'
 _GAE_VERSION_ENV = 'GAE_VERSION'
 
+_TRACE_ID_LABEL = 'appengine.googleapis.com/trace_id'
+
 
 class AppEngineHandler(CloudLoggingHandler):
     """A logging handler that sends App Engine-formatted logs to Stackdriver.
@@ -38,7 +41,7 @@ class AppEngineHandler(CloudLoggingHandler):
     :param client: The authenticated Google Cloud Logging client for this
                    handler to use.
 
-    :type transport: type
+    :type transport: :class:`type`
     :param transport: The transport class. It should be a subclass
                       of :class:`.Transport`. If unspecified,
                       :class:`.BackgroundThreadTransport` will be used.
@@ -50,7 +53,8 @@ class AppEngineHandler(CloudLoggingHandler):
             client,
             name=_DEFAULT_GAE_LOGGER_NAME,
             transport=transport,
-            resource=self.get_gae_resource())
+            resource=self.get_gae_resource(),
+            labels=self.get_gae_labels())
 
     def get_gae_resource(self):
         """Return the GAE resource using the environment variables.
@@ -67,3 +71,20 @@ class AppEngineHandler(CloudLoggingHandler):
             },
         )
         return gae_resource
+
+    def get_gae_labels(self):
+        """Return the labels for GAE app.
+
+        If the trace ID can be detected, it will be included as a label.
+        Currently, no other labels are included.
+
+        :rtype: dict
+        :returns: Labels for GAE app.
+        """
+        gae_labels = {}
+
+        trace_id = get_trace_id()
+        if trace_id is not None:
+            gae_labels[_TRACE_ID_LABEL] = trace_id
+
+        return gae_labels

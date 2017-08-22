@@ -34,25 +34,23 @@ import os
 import time
 import warnings
 
-import httplib2
 from six.moves.urllib.parse import quote
 
-import google.auth.transport.requests
 from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
 from google.resumable_media.requests import Download
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+from google.cloud import exceptions
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud.credentials import generate_signed_url
 from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import make_exception
 from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage._signing import generate_signed_url
 from google.cloud.storage.acl import ObjectACL
 
 
@@ -113,7 +111,7 @@ class Blob(_PropertyMixin):
     :type encryption_key: bytes
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
-        See https://cloud.google.com/storage/docs/encryption#customer-supplied
+        See https://cloud.google.com/storage/docs/encryption#customer-supplied.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -130,7 +128,7 @@ class Blob(_PropertyMixin):
     )
     """Allowed values for :attr:`storage_class`.
 
-    See:
+    See
     https://cloud.google.com/storage/docs/json_api/v1/objects#storageClass
     https://cloud.google.com/storage/docs/per-object-storage-class
 
@@ -243,12 +241,12 @@ class Blob(_PropertyMixin):
         .. note::
 
             If you are on Google Compute Engine, you can't generate a signed
-            URL. Follow `Issue 922`_ for updates on this. If you'd like to
+            URL. Follow `Issue 50`_ for updates on this. If you'd like to
             be able to generate a signed URL from GCE, you can use a standard
             service account from a JSON file rather than a GCE service account.
 
-        .. _Issue 922: https://github.com/GoogleCloudPlatform/\
-                       google-cloud-python/issues/922
+        .. _Issue 50: https://github.com/GoogleCloudPlatform/\
+                      google-auth-library-python/issues/50
 
         If you have a blob that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
@@ -362,22 +360,20 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
-    def _make_transport(self, client):
-        """Make an authenticated transport with a client's credentials.
+    def _get_transport(self, client):
+        """Return the client's transport.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
         :rtype transport:
             :class:`~google.auth.transport.requests.AuthorizedSession`
         :returns: The transport (with credentials) that will
                   make authenticated requests.
         """
         client = self._require_client(client)
-        # Create a ``requests`` transport with the client's credentials.
-        transport = google.auth.transport.requests.AuthorizedSession(
-            client._credentials)
-        return transport
+        return client._http
 
     def _get_download_url(self):
         """Get the download URL for the current blob.
@@ -418,9 +414,8 @@ class Blob(_PropertyMixin):
         :param headers: Optional headers to be sent with the request(s).
         """
         if self.chunk_size is None:
-            download = Download(download_url, headers=headers)
-            response = download.consume(transport)
-            file_obj.write(response.content)
+            download = Download(download_url, stream=file_obj, headers=headers)
+            download.consume(transport)
         else:
             download = ChunkedDownload(
                 download_url, self.chunk_size, file_obj, headers=headers)
@@ -439,9 +434,10 @@ class Blob(_PropertyMixin):
         Downloading a file that has been encrypted with a `customer-supplied`_
         encryption key:
 
-         .. literalinclude:: storage_snippets.py
+         .. literalinclude:: snippets.py
             :start-after: [START download_to_file]
             :end-before: [END download_to_file]
+            :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
@@ -462,12 +458,12 @@ class Blob(_PropertyMixin):
         """
         download_url = self._get_download_url()
         headers = _get_encryption_headers(self._encryption_key)
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
 
         try:
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
-            _raise_from_invalid_response(exc, download_url)
+            _raise_from_invalid_response(exc)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -637,7 +633,7 @@ class Blob(_PropertyMixin):
                 msg = _READ_LESS_THAN_SIZE.format(size, len(data))
                 raise ValueError(msg)
 
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
@@ -707,7 +703,7 @@ class Blob(_PropertyMixin):
         if chunk_size is None:
             chunk_size = self.chunk_size
 
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
         if extra_headers is not None:
@@ -840,9 +836,10 @@ class Blob(_PropertyMixin):
 
         Uploading a file with a `customer-supplied`_ encryption key:
 
-        .. literalinclude:: storage_snippets.py
+        .. literalinclude:: snippets.py
             :start-after: [START upload_from_file]
             :end-before: [END upload_from_file]
+            :dedent: 4
 
         The ``encryption_key`` should be a str or bytes with a length of at
         least 32.
@@ -1054,7 +1051,7 @@ class Blob(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -1076,7 +1073,7 @@ class Blob(_PropertyMixin):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
 
         :type policy: :class:`google.cloud.iam.Policy`
@@ -1104,7 +1101,7 @@ class Blob(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See:
+        See
         https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
 
         :type permissions: list of string
@@ -1217,7 +1214,7 @@ class Blob(_PropertyMixin):
     def update_storage_class(self, new_class, client=None):
         """Update blob's storage class via a rewrite-in-place.
 
-        See:
+        See
         https://cloud.google.com/storage/docs/per-object-storage-class
 
         :type new_class: str
@@ -1244,7 +1241,7 @@ class Blob(_PropertyMixin):
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
 
-    See: `RFC 7234`_ and `API reference docs`_.
+    See `RFC 7234`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1256,7 +1253,7 @@ class Blob(_PropertyMixin):
     content_disposition = _scalar_property('contentDisposition')
     """HTTP 'Content-Disposition' header for this object.
 
-    See: `RFC 6266`_ and `API reference docs`_.
+    See `RFC 6266`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1268,7 +1265,7 @@ class Blob(_PropertyMixin):
     content_encoding = _scalar_property('contentEncoding')
     """HTTP 'Content-Encoding' header for this object.
 
-    See: `RFC 7231`_ and `API reference docs`_.
+    See `RFC 7231`_ and `API reference docs`_.
 
     If the property is not set locally, returns ``None``.
 
@@ -1280,7 +1277,7 @@ class Blob(_PropertyMixin):
     content_language = _scalar_property('contentLanguage')
     """HTTP 'Content-Language' header for this object.
 
-    See: `BCP47`_ and `API reference docs`_.
+    See `BCP47`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1292,7 +1289,7 @@ class Blob(_PropertyMixin):
     content_type = _scalar_property(_CONTENT_TYPE_FIELD)
     """HTTP 'Content-Type' header for this object.
 
-    See: `RFC 2616`_ and `API reference docs`_.
+    See `RFC 2616`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1304,7 +1301,7 @@ class Blob(_PropertyMixin):
     crc32c = _scalar_property('crc32c')
     """CRC32C checksum for this object.
 
-    See: `RFC 4960`_ and `API reference docs`_.
+    See `RFC 4960`_ and `API reference docs`_.
 
     If the property is not set locally, returns :data:`None`.
 
@@ -1317,7 +1314,7 @@ class Blob(_PropertyMixin):
     def component_count(self):
         """Number of underlying components that make up this object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The component count (in case of a composed object) or
@@ -1332,7 +1329,7 @@ class Blob(_PropertyMixin):
     def etag(self):
         """Retrieve the ETag for the object.
 
-        See: `RFC 2616 (etags)`_ and `API reference docs`_.
+        See `RFC 2616 (etags)`_ and `API reference docs`_.
 
         :rtype: str or ``NoneType``
         :returns: The blob etag or ``None`` if the property is not set locally.
@@ -1345,7 +1342,7 @@ class Blob(_PropertyMixin):
     def generation(self):
         """Retrieve the generation for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The generation of the blob or ``None`` if the property
@@ -1359,7 +1356,7 @@ class Blob(_PropertyMixin):
     def id(self):
         """Retrieve the ID for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
         :returns: The ID of the blob or ``None`` if the property is not
@@ -1370,7 +1367,7 @@ class Blob(_PropertyMixin):
     md5_hash = _scalar_property('md5Hash')
     """MD5 hash for this object.
 
-    See: `RFC 1321`_ and `API reference docs`_.
+    See `RFC 1321`_ and `API reference docs`_.
 
     If the property is not set locally, returns ``None``.
 
@@ -1383,7 +1380,7 @@ class Blob(_PropertyMixin):
     def media_link(self):
         """Retrieve the media download URI for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
         :returns: The media link for the blob or ``None`` if the property is
@@ -1395,7 +1392,12 @@ class Blob(_PropertyMixin):
     def metadata(self):
         """Retrieve arbitrary/application specific metadata for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :setter: Update arbitrary/application specific metadata for the
+                 object.
+        :getter: Retrieve arbitrary/application specific metadata for
+                 the object.
 
         :rtype: dict or ``NoneType``
         :returns: The metadata associated with the blob or ``None`` if the
@@ -1407,7 +1409,7 @@ class Blob(_PropertyMixin):
     def metadata(self, value):
         """Update arbitrary/application specific metadata for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :type value: dict
         :param value: (Optional) The blob metadata to set.
@@ -1418,7 +1420,7 @@ class Blob(_PropertyMixin):
     def metageneration(self):
         """Retrieve the metageneration for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The metageneration of the blob or ``None`` if the property
@@ -1432,7 +1434,7 @@ class Blob(_PropertyMixin):
     def owner(self):
         """Retrieve info about the owner of the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: dict or ``NoneType``
         :returns: Mapping of owner's role/ID. If the property is not set
@@ -1444,7 +1446,7 @@ class Blob(_PropertyMixin):
     def self_link(self):
         """Retrieve the URI for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: str or ``NoneType``
         :returns: The self link for the blob or ``None`` if the property is
@@ -1456,7 +1458,7 @@ class Blob(_PropertyMixin):
     def size(self):
         """Size of the object, in bytes.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: int or ``NoneType``
         :returns: The size of the blob or ``None`` if the property
@@ -1474,7 +1476,7 @@ class Blob(_PropertyMixin):
     exists in a bucket, call :meth:`update_storage_class` (which uses
     the "storage.objects.rewrite" method).
 
-    See: https://cloud.google.com/storage/docs/storage-classes
+    See https://cloud.google.com/storage/docs/storage-classes
 
     :rtype: str or ``NoneType``
     :returns: If set, one of "MULTI_REGIONAL", "REGIONAL",
@@ -1486,7 +1488,7 @@ class Blob(_PropertyMixin):
     def time_deleted(self):
         """Retrieve the timestamp at which the object was deleted.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
@@ -1501,7 +1503,7 @@ class Blob(_PropertyMixin):
     def time_created(self):
         """Retrieve the timestamp at which the object was created.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
@@ -1515,7 +1517,7 @@ class Blob(_PropertyMixin):
     def updated(self):
         """Retrieve the timestamp at which the object was updated.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+        See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
         :returns: Datetime object parsed from RFC3339 valid timestamp, or
@@ -1590,20 +1592,14 @@ def _maybe_rewind(stream, rewind=False):
         stream.seek(0, os.SEEK_SET)
 
 
-def _raise_from_invalid_response(error, error_info=None):
+def _raise_from_invalid_response(error):
     """Re-wrap and raise an ``InvalidResponse`` exception.
 
     :type error: :exc:`google.resumable_media.InvalidResponse`
     :param error: A caught exception from the ``google-resumable-media``
                   library.
 
-    :type error_info: str
-    :param error_info: (Optional) Extra information about the failed request.
-
     :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
              to the failed status code
     """
-    response = error.response
-    faux_response = httplib2.Response({'status': response.status_code})
-    raise make_exception(faux_response, response.content,
-                         error_info=error_info, use_json=False)
+    raise exceptions.from_http_response(error.response)

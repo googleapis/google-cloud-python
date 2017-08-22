@@ -58,10 +58,10 @@ class Client(ClientWithProject):
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type _http: :class:`~httplib2.Http`
+    :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                  :meth:`requests.Session.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
@@ -136,12 +136,12 @@ class Client(ClientWithProject):
     def list_topics(self, page_size=None, page_token=None):
         """List topics for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_list_topics]
            :end-before: [END client_list_topics]
 
@@ -154,7 +154,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.topic.Topic`
                   accessible to the current API.
         """
@@ -165,12 +165,12 @@ class Client(ClientWithProject):
     def list_subscriptions(self, page_size=None, page_token=None):
         """List subscriptions for the project associated with this client.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_list_subscriptions]
            :end-before: [END client_list_subscriptions]
 
@@ -183,7 +183,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.pubsub.subscription.Subscription`
                   accessible to the current client.
@@ -195,7 +195,7 @@ class Client(ClientWithProject):
     def list_snapshots(self, page_size=None, page_token=None):
         """List snapshots for the project associated with this API.
 
-        See:
+        See
         https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.snapshots/list
 
         :type project: str
@@ -210,7 +210,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            topics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.pubsub.snapshot.Snapshot`
                   accessible to the current API.
         """
@@ -223,9 +223,10 @@ class Client(ClientWithProject):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_topic]
            :end-before: [END client_topic]
+           :dedent: 4
 
         :type name: str
         :param name: the name of the topic to be constructed.
@@ -245,9 +246,10 @@ class Client(ClientWithProject):
 
         Example:
 
-        .. literalinclude:: pubsub_snippets.py
+        .. literalinclude:: snippets.py
            :start-after: [START client_subscription]
            :end-before: [END client_subscription]
+           :dedent: 4
 
         :type name: str
         :param name: the name of the subscription to be constructed.

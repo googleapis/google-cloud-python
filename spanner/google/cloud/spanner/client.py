@@ -24,7 +24,7 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner.database.Database`
 """
 
-import google.auth.credentials
+from google.api.core import page_iterator
 from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
 from google.cloud.gapic.spanner_admin_database.v1.database_admin_client import (  # noqa
@@ -34,10 +34,7 @@ from google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client import (
 # pylint: enable=line-too-long
 
 from google.cloud._http import DEFAULT_USER_AGENT
-from google.cloud.client import _ClientFactoryMixin
-from google.cloud.client import _ClientProjectMixin
-from google.cloud.credentials import get_credentials
-from google.cloud.iterator import GAXIterator
+from google.cloud.client import ClientWithProject
 from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
@@ -73,13 +70,13 @@ class InstanceConfig(object):
         return cls(config_pb.name, config_pb.display_name)
 
 
-class Client(_ClientFactoryMixin, _ClientProjectMixin):
+class Client(ClientWithProject):
     """Client for interacting with Cloud Spanner API.
 
     .. note::
 
         Since the Cloud Spanner API requires the gRPC transport, no
-        ``http`` argument is accepted by this class.
+        ``_http`` argument is accepted by this class.
 
     :type project: :class:`str` or :func:`unicode <unicode>`
     :param project: (Optional) The ID of the project which owns the
@@ -102,22 +99,18 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     """
     _instance_admin_api = None
     _database_admin_api = None
+    _SET_PROJECT = True  # Used by from_service_account_json()
+
+    SCOPE = (SPANNER_ADMIN_SCOPE,)
+    """The scopes required for Google Cloud Spanner."""
 
     def __init__(self, project=None, credentials=None,
                  user_agent=DEFAULT_USER_AGENT):
-
-        _ClientProjectMixin.__init__(self, project=project)
-        if credentials is None:
-            credentials = get_credentials()
-
-        scopes = [
-            SPANNER_ADMIN_SCOPE,
-        ]
-
-        credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, scopes)
-
-        self._credentials = credentials
+        # NOTE: This API has no use for the _http argument, but sending it
+        #       will have no impact since the _http() @property only lazily
+        #       creates a working HTTP object.
+        super(Client, self).__init__(
+            project=project, credentials=credentials, _http=None)
         self.user_agent = user_agent
 
     @property
@@ -180,19 +173,20 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`.Client`
         :returns: A copy of the current client.
         """
-        credentials = self._credentials
-        copied_creds = credentials.create_scoped(credentials.scopes)
         return self.__class__(
-            self.project,
-            copied_creds,
-            self.user_agent,
+            project=self.project,
+            credentials=self._credentials,
+            user_agent=self.user_agent,
         )
 
     def list_instance_configs(self, page_size=None, page_token=None):
         """List available instance configurations for the client's project.
 
-        See:
-        https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstanceConfigs
+        .. _RPC docs: https://cloud.google.com/spanner/docs/reference/rpc/\
+                      google.spanner.admin.instance.v1#google.spanner.admin.\
+                      instance.v1.InstanceAdmin.ListInstanceConfigs
+
+        See `RPC docs`_.
 
         :type page_size: int
         :param page_size: (Optional) Maximum number of results to return.
@@ -200,7 +194,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of
             :class:`~google.cloud.spanner.instance.InstanceConfig`
@@ -213,7 +207,8 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instance_configs(
             path, page_size=page_size, options=options)
-        return GAXIterator(self, page_iter, _item_to_instance_config)
+        return page_iterator._GAXIterator(
+            self, page_iter, _item_to_instance_config)
 
     def instance(self, instance_id,
                  configuration_name=None,
@@ -250,11 +245,11 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def list_instances(self, filter_='', page_size=None, page_token=None):
         """List instances for the client's project.
 
-        See:
+        See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstances
 
         :type filter_: string
-        :param filter_: (Optional) Filter to select instances listed.  See:
+        :param filter_: (Optional) Filter to select instances listed.  See
                         the ``ListInstancesRequest`` docs above for examples.
 
         :type page_size: int
@@ -263,7 +258,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.spanner.instance.Instance`
             resources within the client's project.
@@ -275,14 +270,15 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
             path, filter_=filter_, page_size=page_size, options=options)
-        return GAXIterator(self, page_iter, _item_to_instance)
+        return page_iterator._GAXIterator(
+            self, page_iter, _item_to_instance)
 
 
 def _item_to_instance_config(
         iterator, config_pb):  # pylint: disable=unused-argument
     """Convert an instance config protobuf to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type config_pb:
@@ -298,7 +294,7 @@ def _item_to_instance_config(
 def _item_to_instance(iterator, instance_pb):
     """Convert an instance protobuf to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`

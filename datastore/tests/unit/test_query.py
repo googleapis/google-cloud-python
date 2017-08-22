@@ -488,7 +488,7 @@ class TestIterator(unittest.TestCase):
             iterator._process_query_results(response_pb)
 
     def _next_page_helper(self, txn_id=None):
-        from google.cloud.iterator import Page
+        from google.api.core import page_iterator
         from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.proto.datastore.v1 import entity_pb2
         from google.cloud.proto.datastore.v1 import query_pb2
@@ -509,7 +509,7 @@ class TestIterator(unittest.TestCase):
         iterator = self._make_one(query, client)
 
         page = iterator._next_page()
-        self.assertIsInstance(page, Page)
+        self.assertIsInstance(page, page_iterator.Page)
         self.assertIs(page._parent, iterator)
 
         partition_id = entity_pb2.PartitionId(project_id=project)
@@ -550,21 +550,14 @@ class Test__item_to_entity(unittest.TestCase):
         return _item_to_entity(iterator, entity_pb)
 
     def test_it(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud.datastore import helpers
+        entity_pb = mock.sentinel.entity_pb
+        patch = mock.patch(
+            'google.cloud.datastore.helpers.entity_from_protobuf')
+        with patch as entity_from_protobuf:
+            result = self._call_fut(None, entity_pb)
+            self.assertIs(result, entity_from_protobuf.return_value)
 
-        result = object()
-        entities = []
-
-        def mocked(entity_pb):
-            entities.append(entity_pb)
-            return result
-
-        entity_pb = object()
-        with _Monkey(helpers, entity_from_protobuf=mocked):
-            self.assertIs(result, self._call_fut(None, entity_pb))
-
-        self.assertEqual(entities, [entity_pb])
+        entity_from_protobuf.assert_called_once_with(entity_pb)
 
 
 class Test__pb_from_query(unittest.TestCase):

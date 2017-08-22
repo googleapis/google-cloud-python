@@ -53,12 +53,19 @@ class Test_SnapshotBase(unittest.TestCase):
 
         class _Derived(self._getTargetClass()):
 
+            _transaction_id = None
+            _multi_use = False
+
             def _make_txn_selector(self):
                 from google.cloud.proto.spanner.v1.transaction_pb2 import (
                     TransactionOptions, TransactionSelector)
 
+                if self._transaction_id:
+                    return TransactionSelector(id=self._transaction_id)
                 options = TransactionOptions(
                     read_only=TransactionOptions.ReadOnly(strong=True))
+                if self._multi_use:
+                    return TransactionSelector(begin=options)
                 return TransactionSelector(single_use=options)
 
         return _Derived(session)
@@ -66,7 +73,7 @@ class Test_SnapshotBase(unittest.TestCase):
     def test_ctor(self):
         session = _Session()
         base = self._make_one(session)
-        self.assertTrue(base._session is session)
+        self.assertIs(base._session, session)
 
     def test__make_txn_selector_virtual(self):
         session = _Session()
@@ -105,7 +112,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
-    def test_read_normal(self):
+    def _read_helper(self, multi_use, first=True, count=0):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -116,6 +123,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.spanner.keyset import KeySet
         from google.cloud.spanner._helpers import _make_value_pb
 
+        TXN_ID = b'DEADBEEF'
         VALUES = [
             [u'bharney', 31],
             [u'phred', 32],
@@ -147,10 +155,21 @@ class Test_SnapshotBase(unittest.TestCase):
             _streaming_read_response=_MockCancellableIterator(*result_sets))
         session = _Session(database)
         derived = self._makeDerived(session)
+        derived._multi_use = multi_use
+        derived._read_request_count = count
+        if not first:
+            derived._transaction_id = TXN_ID
 
         result_set = derived.read(
             TABLE_NAME, COLUMNS, KEYSET,
             index=INDEX, limit=LIMIT, resume_token=TOKEN)
+
+        self.assertEqual(derived._read_request_count, count + 1)
+
+        if multi_use:
+            self.assertIs(result_set._source, derived)
+        else:
+            self.assertIsNone(result_set._source)
 
         result_set.consume_all()
         self.assertEqual(list(result_set.rows), VALUES)
@@ -165,12 +184,38 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(columns, COLUMNS)
         self.assertEqual(key_set, KEYSET.to_pb())
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertTrue(transaction.single_use.read_only.strong)
+        if multi_use:
+            if first:
+                self.assertTrue(transaction.begin.read_only.strong)
+            else:
+                self.assertEqual(transaction.id, TXN_ID)
+        else:
+            self.assertTrue(transaction.single_use.read_only.strong)
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
         self.assertEqual(resume_token, TOKEN)
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
+
+    def test_read_wo_multi_use(self):
+        self._read_helper(multi_use=False)
+
+    def test_read_wo_multi_use_w_read_request_count_gt_0(self):
+        with self.assertRaises(ValueError):
+            self._read_helper(multi_use=False, count=1)
+
+    def test_read_w_multi_use_wo_first(self):
+        self._read_helper(multi_use=True, first=False)
+
+    def test_read_w_multi_use_wo_first_w_count_gt_0(self):
+        self._read_helper(multi_use=True, first=False, count=1)
+
+    def test_read_w_multi_use_w_first(self):
+        self._read_helper(multi_use=True, first=True)
+
+    def test_read_w_multi_use_w_first_w_count_gt_0(self):
+        with self.assertRaises(ValueError):
+            self._read_helper(multi_use=True, first=True, count=1)
 
     def test_execute_sql_grpc_error(self):
         from google.cloud.proto.spanner.v1.transaction_pb2 import (
@@ -208,7 +253,7 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(ValueError):
             derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
 
-    def test_execute_sql_normal(self):
+    def _execute_sql_helper(self, multi_use, first=True, count=0):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
@@ -218,6 +263,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.proto.spanner.v1.type_pb2 import STRING, INT64
         from google.cloud.spanner._helpers import _make_value_pb
 
+        TXN_ID = b'DEADBEEF'
         VALUES = [
             [u'bharney', u'rhubbyl', 31],
             [u'phred', u'phlyntstone', 32],
@@ -248,10 +294,21 @@ class Test_SnapshotBase(unittest.TestCase):
             _execute_streaming_sql_response=iterator)
         session = _Session(database)
         derived = self._makeDerived(session)
+        derived._multi_use = multi_use
+        derived._read_request_count = count
+        if not first:
+            derived._transaction_id = TXN_ID
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
             query_mode=MODE, resume_token=TOKEN)
+
+        self.assertEqual(derived._read_request_count, count + 1)
+
+        if multi_use:
+            self.assertIs(result_set._source, derived)
+        else:
+            self.assertIsNone(result_set._source)
 
         result_set.consume_all()
         self.assertEqual(list(result_set.rows), VALUES)
@@ -264,7 +321,13 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
         self.assertIsInstance(transaction, TransactionSelector)
-        self.assertTrue(transaction.single_use.read_only.strong)
+        if multi_use:
+            if first:
+                self.assertTrue(transaction.begin.read_only.strong)
+            else:
+                self.assertEqual(transaction.id, TXN_ID)
+        else:
+            self.assertTrue(transaction.single_use.read_only.strong)
         expected_params = Struct(fields={
             key: _make_value_pb(value) for (key, value) in PARAMS.items()})
         self.assertEqual(params, expected_params)
@@ -273,6 +336,26 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(resume_token, TOKEN)
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
+
+    def test_execute_sql_wo_multi_use(self):
+        self._execute_sql_helper(multi_use=False)
+
+    def test_execute_sql_wo_multi_use_w_read_request_count_gt_0(self):
+        with self.assertRaises(ValueError):
+            self._execute_sql_helper(multi_use=False, count=1)
+
+    def test_execute_sql_w_multi_use_wo_first(self):
+        self._execute_sql_helper(multi_use=True, first=False)
+
+    def test_execute_sql_w_multi_use_wo_first_w_count_gt_0(self):
+        self._execute_sql_helper(multi_use=True, first=False, count=1)
+
+    def test_execute_sql_w_multi_use_w_first(self):
+        self._execute_sql_helper(multi_use=True, first=True)
+
+    def test_execute_sql_w_multi_use_w_first_w_count_gt_0(self):
+        with self.assertRaises(ValueError):
+            self._execute_sql_helper(multi_use=True, first=True, count=1)
 
 
 class _MockCancellableIterator(object):
@@ -298,6 +381,7 @@ class TestSnapshot(unittest.TestCase):
     DATABASE_NAME = INSTANCE_NAME + '/databases/' + DATABASE_ID
     SESSION_ID = 'session-id'
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
+    TRANSACTION_ID = b'DEADBEEF'
 
     def _getTargetClass(self):
         from google.cloud.spanner.snapshot import Snapshot
@@ -320,12 +404,13 @@ class TestSnapshot(unittest.TestCase):
     def test_ctor_defaults(self):
         session = _Session()
         snapshot = self._make_one(session)
-        self.assertTrue(snapshot._session is session)
+        self.assertIs(snapshot._session, session)
         self.assertTrue(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
 
     def test_ctor_w_multiple_options(self):
         timestamp = self._makeTimestamp()
@@ -340,45 +425,108 @@ class TestSnapshot(unittest.TestCase):
         timestamp = self._makeTimestamp()
         session = _Session()
         snapshot = self._make_one(session, read_timestamp=timestamp)
+        self.assertIs(snapshot._session, session)
+        self.assertFalse(snapshot._strong)
+        self.assertEqual(snapshot._read_timestamp, timestamp)
+        self.assertIsNone(snapshot._min_read_timestamp)
+        self.assertIsNone(snapshot._max_staleness)
+        self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
+
+    def test_ctor_w_min_read_timestamp(self):
+        timestamp = self._makeTimestamp()
+        session = _Session()
+        snapshot = self._make_one(session, min_read_timestamp=timestamp)
+        self.assertIs(snapshot._session, session)
+        self.assertFalse(snapshot._strong)
+        self.assertIsNone(snapshot._read_timestamp)
+        self.assertEqual(snapshot._min_read_timestamp, timestamp)
+        self.assertIsNone(snapshot._max_staleness)
+        self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
+
+    def test_ctor_w_max_staleness(self):
+        duration = self._makeDuration()
+        session = _Session()
+        snapshot = self._make_one(session, max_staleness=duration)
+        self.assertIs(snapshot._session, session)
+        self.assertFalse(snapshot._strong)
+        self.assertIsNone(snapshot._read_timestamp)
+        self.assertIsNone(snapshot._min_read_timestamp)
+        self.assertEqual(snapshot._max_staleness, duration)
+        self.assertIsNone(snapshot._exact_staleness)
+        self.assertFalse(snapshot._multi_use)
+
+    def test_ctor_w_exact_staleness(self):
+        duration = self._makeDuration()
+        session = _Session()
+        snapshot = self._make_one(session, exact_staleness=duration)
+        self.assertIs(snapshot._session, session)
+        self.assertFalse(snapshot._strong)
+        self.assertIsNone(snapshot._read_timestamp)
+        self.assertIsNone(snapshot._min_read_timestamp)
+        self.assertIsNone(snapshot._max_staleness)
+        self.assertEqual(snapshot._exact_staleness, duration)
+        self.assertFalse(snapshot._multi_use)
+
+    def test_ctor_w_multi_use(self):
+        session = _Session()
+        snapshot = self._make_one(session, multi_use=True)
+        self.assertTrue(snapshot._session is session)
+        self.assertTrue(snapshot._strong)
+        self.assertIsNone(snapshot._read_timestamp)
+        self.assertIsNone(snapshot._min_read_timestamp)
+        self.assertIsNone(snapshot._max_staleness)
+        self.assertIsNone(snapshot._exact_staleness)
+        self.assertTrue(snapshot._multi_use)
+
+    def test_ctor_w_multi_use_and_read_timestamp(self):
+        timestamp = self._makeTimestamp()
+        session = _Session()
+        snapshot = self._make_one(
+            session, read_timestamp=timestamp, multi_use=True)
         self.assertTrue(snapshot._session is session)
         self.assertFalse(snapshot._strong)
         self.assertEqual(snapshot._read_timestamp, timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertIsNone(snapshot._exact_staleness)
+        self.assertTrue(snapshot._multi_use)
 
-    def test_ctor_w_min_read_timestamp(self):
+    def test_ctor_w_multi_use_and_min_read_timestamp(self):
         timestamp = self._makeTimestamp()
         session = _Session()
-        snapshot = self._make_one(session, min_read_timestamp=timestamp)
-        self.assertTrue(snapshot._session is session)
-        self.assertFalse(snapshot._strong)
-        self.assertIsNone(snapshot._read_timestamp)
-        self.assertEqual(snapshot._min_read_timestamp, timestamp)
-        self.assertIsNone(snapshot._max_staleness)
-        self.assertIsNone(snapshot._exact_staleness)
 
-    def test_ctor_w_max_staleness(self):
+        with self.assertRaises(ValueError):
+            self._make_one(
+                session, min_read_timestamp=timestamp, multi_use=True)
+
+    def test_ctor_w_multi_use_and_max_staleness(self):
         duration = self._makeDuration()
         session = _Session()
-        snapshot = self._make_one(session, max_staleness=duration)
-        self.assertTrue(snapshot._session is session)
-        self.assertFalse(snapshot._strong)
-        self.assertIsNone(snapshot._read_timestamp)
-        self.assertIsNone(snapshot._min_read_timestamp)
-        self.assertEqual(snapshot._max_staleness, duration)
-        self.assertIsNone(snapshot._exact_staleness)
 
-    def test_ctor_w_exact_staleness(self):
+        with self.assertRaises(ValueError):
+            self._make_one(session, max_staleness=duration, multi_use=True)
+
+    def test_ctor_w_multi_use_and_exact_staleness(self):
         duration = self._makeDuration()
         session = _Session()
-        snapshot = self._make_one(session, exact_staleness=duration)
+        snapshot = self._make_one(
+            session, exact_staleness=duration, multi_use=True)
         self.assertTrue(snapshot._session is session)
         self.assertFalse(snapshot._strong)
         self.assertIsNone(snapshot._read_timestamp)
         self.assertIsNone(snapshot._min_read_timestamp)
         self.assertIsNone(snapshot._max_staleness)
         self.assertEqual(snapshot._exact_staleness, duration)
+        self.assertTrue(snapshot._multi_use)
+
+    def test__make_txn_selector_w_transaction_id(self):
+        session = _Session()
+        snapshot = self._make_one(session)
+        snapshot._transaction_id = self.TRANSACTION_ID
+        selector = snapshot._make_txn_selector()
+        self.assertEqual(selector.id, self.TRANSACTION_ID)
 
     def test__make_txn_selector_strong(self):
         session = _Session()
@@ -429,6 +577,127 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(options.read_only.exact_staleness.seconds, 3)
         self.assertEqual(options.read_only.exact_staleness.nanos, 123456000)
 
+    def test__make_txn_selector_strong_w_multi_use(self):
+        session = _Session()
+        snapshot = self._make_one(session, multi_use=True)
+        selector = snapshot._make_txn_selector()
+        options = selector.begin
+        self.assertTrue(options.read_only.strong)
+
+    def test__make_txn_selector_w_read_timestamp_w_multi_use(self):
+        from google.cloud._helpers import _pb_timestamp_to_datetime
+
+        timestamp = self._makeTimestamp()
+        session = _Session()
+        snapshot = self._make_one(
+            session, read_timestamp=timestamp, multi_use=True)
+        selector = snapshot._make_txn_selector()
+        options = selector.begin
+        self.assertEqual(
+            _pb_timestamp_to_datetime(options.read_only.read_timestamp),
+            timestamp)
+
+    def test__make_txn_selector_w_exact_staleness_w_multi_use(self):
+        duration = self._makeDuration(seconds=3, microseconds=123456)
+        session = _Session()
+        snapshot = self._make_one(
+            session, exact_staleness=duration, multi_use=True)
+        selector = snapshot._make_txn_selector()
+        options = selector.begin
+        self.assertEqual(options.read_only.exact_staleness.seconds, 3)
+        self.assertEqual(options.read_only.exact_staleness.nanos, 123456000)
+
+    def test_begin_wo_multi_use(self):
+        session = _Session()
+        snapshot = self._make_one(session)
+        with self.assertRaises(ValueError):
+            snapshot.begin()
+
+    def test_begin_w_read_request_count_gt_0(self):
+        session = _Session()
+        snapshot = self._make_one(session, multi_use=True)
+        snapshot._read_request_count = 1
+        with self.assertRaises(ValueError):
+            snapshot.begin()
+
+    def test_begin_w_existing_txn_id(self):
+        session = _Session()
+        snapshot = self._make_one(session, multi_use=True)
+        snapshot._transaction_id = self.TRANSACTION_ID
+        with self.assertRaises(ValueError):
+            snapshot.begin()
+
+    def test_begin_w_gax_error(self):
+        from google.gax.errors import GaxError
+        from google.cloud._helpers import _pb_timestamp_to_datetime
+
+        database = _Database()
+        api = database.spanner_api = _FauxSpannerAPI(
+            _random_gax_error=True)
+        timestamp = self._makeTimestamp()
+        session = _Session(database)
+        snapshot = self._make_one(
+            session, read_timestamp=timestamp, multi_use=True)
+
+        with self.assertRaises(GaxError):
+            snapshot.begin()
+
+        session_id, txn_options, options = api._begun
+        self.assertEqual(session_id, session.name)
+        self.assertEqual(
+            _pb_timestamp_to_datetime(txn_options.read_only.read_timestamp),
+            timestamp)
+        self.assertEqual(options.kwargs['metadata'],
+                         [('google-cloud-resource-prefix', database.name)])
+
+    def test_begin_ok_exact_staleness(self):
+        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+            Transaction as TransactionPB)
+
+        transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
+        database = _Database()
+        api = database.spanner_api = _FauxSpannerAPI(
+            _begin_transaction_response=transaction_pb)
+        duration = self._makeDuration(seconds=3, microseconds=123456)
+        session = _Session(database)
+        snapshot = self._make_one(
+            session, exact_staleness=duration, multi_use=True)
+
+        txn_id = snapshot.begin()
+
+        self.assertEqual(txn_id, self.TRANSACTION_ID)
+        self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
+
+        session_id, txn_options, options = api._begun
+        self.assertEqual(session_id, session.name)
+        read_only = txn_options.read_only
+        self.assertEqual(read_only.exact_staleness.seconds, 3)
+        self.assertEqual(read_only.exact_staleness.nanos, 123456000)
+        self.assertEqual(options.kwargs['metadata'],
+                         [('google-cloud-resource-prefix', database.name)])
+
+    def test_begin_ok_exact_strong(self):
+        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+            Transaction as TransactionPB)
+
+        transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
+        database = _Database()
+        api = database.spanner_api = _FauxSpannerAPI(
+            _begin_transaction_response=transaction_pb)
+        session = _Session(database)
+        snapshot = self._make_one(session, multi_use=True)
+
+        txn_id = snapshot.begin()
+
+        self.assertEqual(txn_id, self.TRANSACTION_ID)
+        self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
+
+        session_id, txn_options, options = api._begun
+        self.assertEqual(session_id, session.name)
+        self.assertTrue(txn_options.read_only.strong)
+        self.assertEqual(options.kwargs['metadata'],
+                         [('google-cloud-resource-prefix', database.name)])
+
 
 class _Session(object):
 
@@ -443,7 +712,15 @@ class _Database(object):
 
 class _FauxSpannerAPI(_GAXBaseAPI):
 
-    _read_with = None
+    _read_with = _begin = None
+
+    def begin_transaction(self, session, options_, options=None):
+        from google.gax.errors import GaxError
+
+        self._begun = (session, options_, options)
+        if self._random_gax_error:
+            raise GaxError('error')
+        return self._begin_transaction_response
 
     # pylint: disable=too-many-arguments
     def streaming_read(self, session, table, columns, key_set,

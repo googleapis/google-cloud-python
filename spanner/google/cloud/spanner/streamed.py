@@ -16,6 +16,7 @@
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
+from google.cloud import exceptions
 from google.cloud.proto.spanner.v1 import type_pb2
 import six
 
@@ -32,8 +33,11 @@ class StreamedResultSet(object):
         Iterator yielding
         :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`
         instances.
+
+    :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`
+    :param source: Snapshot from which the result set was fetched.
     """
-    def __init__(self, response_iterator):
+    def __init__(self, response_iterator, source=None):
         self._response_iterator = response_iterator
         self._rows = []             # Fully-processed rows
         self._counter = 0           # Counter for processed responses
@@ -42,6 +46,7 @@ class StreamedResultSet(object):
         self._resume_token = None   # To resume from last received PRS
         self._current_row = []      # Accumulated values for incomplete row
         self._pending_chunk = None  # Incomplete value
+        self._source = source       # Source snapshot
 
     @property
     def rows(self):
@@ -130,7 +135,11 @@ class StreamedResultSet(object):
         self._resume_token = response.resume_token
 
         if self._metadata is None:  # first response
-            self._metadata = response.metadata
+            metadata = self._metadata = response.metadata
+
+            source = self._source
+            if source is not None and source._transaction_id is None:
+                source._transaction_id = metadata.transaction.id
 
         if response.HasField('stats'):  # last response
             self._stats = response.stats
@@ -155,11 +164,53 @@ class StreamedResultSet(object):
     def __iter__(self):
         iter_rows, self._rows[:] = self._rows[:], ()
         while True:
-            if len(iter_rows) == 0:
+            if not iter_rows:
                 self.consume_next()  # raises StopIteration
                 iter_rows, self._rows[:] = self._rows[:], ()
             while iter_rows:
                 yield iter_rows.pop(0)
+
+    def one(self):
+        """Return exactly one result, or raise an exception.
+
+        :raises: :exc:`NotFound`: If there are no results.
+        :raises: :exc:`ValueError`: If there are multiple results.
+        :raises: :exc:`RuntimeError`: If consumption has already occurred,
+            in whole or in part.
+        """
+        answer = self.one_or_none()
+        if answer is None:
+            raise exceptions.NotFound('No rows matched the given query.')
+        return answer
+
+    def one_or_none(self):
+        """Return exactly one result, or None if there are no results.
+
+        :raises: :exc:`ValueError`: If there are multiple results.
+        :raises: :exc:`RuntimeError`: If consumption has already occurred,
+            in whole or in part.
+        """
+        # Sanity check: Has consumption of this query already started?
+        # If it has, then this is an exception.
+        if self._metadata is not None:
+            raise RuntimeError('Can not call `.one` or `.one_or_none` after '
+                               'stream consumption has already started.')
+
+        # Consume the first result of the stream.
+        # If there is no first result, then return None.
+        iterator = iter(self)
+        try:
+            answer = next(iterator)
+        except StopIteration:
+            return None
+
+        # Attempt to consume more. This should no-op; if we get additional
+        # rows, then this is an error case.
+        try:
+            next(iterator)
+            raise ValueError('Expected one result; got more.')
+        except StopIteration:
+            return answer
 
 
 class Unmergeable(ValueError):

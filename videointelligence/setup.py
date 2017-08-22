@@ -27,7 +27,7 @@ with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
 
 setup(
     author='Google Cloud Platform',
-    author_email='googleapis-packages@google.com',
+    author_email='googleapis-publisher@google.com',
     name='google-cloud-videointelligence',
     version='0.25.0',
     description='Python Client for Google Cloud Video Intelligence',
@@ -43,7 +43,7 @@ setup(
     packages=find_packages(exclude=('tests*',)),
     install_requires=(
         'googleapis-common-protos >= 1.5.2, < 2.0dev',
-        'google-gax >= 0.15.12, < 0.16dev',
+        'google-gax >= 0.15.14, < 0.16dev',
         'six >= 1.10.0',
     ),
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',

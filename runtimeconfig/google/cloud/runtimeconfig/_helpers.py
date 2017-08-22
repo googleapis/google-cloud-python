@@ -25,7 +25,7 @@ def config_name_from_full_name(full_name):
     :param full_name:
         The full resource name of a config. The full resource name looks like
         ``projects/project-name/configs/config-name`` and is returned as the
-        ``name`` field of a config resource.  See:
+        ``name`` field of a config resource.  See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs
 
     :rtype: str
@@ -54,7 +54,7 @@ def variable_name_from_full_name(full_name):
     :param full_name:
         The full resource name of a variable. The full resource name looks like
         ``projects/prj-name/configs/cfg-name/variables/var-name`` and is
-        returned as the ``name`` field of a variable resource.  See:
+        returned as the ``name`` field of a variable resource.  See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
 
     :rtype: str

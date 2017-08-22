@@ -512,7 +512,7 @@ class Test_SessionWrapper(unittest.TestCase):
     def test_ctor(self):
         session = object()
         base = self._make_one(session)
-        self.assertTrue(base._session is session)
+        self.assertIs(base._session, session)
 
 
 class Test_options_with_prefix(unittest.TestCase):

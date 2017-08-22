@@ -16,19 +16,19 @@
 
 .. data:: STATE_UNSPECIFIED
 
-    The default variable state.  See:
+    The default variable state.  See
     https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
 
 .. data:: STATE_UPDATED
 
     Indicates the variable was updated, while `variables.watch` was executing.
-    See:
+    See
     https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
 
 .. data:: STATE_DELETED
 
     Indicates the variable was deleted, while `variables.watch`_ was executing.
-    See:
+    See
     https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
 
 .. _variables.watch:
@@ -50,7 +50,7 @@ STATE_DELETED = 'DELETED'
 class Variable(object):
     """A variable in the Cloud RuntimeConfig service.
 
-    See:
+    See
     https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
 
     :type name: str
@@ -118,7 +118,7 @@ class Variable(object):
     def value(self):
         """Value of the variable, as bytes.
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
 
         :rtype: bytes or ``NoneType``
@@ -134,7 +134,7 @@ class Variable(object):
     def state(self):
         """Retrieve the state of the variable.
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables#VariableState
 
         :rtype: str
@@ -148,7 +148,7 @@ class Variable(object):
     def update_time(self):
         """Retrieve the timestamp at which the variable was updated.
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables
 
         :rtype: :class:`datetime.datetime` or ``NoneType``
@@ -190,7 +190,7 @@ class Variable(object):
     def exists(self, client=None):
         """API call:  test for the existence of the variable via a GET request
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs.variables/get
 
         :type client: :class:`~google.cloud.runtimeconfig.client.Client`
@@ -217,7 +217,7 @@ class Variable(object):
 
         This method will reload the newest data for the variable.
 
-        See:
+        See
         https://cloud.google.com/deployment-manager/runtime-configurator/reference/rest/v1beta1/projects.configs/get
 
         :type client: :class:`google.cloud.runtimeconfig.client.Client`

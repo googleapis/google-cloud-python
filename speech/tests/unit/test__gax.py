@@ -34,18 +34,17 @@ class TestGAPICSpeechAPI(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
+    @mock.patch('google.cloud._helpers.make_secure_channel',
+                return_value=mock.sentinel.channel)
     @mock.patch(
-        'google.cloud._helpers.make_secure_channel',
-        return_value=mock.sentinel.channel)
-    @mock.patch(
-        'google.cloud.gapic.speech.v1.speech_client.SpeechClient',
-        SERVICE_ADDRESS='hey.you.guys')
-    @mock.patch(
-        'google.cloud._helpers.make_secure_stub',
-        return_value=mock.sentinel.stub)
-    def test_constructor(self, mocked_stub, mocked_cls, mocked_channel):
+        'google.cloud.gapic.speech.v1.speech_client.SpeechClient.__init__',
+        return_value=None)
+    @mock.patch('google.cloud._helpers.make_secure_stub',
+                return_value=mock.sentinel.stub)
+    def test_constructor(self, mocked_stub, mocked_init, mocked_channel):
         from google.longrunning import operations_grpc
         from google.cloud._http import DEFAULT_USER_AGENT
+        from google.cloud.gapic.speech.v1.speech_client import SpeechClient
         from google.cloud.speech import __version__
         from google.cloud.speech._gax import OPERATIONS_API_HOST
 
@@ -57,17 +56,17 @@ class TestGAPICSpeechAPI(unittest.TestCase):
 
         speech_api = self._make_one(mock_client)
         self.assertIs(speech_api._client, mock_client)
-        self.assertIs(speech_api._gapic_api, mocked_cls.return_value)
+        self.assertIsInstance(speech_api._gapic_api, SpeechClient)
 
         mocked_stub.assert_called_once_with(
             mock_cnxn.credentials, DEFAULT_USER_AGENT,
             operations_grpc.OperationsStub, OPERATIONS_API_HOST)
-        mocked_cls.assert_called_once_with(
+        mocked_init.assert_called_once_with(
             channel=mock.sentinel.channel, lib_name='gccl',
             lib_version=__version__)
         mocked_channel.assert_called_once_with(
             mock_cnxn.credentials, DEFAULT_USER_AGENT,
-            mocked_cls.SERVICE_ADDRESS)
+            'speech.googleapis.com')
 
 
 class TestSpeechGAXMakeRequests(unittest.TestCase):
