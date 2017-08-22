@@ -55,8 +55,8 @@ _VARIABLE_RE = re.compile(r"""
     """, re.VERBOSE)
 
 # Segment expressions used for validating paths against a template.
-_SINGLE_SEGEMENT_PATTERN = r'([^/]+)'
-_MULTI_SEGEMENT_PATTERN = r'(.+)'
+_SINGLE_SEGMENT_PATTERN = r'([^/]+)'
+_MULTI_SEGMENT_PATTERN = r'(.+)'
 
 
 def _expand_variable_match(positional_vars, named_vars, match):
@@ -143,15 +143,15 @@ def _replace_variable_with_pattern(match):
     template = match.group('template')
     if name is not None:
         if not template:
-            return _SINGLE_SEGEMENT_PATTERN.format(name)
+            return _SINGLE_SEGMENT_PATTERN.format(name)
         elif template == '**':
-            return _MULTI_SEGEMENT_PATTERN.format(name)
+            return _MULTI_SEGMENT_PATTERN.format(name)
         else:
             return _generate_pattern_for_template(template)
     elif positional == '*':
-        return _SINGLE_SEGEMENT_PATTERN
+        return _SINGLE_SEGMENT_PATTERN
     elif positional == '**':
-        return _MULTI_SEGEMENT_PATTERN
+        return _MULTI_SEGMENT_PATTERN
     else:
         raise ValueError(
             'Unknown template expression {}'.format(
@@ -187,7 +187,7 @@ def validate(tmpl, path):
 
     Args:
         tmpl (str): The path template.
-        path (str): The expand path.
+        path (str): The expanded path.
 
     Returns:
         bool: True if the path matches.
