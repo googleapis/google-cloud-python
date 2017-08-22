@@ -47,7 +47,7 @@ _VARIABLE_RE = re.compile(r"""
         |
         # Match & capture named variables {name}
         {
-            (?P<name>.+?)
+            (?P<name>[^/]+?)
             # Optionally match and capture the named variable's template.
             (?:=(?P<template>.+?))?
         }
