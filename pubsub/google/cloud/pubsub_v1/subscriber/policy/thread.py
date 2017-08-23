@@ -36,7 +36,8 @@ class Policy(base.BasePolicy):
     This consumer handles the connection to the Pub/Sub service and all of
     the concurrency needs.
     """
-    def __init__(self, client, subscription, flow_control=types.FlowControl()):
+    def __init__(self, client, subscription, flow_control=types.FlowControl(),
+                 executor=None):
         """Instantiate the policy.
 
         Args:
@@ -47,6 +48,9 @@ class Policy(base.BasePolicy):
                 ``projects/{project}/subscriptions/{subscription}``.
             flow_control (~.pubsub_v1.types.FlowControl): The flow control
                 settings.
+            executor (~concurrent.futures.ThreadPoolExecutor): A
+                ThreadPoolExecutor instance, or anything duck-type compatible
+                with it.
         """
         # Default the callback to a no-op; it is provided by `.open`.
         self._callback = lambda message: None
@@ -63,7 +67,9 @@ class Policy(base.BasePolicy):
 
         # Also maintain a request queue and an executor.
         logger.debug('Creating callback requests thread (not starting).')
-        self._executor = futures.ThreadPoolExecutor(max_workers=10)
+        self._executor = executor
+        if self._executor is None:
+            self._executor = futures.ThreadPoolExecutor(max_workers=10)
         self._callback_requests = _helper_threads.QueueCallbackThread(
             self._request_queue,
             self.on_callback_request,
