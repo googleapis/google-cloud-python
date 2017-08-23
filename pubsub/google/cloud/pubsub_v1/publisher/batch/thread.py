@@ -173,8 +173,8 @@ class Batch(base.Batch):
                 self.messages,
             )
             end = time.time()
-            logging.getLogger().debug('gRPC Publish took {sec} seconds.'.format(
-                sec=end - start,
+            logging.getLogger().debug('gRPC Publish took {s} seconds.'.format(
+                s=end - start,
             ))
 
             # We got a response from Pub/Sub; denote that we are processing.
