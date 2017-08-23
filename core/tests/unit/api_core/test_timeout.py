@@ -59,7 +59,7 @@ class TestConstantTimeout(object):
         assert str(timeout_) == '<ConstantTimeout timeout=1.0>'
 
     def test_apply(self):
-        target = mock.Mock(spec=['__call__'])
+        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
         timeout_ = timeout.ConstantTimeout(42.0)
         wrapped = timeout_(target)
 
@@ -68,7 +68,7 @@ class TestConstantTimeout(object):
         target.assert_called_once_with(timeout=42.0)
 
     def test_apply_passthrough(self):
-        target = mock.Mock(spec=['__call__'])
+        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
         timeout_ = timeout.ConstantTimeout(42.0)
         wrapped = timeout_(target)
 
@@ -109,7 +109,7 @@ class TestExponentialTimeout(object):
             'deadline=4.0>')
 
     def test_apply(self):
-        target = mock.Mock(spec=['__call__'])
+        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
         timeout_ = timeout.ExponentialTimeout(1, 10, 2)
         wrapped = timeout_(target)
 
@@ -123,7 +123,7 @@ class TestExponentialTimeout(object):
         target.assert_called_with(timeout=4)
 
     def test_apply_passthrough(self):
-        target = mock.Mock(spec=['__call__'])
+        target = mock.Mock(spec=['__call__', '__name__'], __name__='target')
         timeout_ = timeout.ExponentialTimeout(42.0, 100, 2)
         wrapped = timeout_(target)
 
