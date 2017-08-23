@@ -73,9 +73,11 @@ def retrieve_metadata_server(metadata_key):
 
         # Exception will raise if the HTTP request returned an unsuccessful
         # status code.
+        if response.status_code == requests.codes.ok:
+            return response.text
+
         response.raise_for_status()
 
-        return response.text
     except (exceptions.RequestException, exceptions.HTTPError):
         # Ignore the exception, connection failed means the attribute does not
         # exist in the metadata server.
