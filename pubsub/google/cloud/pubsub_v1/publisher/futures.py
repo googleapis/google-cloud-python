@@ -106,10 +106,6 @@ class Future(google.api.core.future.Future):
         Returns:
             Exception: The exception raised by the call, if any.
         """
-        # If no timeout was specified, use inf.
-        if timeout is None:
-            timeout = float('inf')
-
         # Wait until the future is done.
         if not self._completed.wait(timeout=timeout):
             raise exceptions.TimeoutError('Timed out waiting for result.')
