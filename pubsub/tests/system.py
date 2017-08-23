@@ -91,7 +91,7 @@ def test_subscribe_to_messages():
 
         # Actually open the subscription and hold it open for a few seconds.
         subscription.open(callback)
-        for second in range(0,10):
+        for second in range(0, 10):
             time.sleep(1)
 
             # The callback should have fired at least fifty times, but it
