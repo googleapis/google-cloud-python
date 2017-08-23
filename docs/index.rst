@@ -8,7 +8,7 @@
   datastore/usage
   dns/usage
   language/usage
-  pubsub/usage
+  pubsub/index
   resource-manager/api
   runtimeconfig/usage
   spanner/usage
