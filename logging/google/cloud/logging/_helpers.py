@@ -15,7 +15,6 @@
 """Common logging helpers."""
 
 import requests
-from requests import exceptions
 
 from google.cloud.logging.entries import ProtobufEntry
 from google.cloud.logging.entries import StructEntry
@@ -76,9 +75,7 @@ def retrieve_metadata_server(metadata_key):
         if response.status_code == requests.codes.ok:
             return response.text
 
-        response.raise_for_status()
-
-    except (exceptions.RequestException, exceptions.HTTPError):
+    except requests.exceptions.RequestException:
         # Ignore the exception, connection failed means the attribute does not
         # exist in the metadata server.
         pass

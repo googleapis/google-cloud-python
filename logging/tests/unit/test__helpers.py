@@ -134,9 +134,3 @@ class ResponseMock(object):
     def __init__(self, status_code, text='test_response_text'):
         self.status_code = status_code
         self.text = text
-
-    def raise_for_status(self):
-        from requests.exceptions import HTTPError
-
-        if self.status_code >= 400:
-            raise HTTPError('test_error_msg', response=self)
