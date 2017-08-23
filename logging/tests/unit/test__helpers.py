@@ -68,13 +68,11 @@ class Test_retrieve_metadata_server(unittest.TestCase):
         response_text = 'my-gke-cluster'
         metadata_key = 'test_key'
 
-        response_mock = mock.Mock()
-        response_mock.status_code = status_code_ok
+        response_mock = ResponseMock(status_code=status_code_ok)
         response_mock.text = response_text
 
         requests_mock = mock.Mock()
         requests_mock.get.return_value = response_mock
-        requests_mock.codes.ok = status_code_ok
 
         patch = mock.patch(
             'google.cloud.logging._helpers.requests',
@@ -86,16 +84,13 @@ class Test_retrieve_metadata_server(unittest.TestCase):
         self.assertEqual(metadata, response_text)
 
     def test_metadata_does_not_exist(self):
-        status_code_ok = 200
         status_code_not_found = 404
         metadata_key = 'test_key'
 
-        response_mock = mock.Mock()
-        response_mock.status_code = status_code_not_found
+        response_mock = ResponseMock(status_code=status_code_not_found)
 
         requests_mock = mock.Mock()
         requests_mock.get.return_value = response_mock
-        requests_mock.codes.ok = status_code_ok
 
         patch = mock.patch(
             'google.cloud.logging._helpers.requests',
@@ -129,3 +124,16 @@ class EntryMock(object):
     def from_api_repr(self, resource, client, loggers):
         self.called = (resource, client, loggers)
         return self.sentinel
+
+
+class ResponseMock(object):
+
+    def __init__(self, status_code, text='test_response_text'):
+        self.status_code = status_code
+        self.text = text
+
+    def raise_for_status(self):
+        from requests.exceptions import HTTPError
+
+        if self.status_code >= 400:
+            raise HTTPError('test_error_msg', response=self)
