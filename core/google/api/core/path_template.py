@@ -69,7 +69,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
         match (re.Match): A regular expression match.
 
     Returns:
-        str: The expaned variable to replace the match.
+        str: The expanded variable to replace the match.
 
     Raises:
         ValueError: If a positional or named variable is required by the
