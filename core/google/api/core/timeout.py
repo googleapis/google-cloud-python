@@ -198,7 +198,6 @@ class ExponentialTimeout(object):
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
             kwargs['timeout'] = next(timeouts)
-            print(kwargs)
             return func(*args, **kwargs)
 
         return func_with_timeout
