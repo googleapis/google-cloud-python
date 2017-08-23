@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 
 class Test_entry_from_resource(unittest.TestCase):
 
@@ -51,6 +53,71 @@ class Test_entry_from_resource(unittest.TestCase):
 
     def test_proto_payload(self):
         self._payload_helper('protoPayload', 'ProtobufEntry')
+
+
+class Test_retrieve_metadata_server(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(metadata_key):
+        from google.cloud.logging._helpers import retrieve_metadata_server
+
+        return retrieve_metadata_server(metadata_key)
+
+    def test_metadata_exists(self):
+        status_code_ok = 200
+        response_text = 'my-gke-cluster'
+        metadata_key = 'test_key'
+
+        response_mock = mock.Mock()
+        response_mock.status_code = status_code_ok
+        response_mock.text = response_text
+
+        requests_mock = mock.Mock()
+        requests_mock.get.return_value = response_mock
+        requests_mock.codes.ok = status_code_ok
+
+        patch = mock.patch(
+            'google.cloud.logging._helpers.requests',
+            requests_mock)
+
+        with patch:
+            metadata = self._call_fut(metadata_key)
+
+        self.assertEqual(metadata, response_text)
+
+    def test_metadata_does_not_exist(self):
+        status_code_ok = 200
+        status_code_not_found = 404
+        metadata_key = 'test_key'
+
+        response_mock = mock.Mock()
+        response_mock.status_code = status_code_not_found
+
+        requests_mock = mock.Mock()
+        requests_mock.get.return_value = response_mock
+        requests_mock.codes.ok = status_code_ok
+
+        patch = mock.patch(
+            'google.cloud.logging._helpers.requests',
+            requests_mock)
+
+        with patch:
+            metadata = self._call_fut(metadata_key)
+
+        self.assertIsNone(metadata)
+
+    def test_request_exception(self):
+        metadata_key = 'test_url_cannot_connect'
+        metadata_url = 'invalid_url'
+
+        patch = mock.patch(
+            'google.cloud.logging._helpers.METADATA_URL',
+            new=metadata_url)
+
+        with patch:
+            metadata = self._call_fut(metadata_key)
+
+        self.assertIsNone(metadata)
 
 
 class EntryMock(object):
