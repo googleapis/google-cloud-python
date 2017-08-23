@@ -60,7 +60,9 @@ def retrieve_metadata_server(metadata_key):
     See: https://cloud.google.com/compute/docs/storing-retrieving-metadata
 
     :type metadata_key: str
-    :param metadata_key: Key of the metadata which will form the url.
+    :param metadata_key: Key of the metadata which will form the url. You can
+                         also supply query parameters after the metadata key.
+                         e.g. "tags?alt=json"
 
     :rtype: str
     :returns: The value of the metadata key returned by the metadata server.

@@ -106,7 +106,7 @@ class Test_retrieve_metadata_server(unittest.TestCase):
 
     def test_request_exception(self):
         metadata_key = 'test_url_cannot_connect'
-        metadata_url = 'invalid_url'
+        metadata_url = 'http://metadata.invalid/'
 
         patch = mock.patch(
             'google.cloud.logging._helpers.METADATA_URL',
