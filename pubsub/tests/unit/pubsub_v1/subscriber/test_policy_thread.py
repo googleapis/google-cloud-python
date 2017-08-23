@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
+
+from concurrent import futures
+import queue
 import threading
 
 import grpc
@@ -28,15 +32,21 @@ from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
-def create_policy():
+def create_policy(**kwargs):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
-    return thread.Policy(client, 'sub_name_c')
+    return thread.Policy(client, 'sub_name_c', **kwargs)
 
 
 def test_init():
     policy = create_policy()
     policy._callback(None)
+
+
+def test_init_with_executor():
+    executor = futures.ThreadPoolExecutor(max_workers=25)
+    policy = create_policy(executor=executor, queue=queue.Queue())
+    assert policy._executor is executor
 
 
 def test_close():

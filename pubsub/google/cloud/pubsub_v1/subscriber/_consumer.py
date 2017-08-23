@@ -254,7 +254,8 @@ class Consumer(object):
         """Start consuming the stream."""
         self.active = True
         self._exiting.clear()
-        self.helper_threads.start('consume bidirectional stream',
+        self.helper_threads.start(
+            'consume bidirectional stream',
             self._request_queue,
             self._blocking_consume,
         )

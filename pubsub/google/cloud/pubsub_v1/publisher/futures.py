@@ -14,7 +14,7 @@
 
 from __future__ import absolute_import
 
-import time
+import threading
 
 import google.api.core.future
 from google.cloud.pubsub_v1.publisher import exceptions
@@ -33,6 +33,7 @@ class Future(google.api.core.future.Future):
         self._callbacks = []
         self._result = None
         self._exception = None
+        self._completed = threading.Event()
 
     def cancel(self):
         """Publishes in Pub/Sub currently may not be canceled.
@@ -105,28 +106,16 @@ class Future(google.api.core.future.Future):
         Returns:
             Exception: The exception raised by the call, if any.
         """
-        # If no timeout was specified, use inf.
-        if timeout is None:
-            timeout = float('inf')
+        # Wait until the future is done.
+        if not self._completed.wait(timeout=timeout):
+            raise exceptions.TimeoutError('Timed out waiting for result.')
 
         # If the batch completed successfully, this should return None.
         if self._result is not None:
             return None
 
-        # If this batch had an error, this should return it.
-        if self._exception is not None:
-            return self._exception
-
-        # If the timeout has been exceeded, raise TimeoutError.
-        if timeout <= 0:
-            raise exceptions.TimeoutError('Timed out waiting for result.')
-
-        # Wait a little while and try again.
-        time.sleep(_wait)
-        return self.exception(
-            timeout=timeout - _wait,
-            _wait=min(_wait * 2, timeout, 60),
-        )
+        # Okay, this batch had an error; this should return it.
+        return self._exception
 
     def add_done_callback(self, fn):
         """Attach the provided callable to the future.
@@ -175,5 +164,6 @@ class Future(google.api.core.future.Future):
         Args:
             message_id (str): The message ID, as a string.
         """
+        self._completed.set()
         for callback in self._callbacks:
             callback(self)

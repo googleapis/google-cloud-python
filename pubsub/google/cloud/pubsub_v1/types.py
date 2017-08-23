@@ -60,11 +60,11 @@ FlowControl.__new__.__defaults__ = (
 Timestamp = timestamp_pb2.Timestamp
 
 
-names = ['BatchSettings', 'FlowControl', 'Timestamp']
+_names = ['BatchSettings', 'FlowControl', 'Timestamp']
 for name, message in get_messages(pubsub_pb2).items():
     message.__module__ = 'google.cloud.pubsub_v1.types'
     setattr(sys.modules[__name__], name, message)
-    names.append(name)
+    _names.append(name)
 
 
-__all__ = tuple(sorted(names))
+__all__ = tuple(sorted(_names))

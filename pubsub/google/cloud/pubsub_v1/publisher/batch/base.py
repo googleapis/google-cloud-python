@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import abc
+import enum
 
 import six
 
@@ -104,7 +105,7 @@ class Batch(object):
             bool: Whether this batch can accept the message.
         """
         # If this batch is not accepting messages generally, return False.
-        if self.status != self.Status.ACCEPTING_MESSAGES:
+        if self.status != BatchStatus.ACCEPTING_MESSAGES:
             return False
 
         # If this batch can not hold the message in question, return False.
@@ -133,13 +134,14 @@ class Batch(object):
         """
         raise NotImplementedError
 
-    class Status(object):
-        """An enum class representing valid statuses for a batch.
 
-        It is acceptable for a class to use a status that is not on this
-        class; this represents the list of statuses where the existing
-        library hooks in functionality.
-        """
-        ACCEPTING_MESSAGES = 'accepting messages'
-        ERROR = 'error'
-        SUCCESS = 'success'
+class BatchStatus(object):
+    """An enum-like class representing valid statuses for a batch.
+
+    It is acceptable for a class to use a status that is not on this
+    class; this represents the list of statuses where the existing
+    library hooks in functionality.
+    """
+    ACCEPTING_MESSAGES = 'accepting messages'
+    ERROR = 'error'
+    SUCCESS = 'success'

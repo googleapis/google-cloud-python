@@ -17,12 +17,11 @@ import time
 
 import mock
 
-import pytest
-
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
+from google.cloud.pubsub_v1.publisher.batch.base import BatchStatus
 from google.cloud.pubsub_v1.publisher.batch.thread import Batch
 
 
@@ -61,7 +60,7 @@ def test_init():
         Thread.assert_called_once_with(target=batch.monitor)
 
     # New batches start able to accept messages by default.
-    assert batch.status == batch.Status.ACCEPTING_MESSAGES
+    assert batch.status == BatchStatus.ACCEPTING_MESSAGES
 
 
 def test_init_infinite_latency():
@@ -87,7 +86,7 @@ def test_commit():
 
     # The batch's status needs to be something other than "accepting messages",
     # since the commit started.
-    assert batch.status != batch.Status.ACCEPTING_MESSAGES
+    assert batch.status != BatchStatus.ACCEPTING_MESSAGES
 
 
 def test_blocking_commit():
@@ -159,15 +158,13 @@ def test_monitor_already_committed():
     batch = create_batch(max_latency=5.0)
     batch._status = 'something else'
     with mock.patch.object(time, 'sleep') as sleep:
-        with mock.patch.object(type(batch), '_commit') as _commit:
-            batch.monitor()
+        batch.monitor()
 
-            # The monitor should have waited the given latency.
-            sleep.assert_called_once_with(5.0)
+        # The monitor should have waited the given latency.
+        sleep.assert_called_once_with(5.0)
 
-            # Since the batch was no longer accepting messages, the
-            # commit function should *not* have been called.
-            assert _commit.call_count == 0
+        # The status should not have changed.
+        assert batch._status == 'something else'
 
 
 def test_publish():
