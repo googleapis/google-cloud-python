@@ -70,8 +70,6 @@ def retrieve_metadata_server(metadata_key):
     try:
         response = requests.get(url, headers=METADATA_HEADERS)
 
-        # Exception will raise if the HTTP request returned an unsuccessful
-        # status code.
         if response.status_code == requests.codes.ok:
             return response.text
 
