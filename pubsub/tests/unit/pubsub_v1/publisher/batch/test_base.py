@@ -19,6 +19,7 @@ import mock
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.publisher.batch.base import BatchStatus
 from google.cloud.pubsub_v1.publisher.batch.thread import Batch
 
 
@@ -41,14 +42,14 @@ def create_batch(status=None, settings=types.BatchSettings()):
 
 
 def test_len():
-    batch = create_batch(status=Batch.Status.ACCEPTING_MESSAGES)
+    batch = create_batch(status=BatchStatus.ACCEPTING_MESSAGES)
     assert len(batch) == 0
     batch.publish(types.PubsubMessage(data=b'foo'))
     assert len(batch) == 1
 
 
 def test_will_accept():
-    batch = create_batch(status=Batch.Status.ACCEPTING_MESSAGES)
+    batch = create_batch(status=BatchStatus.ACCEPTING_MESSAGES)
     message = types.PubsubMessage()
     assert batch.will_accept(message) is True
 
@@ -62,7 +63,7 @@ def test_will_not_accept_status():
 def test_will_not_accept_size():
     batch = create_batch(
         settings=types.BatchSettings(max_bytes=10),
-        status=Batch.Status.ACCEPTING_MESSAGES,
+        status=BatchStatus.ACCEPTING_MESSAGES,
     )
     message = types.PubsubMessage(data=b'abcdefghijklmnopqrstuvwxyz')
     assert batch.will_accept(message) is False

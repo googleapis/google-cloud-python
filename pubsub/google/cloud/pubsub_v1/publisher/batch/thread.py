@@ -67,7 +67,7 @@ class Batch(base.Batch):
         self._messages = []
         self._size = 0
         self._settings = settings
-        self._status = self.Status.ACCEPTING_MESSAGES
+        self._status = base.BatchStatus.ACCEPTING_MESSAGES
         self._topic = topic
 
         # If max latency is specified, start a thread to monitor the batch and
@@ -155,7 +155,7 @@ class Batch(base.Batch):
         with self._commit_lock:
             # If, in the intervening period, the batch started to be committed,
             # or completed a commit, then no-op at this point.
-            if self._status != self.Status.ACCEPTING_MESSAGES:
+            if self._status != base.BatchStatus.ACCEPTING_MESSAGES:
                 return
 
             # Update the status.
@@ -192,7 +192,7 @@ class Batch(base.Batch):
             # Iterate over the futures on the queue and return the response
             # IDs. We are trusting that there is a 1:1 mapping, and raise an
             # exception if not.
-            self._status = self.Status.SUCCESS
+            self._status = base.BatchStatus.SUCCESS
             for message_id, future in zip(response.message_ids, self._futures):
                 future.set_result(message_id)
 

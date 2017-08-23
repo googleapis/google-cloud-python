@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 
 from concurrent import futures
-import queue
+from queue import Queue
 import logging
 import threading
 
@@ -37,7 +37,7 @@ class Policy(base.BasePolicy):
     the concurrency needs.
     """
     def __init__(self, client, subscription, flow_control=types.FlowControl(),
-                 executor=None):
+                 executor=None, queue=None):
         """Instantiate the policy.
 
         Args:
@@ -48,15 +48,20 @@ class Policy(base.BasePolicy):
                 ``projects/{project}/subscriptions/{subscription}``.
             flow_control (~.pubsub_v1.types.FlowControl): The flow control
                 settings.
-            executor (~concurrent.futures.ThreadPoolExecutor): A
+            executor (~concurrent.futures.ThreadPoolExecutor): (Optional.) A
                 ThreadPoolExecutor instance, or anything duck-type compatible
                 with it.
+            queue (~queue.Queue): (Optional.) A Queue instance, appropriate
+                for crossing the concurrency boundary implemented by
+                ``executor``.
         """
         # Default the callback to a no-op; it is provided by `.open`.
         self._callback = lambda message: None
 
         # Create a queue for keeping track of shared state.
-        self._request_queue = queue.Queue()
+        if queue is None:
+            queue = Queue()
+        self._request_queue = Queue()
 
         # Call the superclass constructor.
         super(Policy, self).__init__(
@@ -67,9 +72,9 @@ class Policy(base.BasePolicy):
 
         # Also maintain a request queue and an executor.
         logger.debug('Creating callback requests thread (not starting).')
+        if executor is None:
+            executor = futures.ThreadPoolExecutor(max_workers=10)
         self._executor = executor
-        if self._executor is None:
-            self._executor = futures.ThreadPoolExecutor(max_workers=10)
         self._callback_requests = _helper_threads.QueueCallbackThread(
             self._request_queue,
             self.on_callback_request,

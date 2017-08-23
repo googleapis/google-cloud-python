@@ -17,12 +17,11 @@ import time
 
 import mock
 
-import pytest
-
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
+from google.cloud.pubsub_v1.publisher.batch.base import BatchStatus
 from google.cloud.pubsub_v1.publisher.batch.thread import Batch
 
 
@@ -61,7 +60,7 @@ def test_init():
         Thread.assert_called_once_with(target=batch.monitor)
 
     # New batches start able to accept messages by default.
-    assert batch.status == batch.Status.ACCEPTING_MESSAGES
+    assert batch.status == BatchStatus.ACCEPTING_MESSAGES
 
 
 def test_init_infinite_latency():
@@ -87,7 +86,7 @@ def test_commit():
 
     # The batch's status needs to be something other than "accepting messages",
     # since the commit started.
-    assert batch.status != batch.Status.ACCEPTING_MESSAGES
+    assert batch.status != BatchStatus.ACCEPTING_MESSAGES
 
 
 def test_blocking_commit():

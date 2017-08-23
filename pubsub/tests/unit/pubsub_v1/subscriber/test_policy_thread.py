@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 from concurrent import futures
+import queue
 import threading
 
 import grpc
@@ -44,7 +45,7 @@ def test_init():
 
 def test_init_with_executor():
     executor = futures.ThreadPoolExecutor(max_workers=25)
-    policy = create_policy(executor=executor)
+    policy = create_policy(executor=executor, queue=queue.Queue())
     assert policy._executor is executor
 
 
