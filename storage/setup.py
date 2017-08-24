@@ -59,7 +59,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-storage',
-    version='1.3.1',
+    version='1.4.0',
     description='Python Client for Google Cloud Storage',
     long_description=README,
     namespace_packages=[
