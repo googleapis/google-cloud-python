@@ -65,7 +65,7 @@ REQUIREMENTS = [
     'google-cloud-speech >= 0.29.0, < 0.30dev',
     'google-cloud-storage >= 1.4.0, < 1.5dev',
     'google-cloud-translate >= 1.2.0, < 1.3dev',
-    'google-cloud-videointelligence >= 0.25.0, < 0.26dev',
+    'google-cloud-videointelligence >= 0.26.0, < 0.27dev',
     'google-cloud-vision >= 0.27.0, < 0.28dev',
 ]
 
