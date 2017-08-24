@@ -28,7 +28,10 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import ArrayQueryParameter
 from google.cloud.bigquery._helpers import QueryParametersProperty
+from google.cloud.bigquery._helpers import ScalarQueryParameter
+from google.cloud.bigquery._helpers import StructQueryParameter
 from google.cloud.bigquery._helpers import UDFResource
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
