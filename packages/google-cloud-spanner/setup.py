@@ -60,7 +60,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-spanner',
-    version='0.26.0',
+    version='0.27.0',
     description='Python Client for Cloud Spanner',
     long_description=README,
     namespace_packages=[
