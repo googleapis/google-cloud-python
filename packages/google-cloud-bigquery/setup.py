@@ -51,7 +51,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.26.0, < 0.27dev',
+    'google-cloud-core >= 0.27.0, < 0.28dev',
     'google-auth >= 1.0.0',
     'google-resumable-media >= 0.2.1',
     'requests >= 2.18.0',
