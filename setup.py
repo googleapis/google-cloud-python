@@ -48,26 +48,25 @@ SETUP_BASE = {
     ],
 }
 
-
 REQUIREMENTS = [
     'google-cloud-bigquery >= 0.26.0, < 0.27dev',
     'google-cloud-bigtable >= 0.26.0, < 0.27dev',
     'google-cloud-core >= 0.27.0, < 0.28dev',
     'google-cloud-datastore >= 1.2.0, < 1.3dev',
-    'google-cloud-dns >= 0.26.0, < 0.27dev',
-    'google-cloud-error-reporting >= 0.26.0, < 0.27dev',
-    'google-cloud-language >= 0.27.0, < 0.28dev',
-    'google-cloud-logging >= 1.2.0, < 1.3dev',
-    'google-cloud-monitoring >= 0.26.0, < 0.27dev',
+    'google-cloud-dns >= 0.27.0, < 0.28dev',
+    'google-cloud-error-reporting >= 0.27.0, < 0.28dev',
+    'google-cloud-language >= 0.28.0, < 0.29dev',
+    'google-cloud-logging >= 1.3.0, < 1.4dev',
+    'google-cloud-monitoring >= 0.27.0, < 0.28dev',
     'google-cloud-pubsub >= 0.27.0, < 0.28dev',
-    'google-cloud-resource-manager >= 0.26.0, < 0.27dev',
-    'google-cloud-runtimeconfig >= 0.26.0, < 0.27dev',
+    'google-cloud-resource-manager >= 0.27.0, < 0.28dev',
+    'google-cloud-runtimeconfig >= 0.27.0, < 0.28dev',
     'google-cloud-spanner >= 0.26.0, < 0.27dev',
-    'google-cloud-speech >= 0.28.0, < 0.29dev',
+    'google-cloud-speech >= 0.29.0, < 0.30dev',
     'google-cloud-storage >= 1.3.0, < 1.4dev',
-    'google-cloud-translate >= 1.1.0, < 1.2dev',
+    'google-cloud-translate >= 1.2.0, < 1.3dev',
     'google-cloud-videointelligence >= 0.26.0, < 0.27dev',
-    'google-cloud-vision >= 0.26.0, < 0.27dev',
+    'google-cloud-vision >= 0.27.0, < 0.28dev',
 ]
 
 setup(

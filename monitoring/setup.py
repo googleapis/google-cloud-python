@@ -56,7 +56,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-monitoring',
-    version='0.26.0',
+    version='0.27.0',
     description='Python Client for Stackdriver Monitoring',
     long_description=README,
     namespace_packages=[
