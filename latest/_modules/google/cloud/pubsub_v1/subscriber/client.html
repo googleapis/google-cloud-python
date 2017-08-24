@@ -1,0 +1,239 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.pubsub_v1.subscriber.client &#8212; google-cloud 0.27.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '0.27.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.pubsub_v1.subscriber.client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.gapic.pubsub.v1</span> <span class="k">import</span> <span class="n">subscriber_client</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">_gapic</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber.policy</span> <span class="k">import</span> <span class="n">thread</span>
+
+
+<span class="n">__VERSION__</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s1">&#39;google-cloud-pubsub&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
+
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client">[docs]</a><span class="nd">@_gapic</span><span class="o">.</span><span class="n">add_methods</span><span class="p">(</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">,</span>
+                    <span class="n">blacklist</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pull&#39;</span><span class="p">,</span> <span class="s1">&#39;streaming_pull&#39;</span><span class="p">))</span>
+<span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A subscriber client for Google Cloud Pub/Sub.</span>
+
+<span class="sd">    This creates an object that is capable of subscribing to messages.</span>
+<span class="sd">    Generally, you can instantiate this client with no arguments, and you</span>
+<span class="sd">    get sensible defaults.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        policy_class (class): A class that describes how to handle</span>
+<span class="sd">            subscriptions. You may subclass the</span>
+<span class="sd">            :class:`.pubsub_v1.subscriber.policy.base.BasePolicy`</span>
+<span class="sd">            class in order to define your own consumer. This is primarily</span>
+<span class="sd">            provided to allow use of different concurrency models; the default</span>
+<span class="sd">            is based on :class:`threading.Thread`.</span>
+<span class="sd">        kwargs (dict): Any additional arguments provided are sent as keyword</span>
+<span class="sd">            keyword arguments to the underlying</span>
+<span class="sd">            :class:`~.gapic.pubsub.v1.subscriber_client.SubscriberClient`.</span>
+<span class="sd">            Generally, you should not need to set additional keyword</span>
+<span class="sd">            arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy_class</span><span class="o">=</span><span class="n">thread</span><span class="o">.</span><span class="n">Policy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Add the metrics headers, and instantiate the underlying GAPIC</span>
+        <span class="c1"># client.</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lib_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gccl&#39;</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lib_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">__VERSION__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># The subcription class is responsible to retrieving and dispatching</span>
+        <span class="c1"># messages.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_policy_class</span> <span class="o">=</span> <span class="n">policy_class</span>
+
+<div class="viewcode-block" id="Client.subscribe"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;Return a representation of an individual subscription.</span>
+
+<span class="sd">        This method creates and returns a ``Consumer`` object (that is, a</span>
+<span class="sd">        :class:`~.pubsub_v1.subscriber.consumer.base.BaseConsumer`)</span>
+<span class="sd">        subclass) bound to the topic. It does `not` create the subcription</span>
+<span class="sd">        on the backend (or do any API call at all); it simply returns an</span>
+<span class="sd">        object capable of doing these things.</span>
+
+<span class="sd">        If the ``callback`` argument is provided, then the :meth:`open` method</span>
+<span class="sd">        is automatically called on the returned object. If ``callback`` is</span>
+<span class="sd">        not provided, the subscription is returned unopened.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            It only makes sense to provide ``callback`` here if you have</span>
+<span class="sd">            already created the subscription manually in the API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The name of the subscription. The</span>
+<span class="sd">                subscription should have already been created (for example,</span>
+<span class="sd">                by using :meth:`create_subscription`).</span>
+<span class="sd">            callback (function): The callback function. This function receives</span>
+<span class="sd">                the :class:`~.pubsub_v1.types.PubsubMessage` as its only</span>
+<span class="sd">                argument.</span>
+<span class="sd">            flow_control (~.pubsub_v1.types.FlowControl): The flow control</span>
+<span class="sd">                settings. Use this to prevent situations where you are</span>
+<span class="sd">                inundated with too many messages at once.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance</span>
+<span class="sd">                of the defined ``consumer_class`` on the client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flow_control</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FlowControl</span><span class="p">(</span><span class="o">*</span><span class="n">flow_control</span><span class="p">)</span>
+        <span class="n">subscr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_policy_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">flow_control</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
+            <span class="n">subscr</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">subscr</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

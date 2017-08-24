@@ -6,13 +6,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Index &#8212; google-cloud 0.27.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -81,7 +81,27 @@
 </li>
       <li><a href="bigquery/dataset.html#google.cloud.bigquery.dataset.AccessGrant">AccessGrant (class in google.cloud.bigquery.dataset)</a>
 </li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.acknowledge">acknowledge() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.ack">ack() (google.cloud.pubsub_v1.subscriber.message.Message method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ModifyAckDeadlineRequest.ack_deadline_seconds">ack_deadline_seconds (google.cloud.pubsub_v1.types.ModifyAckDeadlineRequest attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription.ack_deadline_seconds">(google.cloud.pubsub_v1.types.Subscription attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ReceivedMessage.ack_id">ack_id (google.cloud.pubsub_v1.types.ReceivedMessage attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.AcknowledgeRequest.ack_ids">ack_ids (google.cloud.pubsub_v1.types.AcknowledgeRequest attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ModifyAckDeadlineRequest.ack_ids">(google.cloud.pubsub_v1.types.ModifyAckDeadlineRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullRequest.ack_ids">(google.cloud.pubsub_v1.types.StreamingPullRequest attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.acknowledge">acknowledge() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.AcknowledgeRequest">AcknowledgeRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="storage/acl.html#google.cloud.storage.acl.ACL">ACL (class in google.cloud.storage.acl)</a>
 </li>
@@ -171,6 +191,8 @@
         <li><a href="language/gapic/v1beta2/types.html#google.cloud.language_v1beta2.types.AnalyzeEntitiesRequest">(class in google.cloud.language_v1beta2.types)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="language/gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeEntitiesResponse">AnalyzeEntitiesResponse (class in google.cloud.language_v1.types)</a>
 
       <ul>
@@ -179,8 +201,6 @@
       </ul></li>
       <li><a href="language/gapic/v1beta2/types.html#google.cloud.language_v1beta2.types.AnalyzeEntitySentimentRequest">AnalyzeEntitySentimentRequest (class in google.cloud.language_v1beta2.types)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="language/gapic/v1beta2/types.html#google.cloud.language_v1beta2.types.AnalyzeEntitySentimentResponse">AnalyzeEntitySentimentResponse (class in google.cloud.language_v1beta2.types)</a>
 </li>
       <li><a href="language/gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeSentimentRequest">AnalyzeSentimentRequest (class in google.cloud.language_v1.types)</a>
@@ -265,8 +285,16 @@
       </ul></li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.CropHintsParams.aspect_ratios">aspect_ratios (google.cloud.vision_v1.types.CropHintsParams attribute)</a>
 </li>
-      <li><a href="pubsub/message.html#google.cloud.pubsub.message.Message.attributes">attributes (google.cloud.pubsub.message.Message attribute)</a>
+      <li><a href="pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.attributes">attributes (google.cloud.pubsub_v1.subscriber.message.Message attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/message.html#Message.attributes">(Message attribute)</a>
 </li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PubsubMessage.attributes">(google.cloud.pubsub_v1.types.PubsubMessage attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PushConfig.attributes">(google.cloud.pubsub_v1.types.PushConfig attribute)</a>
+</li>
+      </ul></li>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.LongRunningRecognizeRequest.audio">audio (google.cloud.speech_v1.types.LongRunningRecognizeRequest attribute)</a>
 
       <ul>
@@ -278,10 +306,6 @@
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.RecognitionAudio.audio_source">audio_source (google.cloud.speech_v1.types.RecognitionAudio attribute)</a>
 </li>
       <li><a href="core/modules.html#google.cloud.iam.Policy.authenticated_users">authenticated_users() (google.cloud.iam.Policy static method)</a>
-</li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.auto_ack">auto_ack() (google.cloud.pubsub.subscription.Subscription method)</a>
-</li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.AutoAck">AutoAck (class in google.cloud.pubsub.subscription)</a>
 </li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.autodetect">autodetect (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
 </li>
@@ -304,7 +328,7 @@
 </li>
         <li><a href="logging/logger.html#google.cloud.logging.logger.Batch">(class in google.cloud.logging.logger)</a>
 </li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Batch">(class in google.cloud.pubsub.topic)</a>
+        <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch">(class in google.cloud.pubsub_v1.publisher.batch.thread)</a>
 </li>
         <li><a href="spanner/batch-api.html#google.cloud.spanner.batch.Batch">(class in google.cloud.spanner.batch)</a>
 </li>
@@ -318,7 +342,7 @@
 </li>
         <li><a href="logging/logger.html#google.cloud.logging.logger.Logger.batch">(google.cloud.logging.logger.Logger method)</a>
 </li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.batch">(google.cloud.pubsub.topic.Topic method)</a>
+        <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.batch">(google.cloud.pubsub_v1.publisher.client.Client method)</a>
 </li>
         <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.batch">(google.cloud.spanner.database.Database method)</a>
 </li>
@@ -334,6 +358,8 @@
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.BatchAnnotateImagesResponse">BatchAnnotateImagesResponse (class in google.cloud.vision_v1.types)</a>
 </li>
       <li><a href="spanner/database-api.html#google.cloud.spanner.database.BatchCheckout">BatchCheckout (class in google.cloud.spanner.database)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.BatchSettings">BatchSettings (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.CopyJob.begin">begin() (google.cloud.bigquery.job.CopyJob method)</a>
 
@@ -477,12 +503,6 @@
 </li>
       <li><a href="dns/zone.html#google.cloud.dns.zone.ManagedZone.changes">changes() (google.cloud.dns.zone.ManagedZone method)</a>
 </li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.check_iam_permissions">check_iam_permissions() (google.cloud.pubsub.subscription.Subscription method)</a>
-
-      <ul>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.check_iam_permissions">(google.cloud.pubsub.topic.Topic method)</a>
-</li>
-      </ul></li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.chunk_size">chunk_size (google.cloud.storage.blob.Blob attribute)</a>
 </li>
       <li><a href="bigtable/row.html#google.cloud.bigtable.row.AppendRow.clear">clear() (google.cloud.bigtable.row.AppendRow method)</a>
@@ -522,7 +542,9 @@
 </li>
         <li><a href="monitoring/client.html#google.cloud.monitoring.client.Client">(class in google.cloud.monitoring.client)</a>
 </li>
-        <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client">(class in google.cloud.pubsub.client)</a>
+        <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client">(class in google.cloud.pubsub_v1.publisher.client)</a>
+</li>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client">(class in google.cloud.pubsub_v1.subscriber.client)</a>
 </li>
         <li><a href="resource-manager/client.html#google.cloud.resource_manager.client.Client">(class in google.cloud.resource_manager.client)</a>
 </li>
@@ -544,6 +566,8 @@
 </li>
         <li><a href="logging/sink.html#google.cloud.logging.sink.Sink.client">(google.cloud.logging.sink.Sink attribute)</a>
 </li>
+        <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.client">(google.cloud.pubsub_v1.publisher.batch.thread.Batch attribute)</a>
+</li>
         <li><a href="runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config.client">(google.cloud.runtimeconfig.config.Config attribute)</a>
 </li>
         <li><a href="runtimeconfig/variable.html#google.cloud.runtimeconfig.variable.Variable.client">(google.cloud.runtimeconfig.variable.Variable attribute)</a>
@@ -560,6 +584,8 @@
 </li>
       </ul></li>
       <li><a href="core/modules.html#google.cloud.client.ClientWithProject">ClientWithProject (class in google.cloud.client)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close">close() (google.cloud.pubsub_v1.subscriber.policy.thread.Policy method)</a>
 </li>
       <li><a href="logging/handlers.html#google.cloud.logging.handlers.handlers.CloudLoggingHandler">CloudLoggingHandler (class in google.cloud.logging.handlers.handlers)</a>
 </li>
@@ -598,7 +624,7 @@
 </li>
         <li><a href="logging/logger.html#google.cloud.logging.logger.Batch.commit">(google.cloud.logging.logger.Batch method)</a>
 </li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Batch.commit">(google.cloud.pubsub.topic.Batch method)</a>
+        <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.commit">(google.cloud.pubsub_v1.publisher.batch.thread.Batch method)</a>
 </li>
         <li><a href="spanner/batch-api.html#google.cloud.spanner.batch.Batch.commit">(google.cloud.spanner.batch.Batch method)</a>
 </li>
@@ -750,10 +776,6 @@
 </li>
         <li><a href="monitoring/metric.html#google.cloud.monitoring.metric.MetricDescriptor.create">(google.cloud.monitoring.metric.MetricDescriptor method)</a>
 </li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.create">(google.cloud.pubsub.subscription.Subscription method)</a>
-</li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.create">(google.cloud.pubsub.topic.Topic method)</a>
-</li>
         <li><a href="resource-manager/project.html#google.cloud.resource_manager.project.Project.create">(google.cloud.resource_manager.project.Project method)</a>
 </li>
         <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.create">(google.cloud.spanner.database.Database method)</a>
@@ -777,6 +799,12 @@
       </ul></li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.create_resumable_upload_session">create_resumable_upload_session() (google.cloud.storage.blob.Blob method)</a>
 </li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.create_snapshot">create_snapshot() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.create_subscription">create_subscription() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.create_topic">create_topic() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+</li>
       <li><a href="bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.created">created (google.cloud.bigquery.dataset.Dataset attribute)</a>
 
       <ul>
@@ -794,6 +822,8 @@
 </li>
       </ul></li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.CreateDisposition">CreateDisposition (class in google.cloud.bigquery.job)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.CreateSnapshotRequest">CreateSnapshotRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="bigtable/client.html#google.cloud.bigtable.client.Client.credentials">credentials (google.cloud.bigtable.client.Client attribute)</a>
 
@@ -845,6 +875,14 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.data">data (google.cloud.pubsub_v1.subscriber.message.Message attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/message.html#Message.data">(Message attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PubsubMessage.data">(google.cloud.pubsub_v1.types.PubsubMessage attribute)</a>
+</li>
+      </ul></li>
       <li><a href="bigtable/client.html#google.cloud.bigtable.client.DATA_API_HOST">DATA_API_HOST (in module google.cloud.bigtable.client)</a>
 </li>
       <li><a href="bigtable/client.html#google.cloud.bigtable.client.DATA_SCOPE">DATA_SCOPE (in module google.cloud.bigtable.client)</a>
@@ -920,10 +958,6 @@
 </li>
         <li><a href="monitoring/metric.html#google.cloud.monitoring.metric.MetricDescriptor.delete">(google.cloud.monitoring.metric.MetricDescriptor method)</a>
 </li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.delete">(google.cloud.pubsub.subscription.Subscription method)</a>
-</li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.delete">(google.cloud.pubsub.topic.Topic method)</a>
-</li>
         <li><a href="resource-manager/project.html#google.cloud.resource_manager.project.Project.delete">(google.cloud.resource_manager.project.Project method)</a>
 </li>
         <li><a href="spanner/instance-api.html#google.cloud.spanner.instance.Instance.delete">(google.cloud.spanner.instance.Instance method)</a>
@@ -959,10 +993,22 @@
       </ul></li>
       <li><a href="dns/changes.html#google.cloud.dns.changes.Changes.delete_record_set">delete_record_set() (google.cloud.dns.changes.Changes method)</a>
 </li>
-      <li><a href="dns/changes.html#google.cloud.dns.changes.Changes.deletions">deletions (google.cloud.dns.changes.Changes attribute)</a>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.delete_snapshot">delete_snapshot() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.delete_subscription">delete_subscription() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.delete_topic">delete_topic() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.DeleteSnapshotRequest">DeleteSnapshotRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.DeleteSubscriptionRequest">DeleteSubscriptionRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.DeleteTopicRequest">DeleteTopicRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="dns/changes.html#google.cloud.dns.changes.Changes.deletions">deletions (google.cloud.dns.changes.Changes attribute)</a>
+</li>
       <li><a href="language/gapic/v1/types.html#google.cloud.language_v1.types.Token.dependency_edge">dependency_edge (google.cloud.language_v1.types.Token attribute)</a>
 
       <ul>
@@ -1205,9 +1251,9 @@
 </li>
         <li><a href="bigquery/usage.html#index-0">GOOGLE_APPLICATION_CREDENTIALS</a>
 </li>
-        <li><a href="logging/usage.html#index-1">GOOGLE_CLOUD_DISABLE_GRPC</a>, <a href="pubsub/usage.html#index-1">[1]</a>
+        <li><a href="logging/usage.html#index-1">GOOGLE_CLOUD_DISABLE_GRPC</a>
 </li>
-        <li><a href="bigquery/usage.html#index-1">GOOGLE_CLOUD_PROJECT</a>, <a href="bigtable/client-intro.html#index-0">[1]</a>, <a href="error-reporting/usage.html#index-0">[2]</a>, <a href="language/usage.html#index-0">[3]</a>, <a href="language/usage.html#index-1">[4]</a>, <a href="logging/usage.html#index-0">[5]</a>, <a href="monitoring/usage.html#index-0">[6]</a>, <a href="pubsub/usage.html#index-0">[7]</a>, <a href="vision/index.html#index-0">[8]</a>, <a href="vision/index.html#index-1">[9]</a>
+        <li><a href="bigquery/usage.html#index-1">GOOGLE_CLOUD_PROJECT</a>, <a href="bigtable/client-intro.html#index-0">[1]</a>, <a href="error-reporting/usage.html#index-0">[2]</a>, <a href="language/usage.html#index-0">[3]</a>, <a href="language/usage.html#index-1">[4]</a>, <a href="logging/usage.html#index-0">[5]</a>, <a href="monitoring/usage.html#index-0">[6]</a>, <a href="pubsub/index.html#index-0">[7]</a>, <a href="pubsub/index.html#index-1">[8]</a>, <a href="vision/index.html#index-0">[9]</a>, <a href="vision/index.html#index-1">[10]</a>
 </li>
       </ul></li>
       <li><a href="core/operation-api.html#google.cloud.operation.Operation.error">error (google.cloud.operation.Operation attribute)</a>
@@ -1272,12 +1318,8 @@
       </ul></li>
       <li><a href="datastore/entities.html#google.cloud.datastore.entity.Entity.exclude_from_indexes">exclude_from_indexes (google.cloud.datastore.entity.Entity attribute)</a>
 </li>
-      <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.execute_sql">execute_sql() (google.cloud.spanner.database.Database method)</a>
-
-      <ul>
-        <li><a href="spanner/session-api.html#google.cloud.spanner.session.Session.execute_sql">(google.cloud.spanner.session.Session method)</a>
+      <li><a href="spanner/session-api.html#google.cloud.spanner.session.Session.execute_sql">execute_sql() (google.cloud.spanner.session.Session method)</a>
 </li>
-      </ul></li>
       <li><a href="bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.exists">exists() (google.cloud.bigquery.dataset.Dataset method)</a>
 
       <ul>
@@ -1301,10 +1343,6 @@
 </li>
         <li><a href="monitoring/group.html#google.cloud.monitoring.group.Group.exists">(google.cloud.monitoring.group.Group method)</a>
 </li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.exists">(google.cloud.pubsub.subscription.Subscription method)</a>
-</li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.exists">(google.cloud.pubsub.topic.Topic method)</a>
-</li>
         <li><a href="resource-manager/project.html#google.cloud.resource_manager.project.Project.exists">(google.cloud.resource_manager.project.Project method)</a>
 </li>
         <li><a href="runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config.exists">(google.cloud.runtimeconfig.config.Config method)</a>
@@ -1322,6 +1360,8 @@
         <li><a href="storage/buckets.html#google.cloud.storage.bucket.Bucket.exists">(google.cloud.storage.bucket.Bucket method)</a>
 </li>
       </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Snapshot.expire_time">expire_time (google.cloud.pubsub_v1.types.Snapshot attribute)</a>
+</li>
       <li><a href="bigquery/table.html#google.cloud.bigquery.table.Table.expires">expires (google.cloud.bigquery.table.Table attribute)</a>
 </li>
       <li><a href="language/gapic/v1/types.html#google.cloud.language_v1.types.AnnotateTextRequest.extract_document_sentiment">extract_document_sentiment (google.cloud.language_v1.types.AnnotateTextRequest attribute)</a>
@@ -1432,6 +1472,8 @@
       </ul></li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.QueryJob.flatten_results">flatten_results (google.cloud.bigquery.job.QueryJob attribute)</a>
 </li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.FlowControl">FlowControl (class in google.cloud.pubsub_v1.types)</a>
+</li>
       <li><a href="logging/transports-thread.html#google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport.flush">flush() (google.cloud.logging.handlers.transports.background_thread.BackgroundThreadTransport method)</a>
 
       <ul>
@@ -1446,6 +1488,8 @@
       </ul></li>
       <li><a href="logging/handlers-container-engine.html#google.cloud.logging.handlers.container_engine.ContainerEngineHandler.format">format() (google.cloud.logging.handlers.container_engine.ContainerEngineHandler method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.friendly_name">friendly_name (google.cloud.bigquery.dataset.Dataset attribute)</a>
 
       <ul>
@@ -1465,6 +1509,8 @@
 </li>
         <li><a href="bigquery/job.html#google.cloud.bigquery.job.QueryJob.from_api_repr">(google.cloud.bigquery.job.QueryJob class method)</a>
 </li>
+        <li><a href="bigquery/schema.html#google.cloud.bigquery.schema.SchemaField.from_api_repr">(google.cloud.bigquery.schema.SchemaField class method)</a>
+</li>
         <li><a href="bigquery/table.html#google.cloud.bigquery.table.Table.from_api_repr">(google.cloud.bigquery.table.Table class method)</a>
 </li>
         <li><a href="dns/changes.html#google.cloud.dns.changes.Changes.from_api_repr">(google.cloud.dns.changes.Changes class method)</a>
@@ -1479,19 +1525,11 @@
 </li>
         <li><a href="logging/sink.html#google.cloud.logging.sink.Sink.from_api_repr">(google.cloud.logging.sink.Sink class method)</a>
 </li>
-        <li><a href="pubsub/message.html#google.cloud.pubsub.message.Message.from_api_repr">(google.cloud.pubsub.message.Message class method)</a>
-</li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.from_api_repr">(google.cloud.pubsub.subscription.Subscription class method)</a>
-</li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.from_api_repr">(google.cloud.pubsub.topic.Topic class method)</a>
-</li>
         <li><a href="resource-manager/project.html#google.cloud.resource_manager.project.Project.from_api_repr">(google.cloud.resource_manager.project.Project class method)</a>
 </li>
         <li><a href="runtimeconfig/variable.html#google.cloud.runtimeconfig.variable.Variable.from_api_repr">(google.cloud.runtimeconfig.variable.Variable class method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="core/operation-api.html#google.cloud.operation.Operation.from_dict">from_dict() (google.cloud.operation.Operation class method)</a>
 </li>
       <li><a href="datastore/usage.html#google.cloud.datastore.Key.from_legacy_urlsafe">from_legacy_urlsafe() (google.cloud.datastore.Key class method)</a>
@@ -1532,10 +1570,6 @@
         <li><a href="logging/metric.html#google.cloud.logging.metric.Metric.full_name">(google.cloud.logging.metric.Metric attribute)</a>
 </li>
         <li><a href="logging/sink.html#google.cloud.logging.sink.Sink.full_name">(google.cloud.logging.sink.Sink attribute)</a>
-</li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.full_name">(google.cloud.pubsub.subscription.Subscription attribute)</a>
-</li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.full_name">(google.cloud.pubsub.topic.Topic attribute)</a>
 </li>
         <li><a href="resource-manager/project.html#google.cloud.resource_manager.project.Project.full_name">(google.cloud.resource_manager.project.Project attribute)</a>
 </li>
@@ -1614,10 +1648,10 @@
 </li>
       <li><a href="logging/handlers-app-engine.html#google.cloud.logging.handlers.app_engine.AppEngineHandler.get_gae_resource">get_gae_resource() (google.cloud.logging.handlers.app_engine.AppEngineHandler method)</a>
 </li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.get_iam_policy">get_iam_policy() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.get_iam_policy">get_iam_policy() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
 
       <ul>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.get_iam_policy">(google.cloud.pubsub.topic.Topic method)</a>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.get_iam_policy">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
         <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.get_iam_policy">(google.cloud.storage.blob.Blob method)</a>
 </li>
@@ -1634,7 +1668,17 @@
         <li><a href="datastore/client.html#google.cloud.datastore.client.Client.get_multi">(google.cloud.datastore.client.Client method)</a>
 </li>
       </ul></li>
+      <li><a href="bigquery/client.html#google.cloud.bigquery.client.Client.get_query_results">get_query_results() (google.cloud.bigquery.client.Client method)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.get_subscription">get_subscription() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.get_topic">get_topic() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+</li>
       <li><a href="runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config.get_variable">get_variable() (google.cloud.runtimeconfig.config.Config method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.GetSubscriptionRequest">GetSubscriptionRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.GetTopicRequest">GetTopicRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="bigquery/client.html#module-google.cloud.bigquery.client">google.cloud.bigquery.client (module)</a>
 </li>
@@ -1686,14 +1730,14 @@
 </li>
       <li><a href="dns/client.html#module-google.cloud.dns.client">google.cloud.dns.client (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dns/resource-record-set.html#module-google.cloud.dns.resource_record_set">google.cloud.dns.resource_record_set (module)</a>
 </li>
       <li><a href="dns/zone.html#module-google.cloud.dns.zone">google.cloud.dns.zone (module)</a>
 </li>
       <li><a href="core/modules.html#module-google.cloud.environment_vars">google.cloud.environment_vars (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="error-reporting/client.html#module-google.cloud.error_reporting.client">google.cloud.error_reporting.client (module)</a>
 </li>
       <li><a href="error-reporting/util.html#module-google.cloud.error_reporting.util">google.cloud.error_reporting.util (module)</a>
@@ -1748,15 +1792,13 @@
 </li>
       <li><a href="core/operation-api.html#module-google.cloud.operation">google.cloud.operation (module)</a>
 </li>
-      <li><a href="pubsub/client.html#module-google.cloud.pubsub.client">google.cloud.pubsub.client (module)</a>
+      <li><a href="pubsub/publisher/api/batch.html#module-google.cloud.pubsub_v1.publisher.batch.thread">google.cloud.pubsub_v1.publisher.batch.thread (module)</a>
 </li>
-      <li><a href="pubsub/iam.html#module-google.cloud.pubsub.iam">google.cloud.pubsub.iam (module)</a>
+      <li><a href="pubsub/publisher/api/client.html#module-google.cloud.pubsub_v1.publisher.client">google.cloud.pubsub_v1.publisher.client (module)</a>
 </li>
-      <li><a href="pubsub/message.html#module-google.cloud.pubsub.message">google.cloud.pubsub.message (module)</a>
+      <li><a href="pubsub/subscriber/api/client.html#module-google.cloud.pubsub_v1.subscriber.client">google.cloud.pubsub_v1.subscriber.client (module)</a>
 </li>
-      <li><a href="pubsub/subscription.html#module-google.cloud.pubsub.subscription">google.cloud.pubsub.subscription (module)</a>
-</li>
-      <li><a href="pubsub/topic.html#module-google.cloud.pubsub.topic">google.cloud.pubsub.topic (module)</a>
+      <li><a href="pubsub/types.html#module-google.cloud.pubsub_v1.types">google.cloud.pubsub_v1.types (module)</a>
 </li>
       <li><a href="resource-manager/client.html#module-google.cloud.resource_manager.client">google.cloud.resource_manager.client (module)</a>
 </li>
@@ -1812,9 +1854,9 @@
 </li>
       <li><a href="bigquery/usage.html#index-0">GOOGLE_APPLICATION_CREDENTIALS</a>
 </li>
-      <li><a href="logging/usage.html#index-1">GOOGLE_CLOUD_DISABLE_GRPC</a>, <a href="pubsub/usage.html#index-1">[1]</a>
+      <li><a href="logging/usage.html#index-1">GOOGLE_CLOUD_DISABLE_GRPC</a>
 </li>
-      <li><a href="bigquery/usage.html#index-1">GOOGLE_CLOUD_PROJECT</a>, <a href="bigtable/client-intro.html#index-0">[1]</a>, <a href="error-reporting/usage.html#index-0">[2]</a>, <a href="language/usage.html#index-0">[3]</a>, <a href="language/usage.html#index-1">[4]</a>, <a href="logging/usage.html#index-0">[5]</a>, <a href="monitoring/usage.html#index-0">[6]</a>, <a href="pubsub/usage.html#index-0">[7]</a>, <a href="vision/index.html#index-0">[8]</a>, <a href="vision/index.html#index-1">[9]</a>
+      <li><a href="bigquery/usage.html#index-1">GOOGLE_CLOUD_PROJECT</a>, <a href="bigtable/client-intro.html#index-0">[1]</a>, <a href="error-reporting/usage.html#index-0">[2]</a>, <a href="language/usage.html#index-0">[3]</a>, <a href="language/usage.html#index-1">[4]</a>, <a href="logging/usage.html#index-0">[5]</a>, <a href="monitoring/usage.html#index-0">[6]</a>, <a href="pubsub/index.html#index-0">[7]</a>, <a href="pubsub/index.html#index-1">[8]</a>, <a href="vision/index.html#index-0">[9]</a>, <a href="vision/index.html#index-1">[10]</a>
 </li>
       <li><a href="monitoring/group.html#google.cloud.monitoring.group.Group">Group (class in google.cloud.monitoring.group)</a>
 </li>
@@ -1858,8 +1900,6 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.iam_policy_api">iam_policy_api (google.cloud.pubsub.client.Client attribute)</a>
-</li>
       <li><a href="datastore/usage.html#google.cloud.datastore.Key.id">id (google.cloud.datastore.Key attribute)</a>
 
       <ul>
@@ -1904,10 +1944,10 @@
 </li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.ImageSource">ImageSource (class in google.cloud.vision_v1.types)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.CropHint.importance_fraction">importance_fraction (google.cloud.vision_v1.types.CropHint attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigtable/row.html#google.cloud.bigtable.row.AppendRow.increment_cell_value">increment_cell_value() (google.cloud.bigtable.row.AppendRow method)</a>
 </li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.input_file_bytes">input_file_bytes (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
@@ -2053,6 +2093,12 @@
       <li><a href="monitoring/timeseries.html#google.cloud.monitoring.timeseries.TimeSeries.labels">labels (google.cloud.monitoring.timeseries.TimeSeries attribute)</a>
 
       <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Snapshot.labels">(google.cloud.pubsub_v1.types.Snapshot attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription.labels">(google.cloud.pubsub_v1.types.Subscription attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Topic.labels">(google.cloud.pubsub_v1.types.Topic attribute)</a>
+</li>
         <li><a href="storage/buckets.html#google.cloud.storage.bucket.Bucket.labels">(google.cloud.storage.bucket.Bucket attribute)</a>
 </li>
       </ul></li>
@@ -2146,12 +2192,12 @@
         <li><a href="logging/logger.html#google.cloud.logging.logger.Logger.list_entries">(google.cloud.logging.logger.Logger method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="monitoring/client.html#google.cloud.monitoring.client.Client.list_groups">list_groups() (google.cloud.monitoring.client.Client method)</a>
 </li>
       <li><a href="spanner/client-api.html#google.cloud.spanner.client.Client.list_instance_configs">list_instance_configs() (google.cloud.spanner.client.Client method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigtable/client.html#google.cloud.bigtable.client.Client.list_instances">list_instances() (google.cloud.bigtable.client.Client method)</a>
 
       <ul>
@@ -2180,25 +2226,39 @@
 </li>
       <li><a href="logging/client.html#google.cloud.logging.client.Client.list_sinks">list_sinks() (google.cloud.logging.client.Client method)</a>
 </li>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.list_snapshots">list_snapshots() (google.cloud.pubsub.client.Client method)</a>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.list_snapshots">list_snapshots() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.list_subscriptions">list_subscriptions() (google.cloud.pubsub.client.Client method)</a>
-
-      <ul>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.list_subscriptions">(google.cloud.pubsub.topic.Topic method)</a>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.list_subscriptions">list_subscriptions() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
-      </ul></li>
       <li><a href="bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.list_tables">list_tables() (google.cloud.bigquery.dataset.Dataset method)</a>
 
       <ul>
         <li><a href="bigtable/instance.html#google.cloud.bigtable.instance.Instance.list_tables">(google.cloud.bigtable.instance.Instance method)</a>
 </li>
       </ul></li>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.list_topics">list_topics() (google.cloud.pubsub.client.Client method)</a>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.list_topic_subscriptions">list_topic_subscriptions() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+</li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.list_topics">list_topics() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
 </li>
       <li><a href="runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config.list_variables">list_variables() (google.cloud.runtimeconfig.config.Config method)</a>
 </li>
       <li><a href="dns/client.html#google.cloud.dns.client.Client.list_zones">list_zones() (google.cloud.dns.client.Client method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSnapshotsRequest">ListSnapshotsRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSnapshotsResponse">ListSnapshotsResponse (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSubscriptionsRequest">ListSubscriptionsRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSubscriptionsResponse">ListSubscriptionsResponse (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicsRequest">ListTopicsRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicsResponse">ListTopicsResponse (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicSubscriptionsRequest">ListTopicSubscriptionsRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse">ListTopicSubscriptionsResponse (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="bigquery/client.html#google.cloud.bigquery.client.Client.load_table_from_storage">load_table_from_storage() (google.cloud.bigquery.client.Client method)</a>
 </li>
@@ -2278,12 +2338,54 @@
       </ul></li>
       <li><a href="dns/zone.html#google.cloud.dns.zone.ManagedZone">ManagedZone (class in google.cloud.dns.zone)</a>
 </li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.match_project_from_project_name">match_project_from_project_name() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.match_project_from_project_name">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.match_project_from_snapshot_name">match_project_from_snapshot_name() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.match_project_from_subscription_name">match_project_from_subscription_name() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.match_project_from_topic_name">match_project_from_topic_name() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.match_project_from_topic_name">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.match_snapshot_from_snapshot_name">match_snapshot_from_snapshot_name() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.match_subscription_from_subscription_name">match_subscription_from_subscription_name() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.match_topic_from_topic_name">match_topic_from_topic_name() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.match_topic_from_topic_name">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      </ul></li>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.RecognitionConfig.max_alternatives">max_alternatives (google.cloud.speech_v1.types.RecognitionConfig attribute)</a>
 </li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.max_bad_records">max_bad_records (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
 </li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.BatchSettings.max_bytes">max_bytes (google.cloud.pubsub_v1.types.BatchSettings attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.FlowControl.max_bytes">(google.cloud.pubsub_v1.types.FlowControl attribute)</a>
+</li>
+      </ul></li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.LatLongRect.max_lat_lng">max_lat_lng (google.cloud.vision_v1.types.LatLongRect attribute)</a>
 </li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.BatchSettings.max_latency">max_latency (google.cloud.pubsub_v1.types.BatchSettings attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.BatchSettings.max_messages">max_messages (google.cloud.pubsub_v1.types.BatchSettings attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.FlowControl.max_messages">(google.cloud.pubsub_v1.types.FlowControl attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PullRequest.max_messages">(google.cloud.pubsub_v1.types.PullRequest attribute)</a>
+</li>
+      </ul></li>
       <li><a href="bigtable/row.html#google.cloud.bigtable.row.MAX_MUTATIONS">MAX_MUTATIONS (in module google.cloud.bigtable.row)</a>
 </li>
       <li><a href="bigquery/query.html#google.cloud.bigquery.query.QueryResults.max_results">max_results (google.cloud.bigquery.query.QueryResults attribute)</a>
@@ -2312,8 +2414,28 @@
         <li><a href="language/gapic/v1beta2/types.html#google.cloud.language_v1beta2.types.Entity.mentions">(google.cloud.language_v1beta2.types.Entity attribute)</a>
 </li>
       </ul></li>
-      <li><a href="pubsub/message.html#google.cloud.pubsub.message.Message">Message (class in google.cloud.pubsub.message)</a>
+      <li><a href="pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message">Message (class in google.cloud.pubsub_v1.subscriber.message)</a>
 </li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ReceivedMessage.message">message (google.cloud.pubsub_v1.types.ReceivedMessage attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PubsubMessage.message_id">message_id (google.cloud.pubsub_v1.types.PubsubMessage attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/message.html#Message.message_id">(Message attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PublishResponse.message_ids">message_ids (google.cloud.pubsub_v1.types.PublishResponse attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription.message_retention_duration">message_retention_duration (google.cloud.pubsub_v1.types.Subscription attribute)</a>
+</li>
+      <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.messages">messages (google.cloud.pubsub_v1.publisher.batch.thread.Batch attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PublishRequest.messages">(google.cloud.pubsub_v1.types.PublishRequest attribute)</a>
+</li>
+      </ul></li>
       <li><a href="language/gapic/v1/types.html#google.cloud.language_v1.types.Entity.metadata">metadata (google.cloud.language_v1.types.Entity attribute)</a>
 
       <ul>
@@ -2326,8 +2448,6 @@
         <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.metadata">(google.cloud.storage.blob.Blob attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.metageneration">metageneration (google.cloud.storage.blob.Blob attribute)</a>
 
       <ul>
@@ -2372,9 +2492,19 @@
         <li><a href="bigquery/table.html#google.cloud.bigquery.table.Table.modified">(google.cloud.bigquery.table.Table attribute)</a>
 </li>
       </ul></li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.modify_ack_deadline">modify_ack_deadline() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.modify_ack_deadline">modify_ack_deadline() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.modify_push_configuration">modify_push_configuration() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullRequest.modify_deadline_ack_ids">modify_deadline_ack_ids (google.cloud.pubsub_v1.types.StreamingPullRequest attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullRequest.modify_deadline_seconds">modify_deadline_seconds (google.cloud.pubsub_v1.types.StreamingPullRequest attribute)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.modify_push_config">modify_push_config() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ModifyAckDeadlineRequest">ModifyAckDeadlineRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ModifyPushConfigRequest">ModifyPushConfigRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.monitor">monitor() (google.cloud.pubsub_v1.publisher.batch.thread.Batch method)</a>
 </li>
       <li><a href="language/gapic/v1/types.html#google.cloud.language_v1.types.PartOfSpeech.mood">mood (google.cloud.language_v1.types.PartOfSpeech attribute)</a>
 
@@ -2398,6 +2528,8 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.nack">nack() (google.cloud.pubsub_v1.subscriber.message.Message method)</a>
+</li>
       <li><a href="bigquery/query.html#google.cloud.bigquery.query.QueryResults.name">name (google.cloud.bigquery.query.QueryResults attribute)</a>
 
       <ul>
@@ -2422,6 +2554,14 @@
         <li><a href="language/gapic/v1beta2/types.html#google.cloud.language_v1beta2.types.Entity.name">(google.cloud.language_v1beta2.types.Entity attribute)</a>
 </li>
         <li><a href="monitoring/group.html#google.cloud.monitoring.group.Group.name">(google.cloud.monitoring.group.Group attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.CreateSnapshotRequest.name">(google.cloud.pubsub_v1.types.CreateSnapshotRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Snapshot.name">(google.cloud.pubsub_v1.types.Snapshot attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription.name">(google.cloud.pubsub_v1.types.Subscription attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Topic.name">(google.cloud.pubsub_v1.types.Topic attribute)</a>
 </li>
         <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.name">(google.cloud.spanner.database.Database attribute)</a>
 </li>
@@ -2456,6 +2596,16 @@
       </ul></li>
       <li><a href="resource-manager/client.html#google.cloud.resource_manager.client.Client.new_project">new_project() (google.cloud.resource_manager.client.Client method)</a>
 </li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSnapshotsResponse.next_page_token">next_page_token (google.cloud.pubsub_v1.types.ListSnapshotsResponse attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSubscriptionsResponse.next_page_token">(google.cloud.pubsub_v1.types.ListSubscriptionsResponse attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse.next_page_token">(google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicsResponse.next_page_token">(google.cloud.pubsub_v1.types.ListTopicsResponse attribute)</a>
+</li>
+      </ul></li>
       <li><a href="translate/client.html#google.cloud.translate_v2.client.NMT">NMT (in module google.cloud.translate_v2.client)</a>
 </li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.null_marker">null_marker (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
@@ -2479,6 +2629,12 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="storage/acl.html#google.cloud.storage.acl.ObjectACL">ObjectACL (class in google.cloud.storage.acl)</a>
+</li>
+      <li><a href="spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.one">one() (google.cloud.spanner.streamed.StreamedResultSet method)</a>
+</li>
+      <li><a href="spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.one_or_none">one_or_none() (google.cloud.spanner.streamed.StreamedResultSet method)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open">open() (google.cloud.pubsub_v1.subscriber.policy.thread.Policy method)</a>
 </li>
       <li><a href="core/operation-api.html#google.cloud.operation.Operation">Operation (class in google.cloud.operation)</a>
 </li>
@@ -2514,8 +2670,28 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.Page">Page (class in google.cloud.vision_v1.types)</a>
 </li>
-      <li><a href="bigquery/query.html#google.cloud.bigquery.query.QueryResults.page_token">page_token (google.cloud.bigquery.query.QueryResults attribute)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSnapshotsRequest.page_size">page_size (google.cloud.pubsub_v1.types.ListSnapshotsRequest attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSubscriptionsRequest.page_size">(google.cloud.pubsub_v1.types.ListSubscriptionsRequest attribute)</a>
 </li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicSubscriptionsRequest.page_size">(google.cloud.pubsub_v1.types.ListTopicSubscriptionsRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicsRequest.page_size">(google.cloud.pubsub_v1.types.ListTopicsRequest attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="bigquery/query.html#google.cloud.bigquery.query.QueryResults.page_token">page_token (google.cloud.bigquery.query.QueryResults attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSnapshotsRequest.page_token">(google.cloud.pubsub_v1.types.ListSnapshotsRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSubscriptionsRequest.page_token">(google.cloud.pubsub_v1.types.ListSubscriptionsRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicSubscriptionsRequest.page_token">(google.cloud.pubsub_v1.types.ListTopicSubscriptionsRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicsRequest.page_token">(google.cloud.pubsub_v1.types.ListTopicsRequest attribute)</a>
+</li>
+      </ul></li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.TextAnnotation.pages">pages (google.cloud.vision_v1.types.TextAnnotation attribute)</a>
 </li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.WebDetection.pages_with_matching_images">pages_with_matching_images (google.cloud.vision_v1.types.WebDetection attribute)</a>
@@ -2601,8 +2777,6 @@
 </li>
         <li><a href="monitoring/group.html#google.cloud.monitoring.group.Group.path">(google.cloud.monitoring.group.Group attribute)</a>
 </li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.path">(google.cloud.pubsub.subscription.Subscription attribute)</a>
-</li>
         <li><a href="resource-manager/project.html#google.cloud.resource_manager.project.Project.path">(google.cloud.resource_manager.project.Project attribute)</a>
 </li>
         <li><a href="runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config.path">(google.cloud.runtimeconfig.config.Config attribute)</a>
@@ -2639,7 +2813,7 @@
       <li><a href="core/modules.html#google.cloud.iam.Policy">Policy (class in google.cloud.iam)</a>
 
       <ul>
-        <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.Policy">(class in google.cloud.pubsub.iam)</a>
+        <li><a href="pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy">(class in google.cloud.pubsub_v1.subscriber.policy.thread)</a>
 </li>
       </ul></li>
       <li><a href="core/operation-api.html#google.cloud.operation.Operation.poll">poll() (google.cloud.operation.Operation method)</a>
@@ -2656,6 +2830,8 @@
 </li>
       <li><a href="bigquery/job.html#google.cloud.bigquery.job.QueryJob.priority">priority (google.cloud.bigquery.job.QueryJob attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.RecognitionConfig.profanity_filter">profanity_filter (google.cloud.speech_v1.types.RecognitionConfig attribute)</a>
 </li>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.LongRunningRecognizeMetadata.progress_percent">progress_percent (google.cloud.speech_v1.types.LongRunningRecognizeMetadata attribute)</a>
@@ -2703,15 +2879,15 @@
 </li>
         <li><a href="logging/sink.html#google.cloud.logging.sink.Sink.project">(google.cloud.logging.sink.Sink attribute)</a>
 </li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.project">(google.cloud.pubsub.subscription.Subscription attribute)</a>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSnapshotsRequest.project">(google.cloud.pubsub_v1.types.ListSnapshotsRequest attribute)</a>
 </li>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.project">(google.cloud.pubsub.topic.Topic attribute)</a>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSubscriptionsRequest.project">(google.cloud.pubsub_v1.types.ListSubscriptionsRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicsRequest.project">(google.cloud.pubsub_v1.types.ListTopicsRequest attribute)</a>
 </li>
         <li><a href="runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config.project">(google.cloud.runtimeconfig.config.Config attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="bigtable/client.html#google.cloud.bigtable.client.Client.project_name">project_name (google.cloud.bigtable.client.Client attribute)</a>
 
       <ul>
@@ -2720,6 +2896,12 @@
       </ul></li>
       <li><a href="storage/buckets.html#google.cloud.storage.bucket.Bucket.project_number">project_number (google.cloud.storage.bucket.Bucket attribute)</a>
 </li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.project_path">project_path() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.project_path">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      </ul></li>
       <li><a href="datastore/usage.html#google.cloud.datastore.Query.projection">projection (google.cloud.datastore.Query attribute)</a>
 
       <ul>
@@ -2752,59 +2934,41 @@
 </li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.public_url">public_url (google.cloud.storage.blob.Blob attribute)</a>
 </li>
-      <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Batch.publish">publish() (google.cloud.pubsub.topic.Batch method)</a>
+      <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.publish">publish() (google.cloud.pubsub_v1.publisher.batch.thread.Batch method)</a>
 
       <ul>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.publish">(google.cloud.pubsub.topic.Topic method)</a>
+        <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish">(google.cloud.pubsub_v1.publisher.client.Client method)</a>
 </li>
       </ul></li>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.publisher_api">publisher_api (google.cloud.pubsub.client.Client attribute)</a>
+      <li><a href="pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.publish_time">publish_time (google.cloud.pubsub_v1.subscriber.message.Message attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/message.html#Message.publish_time">(Message attribute)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.Policy.publishers">publishers (google.cloud.pubsub.iam.Policy attribute)</a>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PubsubMessage.publish_time">(google.cloud.pubsub_v1.types.PubsubMessage attribute)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_ADMIN_ROLE">PUBSUB_ADMIN_ROLE (in module google.cloud.pubsub.iam)</a>
+      </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PublishRequest">PublishRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_EDITOR_ROLE">PUBSUB_EDITOR_ROLE (in module google.cloud.pubsub.iam)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PublishResponse">PublishResponse (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="core/modules.html#google.cloud.environment_vars.PUBSUB_EMULATOR">PUBSUB_EMULATOR (in module google.cloud.environment_vars)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_PUBLISHER_ROLE">PUBSUB_PUBLISHER_ROLE (in module google.cloud.pubsub.iam)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PubsubMessage">PubsubMessage (class in google.cloud.pubsub_v1.types)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIBER_ROLE">PUBSUB_SUBSCRIBER_ROLE (in module google.cloud.pubsub.iam)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PullRequest">PullRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_CONSUME">PUBSUB_SUBSCRIPTIONS_CONSUME (in module google.cloud.pubsub.iam)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PullResponse">PullResponse (class in google.cloud.pubsub_v1.types)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_CREATE">PUBSUB_SUBSCRIPTIONS_CREATE (in module google.cloud.pubsub.iam)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ModifyPushConfigRequest.push_config">push_config (google.cloud.pubsub_v1.types.ModifyPushConfigRequest attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription.push_config">(google.cloud.pubsub_v1.types.Subscription attribute)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_DELETE">PUBSUB_SUBSCRIPTIONS_DELETE (in module google.cloud.pubsub.iam)</a>
+      </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PushConfig.push_endpoint">push_endpoint (google.cloud.pubsub_v1.types.PushConfig attribute)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_GET">PUBSUB_SUBSCRIPTIONS_GET (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY">PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_LIST">PUBSUB_SUBSCRIPTIONS_LIST (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_SET_IAM_POLICY">PUBSUB_SUBSCRIPTIONS_SET_IAM_POLICY (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_SUBSCRIPTIONS_UPDATE">PUBSUB_SUBSCRIPTIONS_UPDATE (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_TOPICS_CONSUME">PUBSUB_TOPICS_CONSUME (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_TOPICS_CREATE">PUBSUB_TOPICS_CREATE (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_TOPICS_DELETE">PUBSUB_TOPICS_DELETE (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_TOPICS_GET">PUBSUB_TOPICS_GET (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_TOPICS_GET_IAM_POLICY">PUBSUB_TOPICS_GET_IAM_POLICY (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_TOPICS_LIST">PUBSUB_TOPICS_LIST (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_TOPICS_SET_IAM_POLICY">PUBSUB_TOPICS_SET_IAM_POLICY (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.PUBSUB_VIEWER_ROLE">PUBSUB_VIEWER_ROLE (in module google.cloud.pubsub.iam)</a>
-</li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.pull">pull() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PushConfig">PushConfig (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="datastore/usage.html#google.cloud.datastore.Batch.put">put() (google.cloud.datastore.Batch method)</a>
 
@@ -2876,17 +3040,21 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.read">read() (google.cloud.spanner.database.Database method)</a>
-
-      <ul>
-        <li><a href="spanner/session-api.html#google.cloud.spanner.session.Session.read">(google.cloud.spanner.session.Session method)</a>
+      <li><a href="spanner/session-api.html#google.cloud.spanner.session.Session.read">read() (google.cloud.spanner.session.Session method)</a>
 </li>
-      </ul></li>
       <li><a href="bigtable/client.html#google.cloud.bigtable.client.READ_ONLY_SCOPE">READ_ONLY_SCOPE (in module google.cloud.bigtable.client)</a>
 </li>
       <li><a href="bigtable/table.html#google.cloud.bigtable.table.Table.read_row">read_row() (google.cloud.bigtable.table.Table method)</a>
 </li>
       <li><a href="bigtable/table.html#google.cloud.bigtable.table.Table.read_rows">read_rows() (google.cloud.bigtable.table.Table method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PullResponse.received_messages">received_messages (google.cloud.pubsub_v1.types.PullResponse attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullResponse.received_messages">(google.cloud.pubsub_v1.types.StreamingPullResponse attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ReceivedMessage">ReceivedMessage (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="language/gapic/v1/types.html#google.cloud.language_v1.types.PartOfSpeech.reciprocity">reciprocity (google.cloud.language_v1.types.PartOfSpeech attribute)</a>
 
@@ -2937,8 +3105,6 @@
 </li>
         <li><a href="monitoring/group.html#google.cloud.monitoring.group.Group.reload">(google.cloud.monitoring.group.Group method)</a>
 </li>
-        <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.reload">(google.cloud.pubsub.subscription.Subscription method)</a>
-</li>
         <li><a href="resource-manager/project.html#google.cloud.resource_manager.project.Project.reload">(google.cloud.resource_manager.project.Project method)</a>
 </li>
         <li><a href="runtimeconfig/config.html#google.cloud.runtimeconfig.config.Config.reload">(google.cloud.runtimeconfig.config.Config method)</a>
@@ -2976,10 +3142,10 @@
 </li>
       <li><a href="monitoring/resource.html#google.cloud.monitoring.resource.Resource">Resource (class in google.cloud.monitoring.resource)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="monitoring/client.html#google.cloud.monitoring.client.Client.resource">resource() (google.cloud.monitoring.client.Client static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="dns/zone.html#google.cloud.dns.zone.ManagedZone.resource_record_set">resource_record_set() (google.cloud.dns.zone.ManagedZone method)</a>
 </li>
       <li><a href="monitoring/resource.html#google.cloud.monitoring.resource.ResourceDescriptor">ResourceDescriptor (class in google.cloud.monitoring.resource)</a>
@@ -3008,7 +3174,13 @@
         <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.StreamingRecognizeResponse.results">(google.cloud.speech_v1.types.StreamingRecognizeResponse attribute)</a>
 </li>
       </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.FlowControl.resume_threshold">resume_threshold (google.cloud.pubsub_v1.types.FlowControl attribute)</a>
+</li>
       <li><a href="spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.resume_token">resume_token (google.cloud.spanner.streamed.StreamedResultSet attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription.retain_acked_messages">retain_acked_messages (google.cloud.pubsub_v1.types.Subscription attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PullRequest.return_immediately">return_immediately (google.cloud.pubsub_v1.types.PullRequest attribute)</a>
 </li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.rewrite">rewrite() (google.cloud.storage.blob.Blob method)</a>
 </li>
@@ -3141,8 +3313,6 @@
 </li>
         <li><a href="monitoring/client.html#google.cloud.monitoring.client.Client.SCOPE">(google.cloud.monitoring.client.Client attribute)</a>
 </li>
-        <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.SCOPE">(google.cloud.pubsub.client.Client attribute)</a>
-</li>
         <li><a href="resource-manager/client.html#google.cloud.resource_manager.client.Client.SCOPE">(google.cloud.resource_manager.client.Client attribute)</a>
 </li>
         <li><a href="runtimeconfig/client.html#google.cloud.runtimeconfig.client.Client.SCOPE">(google.cloud.runtimeconfig.client.Client attribute)</a>
@@ -3166,9 +3336,9 @@
         <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.WebDetection.score">(google.cloud.vision_v1.types.WebDetection attribute)</a>
 </li>
       </ul></li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.seek_snapshot">seek_snapshot() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.seek">seek() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.seek_timestamp">seek_timestamp() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.SeekRequest">SeekRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="monitoring/query.html#google.cloud.monitoring.query.Query.select_group">select_group() (google.cloud.monitoring.query.Query method)</a>
 </li>
@@ -3244,8 +3414,6 @@
       </ul></li>
       <li><a href="core/modules.html#google.cloud.iam.Policy.service_account">service_account() (google.cloud.iam.Policy static method)</a>
 </li>
-      <li><a href="pubsub/message.html#google.cloud.pubsub.message.Message.service_timestamp">service_timestamp (google.cloud.pubsub.message.Message attribute)</a>
-</li>
       <li><a href="spanner/session-api.html#google.cloud.spanner.session.Session">Session (class in google.cloud.spanner.session)</a>
 </li>
       <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.session">session() (google.cloud.spanner.database.Database method)</a>
@@ -3274,12 +3442,10 @@
         <li><a href="bigquery/job.html#google.cloud.bigquery.job.QueryJob.set_exception">(google.cloud.bigquery.job.QueryJob method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.set_iam_policy">set_iam_policy() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.set_iam_policy">set_iam_policy() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
 
       <ul>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.set_iam_policy">(google.cloud.pubsub.topic.Topic method)</a>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.set_iam_policy">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
         <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.set_iam_policy">(google.cloud.storage.blob.Blob method)</a>
 </li>
@@ -3298,12 +3464,16 @@
         <li><a href="bigquery/job.html#google.cloud.bigquery.job.QueryJob.set_result">(google.cloud.bigquery.job.QueryJob method)</a>
 </li>
       </ul></li>
+      <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.settings">settings (google.cloud.pubsub_v1.publisher.batch.thread.Batch attribute)</a>
+</li>
       <li><a href="logging/client.html#google.cloud.logging.client.Client.setup_logging">setup_logging() (google.cloud.logging.client.Client method)</a>
 
       <ul>
         <li><a href="logging/handlers.html#google.cloud.logging.handlers.handlers.setup_logging">(in module google.cloud.logging.handlers.handlers)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.StreamingRecognitionConfig.single_utterance">single_utterance (google.cloud.speech_v1.types.StreamingRecognitionConfig attribute)</a>
 </li>
       <li><a href="logging/sink.html#google.cloud.logging.sink.Sink">Sink (class in google.cloud.logging.sink)</a>
@@ -3314,21 +3484,39 @@
 </li>
       <li><a href="logging/client.html#google.cloud.logging.client.Client.sinks_api">sinks_api (google.cloud.logging.client.Client attribute)</a>
 </li>
-      <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.size">size (google.cloud.storage.blob.Blob attribute)</a>
-</li>
-      <li><a href="bigquery/job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.skip_leading_rows">skip_leading_rows (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
-</li>
-      <li><a href="spanner/snapshot-api.html#google.cloud.spanner.snapshot.Snapshot">Snapshot (class in google.cloud.spanner.snapshot)</a>
-</li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription.snapshot">snapshot() (google.cloud.pubsub.subscription.Subscription method)</a>
+      <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.size">size (google.cloud.pubsub_v1.publisher.batch.thread.Batch attribute)</a>
 
       <ul>
-        <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.snapshot">(google.cloud.spanner.database.Database method)</a>
+        <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.size">(google.cloud.storage.blob.Blob attribute)</a>
 </li>
+      </ul></li>
+      <li><a href="bigquery/job.html#google.cloud.bigquery.job.LoadTableFromStorageJob.skip_leading_rows">skip_leading_rows (google.cloud.bigquery.job.LoadTableFromStorageJob attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Snapshot">Snapshot (class in google.cloud.pubsub_v1.types)</a>
+
+      <ul>
+        <li><a href="spanner/snapshot-api.html#google.cloud.spanner.snapshot.Snapshot">(class in google.cloud.spanner.snapshot)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.DeleteSnapshotRequest.snapshot">snapshot (google.cloud.pubsub_v1.types.DeleteSnapshotRequest attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.SeekRequest.snapshot">(google.cloud.pubsub_v1.types.SeekRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateSnapshotRequest.snapshot">(google.cloud.pubsub_v1.types.UpdateSnapshotRequest attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.snapshot">snapshot() (google.cloud.spanner.database.Database method)</a>
+
+      <ul>
         <li><a href="spanner/session-api.html#google.cloud.spanner.session.Session.snapshot">(google.cloud.spanner.session.Session method)</a>
 </li>
       </ul></li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.snapshot_path">snapshot_path() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
       <li><a href="spanner/database-api.html#google.cloud.spanner.database.SnapshotCheckout">SnapshotCheckout (class in google.cloud.spanner.database)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSnapshotsResponse.snapshots">snapshots (google.cloud.pubsub_v1.types.ListSnapshotsResponse attribute)</a>
 </li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.FaceAnnotation.sorrow_likelihood">sorrow_likelihood (google.cloud.vision_v1.types.FaceAnnotation attribute)</a>
 </li>
@@ -3403,13 +3591,19 @@
       <li><a href="spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.stats">stats (google.cloud.spanner.streamed.StreamedResultSet attribute)</a>
 </li>
       <li><a href="dns/changes.html#google.cloud.dns.changes.Changes.status">status (google.cloud.dns.changes.Changes attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.status">(google.cloud.pubsub_v1.publisher.batch.thread.Batch attribute)</a>
 </li>
+      </ul></li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.storage_class">storage_class (google.cloud.storage.blob.Blob attribute)</a>
 
       <ul>
         <li><a href="storage/buckets.html#google.cloud.storage.bucket.Bucket.storage_class">(google.cloud.storage.bucket.Bucket attribute)</a>
 </li>
       </ul></li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullRequest.stream_ack_deadline_seconds">stream_ack_deadline_seconds (google.cloud.pubsub_v1.types.StreamingPullRequest attribute)</a>
+</li>
       <li><a href="spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet">StreamedResultSet (class in google.cloud.spanner.streamed)</a>
 </li>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.StreamingRecognizeRequest.streaming_config">streaming_config (google.cloud.speech_v1.types.StreamingRecognizeRequest attribute)</a>
@@ -3417,6 +3611,10 @@
       <li><a href="speech/gapic/api.html#google.cloud.speech_v1.SpeechClient.streaming_recognize">streaming_recognize() (google.cloud.speech_v1.SpeechClient method)</a>
 </li>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.StreamingRecognizeRequest.streaming_request">streaming_request (google.cloud.speech_v1.types.StreamingRecognizeRequest attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullRequest">StreamingPullRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullResponse">StreamingPullResponse (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="speech/gapic/types.html#google.cloud.speech_v1.types.StreamingRecognitionConfig">StreamingRecognitionConfig (class in google.cloud.speech_v1.types)</a>
 </li>
@@ -3430,16 +3628,38 @@
 </li>
       <li><a href="logging/entries.html#google.cloud.logging.entries.StructEntry">StructEntry (class in google.cloud.logging.entries)</a>
 </li>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.subscriber_api">subscriber_api (google.cloud.pubsub.client.Client attribute)</a>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe">subscribe() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
-      <li><a href="pubsub/iam.html#google.cloud.pubsub.iam.Policy.subscribers">subscribers (google.cloud.pubsub.iam.Policy attribute)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription">Subscription (class in google.cloud.pubsub_v1.types)</a>
 </li>
-      <li><a href="pubsub/subscription.html#google.cloud.pubsub.subscription.Subscription">Subscription (class in google.cloud.pubsub.subscription)</a>
-</li>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.subscription">subscription() (google.cloud.pubsub.client.Client method)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.AcknowledgeRequest.subscription">subscription (google.cloud.pubsub_v1.types.AcknowledgeRequest attribute)</a>
 
       <ul>
-        <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic.subscription">(google.cloud.pubsub.topic.Topic method)</a>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.CreateSnapshotRequest.subscription">(google.cloud.pubsub_v1.types.CreateSnapshotRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.DeleteSubscriptionRequest.subscription">(google.cloud.pubsub_v1.types.DeleteSubscriptionRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.GetSubscriptionRequest.subscription">(google.cloud.pubsub_v1.types.GetSubscriptionRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ModifyAckDeadlineRequest.subscription">(google.cloud.pubsub_v1.types.ModifyAckDeadlineRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ModifyPushConfigRequest.subscription">(google.cloud.pubsub_v1.types.ModifyPushConfigRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PullRequest.subscription">(google.cloud.pubsub_v1.types.PullRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.SeekRequest.subscription">(google.cloud.pubsub_v1.types.SeekRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.StreamingPullRequest.subscription">(google.cloud.pubsub_v1.types.StreamingPullRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateSubscriptionRequest.subscription">(google.cloud.pubsub_v1.types.UpdateSubscriptionRequest attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscription_path">subscription_path() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListSubscriptionsResponse.subscriptions">subscriptions (google.cloud.pubsub_v1.types.ListSubscriptionsResponse attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse.subscriptions">(google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse attribute)</a>
 </li>
       </ul></li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.FaceAnnotation.surprise_likelihood">surprise_likelihood (google.cloud.vision_v1.types.FaceAnnotation attribute)</a>
@@ -3500,9 +3720,13 @@
         <li><a href="language/gapic/v1beta2/types.html#google.cloud.language_v1beta2.types.PartOfSpeech.tense">(google.cloud.language_v1beta2.types.PartOfSpeech attribute)</a>
 </li>
       </ul></li>
-      <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.test_iam_permissions">test_iam_permissions() (google.cloud.storage.blob.Blob method)</a>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.test_iam_permissions">test_iam_permissions() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
 
       <ul>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.test_iam_permissions">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+        <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.test_iam_permissions">(google.cloud.storage.blob.Blob method)</a>
+</li>
         <li><a href="storage/buckets.html#google.cloud.storage.bucket.Bucket.test_iam_permissions">(google.cloud.storage.bucket.Bucket method)</a>
 </li>
       </ul></li>
@@ -3546,6 +3770,8 @@
       </ul></li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.FaceAnnotation.tilt_angle">tilt_angle (google.cloud.vision_v1.types.FaceAnnotation attribute)</a>
 </li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.SeekRequest.time">time (google.cloud.pubsub_v1.types.SeekRequest attribute)</a>
+</li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.time_created">time_created (google.cloud.storage.blob.Blob attribute)</a>
 
       <ul>
@@ -3560,14 +3786,16 @@
 </li>
       <li><a href="monitoring/timeseries.html#google.cloud.monitoring.timeseries.TimeSeries">TimeSeries (class in google.cloud.monitoring.timeseries)</a>
 </li>
-      <li><a href="pubsub/message.html#google.cloud.pubsub.message.Message.timestamp">timestamp (google.cloud.pubsub.message.Message attribute)</a>
-</li>
       <li><a href="bigtable/row-filters.html#google.cloud.bigtable.row_filters.TimestampRange">TimestampRange (class in google.cloud.bigtable.row_filters)</a>
 </li>
       <li><a href="bigtable/row-filters.html#google.cloud.bigtable.row_filters.TimestampRangeFilter">TimestampRangeFilter (class in google.cloud.bigtable.row_filters)</a>
 </li>
-      <li><a href="core/modules.html#google.cloud.iam.Policy.to_api_repr">to_api_repr() (google.cloud.iam.Policy method)</a>
+      <li><a href="bigquery/schema.html#google.cloud.bigquery.schema.SchemaField.to_api_repr">to_api_repr() (google.cloud.bigquery.schema.SchemaField method)</a>
+
+      <ul>
+        <li><a href="core/modules.html#google.cloud.iam.Policy.to_api_repr">(google.cloud.iam.Policy method)</a>
 </li>
+      </ul></li>
       <li><a href="bigtable/row-data.html#google.cloud.bigtable.row_data.PartialRowData.to_dict">to_dict() (google.cloud.bigtable.row_data.PartialRowData method)</a>
 </li>
       <li><a href="datastore/usage.html#google.cloud.datastore.Key.to_legacy_urlsafe">to_legacy_urlsafe() (google.cloud.datastore.Key method)</a>
@@ -3660,11 +3888,33 @@
       </ul></li>
       <li><a href="bigtable/table.html#google.cloud.bigtable.table.TooManyMutationsError">TooManyMutationsError</a>
 </li>
-      <li><a href="pubsub/topic.html#google.cloud.pubsub.topic.Topic">Topic (class in google.cloud.pubsub.topic)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Topic">Topic (class in google.cloud.pubsub_v1.types)</a>
 </li>
-      <li><a href="pubsub/client.html#google.cloud.pubsub.client.Client.topic">topic() (google.cloud.pubsub.client.Client method)</a>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.DeleteTopicRequest.topic">topic (google.cloud.pubsub_v1.types.DeleteTopicRequest attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.GetTopicRequest.topic">(google.cloud.pubsub_v1.types.GetTopicRequest attribute)</a>
 </li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicSubscriptionsRequest.topic">(google.cloud.pubsub_v1.types.ListTopicSubscriptionsRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.PublishRequest.topic">(google.cloud.pubsub_v1.types.PublishRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Snapshot.topic">(google.cloud.pubsub_v1.types.Snapshot attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.Subscription.topic">(google.cloud.pubsub_v1.types.Subscription attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateTopicRequest.topic">(google.cloud.pubsub_v1.types.UpdateTopicRequest attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.topic_path">topic_path() (google.cloud.pubsub_v1.publisher.client.Client method)</a>
+
+      <ul>
+        <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.topic_path">(google.cloud.pubsub_v1.subscriber.client.Client method)</a>
+</li>
+      </ul></li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.EntityAnnotation.topicality">topicality (google.cloud.vision_v1.types.EntityAnnotation attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.ListTopicsResponse.topics">topics (google.cloud.pubsub_v1.types.ListTopicsResponse attribute)</a>
 </li>
       <li><a href="bigquery/query.html#google.cloud.bigquery.query.QueryResults.total_bytes_processed">total_bytes_processed (google.cloud.bigquery.query.QueryResults attribute)</a>
 </li>
@@ -3752,13 +4002,29 @@
       </ul></li>
       <li><a href="spanner/database-api.html#google.cloud.spanner.database.Database.update_ddl">update_ddl() (google.cloud.spanner.database.Database method)</a>
 </li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateSnapshotRequest.update_mask">update_mask (google.cloud.pubsub_v1.types.UpdateSnapshotRequest attribute)</a>
+
+      <ul>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateSubscriptionRequest.update_mask">(google.cloud.pubsub_v1.types.UpdateSubscriptionRequest attribute)</a>
+</li>
+        <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateTopicRequest.update_mask">(google.cloud.pubsub_v1.types.UpdateTopicRequest attribute)</a>
+</li>
+      </ul></li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.update_storage_class">update_storage_class() (google.cloud.storage.blob.Blob method)</a>
+</li>
+      <li><a href="pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.update_subscription">update_subscription() (google.cloud.pubsub_v1.subscriber.client.Client method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="runtimeconfig/variable.html#google.cloud.runtimeconfig.variable.Variable.update_time">update_time (google.cloud.runtimeconfig.variable.Variable attribute)</a>
 </li>
       <li><a href="storage/blobs.html#google.cloud.storage.blob.Blob.updated">updated (google.cloud.storage.blob.Blob attribute)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateSnapshotRequest">UpdateSnapshotRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateSubscriptionRequest">UpdateSubscriptionRequest (class in google.cloud.pubsub_v1.types)</a>
+</li>
+      <li><a href="pubsub/types.html#google.cloud.pubsub_v1.types.UpdateTopicRequest">UpdateTopicRequest (class in google.cloud.pubsub_v1.types)</a>
 </li>
       <li><a href="bigquery/table.html#google.cloud.bigquery.table.Table.upload_from_file">upload_from_file() (google.cloud.bigquery.table.Table method)</a>
 
@@ -3872,6 +4138,8 @@
 </li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.Page.width">width (google.cloud.vision_v1.types.Page attribute)</a>
 </li>
+      <li><a href="pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.will_accept">will_accept() (google.cloud.pubsub_v1.publisher.batch.thread.Batch method)</a>
+</li>
       <li><a href="vision/gapic/v1/types.html#google.cloud.vision_v1.types.Word">Word (class in google.cloud.vision_v1.types)</a>
 </li>
   </ul></td>
@@ -3982,7 +4250,7 @@
 <li class="toctree-l1"><a class="reference internal" href="datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spanner/usage.html">Spanner</a></li>

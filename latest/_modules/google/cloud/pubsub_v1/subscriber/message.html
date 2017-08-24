@@ -1,0 +1,339 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 0.27.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '0.27.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.pubsub_v1.subscriber.message</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A representation of a single Pub/Sub message.</span>
+
+<span class="sd">    The common way to interact with</span>
+<span class="sd">    :class:`~.pubsub_v1.subscriber.message.Message` objects is to receive</span>
+<span class="sd">    them in callbacks on subscriptions; most users should never have a need</span>
+<span class="sd">    to instantiate them by hand. (The exception to this is if you are</span>
+<span class="sd">    implementing a custom subclass to</span>
+<span class="sd">    :class:`~.pubsub_v1.subscriber.consumer.BaseConsumer`.)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        message_id (str): The message ID. In general, you should not need</span>
+<span class="sd">            to use this directly.</span>
+<span class="sd">        data (bytes): The data in the message. Note that this will be a</span>
+<span class="sd">            :class:`bytes`, not a text string.</span>
+<span class="sd">        attributes (dict): The attributes sent along with the message.</span>
+<span class="sd">        publish_time (datetime): The time that this message was originally</span>
+<span class="sd">            published.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">request_queue</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct the Message.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This class should not be constructed directly; it is the</span>
+<span class="sd">            responsibility of :class:`BasePolicy` subclasses to do so.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            message (~.pubsub_v1.types.PubsubMessage): The message received</span>
+<span class="sd">                from Pub/Sub.</span>
+<span class="sd">            ack_id (str): The ack_id received from Pub/Sub.</span>
+<span class="sd">            request_queue (queue.Queue): A queue provided by the policy that</span>
+<span class="sd">                can accept requests; the policy is responsible for handling</span>
+<span class="sd">                those requests.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span> <span class="o">=</span> <span class="n">ack_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span> <span class="o">=</span> <span class="n">request_queue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_id</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">message_id</span>
+
+        <span class="c1"># The instantiation time is the time that this message</span>
+        <span class="c1"># was received. Tracking this provides us a way to be smart about</span>
+        <span class="c1"># the default lease deadline.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_received_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="c1"># The policy should lease this message, telling PubSub that it has</span>
+        <span class="c1"># it until it is acked or otherwise dropped.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lease</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Get an abbreviated version of the data.</span>
+        <span class="n">abbv_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">data</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">abbv_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="n">abbv_data</span> <span class="o">=</span> <span class="n">abbv_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;...&#39;</span>
+
+        <span class="c1"># Return a useful representation.</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="s1">&#39;Message {</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">answer</span> <span class="o">+=</span> <span class="s1">&#39;    data: </span><span class="si">{0!r}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">abbv_data</span><span class="p">)</span>
+        <span class="n">answer</span> <span class="o">+=</span> <span class="s1">&#39;    attributes: </span><span class="si">{0!r}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="n">answer</span> <span class="o">+=</span> <span class="s1">&#39;}&#39;</span>
+        <span class="k">return</span> <span class="n">answer</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the attributes of the underlying Pub/Sub Message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: The message&#39;s attributes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">attributes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the data for the underlying Pub/Sub Message.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The message data. This is always a bytestring; if you</span>
+<span class="sd">                want a text string, call :meth:`bytes.decode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">publish_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the time that the message was originally published.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            datetime: The date and time that the message was published.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">publish_time</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the size of the underlying message, in bytes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">ByteSize</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Message.ack"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.ack">[docs]</a>    <span class="k">def</span> <span class="nf">ack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Acknowledge the given message.</span>
+
+<span class="sd">        Acknowledging a message in Pub/Sub means that you are done</span>
+<span class="sd">        with it, and it will not be delivered to this subscription again.</span>
+<span class="sd">        You should avoid acknowledging messages until you have</span>
+<span class="sd">        *finished* processing them, so that in the event of a failure,</span>
+<span class="sd">        you receive the message again.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            Acks in Pub/Sub are best effort. You should always</span>
+<span class="sd">            ensure that your processing code is idempotent, as you may</span>
+<span class="sd">            receive any given message more than once.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time_to_ack</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_received_timestamp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s1">&#39;ack&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;ack_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
+            <span class="s1">&#39;byte_size&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+            <span class="s1">&#39;time_to_ack&#39;</span><span class="p">:</span> <span class="n">time_to_ack</span><span class="p">,</span>
+        <span class="p">}))</span></div>
+
+    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Release the message from lease management.</span>
+
+<span class="sd">        This informs the policy to no longer hold on to the lease for this</span>
+<span class="sd">        message. Pub/Sub will re-deliver the message if it is not acknowledged</span>
+<span class="sd">        before the existing lease expires.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            For most use cases, the only reason to drop a message from</span>
+<span class="sd">            lease management is on :meth:`ack` or :meth:`nack`; these methods</span>
+<span class="sd">            both call this one. You probably do not want to call this method</span>
+<span class="sd">            directly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s1">&#39;drop&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;ack_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
+            <span class="s1">&#39;byte_size&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+        <span class="p">}))</span>
+
+    <span class="k">def</span> <span class="nf">lease</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inform the policy to lease this message continually.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This method is called by the constructor, and you should never</span>
+<span class="sd">            need to call it manually.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s1">&#39;lease&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;ack_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
+            <span class="s1">&#39;byte_size&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+        <span class="p">}))</span>
+
+    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seconds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the deadline for acknowledgement to the given value.</span>
+
+<span class="sd">        The default implementation handles this for you; you should not need</span>
+<span class="sd">        to manually deal with setting ack deadlines. The exception case is</span>
+<span class="sd">        if you are implementing your own custom subclass of</span>
+<span class="sd">        :class:`~.pubsub_v1.subcriber.consumer.BaseConsumer`.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This is not an extension; it *sets* the deadline to the given</span>
+<span class="sd">            number of seconds from right now. It is even possible to use this</span>
+<span class="sd">            method to make a deadline shorter.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            seconds (int): The number of seconds to set the lease deadline</span>
+<span class="sd">                to. This should be between 0 and 600. Due to network latency,</span>
+<span class="sd">                values below 10 are advised against.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s1">&#39;modify_ack_deadline&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;ack_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
+            <span class="s1">&#39;seconds&#39;</span><span class="p">:</span> <span class="n">seconds</span><span class="p">,</span>
+        <span class="p">}))</span>
+
+<div class="viewcode-block" id="Message.nack"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message.nack">[docs]</a>    <span class="k">def</span> <span class="nf">nack</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decline to acknowldge the given message.</span>
+
+<span class="sd">        This will cause the message to be re-delivered to the subscription.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="s1">&#39;nack&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;ack_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ack_id</span><span class="p">,</span>
+            <span class="s1">&#39;byte_size&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+        <span class="p">}))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
