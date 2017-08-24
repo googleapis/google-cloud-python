@@ -648,6 +648,7 @@ class TestBigQuery(unittest.TestCase):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         naive_microseconds = datetime.datetime(2016, 12, 5, 12, 41, 9, 250000)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
+        stamp_microseconds = stamp + '.250000'
         zoned = naive.replace(tzinfo=UTC)
         zoned_microseconds = naive_microseconds.replace(tzinfo=UTC)
         return [
@@ -676,7 +677,7 @@ class TestBigQuery(unittest.TestCase):
                 'expected': zoned,
             },
             {
-                'sql': 'SELECT TIMESTAMP "%s"' % (stamp,),
+                'sql': 'SELECT TIMESTAMP "%s"' % (stamp_microseconds,),
                 'expected': zoned_microseconds,
             },
             {
@@ -684,7 +685,7 @@ class TestBigQuery(unittest.TestCase):
                 'expected': naive,
             },
             {
-                'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (stamp,),
+                'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (stamp_microseconds,),
                 'expected': naive_microseconds,
             },
             {
