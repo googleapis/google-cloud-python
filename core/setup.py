@@ -65,7 +65,7 @@ EXTRAS_REQUIREMENTS = {
 
 setup(
     name='google-cloud-core',
-    version='0.26.0',
+    version='0.27.0',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[
