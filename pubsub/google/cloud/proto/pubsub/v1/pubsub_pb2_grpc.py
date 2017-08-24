@@ -76,6 +76,11 @@ class SubscriberStub(object):
         request_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.CreateSnapshotRequest.SerializeToString,
         response_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Snapshot.FromString,
         )
+    self.UpdateSnapshot = channel.unary_unary(
+        '/google.pubsub.v1.Subscriber/UpdateSnapshot',
+        request_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.UpdateSnapshotRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Snapshot.FromString,
+        )
     self.DeleteSnapshot = channel.unary_unary(
         '/google.pubsub.v1.Subscriber/DeleteSnapshot',
         request_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.DeleteSnapshotRequest.SerializeToString,
@@ -119,6 +124,10 @@ class SubscriberServicer(object):
   def UpdateSubscription(self, request, context):
     """Updates an existing subscription. Note that certain properties of a
     subscription, such as its topic, are not modifiable.
+    NOTE:  The style guide requires body: "subscription" instead of body: "*".
+    Keeping the latter for internal consistency in V1, however it should be
+    corrected in V2.  See
+    https://cloud.google.com/apis/design/standard_methods#update for details.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -229,6 +238,18 @@ class SubscriberServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def UpdateSnapshot(self, request, context):
+    """Updates an existing snapshot. Note that certain properties of a snapshot
+    are not modifiable.
+    NOTE:  The style guide requires body: "snapshot" instead of body: "*".
+    Keeping the latter for internal consistency in V1, however it should be
+    corrected in V2.  See
+    https://cloud.google.com/apis/design/standard_methods#update for details.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def DeleteSnapshot(self, request, context):
     """Removes an existing snapshot. All messages retained in the snapshot
     are immediately dropped. After a snapshot is deleted, a new one may be
@@ -310,6 +331,11 @@ def add_SubscriberServicer_to_server(servicer, server):
           request_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.CreateSnapshotRequest.FromString,
           response_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Snapshot.SerializeToString,
       ),
+      'UpdateSnapshot': grpc.unary_unary_rpc_method_handler(
+          servicer.UpdateSnapshot,
+          request_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.UpdateSnapshotRequest.FromString,
+          response_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Snapshot.SerializeToString,
+      ),
       'DeleteSnapshot': grpc.unary_unary_rpc_method_handler(
           servicer.DeleteSnapshot,
           request_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.DeleteSnapshotRequest.FromString,
@@ -340,6 +366,11 @@ class PublisherStub(object):
     self.CreateTopic = channel.unary_unary(
         '/google.pubsub.v1.Publisher/CreateTopic',
         request_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Topic.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Topic.FromString,
+        )
+    self.UpdateTopic = channel.unary_unary(
+        '/google.pubsub.v1.Publisher/UpdateTopic',
+        request_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.UpdateTopicRequest.SerializeToString,
         response_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Topic.FromString,
         )
     self.Publish = channel.unary_unary(
@@ -376,6 +407,18 @@ class PublisherServicer(object):
 
   def CreateTopic(self, request, context):
     """Creates the given topic with the given name.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def UpdateTopic(self, request, context):
+    """Updates an existing topic. Note that certain properties of a topic are not
+    modifiable.  Options settings follow the style guide:
+    NOTE:  The style guide requires body: "topic" instead of body: "*".
+    Keeping the latter for internal consistency in V1, however it should be
+    corrected in V2.  See
+    https://cloud.google.com/apis/design/standard_methods#update for details.
     """
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
@@ -428,6 +471,11 @@ def add_PublisherServicer_to_server(servicer, server):
       'CreateTopic': grpc.unary_unary_rpc_method_handler(
           servicer.CreateTopic,
           request_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Topic.FromString,
+          response_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Topic.SerializeToString,
+      ),
+      'UpdateTopic': grpc.unary_unary_rpc_method_handler(
+          servicer.UpdateTopic,
+          request_deserializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.UpdateTopicRequest.FromString,
           response_serializer=google_dot_cloud_dot_proto_dot_pubsub_dot_v1_dot_pubsub__pb2.Topic.SerializeToString,
       ),
       'Publish': grpc.unary_unary_rpc_method_handler(

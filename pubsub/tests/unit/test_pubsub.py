@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
+from google.cloud import pubsub
+from google.cloud import pubsub_v1
 
-from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.publisher import Client as PublisherClient
-from google.cloud.pubsub_v1.subscriber import Client as SubscriberClient
 
-__all__ = (
-    'PublisherClient',
-    'SubscriberClient',
-    'types',
-)
+def test_exported_things():
+    assert pubsub.PublisherClient is pubsub_v1.PublisherClient
+    assert pubsub.SubscriberClient is pubsub_v1.SubscriberClient
+    assert pubsub.types is pubsub_v1.types

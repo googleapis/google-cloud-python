@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+import logging
 import threading
 import time
 
@@ -66,7 +67,7 @@ class Batch(base.Batch):
         self._messages = []
         self._size = 0
         self._settings = settings
-        self._status = self.Status.ACCEPTING_MESSAGES
+        self._status = base.BatchStatus.ACCEPTING_MESSAGES
         self._topic = topic
 
         # If max latency is specified, start a thread to monitor the batch and
@@ -154,7 +155,7 @@ class Batch(base.Batch):
         with self._commit_lock:
             # If, in the intervening period, the batch started to be committed,
             # or completed a commit, then no-op at this point.
-            if self._status != self.Status.ACCEPTING_MESSAGES:
+            if self._status != base.BatchStatus.ACCEPTING_MESSAGES:
                 return
 
             # Update the status.
@@ -165,10 +166,16 @@ class Batch(base.Batch):
                 return
 
             # Begin the request to publish these messages.
+            # Log how long the underlying request takes.
+            start = time.time()
             response = self.client.api.publish(
                 self._topic,
                 self.messages,
             )
+            end = time.time()
+            logging.getLogger().debug('gRPC Publish took {s} seconds.'.format(
+                s=end - start,
+            ))
 
             # We got a response from Pub/Sub; denote that we are processing.
             self._status = 'processing results'
@@ -185,7 +192,7 @@ class Batch(base.Batch):
             # Iterate over the futures on the queue and return the response
             # IDs. We are trusting that there is a 1:1 mapping, and raise an
             # exception if not.
-            self._status = self.Status.SUCCESS
+            self._status = base.BatchStatus.SUCCESS
             for message_id, future in zip(response.message_ids, self._futures):
                 future.set_result(message_id)
 
