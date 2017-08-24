@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'googleapis-publisher@google.com',
+    'author_email': 'googleapis-packages@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -51,9 +51,11 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.26.0, < 0.27dev',
-    'grpcio >= 1.2.0, < 2.0dev',
-    'gapic-google-cloud-pubsub-v1 >= 0.15.0, < 0.16dev',
+    'google-gax >= 0.15.13, < 0.16dev',
+    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
+    'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
+    'grpcio >= 1.0.2, < 2.0dev',
+    'psutil >= 5.2.2, < 6.0dev',
 ]
 
 setup(
