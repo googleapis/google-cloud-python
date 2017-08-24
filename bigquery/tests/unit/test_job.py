@@ -1494,13 +1494,14 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def _verifyIntegerResourceProperties(self, job, config):
         if 'maximumBillingTier' in config:
-            self.assertEqual(job.maximum_billing_tier,
-                             config['maximumBillingTier'])
+            self.assertEqual(
+                job.maximum_billing_tier, config['maximumBillingTier'])
         else:
             self.assertIsNone(job.maximum_billing_tier)
         if 'maximumBytesBilled' in config:
-            self.assertEqual(job.maximum_bytes_billed,
-                             config['maximumBytesBilled'])
+            self.assertEqual(
+                str(job.maximum_bytes_billed), config['maximumBytesBilled'])
+            self.assertIsInstance(job.maximum_bytes_billed, int)
         else:
             self.assertIsNone(job.maximum_bytes_billed)
 
@@ -2099,7 +2100,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
             'maximumBillingTier': 4,
-            'maximumBytesBilled': 123456
+            'maximumBytesBilled': '123456'
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
         conn1 = _Connection()

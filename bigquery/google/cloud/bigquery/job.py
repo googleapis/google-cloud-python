@@ -1266,7 +1266,8 @@ class QueryJob(_AsyncJob):
         if self.maximum_billing_tier is not None:
             configuration['maximumBillingTier'] = self.maximum_billing_tier
         if self.maximum_bytes_billed is not None:
-            configuration['maximumBytesBilled'] = self.maximum_bytes_billed
+            configuration['maximumBytesBilled'] = str(
+                self.maximum_bytes_billed)
         if len(self._udf_resources) > 0:
             configuration[self._UDF_KEY] = [
                 {udf_resource.udf_type: udf_resource.value}
@@ -1332,7 +1333,8 @@ class QueryJob(_AsyncJob):
         self.priority = configuration.get('priority')
         self.write_disposition = configuration.get('writeDisposition')
         self.maximum_billing_tier = configuration.get('maximumBillingTier')
-        self.maximum_bytes_billed = configuration.get('maximumBytesBilled')
+        self.maximum_bytes_billed = _int_or_none(
+            configuration.get('maximumBytesBilled'))
 
         dest_remote = configuration.get('destinationTable')
 
