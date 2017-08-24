@@ -45,7 +45,7 @@ independently written applications.
 See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
 to Cloud Pub/Sub using this Client Library.
 
-.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/usage.html
+.. _Pub/Sub documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/index.html
 
 To get started with this API, you'll need to create
 
