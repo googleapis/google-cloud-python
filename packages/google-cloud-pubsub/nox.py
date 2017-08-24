@@ -38,10 +38,10 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
-        '--cov=google.cloud.pubsub', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+    session.run(
+        'py.test', '--quiet', '--cov-append', '--cov-report=',
+        '--cov=google.cloud.pubsub', '--cov=google.cloud.pubsub_v1',
+        '--cov-config=.coveragerc', 'tests/unit',
     )
 
 
@@ -87,7 +87,8 @@ def lint(session):
         '--library-filesets', 'google',
         '--test-filesets', 'tests',
         # Temporarily allow this to fail.
-        success_codes=range(0, 100))
+        success_codes=range(0, 100),
+    )
 
 
 @nox.session

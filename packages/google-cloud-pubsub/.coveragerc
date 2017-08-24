@@ -1,11 +1,17 @@
 [run]
 branch = True
+source =
+  google.cloud.pubsub
+  google.cloud.pubsub_v1
+  tests.unit
 
 [report]
-fail_under = 100
 show_missing = True
+
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
     # Ignore debug-only repr
     def __repr__
+    # Ignore abstract methods
+    raise NotImplementedError
