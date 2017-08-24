@@ -68,10 +68,10 @@ from google.api.core import exceptions
 from google.api.core.helpers import datetime_helpers
 
 _LOGGER = logging.getLogger(__name__)
-_DEFAULT_INITIAL_DELAY = 1.0
-_DEFAULT_MAXIMUM_DELAY = 60.0
+_DEFAULT_INITIAL_DELAY = 1.0  # seconds
+_DEFAULT_MAXIMUM_DELAY = 60.0  # seconds
 _DEFAULT_DELAY_MULTIPLIER = 2.0
-_DEFAULT_DEADLINE = 60.0 * 2.0
+_DEFAULT_DEADLINE = 60.0 * 2.0  # seconds
 
 
 def if_exception_type(*exception_types):
