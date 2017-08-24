@@ -152,12 +152,12 @@ class ExponentialTimeout(object):
         maximum (float): The maximum timeout for any one call.
         multiplier (float): The multiplier applied to the timeout for each
             invocation.
-        deadline (Optional[float]): The overall deadline across all invocations.
-            This is used to prevent a very large calculated timeout from
-            pushing the overall execution time over the deadline. This is
-            especially useful in conjuction with :mod:`google.api.core.retry`.
-            If ``None``, the timeouts will not be adjusted to accomodate an
-            overall deadline.
+        deadline (Optional[float]): The overall deadline across all
+            invocations. This is used to prevent a very large calculated
+            timeout from pushing the overall execution time over the deadline.
+            This is especially useful in conjuction with
+            :mod:`google.api.core.retry`. If ``None``, the timeouts will not
+            be adjusted to accomodate an overall deadline.
     """
     def __init__(
             self,
