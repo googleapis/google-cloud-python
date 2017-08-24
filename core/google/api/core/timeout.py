@@ -37,7 +37,7 @@ automatically determined, for example:
 
     for n in range(10):
         try:
-            is_thing_ready({'example': 'data'})
+            is_thing_ready_with_timeout({'example': 'data'})
         except:
             pass
 
@@ -62,7 +62,9 @@ from google.api.core.helpers import datetime_helpers
 _DEFAULT_INITIAL_TIMEOUT = 5.0  # seconds
 _DEFAULT_MAXIMUM_TIMEOUT = 30.0  # seconds
 _DEFAULT_TIMEOUT_MULTIPLIER = 2.0
-_DEFAULT_DEADLINE = None  # seconds
+# If specified, must be in seconds. If none, deadline is not used in the
+# timeout calculation.
+_DEFAULT_DEADLINE = None
 
 
 @six.python_2_unicode_compatible
@@ -114,11 +116,11 @@ def _exponential_timeout_generator(initial, maximum, multiplier, deadline):
         float: A timeout value.
     """
     if deadline is not None:
-        deadline = (
+        deadline_datetime = (
             datetime_helpers.utcnow() +
             datetime.timedelta(seconds=deadline))
     else:
-        deadline = datetime.datetime.max
+        deadline_datetime = datetime.datetime.max
 
     timeout = initial
     while True:
@@ -129,13 +131,13 @@ def _exponential_timeout_generator(initial, maximum, multiplier, deadline):
             # The set maximum timeout.
             maximum,
             # The remaining time before the deadline is reached.
-            float((deadline - now).seconds))
+            float((deadline_datetime - now).seconds))
         timeout = timeout * multiplier
 
 
 @six.python_2_unicode_compatible
 class ExponentialTimeout(object):
-    """A decorator that adds a exponentially increasing timeout argument.
+    """A decorator that adds an exponentially increasing timeout argument.
 
     This is useful if a function is called multiple times. Each time the
     function is called this decorator will calculate a new timeout parameter
@@ -150,10 +152,12 @@ class ExponentialTimeout(object):
         maximum (float): The maximum timeout for any one call.
         multiplier (float): The multiplier applied to the timeout for each
             invocation.
-        deadline (float): The overall deadline across all invocations. This
-            is used to prevent a very large calculated timeout from pushing
-            the overall execution time over the deadline. This is especially
-            useful in conjuction with :mod:`google.api.core.retry`.
+        deadline (Optional[float]): The overall deadline across all invocations.
+            This is used to prevent a very large calculated timeout from
+            pushing the overall execution time over the deadline. This is
+            especially useful in conjuction with :mod:`google.api.core.retry`.
+            If ``None``, the timeouts will not be adjusted to accomodate an
+            overall deadline.
     """
     def __init__(
             self,
