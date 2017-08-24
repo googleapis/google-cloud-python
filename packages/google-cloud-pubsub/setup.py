@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -60,7 +60,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-pubsub',
-    version='0.27.0',
+    version='0.28.0',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[
