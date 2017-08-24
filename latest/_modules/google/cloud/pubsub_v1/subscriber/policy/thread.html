@@ -1,0 +1,288 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 0.27.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../../',
+        VERSION:     '0.27.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.pubsub_v1.subscriber.policy.thread</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">from</span> <span class="nn">concurrent</span> <span class="k">import</span> <span class="n">futures</span>
+<span class="kn">from</span> <span class="nn">queue</span> <span class="k">import</span> <span class="n">Queue</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">import</span> <span class="nn">grpc</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber</span> <span class="k">import</span> <span class="n">_helper_threads</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber.policy</span> <span class="k">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber.message</span> <span class="k">import</span> <span class="n">Message</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">BasePolicy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A consumer class based on :class:`threading.Thread`.</span>
+
+<span class="sd">    This consumer handles the connection to the Pub/Sub service and all of</span>
+<span class="sd">    the concurrency needs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">FlowControl</span><span class="p">(),</span>
+                 <span class="n">executor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate the policy.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            client (~.pubsub_v1.subscriber.client): The subscriber client used</span>
+<span class="sd">                to create this instance.</span>
+<span class="sd">            subscription (str): The name of the subscription. The canonical</span>
+<span class="sd">                format for this is</span>
+<span class="sd">                ``projects/{project}/subscriptions/{subscription}``.</span>
+<span class="sd">            flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow</span>
+<span class="sd">                control settings.</span>
+<span class="sd">            executor (~concurrent.futures.ThreadPoolExecutor): (Optional.) A</span>
+<span class="sd">                ThreadPoolExecutor instance, or anything duck-type compatible</span>
+<span class="sd">                with it.</span>
+<span class="sd">            queue (~queue.Queue): (Optional.) A Queue instance, appropriate</span>
+<span class="sd">                for crossing the concurrency boundary implemented by</span>
+<span class="sd">                ``executor``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Default the callback to a no-op; it is provided by `.open`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">message</span><span class="p">:</span> <span class="kc">None</span>
+
+        <span class="c1"># Create a queue for keeping track of shared state.</span>
+        <span class="k">if</span> <span class="n">queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+
+        <span class="c1"># Call the superclass constructor.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Policy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">flow_control</span><span class="o">=</span><span class="n">flow_control</span><span class="p">,</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Also maintain a request queue and an executor.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Creating callback requests thread (not starting).&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">executor</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span> <span class="o">=</span> <span class="n">executor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback_requests</span> <span class="o">=</span> <span class="n">_helper_threads</span><span class="o">.</span><span class="n">QueueCallbackThread</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_callback_request</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Policy.close"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Close the existing connection.&quot;&quot;&quot;</span>
+        <span class="c1"># Close the main subscription connection.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">helper_threads</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="s1">&#39;callback requests worker&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">stop_consuming</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Policy.open"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open a streaming pull connection and begin receiving messages.</span>
+
+<span class="sd">        For each message received, the ``callback`` function is fired with</span>
+<span class="sd">        a :class:`~.pubsub_v1.subscriber.message.Message` as its only</span>
+<span class="sd">        argument.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            callback (Callable): The callback function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Start the thread to pass the requests.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Starting callback requests worker.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">helper_threads</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+            <span class="s1">&#39;callback requests worker&#39;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_callback_requests</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Actually start consuming messages.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">start_consuming</span><span class="p">()</span>
+
+        <span class="c1"># Spawn a helper thread that maintains all of the leases for</span>
+        <span class="c1"># this policy.</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Spawning lease maintenance worker.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maintain_leases</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">on_callback_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map the callback request to the appropriate GRPC request.&quot;&quot;&quot;</span>
+        <span class="n">action</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">callback_request</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">callback_request</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Bubble the exception.</span>
+
+<span class="sd">        This will cause the stream to exit loudly.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If this is DEADLINE_EXCEEDED, then we want to retry.</span>
+        <span class="c1"># That entails just returning None.</span>
+        <span class="n">deadline_exceeded</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">DEADLINE_EXCEEDED</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">exception</span><span class="p">,</span> <span class="s1">&#39;code&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)()</span> <span class="o">==</span> <span class="n">deadline_exceeded</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Raise any other exception.</span>
+        <span class="k">raise</span> <span class="n">exception</span>
+
+    <span class="k">def</span> <span class="nf">on_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process all received Pub/Sub messages.</span>
+
+<span class="sd">        For each message, schedule a callback with the executor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">received_messages</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;New message received from Pub/Sub: </span><span class="si">%r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">ack_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">)</span>
+            <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Result: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../vision/index.html">Vision</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
