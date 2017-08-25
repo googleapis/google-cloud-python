@@ -67,7 +67,7 @@ messages to it
     publisher.create_topic()
     publisher.publish(topic, b'My first message!', spam='eggs')
 
-To learn more, consult the :doc:`publishing documentation`_.
+To learn more, consult the `publishing documentation`_.
 
 .. _publishing documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/publisher/index.html
 
@@ -104,7 +104,7 @@ use of a callback.
         message.ack()
     subscription.open(callback)
 
-To learn more, consult the :doc:`subscriber documentation`_.
+To learn more, consult the `subscriber documentation`_.
 
 .. _subscriber documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/subscriber/index.html
 
