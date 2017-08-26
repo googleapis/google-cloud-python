@@ -56,7 +56,7 @@ REQUIREMENTS = [
     'google-auth >= 0.4.0, < 2.0.0dev',
     'requests >= 2.18.0, < 3.0.0dev',
     'setuptools >= 34.0.0',
-    'six',
+    'six >= 1.10.0',
 ]
 
 EXTRAS_REQUIREMENTS = {
