@@ -158,6 +158,9 @@ class StreamedResultSet(object):
         """Consume the next partial result set from the stream.
 
         Parse the result set into new/existing rows in :attr:`_rows`
+
+        :raises ValueError:
+            if the sleep generator somehow does not yield values.
         """
         sleep_generator = retry.exponential_sleep_generator(
             initial=retry._DEFAULT_INITIAL_DELAY,
