@@ -25,24 +25,29 @@ class TestStreamedResultSet(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, response_iterator, retry=object(), source=None):
+        return self._getTargetClass()(response_iterator, retry, source=source)
 
     def test_ctor_defaults(self):
         iterator = _MockCancellableIterator()
-        streamed = self._make_one(iterator)
+        retry = object()
+        streamed = self._make_one(iterator, retry)
         self.assertIs(streamed._response_iterator, iterator)
+        self.assertIs(streamed._retry, retry)
         self.assertIsNone(streamed._source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
         self.assertIsNone(streamed.resume_token)
+        self.assertIsNone(streamed.resume_token)
 
     def test_ctor_w_source(self):
         iterator = _MockCancellableIterator()
+        retry = object()
         source = object()
-        streamed = self._make_one(iterator, source=source)
+        streamed = self._make_one(iterator, retry, source=source)
         self.assertIs(streamed._response_iterator, iterator)
+        self.assertIs(streamed._retry, retry)
         self.assertIs(streamed._source, source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
@@ -921,8 +926,8 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, response_iterator, retry=object(), source=None):
+        return self._getTargetClass()(response_iterator, retry, source=source)
 
     def _load_json_test(self, test_name):
         import os
