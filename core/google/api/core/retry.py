@@ -135,7 +135,7 @@ def exponential_sleep_generator(
         delay = delay * multiplier
 
 
-def retry_target(target, predicate, sleep_generator, deadline):
+def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
     """Call a function and retry if it fails.
 
     This is the lowest-level retry helper. Generally, you'll use the
@@ -150,6 +150,9 @@ def retry_target(target, predicate, sleep_generator, deadline):
         sleep_generator (Iterator[float]): An infinite iterator that determines
             how long to sleep between retries.
         deadline (float): How long to keep retrying the target.
+        on_error(Callable): A function to call while processing a retryable
+            exception.  Any error raised by this function will *not* be
+            caught.
 
     Returns:
         Any: the return value of the target function.
@@ -177,6 +180,8 @@ def retry_target(target, predicate, sleep_generator, deadline):
             if not predicate(exc):
                 raise
             last_exc = exc
+            if on_error is not None:
+                on_error()
 
         now = datetime_helpers.utcnow()
         if deadline_datetime is not None and deadline_datetime < now:
@@ -226,11 +231,14 @@ class Retry(object):
         self._maximum = maximum
         self._deadline = deadline
 
-    def __call__(self, func):
+    def __call__(self, func, on_error=None):
         """Wrap a callable with retry behavior.
 
         Args:
             func (Callable): The callable to add retry behavior to.
+            on_error(Callable): A function to call while processing a
+                retryable exception.  Any error raised by this function will
+                *not* be caught.
 
         Returns:
             Callable: A callable that will invoke ``func`` with retry
@@ -246,7 +254,9 @@ class Retry(object):
                 target,
                 self._predicate,
                 sleep_generator,
-                self._deadline)
+                self._deadline,
+                on_error=on_error,
+            )
 
         return retry_wrapped_func
 
