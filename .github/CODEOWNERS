@@ -39,6 +39,9 @@ vision/*                  @lukesneeringer
 # Luke Sneeringer is the primary author of Pub/Sub.
 pubsub/*                  @lukesneeringer
 
+# Danny Hermes is the primary author of resource manager
+resourcemanager/*         @dhermes
+
 # Tim Swast is the primary author of Runtime Config.
 runtimeconfig/            @tswast
 
