@@ -42,6 +42,9 @@ logging/*                 @tseaver
 # Luke Sneeringer is the primary author of Pub/Sub.
 pubsub/*                  @lukesneeringer
 
+# Tim Swast is the primary author of Runtime Config.
+runtimeconfig/            @tswast
+
 # Vikas Kedia is the product owner and Tres Seaver the author for Spanner.
 spanner/*                 @vkedia @tseaver
 
