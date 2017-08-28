@@ -900,8 +900,6 @@ class TestStreamedResultSet(unittest.TestCase):
 
 class _MockCancellableIterator(object):
 
-    cancel_calls = 0
-
     def __init__(self, *values):
         self.iter_values = iter(values)
 
