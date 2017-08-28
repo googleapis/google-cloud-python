@@ -168,7 +168,7 @@ class Test_SnapshotBase(unittest.TestCase):
                 TABLE_NAME, COLUMNS, KEYSET,
                 index=INDEX, limit=LIMIT)
 
-            self.assertIs(result_set._retry, patch.return_value)
+            self.assertIs(result_set._restart, patch.return_value)
             patch.assert_called_once_with(
                 api.streaming_read, session.name, TABLE_NAME, COLUMNS, KEYSET,
                 index=INDEX, limit=LIMIT)
@@ -314,7 +314,7 @@ class Test_SnapshotBase(unittest.TestCase):
                 SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
                 query_mode=MODE)
 
-            self.assertIs(result_set._retry, patch.return_value)
+            self.assertIs(result_set._restart, patch.return_value)
             patch.assert_called_once_with(
                 api.execute_streaming_sql, session.name, SQL_QUERY_WITH_PARAM,
                 params=PARAMS, param_types=PARAM_TYPES, query_mode=MODE)

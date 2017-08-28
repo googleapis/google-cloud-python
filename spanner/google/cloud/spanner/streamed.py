@@ -34,18 +34,18 @@ class StreamedResultSet(object):
         :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`
         instances.
 
-    :type retry: callable
-    :param retry:
+    :type restart: callable
+    :param restart:
         Function (typically curried via :func:`functools.partial`) used to
-        retry the initial request if a retriable error is raised during
+        restart the initial request if a retriable error is raised during
         streaming.
 
     :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`
     :param source: Snapshot from which the result set was fetched.
     """
-    def __init__(self, response_iterator, retry, source=None):
+    def __init__(self, response_iterator, restart, source=None):
         self._response_iterator = response_iterator
-        self._retry = retry
+        self._restart = restart
         self._rows = []             # Fully-processed rows
         self._counter = 0           # Counter for processed responses
         self._metadata = None       # Until set from first PRS
