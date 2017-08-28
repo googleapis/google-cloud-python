@@ -39,7 +39,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
         self.assertIsNone(streamed.resume_token)
-        self.assertIsNone(streamed.resume_token)
 
     def test_ctor_w_source(self):
         iterator = _MockCancellableIterator()
@@ -904,8 +903,6 @@ class TestStreamedResultSet(unittest.TestCase):
 
 
 class _MockCancellableIterator(object):
-
-    cancel_calls = 0
 
     def __init__(self, *values):
         self.iter_values = iter(values)
