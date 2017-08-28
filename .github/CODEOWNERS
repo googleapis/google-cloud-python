@@ -24,9 +24,9 @@ bigtable/*                @dhermes @tseaver
 # Danny Hermes is the primary maintainer of the Datastore library.
 datastore/*               @dhermes
 
-# Bill Prin is the primary author of the Stackdriver libraries.
+# Bill Prin is the primary maintainer of the Stackdriver libraries.
 error_reporting/*         @waprin
-monitoring/*              @waprin
+monitoring/*              @waprin @supriyagarg @rimey
 logging/*                 @waprin @tseaver
 
 # Luke Sneeringer is the primary author of the ML API clients.
@@ -35,9 +35,6 @@ speech/*                  @lukesneeringer
 translate/*               @lukesneeringer
 videointelligence/*       @lukesneeringer
 vision/*                  @lukesneeringer
-
-# Tres Seaver is the primary author of the logging library.
-logging/*                 @tseaver
 
 # Luke Sneeringer is the primary author of Pub/Sub.
 pubsub/*                  @lukesneeringer
