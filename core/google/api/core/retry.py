@@ -150,7 +150,7 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
         sleep_generator (Iterator[float]): An infinite iterator that determines
             how long to sleep between retries.
         deadline (float): How long to keep retrying the target.
-        on_error(Callable): A function to call while processing a retryable
+        on_error (Callable): A function to call while processing a retryable
             exception.  Any error raised by this function will *not* be
             caught.
 
@@ -236,7 +236,7 @@ class Retry(object):
 
         Args:
             func (Callable): The callable to add retry behavior to.
-            on_error(Callable): A function to call while processing a
+            on_error (Callable): A function to call while processing a
                 retryable exception.  Any error raised by this function will
                 *not* be caught.
 
