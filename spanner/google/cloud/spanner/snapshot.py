@@ -94,14 +94,14 @@ class _SnapshotBase(_SessionWrapper):
 
         self._read_request_count += 1
 
-        retry = functools.partial(
+        restart = functools.partial(
             api.streaming_read, self._session.name, table, columns, keyset,
             index=index, limit=limit)
 
         if self._multi_use:
-            return StreamedResultSet(iterator, retry, source=self)
+            return StreamedResultSet(iterator, restart, source=self)
         else:
-            return StreamedResultSet(iterator, retry)
+            return StreamedResultSet(iterator, restart)
 
     def execute_sql(self, sql, params=None, param_types=None, query_mode=None):
         """Perform an ``ExecuteStreamingSql`` API request for rows in a table.
@@ -155,14 +155,14 @@ class _SnapshotBase(_SessionWrapper):
 
         self._read_request_count += 1
 
-        retry = functools.partial(
+        restart = functools.partial(
             api.execute_streaming_sql, self._session.name, sql,
             params=params, param_types=param_types, query_mode=query_mode)
 
         if self._multi_use:
-            return StreamedResultSet(iterator, retry, source=self)
+            return StreamedResultSet(iterator, restart, source=self)
         else:
-            return StreamedResultSet(iterator, retry)
+            return StreamedResultSet(iterator, restart)
 
 
 class Snapshot(_SnapshotBase):

@@ -25,15 +25,16 @@ class TestStreamedResultSet(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, response_iterator, retry=object(), source=None):
-        return self._getTargetClass()(response_iterator, retry, source=source)
+    def _make_one(self, response_iterator, restart=object(), source=None):
+        return self._getTargetClass()(
+            response_iterator, restart, source=source)
 
     def test_ctor_defaults(self):
         iterator = _MockCancellableIterator()
-        retry = object()
-        streamed = self._make_one(iterator, retry)
+        restart = object()
+        streamed = self._make_one(iterator, restart)
         self.assertIs(streamed._response_iterator, iterator)
-        self.assertIs(streamed._retry, retry)
+        self.assertIs(streamed._restart, restart)
         self.assertIsNone(streamed._source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
@@ -43,11 +44,11 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_ctor_w_source(self):
         iterator = _MockCancellableIterator()
-        retry = object()
+        restart = object()
         source = object()
-        streamed = self._make_one(iterator, retry, source=source)
+        streamed = self._make_one(iterator, restart, source=source)
         self.assertIs(streamed._response_iterator, iterator)
-        self.assertIs(streamed._retry, retry)
+        self.assertIs(streamed._restart, restart)
         self.assertIs(streamed._source, source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
@@ -924,8 +925,9 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, response_iterator, retry=object(), source=None):
-        return self._getTargetClass()(response_iterator, retry, source=source)
+    def _make_one(self, response_iterator, restart=object(), source=None):
+        return self._getTargetClass()(
+            response_iterator, restart, source=source)
 
     def _load_json_test(self, test_name):
         import os
