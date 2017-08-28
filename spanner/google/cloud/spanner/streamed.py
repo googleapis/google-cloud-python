@@ -14,15 +14,37 @@
 
 """Wrapper for streaming results."""
 
+import time
+
+from google.api.core import exceptions
+from google.api.core import retry
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
-from google.cloud import exceptions
 from google.cloud.proto.spanner.v1 import type_pb2
 import six
 
 # pylint: disable=ungrouped-imports
 from google.cloud.spanner._helpers import _parse_value_pb
 # pylint: enable=ungrouped-imports
+
+_RESTART_DEADLINE = 30.0  # seconds
+
+
+# pylint: disable=invalid-name
+# Pylint sees this as a constant, but it is also an alias that should be
+# considered a function.
+if_unavailable_error = retry.if_exception_type((
+    exceptions.ServiceUnavailable,
+))
+"""A predicate that checks if an exception is a transient API error.
+
+For streaming the result of ``read`` / ``execute_sql`` requests, only
+the following server errors are considered transient:
+
+- :class:`google.api.core.exceptions.ServiceUnavailable` - HTTP 503, gRPC
+    ``UNAVAILABLE``.
+"""
+# pylint: enable=invalid-name
 
 
 class StreamedResultSet(object):
@@ -137,7 +159,35 @@ class StreamedResultSet(object):
 
         Parse the result set into new/existing rows in :attr:`_rows`
         """
-        response = six.next(self._response_iterator)
+        sleep_generator = retry.exponential_sleep_generator(
+            initial=retry._DEFAULT_INITIAL_DELAY,
+            maximum=retry._DEFAULT_MAXIMUM_DELAY)
+
+        deadline = time.time() + _RESTART_DEADLINE
+
+        response = None
+
+        for sleep in sleep_generator:
+            try:
+                response = six.next(self._response_iterator)
+            except exceptions.ServiceUnavailable:
+
+                if self._resume_token in (None, b''):
+                    raise
+
+                if time.time() > deadline:
+                    raise
+
+                self._response_iterator = self._restart(
+                    resume_token=self._resume_token)
+
+                time.sleep(sleep)
+            else:
+                break
+
+        if response is None:
+            raise ValueError('Sleep generator stopped yielding sleep values.')
+
         self._counter += 1
         self._resume_token = response.resume_token
 
