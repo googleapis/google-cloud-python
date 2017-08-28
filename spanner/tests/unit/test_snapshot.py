@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 from google.cloud._testing import _GAXBaseAPI
 
 
@@ -160,9 +162,17 @@ class Test_SnapshotBase(unittest.TestCase):
         if not first:
             derived._transaction_id = TXN_ID
 
-        result_set = derived.read(
-            TABLE_NAME, COLUMNS, KEYSET,
-            index=INDEX, limit=LIMIT, resume_token=TOKEN)
+        partial_patch = mock.patch('functools.partial')
+
+        with partial_patch as patch:
+            result_set = derived.read(
+                TABLE_NAME, COLUMNS, KEYSET,
+                index=INDEX, limit=LIMIT, resume_token=TOKEN)
+
+            self.assertIs(result_set._retry, patch.return_value)
+            patch.assert_called_once_with(
+                api.streaming_read, session.name, TABLE_NAME, COLUMNS, KEYSET,
+                index=INDEX, limit=LIMIT, resume_token=TOKEN)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -299,9 +309,18 @@ class Test_SnapshotBase(unittest.TestCase):
         if not first:
             derived._transaction_id = TXN_ID
 
-        result_set = derived.execute_sql(
-            SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
-            query_mode=MODE, resume_token=TOKEN)
+        partial_patch = mock.patch('functools.partial')
+
+        with partial_patch as patch:
+            result_set = derived.execute_sql(
+                SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
+                query_mode=MODE, resume_token=TOKEN)
+
+            self.assertIs(result_set._retry, patch.return_value)
+            patch.assert_called_once_with(
+                api.execute_streaming_sql, session.name, SQL_QUERY_WITH_PARAM,
+                params=PARAMS, param_types=PARAM_TYPES, query_mode=MODE,
+                resume_token=TOKEN)
 
         self.assertEqual(derived._read_request_count, count + 1)
 

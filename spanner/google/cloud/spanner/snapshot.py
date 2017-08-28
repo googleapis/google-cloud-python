@@ -14,6 +14,8 @@
 
 """Model a set of read-only queries to a database as a snapshot."""
 
+import functools
+
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
@@ -96,10 +98,14 @@ class _SnapshotBase(_SessionWrapper):
 
         self._read_request_count += 1
 
+        retry = functools.partial(
+            api.streaming_read, self._session.name, table, columns, keyset,
+            index=index, limit=limit, resume_token=resume_token)
+
         if self._multi_use:
-            return StreamedResultSet(iterator, source=self)
+            return StreamedResultSet(iterator, retry, source=self)
         else:
-            return StreamedResultSet(iterator)
+            return StreamedResultSet(iterator, retry)
 
     def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
                     resume_token=b''):
@@ -157,10 +163,15 @@ class _SnapshotBase(_SessionWrapper):
 
         self._read_request_count += 1
 
+        retry = functools.partial(
+            api.execute_streaming_sql, self._session.name, sql,
+            params=params, param_types=param_types, query_mode=query_mode,
+            resume_token=resume_token)
+
         if self._multi_use:
-            return StreamedResultSet(iterator, source=self)
+            return StreamedResultSet(iterator, retry, source=self)
         else:
-            return StreamedResultSet(iterator)
+            return StreamedResultSet(iterator, retry)
 
 
 class Snapshot(_SnapshotBase):
