@@ -667,42 +667,6 @@ class TestStreamedResultSet(unittest.TestCase):
 
         restart.assert_not_called()
 
-    def test_consume_next_w_retryable_exception_w_token_backoff_fails(self):
-        from google.api.core.exceptions import ServiceUnavailable
-
-        TOKEN = b'DEADBEEF'
-
-        failing_iterator = _FailingIterator()
-        restart = mock.Mock(return_value=failing_iterator)
-        streamed = self._make_one(failing_iterator, restart)
-        streamed._resume_token = TOKEN
-
-        deadline_patch = mock.patch(
-            'google.cloud.spanner.streamed._RESTART_DEADLINE', 0.01)
-
-        with deadline_patch:
-            with self.assertRaises(ServiceUnavailable):
-                streamed.consume_next()
-
-        restart.assert_called_with(resume_token=TOKEN)
-
-    def test_consume_next_w_broken_sleep_generator(self):
-        TOKEN = b'DEADBEEF'
-
-        failing_iterator = _FailingIterator()
-        restart = mock.Mock(return_value=failing_iterator)
-        streamed = self._make_one(failing_iterator, restart)
-        streamed._resume_token = TOKEN
-
-        sleep_generator_patch = mock.patch(
-            'google.api.core.retry.exponential_sleep_generator', autospec=True)
-
-        with sleep_generator_patch:
-            with self.assertRaises(ValueError):
-                streamed.consume_next()
-
-        restart.assert_not_called()
-
     def test_consume_next_first_set_partial(self):
         TXN_ID = b'DEADBEEF'
         FIELDS = [
