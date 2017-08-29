@@ -82,6 +82,34 @@ def test_retry_target_success(utcnow, sleep):
     'google.api.core.helpers.datetime_helpers.utcnow',
     return_value=datetime.datetime.min,
     autospec=True)
+def test_retry_target_w_on_error(utcnow, sleep):
+    predicate = retry.if_exception_type(ValueError)
+    call_count = {'target': 0}
+    to_raise = ValueError()
+
+    def target():
+        call_count['target'] += 1
+        if call_count['target'] < 3:
+            raise to_raise
+        return 42
+
+    on_error = mock.Mock()
+
+    result = retry.retry_target(
+        target, predicate, range(10), None, on_error=on_error)
+
+    assert result == 42
+    assert call_count['target'] == 3
+
+    on_error.assert_has_calls([mock.call(to_raise), mock.call(to_raise)])
+    sleep.assert_has_calls([mock.call(0), mock.call(1)])
+
+
+@mock.patch('time.sleep', autospec=True)
+@mock.patch(
+    'google.api.core.helpers.datetime_helpers.utcnow',
+    return_value=datetime.datetime.min,
+    autospec=True)
 def test_retry_target_non_retryable_error(utcnow, sleep):
     predicate = retry.if_exception_type(ValueError)
     exception = TypeError()
@@ -139,7 +167,8 @@ class TestRetry(object):
             initial=1,
             maximum=2,
             multiplier=3,
-            deadline=4)
+            deadline=4,
+        )
         assert retry_._predicate == mock.sentinel.predicate
         assert retry_._initial == 1
         assert retry_._maximum == 2
@@ -204,12 +233,17 @@ class TestRetry(object):
         'random.uniform', autospec=True, side_effect=lambda m, n: n/2.0)
     @mock.patch('time.sleep', autospec=True)
     def test___call___and_execute_retry(self, sleep, uniform):
-        retry_ = retry.Retry(predicate=retry.if_exception_type(ValueError))
+
+        on_error = mock.Mock(spec=['__call__'], side_effect=[None])
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(ValueError),
+        )
+
         target = mock.Mock(spec=['__call__'], side_effect=[ValueError(), 42])
         # __name__ is needed by functools.partial.
         target.__name__ = 'target'
 
-        decorated = retry_(target)
+        decorated = retry_(target, on_error=on_error)
         target.assert_not_called()
 
         result = decorated('meep')
@@ -218,3 +252,4 @@ class TestRetry(object):
         assert target.call_count == 2
         target.assert_has_calls([mock.call('meep'), mock.call('meep')])
         sleep.assert_called_once_with(retry_._initial)
+        assert on_error.call_count == 1
