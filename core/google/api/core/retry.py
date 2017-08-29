@@ -181,7 +181,7 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
                 raise
             last_exc = exc
             if on_error is not None:
-                on_error()
+                on_error(exc)
 
         now = datetime_helpers.utcnow()
         if deadline_datetime is not None and deadline_datetime < now:

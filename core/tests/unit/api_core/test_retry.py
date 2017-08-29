@@ -84,24 +84,24 @@ def test_retry_target_success(utcnow, sleep):
     autospec=True)
 def test_retry_target_w_on_error(utcnow, sleep):
     predicate = retry.if_exception_type(ValueError)
-    call_count = {'target': 0, 'on_error': 0}
-
-    def on_error():
-        call_count['on_error'] += 1
+    call_count = {'target': 0}
+    to_raise = ValueError()
 
     def target():
         call_count['target'] += 1
         if call_count['target'] < 3:
-            raise ValueError()
+            raise to_raise
         return 42
+
+    on_error = mock.Mock()
 
     result = retry.retry_target(
         target, predicate, range(10), None, on_error=on_error)
 
     assert result == 42
     assert call_count['target'] == 3
-    assert call_count['on_error'] == 2
 
+    on_error.assert_has_calls([mock.call(to_raise), mock.call(to_raise)])
     sleep.assert_has_calls([mock.call(0), mock.call(1)])
 
 
