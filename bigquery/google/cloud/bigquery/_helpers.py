@@ -74,7 +74,10 @@ def _datetime_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
         # value will be a string, in YYYY-MM-DDTHH:MM:SS form.
-        return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
+        try:
+            return datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+        except ValueError:
+            return datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
 
 
 def _date_from_json(value, field):
