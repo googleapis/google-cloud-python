@@ -75,9 +75,9 @@ def _datetime_from_json(value, field):
     if _not_null(value, field):
         # value will be a string, in YYYY-MM-DDTHH:MM:SS form.
         try:
-            return datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+            return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
         except ValueError:
-            return datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+            return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
 
 
 def _date_from_json(value, field):
