@@ -317,7 +317,7 @@ class SpannerClient(object):
         requests to it return ``NOT_FOUND``.
 
         Idle sessions can be kept alive by sending a trivial SQL query
-        periodically, e.g., ``\"SELECT 1\"``.
+        periodically, e.g., ``"SEL 1"``.
 
         Example:
           >>> from google.cloud import spanner_v1
@@ -444,7 +444,7 @@ class SpannerClient(object):
 
             Parameters can appear anywhere that a literal value is expected.  The same
             parameter name can be used more than once, for example:
-              ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+            ``"WHERE id > @msg_id AND id < @msg_id + 100"``
 
             It is an error to execute an SQL query with unbound parameters.
 
@@ -533,7 +533,7 @@ class SpannerClient(object):
 
             Parameters can appear anywhere that a literal value is expected.  The same
             parameter name can be used more than once, for example:
-              ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+            ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
 
             It is an error to execute an SQL query with unbound parameters.
 
