@@ -1,0 +1,52 @@
+# Code owners file.
+# This file controls who is tagged for review for any given pull request.
+
+# Luke Sneeringer is the default owner for anything not explicitly
+# taken by someone else.
+*                         @lukesneeringer
+
+# Danny Hermes is the primary author of the original core library, as
+# well as most of the testing code.
+core/*                    @dhermes
+test_utils/*              @dhermes
+
+# Jon Wayne Parrott is the author of the new google.api.core library.
+# NOTE: This trumps the previous core/* directive, since the last match is
+#       what matters.
+core/google/api/core/*    @jonparrott
+
+# Tres Seaver and Tim Swast share responsibility for BigQuery.
+bigquery/*                @tswast @tseaver
+
+# Danny Hermes and Tres Seaver co-authored the BigTable library.
+bigtable/*                @dhermes @tseaver
+
+# Danny Hermes is the primary maintainer of the Datastore library.
+datastore/*               @dhermes
+
+# Bill Prin is the primary maintainer of the Stackdriver libraries.
+error_reporting/*         @waprin
+monitoring/*              @waprin @supriyagarg @rimey
+logging/*                 @waprin @tseaver
+
+# Luke Sneeringer is the primary author of the ML API clients.
+language/*                @lukesneeringer
+speech/*                  @lukesneeringer
+translate/*               @lukesneeringer
+videointelligence/*       @lukesneeringer
+vision/*                  @lukesneeringer
+
+# Luke Sneeringer is the primary author of Pub/Sub.
+pubsub/*                  @lukesneeringer
+
+# Danny Hermes is the primary author of resource manager
+resourcemanager/*         @dhermes
+
+# Tim Swast is the primary author of Runtime Config.
+runtimeconfig/            @tswast
+
+# Vikas Kedia is the product owner and Tres Seaver the author for Spanner.
+spanner/*                 @vkedia @tseaver
+
+# Doug Greiman and Angela Li are the owners of trace.
+trace/*                   @liyanhui1228 @duggelz
