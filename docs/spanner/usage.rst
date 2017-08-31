@@ -23,7 +23,7 @@ Spanner
   transaction-api
   streamed-api
 
-  gapic/index
+  gapic/types
 
 API requests are sent to the `Cloud Spanner`_ API via RPC over
 HTTP/2.  In order to support this, we'll rely on `gRPC`_.
