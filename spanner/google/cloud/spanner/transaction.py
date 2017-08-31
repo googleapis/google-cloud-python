@@ -14,8 +14,8 @@
 
 """Spanner read-write transaction support."""
 
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
+from google.cloud.spanner_v1.types import TransactionSelector
+from google.cloud.spanner_v1.types import TransactionOptions
 
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.spanner._helpers import _options_with_prefix
@@ -60,8 +60,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     def _make_txn_selector(self):
         """Helper for :meth:`read`.
 
-        :rtype:
-            :class:`~.transaction_pb2.TransactionSelector`
+        :rtype: :class:`~.spanner_v1.types.TransactionSelector`
         :returns: a selector configured for read-write transaction semantics.
         """
         self._check_state()

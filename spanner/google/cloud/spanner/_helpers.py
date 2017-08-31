@@ -20,9 +20,8 @@ import math
 import six
 
 from google.gax import CallOptions
-from google.protobuf.struct_pb2 import ListValue
-from google.protobuf.struct_pb2 import Value
 from google.cloud.proto.spanner.v1 import type_pb2
+from google.cloud.spanner_v1 import types
 
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_to_rfc3339
@@ -105,7 +104,7 @@ def _try_to_coerce_bytes(bytestring):
     # Attempt to coerce using google.protobuf.Value, which will expect
     # something that is utf-8 (and base64 consistently is).
     try:
-        Value(string_value=bytestring)
+        types.Value(string_value=bytestring)
         return bytestring
     except ValueError:
         raise ValueError('Received a bytes that is not base64 encoded. '
@@ -120,38 +119,38 @@ def _make_value_pb(value):
     :type value: scalar value
     :param value: value to convert
 
-    :rtype: :class:`~google.protobuf.struct_pb2.Value`
+    :rtype: :class:`~google.cloud.spanner_v1.types.Value`
     :returns: value protobufs
     :raises ValueError: if value is not of a known scalar type.
     """
     if value is None:
-        return Value(null_value='NULL_VALUE')
+        return types.Value(null_value='NULL_VALUE')
     if isinstance(value, list):
-        return Value(list_value=_make_list_value_pb(value))
+        return types.Value(list_value=_make_list_value_pb(value))
     if isinstance(value, bool):
-        return Value(bool_value=value)
+        return types.Value(bool_value=value)
     if isinstance(value, six.integer_types):
-        return Value(string_value=str(value))
+        return types.Value(string_value=str(value))
     if isinstance(value, float):
         if math.isnan(value):
-            return Value(string_value='NaN')
+            return types.Value(string_value='NaN')
         if math.isinf(value):
             if value > 0:
-                return Value(string_value='Infinity')
+                return types.Value(string_value='Infinity')
             else:
-                return Value(string_value='-Infinity')
-        return Value(number_value=value)
+                return types.Value(string_value='-Infinity')
+        return types.Value(number_value=value)
     if isinstance(value, TimestampWithNanoseconds):
-        return Value(string_value=value.rfc3339())
+        return types.Value(string_value=value.rfc3339())
     if isinstance(value, datetime.datetime):
-        return Value(string_value=_datetime_to_rfc3339(value))
+        return types.Value(string_value=_datetime_to_rfc3339(value))
     if isinstance(value, datetime.date):
-        return Value(string_value=value.isoformat())
+        return types.Value(string_value=value.isoformat())
     if isinstance(value, six.binary_type):
         value = _try_to_coerce_bytes(value)
-        return Value(string_value=value)
+        return types.Value(string_value=value)
     if isinstance(value, six.text_type):
-        return Value(string_value=value)
+        return types.Value(string_value=value)
     raise ValueError("Unknown type: %s" % (value,))
 # pylint: enable=too-many-return-statements,too-many-branches
 
@@ -162,10 +161,10 @@ def _make_list_value_pb(values):
     :type values: list of scalar
     :param values: Row data
 
-    :rtype: :class:`~google.protobuf.struct_pb2.ListValue`
+    :rtype: :class:`~google.cloud.spanner_v1.types.ListValue`
     :returns: protobuf
     """
-    return ListValue(values=[_make_value_pb(value) for value in values])
+    return types.ListValue(values=[_make_value_pb(value) for value in values])
 
 
 def _make_list_value_pbs(values):
@@ -174,7 +173,7 @@ def _make_list_value_pbs(values):
     :type values: list of list of scalar
     :param values: Row data
 
-    :rtype: list of :class:`~google.protobuf.struct_pb2.ListValue`
+    :rtype: list of :class:`~google.cloud.spanner_v1.types.ListValue`
     :returns: sequence of protobufs
     """
     return [_make_list_value_pb(row) for row in values]
@@ -184,10 +183,10 @@ def _make_list_value_pbs(values):
 def _parse_value_pb(value_pb, field_type):
     """Convert a Value protobuf to cell data.
 
-    :type value_pb: :class:`~google.protobuf.struct_pb2.Value`
+    :type value_pb: :class:`~google.cloud.spanner_v1.types.Value`
     :param value_pb: protobuf to convert
 
-    :type field_type: :class:`~google.cloud.proto.spanner.v1.type_pb2.Type`
+    :type field_type: :class:`~google.cloud.spanner_v1.types.Type`
     :param field_type: type code for the value
 
     :rtype: varies on field_type
@@ -230,10 +229,10 @@ def _parse_value_pb(value_pb, field_type):
 def _parse_list_value_pbs(rows, row_type):
     """Convert a list of ListValue protobufs into a list of list of cell data.
 
-    :type rows: list of :class:`~google.protobuf.struct_pb2.ListValue`
+    :type rows: list of :class:`~google.cloud.spanner_v1.types.ListValue`
     :param rows: row data returned from a read/query
 
-    :type row_type: :class:`~google.cloud.proto.spanner.v1.type_pb2.StructType`
+    :type row_type: :class:`~google.cloud.spanner_v1.types.StructType`
     :param row_type: row schema specification
 
     :rtype: list of list of cell data

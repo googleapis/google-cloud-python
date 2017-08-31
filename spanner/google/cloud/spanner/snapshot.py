@@ -15,8 +15,8 @@
 """Model a set of read-only queries to a database as a snapshot."""
 
 from google.protobuf.struct_pb2 import Struct
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
+from google.cloud.spanner_v1.types import TransactionOptions
+from google.cloud.spanner_v1.types import TransactionSelector
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
