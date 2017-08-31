@@ -59,7 +59,7 @@ class StreamedResultSet(object):
     def fields(self):
         """Field descriptors for result set columns.
 
-        :rtype: list of :class:`~google.cloud.proto.spanner.v1.types.Field`
+        :rtype: list of :class:`~google.cloud.spanner_v1.types.Field`
         :returns: list of fields describing column names / types.
         """
         return self._metadata.row_type.fields
