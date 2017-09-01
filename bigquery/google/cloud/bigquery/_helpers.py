@@ -73,8 +73,12 @@ def _timestamp_from_json(value, field):
 def _datetime_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
-        # value will be a string, in YYYY-MM-DDTHH:MM:SS form.
-        return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
+        # value will be a string
+        # YYYY-MM-DDTHH:MM:SS or YYYY-MM-DDTHH:MM:SS.0000
+        try:
+            return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
+        except ValueError:
+            return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
 
 
 def _date_from_json(value, field):
