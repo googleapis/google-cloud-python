@@ -187,7 +187,7 @@ class Config(object):
           >>> from google.cloud import runtimeconfig
           >>> client = runtimeconfig.Client()
           >>> config = client.get_config('my-config')
-          >>> print(config.get_varialbe('variable-name'))
+          >>> print(config.get_variable('variable-name'))
           <Variable: my-config, variable-name>
           >>> print(config.get_variable('does-not-exist'))
           None
