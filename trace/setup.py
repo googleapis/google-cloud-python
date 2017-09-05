@@ -15,7 +15,7 @@ install_requires = [
 
 setup(
     name='google-cloud-trace',
-    version='0.15.4',
+    version='0.15.5',
     author='Google Inc',
     author_email='googleapis-packages@google.com',
     classifiers=[
@@ -38,7 +38,12 @@ setup(
     license='Apache-2.0',
     packages=find_packages(),
     namespace_packages=[
-        'google', 'google.cloud', 'google.cloud.gapic',
-        'google.cloud.gapic.trace'
+        'google',
+        'google.cloud',
+        'google.cloud.gapic',
+        'google.cloud.gapic.trace',
+        'google.cloud.proto',
+        'google.cloud.proto.devtools',
+        'google.cloud.proto.devtools.cloudtrace',
     ],
     url='https://github.com/googleapis/googleapis')
