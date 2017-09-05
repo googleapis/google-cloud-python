@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 from google.cloud._testing import _GAXBaseAPI
 
 
@@ -149,7 +151,6 @@ class Test_SnapshotBase(unittest.TestCase):
         KEYSET = KeySet(keys=KEYS)
         INDEX = 'email-address-index'
         LIMIT = 20
-        TOKEN = b'DEADBEEF'
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _streaming_read_response=_MockCancellableIterator(*result_sets))
@@ -160,9 +161,17 @@ class Test_SnapshotBase(unittest.TestCase):
         if not first:
             derived._transaction_id = TXN_ID
 
-        result_set = derived.read(
-            TABLE_NAME, COLUMNS, KEYSET,
-            index=INDEX, limit=LIMIT, resume_token=TOKEN)
+        partial_patch = mock.patch('functools.partial')
+
+        with partial_patch as patch:
+            result_set = derived.read(
+                TABLE_NAME, COLUMNS, KEYSET,
+                index=INDEX, limit=LIMIT)
+
+            self.assertIs(result_set._restart, patch.return_value)
+            patch.assert_called_once_with(
+                api.streaming_read, session.name, TABLE_NAME, COLUMNS, KEYSET,
+                index=INDEX, limit=LIMIT)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -193,7 +202,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self.assertTrue(transaction.single_use.read_only.strong)
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
-        self.assertEqual(resume_token, TOKEN)
+        self.assertEqual(resume_token, b'')
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
@@ -273,7 +282,6 @@ class Test_SnapshotBase(unittest.TestCase):
             for row in VALUES
         ]
         MODE = 2  # PROFILE
-        TOKEN = b'DEADBEEF'
         struct_type_pb = StructType(fields=[
             StructType.Field(name='first_name', type=Type(code=STRING)),
             StructType.Field(name='last_name', type=Type(code=STRING)),
@@ -299,9 +307,17 @@ class Test_SnapshotBase(unittest.TestCase):
         if not first:
             derived._transaction_id = TXN_ID
 
-        result_set = derived.execute_sql(
-            SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
-            query_mode=MODE, resume_token=TOKEN)
+        partial_patch = mock.patch('functools.partial')
+
+        with partial_patch as patch:
+            result_set = derived.execute_sql(
+                SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
+                query_mode=MODE)
+
+            self.assertIs(result_set._restart, patch.return_value)
+            patch.assert_called_once_with(
+                api.execute_streaming_sql, session.name, SQL_QUERY_WITH_PARAM,
+                params=PARAMS, param_types=PARAM_TYPES, query_mode=MODE)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -333,7 +349,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(params, expected_params)
         self.assertEqual(param_types, PARAM_TYPES)
         self.assertEqual(query_mode, MODE)
-        self.assertEqual(resume_token, TOKEN)
+        self.assertEqual(resume_token, b'')
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
@@ -359,8 +375,6 @@ class Test_SnapshotBase(unittest.TestCase):
 
 
 class _MockCancellableIterator(object):
-
-    cancel_calls = 0
 
     def __init__(self, *values):
         self.iter_values = iter(values)
@@ -725,7 +739,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
     # pylint: disable=too-many-arguments
     def streaming_read(self, session, table, columns, key_set,
                        transaction=None, index='', limit=0,
-                       resume_token='', options=None):
+                       resume_token=b'', options=None):
         from google.gax.errors import GaxError
 
         self._streaming_read_with = (
@@ -738,7 +752,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
 
     def execute_streaming_sql(self, session, sql, transaction=None,
                               params=None, param_types=None,
-                              resume_token='', query_mode=None, options=None):
+                              resume_token=b'', query_mode=None, options=None):
         from google.gax.errors import GaxError
 
         self._executed_streaming_sql_with = (

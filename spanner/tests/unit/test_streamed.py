@@ -25,13 +25,16 @@ class TestStreamedResultSet(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, response_iterator, restart=object(), source=None):
+        return self._getTargetClass()(
+            response_iterator, restart, source=source)
 
     def test_ctor_defaults(self):
         iterator = _MockCancellableIterator()
-        streamed = self._make_one(iterator)
+        restart = object()
+        streamed = self._make_one(iterator, restart)
         self.assertIs(streamed._response_iterator, iterator)
+        self.assertIs(streamed._restart, restart)
         self.assertIsNone(streamed._source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
@@ -40,9 +43,11 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_ctor_w_source(self):
         iterator = _MockCancellableIterator()
+        restart = object()
         source = object()
-        streamed = self._make_one(iterator, source=source)
+        streamed = self._make_one(iterator, restart, source=source)
         self.assertIs(streamed._response_iterator, iterator)
+        self.assertIs(streamed._restart, restart)
         self.assertIs(streamed._source, source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
@@ -650,6 +655,18 @@ class TestStreamedResultSet(unittest.TestCase):
         with self.assertRaises(StopIteration):
             streamed.consume_next()
 
+    def test_consume_next_w_retryable_exception_wo_token(self):
+        from google.api.core.exceptions import ServiceUnavailable
+
+        failing_iterator = _FailingIterator()
+        restart = mock.Mock()
+        streamed = self._make_one(failing_iterator, restart)
+
+        with self.assertRaises(ServiceUnavailable):
+            streamed.consume_next()
+
+        restart.assert_not_called()
+
     def test_consume_next_first_set_partial(self):
         TXN_ID = b'DEADBEEF'
         FIELDS = [
@@ -739,7 +756,8 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
         self.assertEqual(streamed.resume_token, result_set.resume_token)
 
-    def test_consume_next_last_set(self):
+    def test_consume_next_last_set_w_restart(self):
+        TOKEN = b'BECADEAF'
         FIELDS = [
             self._make_scalar_field('full_name', 'STRING'),
             self._make_scalar_field('age', 'INT64'),
@@ -754,14 +772,21 @@ class TestStreamedResultSet(unittest.TestCase):
         BARE = [u'Phred Phlyntstone', 42, True]
         VALUES = [self._make_value(bare) for bare in BARE]
         result_set = self._make_partial_result_set(VALUES, stats=stats)
+        failing_iterator = _FailingIterator()
         iterator = _MockCancellableIterator(result_set)
-        streamed = self._make_one(iterator)
+        restart = mock.Mock(return_value=iterator)
+        streamed = self._make_one(failing_iterator, restart)
         streamed._metadata = metadata
+        streamed._resume_token = TOKEN
+
         streamed.consume_next()
+
         self.assertEqual(streamed.rows, [BARE])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._stats, stats)
         self.assertEqual(streamed.resume_token, result_set.resume_token)
+
+        restart.assert_called_once_with(resume_token=TOKEN)
 
     def test_consume_all_empty(self):
         iterator = _MockCancellableIterator()
@@ -900,13 +925,23 @@ class TestStreamedResultSet(unittest.TestCase):
 
 class _MockCancellableIterator(object):
 
-    cancel_calls = 0
-
     def __init__(self, *values):
         self.iter_values = iter(values)
 
     def next(self):
+
         return next(self.iter_values)
+
+    def __next__(self):  # pragma: NO COVER Py3k
+        return self.next()
+
+
+class _FailingIterator(object):
+
+    def next(self):
+        from google.api.core.exceptions import ServiceUnavailable
+
+        raise ServiceUnavailable('testing')
 
     def __next__(self):  # pragma: NO COVER Py3k
         return self.next()
@@ -921,8 +956,9 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, response_iterator, restart=object(), source=None):
+        return self._getTargetClass()(
+            response_iterator, restart, source=source)
 
     def _load_json_test(self, test_name):
         import os

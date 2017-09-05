@@ -32,12 +32,6 @@ fails if the result set is too large,
     for row in result.rows:
         print(row)
 
-.. note::
-
-   If streaming a chunk fails due to a "resumable" error,
-   :meth:`Session.read` retries the ``StreamingRead`` API reqeust,
-   passing the ``resume_token`` from the last partial result streamed.
-
 
 Execute a SQL Select Statement
 ------------------------------

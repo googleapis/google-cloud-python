@@ -14,15 +14,38 @@
 
 """Wrapper for streaming results."""
 
+from google.api.core import exceptions
+from google.api.core import retry
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
-from google.cloud import exceptions
 from google.cloud.proto.spanner.v1 import type_pb2
 import six
 
 # pylint: disable=ungrouped-imports
 from google.cloud.spanner._helpers import _parse_value_pb
 # pylint: enable=ungrouped-imports
+
+_RESTART_DEADLINE = 30.0  # seconds
+
+
+# pylint: disable=invalid-name
+# Pylint sees this as a constant, but it is also an alias that should be
+# considered a function.
+if_unavailable_error = retry.if_exception_type((
+    exceptions.ServiceUnavailable,
+))
+"""A predicate that checks if an exception is a transient API error.
+
+For streaming the result of ``read`` / ``execute_sql`` requests, only
+the following server errors are considered transient:
+
+- :class:`google.api.core.exceptions.ServiceUnavailable` - HTTP 503, gRPC
+    ``UNAVAILABLE``.
+"""
+
+retry_unavailable = retry.Retry(predicate=if_unavailable_error)
+"""Used by `StreamedResultSet.consume_next`."""
+# pylint: enable=invalid-name
 
 
 class StreamedResultSet(object):
@@ -34,11 +57,18 @@ class StreamedResultSet(object):
         :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`
         instances.
 
+    :type restart: callable
+    :param restart:
+        Function (typically curried via :func:`functools.partial`) used to
+        restart the initial request if a retriable error is raised during
+        streaming.
+
     :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`
     :param source: Snapshot from which the result set was fetched.
     """
-    def __init__(self, response_iterator, source=None):
+    def __init__(self, response_iterator, restart, source=None):
         self._response_iterator = response_iterator
+        self._restart = restart
         self._rows = []             # Fully-processed rows
         self._counter = 0           # Counter for processed responses
         self._metadata = None       # Until set from first PRS
@@ -125,12 +155,29 @@ class StreamedResultSet(object):
                 self._rows.append(self._current_row)
                 self._current_row = []
 
+    def _restart_iterator(self, _exc_ignored):
+        """Helper for :meth:`consume_next`."""
+        if self._resume_token in (None, b''):
+            raise
+
+        self._response_iterator = self._restart(
+            resume_token=self._resume_token)
+
+    def _bump_iterator(self):
+        """Helper for :meth:`consume_next`."""
+        return six.next(self._response_iterator)
+
     def consume_next(self):
         """Consume the next partial result set from the stream.
 
         Parse the result set into new/existing rows in :attr:`_rows`
+
+        :raises ValueError:
+            if the sleep generator somehow does not yield values.
         """
-        response = six.next(self._response_iterator)
+        response = retry_unavailable(
+            self._bump_iterator, on_error=self._restart_iterator)()
+
         self._counter += 1
         self._resume_token = response.resume_token
 
