@@ -84,7 +84,7 @@ def _datetime_from_json(value, field):
     """
     if _not_null(value, field):
         if '.' in value:
-            # YYYY-MM-DDTHH:MM:SS.mmmmmm
+            # YYYY-MM-DDTHH:MM:SS.ffffff
             return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
         else:
             # YYYY-MM-DDTHH:MM:SS
