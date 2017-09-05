@@ -608,48 +608,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [VALUES[0:3], VALUES[3:6]])
         self.assertEqual(streamed._current_row, VALUES[6:])
 
-    def test_one_or_none_no_value(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            self.assertIsNone(streamed.one_or_none())
-
-    def test_one_or_none_single_value(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._rows = ['foo']
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            self.assertEqual(streamed.one_or_none(), 'foo')
-
-    def test_one_or_none_multiple_values(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._rows = ['foo', 'bar']
-        with self.assertRaises(ValueError):
-            streamed.one_or_none()
-
-    def test_one_or_none_consumed_stream(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._metadata = object()
-        with self.assertRaises(RuntimeError):
-            streamed.one_or_none()
-
-    def test_one_single_value(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._rows = ['foo']
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            self.assertEqual(streamed.one(), 'foo')
-
-    def test_one_no_value(self):
-        from google.cloud import exceptions
-
-        iterator = _MockCancellableIterator(['foo'])
-        streamed = self._make_one(iterator)
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            with self.assertRaises(exceptions.NotFound):
-                streamed.one()
-
     def test_consume_next_empty(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
@@ -902,6 +860,48 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, [])
         self.assertIsNone(streamed._pending_chunk)
+
+    def test_one_single_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._rows = ['foo']
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertEqual(streamed.one(), 'foo')
+
+    def test_one_no_value(self):
+        from google.cloud import exceptions
+
+        iterator = _MockCancellableIterator(['foo'])
+        streamed = self._make_one(iterator)
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            with self.assertRaises(exceptions.NotFound):
+                streamed.one()
+
+    def test_one_or_none_no_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertIsNone(streamed.one_or_none())
+
+    def test_one_or_none_single_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._rows = ['foo']
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertEqual(streamed.one_or_none(), 'foo')
+
+    def test_one_or_none_multiple_values(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._rows = ['foo', 'bar']
+        with self.assertRaises(ValueError):
+            streamed.one_or_none()
+
+    def test_one_or_none_consumed_stream(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._metadata = object()
+        with self.assertRaises(RuntimeError):
+            streamed.one_or_none()
 
 
 class _MockCancellableIterator(object):
