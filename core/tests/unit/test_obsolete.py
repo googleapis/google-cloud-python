@@ -16,16 +16,16 @@ import warnings
 
 import mock
 
-from google.cloud import obselete
+from google.cloud import obsolete
 
 
 def test_complain_noop():
     with mock.patch.object(warnings, 'warn', autospec=True) as warn:
-        obselete.complain('bogus_package')
+        obsolete.complain('bogus_package')
         assert warn.call_count == 0
 
 
 def test_complain():
     with mock.patch.object(warnings, 'warn', autospec=True) as warn:
-        obselete.complain('google-cloud-core')
+        obsolete.complain('google-cloud-core')
         warn.assert_called_once_with(mock.ANY, DeprecationWarning)
