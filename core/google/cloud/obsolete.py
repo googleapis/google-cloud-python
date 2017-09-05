@@ -26,12 +26,12 @@ def complain(distribution_name):
     rather than just send a warning.
 
     Args:
-        distribution_name (str): The name of the obselete distribution.
+        distribution_name (str): The name of the obsolete distribution.
     """
     try:
         pkg_resources.get_distribution(distribution_name)
         warnings.warn(
-            'The {pkg} distribution is now obselete. '
+            'The {pkg} distribution is now obsolete. '
             'Please `pip uninstall {pkg}`. '
             'In the future, this warning will become an ImportError.'.format(
                 pkg=distribution_name,
