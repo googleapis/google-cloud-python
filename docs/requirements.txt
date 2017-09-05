@@ -13,8 +13,10 @@ monitoring/
 pubsub/
 resource_manager/
 runtimeconfig/
+spanner/
 speech/
 storage/
+trace/
 translate/
+videointelligence/
 vision/
-spanner/
