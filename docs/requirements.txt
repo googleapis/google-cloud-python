@@ -1,3 +1,5 @@
+setuptools >= 38
+
 core/
 bigquery/
 bigtable/
