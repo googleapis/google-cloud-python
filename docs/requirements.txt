@@ -1,4 +1,4 @@
-setuptools >= 38
+setuptools >= 36.4.0
 
 core/
 bigquery/
