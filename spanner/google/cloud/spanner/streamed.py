@@ -142,7 +142,8 @@ class StreamedResultSet(object):
         """
         response = six.next(self._response_iterator)
         self._counter += 1
-        self._resume_token = response.resume_token
+        if response.resume_token:
+            self._resume_token = response.resume_token
 
         if self._metadata is None:  # first response
             metadata = self._metadata = response.metadata

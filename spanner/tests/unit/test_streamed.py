@@ -134,7 +134,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_partial_result_set(
-            values, metadata=None, stats=None, chunked_value=False):
+            values, metadata=None, stats=None, chunked_value=False, **kw):
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet)
         return PartialResultSet(
@@ -142,6 +142,7 @@ class TestStreamedResultSet(unittest.TestCase):
             metadata=metadata,
             stats=stats,
             chunked_value=chunked_value,
+            **kw
         )
 
     def test_properties_set(self):
@@ -641,11 +642,13 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, None)
         self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_first_set_partial_existing_txn_id(self):
         TXN_ID = b'DEADBEEF'
+        PRIOR_TOKEN = b'B4'
+        NEW_TOKEN = b'AF2'
         FIELDS = [
             self._make_scalar_field('full_name', 'STRING'),
             self._make_scalar_field('age', 'INT64'),
@@ -655,18 +658,21 @@ class TestStreamedResultSet(unittest.TestCase):
             FIELDS, transaction_id=b'')
         BARE = [u'Phred Phlyntstone', 42]
         VALUES = [self._make_value(bare) for bare in BARE]
-        result_set = self._make_partial_result_set(VALUES, metadata=metadata)
+        result_set = self._make_partial_result_set(
+            VALUES, metadata=metadata, resume_token=NEW_TOKEN)
         iterator = _MockCancellableIterator(result_set)
         source = mock.Mock(_transaction_id=TXN_ID, spec=['_transaction_id'])
         streamed = self._make_one(iterator, source=source)
+        streamed._resume_token = PRIOR_TOKEN
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, NEW_TOKEN)
         self.assertEqual(source._transaction_id, TXN_ID)
 
-    def test_consume_next_w_partial_result(self):
+    def test_consume_next_w_partial_result_no_resume_token(self):
+        PRIOR_TOKEN = b'DEADBEEF'
         FIELDS = [
             self._make_scalar_field('full_name', 'STRING'),
             self._make_scalar_field('age', 'INT64'),
@@ -678,12 +684,13 @@ class TestStreamedResultSet(unittest.TestCase):
         result_set = self._make_partial_result_set(VALUES, chunked_value=True)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
+        streamed._resume_token = PRIOR_TOKEN
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed.consume_next()
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, VALUES[0])
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, PRIOR_TOKEN)
 
     def test_consume_next_w_pending_chunk(self):
         FIELDS = [
@@ -709,7 +716,7 @@ class TestStreamedResultSet(unittest.TestCase):
         ])
         self.assertEqual(streamed._current_row, [BARE[6]])
         self.assertIsNone(streamed._pending_chunk)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, None)
 
     def test_consume_next_last_set(self):
         FIELDS = [
@@ -733,7 +740,7 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [BARE])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._stats, stats)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, None)
 
     def test_consume_all_empty(self):
         iterator = _MockCancellableIterator()
