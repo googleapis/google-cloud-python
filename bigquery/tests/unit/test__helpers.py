@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import base64
+import datetime
 import unittest
 
 import mock
@@ -144,16 +146,12 @@ class Test_bytes_from_json(unittest.TestCase):
             self._call_fut(None, _Field('REQUIRED'))
 
     def test_w_base64_encoded_bytes(self):
-        import base64
-
         expected = b'Wonderful!'
         encoded = base64.standard_b64encode(expected)
         coerced = self._call_fut(encoded, object())
         self.assertEqual(coerced, expected)
 
     def test_w_base64_encoded_text(self):
-        import base64
-
         expected = b'Wonderful!'
         encoded = base64.standard_b64encode(expected).decode('ascii')
         coerced = self._call_fut(encoded, object())
@@ -175,7 +173,6 @@ class Test_timestamp_from_json(unittest.TestCase):
             self._call_fut(None, _Field('REQUIRED'))
 
     def test_w_string_value(self):
-        import datetime
         from google.cloud._helpers import _EPOCH
 
         coerced = self._call_fut('1.234567', object())
@@ -184,7 +181,6 @@ class Test_timestamp_from_json(unittest.TestCase):
             _EPOCH + datetime.timedelta(seconds=1, microseconds=234567))
 
     def test_w_float_value(self):
-        import datetime
         from google.cloud._helpers import _EPOCH
 
         coerced = self._call_fut(1.234567, object())
@@ -208,12 +204,16 @@ class Test_datetime_from_json(unittest.TestCase):
             self._call_fut(None, _Field('REQUIRED'))
 
     def test_w_string_value(self):
-        import datetime
-
         coerced = self._call_fut('2016-12-02T18:51:33', object())
         self.assertEqual(
             coerced,
             datetime.datetime(2016, 12, 2, 18, 51, 33))
+
+    def test_w_microseconds(self):
+        coerced = self._call_fut('2015-05-22T10:11:12.987654', object())
+        self.assertEqual(
+            coerced,
+            datetime.datetime(2015, 5, 22, 10, 11, 12, 987654))
 
 
 class Test_date_from_json(unittest.TestCase):
@@ -231,8 +231,6 @@ class Test_date_from_json(unittest.TestCase):
             self._call_fut(None, _Field('REQUIRED'))
 
     def test_w_string_value(self):
-        import datetime
-
         coerced = self._call_fut('1987-09-22', object())
         self.assertEqual(
             coerced,
@@ -254,8 +252,6 @@ class Test_time_from_json(unittest.TestCase):
             self._call_fut(None, _Field('REQUIRED'))
 
     def test_w_string_value(self):
-        import datetime
-
         coerced = self._call_fut('12:12:27', object())
         self.assertEqual(
             coerced,
@@ -578,15 +574,11 @@ class Test_timestamp_to_json_parameter(unittest.TestCase):
         self.assertEqual(self._call_fut(ZULU), ZULU)
 
     def test_w_datetime_wo_zone(self):
-        import datetime
-
         ZULU = '2016-12-20 15:58:27.339328+00:00'
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328)
         self.assertEqual(self._call_fut(when), ZULU)
 
     def test_w_datetime_w_non_utc_zone(self):
-        import datetime
-
         class _Zone(datetime.tzinfo):
 
             def utcoffset(self, _):
@@ -598,7 +590,6 @@ class Test_timestamp_to_json_parameter(unittest.TestCase):
         self.assertEqual(self._call_fut(when), ZULU)
 
     def test_w_datetime_w_utc_zone(self):
-        import datetime
         from google.cloud._helpers import UTC
 
         ZULU = '2016-12-20 15:58:27.339328+00:00'
@@ -621,7 +612,6 @@ class Test_timestamp_to_json_row(unittest.TestCase):
         self.assertEqual(self._call_fut(ZULU), ZULU)
 
     def test_w_datetime(self):
-        import datetime
         from google.cloud._helpers import _microseconds_from_datetime
 
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328)
@@ -641,7 +631,6 @@ class Test_datetime_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(RFC3339), RFC3339)
 
     def test_w_datetime(self):
-        import datetime
         from google.cloud._helpers import UTC
 
         when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
@@ -660,8 +649,6 @@ class Test_date_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(RFC3339), RFC3339)
 
     def test_w_datetime(self):
-        import datetime
-
         when = datetime.date(2016, 12, 3)
         self.assertEqual(self._call_fut(when), '2016-12-03')
 
@@ -678,8 +665,6 @@ class Test_time_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(RFC3339), RFC3339)
 
     def test_w_datetime(self):
-        import datetime
-
         when = datetime.time(12, 13, 41)
         self.assertEqual(self._call_fut(when), '12:13:41')
 
@@ -1006,7 +991,6 @@ class Test_ScalarQueryParameter(unittest.TestCase):
 
     def test_to_api_repr_w_timestamp_datetime(self):
         from google.cloud._helpers import UTC
-        import datetime
 
         STAMP = '2016-12-20 15:58:27.339328+00:00'
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
@@ -1023,7 +1007,6 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_timestamp_micros(self):
-        import datetime
         from google.cloud._helpers import _microseconds_from_datetime
 
         now = datetime.datetime.utcnow()
@@ -1041,7 +1024,6 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_datetime_datetime(self):
-        import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
 
         now = datetime.datetime.utcnow()
@@ -1058,7 +1040,6 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_datetime_string(self):
-        import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
 
         now = datetime.datetime.utcnow()
@@ -1076,8 +1057,6 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_date_date(self):
-        import datetime
-
         today = datetime.date.today()
         EXPECTED = {
             'parameterType': {
@@ -1092,8 +1071,6 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
     def test_to_api_repr_w_date_string(self):
-        import datetime
-
         today = datetime.date.today()
         today_str = today.isoformat(),
         EXPECTED = {

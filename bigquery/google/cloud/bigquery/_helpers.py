@@ -71,14 +71,26 @@ def _timestamp_from_json(value, field):
 
 
 def _datetime_from_json(value, field):
-    """Coerce 'value' to a datetime, if set or not nullable."""
+    """Coerce 'value' to a datetime, if set or not nullable.
+
+    Args:
+        value (str): The timestamp.
+        field (.SchemaField): The field corresponding to the value.
+
+    Returns:
+        Optional[datetime.datetime]: The parsed datetime object from
+        ``value`` if the ``field`` is not null (otherwise it is
+        :data:`None`).
+    """
     if _not_null(value, field):
-        # value will be a string
-        # YYYY-MM-DDTHH:MM:SS or YYYY-MM-DDTHH:MM:SS.0000
-        try:
+        if '.' in value:
+            # YYYY-MM-DDTHH:MM:SS.ffffff
             return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
-        except ValueError:
+        else:
+            # YYYY-MM-DDTHH:MM:SS
             return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
+    else:
+        return None
 
 
 def _date_from_json(value, field):
