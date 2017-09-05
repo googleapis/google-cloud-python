@@ -87,7 +87,7 @@ Here is an example:
     # Define the callback.
     # Note that the callback is defined *before* the subscription is opened.
     def callback(message):
-        do_something_with(message)  # Replace this with your acutal logic.
+        do_something_with(message)  # Replace this with your actual logic.
         message.ack()
 
     # Open the subscription, passing the callback.
