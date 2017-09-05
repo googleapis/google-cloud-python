@@ -1,4 +1,5 @@
 setuptools >= 36.4.0
+sphinx >= 1.6.3
 
 core/
 bigquery/
