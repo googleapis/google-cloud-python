@@ -61,12 +61,16 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-pubsub',
-    version='0.28.2',
+    version='0.28.3',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
+        'google.cloud.gapic',
+        'google.cloud.gapic.pubsub',
+        'google.cloud.proto',
+        'google.cloud.proto.pubsub',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
