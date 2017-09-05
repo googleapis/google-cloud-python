@@ -608,6 +608,14 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [VALUES[0:3], VALUES[3:6]])
         self.assertEqual(streamed._current_row, VALUES[6:])
 
+    def test_consume_next_propagates_unavailable(self):
+        from google.cloud import exceptions
+
+        iterator = _ServiceUnavailableIterator()
+        streamed = self._make_one(iterator)
+        with self.assertRaises(exceptions.ServiceUnavailable):
+            streamed.consume_next()
+
     def test_consume_next_empty(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
@@ -902,6 +910,17 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._metadata = object()
         with self.assertRaises(RuntimeError):
             streamed.one_or_none()
+
+
+class _ServiceUnavailableIterator(object):
+
+    def next(self):
+        from google.cloud import exceptions
+
+        raise exceptions.ServiceUnavailable('testing')
+
+    def __next__(self):  # pragma: NO COVER Py3k
+        return self.next()
 
 
 class _MockCancellableIterator(object):

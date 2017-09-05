@@ -136,6 +136,9 @@ class StreamedResultSet(object):
         """Consume the next partial result set from the stream.
 
         Parse the result set into new/existing rows in :attr:`_rows`
+
+        :raises :class:`~google.api.core.exceptions.ServiceUnavailable`:
+            if the iterator must be restarted.
         """
         response = six.next(self._response_iterator)
         self._counter += 1
