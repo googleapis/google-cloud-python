@@ -61,7 +61,7 @@ class Policy(base.BasePolicy):
         # Create a queue for keeping track of shared state.
         if queue is None:
             queue = Queue()
-        self._request_queue = Queue()
+        self._request_queue = queue
 
         # Call the superclass constructor.
         super(Policy, self).__init__(
