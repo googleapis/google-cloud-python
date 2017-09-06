@@ -646,8 +646,11 @@ class TestBigQuery(unittest.TestCase):
 
     def _generate_standard_sql_types_examples(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
+        naive_microseconds = datetime.datetime(2016, 12, 5, 12, 41, 9, 250000)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
+        stamp_microseconds = stamp + '.250000'
         zoned = naive.replace(tzinfo=UTC)
+        zoned_microseconds = naive_microseconds.replace(tzinfo=UTC)
         return [
             {
                 'sql': 'SELECT 1',
@@ -674,8 +677,17 @@ class TestBigQuery(unittest.TestCase):
                 'expected': zoned,
             },
             {
+                'sql': 'SELECT TIMESTAMP "%s"' % (stamp_microseconds,),
+                'expected': zoned_microseconds,
+            },
+            {
                 'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (stamp,),
                 'expected': naive,
+            },
+            {
+                'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (
+                    stamp_microseconds,),
+                'expected': naive_microseconds,
             },
             {
                 'sql': 'SELECT DATE(TIMESTAMP "%s")' % (stamp,),
