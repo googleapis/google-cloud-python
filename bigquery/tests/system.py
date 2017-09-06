@@ -685,7 +685,8 @@ class TestBigQuery(unittest.TestCase):
                 'expected': naive,
             },
             {
-                'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (stamp_microseconds,),
+                'sql': 'SELECT DATETIME(TIMESTAMP "%s")' % (
+                    stamp_microseconds,),
                 'expected': naive_microseconds,
             },
             {
