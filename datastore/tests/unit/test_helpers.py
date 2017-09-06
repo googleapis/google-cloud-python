@@ -376,7 +376,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         from google.cloud.datastore.entity import Entity
 
         entity = Entity()
-        entity['a'] = {'b': 'c'}
+        entity['a'] = {'b': u'c'}
         entity_pb = self._call_fut(entity)
 
         expected_pb = entity_pb2.Entity(
@@ -590,7 +590,7 @@ class Test__pb_attr_value(unittest.TestCase):
     def test_dict(self):
         from google.cloud.datastore.entity import Entity
 
-        orig_value = {'richard': 'feynman'}
+        orig_value = {'richard': b'feynman'}
         name, value = self._call_fut(orig_value)
         self.assertEqual(name, 'entity_value')
         self.assertIsInstance(value, Entity)
