@@ -199,7 +199,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
 
         return entity_to_protobuf(entity)
 
-    def _compareEntityProto(self, entity_pb1, entity_pb2):
+    def _compare_entity_proto(self, entity_pb1, entity_pb2):
         from google.cloud.datastore.helpers import _property_tuples
 
         self.assertEqual(entity_pb1.key, entity_pb2.key)
@@ -212,8 +212,8 @@ class Test_entity_to_protobuf(unittest.TestCase):
             self.assertEqual(name1, name2)
             if val1.HasField('entity_value'):  # Message field (Entity)
                 self.assertEqual(val1.meaning, val2.meaning)
-                self._compareEntityProto(val1.entity_value,
-                                         val2.entity_value)
+                self._compare_entity_proto(
+                    val1.entity_value, val2.entity_value)
             else:
                 self.assertEqual(val1, val2)
 
@@ -223,7 +223,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
 
         entity = Entity()
         entity_pb = self._call_fut(entity)
-        self._compareEntityProto(entity_pb, entity_pb2.Entity())
+        self._compare_entity_proto(entity_pb, entity_pb2.Entity())
 
     def test_key_only(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
@@ -242,7 +242,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         path_elt.kind = kind
         path_elt.name = name
 
-        self._compareEntityProto(entity_pb, expected_pb)
+        self._compare_entity_proto(entity_pb, expected_pb)
 
     def test_simple_fields(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
@@ -262,7 +262,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         val_pb2 = _new_value_pb(expected_pb, name2)
         val_pb2.string_value = value2
 
-        self._compareEntityProto(entity_pb, expected_pb)
+        self._compare_entity_proto(entity_pb, expected_pb)
 
     def test_with_empty_list(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
@@ -272,7 +272,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         entity['foo'] = []
         entity_pb = self._call_fut(entity)
 
-        self._compareEntityProto(entity_pb, entity_pb2.Entity())
+        self._compare_entity_proto(entity_pb, entity_pb2.Entity())
 
     def test_inverts_to_protobuf(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
@@ -325,7 +325,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
 
         # NOTE: entity_to_protobuf() strips the project so we "cheat".
         new_pb.key.partition_id.project_id = project
-        self._compareEntityProto(original_pb, new_pb)
+        self._compare_entity_proto(original_pb, new_pb)
 
     def test_meaning_with_change(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
@@ -343,7 +343,7 @@ class Test_entity_to_protobuf(unittest.TestCase):
         value_pb.integer_value = value
         # NOTE: No meaning is used since the value differs from the
         #       value stored.
-        self._compareEntityProto(entity_pb, expected_pb)
+        self._compare_entity_proto(entity_pb, expected_pb)
 
     def test_variable_meanings(self):
         from google.cloud.proto.datastore.v1 import entity_pb2
@@ -369,7 +369,78 @@ class Test_entity_to_protobuf(unittest.TestCase):
         value2 = value_pb.array_value.values.add()
         value2.integer_value = values[2]
 
-        self._compareEntityProto(entity_pb, expected_pb)
+        self._compare_entity_proto(entity_pb, expected_pb)
+
+    def test_dict_to_entity(self):
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.datastore.entity import Entity
+
+        entity = Entity()
+        entity['a'] = {'b': 'c'}
+        entity_pb = self._call_fut(entity)
+
+        expected_pb = entity_pb2.Entity(
+            properties={
+                'a': entity_pb2.Value(
+                    entity_value=entity_pb2.Entity(
+                        properties={
+                            'b': entity_pb2.Value(
+                                string_value='c',
+                            ),
+                        },
+                    ),
+                ),
+            },
+        )
+        self.assertEqual(entity_pb, expected_pb)
+
+    def test_dict_to_entity_recursive(self):
+        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.datastore.entity import Entity
+
+        entity = Entity()
+        entity['a'] = {
+            'b': {
+                'c': {
+                    'd': 1.25,
+                },
+                'e': True,
+            },
+            'f': 10,
+        }
+        entity_pb = self._call_fut(entity)
+
+        b_entity_pb = entity_pb2.Entity(
+            properties={
+                'c': entity_pb2.Value(
+                    entity_value=entity_pb2.Entity(
+                        properties={
+                            'd': entity_pb2.Value(
+                                double_value=1.25,
+                            ),
+                        },
+                    ),
+                ),
+                'e': entity_pb2.Value(boolean_value=True),
+            }
+        )
+        expected_pb = entity_pb2.Entity(
+            properties={
+                'a': entity_pb2.Value(
+                    entity_value=entity_pb2.Entity(
+                        properties={
+                            'b': entity_pb2.Value(
+                                entity_value=b_entity_pb,
+                            ),
+                            'f': entity_pb2.Value(
+                                integer_value=10,
+                            ),
+                        },
+                    ),
+                ),
+            },
+        )
+        self.assertEqual(entity_pb, expected_pb)
 
 
 class Test_key_from_protobuf(unittest.TestCase):
@@ -515,6 +586,18 @@ class Test__pb_attr_value(unittest.TestCase):
         name, value = self._call_fut(entity)
         self.assertEqual(name, 'entity_value')
         self.assertIs(value, entity)
+
+    def test_dict(self):
+        from google.cloud.datastore.entity import Entity
+
+        orig_value = {'richard': 'feynman'}
+        name, value = self._call_fut(orig_value)
+        self.assertEqual(name, 'entity_value')
+        self.assertIsInstance(value, Entity)
+        self.assertIsNone(value.key)
+        self.assertEqual(value._meanings, {})
+        self.assertEqual(value.exclude_from_indexes, set())
+        self.assertEqual(dict(value), orig_value)
 
     def test_array(self):
         values = ['a', 0, 3.14]

@@ -290,8 +290,11 @@ def _pb_attr_value(val):
     >>> _pb_attr_value('my_string')
     ('string_value', 'my_string')
 
-    :type val: `datetime.datetime`, :class:`google.cloud.datastore.key.Key`,
-               bool, float, integer, string
+    :type val:
+        :class:`datetime.datetime`, :class:`google.cloud.datastore.key.Key`,
+        bool, float, integer, bytes, str, unicode,
+        :class:`google.cloud.datastore.entity.Entity`, dict, list,
+        :class:`google.cloud.datastore.helpers.GeoPoint`, NoneType
     :param val: The value to be scrutinized.
 
     :rtype: tuple
@@ -315,6 +318,10 @@ def _pb_attr_value(val):
         name, value = 'blob', val
     elif isinstance(val, Entity):
         name, value = 'entity', val
+    elif isinstance(val, dict):
+        entity_val = Entity(key=None)
+        entity_val.update(val)
+        name, value = 'entity', entity_val
     elif isinstance(val, list):
         name, value = 'array', val
     elif isinstance(val, GeoPoint):
@@ -322,7 +329,7 @@ def _pb_attr_value(val):
     elif val is None:
         name, value = 'null', struct_pb2.NULL_VALUE
     else:
-        raise ValueError("Unknown protobuf attr type %s" % type(val))
+        raise ValueError('Unknown protobuf attr type', type(val))
 
     return name + '_value', value
 
