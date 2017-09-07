@@ -644,6 +644,50 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed.rows, [row1, row2, row3, row4])
 
+    def test__do_restart_no_token(self):
+        restart = mock.Mock()
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+
+        with self.assertRaises(ValueError):
+            streamed._do_restart()
+
+        restart.assert_not_called()
+
+    def test__do_restart_empty(self):
+        TOKEN = b'DEADBEEF'
+        restart = mock.Mock()
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+        streamed._resume_token = TOKEN
+
+        streamed._do_restart()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        self.assertIsNone(streamed._pending_chunk)
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed._current_row, [])
+        restart.assert_called_once_with(TOKEN)
+
+    def test__do_restart_non_empty(self):
+        TOKEN = b'DEADBEEF'
+        restart = mock.Mock()
+        row1, row2, row3 = ('foo',), ('bar',), ('baz',)
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+        streamed._resume_token = TOKEN
+        streamed._pending_chunk = self._make_value(u'Phred ')
+        streamed._current_row = [row1]
+        streamed._pending_rows = [row2, row3]
+
+        streamed._do_restart()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        self.assertIsNone(streamed._pending_chunk)
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed._current_row, [])
+        restart.assert_called_once_with(TOKEN)
+
     def test_consume_next_propagates_unavailable(self):
         from google.cloud import exceptions
 
