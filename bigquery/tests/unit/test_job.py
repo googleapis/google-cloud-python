@@ -1702,6 +1702,95 @@ class TestQueryJob(unittest.TestCase, _Base):
                 self.assertEqual(f_step.kind, e_step['kind'])
                 self.assertEqual(f_step.substeps, e_step['substeps'])
 
+    def test_total_bytes_processed(self):
+        total_bytes = 1234
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.total_bytes_processed)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.total_bytes_processed)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.total_bytes_processed)
+
+        query_stats['totalBytesProcessed'] = str(total_bytes)
+        self.assertEqual(job.total_bytes_processed, total_bytes)
+
+    def test_total_bytes_billed(self):
+        total_bytes = 1234
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.total_bytes_billed)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.total_bytes_billed)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.total_bytes_billed)
+
+        query_stats['totalBytesBilled'] = str(total_bytes)
+        self.assertEqual(job.total_bytes_billed, total_bytes)
+
+    def test_billing_tier(self):
+        billing_tier = 1
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.billing_tier)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.billing_tier)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.billing_tier)
+
+        query_stats['billingTier'] = billing_tier
+        self.assertEqual(job.billing_tier, billing_tier)
+
+    def test_cache_hit(self):
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.cache_hit)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.cache_hit)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.cache_hit)
+
+        query_stats['cacheHit'] = True
+        self.assertTrue(job.cache_hit)
+
+    def test_num_dml_affected_rows(self):
+        num_rows = 1234
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.num_dml_affected_rows)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.num_dml_affected_rows)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.num_dml_affected_rows)
+
+        query_stats['numDmlAffectedRows'] = str(num_rows)
+        self.assertEqual(job.num_dml_affected_rows, num_rows)
+
+    def test_statement_type(self):
+        statement_type = 'SELECT'
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertIsNone(job.statement_type)
+
+        statistics = job._properties['statistics'] = {}
+        self.assertIsNone(job.statement_type)
+
+        query_stats = statistics['query'] = {}
+        self.assertIsNone(job.statement_type)
+
+        query_stats['statementType'] = statement_type
+        self.assertEqual(job.statement_type, statement_type)
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
