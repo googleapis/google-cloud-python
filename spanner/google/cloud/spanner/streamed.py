@@ -154,12 +154,13 @@ class StreamedResultSet(object):
 
         Parse the result set into new/existing rows in :attr:`_complete_rows`
 
-        :raises :class:`~google.api.core.exceptions.ServiceUnavailable`:
-            if the iterator must be restarted.
         :raises StopIteration: if the iterator is empty.
         """
         try:
             response = six.next(self._response_iterator)
+        except exceptions.ServiceUnavailable:
+            self._do_restart()
+            return
         except StopIteration:
             self._flush_pending_rows()
             raise

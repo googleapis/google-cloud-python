@@ -688,21 +688,27 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed._current_row, [])
         restart.assert_called_once_with(TOKEN)
 
-    def test_consume_next_propagates_unavailable(self):
-        from google.cloud import exceptions
-
+    def test_consume_next_w_service_unavailable(self):
+        TOKEN = b'DEADBEEF'
+        restart = mock.Mock()
         iterator = _ServiceUnavailableIterator()
-        streamed = self._make_one(iterator)
-        with self.assertRaises(exceptions.ServiceUnavailable):
-            streamed.consume_next()
+        streamed = self._make_one(iterator, restart=restart)
+        streamed._resume_token = TOKEN
+
+        streamed.consume_next()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        restart.assert_called_once_with(TOKEN)
 
     def test_consume_next_empty(self):
         row1, row2 = ('foo',), ('bar',)
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         streamed._pending_rows = [row1, row2]
+
         with self.assertRaises(StopIteration):
             streamed.consume_next()
+
         self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed.rows, [row1, row2])
 
@@ -721,7 +727,9 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator(result_set)
         source = mock.Mock(_transaction_id=None, spec=['_transaction_id'])
         streamed = self._make_one(iterator, source=source)
+
         streamed.consume_next()
+
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
@@ -749,7 +757,9 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator, source=source)
         streamed._resume_token = PRIOR_TOKEN
         streamed._pending_rows = [row1, row2]
+
         streamed.consume_next()
+
         self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed.rows, [row1, row2])
         self.assertEqual(streamed._current_row, BARE)
@@ -772,7 +782,9 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         streamed._resume_token = PRIOR_TOKEN
         streamed._metadata = self._make_result_set_metadata(FIELDS)
+
         streamed.consume_next()
+
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, VALUES[0])
@@ -795,7 +807,9 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._pending_chunk = self._make_value(u'Phred ')
+
         streamed.consume_next()
+
         self.assertEqual(streamed._pending_rows, [
             [u'Phred Phlyntstone', BARE[1], BARE[2]],
             [BARE[3], BARE[4], BARE[5]],
@@ -824,7 +838,9 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         streamed._metadata = metadata
         streamed._pending_rows = [row1, row2]
+
         streamed.consume_next()
+
         self.assertEqual(streamed.rows, [row1, row2])
         self.assertEqual(streamed._pending_rows, [BARE])
         self.assertEqual(streamed._current_row, [])
