@@ -1682,6 +1682,68 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._get_target_class().from_api_repr(resource, client)
         self.assertTrue(job.done())
 
+    def test_query_plan(self):
+        from google.cloud.bigquery.job import QueryPlanEntry
+        from google.cloud.bigquery.job import QueryPlanEntryStep
+
+        plan_entries = [{
+            'name': 'NAME',
+            'id': 1234,
+            'waitRatioAvg': 2.71828,
+            'waitRatioMax': 3.14159,
+            'readRatioAvg': 1.41421,
+            'readRatioMax': 1.73205,
+            'computeRatioAvg': 0.69315,
+            'computeRatioMax': 1.09861,
+            'writeRatioAvg': 3.32193,
+            'writeRatioMax': 2.30258,
+            'recordsRead': '100',
+            'recordsWritten': '1',
+            'status': 'STATUS',
+            'steps': [{
+                'kind': 'KIND',
+                'substeps': ['SUBSTEP1', 'SUBSTEP2'],
+            }],
+        }]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.query_plan, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.query_plan, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.query_plan, [])
+
+        query_stats['queryPlan'] = plan_entries
+
+        self.assertEqual(len(job.query_plan), len(plan_entries))
+        for found, expected in zip(job.query_plan, plan_entries):
+            self.assertIsInstance(found, QueryPlanEntry)
+            self.assertEqual(found.name, expected['name'])
+            self.assertEqual(found.entry_id, expected['id'])
+            self.assertEqual(found.wait_ratio_avg, expected['waitRatioAvg'])
+            self.assertEqual(found.wait_ratio_max, expected['waitRatioMax'])
+            self.assertEqual(found.read_ratio_avg, expected['readRatioAvg'])
+            self.assertEqual(found.read_ratio_max, expected['readRatioMax'])
+            self.assertEqual(
+                found.compute_ratio_avg, expected['computeRatioAvg'])
+            self.assertEqual(
+                found.compute_ratio_max, expected['computeRatioMax'])
+            self.assertEqual(found.write_ratio_avg, expected['writeRatioAvg'])
+            self.assertEqual(found.write_ratio_max, expected['writeRatioMax'])
+            self.assertEqual(
+                found.records_read, int(expected['recordsRead']))
+            self.assertEqual(
+                found.records_written, int(expected['recordsWritten']))
+            self.assertEqual(found.status, expected['status'])
+
+            self.assertEqual(len(found.steps), len(expected['steps']))
+            for f_step, e_step in zip(found.steps, expected['steps']):
+                self.assertIsInstance(f_step, QueryPlanEntryStep)
+                self.assertEqual(f_step.kind, e_step['kind'])
+                self.assertEqual(f_step.substeps, e_step['substeps'])
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
@@ -2152,6 +2214,185 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
+
+
+class TestQueryPlanEntryStep(unittest.TestCase, _Base):
+    KIND = 'KIND'
+    SUBSTEPS = ('SUB1', 'SUB2')
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import QueryPlanEntryStep
+
+        return QueryPlanEntryStep
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        step = self._make_one(self.KIND, self.SUBSTEPS)
+        self.assertEqual(step.kind, self.KIND)
+        self.assertEqual(step.substeps, list(self.SUBSTEPS))
+
+    def test_from_api_repr_empty(self):
+        klass = self._get_target_class()
+        step = klass.from_api_repr({})
+        self.assertIsNone(step.kind)
+        self.assertEqual(step.substeps, [])
+
+    def test_from_api_repr_normal(self):
+        resource = {
+            'kind': self.KIND,
+            'substeps': self.SUBSTEPS,
+        }
+        klass = self._get_target_class()
+        step = klass.from_api_repr(resource)
+        self.assertEqual(step.kind, self.KIND)
+        self.assertEqual(step.substeps, list(self.SUBSTEPS))
+
+    def test___eq___mismatched_type(self):
+        step = self._make_one(self.KIND, self.SUBSTEPS)
+        self.assertNotEqual(step, object())
+
+    def test___eq___mismatch_kind(self):
+        step = self._make_one(self.KIND, self.SUBSTEPS)
+        other = self._make_one('OTHER', self.SUBSTEPS)
+        self.assertNotEqual(step, other)
+
+    def test___eq___mismatch_substeps(self):
+        step = self._make_one(self.KIND, self.SUBSTEPS)
+        other = self._make_one(self.KIND, ())
+        self.assertNotEqual(step, other)
+
+    def test___eq___hit(self):
+        step = self._make_one(self.KIND, self.SUBSTEPS)
+        other = self._make_one(self.KIND, self.SUBSTEPS)
+        self.assertEqual(step, other)
+
+
+class TestQueryPlanEntry(unittest.TestCase, _Base):
+    NAME = 'NAME'
+    ENTRY_ID = 1234
+    WAIT_RATIO_AVG = 2.71828
+    WAIT_RATIO_MAX = 3.14159
+    READ_RATIO_AVG = 1.41421
+    READ_RATIO_MAX = 1.73205
+    COMPUTE_RATIO_AVG = 0.69315
+    COMPUTE_RATIO_MAX = 1.09861
+    WRITE_RATIO_AVG = 3.32193
+    WRITE_RATIO_MAX = 2.30258
+    RECORDS_READ = 100
+    RECORDS_WRITTEN = 1
+    STATUS = 'STATUS'
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import QueryPlanEntry
+
+        return QueryPlanEntry
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        from google.cloud.bigquery.job import QueryPlanEntryStep
+
+        steps = [QueryPlanEntryStep(
+            kind=TestQueryPlanEntryStep.KIND,
+            substeps=TestQueryPlanEntryStep.SUBSTEPS)]
+        entry = self._make_one(
+            name=self.NAME,
+            entry_id=self.ENTRY_ID,
+            wait_ratio_avg=self.WAIT_RATIO_AVG,
+            wait_ratio_max=self.WAIT_RATIO_MAX,
+            read_ratio_avg=self.READ_RATIO_AVG,
+            read_ratio_max=self.READ_RATIO_MAX,
+            compute_ratio_avg=self.COMPUTE_RATIO_AVG,
+            compute_ratio_max=self.COMPUTE_RATIO_MAX,
+            write_ratio_avg=self.WRITE_RATIO_AVG,
+            write_ratio_max=self.WRITE_RATIO_MAX,
+            records_read=self.RECORDS_READ,
+            records_written=self.RECORDS_WRITTEN,
+            status=self.STATUS,
+            steps=steps,
+        )
+        self.assertEqual(entry.name, self.NAME)
+        self.assertEqual(entry.entry_id, self.ENTRY_ID)
+        self.assertEqual(entry.wait_ratio_avg, self.WAIT_RATIO_AVG)
+        self.assertEqual(entry.wait_ratio_max, self.WAIT_RATIO_MAX)
+        self.assertEqual(entry.read_ratio_avg, self.READ_RATIO_AVG)
+        self.assertEqual(entry.read_ratio_max, self.READ_RATIO_MAX)
+        self.assertEqual(entry.compute_ratio_avg, self.COMPUTE_RATIO_AVG)
+        self.assertEqual(entry.compute_ratio_max, self.COMPUTE_RATIO_MAX)
+        self.assertEqual(entry.write_ratio_avg, self.WRITE_RATIO_AVG)
+        self.assertEqual(entry.write_ratio_max, self.WRITE_RATIO_MAX)
+        self.assertEqual(entry.records_read, self.RECORDS_READ)
+        self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
+        self.assertEqual(entry.status, self.STATUS)
+        self.assertEqual(entry.steps, steps)
+
+    def test_from_api_repr_empty(self):
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr({})
+
+        self.assertIsNone(entry.name)
+        self.assertIsNone(entry.entry_id)
+        self.assertIsNone(entry.wait_ratio_avg)
+        self.assertIsNone(entry.wait_ratio_max)
+        self.assertIsNone(entry.read_ratio_avg)
+        self.assertIsNone(entry.read_ratio_max)
+        self.assertIsNone(entry.compute_ratio_avg)
+        self.assertIsNone(entry.compute_ratio_max)
+        self.assertIsNone(entry.write_ratio_avg)
+        self.assertIsNone(entry.write_ratio_max)
+        self.assertIsNone(entry.records_read)
+        self.assertIsNone(entry.records_written)
+        self.assertIsNone(entry.status)
+        self.assertEqual(entry.steps, [])
+
+    def test_from_api_repr_normal(self):
+        from google.cloud.bigquery.job import QueryPlanEntryStep
+
+        steps = [QueryPlanEntryStep(
+            kind=TestQueryPlanEntryStep.KIND,
+            substeps=TestQueryPlanEntryStep.SUBSTEPS)]
+        resource = {
+            'name': self.NAME,
+            'id': self.ENTRY_ID,
+            'waitRatioAvg': self.WAIT_RATIO_AVG,
+            'waitRatioMax': self.WAIT_RATIO_MAX,
+            'readRatioAvg': self.READ_RATIO_AVG,
+            'readRatioMax': self.READ_RATIO_MAX,
+            'computeRatioAvg': self.COMPUTE_RATIO_AVG,
+            'computeRatioMax': self.COMPUTE_RATIO_MAX,
+            'writeRatioAvg': self.WRITE_RATIO_AVG,
+            'writeRatioMax': self.WRITE_RATIO_MAX,
+            'recordsRead': str(self.RECORDS_READ),
+            'recordsWritten': str(self.RECORDS_WRITTEN),
+            'status': self.STATUS,
+            'steps': [{
+                'kind': TestQueryPlanEntryStep.KIND,
+                'substeps': TestQueryPlanEntryStep.SUBSTEPS,
+            }]
+        }
+        klass = self._get_target_class()
+
+        entry = klass.from_api_repr(resource)
+        self.assertEqual(entry.name, self.NAME)
+        self.assertEqual(entry.entry_id, self.ENTRY_ID)
+        self.assertEqual(entry.wait_ratio_avg, self.WAIT_RATIO_AVG)
+        self.assertEqual(entry.wait_ratio_max, self.WAIT_RATIO_MAX)
+        self.assertEqual(entry.read_ratio_avg, self.READ_RATIO_AVG)
+        self.assertEqual(entry.read_ratio_max, self.READ_RATIO_MAX)
+        self.assertEqual(entry.compute_ratio_avg, self.COMPUTE_RATIO_AVG)
+        self.assertEqual(entry.compute_ratio_max, self.COMPUTE_RATIO_MAX)
+        self.assertEqual(entry.write_ratio_avg, self.WRITE_RATIO_AVG)
+        self.assertEqual(entry.write_ratio_max, self.WRITE_RATIO_MAX)
+        self.assertEqual(entry.records_read, self.RECORDS_READ)
+        self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
+        self.assertEqual(entry.status, self.STATUS)
+        self.assertEqual(entry.steps, steps)
 
 
 class _Client(object):
