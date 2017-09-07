@@ -266,6 +266,11 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
             if millis is not None:
                 return _datetime_from_microseconds(millis * 1000.0)
 
+    def _job_statistics(self):
+        """Helper for job-type specific statistics-based properties."""
+        statistics = self._properties.get('statistics', {})
+        return statistics.get(self._JOB_TYPE, {})
+
     @property
     def error_result(self):
         """Error information about the job as a whole.
@@ -1281,6 +1286,20 @@ class QueryJob(_AsyncJob):
         job._set_properties(resource)
         return job
 
+    @property
+    def query_plan(self):
+        """Return query plan from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.queryPlan
+
+        :rtype: list of :class:`QueryPlanEntry`
+        :returns: mappings describing the query plan, or an empty list
+                  if the query has not yet completed.
+        """
+        plan_entries = self._job_statistics().get('queryPlan', ())
+        return [QueryPlanEntry.from_api_repr(entry) for entry in plan_entries]
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
@@ -1333,3 +1352,149 @@ class QueryJob(_AsyncJob):
         super(QueryJob, self).result(timeout=timeout)
         # Return an iterator instead of returning the job.
         return self.query_results().fetch_data()
+
+
+class QueryPlanEntryStep(object):
+    """Map a single step in a query plan entry.
+
+    :type kind: str
+    :param kind: step type
+
+    :type substeps:
+    :param substeps: names of substeps
+    """
+    def __init__(self, kind, substeps):
+        self.kind = kind
+        self.substeps = list(substeps)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct instance from the JSON repr.
+
+        :type resource: dict
+        :param resource: JSON representation of the entry
+
+        :rtype: :class:`QueryPlanEntryStep`
+        :return: new instance built from the resource
+        """
+        return cls(
+            kind=resource.get('kind'),
+            substeps=resource.get('substeps', ()),
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.kind == other.kind and self.substeps == other.substeps
+
+
+class QueryPlanEntry(object):
+    """Map a single entry in a query plan.
+
+    :type name: str
+    :param name: name of the entry
+
+    :type entry_id: int
+    :param entry_id: ID of the entry
+
+    :type wait_ratio_avg: float
+    :param wait_ratio_avg: average wait ratio
+
+    :type wait_ratio_max: float
+    :param wait_ratio_avg: maximum wait ratio
+
+    :type read_ratio_avg: float
+    :param read_ratio_avg: average read ratio
+
+    :type read_ratio_max: float
+    :param read_ratio_avg: maximum read ratio
+
+    :type copute_ratio_avg: float
+    :param copute_ratio_avg: average copute ratio
+
+    :type copute_ratio_max: float
+    :param copute_ratio_avg: maximum copute ratio
+
+    :type write_ratio_avg: float
+    :param write_ratio_avg: average write ratio
+
+    :type write_ratio_max: float
+    :param write_ratio_avg: maximum write ratio
+
+    :type records_read: int
+    :param records_read: number of records read
+
+    :type records_written: int
+    :param records_written: number of records written
+
+    :type status: str
+    :param status: entry status
+
+    :type steps: List(QueryPlanEntryStep)
+    :param steps: steps in the entry
+    """
+    def __init__(self,
+                 name,
+                 entry_id,
+                 wait_ratio_avg,
+                 wait_ratio_max,
+                 read_ratio_avg,
+                 read_ratio_max,
+                 compute_ratio_avg,
+                 compute_ratio_max,
+                 write_ratio_avg,
+                 write_ratio_max,
+                 records_read,
+                 records_written,
+                 status,
+                 steps):
+        self.name = name
+        self.entry_id = entry_id
+        self.wait_ratio_avg = wait_ratio_avg
+        self.wait_ratio_max = wait_ratio_max
+        self.read_ratio_avg = read_ratio_avg
+        self.read_ratio_max = read_ratio_max
+        self.compute_ratio_avg = compute_ratio_avg
+        self.compute_ratio_max = compute_ratio_max
+        self.write_ratio_avg = write_ratio_avg
+        self.write_ratio_max = write_ratio_max
+        self.records_read = records_read
+        self.records_written = records_written
+        self.status = status
+        self.steps = steps
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct instance from the JSON repr.
+
+        :type resource: dict
+        :param resource: JSON representation of the entry
+
+        :rtype: :class:`QueryPlanEntry`
+        :return: new instance built from the resource
+        """
+        records_read = resource.get('recordsRead')
+        if records_read is not None:
+            records_read = int(records_read)
+
+        records_written = resource.get('recordsWritten')
+        if records_written is not None:
+            records_written = int(records_written)
+
+        return cls(
+            name=resource.get('name'),
+            entry_id=resource.get('id'),
+            wait_ratio_avg=resource.get('waitRatioAvg'),
+            wait_ratio_max=resource.get('waitRatioMax'),
+            read_ratio_avg=resource.get('readRatioAvg'),
+            read_ratio_max=resource.get('readRatioMax'),
+            compute_ratio_avg=resource.get('computeRatioAvg'),
+            compute_ratio_max=resource.get('computeRatioMax'),
+            write_ratio_avg=resource.get('writeRatioAvg'),
+            write_ratio_max=resource.get('writeRatioMax'),
+            records_read=records_read,
+            records_written=records_written,
+            status=resource.get('status'),
+            steps=[QueryPlanEntryStep.from_api_repr(step)
+                   for step in resource.get('steps', ())],
+        )
