@@ -190,6 +190,7 @@ class StreamedResultSet(object):
             in whole or in part.
         """
         answer = self.one_or_none()
+
         if answer is None:
             raise exceptions.NotFound('No rows matched the given query.')
         return answer
@@ -207,21 +208,13 @@ class StreamedResultSet(object):
             raise RuntimeError('Can not call `.one` or `.one_or_none` after '
                                'stream consumption has already started.')
 
-        # Consume the first result of the stream.
-        # If there is no first result, then return None.
-        iterator = iter(self)
-        try:
-            answer = next(iterator)
-        except StopIteration:
-            return None
+        self.consume_all()
 
-        # Attempt to consume more. This should no-op; if we get additional
-        # rows, then this is an error case.
-        try:
-            next(iterator)
+        if len(self._rows) > 1:
             raise ValueError('Expected one result; got more.')
-        except StopIteration:
-            return answer
+
+        if self._rows:
+            return self._rows[0]
 
 
 class Unmergeable(ValueError):
