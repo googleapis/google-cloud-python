@@ -1300,6 +1300,93 @@ class QueryJob(_AsyncJob):
         plan_entries = self._job_statistics().get('queryPlan', ())
         return [QueryPlanEntry.from_api_repr(entry) for entry in plan_entries]
 
+    @property
+    def total_bytes_processed(self):
+        """Return total bytes processed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesProcessed
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        result = self._job_statistics().get('totalBytesProcessed')
+        if result is not None:
+            result = int(result)
+        return result
+
+    @property
+    def total_bytes_billed(self):
+        """Return total bytes billed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.totalBytesBilled
+
+        :rtype: int or None
+        :returns: total bytes processed by the job, or None if job is not
+                  yet complete.
+        """
+        result = self._job_statistics().get('totalBytesBilled')
+        if result is not None:
+            result = int(result)
+        return result
+
+    @property
+    def billing_tier(self):
+        """Return billing tier from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.billingTier
+
+        :rtype: int or None
+        :returns: billing tier used by the job, or None if job is not
+                  yet complete.
+        """
+        return self._job_statistics().get('billingTier')
+
+    @property
+    def cache_hit(self):
+        """Return billing tier from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.cacheHit
+
+        :rtype: bool or None
+        :returns: whether the query results were returned from cache, or None
+                  if job is not yet complete.
+        """
+        return self._job_statistics().get('cacheHit')
+
+    @property
+    def num_dml_affected_rows(self):
+        """Return total bytes billed from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows
+
+        :rtype: int or None
+        :returns: number of DML rows affectd by the job, or None if job is not
+                  yet complete.
+        """
+        result = self._job_statistics().get('numDmlAffectedRows')
+        if result is not None:
+            result = int(result)
+        return result
+
+    @property
+    def statement_type(self):
+        """Return statement type from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.statementType
+
+        :rtype: str or None
+        :returns: type of statement used by the job, or None if job is not
+                  yet complete.
+        """
+        return self._job_statistics().get('statementType')
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 
