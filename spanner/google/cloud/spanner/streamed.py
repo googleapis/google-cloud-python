@@ -46,7 +46,8 @@ class StreamedResultSet(object):
     def __init__(self, response_iterator, restart, source=None):
         self._response_iterator = response_iterator
         self._restart = restart
-        self._rows = []             # Fully-processed rows
+        self._pending_rows = []     # Rows pending new token / EOT
+        self._complete_rows = []    # Fully-processed rows
         self._counter = 0           # Counter for processed responses
         self._metadata = None       # Until set from first PRS
         self._stats = None          # Until set from last PRS
@@ -62,7 +63,7 @@ class StreamedResultSet(object):
         :rtype: list of row-data lists.
         :returns: list of completed row data, from proceesd PRS responses.
         """
-        return self._rows
+        return self._complete_rows
 
     @property
     def fields(self):
@@ -129,21 +130,38 @@ class StreamedResultSet(object):
             field = self.fields[index]
             self._current_row.append(_parse_value_pb(value, field.type))
             if len(self._current_row) == width:
-                self._rows.append(self._current_row)
+                self._pending_rows.append(self._current_row)
                 self._current_row = []
+
+    def _flush_pending_rows(self):
+        """Helper for :meth:`consume_next`."""
+        flushed = self._pending_rows[:]
+        self._pending_rows[:] = ()
+        self._complete_rows.extend(flushed)
 
     def consume_next(self):
         """Consume the next partial result set from the stream.
 
-        Parse the result set into new/existing rows in :attr:`_rows`
+        Parse the result set into new/existing rows in :attr:`_complete_rows`
 
         :raises :class:`~google.api.core.exceptions.ServiceUnavailable`:
             if the iterator must be restarted.
+        :raises StopIteration: if the iterator is empty.
         """
-        response = six.next(self._response_iterator)
+        try:
+            response = six.next(self._response_iterator)
+        except StopIteration:
+            self._flush_pending_rows()
+            raise
+
         self._counter += 1
         if response.resume_token:
+            self._flush_pending_rows()
             self._resume_token = response.resume_token
+
+        if response.HasField('stats'):  # last response
+            self._flush_pending_rows()
+            self._stats = response.stats
 
         if self._metadata is None:  # first response
             metadata = self._metadata = response.metadata
@@ -151,9 +169,6 @@ class StreamedResultSet(object):
             source = self._source
             if source is not None and source._transaction_id is None:
                 source._transaction_id = metadata.transaction.id
-
-        if response.HasField('stats'):  # last response
-            self._stats = response.stats
 
         values = list(response.values)
         if self._pending_chunk is not None:
@@ -173,11 +188,15 @@ class StreamedResultSet(object):
                 break
 
     def __iter__(self):
-        iter_rows, self._rows[:] = self._rows[:], ()
+        iter_rows, self._complete_rows[:] = self._complete_rows[:], ()
         while True:
             if not iter_rows:
-                self.consume_next()  # raises StopIteration
-                iter_rows, self._rows[:] = self._rows[:], ()
+                try:
+                    self.consume_next()  # raises StopIteration
+                except StopIteration:
+                    if not self._complete_rows:
+                        raise
+                iter_rows, self._complete_rows[:] = self._complete_rows[:], ()
             while iter_rows:
                 yield iter_rows.pop(0)
 
@@ -210,11 +229,11 @@ class StreamedResultSet(object):
 
         self.consume_all()
 
-        if len(self._rows) > 1:
+        if len(self._complete_rows) > 1:
             raise ValueError('Expected one result; got more.')
 
-        if self._rows:
-            return self._rows[0]
+        if self._complete_rows:
+            return self._complete_rows[0]
 
 
 class Unmergeable(ValueError):
