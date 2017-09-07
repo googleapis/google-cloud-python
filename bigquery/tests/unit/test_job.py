@@ -1714,7 +1714,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats = statistics['query'] = {}
         self.assertIsNone(job.total_bytes_processed)
 
-        query_stats['totalBytesProcessed'] = total_bytes
+        query_stats['totalBytesProcessed'] = str(total_bytes)
         self.assertEqual(job.total_bytes_processed, total_bytes)
 
     def test_total_bytes_billed(self):
@@ -1729,7 +1729,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats = statistics['query'] = {}
         self.assertIsNone(job.total_bytes_billed)
 
-        query_stats['totalBytesBilled'] = total_bytes
+        query_stats['totalBytesBilled'] = str(total_bytes)
         self.assertEqual(job.total_bytes_billed, total_bytes)
 
     def test_billing_tier(self):
@@ -1773,7 +1773,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats = statistics['query'] = {}
         self.assertIsNone(job.num_dml_affected_rows)
 
-        query_stats['numDmlAffectedRows'] = num_rows
+        query_stats['numDmlAffectedRows'] = str(num_rows)
         self.assertEqual(job.num_dml_affected_rows, num_rows)
 
     def test_statement_type(self):

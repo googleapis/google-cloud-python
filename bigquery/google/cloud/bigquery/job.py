@@ -1310,7 +1310,10 @@ class QueryJob(_AsyncJob):
         :returns: total bytes processed by the job, or None if job is not
                   yet complete.
         """
-        return self._job_statistics().get('totalBytesProcessed')
+        result = self._job_statistics().get('totalBytesProcessed')
+        if result is not None:
+            result = int(result)
+        return result
 
     @property
     def total_bytes_billed(self):
@@ -1323,7 +1326,10 @@ class QueryJob(_AsyncJob):
         :returns: total bytes processed by the job, or None if job is not
                   yet complete.
         """
-        return self._job_statistics().get('totalBytesBilled')
+        result = self._job_statistics().get('totalBytesBilled')
+        if result is not None:
+            result = int(result)
+        return result
 
     @property
     def billing_tier(self):
@@ -1362,7 +1368,10 @@ class QueryJob(_AsyncJob):
         :returns: number of DML rows affectd by the job, or None if job is not
                   yet complete.
         """
-        return self._job_statistics().get('numDmlAffectedRows')
+        result = self._job_statistics().get('numDmlAffectedRows')
+        if result is not None:
+            result = int(result)
+        return result
 
     @property
     def statement_type(self):
