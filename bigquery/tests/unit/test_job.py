@@ -1656,7 +1656,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'writeRatioAvg': 3.32193,
             'writeRatioMax': 2.30258,
             'recordsRead': '100',
-            'recordsWritten': 1,
+            'recordsWritten': '1',
             'status': 'STATUS',
             'steps': [{
                 'kind': 'KIND',
@@ -2291,8 +2291,8 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
             'computeRatioMax': self.COMPUTE_RATIO_MAX,
             'writeRatioAvg': self.WRITE_RATIO_AVG,
             'writeRatioMax': self.WRITE_RATIO_MAX,
-            'recordsRead': self.RECORDS_READ,
-            'recordsWritten': self.RECORDS_WRITTEN,
+            'recordsRead': str(self.RECORDS_READ),
+            'recordsWritten': str(self.RECORDS_WRITTEN),
             'status': self.STATUS,
             'steps': [{
                 'kind': TestQueryPlanEntryStep.KIND,
