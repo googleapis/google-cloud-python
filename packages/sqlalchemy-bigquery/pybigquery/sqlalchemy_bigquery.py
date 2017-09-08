@@ -77,6 +77,7 @@ class BigQueryCompiler(SQLCompiler):
         result = super(BigQueryCompiler, self).visit_column(*args, **kwargs)
         return result
 
+
 class BigQueryDialect(DefaultDialect):
     name = 'bigquery'
     driver = 'bigquery'
@@ -106,20 +107,38 @@ class BigQueryDialect(DefaultDialect):
         client = bigquery.Client(url.host) if url.host else None
         return ([client], {})
 
-    def _split_table_name(self, table_name):
-        dataset, table_name = table_name.split('.')
-        return (dataset, table_name)
+    def _split_table_name(self, full_table_name):
+        # Split full_table_name to get project, dataset and table name
+        dataset = None
+        table_name = None
+        project = None
+
+        table_name_split = full_table_name.split('.')
+        if len(table_name_split) == 2:
+            dataset, table_name = table_name_split
+        elif len(table_name_split) == 3:
+            project, dataset, table_name = table_name_split
+
+        return (project, dataset, table_name)
+
+    def _get_table(self, connection, table_name):
+        project, dataset, table_name = self._split_table_name(table_name)
+        table = connection.connection._client.dataset(dataset, project=project).table(table_name)
+        try:
+            table.reload()
+        except NotFound as e:
+            raise NoSuchTableError(table_name)
+        return table
 
     def has_table(self, connection, table_name, schema=None):
-        dataset, table_name = self._split_table_name(table_name)
-        return connection.connection._client.dataset(dataset).table(table_name).exists()
+        try:
+            self._get_table(connection, table_name)
+            return True
+        except NoSuchTableError:
+            return False
 
     def get_columns(self, connection, table_name, schema=None, **kw):
-
-        dataset, table_name = self._split_table_name(table_name)
-        table = connection.connection._client.dataset(dataset).table(table_name)
-
-        table.reload()
+        table = self._get_table(connection, table_name)
         columns = table.schema
         result = []
         for col in columns:
