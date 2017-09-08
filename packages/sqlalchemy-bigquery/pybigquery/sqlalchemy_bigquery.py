@@ -2,11 +2,14 @@
 
 from __future__ import absolute_import
 from __future__ import unicode_literals
-import bigquery as dbapi
-from sqlalchemy import types
-from sqlalchemy import util
+
+from google.cloud.bigquery import dbapi
+from google.cloud import bigquery
+from google.api.core.exceptions import NotFound
+from sqlalchemy.exc import NoSuchTableError
+from sqlalchemy import types, util
 from sqlalchemy.sql.compiler import SQLCompiler, IdentifierPreparer
-from sqlalchemy.engine.default import DefaultDialect
+from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 
 
 class UniversalSet(object):
@@ -39,15 +42,27 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
 
 _type_map = {
+    'STRING': types.String,
     'BOOLEAN': types.Boolean,
     'INTEGER': types.Integer,
     'FLOAT': types.Float,
-    'STRING': types.String,
     'TIMESTAMP': types.TIMESTAMP,
+    'DATETIME': types.DATETIME,
     'DATE': types.DATE,
+    'BYTES': types.BINARY,
+    'TIME': types.TIME
     # TODO
-    # 'REPEATED' / 'RECORD'
+    # 'RECORD'
 }
+
+
+class BigQueryExecutionContext(DefaultExecutionContext):
+    def create_cursor(self):
+        # Set arraysize
+        c = super().create_cursor()
+        if self.dialect.arraysize:
+            c.arraysize = self.dialect.arraysize
+        return c
 
 
 class BigQueryCompiler(SQLCompiler):
@@ -61,8 +76,10 @@ class BigQueryCompiler(SQLCompiler):
 
 class BigQueryDialect(DefaultDialect):
     name = 'bigquery'
+    driver = 'bigquery'
     preparer = BigQueryIdentifierPreparer
     statement_compiler = BigQueryCompiler
+    execution_ctx_cls = BigQueryExecutionContext
     supports_alter = False
     supports_pk_autoincrement = False
     supports_default_values = False
@@ -74,12 +91,17 @@ class BigQueryDialect(DefaultDialect):
     supports_native_boolean = True
     supports_simple_order_by_label = True
 
+    def __init__(self, arraysize=5000, **kwargs):
+        super().__init__(**kwargs)
+        self.arraysize = arraysize
+
     @classmethod
     def dbapi(cls):
         return dbapi
 
     def create_connect_args(self, url):
-        return ([url.host], {})
+        client = bigquery.Client(url.host) if url.host else None
+        return ([client], {})
 
     def _split_table_name(self, table_name):
         dataset, table_name = table_name.split('.')
