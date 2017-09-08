@@ -755,7 +755,7 @@ class LoadJob(_AsyncJob):
         if self.quote_character is not None:
             configuration['quote'] = self.quote_character
         if self.skip_leading_rows is not None:
-            configuration['skipLeadingRows'] = self.skip_leading_rows
+            configuration['skipLeadingRows'] = str(self.skip_leading_rows)
         if self.source_format is not None:
             configuration['sourceFormat'] = self.source_format
         if self.write_disposition is not None:

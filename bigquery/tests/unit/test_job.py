@@ -298,7 +298,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.quote_character)
         if 'skipLeadingRows' in config:
-            self.assertEqual(job.skip_leading_rows,
+            self.assertEqual(str(job.skip_leading_rows),
                              config['skipLeadingRows'])
         else:
             self.assertIsNone(job.skip_leading_rows)
@@ -642,7 +642,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             'maxBadRecords': 100,
             'nullMarker': r'\N',
             'quote': "'",
-            'skipLeadingRows': 1,
+            'skipLeadingRows': '1',
             'sourceFormat': 'CSV',
             'writeDisposition': 'WRITE_TRUNCATE',
             'schema': {'fields': [
