@@ -83,10 +83,12 @@ class Entity(dict):
     * :class:`~google.cloud.datastore.helpers.GeoPoint`
     * :data:`None`
 
-    In addition, two container types are supported:
+    In addition, three container types are supported:
 
     * :class:`list`
     * :class:`~google.cloud.datastore.entity.Entity`
+    * :class:`dict` (will just be treated like an ``Entity`` without
+      a key or ``exclude_from_indexes``)
 
     Each entry in a list must be one of the value types (basic or
     container) and each value in an
