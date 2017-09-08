@@ -67,9 +67,8 @@ class BigQueryExecutionContext(DefaultExecutionContext):
 
 class BigQueryCompiler(SQLCompiler):
     def visit_label(self, *args, **kwargs):
-        # Hacky solution to use labels in GROUP BY clause
-        if len(kwargs) == 1:
-            kwargs['render_label_as_label'] = args[0]
+        # Use labels in GROUP BY clause
+        kwargs['render_label_as_label'] = args[0]
         result = super(BigQueryCompiler, self).visit_label(*args, **kwargs)
         return result
 
