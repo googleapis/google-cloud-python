@@ -32,7 +32,7 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
     def __init__(self, dialect):
         super(BigQueryIdentifierPreparer, self).__init__(
             dialect,
-            initial_quote='',
+            initial_quote="`",
         )
 
     def format_label(self, *args, **kwargs):
