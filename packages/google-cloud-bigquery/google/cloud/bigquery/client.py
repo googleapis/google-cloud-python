@@ -162,7 +162,7 @@ class Client(ClientWithProject):
         """
         return Dataset(dataset_name, client=self, project=project)
 
-    def get_query_results(self, job_id, project=None, timeout_ms=None):
+    def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
 
         :type job_id: str

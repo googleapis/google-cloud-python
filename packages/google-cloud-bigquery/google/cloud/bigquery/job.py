@@ -1286,7 +1286,7 @@ class QueryJob(_AsyncJob):
         :returns: results instance
         """
         if not self._query_results:
-            self._query_results = self._client.get_query_results(self.name)
+            self._query_results = self._client._get_query_results(self.name)
         return self._query_results
 
     def done(self):
@@ -1298,7 +1298,7 @@ class QueryJob(_AsyncJob):
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
         if self.state != _DONE_STATE:
-            self._query_results = self._client.get_query_results(self.name)
+            self._query_results = self._client._get_query_results(self.name)
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
@@ -1307,3 +1307,27 @@ class QueryJob(_AsyncJob):
                 self.reload()
 
         return self.state == _DONE_STATE
+
+    def result(self, timeout=None):
+        """Start the job and wait for it to complete and get the result.
+
+        :type timeout: int
+        :param timeout:
+            How long to wait for job to complete before raising a
+            :class:`TimeoutError`.
+
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :returns:
+            Iterator of row data :class:`tuple`s. During each page, the
+            iterator will have the ``total_rows`` attribute set, which counts
+            the total number of rows **in the result set** (this is distinct
+            from the total number of rows in the current page:
+            ``iterator.page.num_items``).
+
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or  :class:`TimeoutError` if the job did not complete in the
+            given timeout.
+        """
+        super(QueryJob, self).result(timeout=timeout)
+        # Return an iterator instead of returning the job.
+        return self.query_results().fetch_data()
