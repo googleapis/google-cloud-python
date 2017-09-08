@@ -91,6 +91,42 @@ class AccessEntry(object):
             self.role, self.entity_type, self.entity_id)
 
 
+class DatasetReference(object):
+    """DatasetReferences are pointers to datasets.
+
+    See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
+
+    :type project_id: str
+    :param project_id: the ID of the project
+
+    :type dataset_id: str
+    :param dataset_id: the ID of the dataset
+    """
+
+    def __init__(self, project_id, dataset_id):
+        self._project_id = project_id
+        self._dataset_id = dataset_id
+
+    @property
+    def project_id(self):
+        """Project ID of the dataset.
+
+        :rtype: str
+        :returns: the project ID.
+        """
+        return self._project_id
+
+    @property
+    def dataset_id(self):
+        """Dataset ID.
+
+        :rtype: str
+        :returns: the dataset ID.
+        """
+        return self._dataset_id
+
+
 class Dataset(object):
     """Datasets are containers for tables.
 
