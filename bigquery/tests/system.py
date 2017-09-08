@@ -156,14 +156,14 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.append(dataset)
 
         self.assertTrue(dataset.exists())
-        after = [grant for grant in dataset.access_grants
-                 if grant.entity_id != 'projectWriters']
-        dataset.access_grants = after
+        after = [entry for entry in dataset.access_entries
+                 if entry.entity_id != 'projectWriters']
+        dataset.access_entries = after
 
         retry_403(dataset.update)()
 
-        self.assertEqual(len(dataset.access_grants), len(after))
-        for found, expected in zip(dataset.access_grants, after):
+        self.assertEqual(len(dataset.access_entries), len(after))
+        for found, expected in zip(dataset.access_entries, after):
             self.assertEqual(found.role, expected.role)
             self.assertEqual(found.entity_type, expected.entity_type)
             self.assertEqual(found.entity_id, expected.entity_id)
