@@ -154,7 +154,7 @@ class Cursor(object):
 
         # Wait for the query to finish.
         try:
-            query_job = query_job.result()
+            query_job.result()
         except google.cloud.exceptions.GoogleCloudError:
             raise exceptions.DatabaseError(query_job.errors)
 

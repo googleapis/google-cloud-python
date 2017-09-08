@@ -1685,7 +1685,13 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
-        query_resource = {'jobComplete': True}
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+        }
         connection = _Connection(query_resource)
         client = _Client(self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
@@ -1705,22 +1711,37 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIs(results, query_results)
 
     def test_result(self):
-        client = _Client(self.PROJECT)
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+        }
+        connection = _Connection(query_resource, query_resource)
+        client = _Client(self.PROJECT, connection=connection)
         resource = self._makeResource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
 
         result = job.result()
 
-        self.assertIs(result, job)
+        self.assertEqual(list(result), [])
 
     def test_result_invokes_begins(self):
         begun_resource = self._makeResource()
         incomplete_resource = {'jobComplete': False}
-        query_resource = {'jobComplete': True}
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+        }
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
         connection = _Connection(
-            begun_resource, incomplete_resource, query_resource, done_resource)
+            begun_resource, incomplete_resource, query_resource, done_resource,
+            query_resource)
         client = _Client(self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
 
@@ -2144,7 +2165,7 @@ class _Client(object):
 
         return Dataset(name, client=self)
 
-    def get_query_results(self, job_id):
+    def _get_query_results(self, job_id):
         from google.cloud.bigquery.query import QueryResults
 
         resource = self._connection.api_request(method='GET')

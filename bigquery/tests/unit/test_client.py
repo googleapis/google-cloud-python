@@ -45,7 +45,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
 
-    def test_get_job_miss_w_explicit_project_and_timeout(self):
+    def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound
 
         project = 'PROJECT'
@@ -54,7 +54,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _Connection()
 
         with self.assertRaises(NotFound):
-            client.get_query_results(
+            client._get_query_results(
                 'nothere', project='other-project', timeout_ms=500)
 
         self.assertEqual(len(conn._requested), 1)
@@ -65,7 +65,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             req['query_params'], {'maxResults': 0, 'timeoutMs': 500})
 
-    def test_get_query_results_hit(self):
+    def test__get_query_results_hit(self):
         project = 'PROJECT'
         job_id = 'query_job'
         data = {
@@ -98,7 +98,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project, creds)
         client._connection = _Connection(data)
-        query_results = client.get_query_results(job_id)
+        query_results = client._get_query_results(job_id)
 
         self.assertEqual(query_results.total_rows, 10)
         self.assertTrue(query_results.complete)
