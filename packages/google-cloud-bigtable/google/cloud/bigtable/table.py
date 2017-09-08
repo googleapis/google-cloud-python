@@ -120,13 +120,13 @@ class Table(object):
 
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) Filter to be used for conditional mutations.
-                        See :class:`.DirectRow` for more details.
+                        See :class:`.ConditionalRow` for more details.
 
         :type append: bool
         :param append: (Optional) Flag to determine if the row should be used
                        for append mutations.
 
-        :rtype: :class:`.DirectRow`
+        :rtype: :class:`.Row`
         :returns: A row owned by this table.
         :raises: :class:`ValueError <exceptions.ValueError>` if both
                  ``filter_`` and ``append`` are used.
