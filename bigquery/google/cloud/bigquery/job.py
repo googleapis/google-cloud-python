@@ -1386,6 +1386,36 @@ class QueryJob(_AsyncJob):
         """
         return self._job_statistics().get('statementType')
 
+    @property
+    def referenced_tables(self):
+        """Return referenced tables from job statistics, if present.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.referencedTables
+
+        :rtype: list of dict
+        :returns: mappings describing the query plan, or an empty list
+                  if the query has not yet completed.
+        """
+        tables = []
+        client = self._require_client(None)
+        datasets_by_project_name = {}
+
+        for table in self._job_statistics().get('referencedTables', ()):
+
+            t_project = table['projectId']
+
+            ds_name = table['datasetId']
+            t_dataset = datasets_by_project_name.get((t_project, ds_name))
+            if t_dataset is None:
+                t_dataset = client.dataset(ds_name, project=t_project)
+                datasets_by_project_name[(t_project, ds_name)] = t_dataset
+
+            t_name = table['tableId']
+            tables.append(t_dataset.table(t_name))
+
+        return tables
+
     def query_results(self):
         """Construct a QueryResults instance, bound to this job.
 

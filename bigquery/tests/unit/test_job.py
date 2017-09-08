@@ -1791,6 +1791,60 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_stats['statementType'] = statement_type
         self.assertEqual(job.statement_type, statement_type)
 
+    def test_referenced_tables(self):
+        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.table import Table
+
+        ref_tables_resource = [{
+            'projectId': self.PROJECT,
+            'datasetId': 'dataset',
+            'tableId': 'local1',
+        }, {
+
+            'projectId': self.PROJECT,
+            'datasetId': 'dataset',
+            'tableId': 'local2',
+        }, {
+
+            'projectId': 'other-project-123',
+            'datasetId': 'other-dataset',
+            'tableId': 'other-table',
+        }]
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.referenced_tables, [])
+
+        statistics = job._properties['statistics'] = {}
+        self.assertEqual(job.referenced_tables, [])
+
+        query_stats = statistics['query'] = {}
+        self.assertEqual(job.referenced_tables, [])
+
+        query_stats['referencedTables'] = ref_tables_resource
+
+        local1, local2, remote = job.referenced_tables
+
+        self.assertIsInstance(local1, Table)
+        self.assertEqual(local1.name, 'local1')
+        self.assertIsInstance(local1._dataset, Dataset)
+        self.assertEqual(local1.dataset_name, 'dataset')
+        self.assertEqual(local1.project, self.PROJECT)
+        self.assertIs(local1._dataset._client, client)
+
+        self.assertIsInstance(local2, Table)
+        self.assertEqual(local2.name, 'local2')
+        self.assertIsInstance(local2._dataset, Dataset)
+        self.assertEqual(local2.dataset_name, 'dataset')
+        self.assertEqual(local2.project, self.PROJECT)
+        self.assertIs(local2._dataset._client, client)
+
+        self.assertIsInstance(remote, Table)
+        self.assertEqual(remote.name, 'other-table')
+        self.assertIsInstance(remote._dataset, Dataset)
+        self.assertEqual(remote.dataset_name, 'other-dataset')
+        self.assertEqual(remote.project, 'other-project-123')
+        self.assertIs(remote._dataset._client, client)
+
     def test_query_results(self):
         from google.cloud.bigquery.query import QueryResults
 
@@ -2413,10 +2467,10 @@ class _Client(object):
         self.project = project
         self._connection = connection
 
-    def dataset(self, name):
+    def dataset(self, name, project=None):
         from google.cloud.bigquery.dataset import Dataset
 
-        return Dataset(name, client=self)
+        return Dataset(name, client=self, project=project)
 
 
 class _Table(object):
