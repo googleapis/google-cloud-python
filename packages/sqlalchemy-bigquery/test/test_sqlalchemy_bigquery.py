@@ -45,6 +45,21 @@ def session(engine):
     return session
 
 
+@pytest.fixture(scope='session')
+def query(table):
+    col1 = literal_column("TIMESTAMP_TRUNC(timestamp, DAY)").label("timestamp_label")
+    col2 = func.sum(table.c.integer)
+    query = (
+        select([
+            col1,
+            col2,
+        ])
+        .where(col1 < datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        .group_by(col1)
+        .order_by(col2)
+    )
+    return query
+
 def test_reflect_select(engine, table):
     assert len(table.c) == 9
     assert isinstance(table.c.integer, Column)
@@ -127,18 +142,13 @@ def test_session_query(session, table):
     assert len(result) > 0
 
 
-def test_custom_expression(engine, table):
+def test_custom_expression(engine, query):
     """GROUP BY clause should use labels instead of expressions"""
+    result = engine.execute(query).fetchall()
+    assert len(result) > 0
 
-    col1 = literal_column("TIMESTAMP_TRUNC(timestamp, DAY)").label("timestamp_label")
-    col2 = func.sum(table.c.integer)
-    query = (
-        select([
-            col1,
-            col2,
-        ])
-        .group_by(col1)
-        .order_by(col2)
-    )
-    result = engine.execute(query).fetchone()
+
+def test_compiled_query_literal_binds(engine, query):
+    compiled = query.compile(engine, compile_kwargs={"literal_binds": True})
+    result = engine.execute(compiled).fetchall()
     assert len(result) > 0
