@@ -60,6 +60,7 @@ def query(table):
     )
     return query
 
+
 def test_reflect_select(engine, table):
     assert len(table.c) == 9
     assert isinstance(table.c.integer, Column)
@@ -152,3 +153,17 @@ def test_compiled_query_literal_binds(engine, query):
     compiled = query.compile(engine, compile_kwargs={"literal_binds": True})
     result = engine.execute(compiled).fetchall()
     assert len(result) > 0
+
+
+def test_joins(session, table, table_one_row):
+    result = (session.query(table.c.string, func.count(table_one_row.c.integer))
+                     .join(table_one_row, table_one_row.c.string == table.c.string)
+                     .group_by(table.c.string).all())
+
+    assert len(result) > 0
+
+
+def test_querying_wildcard_tables(engine, query):
+    table = Table('bigquery-public-data.noaa_gsod.gsod*', MetaData(bind=engine), autoload=True)
+    rows = table.select().limit(1).execute().first()
+    assert len(rows) > 0
