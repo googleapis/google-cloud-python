@@ -73,11 +73,6 @@ class BigQueryCompiler(SQLCompiler):
         result = super(BigQueryCompiler, self).visit_label(*args, **kwargs)
         return result
 
-    def visit_column(self, *args, **kwargs):
-        kwargs['include_table'] = False
-        result = super(BigQueryCompiler, self).visit_column(*args, **kwargs)
-        return result
-
 
 class BigQueryDialect(DefaultDialect):
     name = 'bigquery'
