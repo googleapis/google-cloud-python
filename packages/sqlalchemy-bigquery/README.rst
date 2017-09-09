@@ -47,18 +47,18 @@ Install using
 Testing
 ============
 
-Load sample tables:
+Load sample tables::
 
     ./scripts/load_test_data.sh
 
-This will create a dataset `test_pybigquery` with tables named `sample_one_row` and `sample`
+This will create a dataset `test_pybigquery` with tables named `sample_one_row` and `sample`.
 
-Set up an environment and run tests:
+Set up an environment and run tests::
+
     pyvenv .env
     source .env/bin/activate
     pip install -r dev_requirements.txt
     pytest
-
 
 TODO
 ====
