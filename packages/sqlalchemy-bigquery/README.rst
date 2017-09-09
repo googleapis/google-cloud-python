@@ -10,8 +10,8 @@ Usage
     from sqlalchemy.engine import create_engine
     from sqlalchemy.schema import *
     engine = create_engine('bigquery://project')
-    logs = Table('dataset.table', MetaData(bind=engine), autoload=True)
-    print(select([func.count('*')], from_obj=logs).scalar())
+    table = Table('dataset.table', MetaData(bind=engine), autoload=True)
+    print(select([func.count('*')], from_obj=table).scalar())
 
 
 Project
