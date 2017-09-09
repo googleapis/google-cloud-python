@@ -41,7 +41,7 @@ Requirements
 
 Install using
 
-- ``pip install git+https://github.com/mxmzdlv/pybigquery.git@master#egg=pybigquery``
+- ``pip install pybigquery``
 
 
 Testing

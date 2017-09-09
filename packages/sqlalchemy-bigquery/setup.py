@@ -9,6 +9,9 @@ setup(
     author="Maxim Zudilov",
     author_email="maxim.zudilov@gmail.com",
     packages=['pybigquery'],
+    url="https://github.com/mxmzdlv/pybigquery",
+    download_url='https://github.com/mxmzdlv/pybigquery/archive/0.2.tar.gz',
+    keywords=['bigquery', 'sqlalchemy'],
     classifiers=[
         "Intended Audience :: Developers",
         "Topic :: Database :: Front-Ends"
