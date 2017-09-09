@@ -4,22 +4,25 @@ from setuptools import setup
 
 setup(
     name="pybigquery",
-    version='0.1',
-    description="DB-API interface and SQLAlchemy dialect for BigQuery",
+    version='0.2',
+    description="SQLAlchemy dialect for BigQuery",
     author="Maxim Zudilov",
     author_email="maxim.zudilov@gmail.com",
-    packages=['bigquery'],
+    packages=['pybigquery'],
+    url="https://github.com/mxmzdlv/pybigquery",
+    download_url='https://github.com/mxmzdlv/pybigquery/archive/0.2.tar.gz',
+    keywords=['bigquery', 'sqlalchemy'],
     classifiers=[
         "Intended Audience :: Developers",
         "Topic :: Database :: Front-Ends"
     ],
     install_requires=[
         'sqlalchemy>=1.1.9',
-        'google-cloud>=0.25.0'
+        'google-cloud-bigquery>=0.27.0'
     ],
     entry_points={
         'sqlalchemy.dialects': [
-            'bigquery = bigquery.sqlalchemy_bigquery:BigQueryDialect'
+            'bigquery = pybigquery.sqlalchemy_bigquery:BigQueryDialect'
         ]
     }
 )

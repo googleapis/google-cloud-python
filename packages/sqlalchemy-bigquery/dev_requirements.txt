@@ -1,2 +1,4 @@
 sqlalchemy>=1.1.9
-google-cloud>=0.25.0
+google-cloud-bigquery>=0.27.0
+
+pytest==3.2.2
