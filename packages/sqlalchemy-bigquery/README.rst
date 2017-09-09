@@ -16,11 +16,11 @@ Usage
 
 Project
 _______
-`project` in `bigquery://project` is used to instantiate BigQuery client with the specific project ID. To infer project from the environment, use `bigquery://` – without `project`
+``project`` in ``bigquery://project`` is used to instantiate BigQuery client with the specific project ID. To infer project from the environment, use ``bigquery://`` – without ``project``
 
 Table names
 ___________
-To query tables from non-default projects, use the following format for the table name: `project.dataset.table`, e.g.:
+To query tables from non-default projects, use the following format for the table name: ``project.dataset.table``, e.g.:
 
 .. code-block:: python
 
@@ -29,7 +29,7 @@ To query tables from non-default projects, use the following format for the tabl
 Batch size
 __________
 
-By default, `arraysize` is set to `5000`. `arraysize` is used to set the batch size for fetching results. To change it, pass `arraysize` to `create_engine()`:
+By default, ``arraysize`` is set to ``5000``. ``arraysize`` is used to set the batch size for fetching results. To change it, pass ``arraysize`` to ``create_engine()``:
 
 .. code-block:: python
 
@@ -51,7 +51,7 @@ Load sample tables::
 
     ./scripts/load_test_data.sh
 
-This will create a dataset `test_pybigquery` with tables named `sample_one_row` and `sample`.
+This will create a dataset ``test_pybigquery`` with tables named ``sample_one_row`` and ``sample``.
 
 Set up an environment and run tests::
 
