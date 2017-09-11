@@ -89,14 +89,15 @@ class _SnapshotBase(_SessionWrapper):
 
         iterator = api.streaming_read(
             self._session.name, table, columns, keyset.to_pb(),
-            transaction=transaction, index=index, limit=limit,
-            options=options)
+            index=index, limit=limit,
+            transaction=transaction, options=options)
 
         self._read_request_count += 1
 
         restart = functools.partial(
             api.streaming_read, self._session.name, table, columns, keyset,
-            index=index, limit=limit)
+            index=index, limit=limit,
+            transaction=transaction, options=options)
 
         if self._multi_use:
             return StreamedResultSet(iterator, restart, source=self)
@@ -150,14 +151,15 @@ class _SnapshotBase(_SessionWrapper):
         api = database.spanner_api
         iterator = api.execute_streaming_sql(
             self._session.name, sql,
-            transaction=transaction, params=params_pb, param_types=param_types,
-            query_mode=query_mode, options=options)
+            params=params_pb, param_types=param_types, query_mode=query_mode,
+            transaction=transaction, options=options)
 
         self._read_request_count += 1
 
         restart = functools.partial(
             api.execute_streaming_sql, self._session.name, sql,
-            params=params, param_types=param_types, query_mode=query_mode)
+            params=params, param_types=param_types, query_mode=query_mode,
+            transaction=transaction, options=options)
 
         if self._multi_use:
             return StreamedResultSet(iterator, restart, source=self)
