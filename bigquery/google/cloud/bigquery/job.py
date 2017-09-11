@@ -986,7 +986,10 @@ class ExtractJob(_AsyncJob):
         :returns: number of DML rows affectd by the job, or None if job is not
                   yet complete.
         """
-        return self._job_statistics().get('destinationUriFileCounts')
+        result = self._job_statistics().get('destinationUriFileCounts')
+        if result is not None:
+            result = int(result)
+        return result
 
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""

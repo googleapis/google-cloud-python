@@ -1204,7 +1204,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         extract_stats = statistics['extract'] = {}
         self.assertIsNone(job.destination_uri_file_counts)
 
-        extract_stats['destinationUriFileCounts'] = file_counts
+        extract_stats['destinationUriFileCounts'] = str(file_counts)
         self.assertEqual(job.destination_uri_file_counts, file_counts)
 
     def test_from_api_repr_missing_identity(self):
