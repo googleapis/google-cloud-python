@@ -32,8 +32,10 @@ from google.cloud.bigquery._helpers import ArrayQueryParameter
 from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import ScalarQueryParameter
 from google.cloud.bigquery._helpers import StructQueryParameter
+from google.cloud.bigquery._helpers import UDFResource
 from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumProperty
+from google.cloud.bigquery._helpers import _query_param_from_api_repr
 from google.cloud.bigquery._helpers import _TypedProperty
 
 _DONE_STATE = 'DONE'
@@ -59,6 +61,22 @@ _ERROR_REASON_TO_EXCEPTION = {
     'stopped': http_client.OK,
     'tableUnavailable': http_client.BAD_REQUEST,
 }
+
+
+def _bool_or_none(value):
+    """Helper: deserialize boolean value from JSON string."""
+    if isinstance(value, bool):
+        return value
+    if value is not None:
+        return value.lower() in ['t', 'true', '1']
+
+
+def _int_or_none(value):
+    """Helper: deserialize int value from JSON string."""
+    if isinstance(value, int):
+        return value
+    if value is not None:
+        return int(value)
 
 
 def _error_result_to_exception(error_result):
@@ -311,6 +329,10 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         """Helper:  handle subclass properties in cleaned."""
         pass
 
+    def _copy_configuration_properties(self, configuration):
+        """Helper:  assign subclass configuration properties in cleaned."""
+        raise NotImplementedError("Abstract")
+
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
@@ -330,6 +352,8 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
 
         self._properties.clear()
         self._properties.update(cleaned)
+        configuration = cleaned['configuration'][self._JOB_TYPE]
+        self._copy_configuration_properties(configuration)
 
         # For Future interface
         self._set_future_result()
@@ -731,7 +755,7 @@ class LoadJob(_AsyncJob):
         if self.quote_character is not None:
             configuration['quote'] = self.quote_character
         if self.skip_leading_rows is not None:
-            configuration['skipLeadingRows'] = self.skip_leading_rows
+            configuration['skipLeadingRows'] = str(self.skip_leading_rows)
         if self.source_format is not None:
             configuration['sourceFormat'] = self.source_format
         if self.write_disposition is not None:
@@ -768,6 +792,28 @@ class LoadJob(_AsyncJob):
         """Helper:  handle subclass properties in cleaned."""
         schema = cleaned.pop('schema', {'fields': ()})
         self.schema = _parse_schema_resource(schema)
+
+    def _copy_configuration_properties(self, configuration):
+        """Helper:  assign subclass configuration properties in cleaned."""
+        self.allow_jagged_rows = _bool_or_none(
+            configuration.get('allowJaggedRows'))
+        self.allow_quoted_newlines = _bool_or_none(
+            configuration.get('allowQuotedNewlines'))
+        self.autodetect = _bool_or_none(
+            configuration.get('autodetect'))
+        self.create_disposition = configuration.get('createDisposition')
+        self.encoding = configuration.get('encoding')
+        self.field_delimiter = configuration.get('fieldDelimiter')
+        self.ignore_unknown_values = _bool_or_none(
+            configuration.get('ignoreUnknownValues'))
+        self.max_bad_records = _int_or_none(
+            configuration.get('maxBadRecords'))
+        self.null_marker = configuration.get('nullMarker')
+        self.quote_character = configuration.get('quote')
+        self.skip_leading_rows = _int_or_none(
+            configuration.get('skipLeadingRows'))
+        self.source_format = configuration.get('sourceFormat')
+        self.write_disposition = configuration.get('writeDisposition')
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -878,6 +924,11 @@ class CopyJob(_AsyncJob):
         self._populate_config_resource(configuration)
 
         return resource
+
+    def _copy_configuration_properties(self, configuration):
+        """Helper:  assign subclass configuration properties in cleaned."""
+        self.create_disposition = configuration.get('createDisposition')
+        self.write_disposition = configuration.get('writeDisposition')
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -1011,6 +1062,14 @@ class ExtractJob(_AsyncJob):
         self._populate_config_resource(configuration)
 
         return resource
+
+    def _copy_configuration_properties(self, configuration):
+        """Helper:  assign subclass configuration properties in cleaned."""
+        self.compression = configuration.get('compression')
+        self.destination_format = configuration.get('destinationFormat')
+        self.field_delimiter = configuration.get('fieldDelimiter')
+        self.print_header = _bool_or_none(
+            configuration.get('printHeader'))
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -1208,7 +1267,8 @@ class QueryJob(_AsyncJob):
         if self.maximum_billing_tier is not None:
             configuration['maximumBillingTier'] = self.maximum_billing_tier
         if self.maximum_bytes_billed is not None:
-            configuration['maximumBytesBilled'] = self.maximum_bytes_billed
+            configuration['maximumBytesBilled'] = str(
+                self.maximum_bytes_billed)
         if len(self._udf_resources) > 0:
             configuration[self._UDF_KEY] = [
                 {udf_resource.udf_type: udf_resource.value}
@@ -1258,6 +1318,25 @@ class QueryJob(_AsyncJob):
         configuration = cleaned['configuration']['query']
 
         self.query = configuration['query']
+
+    def _copy_configuration_properties(self, configuration):
+        """Helper:  assign subclass configuration properties in cleaned."""
+        self.allow_large_results = _bool_or_none(
+            configuration.get('allowLargeResults'))
+        self.flatten_results = _bool_or_none(
+            configuration.get('flattenResults'))
+        self.use_query_cache = _bool_or_none(
+            configuration.get('useQueryCache'))
+        self.use_legacy_sql = _bool_or_none(
+            configuration.get('useLegacySql'))
+
+        self.create_disposition = configuration.get('createDisposition')
+        self.priority = configuration.get('priority')
+        self.write_disposition = configuration.get('writeDisposition')
+        self.maximum_billing_tier = configuration.get('maximumBillingTier')
+        self.maximum_bytes_billed = _int_or_none(
+            configuration.get('maximumBytesBilled'))
+
         dest_remote = configuration.get('destinationTable')
 
         if dest_remote is None:
@@ -1266,8 +1345,29 @@ class QueryJob(_AsyncJob):
         else:
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
-                dataset = self._client.dataset(dest_remote['datasetId'])
+                project = dest_remote['projectId']
+                dataset = self._client.dataset(
+                    dest_remote['datasetId'], project=project)
                 self.destination = dataset.table(dest_remote['tableId'])
+
+        def_ds = configuration.get('defaultDataset')
+        if def_ds is None:
+            if self.default_dataset is not None:
+                del self.default_dataset
+        else:
+            project = def_ds['projectId']
+            self.default_dataset = self._client.dataset(def_ds['datasetId'])
+
+        udf_resources = []
+        for udf_mapping in configuration.get(self._UDF_KEY, ()):
+            key_val, = udf_mapping.items()
+            udf_resources.append(UDFResource(key_val[0], key_val[1]))
+        self._udf_resources = udf_resources
+
+        self._query_parameters = [
+            _query_param_from_api_repr(mapping)
+            for mapping in configuration.get(self._QUERY_PARAMETERS_KEY, ())
+        ]
 
     @classmethod
     def from_api_repr(cls, resource, client):
