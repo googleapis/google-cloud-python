@@ -85,6 +85,23 @@ class TestAccessEntry(unittest.TestCase):
         self.assertEqual(entry, mock.ANY)
 
 
+class TestDatasetReference(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        return DatasetReference
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        dataset_ref = self._make_one('some-project-1', 'dataset_1')
+        self.assertEqual(dataset_ref.project_id, 'some-project-1')
+        self.assertEqual(dataset_ref.dataset_id, 'dataset_1')
+
+
 class TestDataset(unittest.TestCase):
     PROJECT = 'project'
     DS_NAME = 'dataset-name'
