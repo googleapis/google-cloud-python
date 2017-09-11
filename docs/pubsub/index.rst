@@ -90,7 +90,7 @@ the topic, and subscribe to that.
     ...     project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
     ...     sub='MY_SUBSCRIPTION_NAME',  # Set this to something appropriate.
     ... )
-    >>> subscription = subscriber.create_subscription(topic, subscription)
+    >>> subscription = subscriber.create_subscription(subscription_name, topic)
 
 The subscription is opened asychronously, and messages are processed by
 use of a callback.
