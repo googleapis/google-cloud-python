@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-only Transactions via Snapshots &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Read-only Transactions via Snapshots &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -74,19 +74,42 @@ reads as of a given timestamp:</p>
 <p>Read data for selected rows from a table in the session’s database.  Calls
 the <code class="docutils literal"><span class="pre">Read</span></code> API, which returns all rows specified in <code class="docutils literal"><span class="pre">key_set</span></code>, or else
 fails if the result set is too large,</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-    <span class="n">table</span><span class="o">=</span><span class="s1">&#39;table-name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
-    <span class="n">key_set</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phred@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;bharney@example.com&#39;</span><span class="p">])</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+        <span class="n">table</span><span class="o">=</span><span class="s1">&#39;table-name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+        <span class="n">key_set</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phred@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;bharney@example.com&#39;</span><span class="p">])</span>
 
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If streaming a chunk fails due to a “resumable” error,
-<code class="xref py py-meth docutils literal"><span class="pre">Session.read()</span></code> retries the <code class="docutils literal"><span class="pre">StreamingRead</span></code> API reqeust,
-passing the <code class="docutils literal"><span class="pre">resume_token</span></code> from the last partial result streamed.</p>
+<p class="last">The result set returned by
+<code class="xref py py-meth docutils literal"><span class="pre">execute_sql()</span></code> <em>must not</em> be
+iterated after the snapshot’s session has been returned to the database’s
+session pool.  Therefore, unless your application creates sessions
+manually, perform all iteration within the context of  the
+<code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code> block.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If streaming a chunk raises an exception, the application can
+retry the <code class="docutils literal"><span class="pre">read</span></code>, passing the <code class="docutils literal"><span class="pre">resume_token</span></code> from <code class="docutils literal"><span class="pre">StreamingResultSet</span></code>
+which raised the error.  E.g.:</p>
+<div class="code python last highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="n">row</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+         <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
+            <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">resume_token</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">resume_token</span><span class="p">)</span>
+         <span class="k">continue</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="execute-a-sql-select-statement">
@@ -94,15 +117,44 @@ passing the <code class="docutils literal"><span class="pre">resume_token</span>
 <p>Read data from a query against tables in the session’s database.  Calls
 the <code class="docutils literal"><span class="pre">ExecuteSql</span></code> API, which returns all rows matching the query, or else
 fails if the result set is too large,</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;SELECT e.first_name, e.last_name, p.telephone &#39;</span>
-    <span class="s1">&#39;FROM employees as e, phones as p &#39;</span>
-    <span class="s1">&#39;WHERE p.employee_id == e.employee_id&#39;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
+    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;SELECT e.first_name, e.last_name, p.telephone &#39;</span>
+        <span class="s1">&#39;FROM employees as e, phones as p &#39;</span>
+        <span class="s1">&#39;WHERE p.employee_id == e.employee_id&#39;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result set returned by
+<code class="xref py py-meth docutils literal"><span class="pre">execute_sql()</span></code> <em>must not</em> be
+iterated after the snapshot’s session has been returned to the database’s
+session pool.  Therefore, unless your application creates sessions
+manually, perform all iteration within the context of  the
+<code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code> block.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If streaming a chunk raises an exception, the application can
+retry the query, passing the <code class="docutils literal"><span class="pre">resume_token</span></code> from <code class="docutils literal"><span class="pre">StreamingResultSet</span></code>
+which raised the error.  E.g.:</p>
+<div class="code python last highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="n">row</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+         <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span>
+            <span class="n">QUERY</span><span class="p">,</span> <span class="n">resume_token</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">resume_token</span><span class="p">)</span>
+         <span class="k">continue</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="next-step">
@@ -155,19 +207,18 @@ fails if the result set is too large,</p>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-crud-usage.html">Session Creation / Deletion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-implicit-txn-usage.html">Implicit Transactions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>

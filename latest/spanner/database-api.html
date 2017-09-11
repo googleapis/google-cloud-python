@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Database API &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Database API &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -166,37 +166,6 @@ cloud.google.com/spanner/docs/data-definition-language</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.database.Database.execute_sql">
-<code class="descname">execute_sql</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em>, <em>resume_token=b''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/database.html#Database.execute_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.execute_sql" title="Permalink to this definition">#</a></dt>
-<dd><p>Perform an <code class="docutils literal"><span class="pre">ExecuteStreamingSql</span></code> API request.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sql</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – SQL query statement</li>
-<li><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><em>{str -&gt; column value}</em>) – values for parameter replacement.  Keys must match
-the names used in <code class="docutils literal"><span class="pre">sql</span></code>.</li>
-<li><strong>param_types</strong> (dict, {str -&gt; <code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.type_pb2.TypeCode</span></code>}) – (Optional) explicit types for one or more param
-values;  overrides default type detection on the
-back-end.</li>
-<li><strong>query_mode</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode</span></code>) – Mode governing return of results / query plan. See
-<a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</a></li>
-<li><strong>resume_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – token for resuming previously-interrupted query</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet" title="google.cloud.spanner.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a result set instance which can be used to consume rows.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="google.cloud.spanner.database.Database.exists">
 <code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/database.html#Database.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>Test whether this database exists.</p>
@@ -267,35 +236,6 @@ return value is not cached.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The database name.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.spanner.database.Database.read">
-<code class="descname">read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=''</em>, <em>limit=0</em>, <em>resume_token=b''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/database.html#Database.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.database.Database.read" title="Permalink to this definition">#</a></dt>
-<dd><p>Perform a <code class="docutils literal"><span class="pre">StreamingRead</span></code> API request for rows in a table.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of the table from which to fetch data</li>
-<li><strong>columns</strong> (<em>list of str</em>) – names of columns to be retrieved</li>
-<li><strong>keyset</strong> (<a class="reference internal" href="keyset-api.html#google.cloud.spanner.keyset.KeySet" title="google.cloud.spanner.keyset.KeySet"><code class="xref py py-class docutils literal"><span class="pre">KeySet</span></code></a>) – keys / ranges identifying rows to be retrieved</li>
-<li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) name of index to use, rather than the
-table’s primary key</li>
-<li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) maxiumn number of rows to return</li>
-<li><strong>resume_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – token for resuming previously-interrupted read</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet" title="google.cloud.spanner.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a result set instance which can be used to consume rows.</p>
-</td>
 </tr>
 </tbody>
 </table>
@@ -495,19 +435,18 @@ scope of the context manager.</p>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-crud-usage.html">Session Creation / Deletion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-implicit-txn-usage.html">Implicit Transactions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Database API</a></li>

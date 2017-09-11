@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>StreamedResultSet API &#8212; google-cloud 87a46a8 documentation</title>
+    <title>StreamedResultSet API &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -103,6 +103,42 @@ instances.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ResultSetMetadata</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">structure describing the results</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.streamed.StreamedResultSet.one">
+<code class="descname">one</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#StreamedResultSet.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.one" title="Permalink to this definition">#</a></dt>
+<dd><p>Return exactly one result, or raise an exception.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">NotFound</span></code>: If there are no results.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a>: If there are multiple results.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">RuntimeError</span></code></a>: If consumption has already occurred,
+in whole or in part.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner.streamed.StreamedResultSet.one_or_none">
+<code class="descname">one_or_none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#StreamedResultSet.one_or_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.one_or_none" title="Permalink to this definition">#</a></dt>
+<dd><p>Return exactly one result, or None if there are no results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a>: If there are multiple results.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">RuntimeError</span></code></a>: If consumption has already occurred,
+in whole or in part.</td>
 </tr>
 </tbody>
 </table>
@@ -224,19 +260,18 @@ instances.</li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-crud-usage.html">Session Creation / Deletion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-implicit-txn-usage.html">Implicit Transactions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>

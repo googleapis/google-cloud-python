@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Entities &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Entities &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -86,10 +86,12 @@ entity. The following basic types are supported by the API:</p>
 <li><a class="reference internal" href="helpers.html#google.cloud.datastore.helpers.GeoPoint" title="google.cloud.datastore.helpers.GeoPoint"><code class="xref py py-class docutils literal"><span class="pre">GeoPoint</span></code></a></li>
 <li><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a></li>
 </ul>
-<p>In addition, two container types are supported:</p>
+<p>In addition, three container types are supported:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a></li>
 <li><a class="reference internal" href="#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a></li>
+<li><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a> (will just be treated like an <code class="docutils literal"><span class="pre">Entity</span></code> without
+a key or <code class="docutils literal"><span class="pre">exclude_from_indexes</span></code>)</li>
 </ul>
 <p>Each entry in a list must be one of the value types (basic or
 container) and each value in an
@@ -204,7 +206,7 @@ Key which knows its Kind.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>

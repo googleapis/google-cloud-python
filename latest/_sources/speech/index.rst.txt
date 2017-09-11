@@ -266,19 +266,15 @@ If ``interim_results`` is set to :data:`True`, interim results
     ...     requests = [speech.types.StreamingRecognizeRequest(
     ...         audio_content=stream.read(),
     ...     )]
-    >>> results = sample.streaming_recognize(
-    ...     config=speech.types.StreamingRecognitionConfig(
-    ...         config=config,
-    ...         iterim_results=True,
-    ...     ),
-    ...     requests,
-    ... )
-    >>> for result in results:
-    ...     for alternative in result.alternatives:
-    ...         print('=' * 20)
-    ...         print('transcript: ' + alternative.transcript)
-    ...         print('confidence: ' + str(alternative.confidence))
-    ...         print('is_final:' + str(result.is_final))
+    >>> config = speech.types.StreamingRecognitionConfig(config=config)
+    >>> responses = client.streaming_recognize(config,requests)
+    >>> for response in responses:
+    ...     for result in response:
+    ...         for alternative in result.alternatives:
+    ...             print('=' * 20)
+    ...             print('transcript: ' + alternative.transcript)
+    ...             print('confidence: ' + str(alternative.confidence))
+    ...             print('is_final:' + str(result.is_final))
     ====================
     'he'
     None

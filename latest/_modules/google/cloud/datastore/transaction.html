@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.transaction &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.datastore.transaction &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -71,24 +71,28 @@
 
 <span class="sd">    .. testsetup:: txn-put-multi, txn-api</span>
 
-<span class="sd">       from google.cloud import datastore</span>
-<span class="sd">       from tests.system.test_system import Config  # system tests</span>
+<span class="sd">        import os</span>
+<span class="sd">        import uuid</span>
 
-<span class="sd">       client = datastore.Client()</span>
-<span class="sd">       key1 = client.key(&#39;_Doctest&#39;)</span>
-<span class="sd">       entity1 = datastore.Entity(key=key1)</span>
-<span class="sd">       entity1[&#39;foo&#39;] = 1337</span>
+<span class="sd">        from google.cloud import datastore</span>
+<span class="sd">        from tests.system.test_system import Config  # system tests</span>
 
-<span class="sd">       key2 = client.key(&#39;_Doctest&#39;, &#39;abcd1234&#39;)</span>
-<span class="sd">       entity2 = datastore.Entity(key=key2)</span>
-<span class="sd">       entity2[&#39;foo&#39;] = 42</span>
+<span class="sd">        unique = os.getenv(&#39;CIRCLE_BUILD_NUM&#39;, str(uuid.uuid4())[0:8])</span>
+<span class="sd">        client = datastore.Client(namespace=&#39;ns{}&#39;.format(unique))</span>
+<span class="sd">        key1 = client.key(&#39;_Doctest&#39;)</span>
+<span class="sd">        entity1 = datastore.Entity(key=key1)</span>
+<span class="sd">        entity1[&#39;foo&#39;] = 1337</span>
 
-<span class="sd">       Config.TO_DELETE.extend([entity1, entity2])</span>
+<span class="sd">        key2 = client.key(&#39;_Doctest&#39;, &#39;abcd1234&#39;)</span>
+<span class="sd">        entity2 = datastore.Entity(key=key2)</span>
+<span class="sd">        entity2[&#39;foo&#39;] = 42</span>
+
+<span class="sd">        Config.TO_DELETE.extend([entity1, entity2])</span>
 
 <span class="sd">    .. doctest:: txn-put-multi</span>
 
-<span class="sd">       &gt;&gt;&gt; with client.transaction():</span>
-<span class="sd">       ...     client.put_multi([entity1, entity2])</span>
+<span class="sd">        &gt;&gt;&gt; with client.transaction():</span>
+<span class="sd">        ...     client.put_multi([entity1, entity2])</span>
 
 <span class="sd">    Because it derives from :class:`~google.cloud.datastore.batch.Batch`,</span>
 <span class="sd">    :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods:</span>
@@ -104,51 +108,59 @@
 
 <span class="sd">    .. testsetup:: txn-error</span>
 
-<span class="sd">       from google.cloud import datastore</span>
+<span class="sd">        import os</span>
+<span class="sd">        import uuid</span>
 
-<span class="sd">       client = datastore.Client()</span>
+<span class="sd">        from google.cloud import datastore</span>
 
-<span class="sd">       def do_some_work():</span>
-<span class="sd">           return</span>
+<span class="sd">        unique = os.getenv(&#39;CIRCLE_BUILD_NUM&#39;, str(uuid.uuid4())[0:8])</span>
+<span class="sd">        client = datastore.Client(namespace=&#39;ns{}&#39;.format(unique))</span>
 
-<span class="sd">       class SomeException(Exception):</span>
-<span class="sd">           pass</span>
+<span class="sd">        def do_some_work():</span>
+<span class="sd">            return</span>
+
+<span class="sd">        class SomeException(Exception):</span>
+<span class="sd">            pass</span>
 
 <span class="sd">    .. doctest:: txn-error</span>
 
-<span class="sd">       &gt;&gt;&gt; with client.transaction():</span>
-<span class="sd">       ...     do_some_work()</span>
-<span class="sd">       ...     raise SomeException  # rolls back</span>
-<span class="sd">       Traceback (most recent call last):</span>
-<span class="sd">         ...</span>
-<span class="sd">       SomeException</span>
+<span class="sd">        &gt;&gt;&gt; with client.transaction():</span>
+<span class="sd">        ...     do_some_work()</span>
+<span class="sd">        ...     raise SomeException  # rolls back</span>
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">          ...</span>
+<span class="sd">        SomeException</span>
 
 <span class="sd">    If the transaction block exits without an exception, it will commit</span>
 <span class="sd">    by default.</span>
 
 <span class="sd">    .. warning::</span>
 
-<span class="sd">       Inside a transaction, automatically assigned IDs for</span>
-<span class="sd">       entities will not be available at save time!  That means, if you</span>
-<span class="sd">       try:</span>
+<span class="sd">        Inside a transaction, automatically assigned IDs for</span>
+<span class="sd">        entities will not be available at save time!  That means, if you</span>
+<span class="sd">        try:</span>
 
-<span class="sd">       .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual</span>
+<span class="sd">        .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual</span>
 
-<span class="sd">          from google.cloud import datastore</span>
-<span class="sd">          from tests.system.test_system import Config  # system tests</span>
+<span class="sd">            import os</span>
+<span class="sd">            import uuid</span>
 
-<span class="sd">          client = datastore.Client()</span>
+<span class="sd">            from google.cloud import datastore</span>
+<span class="sd">            from tests.system.test_system import Config  # system tests</span>
 
-<span class="sd">          def Entity(*args, **kwargs):</span>
-<span class="sd">              entity = datastore.Entity(*args, **kwargs)</span>
-<span class="sd">              Config.TO_DELETE.append(entity)</span>
-<span class="sd">              return entity</span>
+<span class="sd">            unique = os.getenv(&#39;CIRCLE_BUILD_NUM&#39;, str(uuid.uuid4())[0:8])</span>
+<span class="sd">            client = datastore.Client(namespace=&#39;ns{}&#39;.format(unique))</span>
 
-<span class="sd">       .. doctest:: txn-entity-key</span>
+<span class="sd">            def Entity(*args, **kwargs):</span>
+<span class="sd">                entity = datastore.Entity(*args, **kwargs)</span>
+<span class="sd">                Config.TO_DELETE.append(entity)</span>
+<span class="sd">                return entity</span>
 
-<span class="sd">          &gt;&gt;&gt; with client.transaction():</span>
-<span class="sd">          ...     entity = Entity(key=client.key(&#39;Thing&#39;))</span>
-<span class="sd">          ...     client.put(entity)</span>
+<span class="sd">        .. doctest:: txn-entity-key</span>
+
+<span class="sd">            &gt;&gt;&gt; with client.transaction():</span>
+<span class="sd">            ...     entity = Entity(key=client.key(&#39;Thing&#39;))</span>
+<span class="sd">            ...     client.put(entity)</span>
 
 <span class="sd">       ``entity`` won&#39;t have a complete key until the transaction is</span>
 <span class="sd">       committed.</span>
@@ -309,7 +321,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

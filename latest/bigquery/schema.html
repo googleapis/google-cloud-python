@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Schemas &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Schemas &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -88,6 +88,26 @@ or ‘REPEATED’).</li>
 empty / unset.</p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.schema.SchemaField.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>api_repr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/schema.html#SchemaField.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a <code class="docutils literal"><span class="pre">SchemaField</span></code> object deserialized from a dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>api_repr</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – The serialized representation
+of the SchemaField, such as what is output by
+<a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField.to_api_repr" title="google.cloud.bigquery.schema.SchemaField.to_api_repr"><code class="xref py py-meth docutils literal"><span class="pre">to_api_repr()</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <code class="docutils literal"><span class="pre">SchemaField</span></code> object.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField">SchemaField</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.bigquery.schema.SchemaField.is_nullable">
 <code class="descname">is_nullable</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.is_nullable" title="Permalink to this definition">#</a></dt>
@@ -105,6 +125,26 @@ empty / unset.</p>
 <dt id="google.cloud.bigquery.schema.SchemaField.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.name" title="Permalink to this definition">#</a></dt>
 <dd><p><em>str</em> – The name of the field.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.schema.SchemaField.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/schema.html#SchemaField.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a dictionary representing this schema field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A dictionary representing the SchemaField in a serialized</dt>
+<dd>form.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -168,7 +208,7 @@ empty / unset.</p>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>

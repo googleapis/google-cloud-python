@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Transactions &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Transactions &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -79,7 +79,8 @@ exits with an error:</p>
 by default.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>Inside a transaction, automatically assigned IDs for
+<blockquote>
+<div><p>Inside a transaction, automatically assigned IDs for
 entities will not be available at save time!  That means, if you
 try:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
@@ -87,6 +88,7 @@ try:</p>
 <span class="gp">... </span>    <span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 </pre></div>
 </div>
+</div></blockquote>
 <p><code class="docutils literal"><span class="pre">entity</span></code> won’t have a complete key until the transaction is
 committed.</p>
 <p>Once you exit the transaction (or call <a class="reference internal" href="#google.cloud.datastore.transaction.Transaction.commit" title="google.cloud.datastore.transaction.Transaction.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>), the
@@ -364,7 +366,7 @@ progress, if entity has no key assigned, or if the key’s
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>

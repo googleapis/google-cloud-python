@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.client &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.logging.client &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -73,6 +73,7 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.environment_vars</span> <span class="k">import</span> <span class="n">DISABLE_GRPC</span>
+<span class="kn">from</span> <span class="nn">google.cloud.logging._helpers</span> <span class="k">import</span> <span class="n">retrieve_metadata_server</span>
 <span class="kn">from</span> <span class="nn">google.cloud.logging._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.logging._http</span> <span class="k">import</span> <span class="n">_LoggingAPI</span> <span class="k">as</span> <span class="n">JSONLoggingAPI</span>
 <span class="kn">from</span> <span class="nn">google.cloud.logging._http</span> <span class="k">import</span> <span class="n">_MetricsAPI</span> <span class="k">as</span> <span class="n">JSONMetricsAPI</span>
@@ -97,8 +98,8 @@
 <span class="n">_APPENGINE_FLEXIBLE_ENV_FLEX</span> <span class="o">=</span> <span class="s1">&#39;GAE_INSTANCE&#39;</span>
 <span class="sd">&quot;&quot;&quot;Environment variable set in App Engine when env:flex is set.&quot;&quot;&quot;</span>
 
-<span class="n">_CONTAINER_ENGINE_ENV</span> <span class="o">=</span> <span class="s1">&#39;KUBERNETES_SERVICE&#39;</span>
-<span class="sd">&quot;&quot;&quot;Environment variable set in a Google Container Engine environment.&quot;&quot;&quot;</span>
+<span class="n">_GKE_CLUSTER_NAME</span> <span class="o">=</span> <span class="s1">&#39;instance/attributes/cluster-name&#39;</span>
+<span class="sd">&quot;&quot;&quot;Attribute in metadata server when in GKE environment.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../logging/client.html#google.cloud.logging.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
@@ -343,10 +344,12 @@
 <span class="sd">        :rtype: :class:`logging.Handler`</span>
 <span class="sd">        :returns: The default log handler based on the environment</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gke_cluster_name</span> <span class="o">=</span> <span class="n">retrieve_metadata_server</span><span class="p">(</span><span class="n">_GKE_CLUSTER_NAME</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="n">_APPENGINE_FLEXIBLE_ENV_VM</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">or</span>
                 <span class="n">_APPENGINE_FLEXIBLE_ENV_FLEX</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">AppEngineHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">_CONTAINER_ENGINE_ENV</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">gke_cluster_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ContainerEngineHandler</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">CloudLoggingHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
@@ -418,7 +421,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.streamed &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.spanner.streamed &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,6 +58,7 @@
 
 <span class="kn">from</span> <span class="nn">google.protobuf.struct_pb2</span> <span class="k">import</span> <span class="n">ListValue</span>
 <span class="kn">from</span> <span class="nn">google.protobuf.struct_pb2</span> <span class="k">import</span> <span class="n">Value</span>
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1</span> <span class="k">import</span> <span class="n">type_pb2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
@@ -209,7 +210,49 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">consume_next</span><span class="p">()</span>  <span class="c1"># raises StopIteration</span>
                 <span class="n">iter_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:],</span> <span class="p">()</span>
             <span class="k">while</span> <span class="n">iter_rows</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">iter_rows</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+                <span class="k">yield</span> <span class="n">iter_rows</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StreamedResultSet.one"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return exactly one result, or raise an exception.</span>
+
+<span class="sd">        :raises: :exc:`NotFound`: If there are no results.</span>
+<span class="sd">        :raises: :exc:`ValueError`: If there are multiple results.</span>
+<span class="sd">        :raises: :exc:`RuntimeError`: If consumption has already occurred,</span>
+<span class="sd">            in whole or in part.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_or_none</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">answer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;No rows matched the given query.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">answer</span></div>
+
+<div class="viewcode-block" id="StreamedResultSet.one_or_none"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.one_or_none">[docs]</a>    <span class="k">def</span> <span class="nf">one_or_none</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return exactly one result, or None if there are no results.</span>
+
+<span class="sd">        :raises: :exc:`ValueError`: If there are multiple results.</span>
+<span class="sd">        :raises: :exc:`RuntimeError`: If consumption has already occurred,</span>
+<span class="sd">            in whole or in part.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sanity check: Has consumption of this query already started?</span>
+        <span class="c1"># If it has, then this is an exception.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Can not call `.one` or `.one_or_none` after &#39;</span>
+                               <span class="s1">&#39;stream consumption has already started.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Consume the first result of the stream.</span>
+        <span class="c1"># If there is no first result, then return None.</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Attempt to consume more. This should no-op; if we get additional</span>
+        <span class="c1"># rows, then this is an error case.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Expected one result; got more.&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">answer</span></div></div>
 
 
 <div class="viewcode-block" id="Unmergeable"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.Unmergeable">[docs]</a><span class="k">class</span> <span class="nc">Unmergeable</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
@@ -356,7 +399,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

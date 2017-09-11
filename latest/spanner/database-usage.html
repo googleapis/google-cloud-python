@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Database Admin API &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Database Admin API &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,7 +24,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Session Creation / Deletion" href="session-crud-usage.html" />
+    <link rel="next" title="Batching Modifications" href="batch-usage.html" />
     <link rel="prev" title="Instance Admin API" href="instance-usage.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -136,9 +136,126 @@ object should not be re-used. Subsequent calls to
 will result in an :exc`ValueError` being raised.</p>
 </div>
 </div>
-<div class="section" id="next-step">
-<h2>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h2>
-<p>Next, learn about <a class="reference internal" href="session-crud-usage.html"><span class="doc">Session Creation / Deletion</span></a>.</p>
+</div>
+<div class="section" id="non-admin-database-usage">
+<h1>Non-Admin Database Usage<a class="headerlink" href="#non-admin-database-usage" title="Permalink to this headline">#</a></h1>
+<div class="section" id="use-a-snapshot-to-read-query-the-database">
+<h2>Use a Snapshot to Read / Query the Database<a class="headerlink" href="#use-a-snapshot-to-read-query-the-database" title="Permalink to this headline">#</a></h2>
+<p>A snapshot represents a read-only point-in-time view of the database.</p>
+<p>Calling <a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.snapshot" title="google.cloud.spanner.database.Database.snapshot"><code class="xref py py-meth docutils literal"><span class="pre">snapshot()</span></code></a> with
+no arguments creates a snapshot with strong concurrency:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> for the other options
+which can be passed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.snapshot" title="google.cloud.spanner.database.Database.snapshot"><code class="xref py py-meth docutils literal"><span class="pre">snapshot()</span></code></a> returns an
+object intended to be used as a Python context manager (i.e., as the
+target of a <code class="docutils literal"><span class="pre">with</span></code> statement).  Use the instance, and any result
+sets returned by its <code class="docutils literal"><span class="pre">read</span></code> or <code class="docutils literal"><span class="pre">execute_sql</span></code> methods, only inside
+the block created by the <code class="docutils literal"><span class="pre">with</span></code> statement.</p>
+</div>
+<p>See <a class="reference internal" href="snapshot-usage.html"><span class="doc">Read-only Transactions via Snapshots</span></a> for more complete examples of snapshot usage.</p>
+</div>
+<div class="section" id="use-a-batch-to-modify-rows-in-the-database">
+<h2>Use a Batch to Modify Rows in the Database<a class="headerlink" href="#use-a-batch-to-modify-rows-in-the-database" title="Permalink to this headline">#</a></h2>
+<p>A batch represents a bundled set of insert/upsert/update/delete operations
+on the rows of tables in the database.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+     <span class="n">batch</span><span class="o">.</span><span class="n">insert_or_update</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+     <span class="n">batch</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">keyset_to_delete</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.batch" title="google.cloud.spanner.database.Database.batch"><code class="xref py py-meth docutils literal"><span class="pre">batch()</span></code></a> returns an
+object intended to be used as a Python context manager (i.e., as the
+target of a <code class="docutils literal"><span class="pre">with</span></code> statement).  It applies any changes made inside
+the block of its <code class="docutils literal"><span class="pre">with</span></code> statement when exiting the block, unless an
+exception is raised within the block.  Use the batch only inside
+the block created by the <code class="docutils literal"><span class="pre">with</span></code> statement.</p>
+</div>
+<p>See <a class="reference internal" href="batch-usage.html"><span class="doc">Batching Modifications</span></a> for more complete examples of batch usage.</p>
+</div>
+<div class="section" id="use-a-transaction-to-query-modify-rows-in-the-database">
+<h2>Use a Transaction to Query / Modify Rows in the Database<a class="headerlink" href="#use-a-transaction-to-query-modify-rows-in-the-database" title="Permalink to this headline">#</a></h2>
+<p>A transaction represents the union of a “strong” snapshot and a batch:
+it allows <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">execute_sql</span></code> operations, and accumulates
+insert/upsert/update/delete operations.</p>
+<p>Because other applications may be performing concurrent updates which
+would invalidate the reads / queries, the work done by a transaction needs
+to be bundled as a retryable “unit of work” function, which takes the
+transaction as a required argument:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unit_of_work</span><span class="p">(</span><span class="n">transaction</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">emp_id</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">pay</span> <span class="ow">in</span> <span class="n">_compute_pay</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">insert_or_update</span><span class="p">(</span>
+            <span class="n">table</span><span class="o">=</span><span class="s1">&#39;monthly_hours&#39;</span><span class="p">,</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;employee_id&#39;</span><span class="p">,</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;hours&#39;</span><span class="p">,</span> <span class="s1">&#39;pay&#39;</span><span class="p">],</span>
+            <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">emp_id</span><span class="p">,</span> <span class="n">month_start</span><span class="p">,</span> <span class="n">hours</span><span class="p">,</span> <span class="n">pay</span><span class="p">])</span>
+
+<span class="n">database</span><span class="o">.</span><span class="n">run_in_transaction</span><span class="p">(</span><span class="n">unit_of_work</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.run_in_transaction" title="google.cloud.spanner.database.Database.run_in_transaction"><code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code></a>
+commits the transaction automatically if the “unit of work” function
+returns without raising an exception.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.run_in_transaction" title="google.cloud.spanner.database.Database.run_in_transaction"><code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code></a>
+retries the “unit of work” function if the read / query operatoins
+or the commit are aborted due to concurrent updates</p>
+</div>
+<p>See <a class="reference internal" href="transaction-usage.html"><span class="doc">Read-write Transactions</span></a> for more complete examples of transaction usage.</p>
+</div>
+<div class="section" id="configuring-a-session-pool-for-a-database">
+<h2>Configuring a session pool for a database<a class="headerlink" href="#configuring-a-session-pool-for-a-database" title="Permalink to this headline">#</a></h2>
+<p>Under the covers, the <code class="docutils literal"><span class="pre">snapshot</span></code>, <code class="docutils literal"><span class="pre">batch</span></code>, and <code class="docutils literal"><span class="pre">run_in_transaction</span></code>
+methods use a pool of <a class="reference internal" href="session-api.html#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a> objects
+to manage their communication with the back-end.  You can configure
+one of the pools manually to control the number of sessions, timeouts, etc.,
+and then passing it to the <a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>
+constructor:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="kn">import</span> <span class="n">FixedSizePool</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_NAME</span><span class="p">)</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">FixedSizePool</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">instanc</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that creating a database with a pool may presume that its database
+already exists, as it may need to pre-create sessions (rather than creating
+them on demand, as the default implementation does).</p>
+<p>You can supply your own pool implementation, which must satisfy the
+contract laid out in <a class="reference internal" href="session-api.html#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.pool</span> <span class="kn">import</span> <span class="n">AbstractSessionPool</span>
+
+<span class="k">class</span> <span class="nc">MyCustomPool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
+
+     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">custom_param</span><span class="p">):</span>
+         <span class="nb">super</span><span class="p">(</span><span class="n">MyCustomPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+         <span class="bp">self</span><span class="o">.</span><span class="n">custom_param</span> <span class="o">=</span> <span class="n">custom_param</span>
+
+     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+         <span class="o">...</span>
+
+     <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">discard_if_full</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+         <span class="o">...</span>
+
+<span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">MyCustomPool</span><span class="p">(</span><span class="n">database</span><span class="p">,</span> <span class="n">custom_param</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="advanced-session-pool-topics.html"><span class="doc">Advanced Session Pool Topics</span></a> for more advanced coverage of
+session pools.</p>
 </div>
 </div>
 
@@ -186,19 +303,18 @@ will result in an :exc`ValueError` being raised.</p>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Database Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-crud-usage.html">Session Creation / Deletion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-implicit-txn-usage.html">Implicit Transactions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-pool-usage.html">Session Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
@@ -226,7 +342,7 @@ will result in an :exc`ValueError` being raised.</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
       <li>Previous: <a href="instance-usage.html" title="previous chapter">Instance Admin API</a></li>
-      <li>Next: <a href="session-crud-usage.html" title="next chapter">Session Creation / Deletion</a></li>
+      <li>Next: <a href="batch-usage.html" title="next chapter">Batching Modifications</a></li>
   </ul></li>
   </ul></li>
 </ul>
