@@ -18,9 +18,49 @@ from six.moves import http_client
 import unittest
 
 
-class Test__error_result_to_exception(unittest.TestCase):
+class Test__bool_or_none(unittest.TestCase):
+
     def _call_fut(self, *args, **kwargs):
         from google.cloud.bigquery import job
+
+        return job._bool_or_none(*args, **kwargs)
+
+    def test_w_bool(self):
+        self.assertTrue(self._call_fut(True))
+        self.assertFalse(self._call_fut(False))
+
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
+
+    def test_w_str(self):
+        self.assertTrue(self._call_fut('1'))
+        self.assertTrue(self._call_fut('t'))
+        self.assertTrue(self._call_fut('true'))
+        self.assertFalse(self._call_fut('anything else'))
+
+
+class Test__int_or_none(unittest.TestCase):
+
+    def _call_fut(self, *args, **kwargs):
+        from google.cloud.bigquery import job
+
+        return job._int_or_none(*args, **kwargs)
+
+    def test_w_int(self):
+        self.assertEqual(self._call_fut(13), 13)
+
+    def test_w_none(self):
+        self.assertIsNone(self._call_fut(None))
+
+    def test_w_str(self):
+        self.assertEqual(self._call_fut('13'), 13)
+
+
+class Test__error_result_to_exception(unittest.TestCase):
+
+    def _call_fut(self, *args, **kwargs):
+        from google.cloud.bigquery import job
+
         return job._error_result_to_exception(*args, **kwargs)
 
     def test_simple(self):
@@ -259,7 +299,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.quote_character)
         if 'skipLeadingRows' in config:
-            self.assertEqual(job.skip_leading_rows,
+            self.assertEqual(str(job.skip_leading_rows),
                              config['skipLeadingRows'])
         else:
             self.assertIsNone(job.skip_leading_rows)
@@ -517,10 +557,12 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
+        load_config = RESOURCE['configuration']['load']
+        load_config['createDisposition'] = 'CREATE_IF_NEEDED'
         klass = self._get_target_class()
-        dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertIs(dataset._client, client)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_already_running(self):
         conn = _Connection()
@@ -632,7 +674,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             'maxBadRecords': 100,
             'nullMarker': r'\N',
             'quote': "'",
-            'skipLeadingRows': 1,
+            'skipLeadingRows': '1',
             'sourceFormat': 'CSV',
             'writeDisposition': 'WRITE_TRUNCATE',
             'schema': {'fields': [
@@ -973,10 +1015,12 @@ class TestCopyJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
+        copy_config = RESOURCE['configuration']['copy']
+        copy_config['createDisposition'] = 'CREATE_IF_NEEDED'
         klass = self._get_target_class()
-        dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertIs(dataset._client, client)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1272,10 +1316,12 @@ class TestExtractJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
+        extract_config = RESOURCE['configuration']['extract']
+        extract_config['compression'] = 'GZIP'
         klass = self._get_target_class()
-        dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertIs(dataset._client, client)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1484,13 +1530,14 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def _verifyIntegerResourceProperties(self, job, config):
         if 'maximumBillingTier' in config:
-            self.assertEqual(job.maximum_billing_tier,
-                             config['maximumBillingTier'])
+            self.assertEqual(
+                job.maximum_billing_tier, config['maximumBillingTier'])
         else:
             self.assertIsNone(job.maximum_billing_tier)
         if 'maximumBytesBilled' in config:
-            self.assertEqual(job.maximum_bytes_billed,
-                             config['maximumBytesBilled'])
+            self.assertEqual(
+                str(job.maximum_bytes_billed), config['maximumBytesBilled'])
+            self.assertIsInstance(job.maximum_bytes_billed, int)
         else:
             self.assertIsNone(job.maximum_bytes_billed)
 
@@ -1643,7 +1690,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_NAME,
             },
             'configuration': {
-                'query': {'query': self.QUERY}
+                'query': {'query': self.QUERY},
             },
         }
         klass = self._get_target_class()
@@ -1654,15 +1701,18 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_from_api_repr_w_properties(self):
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
-        RESOURCE['configuration']['query']['destinationTable'] = {
+        query_config = RESOURCE['configuration']['query']
+        query_config['createDisposition'] = 'CREATE_IF_NEEDED'
+        query_config['writeDisposition'] = 'WRITE_TRUNCATE'
+        query_config['destinationTable'] = {
             'projectId': self.PROJECT,
             'datasetId': self.DS_NAME,
             'tableId': self.DESTINATION_TABLE,
         }
         klass = self._get_target_class()
-        dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertIs(dataset._client, client)
-        self._verifyResourceProperties(dataset, RESOURCE)
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancelled(self):
         client = _Client(self.PROJECT)
@@ -2058,7 +2108,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
     def test_begin_w_bound_client(self):
+        from google.cloud.bigquery.dataset import Dataset
+
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
+        DS_NAME = 'DATASET'
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -2067,9 +2120,13 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
+
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        job.default_dataset = Dataset(DS_NAME, client)
 
         job.begin()
+
+        self.assertIsNone(job.default_dataset)
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -2082,7 +2139,11 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
             'configuration': {
                 'query': {
-                    'query': self.QUERY
+                    'query': self.QUERY,
+                    'defaultDataset': {
+                        'projectId': self.PROJECT,
+                        'datasetId': DS_NAME,
+                    },
                 },
             },
         }
@@ -2116,7 +2177,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
             'maximumBillingTier': 4,
-            'maximumBytesBilled': 123456
+            'maximumBytesBilled': '123456'
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
         conn1 = _Connection()
