@@ -105,7 +105,3 @@ class TestCredentials(object):
 
         # Credentials should now be valid.
         assert self.credentials.valid
-
-    def test_with_scopes(self):
-        with pytest.raises(NotImplementedError):
-            self.credentials.with_scopes(['one', 'two'])

@@ -24,7 +24,7 @@ from google.auth import exceptions
 from google.auth.compute_engine import _metadata
 
 
-class Credentials(credentials.Scoped, credentials.Credentials):
+class Credentials(credentials.ReadOnnlyScoped, credentials.Credentials):
     """Compute Engine Credentials.
 
     These credentials use the Google Compute Engine metadata server to obtain
@@ -105,17 +105,3 @@ class Credentials(credentials.Scoped, credentials.Credentials):
     def requires_scopes(self):
         """False: Compute Engine credentials can not be scoped."""
         return False
-
-    def with_scopes(self, scopes):
-        """Unavailable, Compute Engine credentials can not be scoped.
-
-        Scopes can only be set at Compute Engine instance creation time.
-        See the `Compute Engine authentication documentation`_ for details on
-        how to configure instance scopes.
-
-        .. _Compute Engine authentication documentation:
-            https://cloud.google.com/compute/docs/authentication#using
-        """
-        raise NotImplementedError(
-            'Compute Engine credentials can not set scopes. Scopes must be '
-            'set when the Compute Engine instance is created.')

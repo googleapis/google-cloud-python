@@ -123,8 +123,8 @@ class Credentials(object):
 
 
 @six.add_metaclass(abc.ABCMeta)
-class Scoped(object):
-    """Interface for scoped credentials.
+class ReadOnnlyScoped(object):
+    """Interface for credentials whose scopes can be queried.
 
     OAuth 2.0-based credentials allow limiting access using scopes as described
     in `RFC6749 Section 3.3`_.
@@ -152,7 +152,7 @@ class Scoped(object):
     .. _RFC6749 Section 3.3: https://tools.ietf.org/html/rfc6749#section-3.3
     """
     def __init__(self):
-        super(Scoped, self).__init__()
+        super(ReadOnnlyScoped, self).__init__()
         self._scopes = None
 
     @property
@@ -166,6 +166,46 @@ class Scoped(object):
         """
         return False
 
+    def has_scopes(self, scopes):
+        """Checks if the credentials have the given scopes.
+
+        .. warning: This method is not guaranteed to be accurate if the
+            credentials are :attr:`~Credentials.invalid`.
+
+        Returns:
+            bool: True if the credentials have the given scopes.
+        """
+        return set(scopes).issubset(set(self._scopes or []))
+
+
+class Scoped(ReadOnnlyScoped):
+    """Interface for credentials whose scopes can be replaced while copying.
+
+    OAuth 2.0-based credentials allow limiting access using scopes as described
+    in `RFC6749 Section 3.3`_.
+    If a credential class implements this interface then the credentials either
+    use scopes in their implementation.
+
+    Some credentials require scopes in order to obtain a token. You can check
+    if scoping is necessary with :attr:`requires_scopes`::
+
+        if credentials.requires_scopes:
+            # Scoping is required.
+            credentials = credentials.create_scoped(['one', 'two'])
+
+    Credentials that require scopes must either be constructed with scopes::
+
+        credentials = SomeScopedCredentials(scopes=['one', 'two'])
+
+    Or must copy an existing instance using :meth:`with_scopes`::
+
+        scoped_credentials = credentials.with_scopes(scopes=['one', 'two'])
+
+    Some credentials have scopes but do not allow or require scopes to be set,
+    these credentials can be used as-is.
+
+    .. _RFC6749 Section 3.3: https://tools.ietf.org/html/rfc6749#section-3.3
+    """
     @abc.abstractmethod
     def with_scopes(self, scopes):
         """Create a copy of these credentials with the specified scopes.
@@ -179,17 +219,6 @@ class Scoped(object):
                 calling this method.
         """
         raise NotImplementedError('This class does not require scoping.')
-
-    def has_scopes(self, scopes):
-        """Checks if the credentials have the given scopes.
-
-        .. warning: This method is not guaranteed to be accurate if the
-            credentials are :attr:`~Credentials.invalid`.
-
-        Returns:
-            bool: True if the credentials have the given scopes.
-        """
-        return set(scopes).issubset(set(self._scopes or []))
 
 
 def with_scopes_if_required(credentials, scopes):
