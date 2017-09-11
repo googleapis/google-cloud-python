@@ -649,10 +649,9 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator, restart=restart)
 
-        with self.assertRaises(ValueError):
-            streamed._do_restart()
+        streamed._do_restart()
 
-        restart.assert_not_called()
+        restart.assert_called_once_with()
 
     def test__do_restart_empty(self):
         TOKEN = b'DEADBEEF'
@@ -687,6 +686,16 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed._current_row, [])
         restart.assert_called_once_with(TOKEN)
+
+    def test_consume_next_w_service_no_token_yet(self):
+        restart = mock.Mock()
+        iterator = _ServiceUnavailableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+
+        streamed.consume_next()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        restart.assert_called_once_with()
 
     def test_consume_next_w_service_unavailable(self):
         TOKEN = b'DEADBEEF'

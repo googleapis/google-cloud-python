@@ -141,13 +141,14 @@ class StreamedResultSet(object):
 
     def _do_restart(self):
         """Helper for :meth:`consume_next`."""
-        if not self._resume_token:
-            raise ValueError("No resume token")
-
         self._pending_chunk = None
         self._pending_rows[:] = ()
         self._current_row[:] = ()
-        self._response_iterator = self._restart(self._resume_token)
+
+        if self._resume_token:
+            self._response_iterator = self._restart(self._resume_token)
+        else:
+            self._response_iterator = self._restart()
 
     def consume_next(self):
         """Consume the next partial result set from the stream.
