@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.client &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.datastore.client &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -546,56 +546,64 @@
 
 <span class="sd">        .. testsetup:: query</span>
 
-<span class="sd">           from google.cloud import datastore</span>
+<span class="sd">            import os</span>
+<span class="sd">            import uuid</span>
 
-<span class="sd">           client = datastore.Client()</span>
-<span class="sd">           query = client.query(kind=&#39;_Doctest&#39;)</span>
+<span class="sd">            from google.cloud import datastore</span>
 
-<span class="sd">           def do_something(entity):</span>
-<span class="sd">               pass</span>
+<span class="sd">            unique = os.getenv(&#39;CIRCLE_BUILD_NUM&#39;, str(uuid.uuid4())[0:8])</span>
+<span class="sd">            client = datastore.Client(namespace=&#39;ns{}&#39;.format(unique))</span>
+<span class="sd">            query = client.query(kind=&#39;_Doctest&#39;)</span>
+
+<span class="sd">            def do_something(entity):</span>
+<span class="sd">                pass</span>
 
 <span class="sd">        .. doctest:: query</span>
 
-<span class="sd">           &gt;&gt;&gt; query = client.query(kind=&#39;MyKind&#39;)</span>
-<span class="sd">           &gt;&gt;&gt; query.add_filter(&#39;property&#39;, &#39;=&#39;, &#39;val&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; query = client.query(kind=&#39;MyKind&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; query.add_filter(&#39;property&#39;, &#39;=&#39;, &#39;val&#39;)</span>
 
 <span class="sd">        Using the query iterator</span>
 
 <span class="sd">        .. doctest:: query</span>
 
-<span class="sd">           &gt;&gt;&gt; query_iter = query.fetch()</span>
-<span class="sd">           &gt;&gt;&gt; for entity in query_iter:</span>
-<span class="sd">           ...     do_something(entity)</span>
+<span class="sd">            &gt;&gt;&gt; query_iter = query.fetch()</span>
+<span class="sd">            &gt;&gt;&gt; for entity in query_iter:</span>
+<span class="sd">            ...     do_something(entity)</span>
 
 <span class="sd">        or manually page through results</span>
 
 <span class="sd">        .. testsetup:: query-page</span>
 
-<span class="sd">           from google.cloud import datastore</span>
-<span class="sd">           from tests.system.test_system import Config  # system tests</span>
+<span class="sd">            import os</span>
+<span class="sd">            import uuid</span>
 
-<span class="sd">           client = datastore.Client()</span>
+<span class="sd">            from google.cloud import datastore</span>
+<span class="sd">            from tests.system.test_system import Config  # system tests</span>
 
-<span class="sd">           key = client.key(&#39;_Doctest&#39;)</span>
-<span class="sd">           entity1 = datastore.Entity(key=key)</span>
-<span class="sd">           entity1[&#39;foo&#39;] = 1337</span>
-<span class="sd">           entity2 = datastore.Entity(key=key)</span>
-<span class="sd">           entity2[&#39;foo&#39;] = 42</span>
-<span class="sd">           Config.TO_DELETE.extend([entity1, entity2])</span>
-<span class="sd">           client.put_multi([entity1, entity2])</span>
+<span class="sd">            unique = os.getenv(&#39;CIRCLE_BUILD_NUM&#39;, str(uuid.uuid4())[0:8])</span>
+<span class="sd">            client = datastore.Client(namespace=&#39;ns{}&#39;.format(unique))</span>
 
-<span class="sd">           query = client.query(kind=&#39;_Doctest&#39;)</span>
-<span class="sd">           cursor = None</span>
+<span class="sd">            key = client.key(&#39;_Doctest&#39;)</span>
+<span class="sd">            entity1 = datastore.Entity(key=key)</span>
+<span class="sd">            entity1[&#39;foo&#39;] = 1337</span>
+<span class="sd">            entity2 = datastore.Entity(key=key)</span>
+<span class="sd">            entity2[&#39;foo&#39;] = 42</span>
+<span class="sd">            Config.TO_DELETE.extend([entity1, entity2])</span>
+<span class="sd">            client.put_multi([entity1, entity2])</span>
+
+<span class="sd">            query = client.query(kind=&#39;_Doctest&#39;)</span>
+<span class="sd">            cursor = None</span>
 
 <span class="sd">        .. doctest:: query-page</span>
 
-<span class="sd">           &gt;&gt;&gt; query_iter = query.fetch(start_cursor=cursor)</span>
-<span class="sd">           &gt;&gt;&gt; pages = query_iter.pages</span>
-<span class="sd">           &gt;&gt;&gt;</span>
-<span class="sd">           &gt;&gt;&gt; first_page = next(pages)</span>
-<span class="sd">           &gt;&gt;&gt; first_page_entities = list(first_page)</span>
-<span class="sd">           &gt;&gt;&gt; query_iter.next_page_token</span>
-<span class="sd">           b&#39;...&#39;</span>
+<span class="sd">            &gt;&gt;&gt; query_iter = query.fetch(start_cursor=cursor)</span>
+<span class="sd">            &gt;&gt;&gt; pages = query_iter.pages</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; first_page = next(pages)</span>
+<span class="sd">            &gt;&gt;&gt; first_page_entities = list(first_page)</span>
+<span class="sd">            &gt;&gt;&gt; query_iter.next_page_token</span>
+<span class="sd">            b&#39;...&#39;</span>
 
 <span class="sd">        :type kwargs: dict</span>
 <span class="sd">        :param kwargs: Parameters for initializing and instance of</span>
@@ -688,7 +696,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

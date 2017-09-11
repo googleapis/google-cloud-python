@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.helpers &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.datastore.helpers &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -332,8 +332,11 @@
 <span class="sd">    &gt;&gt;&gt; _pb_attr_value(&#39;my_string&#39;)</span>
 <span class="sd">    (&#39;string_value&#39;, &#39;my_string&#39;)</span>
 
-<span class="sd">    :type val: `datetime.datetime`, :class:`google.cloud.datastore.key.Key`,</span>
-<span class="sd">               bool, float, integer, string</span>
+<span class="sd">    :type val:</span>
+<span class="sd">        :class:`datetime.datetime`, :class:`google.cloud.datastore.key.Key`,</span>
+<span class="sd">        bool, float, integer, bytes, str, unicode,</span>
+<span class="sd">        :class:`google.cloud.datastore.entity.Entity`, dict, list,</span>
+<span class="sd">        :class:`google.cloud.datastore.helpers.GeoPoint`, NoneType</span>
 <span class="sd">    :param val: The value to be scrutinized.</span>
 
 <span class="sd">    :rtype: tuple</span>
@@ -357,6 +360,10 @@
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;blob&#39;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="n">val</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">entity_val</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">entity_val</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;entity&#39;</span><span class="p">,</span> <span class="n">entity_val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">GeoPoint</span><span class="p">):</span>
@@ -364,7 +371,7 @@
     <span class="k">elif</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span> <span class="n">struct_pb2</span><span class="o">.</span><span class="n">NULL_VALUE</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown protobuf attr type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown protobuf attr type&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_value&#39;</span><span class="p">,</span> <span class="n">value</span>
 
@@ -553,7 +560,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

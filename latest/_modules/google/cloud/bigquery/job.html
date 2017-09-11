@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -1127,6 +1127,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">udf_resources</span> <span class="o">=</span> <span class="n">udf_resources</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_AsyncQueryConfiguration</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">allow_large_results</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;allow_large_results&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See</span>
@@ -1326,26 +1327,52 @@
 <span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`</span>
 <span class="sd">        :returns: results instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">QueryResults</span>
-        <span class="k">return</span> <span class="n">QueryResults</span><span class="o">.</span><span class="n">from_query_job</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_query_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span></div>
+
+<div class="viewcode-block" id="QueryJob.done"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.QueryJob.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Refresh the job and checks if it is complete.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: True if the job is complete, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Do not refresh is the state is already done, as the job will not</span>
+        <span class="c1"># change once complete.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">_DONE_STATE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_query_results</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="c1"># Only reload the job once we know the query is complete.</span>
+            <span class="c1"># This will ensure that fields such as the destination table are</span>
+            <span class="c1"># correctly populated.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_DONE_STATE</span></div>
 
 <div class="viewcode-block" id="QueryJob.result"><a class="viewcode-back" href="../../../../bigquery/job.html#google.cloud.bigquery.job.QueryJob.result">[docs]</a>    <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start the job and wait for it to complete and get the result.</span>
 
 <span class="sd">        :type timeout: int</span>
-<span class="sd">        :param timeout: How long to wait for job to complete before raising</span>
-<span class="sd">            a :class:`TimeoutError`.</span>
+<span class="sd">        :param timeout:</span>
+<span class="sd">            How long to wait for job to complete before raising a</span>
+<span class="sd">            :class:`TimeoutError`.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.QueryResults`</span>
-<span class="sd">        :returns: The query results.</span>
+<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Iterator of row data :class:`tuple`s. During each page, the</span>
+<span class="sd">            iterator will have the ``total_rows`` attribute set, which counts</span>
+<span class="sd">            the total number of rows **in the result set** (this is distinct</span>
+<span class="sd">            from the total number of rows in the current page:</span>
+<span class="sd">            ``iterator.page.num_items``).</span>
 
 <span class="sd">        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job</span>
 <span class="sd">            failed or  :class:`TimeoutError` if the job did not complete in the</span>
 <span class="sd">            given timeout.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-        <span class="c1"># Return a QueryResults instance instead of returning the job.</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span></div></div>
+        <span class="c1"># Return an iterator instead of returning the job.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span></div></div>
 </pre></div>
 
           </div>
@@ -1391,7 +1418,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

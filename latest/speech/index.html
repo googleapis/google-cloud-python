@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Speech &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Speech &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -273,19 +273,15 @@ been reached.</p>
 <span class="gp">... </span>    <span class="n">requests</span> <span class="o">=</span> <span class="p">[</span><span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognizeRequest</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">audio_content</span><span class="o">=</span><span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span>
 <span class="gp">... </span>    <span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">config</span><span class="o">=</span><span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognitionConfig</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">iterim_results</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="p">),</span>
-<span class="gp">... </span>    <span class="n">requests</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
-<span class="gp">... </span>        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;is_final:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">is_final</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">speech</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">StreamingRecognitionConfig</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">responses</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">streaming_recognize</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="n">requests</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">alternative</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">alternatives</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;transcript: &#39;</span> <span class="o">+</span> <span class="n">alternative</span><span class="o">.</span><span class="n">transcript</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;confidence: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">alternative</span><span class="o">.</span><span class="n">confidence</span><span class="p">))</span>
+<span class="gp">... </span>            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;is_final:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">is_final</span><span class="p">))</span>
 <span class="go">====================</span>
 <span class="go">&#39;he&#39;</span>
 <span class="go">None</span>
@@ -356,7 +352,7 @@ been reached.</p>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>

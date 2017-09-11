@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api.core.future.polling &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.api.core.future.polling &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,14 +58,16 @@
 
 <span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">concurrent.futures</span>
-<span class="kn">import</span> <span class="nn">functools</span>
-<span class="kn">import</span> <span class="nn">operator</span>
 
-<span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">import</span> <span class="nn">tenacity</span>
-
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">exceptions</span>
+<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">retry</span>
 <span class="kn">from</span> <span class="nn">google.api.core.future</span> <span class="k">import</span> <span class="n">_helpers</span>
 <span class="kn">from</span> <span class="nn">google.api.core.future</span> <span class="k">import</span> <span class="n">base</span>
+
+
+<span class="k">class</span> <span class="nc">_OperationNotComplete</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Private exception used for polling via retry.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
 
 
 <span class="k">class</span> <span class="nc">PollingFuture</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">Future</span><span class="p">):</span>
@@ -97,6 +99,11 @@
         <span class="c1"># pylint: disable=redundant-returns-doc, missing-raises-doc</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
+    <span class="k">def</span> <span class="nf">_done_or_raise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if the future is done and raise if it&#39;s not.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">_OperationNotComplete</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">running</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;True if the operation is currently running.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">()</span>
@@ -111,29 +118,16 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">retry_on</span> <span class="o">=</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">retry_if_result</span><span class="p">(</span>
-            <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">is_not</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
-        <span class="c1"># Use exponential backoff with jitter.</span>
-        <span class="n">wait_on</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">tenacity</span><span class="o">.</span><span class="n">wait_exponential</span><span class="p">(</span><span class="n">multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span>
-            <span class="n">tenacity</span><span class="o">.</span><span class="n">wait_random</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">retry</span> <span class="o">=</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">retry</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry_on</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait_on</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">retry</span> <span class="o">=</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">retry</span><span class="p">(</span>
-                <span class="n">retry</span><span class="o">=</span><span class="n">retry_on</span><span class="p">,</span>
-                <span class="n">wait</span><span class="o">=</span><span class="n">wait_on</span><span class="p">,</span>
-                <span class="n">stop</span><span class="o">=</span><span class="n">tenacity</span><span class="o">.</span><span class="n">stop_after_delay</span><span class="p">(</span><span class="n">timeout</span><span class="p">))</span>
+        <span class="n">retry_</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="n">retry</span><span class="o">.</span><span class="n">if_exception_type</span><span class="p">(</span><span class="n">_OperationNotComplete</span><span class="p">),</span>
+            <span class="n">deadline</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">retry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">)()</span>
-        <span class="k">except</span> <span class="n">tenacity</span><span class="o">.</span><span class="n">RetryError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span>
-                <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
-                    <span class="s1">&#39;Operation did not complete within the designated &#39;</span>
-                    <span class="s1">&#39;timeout.&#39;</span><span class="p">),</span>
-                <span class="n">exc</span><span class="p">)</span>
+            <span class="n">retry_</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_done_or_raise</span><span class="p">)()</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">RetryError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">(</span>
+                <span class="s1">&#39;Operation did not complete within the designated &#39;</span>
+                <span class="s1">&#39;timeout.&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the result of the operation, blocking if necessary.</span>
@@ -254,7 +248,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>

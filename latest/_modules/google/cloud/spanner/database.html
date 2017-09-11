@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.database &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.spanner.database &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,6 +57,7 @@
 <span class="sd">&quot;&quot;&quot;User friendly container for Cloud Spanner Database.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">threading</span>
 
 <span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">from</span> <span class="nn">google.gax.errors</span> <span class="k">import</span> <span class="n">GaxError</span>
@@ -121,6 +122,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">database_id</span> <span class="o">=</span> <span class="n">database_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ddl_statements</span> <span class="o">=</span> <span class="n">_check_ddl_statements</span><span class="p">(</span><span class="n">ddl_statements</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_local</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">pool</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">pool</span> <span class="o">=</span> <span class="n">BurstyPool</span><span class="p">()</span>
@@ -355,67 +357,35 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.read"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-             <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform a ``StreamingRead`` API request for rows in a table.</span>
+<div class="viewcode-block" id="Database.snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an object which wraps a snapshot.</span>
 
-<span class="sd">        :type table: str</span>
-<span class="sd">        :param table: name of the table from which to fetch data</span>
+<span class="sd">        The wrapper *must* be used as a context manager, with the snapshot</span>
+<span class="sd">        as the value returned by the wrapper.</span>
 
-<span class="sd">        :type columns: list of str</span>
-<span class="sd">        :param columns: names of columns to be retrieved</span>
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</span>
 
-<span class="sd">        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`</span>
-<span class="sd">        :param keyset: keys / ranges identifying rows to be retrieved</span>
+<span class="sd">        :type kw: dict</span>
+<span class="sd">        :param kw:</span>
+<span class="sd">            Passed through to</span>
+<span class="sd">            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.</span>
 
-<span class="sd">        :type index: str</span>
-<span class="sd">        :param index: (Optional) name of index to use, rather than the</span>
-<span class="sd">                      table&#39;s primary key</span>
-
-<span class="sd">        :type limit: int</span>
-<span class="sd">        :param limit: (Optional) maxiumn number of rows to return</span>
-
-<span class="sd">        :type resume_token: bytes</span>
-<span class="sd">        :param resume_token: token for resuming previously-interrupted read</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
-<span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`</span>
+<span class="sd">        :returns: new wrapper</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">SessionCheckout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-                <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">resume_token</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">SnapshotCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.execute_sql"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.execute_sql">[docs]</a>    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform an ``ExecuteStreamingSql`` API request.</span>
+<div class="viewcode-block" id="Database.batch"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an object which wraps a batch.</span>
 
-<span class="sd">        :type sql: str</span>
-<span class="sd">        :param sql: SQL query statement</span>
+<span class="sd">        The wrapper *must* be used as a context manager, with the batch</span>
+<span class="sd">        as the value returned by the wrapper.</span>
 
-<span class="sd">        :type params: dict, {str -&gt; column value}</span>
-<span class="sd">        :param params: values for parameter replacement.  Keys must match</span>
-<span class="sd">                       the names used in ``sql``.</span>
-
-<span class="sd">        :type param_types:</span>
-<span class="sd">            dict, {str -&gt; :class:`google.spanner.v1.type_pb2.TypeCode`}</span>
-<span class="sd">        :param param_types: (Optional) explicit types for one or more param</span>
-<span class="sd">                            values;  overrides default type detection on the</span>
-<span class="sd">                            back-end.</span>
-
-<span class="sd">        :type query_mode:</span>
-<span class="sd">            :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`</span>
-<span class="sd">        :param query_mode: Mode governing return of results / query plan. See</span>
-<span class="sd">            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</span>
-
-<span class="sd">        :type resume_token: bytes</span>
-<span class="sd">        :param resume_token: token for resuming previously-interrupted query</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
-<span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`</span>
+<span class="sd">        :returns: new wrapper</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">SessionCheckout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span>
-                <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">param_types</span><span class="p">,</span> <span class="n">query_mode</span><span class="p">,</span> <span class="n">resume_token</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">BatchCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Database.run_in_transaction"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.run_in_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">run_in_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a unit of work in a transaction, retrying on abort.</span>
@@ -436,38 +406,20 @@
 <span class="sd">        :rtype: :class:`datetime.datetime`</span>
 <span class="sd">        :returns: timestamp of committed transaction</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="n">SessionCheckout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">run_in_transaction</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+        <span class="c1"># Sanity check: Is there a transaction already running?</span>
+        <span class="c1"># If there is, then raise a red flag. Otherwise, mark that this one</span>
+        <span class="c1"># is running.</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="p">,</span> <span class="s1">&#39;transaction_running&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Spanner does not support nested transactions.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">transaction_running</span> <span class="o">=</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="Database.batch"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return an object which wraps a batch.</span>
-
-<span class="sd">        The wrapper *must* be used as a context manager, with the batch</span>
-<span class="sd">        as the value returned by the wrapper.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`</span>
-<span class="sd">        :returns: new wrapper</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">BatchCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Database.snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return an object which wraps a snapshot.</span>
-
-<span class="sd">        The wrapper *must* be used as a context manager, with the snapshot</span>
-<span class="sd">        as the value returned by the wrapper.</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</span>
-
-<span class="sd">        :type kw: dict</span>
-<span class="sd">        :param kw:</span>
-<span class="sd">            Passed through to</span>
-<span class="sd">            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`</span>
-<span class="sd">        :returns: new wrapper</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">SnapshotCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div></div>
+        <span class="c1"># Check out a session and run the function in a transaction; once</span>
+        <span class="c1"># done, flip the sanity check bit back.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">SessionCheckout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">session</span><span class="o">.</span><span class="n">run_in_transaction</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">transaction_running</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 
 
 <div class="viewcode-block" id="BatchCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.BatchCheckout">[docs]</a><span class="k">class</span> <span class="nc">BatchCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -600,7 +552,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

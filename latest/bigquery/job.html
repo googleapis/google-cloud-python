@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Jobs &#8212; google-cloud 87a46a8 documentation</title>
+    <title>Jobs &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -1753,7 +1753,7 @@ for <code class="xref py py-class docutils literal"><span class="pre">google.api
 
 <dl class="method">
 <dt id="google.cloud.bigquery.job.QueryJob.done">
-<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.done" title="Permalink to this definition">#</a></dt>
+<code class="descname">done</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#QueryJob.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.done" title="Permalink to this definition">#</a></dt>
 <dd><p>Refresh the job and checks if it is complete.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2022,12 +2022,16 @@ configuration for the dataset.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for job to complete before raising
-a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – How long to wait for job to complete before raising a
+<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="query.html#google.cloud.bigquery.query.QueryResults" title="google.cloud.bigquery.query.QueryResults"><code class="xref py py-class docutils literal"><span class="pre">QueryResults</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The query results.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Iterator of row data <code class="xref py py-class docutils literal"><span class="pre">tuple`s.</span> <span class="pre">During</span> <span class="pre">each</span> <span class="pre">page,</span> <span class="pre">the</span>
+<span class="pre">iterator</span> <span class="pre">will</span> <span class="pre">have</span> <span class="pre">the</span> <span class="pre">``total_rows`</span></code> attribute set, which counts
+the total number of rows <strong>in the result set</strong> (this is distinct
+from the total number of rows in the current page:
+<code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code> if the job
 failed or  <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">TimeoutError</span></code></a> if the job did not complete in the
@@ -2222,7 +2226,7 @@ given timeout.</td>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscribing to Messages &#8212; google-cloud 0.27.0 documentation</title>
+    <title>Subscribing to Messages &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.27.0',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -110,7 +110,7 @@ must pass the callback that will be used.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Define the callback.</span>
 <span class="c1"># Note that the callback is defined *before* the subscription is opened.</span>
 <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-    <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>  <span class="c1"># Replace this with your acutal logic.</span>
+    <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>  <span class="c1"># Replace this with your actual logic.</span>
     <span class="n">message</span><span class="o">.</span><span class="n">ack</span><span class="p">()</span>
 
 <span class="c1"># Open the subscription, passing the callback.</span>

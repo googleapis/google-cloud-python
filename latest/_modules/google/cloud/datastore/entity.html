@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.entity &#8212; google-cloud 87a46a8 documentation</title>
+    <title>google.cloud.datastore.entity &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '87a46a8',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -84,29 +84,33 @@
 
 <span class="sd">    .. testsetup:: entity-ctor</span>
 
-<span class="sd">       from google.cloud import datastore</span>
-<span class="sd">       from tests.system.test_system import Config  # system tests</span>
+<span class="sd">        import os</span>
+<span class="sd">        import uuid</span>
 
-<span class="sd">       client = datastore.Client()</span>
-<span class="sd">       key = client.key(&#39;EntityKind&#39;, 1234, namespace=&#39;_Doctest&#39;)</span>
-<span class="sd">       entity = datastore.Entity(key=key)</span>
-<span class="sd">       entity[&#39;property&#39;] = &#39;value&#39;</span>
-<span class="sd">       Config.TO_DELETE.append(entity)</span>
+<span class="sd">        from google.cloud import datastore</span>
+<span class="sd">        from tests.system.test_system import Config  # system tests</span>
 
-<span class="sd">       client.put(entity)</span>
+<span class="sd">        unique = os.getenv(&#39;CIRCLE_BUILD_NUM&#39;, str(uuid.uuid4())[0:8])</span>
+<span class="sd">        client = datastore.Client(namespace=&#39;ns{}&#39;.format(unique))</span>
+<span class="sd">        key = client.key(&#39;EntityKind&#39;, 1234, namespace=&#39;_Doctest&#39;)</span>
+<span class="sd">        entity = datastore.Entity(key=key)</span>
+<span class="sd">        entity[&#39;property&#39;] = &#39;value&#39;</span>
+<span class="sd">        Config.TO_DELETE.append(entity)</span>
+
+<span class="sd">        client.put(entity)</span>
 
 <span class="sd">    .. doctest:: entity-ctor</span>
 
-<span class="sd">       &gt;&gt;&gt; client.get(key)</span>
-<span class="sd">       &lt;Entity(&#39;EntityKind&#39;, 1234) {&#39;property&#39;: &#39;value&#39;}&gt;</span>
+<span class="sd">        &gt;&gt;&gt; client.get(key)</span>
+<span class="sd">        &lt;Entity(&#39;EntityKind&#39;, 1234) {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 
 <span class="sd">    You can the set values on the entity just like you would on any</span>
 <span class="sd">    other dictionary.</span>
 
 <span class="sd">    .. doctest:: entity-ctor</span>
 
-<span class="sd">       &gt;&gt;&gt; entity[&#39;age&#39;] = 20</span>
-<span class="sd">       &gt;&gt;&gt; entity[&#39;name&#39;] = &#39;JJ&#39;</span>
+<span class="sd">        &gt;&gt;&gt; entity[&#39;age&#39;] = 20</span>
+<span class="sd">        &gt;&gt;&gt; entity[&#39;name&#39;] = &#39;JJ&#39;</span>
 
 <span class="sd">    However, not all types are allowed as a value for a Google Cloud Datastore</span>
 <span class="sd">    entity. The following basic types are supported by the API:</span>
@@ -121,10 +125,12 @@
 <span class="sd">    * :class:`~google.cloud.datastore.helpers.GeoPoint`</span>
 <span class="sd">    * :data:`None`</span>
 
-<span class="sd">    In addition, two container types are supported:</span>
+<span class="sd">    In addition, three container types are supported:</span>
 
 <span class="sd">    * :class:`list`</span>
 <span class="sd">    * :class:`~google.cloud.datastore.entity.Entity`</span>
+<span class="sd">    * :class:`dict` (will just be treated like an ``Entity`` without</span>
+<span class="sd">      a key or ``exclude_from_indexes``)</span>
 
 <span class="sd">    Each entry in a list must be one of the value types (basic or</span>
 <span class="sd">    container) and each value in an</span>
@@ -270,7 +276,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/usage.html">Pub / Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>

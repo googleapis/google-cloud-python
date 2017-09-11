@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub &#8212; google-cloud 0.27.0 documentation</title>
+    <title>Pub/Sub &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.27.0',
+        VERSION:     '0.27.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -115,7 +115,7 @@ the topic, and subscribe to that.</p>
 <span class="gp">... </span>    <span class="n">project_id</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;GOOGLE_CLOUD_PROJECT&#39;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">sub</span><span class="o">=</span><span class="s1">&#39;MY_SUBSCRIPTION_NAME&#39;</span><span class="p">,</span>  <span class="c1"># Set this to something appropriate.</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">subscription</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span><span class="n">subscription_name</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The subscription is opened asychronously, and messages are processed by
