@@ -114,7 +114,7 @@ class Credentials(credentials.Scoped, credentials.Signing,
         # pylint: disable=unused-argument
         token, ttl = app_identity.get_access_token(
             self._scopes, self._service_account_id)
-        expiry = _helpers.utcnow() + datetime.timedelta(seconds=ttl)
+        expiry = datetime.datetime.utcfromtimestamp(ttl)
 
         self.token, self.expiry = token, expiry
 

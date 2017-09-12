@@ -17,7 +17,6 @@ import datetime
 import mock
 import pytest
 
-from google.auth import _helpers
 from google.auth import app_engine
 
 
@@ -134,7 +133,7 @@ class TestCredentials(object):
         return_value=datetime.datetime.min)
     def test_refresh(self, utcnow, app_identity):
         token = 'token'
-        ttl = _helpers.CLOCK_SKEW_SECS + 100
+        ttl = 643942923
         app_identity.get_access_token.return_value = token, ttl
         credentials = app_engine.Credentials(scopes=['email'])
 
@@ -143,8 +142,8 @@ class TestCredentials(object):
         app_identity.get_access_token.assert_called_with(
             credentials.scopes, credentials._service_account_id)
         assert credentials.token == token
-        assert credentials.expiry == (
-            utcnow() + datetime.timedelta(seconds=ttl))
+        assert credentials.expiry == datetime.datetime(
+            1990, 5, 29, 1, 2, 3)
         assert credentials.valid
         assert not credentials.expired
 
