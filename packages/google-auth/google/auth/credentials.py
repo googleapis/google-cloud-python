@@ -123,7 +123,7 @@ class Credentials(object):
 
 
 @six.add_metaclass(abc.ABCMeta)
-class ReadOnnlyScoped(object):
+class ReadOnlyScoped(object):
     """Interface for credentials whose scopes can be queried.
 
     OAuth 2.0-based credentials allow limiting access using scopes as described
@@ -152,7 +152,7 @@ class ReadOnnlyScoped(object):
     .. _RFC6749 Section 3.3: https://tools.ietf.org/html/rfc6749#section-3.3
     """
     def __init__(self):
-        super(ReadOnnlyScoped, self).__init__()
+        super(ReadOnlyScoped, self).__init__()
         self._scopes = None
 
     @property
@@ -178,7 +178,7 @@ class ReadOnnlyScoped(object):
         return set(scopes).issubset(set(self._scopes or []))
 
 
-class Scoped(ReadOnnlyScoped):
+class Scoped(ReadOnlyScoped):
     """Interface for credentials whose scopes can be replaced while copying.
 
     OAuth 2.0-based credentials allow limiting access using scopes as described

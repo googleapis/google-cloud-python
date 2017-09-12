@@ -24,7 +24,7 @@ from google.auth import exceptions
 from google.auth.compute_engine import _metadata
 
 
-class Credentials(credentials.ReadOnnlyScoped, credentials.Credentials):
+class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
     """Compute Engine Credentials.
 
     These credentials use the Google Compute Engine metadata server to obtain
