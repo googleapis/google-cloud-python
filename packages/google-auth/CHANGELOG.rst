@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v1.1.0
+------
+
+- Added ``service_account.Credentials.project_id``. (#187)
+- Move read-only methods of ``credentials.Scoped`` into new interface ``credentials.ReadOnlyScoped``. (#195, #196)
+- Make ``compute_engine.Credentials`` derive from ``ReadOnlyScoped`` instead of ``Scoped``. (#195)
+- Fix App Engine's expiration calculation (#197)
+- Split ``crypt`` module into a package to allow alternative implementations. (#189)
+- Add error message to handle case of empty string or missing file for GOOGLE_APPLICATION_CREDENTIALS (#188)
+
 v1.0.2
 ------
 
