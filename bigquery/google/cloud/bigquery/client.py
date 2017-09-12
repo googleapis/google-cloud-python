@@ -18,6 +18,7 @@ from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
@@ -148,7 +149,7 @@ class Client(ClientWithProject):
             extra_params=extra_params)
 
     def dataset(self, dataset_name, project=None):
-        """Construct a dataset bound to this client.
+        """Construct a reference to a dataset bound to this client.
 
         :type dataset_name: str
         :param dataset_name: Name of the dataset.
@@ -157,10 +158,10 @@ class Client(ClientWithProject):
         :param project: (Optional) project ID for the dataset (defaults to
                         the project of the client).
 
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
-        :returns: a new ``Dataset`` instance
+        :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`
+        :returns: a new ``DatasetReference`` instance
         """
-        return Dataset(dataset_name, client=self, project=project)
+        return DatasetReference(project, dataset_name)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
