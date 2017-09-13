@@ -18,8 +18,8 @@ import unittest
 
 from google.gax import errors
 
-from google.cloud.gapic.vision.v1 import image_annotator_client
-from google.cloud.proto.vision.v1 import image_annotator_pb2
+from google.cloud import vision_v1
+from google.cloud.vision_v1.proto import image_annotator_pb2
 
 
 class CustomException(Exception):
@@ -33,13 +33,15 @@ class TestImageAnnotatorClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = image_annotator_client.ImageAnnotatorClient()
+        client = vision_v1.ImageAnnotatorClient()
 
         # Mock request
         requests = []
 
         # Mock response
-        expected_response = image_annotator_pb2.BatchAnnotateImagesResponse()
+        expected_response = {}
+        expected_response = image_annotator_pb2.BatchAnnotateImagesResponse(
+            **expected_response)
         grpc_stub.BatchAnnotateImages.return_value = expected_response
 
         response = client.batch_annotate_images(requests)
@@ -63,7 +65,7 @@ class TestImageAnnotatorClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = image_annotator_client.ImageAnnotatorClient()
+        client = vision_v1.ImageAnnotatorClient()
 
         # Mock request
         requests = []

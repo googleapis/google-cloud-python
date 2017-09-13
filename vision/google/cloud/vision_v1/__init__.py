@@ -14,22 +14,17 @@
 
 from __future__ import absolute_import
 
-from google.cloud.gapic.vision.v1 import image_annotator_client as iac
-from google.cloud.gapic.vision.v1 import enums
-
-from google.cloud.vision.decorators import add_single_feature_methods
-from google.cloud.vision.helpers import VisionHelpers
 from google.cloud.vision_v1 import types
+from google.cloud.vision_v1.gapic import enums
+from google.cloud.vision_v1.gapic import image_annotator_client
 
 
-@add_single_feature_methods
-class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):
-    __doc__ = iac.ImageAnnotatorClient.__doc__
+class ImageAnnotatorClient(image_annotator_client.ImageAnnotatorClient):
+    __doc__ = image_annotator_client.ImageAnnotatorClient.__doc__
     enums = enums
 
 
 __all__ = (
     'enums',
-    'ImageAnnotatorClient',
     'types',
-)
+    'ImageAnnotatorClient', )
