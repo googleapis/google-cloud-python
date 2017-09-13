@@ -19,6 +19,7 @@ from google.api.core import page_iterator
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableReference
 
 
 class AccessEntry(object):
@@ -125,6 +126,14 @@ class DatasetReference(object):
         :returns: the dataset ID.
         """
         return self._dataset_id
+
+    def table(self, table_id):
+        """Constructs a TableReference.
+
+        :rtype: :class:`google.cloud.bigquery.table.TableReference`
+        :returns: a TableReference for a table in this dataset.
+        """
+        return TableReference(self, table_id)
 
 
 class Dataset(object):
