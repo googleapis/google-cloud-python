@@ -48,6 +48,42 @@ _READ_LESS_THAN_SIZE = (
 _DEFAULT_NUM_RETRIES = 6
 
 
+class TableReference(object):
+    """TableReferences are pointers to tables.
+
+    See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
+
+    :type dataset_ref: :class:`google.cloud.bigquery.dataset.DatasetReference`
+    :param dataset_ref: a pointer to the dataset
+
+    :type table_id: str
+    :param table_id: the ID of the table
+    """
+
+    def __init__(self, dataset_ref, table_id):
+        self._dataset_ref = dataset_ref
+        self._table_id = table_id
+
+    @property
+    def dataset_ref(self):
+        """Pointer to the dataset.
+
+        :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`
+        :returns: a pointer to the dataset.
+        """
+        return self._dataset_ref
+
+    @property
+    def table_id(self):
+        """Table ID.
+
+        :rtype: str
+        :returns: the table ID.
+        """
+        return self._table_id
+
+
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
