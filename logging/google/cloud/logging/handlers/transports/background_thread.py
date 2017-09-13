@@ -20,7 +20,6 @@ Uses a background worker to log to Stackdriver Logging asynchronously.
 from __future__ import print_function
 
 import atexit
-import copy
 import logging
 import threading
 
