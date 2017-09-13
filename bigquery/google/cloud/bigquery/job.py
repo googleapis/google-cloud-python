@@ -1362,8 +1362,8 @@ class QueryJob(_AsyncJob):
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
                 project = dest_remote['projectId']
-                dataset = self._client.dataset(
-                    dest_remote['datasetId'], project=project)
+                dataset = Dataset(
+                    dest_remote['datasetId'], self._client, project=project)
                 self.destination = dataset.table(dest_remote['tableId'])
 
         def_ds = configuration.get('defaultDataset')
@@ -1372,7 +1372,7 @@ class QueryJob(_AsyncJob):
                 del self.default_dataset
         else:
             project = def_ds['projectId']
-            self.default_dataset = self._client.dataset(def_ds['datasetId'])
+            self.default_dataset = Dataset(def_ds['datasetId'], self._client)
 
         udf_resources = []
         for udf_mapping in configuration.get(self._UDF_KEY, ()):
@@ -1528,7 +1528,7 @@ class QueryJob(_AsyncJob):
             ds_name = table['datasetId']
             t_dataset = datasets_by_project_name.get((t_project, ds_name))
             if t_dataset is None:
-                t_dataset = client.dataset(ds_name, project=t_project)
+                t_dataset = Dataset(ds_name, client, project=t_project)
                 datasets_by_project_name[(t_project, ds_name)] = t_dataset
 
             t_name = table['tableId']
