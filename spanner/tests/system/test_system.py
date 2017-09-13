@@ -46,8 +46,7 @@ from test_utils.system import unique_resource_id
 from tests._fixtures import DDL_STATEMENTS
 
 
-IS_CIRCLE = os.getenv('CIRCLECI') == 'true'
-CREATE_INSTANCE = IS_CIRCLE or os.getenv(
+CREATE_INSTANCE = os.getenv(
     'GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE') is not None
 
 if CREATE_INSTANCE:
