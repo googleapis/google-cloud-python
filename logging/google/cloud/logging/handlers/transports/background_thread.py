@@ -254,9 +254,7 @@ class BackgroundThreadTransport(Transport):
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
                  batch_size=_DEFAULT_MAX_BATCH_SIZE):
-        http = copy.deepcopy(client._http)
-        self.client = client.__class__(
-            client.project, client._credentials, http)
+        self.client = client
         logger = self.client.logger(name)
         self.worker = _Worker(logger)
         self.worker.start()
