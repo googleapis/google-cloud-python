@@ -28,10 +28,22 @@ from google.cloud._helpers import _to_bytes
 
 _RFC3339_MICROS_NO_ZULU = '%Y-%m-%dT%H:%M:%S.%f'
 
-# Canonical formats for timestamps in BigQuery
+# Canonical formats for timestamps in BigQuery.
+# Timestamps in an API response will always be in UTC, but they
+# can vary in other ways. The separator between the date and time
+# can be 'T' or ' ', the microseconds may be present or not, and
+# the UTC timezone may be formatted as Z or +00:00. See:
 # g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
-_BIGQUERY_TIMESTAMP = '%Y-%m-%d %H:%M:%S%z'
-_BIGQUERY_TIMESTAMP_MICROS = '%Y-%m-%d %H:%M:%S.%f%z'
+_BIGQUERY_TIMESTAMP_FORMATS = [
+    '%Y-%m-%d %H:%M:%S+00:00',
+    '%Y-%m-%d %H:%M:%SZ',
+    '%Y-%m-%d %H:%M:%S.%f+00:00',
+    '%Y-%m-%d %H:%M:%S.%fZ',
+    '%Y-%m-%dT%H:%M:%S+00:00',
+    '%Y-%m-%dT%H:%M:%SZ',
+    '%Y-%m-%dT%H:%M:%S.%f+00:00',
+    '%Y-%m-%dT%H:%M:%S.%fZ',
+]
 
 
 def _not_null(value, field):
@@ -88,16 +100,16 @@ def _timestamp_query_param_from_json(value, field):
         :data:`None`).
     """
     if _not_null(value, field):
-        # Remove final : from timezone because python represents UTC offset
-        # as +HHMM or -HHMM, whereas BigQuery represents it as +HH:MM or -HH:MM
-        value = ''.join(value.rsplit(':', 1))
-        if '.' in value:
-            # YYYY-MM-DDTHH:MM:SS.ffffff+00:00
-            return datetime.datetime.strptime(
-                value, _BIGQUERY_TIMESTAMP_MICROS)
-        else:
-            # YYYY-MM-DDTHH:MM:SS+00:00
-            return datetime.datetime.strptime(value, _BIGQUERY_TIMESTAMP)
+        error = None
+
+        for timefmt in _BIGQUERY_TIMESTAMP_FORMATS:
+            try:
+                return datetime.datetime.strptime(
+                    value, timefmt).replace(tzinfo=UTC)
+            except ValueError as exc:
+                error = exc
+
+        raise error
     else:
         return None
 

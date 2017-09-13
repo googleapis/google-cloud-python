@@ -16,6 +16,7 @@ import base64
 import datetime
 import unittest
 
+import pytest
 import mock
 
 
@@ -167,6 +168,53 @@ class Test_timestamp_query_param_from_json(unittest.TestCase):
 
     def test_w_none_nullable(self):
         self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_timestamp_valid(self):
+        from google.cloud._helpers import UTC
+
+        samples = [
+            (
+                '2016-12-20 15:58:27.339328+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20 15:58:27+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27.339328+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20 15:58:27.339328Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20 15:58:27Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27.339328Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+        ]
+        for timestamp_str, expected_result in samples:
+            self.assertEqual(
+                self._call_fut(timestamp_str, _Field('NULLABLE')),
+                expected_result)
+
+    def test_w_timestamp_invalid(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('definitely-not-a-timestamp', _Field('NULLABLE'))
+
 
 
 class Test_timestamp_from_json(unittest.TestCase):
