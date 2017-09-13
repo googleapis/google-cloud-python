@@ -246,7 +246,20 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'],
                          {'all': True, 'maxResults': 3, 'pageToken': TOKEN})
 
-    def test_dataset(self):
+    def test_dataset_with_specified_project(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DATASET = 'dataset_name'
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        dataset = client.dataset(DATASET, PROJECT)
+        self.assertIsInstance(dataset, DatasetReference)
+        self.assertEqual(dataset.dataset_id, DATASET)
+        self.assertEqual(dataset.project_id, PROJECT)
+
+    def test_dataset_with_default_project(self):
         from google.cloud.bigquery.dataset import DatasetReference
 
         PROJECT = 'PROJECT'
@@ -257,6 +270,7 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         self.assertIsInstance(dataset, DatasetReference)
         self.assertEqual(dataset.dataset_id, DATASET)
+        self.assertEqual(dataset.project_id, PROJECT)
 
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'

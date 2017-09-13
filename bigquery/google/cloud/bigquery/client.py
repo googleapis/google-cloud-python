@@ -149,7 +149,7 @@ class Client(ClientWithProject):
             extra_params=extra_params)
 
     def dataset(self, dataset_name, project=None):
-        """Construct a reference to a dataset bound to this client.
+        """Construct a reference to a dataset.
 
         :type dataset_name: str
         :param dataset_name: Name of the dataset.
@@ -161,6 +161,9 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`
         :returns: a new ``DatasetReference`` instance
         """
+        if project is None:
+            project = self.project
+
         return DatasetReference(project, dataset_name)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
