@@ -46,6 +46,8 @@ jobs:
           name: Run tests - google.cloud.bigtable
           command: |
             if [[ -n $(grep bigtable ~/target_packages) ]]; then
+              test_utils/scripts/circleci/prepare_bigtable.sh
+              export DOWNLOAD_BIGTABLE_SERVER=0 
               nox -f bigtable/nox.py
             fi
       - run:

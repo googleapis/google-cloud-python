@@ -286,10 +286,29 @@ class TestTableAdminAPI(unittest.TestCase):
             # python 2
             from urllib2 import urlopen
 
-
         TEST_SCRIPT = 'tests/retry_test_script.txt'
         SERVER_NAME = 'retry_server'
         SERVER_ZIP = SERVER_NAME + ".tar.gz"
+
+        def download_server():
+            # Download server
+            MOCK_SERVER_URLS = {
+                'Linux': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_linux.tar.gz',
+                'Darwin': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_mac.tar.gz',
+            }
+
+            test_platform = platform.system()
+            if test_platform not in MOCK_SERVER_URLS:
+                self.skip('Retry server not available for platform {0}.'.format(test_platform))
+
+            context = ssl._create_unverified_context()
+            mock_server_download = urlopen(MOCK_SERVER_URLS[test_platform], context=context).read()
+            mock_server_file = open(SERVER_ZIP, 'wb')
+            mock_server_file.write(mock_server_download)
+
+            # Unzip server
+            subprocess.call(['tar', 'zxvf', SERVER_ZIP, '-C', '.'])
+            os.remove(SERVER_ZIP)
 
         def process_scan(table, range, ids):
             range_chunks = range.split(",")
@@ -298,23 +317,10 @@ class TestTableAdminAPI(unittest.TestCase):
             rows = table.read_rows(range_open, range_close)
             rows.consume_all()
 
-        # Download server
-        MOCK_SERVER_URLS = {
-            'Linux': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_linux.tar.gz',
-            'Darwin': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_mac.tar.gz',
-        }
-
-        test_platform = platform.system()
-        if test_platform not in MOCK_SERVER_URLS:
-            self.skip('Retry server not available for platform {0}.'.format(test_platform))
-
-        context = ssl._create_unverified_context()
-        mock_server_download = urlopen(MOCK_SERVER_URLS[test_platform], context=context).read()
-        mock_server_file = open(SERVER_ZIP, 'wb')
-        mock_server_file.write(mock_server_download)
-
-        # Unzip server
-        subprocess.call(['tar', 'zxvf', SERVER_ZIP, '-C', '.'])
+        should_download = os.environ.get("DOWNLOAD_BIGTABLE_SERVER")
+        if should_download is None or should_download == '1':
+            if not os.path.isfile(SERVER_NAME):
+                download_server()
 
         # Connect to server
         server = subprocess.Popen(
@@ -349,7 +355,6 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(server_stdout_lines[-1], "PASS\n")
 
         # Clean up
-        os.remove(SERVER_ZIP)
         os.remove(SERVER_NAME)
 
 class TestDataAPI(unittest.TestCase):

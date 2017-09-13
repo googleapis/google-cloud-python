@@ -51,7 +51,7 @@ class _MethodMock(object):
         """Sync method meant to mock a gRPC stub request."""
         self._stub.method_calls.append((self._name, args, kwargs))
         curr_result, self._stub.results = (self._stub.results[0],
-                                       self._stub.results[1:])
+                                           self._stub.results[1:])
         return curr_result
 
 class _CustomMethodMock(object):
