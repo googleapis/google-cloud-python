@@ -84,8 +84,9 @@ def ensure_database(client):
 def populate_table(database, table_desc):
     all_ = KeySet(all_=True)
     columns = ('pkey', 'chunk_me')
-    rows = list(database.execute_sql(
-        'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
+    with database.snapshot() as snapshot:
+        rows = list(snapshot.execute_sql(
+            'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
     assert len(rows) == 1
     count = rows[0][0]
     if count != table_desc.row_count:
@@ -102,8 +103,9 @@ def populate_table(database, table_desc):
 def populate_table_2_columns(database, table_desc):
     all_ = KeySet(all_=True)
     columns = ('pkey', 'chunk_me', 'chunk_me_2')
-    rows = list(database.execute_sql(
-        'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
+    with database.snapshot() as snapshot:
+        rows = list(snapshot.execute_sql(
+            'SELECT COUNT(*) FROM {}'.format(table_desc.table)))
     assert len(rows) == 1
     count = rows[0][0]
     if count != table_desc.row_count:
