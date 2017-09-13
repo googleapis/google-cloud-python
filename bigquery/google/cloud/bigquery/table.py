@@ -66,7 +66,7 @@ class TableReference(object):
         self._table_id = table_id
 
     @property
-    def dataset_ref(self):
+    def dataset(self):
         """Pointer to the dataset.
 
         :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`
