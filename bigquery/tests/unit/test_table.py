@@ -37,6 +37,26 @@ class _SchemaBase(object):
             self._verify_field(field, r_field)
 
 
+class TestTableReference(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import TableReference
+
+        return TableReference
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset_ref = DatasetReference('project_1', 'dataset_1')
+
+        table_ref = self._make_one(dataset_ref, 'table_1')
+        self.assertIs(table_ref.dataset_ref, dataset_ref)
+        self.assertEqual(table_ref.table_id, 'table_1')
+
+
 class TestTable(unittest.TestCase, _SchemaBase):
 
     PROJECT = 'prahj-ekt'
