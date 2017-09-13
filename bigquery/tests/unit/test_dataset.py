@@ -104,7 +104,7 @@ class TestDatasetReference(unittest.TestCase):
     def test_table(self):
         dataset_ref = self._make_one('some-project-1', 'dataset_1')
         table_ref = dataset_ref.table('table_1')
-        self.assertIs(table_ref.dataset_ref, dataset_ref)
+        self.assertIs(table_ref.dataset, dataset_ref)
         self.assertEqual(table_ref.table_id, 'table_1')
 
 
