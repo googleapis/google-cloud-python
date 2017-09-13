@@ -14,8 +14,8 @@
 
 """Context manager for Cloud Spanner batched writes."""
 
-from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
+from google.cloud.spanner_v1.types import Mutation
+from google.cloud.spanner_v1.types import TransactionOptions
 
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _pb_timestamp_to_datetime

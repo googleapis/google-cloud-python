@@ -14,10 +14,9 @@
 
 """Wrapper for streaming results."""
 
-from google.protobuf.struct_pb2 import ListValue
-from google.protobuf.struct_pb2 import Value
 from google.cloud import exceptions
 from google.cloud.proto.spanner.v1 import type_pb2
+from google.cloud.spanner_v1 import types
 import six
 
 # pylint: disable=ungrouped-imports
@@ -29,10 +28,9 @@ class StreamedResultSet(object):
     """Process a sequence of partial result sets into a single set of row data.
 
     :type response_iterator:
-    :param response_iterator:
-        Iterator yielding
-        :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`
-        instances.
+        Iterator[:class:`~.spanner_v1.types.PartialResultSet`]
+    :param response_iterator: Iterator yielding
+        :class:`google.cloud.spanner_v1.types.PartialResultSet` instances.
 
     :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`
     :param source: Snapshot from which the result set was fetched.
@@ -61,7 +59,7 @@ class StreamedResultSet(object):
     def fields(self):
         """Field descriptors for result set columns.
 
-        :rtype: list of :class:`~google.cloud.proto.spanner.v1.type_pb2.Field`
+        :rtype: list of :class:`~google.cloud.spanner_v1.types.Field`
         :returns: list of fields describing column names / types.
         """
         return self._metadata.row_type.fields
@@ -97,11 +95,11 @@ class StreamedResultSet(object):
     def _merge_chunk(self, value):
         """Merge pending chunk with next value.
 
-        :type value: :class:`~google.protobuf.struct_pb2.Value`
+        :type value: :class:`~google.cloud.spanner_v1.types.Value`
         :param value: continuation of chunked value from previous
                       partial result set.
 
-        :rtype: :class:`~google.protobuf.struct_pb2.Value`
+        :rtype: :class:`~google.cloud.spanner_v1.types.Value`
         :returns: the merged value
         """
         current_column = len(self._current_row)
@@ -113,7 +111,7 @@ class StreamedResultSet(object):
     def _merge_values(self, values):
         """Merge values into rows.
 
-        :type values: list of :class:`~google.protobuf.struct_pb2.Value`
+        :type values: list of :class:`~google.cloud.spanner_v1.types.Value`
         :param values: non-chunked values from partial result set.
         """
         width = len(self.fields)
@@ -216,13 +214,13 @@ class StreamedResultSet(object):
 class Unmergeable(ValueError):
     """Unable to merge two values.
 
-    :type lhs: :class:`google.protobuf.struct_pb2.Value`
+    :type lhs: :class:`google.cloud.spanner_v1.types.Value`
     :param lhs: pending value to be merged
 
-    :type rhs: :class:`google.protobuf.struct_pb2.Value`
+    :type rhs: :class:`google.cloud.spanner_v1.types.Value`
     :param rhs: remaining value to be merged
 
-    :type type_: :class:`google.cloud.proto.spanner.v1.type_pb2.Type`
+    :type type_: :class:`google.cloud.spanner_v1.types.Type`
     :param type_: field type of values being merged
     """
     def __init__(self, lhs, rhs, type_):
@@ -240,7 +238,7 @@ def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
     """Helper for '_merge_by_type'."""
     lhs_kind = lhs.WhichOneof('kind')
     if lhs_kind == 'string_value':
-        return Value(string_value=lhs.string_value + rhs.string_value)
+        return types.Value(string_value=lhs.string_value + rhs.string_value)
     rhs_kind = rhs.WhichOneof('kind')
     array_continuation = (
         lhs_kind == 'number_value' and
@@ -253,7 +251,7 @@ def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
 
 def _merge_string(lhs, rhs, type_):  # pylint: disable=unused-argument
     """Helper for '_merge_by_type'."""
-    return Value(string_value=lhs.string_value + rhs.string_value)
+    return types.Value(string_value=lhs.string_value + rhs.string_value)
 
 
 _UNMERGEABLE_TYPES = (type_pb2.BOOL,)
@@ -279,7 +277,7 @@ def _merge_array(lhs, rhs, type_):
             lhs.append(first)
         else:
             lhs.append(merged)
-    return Value(list_value=ListValue(values=(lhs + rhs)))
+    return types.Value(list_value=types.ListValue(values=(lhs + rhs)))
 
 
 def _merge_struct(lhs, rhs, type_):
@@ -294,7 +292,7 @@ def _merge_struct(lhs, rhs, type_):
     else:
         last = lhs.pop()
         lhs.append(_merge_by_type(last, first, candidate_type))
-    return Value(list_value=ListValue(values=lhs + rhs))
+    return types.Value(list_value=types.ListValue(values=lhs + rhs))
 
 
 _MERGE_BY_TYPE = {
