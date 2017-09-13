@@ -23,7 +23,7 @@ class TestFace(unittest.TestCase):
         return Face
 
     def _make_face_pb(self, *args, **kwargs):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         return image_annotator_pb2.FaceAnnotation(*args, **kwargs)
 
@@ -36,8 +36,8 @@ class TestFace(unittest.TestCase):
             self.face_annotations['faceAnnotations'][0])
 
     def test_face_from_pb(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
-        from google.cloud.proto.vision.v1 import geometry_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
+        from google.cloud.vision_v1.proto import geometry_pb2
 
         position_pb = geometry_pb2.Position(x=1.0, y=2.0, z=3.0)
         landmark_pb = image_annotator_pb2.FaceAnnotation.Landmark(

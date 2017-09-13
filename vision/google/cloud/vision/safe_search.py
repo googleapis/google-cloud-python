@@ -66,7 +66,7 @@ class SafeSearchAnnotation(object):
     def from_pb(cls, image):
         """Factory: construct SafeSearchAnnotation from Vision API response.
 
-        :type image: :class:`~google.cloud.proto.vision.v1.\
+        :type image: :class:`~google.cloud.vision_v1.proto.\
                       image_annotator_pb2.SafeSearchAnnotation`
         :param image: Protobuf response from Vision API with safe search data.
 
