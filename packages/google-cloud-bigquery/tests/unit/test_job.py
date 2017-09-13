@@ -2697,11 +2697,6 @@ class _Client(object):
         self.project = project
         self._connection = connection
 
-    def dataset(self, name, project=None):
-        from google.cloud.bigquery.dataset import Dataset
-
-        return Dataset(name, client=self, project=project)
-
     def _get_query_results(self, job_id):
         from google.cloud.bigquery.query import QueryResults
 
