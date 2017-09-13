@@ -53,7 +53,7 @@ class TestTableReference(unittest.TestCase):
         dataset_ref = DatasetReference('project_1', 'dataset_1')
 
         table_ref = self._make_one(dataset_ref, 'table_1')
-        self.assertIs(table_ref.dataset_ref, dataset_ref)
+        self.assertIs(table_ref.dataset, dataset_ref)
         self.assertEqual(table_ref.table_id, 'table_1')
 
 
