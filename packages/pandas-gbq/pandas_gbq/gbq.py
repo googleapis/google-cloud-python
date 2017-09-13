@@ -5,6 +5,7 @@ from time import sleep
 import uuid
 import time
 import sys
+import os
 
 import numpy as np
 
@@ -279,7 +280,7 @@ class GbqConnector(object):
         from google.oauth2.credentials import Credentials
 
         try:
-            with open('bigquery_credentials.dat') as credentials_file:
+            with open(_get_credentials_file()) as credentials_file:
                 credentials_json = json.load(credentials_file)
         except (IOError, ValueError):
             return None
@@ -307,7 +308,7 @@ class GbqConnector(object):
         .. versionadded 0.2.0
         """
         try:
-            with open('bigquery_credentials.dat', 'w') as credentials_file:
+            with open(_get_credentials_file(), 'w') as credentials_file:
                 credentials_json = {
                     'refresh_token': credentials.refresh_token,
                     'id_token': credentials.id_token,
@@ -790,6 +791,11 @@ class GbqConnector(object):
         sleep(delay)
 
 
+def _get_credentials_file():
+    return os.environ.get(
+        'PANDAS_GBQ_CREDENTIALS_FILE', 'bigquery_credentials.dat')
+
+
 def _parse_data(schema, rows):
     # see:
     # http://pandas.pydata.org/pandas-docs/dev/missing_data.html
@@ -875,7 +881,10 @@ def read_gbq(query, project_id=None, index_col=None, col_order=None,
         authentication (eg. jupyter iPython notebook on remote host)
     auth_local_webserver : boolean, default False
         Use the [local webserver flow] instead of the [console flow] when
-        getting user credentials.
+        getting user credentials. A file named bigquery_credentials.dat will
+        be created in current dir. You can also set PANDAS_GBQ_CREDENTIALS_FILE
+        environment variable so as to define a specific path to store this
+        credential (eg. /etc/keys/bigquery.dat).
 
         .. [local webserver flow]
             http://google-auth-oauthlib.readthedocs.io/en/latest/reference/google_auth_oauthlib.flow.html#google_auth_oauthlib.flow.InstalledAppFlow.run_local_server

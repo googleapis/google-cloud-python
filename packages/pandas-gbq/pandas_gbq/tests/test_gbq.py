@@ -321,6 +321,14 @@ class GBQUnitTests(object):
             from googleapiclient.discovery import build  # noqa
             from googleapiclient.errors import HttpError  # noqa
 
+    def test_should_return_credentials_path_set_by_env_var(self):
+        import mock
+        env = {'PANDAS_GBQ_CREDENTIALS_FILE': '/tmp/dummy.dat'}
+        with mock.patch.dict('os.environ', env):
+            assert gbq._get_credentials_file() == '/tmp/dummy.dat'
+
+        assert gbq._get_credentials_file() == 'bigquery_credentials.dat'
+
     def test_should_return_bigquery_integers_as_python_ints(self):
         result = gbq._parse_entry(1, 'INTEGER')
         assert result == int(1)
