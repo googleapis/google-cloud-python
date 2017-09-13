@@ -127,6 +127,15 @@ class DatasetReference(object):
         """
         return self._dataset_id
 
+    @property
+    def path(self):
+        """URL path for the dataset's APIs.
+
+        :rtype: str
+        :returns: the path based on project and dataset name.
+        """
+        return '/projects/%s/datasets/%s' % (self.project_id, self.dataset_id)
+
     def table(self, table_id):
         """Constructs a TableReference.
 
@@ -181,7 +190,7 @@ class Dataset(object):
         """URL path for the dataset's APIs.
 
         :rtype: str
-        :returns: the path based on project and dataste name.
+        :returns: the path based on project and dataset name.
         """
         return '/projects/%s/datasets/%s' % (self.project, self.name)
 
