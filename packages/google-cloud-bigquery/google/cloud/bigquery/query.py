@@ -329,7 +329,7 @@ class QueryResults(object):
         if self.default_dataset is not None:
             resource['defaultDataset'] = {
                 'projectId': self.project,
-                'datasetId': self.default_dataset.name,
+                'datasetId': self.default_dataset.dataset_id,
             }
 
         if self.max_results is not None:

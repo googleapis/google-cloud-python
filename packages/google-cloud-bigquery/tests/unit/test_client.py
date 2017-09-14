@@ -210,7 +210,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(datasets), len(DATA['datasets']))
         for found, expected in zip(datasets, DATA['datasets']):
             self.assertIsInstance(found, Dataset)
-            self.assertEqual(found.dataset_id, expected['id'])
+            self.assertEqual(found.full_dataset_id, expected['id'])
             self.assertEqual(found.friendly_name, expected['friendlyName'])
         self.assertEqual(token, TOKEN)
 

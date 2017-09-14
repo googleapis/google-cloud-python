@@ -110,7 +110,7 @@ class TestDatasetReference(unittest.TestCase):
 
 class TestDataset(unittest.TestCase):
     PROJECT = 'project'
-    DS_NAME = 'dataset-name'
+    DS_ID = 'dataset-id'
 
     @staticmethod
     def _get_target_class():
@@ -129,7 +129,7 @@ class TestDataset(unittest.TestCase):
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
             tzinfo=UTC)
         self.ETAG = 'ETAG'
-        self.DS_ID = '%s:%s' % (self.PROJECT, self.DS_NAME)
+        self.DS_FULL_ID = '%s:%s' % (self.PROJECT, self.DS_ID)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
 
     def _makeResource(self):
@@ -139,9 +139,9 @@ class TestDataset(unittest.TestCase):
         return {
             'creationTime': self.WHEN_TS * 1000,
             'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'etag': self.ETAG,
-            'id': self.DS_ID,
+            'id': self.DS_FULL_ID,
             'lastModifiedTime': self.WHEN_TS * 1000,
             'location': 'US',
             'selfLink': self.RESOURCE_URL,
@@ -209,17 +209,17 @@ class TestDataset(unittest.TestCase):
 
     def test_ctor_defaults(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
-        self.assertEqual(dataset.name, self.DS_NAME)
+        dataset = self._make_one(self.DS_ID, client)
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertIs(dataset._client, client)
         self.assertEqual(dataset.project, client.project)
         self.assertEqual(
             dataset.path,
-            '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME))
+            '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID))
         self.assertEqual(dataset.access_entries, [])
 
         self.assertIsNone(dataset.created)
-        self.assertIsNone(dataset.dataset_id)
+        self.assertIsNone(dataset.full_dataset_id)
         self.assertIsNone(dataset.etag)
         self.assertIsNone(dataset.modified)
         self.assertIsNone(dataset.self_link)
@@ -237,19 +237,19 @@ class TestDataset(unittest.TestCase):
         entries = [phred, bharney]
         OTHER_PROJECT = 'foo-bar-123'
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client,
+        dataset = self._make_one(self.DS_ID, client,
                                  access_entries=entries,
                                  project=OTHER_PROJECT)
-        self.assertEqual(dataset.name, self.DS_NAME)
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertIs(dataset._client, client)
         self.assertEqual(dataset.project, OTHER_PROJECT)
         self.assertEqual(
             dataset.path,
-            '/projects/%s/datasets/%s' % (OTHER_PROJECT, self.DS_NAME))
+            '/projects/%s/datasets/%s' % (OTHER_PROJECT, self.DS_ID))
         self.assertEqual(dataset.access_entries, entries)
 
         self.assertIsNone(dataset.created)
-        self.assertIsNone(dataset.dataset_id)
+        self.assertIsNone(dataset.full_dataset_id)
         self.assertIsNone(dataset.etag)
         self.assertIsNone(dataset.modified)
         self.assertIsNone(dataset.self_link)
@@ -261,7 +261,7 @@ class TestDataset(unittest.TestCase):
 
     def test_access_entries_setter_non_list(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         with self.assertRaises(TypeError):
             dataset.access_entries = object()
 
@@ -269,7 +269,7 @@ class TestDataset(unittest.TestCase):
         from google.cloud.bigquery.dataset import AccessEntry
 
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         with self.assertRaises(ValueError):
             dataset.access_entries = [phred, object()]
@@ -278,7 +278,7 @@ class TestDataset(unittest.TestCase):
         from google.cloud.bigquery.dataset import AccessEntry
 
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
         dataset.access_entries = [phred, bharney]
@@ -286,49 +286,49 @@ class TestDataset(unittest.TestCase):
 
     def test_default_table_expiration_ms_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         with self.assertRaises(ValueError):
             dataset.default_table_expiration_ms = 'bogus'
 
     def test_default_table_expiration_ms_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         dataset.default_table_expiration_ms = 12345
         self.assertEqual(dataset.default_table_expiration_ms, 12345)
 
     def test_description_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         with self.assertRaises(ValueError):
             dataset.description = 12345
 
     def test_description_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         dataset.description = 'DESCRIPTION'
         self.assertEqual(dataset.description, 'DESCRIPTION')
 
     def test_friendly_name_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         with self.assertRaises(ValueError):
             dataset.friendly_name = 12345
 
     def test_friendly_name_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         dataset.friendly_name = 'FRIENDLY'
         self.assertEqual(dataset.friendly_name, 'FRIENDLY')
 
     def test_location_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         with self.assertRaises(ValueError):
             dataset.location = 12345
 
     def test_location_setter(self):
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client)
+        dataset = self._make_one(self.DS_ID, client)
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
 
@@ -344,10 +344,10 @@ class TestDataset(unittest.TestCase):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {
-            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'datasetReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
             }
         }
         klass = self._get_target_class()
@@ -368,7 +368,7 @@ class TestDataset(unittest.TestCase):
             {'role': 'READER', 'unknown': 'UNKNOWN'},
         ]
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
         with self.assertRaises(ValueError):
             dataset._parse_access_entries(ACCESS)
 
@@ -382,7 +382,7 @@ class TestDataset(unittest.TestCase):
             },
         ]
         client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
         with self.assertRaises(ValueError):
             dataset._parse_access_entries(ACCESS)
 
@@ -391,7 +391,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         dataset.create()
 
@@ -401,7 +401,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {
             'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
         }
         self.assertEqual(req['data'], SENT)
         self._verify_resource_properties(dataset, RESOURCE)
@@ -421,7 +421,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_ID, client=CLIENT1)
         dataset.friendly_name = TITLE
         dataset.description = DESCRIPTION
         VIEW = {
@@ -448,7 +448,7 @@ class TestDataset(unittest.TestCase):
         SENT = {
             'datasetReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
             },
             'description': DESCRIPTION,
             'friendlyName': TITLE,
@@ -474,7 +474,7 @@ class TestDataset(unittest.TestCase):
         self.WHEN = None
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         dataset.create()
 
@@ -484,16 +484,16 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {
             'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
         }
         self.assertEqual(req['data'], SENT)
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         self.assertFalse(dataset.exists())
 
@@ -504,12 +504,12 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_exists_hit_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_ID, client=CLIENT1)
 
         self.assertTrue(dataset.exists(client=CLIENT2))
 
@@ -521,11 +521,11 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         dataset.reload()
 
@@ -536,13 +536,13 @@ class TestDataset(unittest.TestCase):
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_reload_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_ID, client=CLIENT1)
 
         dataset.reload(client=CLIENT2)
 
@@ -557,13 +557,13 @@ class TestDataset(unittest.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         with self.assertRaises(ValueError):
             dataset.patch(default_table_expiration_ms='BOGUS')
 
     def test_patch_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         RESOURCE = self._makeResource()
@@ -571,7 +571,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         dataset.patch(description=DESCRIPTION, friendly_name=TITLE)
 
@@ -587,7 +587,7 @@ class TestDataset(unittest.TestCase):
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_patch_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         DEF_TABLE_EXP = 12345
         LOCATION = 'EU'
         RESOURCE = self._makeResource()
@@ -597,7 +597,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_ID, client=CLIENT1)
 
         dataset.patch(client=CLIENT2,
                       default_table_expiration_ms=DEF_TABLE_EXP,
@@ -616,7 +616,7 @@ class TestDataset(unittest.TestCase):
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_update_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         RESOURCE = self._makeResource()
@@ -624,7 +624,7 @@ class TestDataset(unittest.TestCase):
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
         dataset.description = DESCRIPTION
         dataset.friendly_name = TITLE
 
@@ -635,7 +635,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['method'], 'PUT')
         SENT = {
             'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
         }
@@ -644,7 +644,7 @@ class TestDataset(unittest.TestCase):
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_update_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         DEF_TABLE_EXP = 12345
         LOCATION = 'EU'
         RESOURCE = self._makeResource()
@@ -654,7 +654,7 @@ class TestDataset(unittest.TestCase):
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_ID, client=CLIENT1)
         dataset.default_table_expiration_ms = DEF_TABLE_EXP
         dataset.location = LOCATION
 
@@ -667,7 +667,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {
             'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'defaultTableExpirationMs': 12345,
             'location': 'EU',
         }
@@ -675,10 +675,10 @@ class TestDataset(unittest.TestCase):
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_delete_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         dataset.delete()
 
@@ -688,12 +688,12 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_delete_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
+        dataset = self._make_one(self.DS_ID, client=CLIENT1)
 
         dataset.delete(client=CLIENT2)
 
@@ -708,7 +708,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         iterator = dataset.list_tables()
         self.assertIs(iterator.dataset, dataset)
@@ -721,7 +721,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_tables_defaults(self):
@@ -730,21 +730,21 @@ class TestDataset(unittest.TestCase):
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         TOKEN = 'TOKEN'
         DATA = {
             'nextPageToken': TOKEN,
             'tables': [
                 {'kind': 'bigquery#table',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_1),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_1),
                  'tableReference': {'tableId': TABLE_1,
-                                    'datasetId': self.DS_NAME,
+                                    'datasetId': self.DS_ID,
                                     'projectId': self.PROJECT},
                  'type': 'TABLE'},
                 {'kind': 'bigquery#table',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_2),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_2),
                  'tableReference': {'tableId': TABLE_2,
-                                    'datasetId': self.DS_NAME,
+                                    'datasetId': self.DS_ID,
                                     'projectId': self.PROJECT},
                  'type': 'TABLE'},
             ]
@@ -752,7 +752,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         iterator = dataset.list_tables()
         self.assertIs(iterator.dataset, dataset)
@@ -778,20 +778,20 @@ class TestDataset(unittest.TestCase):
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         TOKEN = 'TOKEN'
         DATA = {
             'tables': [
                 {'kind': 'bigquery#dataset',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_1),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_1),
                  'tableReference': {'tableId': TABLE_1,
-                                    'datasetId': self.DS_NAME,
+                                    'datasetId': self.DS_ID,
                                     'projectId': self.PROJECT},
                  'type': 'TABLE'},
                 {'kind': 'bigquery#dataset',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_2),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_2),
                  'tableReference': {'tableId': TABLE_2,
-                                    'datasetId': self.DS_NAME,
+                                    'datasetId': self.DS_ID,
                                     'projectId': self.PROJECT},
                  'type': 'TABLE'},
             ]
@@ -799,7 +799,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
 
         iterator = dataset.list_tables(max_results=3, page_token=TOKEN)
         self.assertIs(iterator.dataset, dataset)
@@ -826,7 +826,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
         table = dataset.table('table_name')
         self.assertIsInstance(table, Table)
         self.assertEqual(table.name, 'table_name')
@@ -839,7 +839,7 @@ class TestDataset(unittest.TestCase):
 
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
+        dataset = self._make_one(self.DS_ID, client=client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = dataset.table('table_name', schema=[full_name, age])
