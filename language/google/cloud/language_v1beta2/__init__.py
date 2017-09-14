@@ -14,17 +14,17 @@
 
 from __future__ import absolute_import
 
-from google.cloud.gapic.language.v1beta2 import language_service_client as lsc
-from google.cloud.gapic.language.v1beta2 import enums
-
 from google.cloud.language_v1beta2 import types
+from google.cloud.language_v1beta2.gapic import enums
+from google.cloud.language_v1beta2.gapic import language_service_client
 
 
-LanguageServiceClient = lsc.LanguageServiceClient
+class LanguageServiceClient(language_service_client.LanguageServiceClient):
+    __doc__ = language_service_client.LanguageServiceClient.__doc__
+    enums = enums
 
 
 __all__ = (
     'enums',
-    'LanguageServiceClient',
     'types',
-)
+    'LanguageServiceClient', )
