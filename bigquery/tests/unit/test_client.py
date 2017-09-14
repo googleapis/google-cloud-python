@@ -285,24 +285,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         self.assertEqual(dataset.name, dataset_id)
 
-    # def test_reload_w_alternate_client(self):
-    #     PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
-    #     RESOURCE = self._makeResource()
-    #     conn1 = _Connection()
-    #     CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-    #     conn2 = _Connection(RESOURCE)
-    #     CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-    #     dataset = self._make_one(self.DS_NAME, client=CLIENT1)
-    #
-    #     dataset.reload(client=CLIENT2)
-    #
-    #     self.assertEqual(len(conn1._requested), 0)
-    #     self.assertEqual(len(conn2._requested), 1)
-    #     req = conn2._requested[0]
-    #     self.assertEqual(req['method'], 'GET')
-    #     self.assertEqual(req['path'], '/%s' % PATH)
-    #     self._verify_resource_properties(dataset, RESOURCE)
-
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _make_credentials()
