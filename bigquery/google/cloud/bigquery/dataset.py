@@ -142,8 +142,8 @@ class Dataset(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type name: str
-    :param name: the name of the dataset
+    :type dataset_id: str
+    :param dataset_id: the ID of the dataset
 
     :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
@@ -159,8 +159,8 @@ class Dataset(object):
 
     _access_entries = None
 
-    def __init__(self, name, client, access_entries=(), project=None):
-        self.name = name
+    def __init__(self, dataset_id, client, access_entries=(), project=None):
+        self.dataset_id = dataset_id
         self._client = client
         self._properties = {}
         # Let the @property do validation.
@@ -181,9 +181,9 @@ class Dataset(object):
         """URL path for the dataset's APIs.
 
         :rtype: str
-        :returns: the path based on project and dataste name.
+        :returns: the path based on project and dataset ID.
         """
-        return '/projects/%s/datasets/%s' % (self.project, self.name)
+        return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
 
     @property
     def access_entries(self):
@@ -221,8 +221,8 @@ class Dataset(object):
             return _datetime_from_microseconds(1000.0 * creation_time)
 
     @property
-    def dataset_id(self):
-        """ID for the dataset resource.
+    def full_dataset_id(self):
+        """ID for the dataset resource, in the form "project_id:dataset_id".
 
         :rtype: str, or ``NoneType``
         :returns: the ID (None until set from the server).
@@ -365,8 +365,8 @@ class Dataset(object):
                 'datasetId' not in resource['datasetReference']):
             raise KeyError('Resource lacks required identity information:'
                            '["datasetReference"]["datasetId"]')
-        name = resource['datasetReference']['datasetId']
-        dataset = cls(name, client=client)
+        dataset_id = resource['datasetReference']['datasetId']
+        dataset = cls(dataset_id, client=client)
         dataset._set_properties(resource)
         return dataset
 
@@ -444,7 +444,7 @@ class Dataset(object):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'datasetReference': {
-                'projectId': self.project, 'datasetId': self.name},
+                'projectId': self.project, 'datasetId': self.dataset_id},
         }
         if self.default_table_expiration_ms is not None:
             value = self.default_table_expiration_ms
@@ -610,7 +610,7 @@ class Dataset(object):
         :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
                   contained within the current dataset.
         """
-        path = '/projects/%s/datasets/%s/tables' % (self.project, self.name)
+        path = '/projects/%s/datasets/%s/tables' % (self.project, self.dataset_id)
         result = page_iterator.HTTPIterator(
             client=self._client,
             api_request=self._client._connection.api_request,
