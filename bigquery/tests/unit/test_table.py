@@ -80,7 +80,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
             tzinfo=UTC)
         self.ETAG = 'ETAG'
-        self.TABLE_ID = '%s:%s:%s' % (
+        self.TABLE_FULL_ID = '%s:%s:%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.NUM_BYTES = 12345
@@ -98,7 +98,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
             'etag': 'ETAG',
-            'id': self.TABLE_ID,
+            'id': self.TABLE_FULL_ID,
             'lastModifiedTime': self.WHEN_TS * 1000,
             'location': 'US',
             'selfLink': self.RESOURCE_URL,
@@ -133,7 +133,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         else:
             self.assertIsNone(table.self_link)
 
-        self.assertEqual(table.table_id, self.TABLE_ID)
+        self.assertEqual(table.full_table_id, self.TABLE_FULL_ID)
         self.assertEqual(table.table_type,
                          'TABLE' if 'view' not in resource else 'VIEW')
 
@@ -168,7 +168,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         table = self._make_one(self.TABLE_NAME, dataset)
-        self.assertEqual(table.name, self.TABLE_NAME)
+        self.assertEqual(table.table_id, self.TABLE_NAME)
         self.assertIs(table._dataset, dataset)
         self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.dataset_id, self.DS_ID)
@@ -184,7 +184,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.num_bytes)
         self.assertIsNone(table.num_rows)
         self.assertIsNone(table.self_link)
-        self.assertIsNone(table.table_id)
+        self.assertIsNone(table.full_table_id)
         self.assertIsNone(table.table_type)
 
         self.assertIsNone(table.description)
@@ -284,7 +284,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
-        TABLE_ID = '%s:%s:%s' % (
+        TABLE_FULL_ID = '%s:%s:%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
@@ -297,7 +297,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table._properties['numBytes'] = 12345
         table._properties['numRows'] = 66
         table._properties['selfLink'] = URL
-        table._properties['id'] = TABLE_ID
+        table._properties['id'] = TABLE_FULL_ID
         table._properties['type'] = 'TABLE'
 
         self.assertEqual(table.created, CREATED)
@@ -306,7 +306,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.num_bytes, 12345)
         self.assertEqual(table.num_rows, 66)
         self.assertEqual(table.self_link, URL)
-        self.assertEqual(table.table_id, TABLE_ID)
+        self.assertEqual(table.full_table_id, TABLE_FULL_ID)
         self.assertEqual(table.table_type, 'TABLE')
 
     def test_description_setter_bad_value(self):
@@ -431,7 +431,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         }
         klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE, dataset)
-        self.assertEqual(table.name, self.TABLE_NAME)
+        self.assertEqual(table.table_id, self.TABLE_NAME)
         self.assertIs(table._dataset, dataset)
         self._verifyResourceProperties(table, RESOURCE)
 
@@ -1681,7 +1681,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         data = b'goodbye gudbi gootbee'
         stream = io.BytesIO(data)
         metadata = _get_upload_metadata(
-            'CSV', table._schema, table._dataset, table.name)
+            'CSV', table._schema, table._dataset, table.table_id)
         upload, transport = table._initiate_resumable_upload(
             client, stream, metadata, num_retries)
 
@@ -1747,7 +1747,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         data = b'Bzzzz-zap \x00\x01\xf4'
         stream = io.BytesIO(data)
         metadata = _get_upload_metadata(
-            'CSV', table._schema, table._dataset, table.name)
+            'CSV', table._schema, table._dataset, table.table_id)
         size = len(data)
         response = table._do_multipart_upload(
             client, stream, metadata, size, num_retries)
@@ -1899,7 +1899,7 @@ class TestTableUpload(object):
                     'destinationTable': {
                         'projectId': table._dataset._client.project,
                         'datasetId': table.dataset_id,
-                        'tableId': table.name,
+                        'tableId': table.table_id,
                     },
                     'allowJaggedRows': config_args['allow_jagged_rows'],
                     'allowQuotedNewlines':
