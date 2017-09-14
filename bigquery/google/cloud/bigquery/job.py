@@ -774,7 +774,7 @@ class LoadJob(_AsyncJob):
                     'destinationTable': {
                         'projectId': self.destination.project,
                         'datasetId': self.destination.dataset_id,
-                        'tableId': self.destination.name,
+                        'tableId': self.destination.table_id,
                     },
                 },
             },
@@ -901,7 +901,7 @@ class CopyJob(_AsyncJob):
         source_refs = [{
             'projectId': table.project,
             'datasetId': table.dataset_id,
-            'tableId': table.name,
+            'tableId': table.table_id,
         } for table in self.sources]
 
         resource = {
@@ -915,7 +915,7 @@ class CopyJob(_AsyncJob):
                     'destinationTable': {
                         'projectId': self.destination.project,
                         'datasetId': self.destination.dataset_id,
-                        'tableId': self.destination.name,
+                        'tableId': self.destination.table_id,
                     },
                 },
             },
@@ -1059,7 +1059,7 @@ class ExtractJob(_AsyncJob):
         source_ref = {
             'projectId': self.source.project,
             'datasetId': self.source.dataset_id,
-            'tableId': self.source.name,
+            'tableId': self.source.table_id,
         }
 
         resource = {
@@ -1248,7 +1248,7 @@ class QueryJob(_AsyncJob):
             return {
                 'projectId': self.destination.project,
                 'datasetId': self.destination.dataset_id,
-                'tableId': self.destination.name,
+                'tableId': self.destination.table_id,
             }
 
     def _populate_config_resource_booleans(self, configuration):
