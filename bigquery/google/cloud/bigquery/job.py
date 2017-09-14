@@ -773,7 +773,7 @@ class LoadJob(_AsyncJob):
                     'sourceUris': self.source_uris,
                     'destinationTable': {
                         'projectId': self.destination.project,
-                        'datasetId': self.destination.dataset_name,
+                        'datasetId': self.destination.dataset_id,
                         'tableId': self.destination.name,
                     },
                 },
@@ -900,7 +900,7 @@ class CopyJob(_AsyncJob):
 
         source_refs = [{
             'projectId': table.project,
-            'datasetId': table.dataset_name,
+            'datasetId': table.dataset_id,
             'tableId': table.name,
         } for table in self.sources]
 
@@ -914,7 +914,7 @@ class CopyJob(_AsyncJob):
                     'sourceTables': source_refs,
                     'destinationTable': {
                         'projectId': self.destination.project,
-                        'datasetId': self.destination.dataset_name,
+                        'datasetId': self.destination.dataset_id,
                         'tableId': self.destination.name,
                     },
                 },
@@ -1058,7 +1058,7 @@ class ExtractJob(_AsyncJob):
 
         source_ref = {
             'projectId': self.source.project,
-            'datasetId': self.source.dataset_name,
+            'datasetId': self.source.dataset_id,
             'tableId': self.source.name,
         }
 
@@ -1247,7 +1247,7 @@ class QueryJob(_AsyncJob):
         if self.destination is not None:
             return {
                 'projectId': self.destination.project,
-                'datasetId': self.destination.dataset_name,
+                'datasetId': self.destination.dataset_id,
                 'tableId': self.destination.name,
             }
 
@@ -1271,7 +1271,7 @@ class QueryJob(_AsyncJob):
         if self.default_dataset is not None:
             configuration['defaultDataset'] = {
                 'projectId': self.default_dataset.project,
-                'datasetId': self.default_dataset.name,
+                'datasetId': self.default_dataset.dataset_id,
             }
         if self.destination is not None:
             table_res = self._destination_table_resource()
