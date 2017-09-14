@@ -90,8 +90,8 @@ class Table(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type name: str
-    :param name: the name of the table
+    :type table_id: str
+    :param table_id: the ID of the table
 
     :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
     :param dataset: The dataset which contains the table.
@@ -102,8 +102,8 @@ class Table(object):
 
     _schema = None
 
-    def __init__(self, name, dataset, schema=()):
-        self.name = name
+    def __init__(self, table_id, dataset, schema=()):
+        self._table_id = table_id
         self._dataset = dataset
         self._properties = {}
         # Let the @property do validation.
@@ -128,13 +128,22 @@ class Table(object):
         return self._dataset.dataset_id
 
     @property
+    def table_id(self):
+        """ID of the table.
+
+        :rtype: str
+        :returns: the table ID.
+        """
+        return self._table_id
+
+    @property
     def path(self):
         """URL path for the table's APIs.
 
         :rtype: str
-        :returns: the path based on project and dataste name.
+        :returns: the path based on project, dataset and table IDs.
         """
-        return '%s/tables/%s' % (self._dataset.path, self.name)
+        return '%s/tables/%s' % (self._dataset.path, self.table_id)
 
     @property
     def schema(self):
@@ -224,11 +233,11 @@ class Table(object):
         return self._properties.get('selfLink')
 
     @property
-    def table_id(self):
-        """ID for the table resource.
+    def full_table_id(self):
+        """ID for the table, in the form ``project_id:dataset_id:table_id``.
 
         :rtype: str, or ``NoneType``
-        :returns: the ID (None until set from the server).
+        :returns: the full ID (None until set from the server).
         """
         return self._properties.get('id')
 
@@ -463,7 +472,7 @@ class Table(object):
         """
         query = self._require_client(client).run_sync_query(
             'SELECT partition_id from [%s.%s$__PARTITIONS_SUMMARY__]' %
-            (self.dataset_id, self.name))
+            (self.dataset_id, self.table_id))
         query.run()
         return [row[0] for row in query.rows]
 
@@ -484,8 +493,8 @@ class Table(object):
                 'tableId' not in resource['tableReference']):
             raise KeyError('Resource lacks required identity information:'
                            '["tableReference"]["tableId"]')
-        table_name = resource['tableReference']['tableId']
-        table = cls(table_name, dataset=dataset)
+        table_id = resource['tableReference']['tableId']
+        table = cls(table_id, dataset=dataset)
         table._set_properties(resource)
         return table
 
@@ -528,7 +537,7 @@ class Table(object):
             'tableReference': {
                 'projectId': self._dataset.project,
                 'datasetId': self._dataset.dataset_id,
-                'tableId': self.name},
+                'tableId': self.table_id},
         }
         if self.description is not None:
             resource['description'] = self.description
@@ -1181,7 +1190,7 @@ class Table(object):
         _maybe_rewind(file_obj, rewind=rewind)
         _check_mode(file_obj)
         metadata = _get_upload_metadata(
-            source_format, self._schema, self._dataset, self.name)
+            source_format, self._schema, self._dataset, self.table_id)
         _configure_job_metadata(metadata, allow_jagged_rows,
                                 allow_quoted_newlines, create_disposition,
                                 encoding, field_delimiter,
@@ -1346,7 +1355,7 @@ def _get_upload_headers(user_agent):
     }
 
 
-def _get_upload_metadata(source_format, schema, dataset, name):
+def _get_upload_metadata(source_format, schema, dataset, table_id):
     """Get base metadata for creating a table.
 
     :type source_format: str
@@ -1359,8 +1368,8 @@ def _get_upload_metadata(source_format, schema, dataset, name):
     :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
     :param dataset: A dataset which contains a table.
 
-    :type name: str
-    :param name: The name of the table.
+    :type table_id: str
+    :param table_id: The table_id of the table.
 
     :rtype: dict
     :returns: The metadata dictionary.
@@ -1370,7 +1379,7 @@ def _get_upload_metadata(source_format, schema, dataset, name):
         'destinationTable': {
             'projectId': dataset.project,
             'datasetId': dataset.dataset_id,
-            'tableId': name,
+            'tableId': table_id,
         },
     }
     if schema:

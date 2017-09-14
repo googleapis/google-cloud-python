@@ -763,7 +763,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
             self.assertIsInstance(found, Table)
-            self.assertEqual(found.table_id, expected['id'])
+            self.assertEqual(found.full_table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertEqual(token, TOKEN)
 
@@ -810,7 +810,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
             self.assertIsInstance(found, Table)
-            self.assertEqual(found.table_id, expected['id'])
+            self.assertEqual(found.full_table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertIsNone(token)
 
@@ -827,9 +827,9 @@ class TestDataset(unittest.TestCase):
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._make_one(self.DS_ID, client=client)
-        table = dataset.table('table_name')
+        table = dataset.table('table_id')
         self.assertIsInstance(table, Table)
-        self.assertEqual(table.name, 'table_name')
+        self.assertEqual(table.table_id, 'table_id')
         self.assertIs(table._dataset, dataset)
         self.assertEqual(table.schema, [])
 
@@ -842,9 +842,9 @@ class TestDataset(unittest.TestCase):
         dataset = self._make_one(self.DS_ID, client=client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = dataset.table('table_name', schema=[full_name, age])
+        table = dataset.table('table_id', schema=[full_name, age])
         self.assertIsInstance(table, Table)
-        self.assertEqual(table.name, 'table_name')
+        self.assertEqual(table.table_id, 'table_id')
         self.assertIs(table._dataset, dataset)
         self.assertEqual(table.schema, [full_name, age])
 
