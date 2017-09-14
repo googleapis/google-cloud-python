@@ -2230,7 +2230,8 @@ class Test__get_upload_metadata(unittest.TestCase):
 
     def test_empty_schema(self):
         source_format = 'AVRO'
-        dataset = mock.Mock(project='prediction', spec=['dataset_id', 'project'])
+        dataset = mock.Mock(project='prediction',
+                            spec=['dataset_id', 'project'])
         dataset.dataset_id = 'market'  # mock.Mock() treats `name` specially.
         table_name = 'chairs'
         metadata = self._call_fut(source_format, [], dataset, table_name)
