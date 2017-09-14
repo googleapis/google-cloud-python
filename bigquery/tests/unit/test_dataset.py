@@ -520,39 +520,6 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
-    def test_reload_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_NAME, client=client)
-
-        dataset.reload()
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self._verify_resource_properties(dataset, RESOURCE)
-
-    def test_reload_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
-        RESOURCE = self._makeResource()
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_NAME, client=CLIENT1)
-
-        dataset.reload(client=CLIENT2)
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self._verify_resource_properties(dataset, RESOURCE)
-
     def test_patch_w_invalid_expiration(self):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
