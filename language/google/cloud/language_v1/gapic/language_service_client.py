@@ -70,7 +70,7 @@ class LanguageServiceClient(object):
                 which to make calls.
             credentials (~google.auth.credentials.Credentials): The authorization
                 credentials to attach to requests. These credentials identify this
-                 application to the service.
+                application to the service.
             ssl_credentials (~grpc.ChannelCredentials): A
                 ``ChannelCredentials`` instance for use with an SSL-enabled
                 channel.
