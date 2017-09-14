@@ -83,7 +83,7 @@ class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
     DS_ID = 'datset_id'
-    TABLE_NAME = 'table_name'
+    TABLE_ID = 'table_id'
     JOB_NAME = 'job_name'
 
     def _make_one(self, *args, **kw):
@@ -207,7 +207,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         config['destinationTable'] = {
             'projectId': self.PROJECT,
             'datasetId': self.DS_ID,
-            'tableId': self.TABLE_NAME,
+            'tableId': self.TABLE_ID,
         }
 
         if ended:
@@ -276,7 +276,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         table_ref = config['destinationTable']
         self.assertEqual(job.destination.project, table_ref['projectId'])
         self.assertEqual(job.destination.dataset_id, table_ref['datasetId'])
-        self.assertEqual(job.destination.name, table_ref['tableId'])
+        self.assertEqual(job.destination.table_id, table_ref['tableId'])
 
         if 'fieldDelimiter' in config:
             self.assertEqual(job.field_delimiter,
@@ -544,7 +544,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'destinationTable': {
                         'projectId': self.PROJECT,
                         'datasetId': self.DS_ID,
-                        'tableId': self.TABLE_NAME,
+                        'tableId': self.TABLE_ID,
                     },
                 }
             },
@@ -604,7 +604,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'destinationTable': {
                         'projectId': self.PROJECT,
                         'datasetId': self.DS_ID,
-                        'tableId': self.TABLE_NAME,
+                        'tableId': self.TABLE_ID,
                     },
                 },
             },
@@ -639,7 +639,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'destinationTable': {
                         'projectId': self.PROJECT,
                         'datasetId': self.DS_ID,
-                        'tableId': self.TABLE_NAME,
+                        'tableId': self.TABLE_ID,
                     },
                     'autodetect': True
                 },
@@ -663,7 +663,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             'destinationTable': {
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_ID,
-                'tableId': self.TABLE_NAME,
+                'tableId': self.TABLE_ID,
             },
             'allowJaggedRows': True,
             'allowQuotedNewlines': True,
@@ -867,7 +867,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         table_ref = config['destinationTable']
         self.assertEqual(job.destination.project, table_ref['projectId'])
         self.assertEqual(job.destination.dataset_id, table_ref['datasetId'])
-        self.assertEqual(job.destination.name, table_ref['tableId'])
+        self.assertEqual(job.destination.table_id, table_ref['tableId'])
 
         sources = config.get('sourceTables')
         if sources is None:
@@ -876,7 +876,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         for table_ref, table in zip(sources, job.sources):
             self.assertEqual(table.project, table_ref['projectId'])
             self.assertEqual(table.dataset_id, table_ref['datasetId'])
-            self.assertEqual(table.name, table_ref['tableId'])
+            self.assertEqual(table.table_id, table_ref['tableId'])
 
         if 'createDisposition' in config:
             self.assertEqual(job.create_disposition,
@@ -1219,7 +1219,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         table_ref = config['sourceTable']
         self.assertEqual(job.source.project, table_ref['projectId'])
         self.assertEqual(job.source.dataset_id, table_ref['datasetId'])
-        self.assertEqual(job.source.name, table_ref['tableId'])
+        self.assertEqual(job.source.table_id, table_ref['tableId'])
 
         if 'compression' in config:
             self.assertEqual(job.compression,
@@ -1614,7 +1614,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             tb_ref = {
                 'projectId': table.project,
                 'datasetId': table.dataset_id,
-                'tableId': table.name
+                'tableId': table.table_id
             }
             self.assertEqual(tb_ref, query_config['destinationTable'])
         else:
@@ -1934,21 +1934,21 @@ class TestQueryJob(unittest.TestCase, _Base):
         local1, local2, remote = job.referenced_tables
 
         self.assertIsInstance(local1, Table)
-        self.assertEqual(local1.name, 'local1')
+        self.assertEqual(local1.table_id, 'local1')
         self.assertIsInstance(local1._dataset, Dataset)
         self.assertEqual(local1.dataset_id, 'dataset')
         self.assertEqual(local1.project, self.PROJECT)
         self.assertIs(local1._dataset._client, client)
 
         self.assertIsInstance(local2, Table)
-        self.assertEqual(local2.name, 'local2')
+        self.assertEqual(local2.table_id, 'local2')
         self.assertIsInstance(local2._dataset, Dataset)
         self.assertEqual(local2.dataset_id, 'dataset')
         self.assertEqual(local2.project, self.PROJECT)
         self.assertIs(local2._dataset._client, client)
 
         self.assertIsInstance(remote, Table)
-        self.assertEqual(remote.name, 'other-table')
+        self.assertEqual(remote.table_id, 'other-table')
         self.assertIsInstance(remote._dataset, Dataset)
         self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
@@ -2706,14 +2706,14 @@ class _Client(object):
 
 class _Table(object):
 
-    def __init__(self, name=None):
-        self._name = name
+    def __init__(self, table_id=None):
+        self._table_id = table_id
 
     @property
-    def name(self):
-        if self._name is not None:
-            return self._name
-        return TestLoadJob.TABLE_NAME
+    def table_id(self):
+        if self._table_id is not None:
+            return self._table_id
+        return TestLoadJob.TABLE_ID
 
     @property
     def project(self):
