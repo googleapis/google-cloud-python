@@ -543,6 +543,108 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             sorted(actual_rows, key=by_age), sorted(rows, key=by_age))
 
+    def _load_table_for_extract_table(
+            self, storage_client, rows, bucket_name, blob_name, table):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        local_id = unique_resource_id()
+        gs_url = 'gs://{}/{}'.format(bucket_name, blob_name)
+
+        # In the **very** rare case the bucket name is reserved, this
+        # fails with a ConnectionError.
+        bucket = storage_client.create_bucket(bucket_name)
+        self.to_delete.append(bucket)
+        blob = bucket.blob(blob_name)
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(('Full Name', 'Age'))
+                writer.writerows(rows)
+
+            with open(temp.name, 'rb') as csv_read:
+                blob.upload_from_file(csv_read, content_type='text/csv')
+        self.to_delete.insert(0, blob)
+
+        dataset = Dataset(
+            table.dataset.dataset_id, Config.CLIENT)
+        retry_403(dataset.create)()
+        self.to_delete.append(dataset)
+        table = dataset.table(table.table_id)
+        self.to_delete.insert(0, table)
+        job = Config.CLIENT.load_table_from_storage(
+            'bq_extract_storage_test_' + local_id, table, gs_url)
+        job.autodetect = True
+        job.begin()
+        # Allow for 90 seconds of "warm up" before rows visible.  See
+        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
+        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
+
+    def test_extract_table(self):
+        from google.cloud.storage import Client as StorageClient
+
+        storage_client = StorageClient()
+        local_id = unique_resource_id()
+        bucket_name = 'bq_extract_test' + local_id
+        blob_name = 'person_ages.csv'
+        dataset_id = _make_dataset_id('load_gcs_then_extract')
+        table_id = 'test_table'
+        table = Config.CLIENT.dataset(dataset_id).table(table_id)
+        rows = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+        self._load_table_for_extract_table(
+            storage_client, rows, bucket_name, blob_name, table)
+        bucket = storage_client.bucket(bucket_name)
+        destination_blob_name = 'person_ages_out.csv'
+        destination = bucket.blob(destination_blob_name)
+        destination_uri = 'gs://{}/person_ages_out.csv'.format(bucket_name)
+
+        job = Config.CLIENT.extract_table(table, destination_uri)
+        job.result()
+
+        self.to_delete.insert(0, destination)
+        got = destination.download_as_string().decode('utf-8')
+        self.assertIn('Bharney Rhubble', got)
+
+    def test_extract_table_w_job_config(self):
+        from google.cloud.storage import Client as StorageClient
+
+        storage_client = StorageClient()
+        local_id = unique_resource_id()
+        bucket_name = 'bq_extract_test' + local_id
+        blob_name = 'person_ages.csv'
+        dataset_id = _make_dataset_id('load_gcs_then_extract')
+        table_id = 'test_table'
+        table = Config.CLIENT.dataset(dataset_id).table(table_id)
+        rows = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+        self._load_table_for_extract_table(
+            storage_client, rows, bucket_name, blob_name, table)
+        bucket = storage_client.bucket(bucket_name)
+        destination_blob_name = 'person_ages_out.csv'
+        destination = bucket.blob(destination_blob_name)
+        destination_uri = 'gs://{}/person_ages_out.csv'.format(bucket_name)
+
+        job_config = bigquery.ExtractJobConfig()
+        job_config.destination_format = 'NEWLINE_DELIMITED_JSON'
+        job = Config.CLIENT.extract_table(
+            table, destination_uri, job_config=job_config)
+        job.result()
+
+        self.to_delete.insert(0, destination)
+        got = destination.download_as_string().decode('utf-8')
+        self.assertIn('"Bharney Rhubble"', got)
+
     def test_job_cancel(self):
         DATASET_ID = _make_dataset_id('job_cancel')
         JOB_NAME = 'fetch_' + DATASET_ID

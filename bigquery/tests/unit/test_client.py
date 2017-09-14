@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import six
 
 
 def _make_credentials():
@@ -714,7 +715,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.sources), [source])
         self.assertIs(job.destination, destination)
 
-    def test_extract_table_to_storage(self):
+    def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
 
         PROJECT = 'PROJECT'
@@ -722,15 +723,88 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         SOURCE = 'source_table'
         DESTINATION = 'gs://bucket_name/object_name'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': SOURCE,
+                    },
+                    'destinationUris': [DESTINATION],
+                },
+            },
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(RESOURCE)
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
-        job = client.extract_table_to_storage(JOB, source, DESTINATION)
+
+        job = client.extract_table(source, DESTINATION, job_id=JOB)
+
+        # Check that extract_table actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+
+        # Check the job resource.
         self.assertIsInstance(job, ExtractJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)
+        self.assertEqual(job.source, source)
+        self.assertEqual(list(job.destination_uris), [DESTINATION])
+
+    def test_extract_table_generated_job_id(self):
+        from google.cloud.bigquery.job import ExtractJob
+
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        DATASET = 'dataset_name'
+        SOURCE = 'source_table'
+        DESTINATION = 'gs://bucket_name/object_name'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': SOURCE,
+                    },
+                    'destinationUris': [DESTINATION],
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(RESOURCE)
+        dataset = client.dataset(DATASET)
+        source = dataset.table(SOURCE)
+
+        job = client.extract_table(source, DESTINATION)
+
+        # Check that extract_table actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        self.assertIsInstance(
+            req['data']['jobReference']['jobId'], six.string_types)
+
+        # Check the job resource.
+        self.assertIsInstance(job, ExtractJob)
+        self.assertIs(job._client, client)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
