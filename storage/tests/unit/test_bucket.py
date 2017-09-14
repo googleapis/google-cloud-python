@@ -72,6 +72,63 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(blob.chunk_size, CHUNK_SIZE)
         self.assertEqual(blob._encryption_key, KEY)
 
+    def test_notification_defaults(self):
+        from google.cloud.storage.notification import BucketNotification
+
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'BUCKET_NAME'
+        TOPIC_NAME = 'TOPIC_NAME'
+        client = _Client(_Connection(), project=PROJECT)
+        bucket = self._make_one(client, name=BUCKET_NAME)
+
+        notification = bucket.notification(TOPIC_NAME)
+
+        self.assertIsInstance(notification, BucketNotification)
+        self.assertIs(notification.bucket, bucket)
+        self.assertEqual(notification.topic_project, PROJECT)
+        self.assertIsNone(notification.custom_attributes)
+        self.assertIsNone(notification.event_types)
+        self.assertIsNone(notification.blob_name_prefix)
+        self.assertIsNone(notification.payload_format)
+
+    def test_notification_explicit(self):
+        from google.cloud.storage.notification import (
+            BucketNotification,
+            OBJECT_FINALIZE_EVENT_TYPE,
+            OBJECT_DELETE_EVENT_TYPE,
+            JSON_API_V1_PAYLOAD_FORMAT)
+
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'BUCKET_NAME'
+        TOPIC_NAME = 'TOPIC_NAME'
+        TOPIC_ALT_PROJECT = 'topic-project-456'
+        CUSTOM_ATTRIBUTES = {
+            'attr1': 'value1',
+            'attr2': 'value2',
+        }
+        EVENT_TYPES = [OBJECT_FINALIZE_EVENT_TYPE, OBJECT_DELETE_EVENT_TYPE]
+        BLOB_NAME_PREFIX = 'blob-name-prefix/'
+        client = _Client(_Connection(), project=PROJECT)
+        bucket = self._make_one(client, name=BUCKET_NAME)
+
+        notification = bucket.notification(
+            TOPIC_NAME,
+            topic_project=TOPIC_ALT_PROJECT,
+            custom_attributes=CUSTOM_ATTRIBUTES,
+            event_types=EVENT_TYPES,
+            blob_name_prefix=BLOB_NAME_PREFIX,
+            payload_format=JSON_API_V1_PAYLOAD_FORMAT,
+        )
+
+        self.assertIsInstance(notification, BucketNotification)
+        self.assertIs(notification.bucket, bucket)
+        self.assertEqual(notification.topic_project, TOPIC_ALT_PROJECT)
+        self.assertEqual(notification.custom_attributes, CUSTOM_ATTRIBUTES)
+        self.assertEqual(notification.event_types, EVENT_TYPES)
+        self.assertEqual(notification.blob_name_prefix, BLOB_NAME_PREFIX)
+        self.assertEqual(
+            notification.payload_format, JSON_API_V1_PAYLOAD_FORMAT)
+
     def test_bucket_name_value(self):
         bucket_name = 'testing123'
         mixin = self._make_one(name=bucket_name)
