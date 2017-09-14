@@ -129,12 +129,12 @@ class Table(object):
 
     @property
     def table_id(self):
-      """ID of the table.
+        """ID of the table.
 
-      :rtype: str
-      :returns: the table ID.
-      """
-      return self._table_id
+        :rtype: str
+        :returns: the table ID.
+        """
+        return self._table_id
 
     @property
     def path(self):
