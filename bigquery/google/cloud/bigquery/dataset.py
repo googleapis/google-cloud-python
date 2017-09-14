@@ -610,7 +610,8 @@ class Dataset(object):
         :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
                   contained within the current dataset.
         """
-        path = '/projects/%s/datasets/%s/tables' % (self.project, self.dataset_id)
+        path = '/projects/%s/datasets/%s/tables' % (
+            self.project, self.dataset_id)
         result = page_iterator.HTTPIterator(
             client=self._client,
             api_request=self._client._connection.api_request,
