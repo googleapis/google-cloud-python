@@ -119,13 +119,13 @@ class Table(object):
         return self._dataset.project
 
     @property
-    def dataset_name(self):
-        """Name of dataset containing the table.
+    def dataset_id(self):
+        """ID of dataset containing the table.
 
         :rtype: str
         :returns: the ID (derived from the dataset).
         """
-        return self._dataset.name
+        return self._dataset.dataset_id
 
     @property
     def path(self):
@@ -463,7 +463,7 @@ class Table(object):
         """
         query = self._require_client(client).run_sync_query(
             'SELECT partition_id from [%s.%s$__PARTITIONS_SUMMARY__]' %
-            (self.dataset_name, self.name))
+            (self.dataset_id, self.name))
         query.run()
         return [row[0] for row in query.rows]
 
@@ -527,7 +527,7 @@ class Table(object):
         resource = {
             'tableReference': {
                 'projectId': self._dataset.project,
-                'datasetId': self._dataset.name,
+                'datasetId': self._dataset.dataset_id,
                 'tableId': self.name},
         }
         if self.description is not None:
@@ -572,7 +572,7 @@ class Table(object):
         """
         client = self._require_client(client)
         path = '/projects/%s/datasets/%s/tables' % (
-            self._dataset.project, self._dataset.name)
+            self._dataset.project, self._dataset.dataset_id)
         api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
@@ -1361,7 +1361,7 @@ def _get_upload_metadata(source_format, schema, dataset, name):
         'sourceFormat': source_format,
         'destinationTable': {
             'projectId': dataset.project,
-            'datasetId': dataset.name,
+            'datasetId': dataset.dataset_id,
             'tableId': name,
         },
     }

@@ -60,7 +60,7 @@ class TestTableReference(unittest.TestCase):
 class TestTable(unittest.TestCase, _SchemaBase):
 
     PROJECT = 'prahj-ekt'
-    DS_NAME = 'dataset-name'
+    DS_ID = 'dataset-name'
     TABLE_NAME = 'table-name'
 
     @staticmethod
@@ -81,7 +81,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             tzinfo=UTC)
         self.ETAG = 'ETAG'
         self.TABLE_ID = '%s:%s:%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.NUM_BYTES = 12345
         self.NUM_ROWS = 67
@@ -92,7 +92,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             'creationTime': self.WHEN_TS * 1000,
             'tableReference':
                 {'projectId': self.PROJECT,
-                 'datasetId': self.DS_NAME,
+                 'datasetId': self.DS_ID,
                  'tableId': self.TABLE_NAME},
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -171,11 +171,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.name, self.TABLE_NAME)
         self.assertIs(table._dataset, dataset)
         self.assertEqual(table.project, self.PROJECT)
-        self.assertEqual(table.dataset_name, self.DS_NAME)
+        self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(
             table.path,
             '/projects/%s/datasets/%s/tables/%s' % (
-                self.PROJECT, self.DS_NAME, self.TABLE_NAME))
+                self.PROJECT, self.DS_ID, self.TABLE_NAME))
         self.assertEqual(table.schema, [])
 
         self.assertIsNone(table.created)
@@ -285,9 +285,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
         TABLE_ID = '%s:%s:%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         table = self._make_one(self.TABLE_NAME, dataset)
@@ -421,10 +421,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         RESOURCE = {
-            'id': '%s:%s:%s' % (self.PROJECT, self.DS_NAME, self.TABLE_NAME),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
             'tableReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.TABLE_NAME,
             },
             'type': 'TABLE',
@@ -445,7 +445,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_create_new_day_partitioned_table(self):
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -461,7 +461,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.TABLE_NAME},
             'timePartitioning': {'type': 'DAY'},
         }
@@ -471,7 +471,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_create_w_bound_client(self):
         from google.cloud.bigquery.table import SchemaField
 
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -490,7 +490,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.TABLE_NAME},
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -502,7 +502,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_create_w_partition_no_expire(self):
         from google.cloud.bigquery.table import SchemaField
 
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -524,7 +524,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.TABLE_NAME},
             'timePartitioning': {'type': 'DAY'},
             'schema': {'fields': [
@@ -537,7 +537,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_create_w_partition_and_expire(self):
         from google.cloud.bigquery.table import SchemaField
 
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -559,7 +559,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.TABLE_NAME},
             'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
             'schema': {'fields': [
@@ -712,7 +712,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _millis
 
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         QUERY = 'select fullname, age from person_ages'
@@ -745,7 +745,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.TABLE_NAME},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
@@ -759,7 +759,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         # lacks 'creationTime' / 'lastModifiedTime'
         from google.cloud.bigquery.table import SchemaField
 
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         RESOURCE = self._makeResource()
         del RESOURCE['creationTime']
         del RESOURCE['lastModifiedTime']
@@ -781,7 +781,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.TABLE_NAME},
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -792,7 +792,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
@@ -808,7 +808,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_exists_hit_w_alternate_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
@@ -827,7 +827,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_reload_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -844,7 +844,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_reload_w_alternate_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -874,7 +874,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_patch_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         RESOURCE = self._makeResource()
@@ -908,7 +908,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         QUERY = 'select fullname, age from person_ages'
         LOCATION = 'EU'
         RESOURCE = self._makeResource()
@@ -950,7 +950,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         # Simulate deleting schema:  not sure if back-end will actually
         # allow this operation, but the spec says it is optional.
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         RESOURCE = self._makeResource()
@@ -975,7 +975,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         RESOURCE = self._makeResource()
@@ -999,7 +999,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference':
                 {'projectId': self.PROJECT,
-                 'datasetId': self.DS_NAME,
+                 'datasetId': self.DS_ID,
                  'tableId': self.TABLE_NAME},
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -1017,7 +1017,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud._helpers import _millis
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         DEF_TABLE_EXP = 12345
         LOCATION = 'EU'
         QUERY = 'select fullname, age from person_ages'
@@ -1051,7 +1051,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         SENT = {
             'tableReference':
                 {'projectId': self.PROJECT,
-                 'datasetId': self.DS_NAME,
+                 'datasetId': self.DS_ID,
                  'tableId': self.TABLE_NAME},
             'expirationTime': _millis(self.EXP_TIME),
             'location': 'EU',
@@ -1062,7 +1062,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_delete_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
@@ -1077,7 +1077,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_delete_w_alternate_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
@@ -1112,7 +1112,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
             tzinfo=UTC)
@@ -1185,7 +1185,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         MAX = 10
         TOKEN = 'TOKEN'
         DATA = {
@@ -1256,7 +1256,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
@@ -1309,7 +1309,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
@@ -1451,7 +1451,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
             tzinfo=UTC)
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
@@ -1492,7 +1492,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         RESPONSE = {
             'insertErrors': [
                 {'index': 1,
@@ -1561,7 +1561,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
@@ -1597,7 +1597,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+            self.PROJECT, self.DS_ID, self.TABLE_NAME)
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
@@ -1898,7 +1898,7 @@ class TestTableUpload(object):
                     'sourceFormat': config_args['source_format'],
                     'destinationTable': {
                         'projectId': table._dataset._client.project,
-                        'datasetId': table.dataset_name,
+                        'datasetId': table.dataset_id,
                         'tableId': table.name,
                     },
                     'allowJaggedRows': config_args['allow_jagged_rows'],
@@ -2230,8 +2230,9 @@ class Test__get_upload_metadata(unittest.TestCase):
 
     def test_empty_schema(self):
         source_format = 'AVRO'
-        dataset = mock.Mock(project='prediction', spec=['name', 'project'])
-        dataset.name = 'market'  # mock.Mock() treats `name` specially.
+        dataset = mock.Mock(project='prediction',
+                            spec=['dataset_id', 'project'])
+        dataset.dataset_id = 'market'  # mock.Mock() treats `name` specially.
         table_name = 'chairs'
         metadata = self._call_fut(source_format, [], dataset, table_name)
 
@@ -2241,7 +2242,7 @@ class Test__get_upload_metadata(unittest.TestCase):
                     'sourceFormat': source_format,
                     'destinationTable': {
                         'projectId': dataset.project,
-                        'datasetId': dataset.name,
+                        'datasetId': dataset.dataset_id,
                         'tableId': table_name,
                     },
                 },
@@ -2254,8 +2255,8 @@ class Test__get_upload_metadata(unittest.TestCase):
 
         source_format = 'CSV'
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        dataset = mock.Mock(project='blind', spec=['name', 'project'])
-        dataset.name = 'movie'  # mock.Mock() treats `name` specially.
+        dataset = mock.Mock(project='blind', spec=['dataset_id', 'project'])
+        dataset.dataset_id = 'movie'  # mock.Mock() treats `name` specially.
         table_name = 'teebull-neem'
         metadata = self._call_fut(
             source_format, [full_name], dataset, table_name)
@@ -2266,7 +2267,7 @@ class Test__get_upload_metadata(unittest.TestCase):
                     'sourceFormat': source_format,
                     'destinationTable': {
                         'projectId': dataset.project,
-                        'datasetId': dataset.name,
+                        'datasetId': dataset.dataset_id,
                         'tableId': table_name,
                     },
                     'schema': {
@@ -2309,14 +2310,14 @@ class _Query(object):
 
 class _Dataset(object):
 
-    def __init__(self, client, name=TestTable.DS_NAME):
+    def __init__(self, client, dataset_id=TestTable.DS_ID):
         self._client = client
-        self.name = name
+        self.dataset_id = dataset_id
 
     @property
     def path(self):
         return '/projects/%s/datasets/%s' % (
-            self._client.project, self.name)
+            self._client.project, self.dataset_id)
 
     @property
     def project(self):
