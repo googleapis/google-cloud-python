@@ -28,23 +28,6 @@ from google.cloud._helpers import _to_bytes
 
 _RFC3339_MICROS_NO_ZULU = '%Y-%m-%dT%H:%M:%S.%f'
 
-# Canonical formats for timestamps in BigQuery.
-# Timestamps in an API response will always be in UTC, but they
-# can vary in other ways. The separator between the date and time
-# can be 'T' or ' ', the microseconds may be present or not, and
-# the UTC timezone may be formatted as Z or +00:00. See:
-# g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
-_BIGQUERY_TIMESTAMP_FORMATS = [
-    '%Y-%m-%d %H:%M:%S+00:00',
-    '%Y-%m-%d %H:%M:%SZ',
-    '%Y-%m-%d %H:%M:%S.%f+00:00',
-    '%Y-%m-%d %H:%M:%S.%fZ',
-    '%Y-%m-%dT%H:%M:%S+00:00',
-    '%Y-%m-%dT%H:%M:%SZ',
-    '%Y-%m-%dT%H:%M:%S.%f+00:00',
-    '%Y-%m-%dT%H:%M:%S.%fZ',
-]
-
 
 def _not_null(value, field):
     """Check whether 'value' should be coerced to 'field' type."""
@@ -100,16 +83,22 @@ def _timestamp_query_param_from_json(value, field):
         :data:`None`).
     """
     if _not_null(value, field):
-        error = None
+        # Canonical formats for timestamps in BigQuery are flexible. See:
+        # g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
+        # The separator between the date and time can be 'T' or ' '.
+        value = value.replace(' ', 'T', 1)
+        # The UTC timezone may be formatted as Z or +00:00.
+        value = value.replace('Z', '')
+        value = value.replace('+00:00', '')
 
-        for timefmt in _BIGQUERY_TIMESTAMP_FORMATS:
-            try:
-                return datetime.datetime.strptime(
-                    value, timefmt).replace(tzinfo=UTC)
-            except ValueError as exc:
-                error = exc
-
-        raise error
+        if '.' in value:
+            # YYYY-MM-DDTHH:MM:SS.ffffff
+            return datetime.datetime.strptime(
+                value, _RFC3339_MICROS_NO_ZULU).replace(tzinfo=UTC)
+        else:
+            # YYYY-MM-DDTHH:MM:SS
+            return datetime.datetime.strptime(
+                value, _RFC3339_NO_FRACTION).replace(tzinfo=UTC)
     else:
         return None
 
