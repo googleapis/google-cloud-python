@@ -333,7 +333,7 @@ class TestClient(unittest.TestCase):
         job = client.get_job(JOB_ID)
 
         self.assertIsInstance(job, QueryJob)
-        self.assertEqual(job.name, JOB_ID)
+        self.assertEqual(job.job_id, JOB_ID)
         self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
         self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
 
@@ -466,7 +466,7 @@ class TestClient(unittest.TestCase):
         for found, expected in zip(jobs, DATA['jobs']):
             name = expected['jobReference']['jobId']
             self.assertIsInstance(found, JOB_TYPES[name])
-            self.assertEqual(found.name, name)
+            self.assertEqual(found.job_id, name)
         self.assertEqual(token, TOKEN)
 
         self.assertEqual(len(conn._requested), 1)
@@ -523,7 +523,7 @@ class TestClient(unittest.TestCase):
         for found, expected in zip(jobs, DATA['jobs']):
             name = expected['jobReference']['jobId']
             self.assertIsInstance(found, JOB_TYPES[name])
-            self.assertEqual(found.name, name)
+            self.assertEqual(found.job_id, name)
         self.assertEqual(token, TOKEN)
 
         self.assertEqual(len(conn._requested), 1)
@@ -579,7 +579,7 @@ class TestClient(unittest.TestCase):
         job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
         self.assertIsInstance(job, LoadJob)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.job_id, JOB)
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
         self.assertIs(job.destination, destination)
 
@@ -600,7 +600,7 @@ class TestClient(unittest.TestCase):
         job = client.copy_table(JOB, destination, source)
         self.assertIsInstance(job, CopyJob)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.job_id, JOB)
         self.assertEqual(list(job.sources), [source])
         self.assertIs(job.destination, destination)
 
@@ -620,7 +620,7 @@ class TestClient(unittest.TestCase):
         job = client.extract_table_to_storage(JOB, source, DESTINATION)
         self.assertIsInstance(job, ExtractJob)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
@@ -636,7 +636,7 @@ class TestClient(unittest.TestCase):
         job = client.run_async_query(JOB, QUERY)
         self.assertIsInstance(job, QueryJob)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.query, QUERY)
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(job.query_parameters, [])
@@ -656,7 +656,7 @@ class TestClient(unittest.TestCase):
         job = client.run_async_query(JOB, QUERY, udf_resources=udf_resources)
         self.assertIsInstance(job, QueryJob)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.query, QUERY)
         self.assertEqual(job.udf_resources, udf_resources)
         self.assertEqual(job.query_parameters, [])
@@ -676,7 +676,7 @@ class TestClient(unittest.TestCase):
                                      query_parameters=query_parameters)
         self.assertIsInstance(job, QueryJob)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.query, QUERY)
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(job.query_parameters, query_parameters)
