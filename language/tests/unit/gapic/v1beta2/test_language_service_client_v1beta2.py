@@ -18,8 +18,8 @@ import unittest
 
 from google.gax import errors
 
-from google.cloud.gapic.language.v1beta2 import language_service_client
-from google.cloud.proto.language.v1beta2 import language_service_pb2
+from google.cloud import language_v1beta2
+from google.cloud.language_v1beta2.proto import language_service_pb2
 
 
 class CustomException(Exception):
@@ -33,15 +33,16 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock response
         language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeSentimentResponse(
-            language=language)
+            **expected_response)
         grpc_stub.AnalyzeSentiment.return_value = expected_response
 
         response = client.analyze_sentiment(document)
@@ -65,10 +66,10 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock exception response
         grpc_stub.AnalyzeSentiment.side_effect = CustomException()
@@ -81,15 +82,16 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock response
         language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeEntitiesResponse(
-            language=language)
+            **expected_response)
         grpc_stub.AnalyzeEntities.return_value = expected_response
 
         response = client.analyze_entities(document)
@@ -113,10 +115,10 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock exception response
         grpc_stub.AnalyzeEntities.side_effect = CustomException()
@@ -129,15 +131,16 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock response
         language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeEntitySentimentResponse(
-            language=language)
+            **expected_response)
         grpc_stub.AnalyzeEntitySentiment.return_value = expected_response
 
         response = client.analyze_entity_sentiment(document)
@@ -161,10 +164,10 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock exception response
         grpc_stub.AnalyzeEntitySentiment.side_effect = CustomException()
@@ -178,15 +181,16 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock response
         language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeSyntaxResponse(
-            language=language)
+            **expected_response)
         grpc_stub.AnalyzeSyntax.return_value = expected_response
 
         response = client.analyze_syntax(document)
@@ -210,10 +214,10 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
+        document = {}
 
         # Mock exception response
         grpc_stub.AnalyzeSyntax.side_effect = CustomException()
@@ -221,21 +225,70 @@ class TestLanguageServiceClient(unittest.TestCase):
         self.assertRaises(errors.GaxError, client.analyze_syntax, document)
 
     @mock.patch('google.gax.config.create_stub', spec=True)
+    def test_classify_text(self, mock_create_stub):
+        # Mock gRPC layer
+        grpc_stub = mock.Mock()
+        mock_create_stub.return_value = grpc_stub
+
+        client = language_v1beta2.LanguageServiceClient()
+
+        # Mock request
+        document = {}
+
+        # Mock response
+        expected_response = {}
+        expected_response = language_service_pb2.ClassifyTextResponse(
+            **expected_response)
+        grpc_stub.ClassifyText.return_value = expected_response
+
+        response = client.classify_text(document)
+        self.assertEqual(expected_response, response)
+
+        grpc_stub.ClassifyText.assert_called_once()
+        args, kwargs = grpc_stub.ClassifyText.call_args
+        self.assertEqual(len(args), 2)
+        self.assertEqual(len(kwargs), 1)
+        self.assertIn('metadata', kwargs)
+        actual_request = args[0]
+
+        expected_request = language_service_pb2.ClassifyTextRequest(
+            document=document)
+        self.assertEqual(expected_request, actual_request)
+
+    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
+    @mock.patch('google.gax.config.create_stub', spec=True)
+    def test_classify_text_exception(self, mock_create_stub):
+        # Mock gRPC layer
+        grpc_stub = mock.Mock()
+        mock_create_stub.return_value = grpc_stub
+
+        client = language_v1beta2.LanguageServiceClient()
+
+        # Mock request
+        document = {}
+
+        # Mock exception response
+        grpc_stub.ClassifyText.side_effect = CustomException()
+
+        self.assertRaises(errors.GaxError, client.classify_text, document)
+
+    @mock.patch('google.gax.config.create_stub', spec=True)
     def test_annotate_text(self, mock_create_stub):
         # Mock gRPC layer
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
-        features = language_service_pb2.AnnotateTextRequest.Features()
+        document = {}
+        features = {}
 
         # Mock response
         language = 'language-1613589672'
+        expected_response = {'language': language}
         expected_response = language_service_pb2.AnnotateTextResponse(
-            language=language)
+            **expected_response)
         grpc_stub.AnnotateText.return_value = expected_response
 
         response = client.annotate_text(document, features)
@@ -259,11 +312,11 @@ class TestLanguageServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = language_service_client.LanguageServiceClient()
+        client = language_v1beta2.LanguageServiceClient()
 
         # Mock request
-        document = language_service_pb2.Document()
-        features = language_service_pb2.AnnotateTextRequest.Features()
+        document = {}
+        features = {}
 
         # Mock exception response
         grpc_stub.AnnotateText.side_effect = CustomException()

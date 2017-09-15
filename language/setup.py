@@ -67,10 +67,6 @@ setup(
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.cloud.gapic',
-        'google.cloud.gapic.language',
-        'google.cloud.proto',
-        'google.cloud.proto.language',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
