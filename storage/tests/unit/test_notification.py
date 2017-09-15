@@ -244,6 +244,54 @@ class TestBucketNotification(unittest.TestCase):
             data=data,
         )
 
+    def test_exists_wo_notification_id(self):
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(
+            bucket, self.TOPIC_NAME)
+
+        with self.assertRaises(ValueError):
+            notification.exists()
+
+    def test_exists_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        NOTIFICATION_ID = '123'
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.side_effect = NotFound('testing')
+
+        self.assertFalse(notification.exists())
+
+        path = '/b/{}/notificationConfigs/{}'.format(
+            self.BUCKET_NAME, NOTIFICATION_ID)
+        api_request.assert_called_once_with(
+            method='GET',
+            path=path,
+        )
+
+    def test_exists_hit(self):
+        NOTIFICATION_ID = '123'
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        alt_client = self._make_client()
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.return_value = None
+
+        self.assertTrue(notification.exists(client=client))
+
+        path = '/b/{}/notificationConfigs/{}'.format(
+            self.BUCKET_NAME, NOTIFICATION_ID)
+        api_request.assert_called_once_with(
+            method='GET',
+            path=path,
+        )
+
     def test_delete_wo_notification_id(self):
         client = self._make_client()
         bucket = self._make_bucket(client)
