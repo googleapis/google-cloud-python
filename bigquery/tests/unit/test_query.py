@@ -262,7 +262,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertIsInstance(job, QueryJob)
         self.assertEqual(job.query, self.QUERY)
         self.assertIs(job._client, client)
-        self.assertEqual(job.name, SERVER_GENERATED)
+        self.assertEqual(job.job_id, SERVER_GENERATED)
         fetched_later = query.job
         self.assertIs(fetched_later, job)
 
