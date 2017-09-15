@@ -85,6 +85,15 @@ class TableReference(object):
         """
         return self._table_id
 
+    @property
+    def path(self):
+        """URL path for the table's APIs.
+
+        :rtype: str
+        :returns: the path based on project, dataset and table IDs.
+        """
+        return '%s/tables/%s' % (self._dataset_ref.path, self._table_id)
+
 
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.

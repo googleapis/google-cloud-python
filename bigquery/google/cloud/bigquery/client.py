@@ -207,6 +207,21 @@ class Client(ClientWithProject):
             method='GET', path=dataset_ref.path)
         return Dataset.from_api_repr(api_response, self)
 
+    def get_table(self, table_ref):
+        """Fetch the table referenced by ``table_ref``
+
+        :type table_ref:
+            :class:`google.cloud.bigquery.table.TableReference`
+        :param table_ref: the table to use.
+
+        :rtype: :class:`google.cloud.bigquery.table.Table`
+        :returns: a ``Table`` instance
+        """
+        api_response = self._connection.api_request(
+            method='GET', path=table_ref.path)
+        # return Table.from_api_repr(api_response, [DATASET HERE])
+        assert False
+
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
 
