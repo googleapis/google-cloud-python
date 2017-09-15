@@ -22,6 +22,8 @@ OBJECT_ARCHIVE_EVENT_TYPE = 'OBJECT_ARCHIVE'
 JSON_API_V1_PAYLOAD_FORMAT = 'JSON_API_V1'
 NONE_PAYLOAD_FORMAT = 'NONE'
 
+_TOPIC_REF = '//pubsub.googleapis.com/projects/{}/topics/{}'
+
 
 class BucketNotification(object):
     """Represent a single notification resource for a bucket.
@@ -133,3 +135,48 @@ class BucketNotification(object):
     def self_link(self):
         """Server-set ETag of notification resource."""
         return self._properties.get('selfLink')
+
+    @property
+    def client(self):
+        """The client bound to this notfication."""
+        return self.bucket.client
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.
+
+        :rtype: :class:`google.cloud.storage.client.Client`
+        :returns: The client passed in or the bucket's client.
+        """
+        if client is None:
+            client = self.client
+        return client
+
+    def create(self, client=None):
+        """API wrapper: create the notification.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/insert
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) the client to use.  If not passed, falls back
+                       to the ``client`` stored on the notification's bucket.
+        """
+        if self.notification_id is not None:
+            raise ValueError("Notification already exists w/ id: {}".format(
+                self.notification_id))
+
+        client = self._require_client(client)
+
+        path = '/b/{}/notificationConfigs'.format(self.bucket.name)
+        properties = self._properties.copy()
+        properties['topic'] = _TOPIC_REF.format(
+            self.topic_project, self.topic_name)
+        self._properties = client._connection.api_request(
+            method='POST',
+            path=path,
+            data=properties,
+        )
