@@ -793,10 +793,18 @@ class Table(object):
                         passed, no de-duplication occurs.
 
         :type skip_invalid_rows: bool
-        :param skip_invalid_rows: (Optional) skip rows w/ invalid data?
+        :param skip_invalid_rows: (Optional)  Insert all valid rows of a
+                                  request, even if invalid rows exist.
+                                  The default value is False, which causes
+                                  the entire request to fail if any invalid
+                                  rows exist.
 
         :type ignore_unknown_values: bool
-        :param ignore_unknown_values: (Optional) ignore columns beyond schema?
+        :param ignore_unknown_values: (Optional) Accept rows that contain
+                                      values that do not match the schema.
+                                      The unknown values are ignored. Default
+                                      is False, which treats unknown values as
+                                      errors.
 
         :type template_suffix: str
         :param template_suffix:
