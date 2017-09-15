@@ -68,7 +68,7 @@ class VideoIntelligenceServiceClient(object):
                 which to make calls.
             credentials (~google.auth.credentials.Credentials): The authorization
                 credentials to attach to requests. These credentials identify this
-                application to the service.
+                 application to the service.
             ssl_credentials (~grpc.ChannelCredentials): A
                 ``ChannelCredentials`` instance for use with an SSL-enabled
                 channel.
@@ -88,6 +88,8 @@ class VideoIntelligenceServiceClient(object):
                 client library metrics. Ultimately serializes to a string
                 (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
                 considered private.
+
+        Returns: VideoIntelligenceServiceClient
         """
         # Unless the calling application specifically requested
         # OAuth scopes, request everything.
