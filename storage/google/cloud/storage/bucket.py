@@ -35,6 +35,7 @@ from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.blob import _get_encryption_headers
+from google.cloud.storage.notification import BucketNotification
 
 
 def _blobs_page_start(iterator, page, response):
@@ -158,6 +159,28 @@ class Bucket(_PropertyMixin):
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
                     encryption_key=encryption_key)
+
+    def notification(self, topic_name,
+                     topic_project=None,
+                     custom_attributes=None,
+                     event_types=None,
+                     blob_name_prefix=None,
+                     payload_format=None):
+        """Factory:  create a notification resource for the bucket.
+
+        See: :class:`google.cloud.storage.notification.BucketNotification`
+        for parameters.
+
+        :rtype: :class:`google.cloud.storage.notification.BucketNotification`
+        """
+        return BucketNotification(
+            self, topic_name,
+            topic_project=topic_project,
+            custom_attributes=custom_attributes,
+            event_types=event_types,
+            blob_name_prefix=blob_name_prefix,
+            payload_format=payload_format,
+        )
 
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
