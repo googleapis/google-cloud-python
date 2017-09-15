@@ -279,9 +279,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=project, credentials=creds, _http=http)
-        DS_ID = '%s:%s' % (project, dataset_id)
         resource = {
-            'id': DS_ID,
+            'id': '%s:%s' % (project, dataset_id),
             'datasetReference': {
                 'projectId': project,
                 'datasetId': dataset_id,

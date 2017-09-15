@@ -167,7 +167,7 @@ class Client(ClientWithProject):
         return DatasetReference(project, dataset_name)
 
     def get_dataset(self, dataset_ref):
-        """API call:  refresh dataset properties via a GET request.
+        """Fetch the dataset referenced by ``dataset_ref``
 
         :type dataset_ref:
             :class:`google.cloud.bigquery.dataset.DatasetReference`
