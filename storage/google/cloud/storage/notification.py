@@ -141,6 +141,12 @@ class BucketNotification(object):
         """The client bound to this notfication."""
         return self.bucket.client
 
+    @property
+    def path(self):
+        """The URL path for this notification."""
+        return '/b/{}/notificationConfigs/{}'.format(
+            self.bucket.name, self.notification_id)
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -180,3 +186,20 @@ class BucketNotification(object):
             path=path,
             data=properties,
         )
+
+    def delete(self, client=None):
+        """Delete this notification.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :raises: :class:`google.api.core.exceptions.NotFound`:
+            if the notification does not exist.
+        """
+        if self.notification_id is None:
+            raise ValueError("Notification not intialized by server")
+
+        client = self._require_client(client)
+        client._connection.api_request(method='DELETE', path=self.path)
