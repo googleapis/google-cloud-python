@@ -111,7 +111,7 @@ class VideoIntelligenceServiceClient(object):
 
         # Finally, track the GAPIC package version.
         metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'google-cloud-video-intelligence', ).version
+            'google-cloud-videointelligence', ).version
 
         # Load the configuration defaults.
         defaults = api_callable.construct_settings(
