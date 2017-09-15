@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class LabelLevel(object):
       VIDEO_LEVEL (int): Video-level. Corresponds to the whole video.
       SEGMENT_LEVEL (int): Segment-level. Corresponds to one of ``AnnotateSpec.segments``.
       SHOT_LEVEL (int): Shot-level. Corresponds to a single shot (i.e. a series of frames
-        without a major camera position or background change).
+      without a major camera position or background change).
       FRAME_LEVEL (int): Frame-level. Corresponds to a single video frame.
     """
     LABEL_LEVEL_UNSPECIFIED = 0

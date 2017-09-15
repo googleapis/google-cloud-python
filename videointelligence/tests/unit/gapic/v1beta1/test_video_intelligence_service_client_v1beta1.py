@@ -19,8 +19,8 @@ import unittest
 from google.gax import errors
 from google.rpc import status_pb2
 
-from google.cloud.gapic.videointelligence.v1beta1 import video_intelligence_service_client
-from google.cloud.proto.videointelligence.v1beta1 import video_intelligence_pb2
+from google.cloud import videointelligence_v1beta1
+from google.cloud.videointelligence_v1beta1.proto import video_intelligence_pb2
 from google.longrunning import operations_pb2
 
 
@@ -35,15 +35,16 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = video_intelligence_service_client.VideoIntelligenceServiceClient(
-        )
+        client = videointelligence_v1beta1.VideoIntelligenceServiceClient()
 
         # Mock request
         input_uri = 'inputUri1707300727'
         features = []
 
         # Mock response
-        expected_response = video_intelligence_pb2.AnnotateVideoResponse()
+        expected_response = {}
+        expected_response = video_intelligence_pb2.AnnotateVideoResponse(
+            **expected_response)
         operation = operations_pb2.Operation(
             name='operations/test_annotate_video', done=True)
         operation.response.Pack(expected_response)
@@ -69,8 +70,7 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
         grpc_stub = mock.Mock()
         mock_create_stub.return_value = grpc_stub
 
-        client = video_intelligence_service_client.VideoIntelligenceServiceClient(
-        )
+        client = videointelligence_v1beta1.VideoIntelligenceServiceClient()
 
         # Mock request
         input_uri = 'inputUri1707300727'
