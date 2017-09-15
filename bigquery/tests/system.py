@@ -205,7 +205,7 @@ class TestBigQuery(unittest.TestCase):
         table.create()
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
-        self.assertEqual(table.name, TABLE_NAME)
+        self.assertEqual(table.table_id, TABLE_NAME)
 
     def test_list_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
@@ -240,7 +240,7 @@ class TestBigQuery(unittest.TestCase):
         all_tables = list(iterator)
         self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
-                   if (table.name in tables_to_create and
+                   if (table.table_id in tables_to_create and
                        table.dataset_id == DATASET_ID)]
         self.assertEqual(len(created), len(tables_to_create))
 
@@ -1167,7 +1167,7 @@ class TestBigQuery(unittest.TestCase):
         table.create()
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
-        self.assertEqual(table.name, table_name)
+        self.assertEqual(table.table_id, table_name)
 
         to_insert = []
         # Data is in "JSON Lines" format, see http://jsonlines.org/
