@@ -14,8 +14,8 @@
 
 """GAX Client for interacting with the Google Cloud Vision API."""
 
-from google.cloud.gapic.vision.v1 import image_annotator_client
-from google.cloud.proto.vision.v1 import image_annotator_pb2
+from google.cloud.vision_v1.gapic import image_annotator_client
+from google.cloud.vision_v1.proto import image_annotator_pb2
 
 from google.cloud.vision import __version__
 from google.cloud.vision.annotations import Annotations
@@ -43,7 +43,7 @@ class _GAPICVisionAPI(object):
                        e.g. [(image, [feature_one, feature_two]),]
 
         :type requests_pb: list
-        :param requests_pb: List of :class:`google.cloud.proto.vision.v1.\
+        :param requests_pb: List of :class:`google.cloud.vision_v1.proto.\
                             image_annotator_pb2.AnnotateImageRequest`
 
         :rtype: list
@@ -77,7 +77,7 @@ def _to_gapic_feature(feature):
     :param feature: Local ``Feature`` class to be converted to gRPC ``Feature``
                     instance.
 
-    :rtype: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.Feature`
+    :rtype: :class:`~google.cloud.vision_v1.proto.image_annotator_pb2.Feature`
     :returns: gRPC ``Feature`` converted from
               :class:`~google.cloud.vision.feature.Feature`.
     """
@@ -92,7 +92,7 @@ def _to_gapic_image(image):
     :type image: :class:`~google.cloud.vision.image.Image`
     :param image: Local ``Image`` class to be converted to gRPC ``Image``.
 
-    :rtype: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.Image`
+    :rtype: :class:`~google.cloud.vision_v1.proto.image_annotator_pb2.Image`
     :returns: gRPC ``Image`` converted from
               :class:`~google.cloud.vision.image.Image`.
     """

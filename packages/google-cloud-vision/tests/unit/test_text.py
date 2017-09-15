@@ -32,7 +32,7 @@ class TestTextAnnotatin(unittest.TestCase):
         self.assertEqual(text_annotation.text, annotation['text'])
 
     def test_text_annotation_from_pb(self):
-        from google.cloud.proto.vision.v1 import text_annotation_pb2
+        from google.cloud.vision_v1.proto import text_annotation_pb2
 
         page = text_annotation_pb2.Page(width=8, height=11)
         text = 'some detected text'

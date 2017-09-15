@@ -33,13 +33,15 @@ from google.gax import config
 from google.gax import path_template
 import google.gax
 
-from google.cloud.gapic.vision.v1 import enums
-from google.cloud.proto.vision.v1 import image_annotator_pb2
+from google.cloud.vision_v1.gapic import enums
+from google.cloud.vision_v1.gapic import image_annotator_client_config
+from google.cloud.vision_v1.proto import image_annotator_pb2
 
 
 class ImageAnnotatorClient(object):
-    """Service that performs Google Cloud Vision API detection tasks over
-    client images, such as face, landmark, logo, label, and text detection. The
+    """
+    Service that performs Google Cloud Vision API detection tasks over client
+    images, such as face, landmark, logo, label, and text detection. The
     ImageAnnotator service returns detected entities from the images.
     """
 
@@ -54,54 +56,43 @@ class ImageAnnotatorClient(object):
     _ALL_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
 
     def __init__(self,
-                 service_path=SERVICE_ADDRESS,
-                 port=DEFAULT_SERVICE_PORT,
                  channel=None,
                  credentials=None,
                  ssl_credentials=None,
                  scopes=None,
                  client_config=None,
-                 app_name=None,
-                 app_version='',
                  lib_name=None,
                  lib_version='',
                  metrics_headers=()):
         """Constructor.
 
         Args:
-          service_path (string): The domain name of the API remote host.
-          port (int): The port on which to connect to the remote host.
-          channel (:class:`grpc.Channel`): A ``Channel`` instance through
-            which to make calls.
-          credentials (object): The authorization credentials to attach to
-            requests. These credentials identify this application to the
-            service.
-          ssl_credentials (:class:`grpc.ChannelCredentials`): A
-            ``ChannelCredentials`` instance for use with an SSL-enabled
-            channel.
-          scopes (list[string]): A list of OAuth2 scopes to attach to requests.
-          client_config (dict):
-            A dictionary for call options for each method. See
-            :func:`google.gax.construct_settings` for the structure of
-            this data. Falls back to the default config if not specified
-            or the specified config is missing data points.
-          app_name (string): The name of the application calling
-            the service. Recommended for analytics purposes.
-          app_version (string): The version of the application calling
-            the service. Recommended for analytics purposes.
-          lib_name (string): The API library software used for calling
-            the service. (Unless you are writing an API client itself,
-            leave this as default.)
-          lib_version (string): The API library software version used
-            for calling the service. (Unless you are writing an API client
-            itself, leave this as default.)
-          metrics_headers (dict): A dictionary of values for tracking
-            client library metrics. Ultimately serializes to a string
-            (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
-            considered private.
+            channel (~grpc.Channel): A ``Channel`` instance through
+                which to make calls.
+            credentials (~google.auth.credentials.Credentials): The authorization
+                credentials to attach to requests. These credentials identify this
+                application to the service.
+            ssl_credentials (~grpc.ChannelCredentials): A
+                ``ChannelCredentials`` instance for use with an SSL-enabled
+                channel.
+            scopes (Sequence[str]): A list of OAuth2 scopes to attach to requests.
+            client_config (dict):
+                A dictionary for call options for each method. See
+                :func:`google.gax.construct_settings` for the structure of
+                this data. Falls back to the default config if not specified
+                or the specified config is missing data points.
+            lib_name (str): The API library software used for calling
+                the service. (Unless you are writing an API client itself,
+                leave this as default.)
+            lib_version (str): The API library software version used
+                for calling the service. (Unless you are writing an API client
+                itself, leave this as default.)
+            metrics_headers (dict): A dictionary of values for tracking
+                client library metrics. Ultimately serializes to a string
+                (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
+                considered private.
 
-        Returns:
-          A ImageAnnotatorClient object.
+        Returns: ImageAnnotatorClient
         """
         # Unless the calling application specifically requested
         # OAuth scopes, request everything.
@@ -128,20 +119,17 @@ class ImageAnnotatorClient(object):
             'google-cloud-vision', ).version
 
         # Load the configuration defaults.
-        default_client_config = json.loads(
-            pkg_resources.resource_string(
-                __name__, 'image_annotator_client_config.json').decode())
         defaults = api_callable.construct_settings(
             'google.cloud.vision.v1.ImageAnnotator',
-            default_client_config,
+            image_annotator_client_config.config,
             client_config,
             config.STATUS_CODE_NAMES,
             metrics_headers=metrics_headers, )
         self.image_annotator_stub = config.create_stub(
             image_annotator_pb2.ImageAnnotatorStub,
             channel=channel,
-            service_path=service_path,
-            service_port=port,
+            service_path=self.SERVICE_ADDRESS,
+            service_port=self.DEFAULT_SERVICE_PORT,
             credentials=credentials,
             scopes=scopes,
             ssl_credentials=ssl_credentials)
@@ -156,24 +144,28 @@ class ImageAnnotatorClient(object):
         Run image detection and annotation for a batch of images.
 
         Example:
-          >>> from google.cloud.gapic.vision.v1 import image_annotator_client
-          >>> client = image_annotator_client.ImageAnnotatorClient()
-          >>> requests = []
-          >>> response = client.batch_annotate_images(requests)
+            >>> from google.cloud import vision_v1
+            >>>
+            >>> client = vision_v1.ImageAnnotatorClient()
+            >>>
+            >>> requests = []
+            >>>
+            >>> response = client.batch_annotate_images(requests)
 
         Args:
-          requests (list[:class:`google.cloud.proto.vision.v1.image_annotator_pb2.AnnotateImageRequest`]): Individual image annotation requests for this batch.
-          options (:class:`google.gax.CallOptions`): Overrides the default
-            settings for this call, e.g, timeout, retries etc.
+            requests (list[Union[dict, ~google.cloud.vision_v1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.vision_v1.types.AnnotateImageRequest`
+            options (~google.gax.CallOptions): Overrides the default
+                settings for this call, e.g, timeout, retries etc.
 
         Returns:
-          A :class:`google.cloud.proto.vision.v1.image_annotator_pb2.BatchAnnotateImagesResponse` instance.
+            A :class:`~google.cloud.vision_v1.types.BatchAnnotateImagesResponse` instance.
 
         Raises:
-          :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-          :exc:`ValueError` if the parameters are invalid.
+            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
+            :exc:`ValueError` if the parameters are invalid.
         """
-        # Create the request object.
         request = image_annotator_pb2.BatchAnnotateImagesRequest(
             requests=requests)
         return self._batch_annotate_images(request, options)

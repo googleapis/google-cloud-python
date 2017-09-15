@@ -73,7 +73,7 @@ class TestWebDetection(unittest.TestCase):
                               WebPage)
 
     def test_web_detection_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_detection_pb2
+        from google.cloud.vision_v1.proto import web_detection_pb2
         from google.cloud.vision.web import WebEntity
         from google.cloud.vision.web import WebImage
         from google.cloud.vision.web import WebPage
@@ -140,7 +140,7 @@ class TestWebEntity(unittest.TestCase):
         self.assertEqual(web_entity.description, entity_dict['description'])
 
     def test_web_entity_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_detection_pb2
+        from google.cloud.vision_v1.proto import web_detection_pb2
 
         entity_id = '/m/019dvv'
         score = 1470.4435
@@ -179,7 +179,7 @@ class TestWebImage(unittest.TestCase):
         self.assertAlmostEqual(web_image.score, web_image_dict['score'])
 
     def test_web_image_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_detection_pb2
+        from google.cloud.vision_v1.proto import web_detection_pb2
 
         url = 'http://cloud.google.com/vision'
         score = 1234.23
@@ -216,7 +216,7 @@ class TestWebPage(unittest.TestCase):
         self.assertAlmostEqual(web_page.score, web_page_dict['score'], 4)
 
     def test_web_page_from_pb(self):
-        from google.cloud.proto.vision.v1 import web_detection_pb2
+        from google.cloud.vision_v1.proto import web_detection_pb2
 
         url = 'http://cloud.google.com/vision'
         score = 1234.23
