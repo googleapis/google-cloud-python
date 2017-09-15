@@ -110,7 +110,7 @@ class Test_HTTPVisionAPI(unittest.TestCase):
         http_api._connection.api_request.assert_not_called()
 
     def test_call_annotate_with_pb_requests_results(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         client = mock.Mock(spec_set=['_connection'])
 

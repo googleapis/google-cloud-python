@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,27 @@
 """Wrappers for protocol buffer enum types."""
 
 
+class Likelihood(object):
+    """
+    A bucketized representation of likelihood, which is intended to give clients
+    highly stable results across model upgrades.
+
+    Attributes:
+      UNKNOWN (int): Unknown likelihood.
+      VERY_UNLIKELY (int): It is very unlikely that the image belongs to the specified vertical.
+      UNLIKELY (int): It is unlikely that the image belongs to the specified vertical.
+      POSSIBLE (int): It is possible that the image belongs to the specified vertical.
+      LIKELY (int): It is likely that the image belongs to the specified vertical.
+      VERY_LIKELY (int): It is very likely that the image belongs to the specified vertical.
+    """
+    UNKNOWN = 0
+    VERY_UNLIKELY = 1
+    UNLIKELY = 2
+    POSSIBLE = 3
+    LIKELY = 4
+    VERY_LIKELY = 5
+
+
 class TextAnnotation(object):
     class DetectedBreak(object):
         class BreakType(object):
@@ -27,8 +48,8 @@ class TextAnnotation(object):
               EOL_SURE_SPACE (int): Line-wrapping break.
               HYPHEN (int): End-line hyphen that is not present in text; does
               LINE_BREAK (int): not co-occur with SPACE, LEADER_SPACE, or
-                LINE_BREAK.
-                Line break that ends a paragraph.
+              LINE_BREAK.
+              Line break that ends a paragraph.
             """
             UNKNOWN = 0
             SPACE = 1
@@ -59,27 +80,6 @@ class Block(object):
         BARCODE = 5
 
 
-class Likelihood(object):
-    """
-    A bucketized representation of likelihood, which is intended to give clients
-    highly stable results across model upgrades.
-
-    Attributes:
-      UNKNOWN (int): Unknown likelihood.
-      VERY_UNLIKELY (int): It is very unlikely that the image belongs to the specified vertical.
-      UNLIKELY (int): It is unlikely that the image belongs to the specified vertical.
-      POSSIBLE (int): It is possible that the image belongs to the specified vertical.
-      LIKELY (int): It is likely that the image belongs to the specified vertical.
-      VERY_LIKELY (int): It is very likely that the image belongs to the specified vertical.
-    """
-    UNKNOWN = 0
-    VERY_UNLIKELY = 1
-    UNLIKELY = 2
-    POSSIBLE = 3
-    LIKELY = 4
-    VERY_LIKELY = 5
-
-
 class Feature(object):
     class Type(object):
         """
@@ -93,7 +93,7 @@ class Feature(object):
           LABEL_DETECTION (int): Run label detection.
           TEXT_DETECTION (int): Run OCR.
           DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
-            DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
+          DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
           SAFE_SEARCH_DETECTION (int): Run computer vision models to compute image safe-search properties.
           IMAGE_PROPERTIES (int): Compute a set of image properties, such as the image's dominant colors.
           CROP_HINTS (int): Run crop hints.

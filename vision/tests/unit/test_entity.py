@@ -35,7 +35,7 @@ class TestEntityAnnotation(unittest.TestCase):
         self.assertEqual(logo.bounds.vertices[0].y_coordinate, 162)
 
     def test_logo_pb_annotation(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         description = 'testing 1 2 3'
         locale = 'US'
