@@ -272,6 +272,31 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dataset.dataset_id, DATASET)
         self.assertEqual(dataset.project_id, PROJECT)
 
+    def test_get_dataset(self):
+        project = 'PROJECT'
+        dataset_id = 'dataset_id'
+        path = 'projects/%s/datasets/%s' % (project, dataset_id)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=project, credentials=creds, _http=http)
+        resource = {
+            'id': '%s:%s' % (project, dataset_id),
+            'datasetReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+            },
+        }
+        conn = client._connection = _Connection(resource)
+        dataset_ref = client.dataset(dataset_id)
+
+        dataset = client.get_dataset(dataset_ref)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % path)
+        self.assertEqual(dataset.dataset_id, dataset_id)
+
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _make_credentials()
