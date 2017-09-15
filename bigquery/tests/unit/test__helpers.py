@@ -158,6 +158,63 @@ class Test_bytes_from_json(unittest.TestCase):
         self.assertEqual(coerced, expected)
 
 
+class Test_timestamp_query_param_from_json(unittest.TestCase):
+
+    def _call_fut(self, value, field):
+        from google.cloud.bigquery import _helpers
+
+        return _helpers._timestamp_query_param_from_json(value, field)
+
+    def test_w_none_nullable(self):
+        self.assertIsNone(self._call_fut(None, _Field('NULLABLE')))
+
+    def test_w_timestamp_valid(self):
+        from google.cloud._helpers import UTC
+
+        samples = [
+            (
+                '2016-12-20 15:58:27.339328+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20 15:58:27+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27.339328+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27+00:00',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20 15:58:27.339328Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20 15:58:27Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27.339328Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, 339328, tzinfo=UTC)
+            ),
+            (
+                '2016-12-20T15:58:27Z',
+                datetime.datetime(2016, 12, 20, 15, 58, 27, tzinfo=UTC)
+            ),
+        ]
+        for timestamp_str, expected_result in samples:
+            self.assertEqual(
+                self._call_fut(timestamp_str, _Field('NULLABLE')),
+                expected_result)
+
+    def test_w_timestamp_invalid(self):
+        with self.assertRaises(ValueError):
+            self._call_fut('definitely-not-a-timestamp', _Field('NULLABLE'))
+
+
 class Test_timestamp_from_json(unittest.TestCase):
 
     def _call_fut(self, value, field):
@@ -1528,6 +1585,44 @@ class Test__query_param_from_api_repr(unittest.TestCase):
         self.assertEqual(parameter.name, 'foo')
         self.assertEqual(parameter.type_, 'INT64')
         self.assertEqual(parameter.value, 123)
+
+    def test_w_scalar_timestamp(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud._helpers import UTC
+
+        RESOURCE = {
+            'name': 'zoned',
+            'parameterType': {'type': 'TIMESTAMP'},
+            'parameterValue': {'value': '2012-03-04 05:06:07+00:00'},
+        }
+
+        parameter = self._call_fut(RESOURCE)
+
+        self.assertIsInstance(parameter, ScalarQueryParameter)
+        self.assertEqual(parameter.name, 'zoned')
+        self.assertEqual(parameter.type_, 'TIMESTAMP')
+        self.assertEqual(
+            parameter.value,
+            datetime.datetime(2012, 3, 4, 5, 6, 7, tzinfo=UTC))
+
+    def test_w_scalar_timestamp_micros(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+        from google.cloud._helpers import UTC
+
+        RESOURCE = {
+            'name': 'zoned',
+            'parameterType': {'type': 'TIMESTAMP'},
+            'parameterValue': {'value': '2012-03-04 05:06:07.250000+00:00'},
+        }
+
+        parameter = self._call_fut(RESOURCE)
+
+        self.assertIsInstance(parameter, ScalarQueryParameter)
+        self.assertEqual(parameter.name, 'zoned')
+        self.assertEqual(parameter.type_, 'TIMESTAMP')
+        self.assertEqual(
+            parameter.value,
+            datetime.datetime(2012, 3, 4, 5, 6, 7, 250000, tzinfo=UTC))
 
     def test_w_array(self):
         from google.cloud.bigquery._helpers import ArrayQueryParameter

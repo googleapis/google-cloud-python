@@ -70,6 +70,39 @@ def _timestamp_from_json(value, field):
         return _datetime_from_microseconds(1e6 * float(value))
 
 
+def _timestamp_query_param_from_json(value, field):
+    """Coerce 'value' to a datetime, if set or not nullable.
+
+    Args:
+        value (str): The timestamp.
+        field (.SchemaField): The field corresponding to the value.
+
+    Returns:
+        Optional[datetime.datetime]: The parsed datetime object from
+        ``value`` if the ``field`` is not null (otherwise it is
+        :data:`None`).
+    """
+    if _not_null(value, field):
+        # Canonical formats for timestamps in BigQuery are flexible. See:
+        # g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
+        # The separator between the date and time can be 'T' or ' '.
+        value = value.replace(' ', 'T', 1)
+        # The UTC timezone may be formatted as Z or +00:00.
+        value = value.replace('Z', '')
+        value = value.replace('+00:00', '')
+
+        if '.' in value:
+            # YYYY-MM-DDTHH:MM:SS.ffffff
+            return datetime.datetime.strptime(
+                value, _RFC3339_MICROS_NO_ZULU).replace(tzinfo=UTC)
+        else:
+            # YYYY-MM-DDTHH:MM:SS
+            return datetime.datetime.strptime(
+                value, _RFC3339_NO_FRACTION).replace(tzinfo=UTC)
+    else:
+        return None
+
+
 def _datetime_from_json(value, field):
     """Coerce 'value' to a datetime, if set or not nullable.
 
@@ -137,6 +170,9 @@ _CELLDATA_FROM_JSON = {
     'TIME': _time_from_json,
     'RECORD': _record_from_json,
 }
+
+_QUERY_PARAMS_FROM_JSON = dict(_CELLDATA_FROM_JSON)
+_QUERY_PARAMS_FROM_JSON['TIMESTAMP'] = _timestamp_query_param_from_json
 
 
 def _row_from_json(row, schema):
@@ -453,7 +489,7 @@ class ScalarQueryParameter(AbstractQueryParameter):
         name = resource.get('name')
         type_ = resource['parameterType']['type']
         value = resource['parameterValue']['value']
-        converted = _CELLDATA_FROM_JSON[type_](value, None)
+        converted = _QUERY_PARAMS_FROM_JSON[type_](value, None)
         return cls(name, type_, converted)
 
     def to_api_repr(self):
@@ -541,7 +577,9 @@ class ArrayQueryParameter(AbstractQueryParameter):
             for value
             in resource['parameterValue']['arrayValues']]
         converted = [
-            _CELLDATA_FROM_JSON[array_type](value, None) for value in values]
+            _QUERY_PARAMS_FROM_JSON[array_type](value, None)
+            for value in values
+        ]
         return cls(name, array_type, converted)
 
     def to_api_repr(self):
@@ -639,7 +677,7 @@ class StructQueryParameter(AbstractQueryParameter):
         for key, value in struct_values.items():
             type_ = types[key]
             value = value['value']
-            converted = _CELLDATA_FROM_JSON[type_](value, None)
+            converted = _QUERY_PARAMS_FROM_JSON[type_](value, None)
             instance.struct_values[key] = converted
         return instance
 
