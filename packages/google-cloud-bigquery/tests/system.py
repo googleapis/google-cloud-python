@@ -1081,6 +1081,14 @@ class TestBigQuery(unittest.TestCase):
                 },
                 'expected': datetime.datetime(2012, 3, 4, 5, 6, 0, tzinfo=UTC),
             },
+            {
+                'sql': 'SELECT TIMESTAMP_TRUNC(%(zoned)s, MINUTE)',
+                'query_parameters': {
+                    'zoned': datetime.datetime(
+                        2012, 3, 4, 5, 6, 7, 250000, tzinfo=UTC),
+                },
+                'expected': datetime.datetime(2012, 3, 4, 5, 6, 0, tzinfo=UTC),
+            },
         ]
         for example in examples:
             msg = 'sql: {} query_parameters: {}'.format(
