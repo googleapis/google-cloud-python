@@ -15,21 +15,36 @@
 from __future__ import absolute_import
 import sys
 
-from google.cloud.proto.vision.v1 import geometry_pb2
-from google.cloud.proto.vision.v1 import image_annotator_pb2
-from google.cloud.proto.vision.v1 import text_annotation_pb2
-from google.cloud.proto.vision.v1 import web_detection_pb2
-
 from google.gax.utils.messages import get_messages
 
+from google.api import http_pb2
+from google.cloud.vision_v1.proto import geometry_pb2
+from google.cloud.vision_v1.proto import image_annotator_pb2
+from google.cloud.vision_v1.proto import text_annotation_pb2
+from google.cloud.vision_v1.proto import web_detection_pb2
+from google.protobuf import any_pb2
+from google.protobuf import descriptor_pb2
+from google.protobuf import wrappers_pb2
+from google.rpc import status_pb2
+from google.type import color_pb2
+from google.type import latlng_pb2
 
 names = []
-for module in (geometry_pb2, image_annotator_pb2,
-               text_annotation_pb2, web_detection_pb2):
+for module in (
+        http_pb2,
+        geometry_pb2,
+        image_annotator_pb2,
+        text_annotation_pb2,
+        web_detection_pb2,
+        any_pb2,
+        descriptor_pb2,
+        wrappers_pb2,
+        status_pb2,
+        color_pb2,
+        latlng_pb2, ):
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.vision_v1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
-
 
 __all__ = tuple(sorted(names))

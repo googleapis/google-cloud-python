@@ -45,7 +45,7 @@ class ImagePropertiesAnnotation(object):
     def from_pb(cls, image_properties):
         """Factory: construct ``ImagePropertiesAnnotation`` from a response.
 
-        :type image_properties: :class:`~google.cloud.proto.vision.v1.\
+        :type image_properties: :class:`~google.cloud.vision_v1.proto.\
                                 image_annotator_pb2.ImageProperties`
         :param image_properties: Protobuf response from Vision API with image
                                  properties data.
@@ -196,7 +196,7 @@ class ColorInformation(object):
     def from_pb(cls, color_information):
         """Factory: construct ``ColorInformation`` for a color.
 
-        :type color_information: :class:`~google.cloud.proto.vision.v1.\
+        :type color_information: :class:`~google.cloud.vision_v1.proto.\
                                  image_annotator_pb2.ColorInfo`
         :param color_information: Color data with extra meta information.
 

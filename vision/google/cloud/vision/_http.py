@@ -70,7 +70,7 @@ class _HTTPVisionAPI(object):
         :returns: List of :class:`~googe.cloud.vision.annotations.Annotations`.
 
         :type requests_pb: list
-        :param requests_pb: List of :class:`google.cloud.proto.vision.v1.\
+        :param requests_pb: List of :class:`google.cloud.vision_v1.proto.\
                             image_annotator_b2.AnnotateImageRequest`.
 
         :rtype: list

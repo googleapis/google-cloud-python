@@ -50,7 +50,7 @@ class Angles(object):
     def from_pb(cls, angle):
         """Factory: convert protobuf Angle object to local Angle object.
 
-        :type angle: :class:`~google.cloud.proto.vision.v1.\
+        :type angle: :class:`~google.cloud.vision_v1.proto.\
                      image_annotator_pb2.FaceAnnotation`
         :param angle: Protobuf ``FaceAnnotation`` response with angle data.
 
@@ -126,7 +126,7 @@ class Emotions(object):
     def from_pb(cls, emotions):
         """Factory: construct ``Emotions`` from Vision API response.
 
-        :type emotions: :class:`~google.cloud.proto.vision.v1.\
+        :type emotions: :class:`~google.cloud.vision_v1.proto.\
                         image_annotator_pb2.FaceAnnotation`
         :param emotions: Response dictionary representing a face with emotions.
 
@@ -225,7 +225,7 @@ class Face(object):
     def from_pb(cls, face):
         """Factory: construct an instance of a Face from an protobuf response
 
-        :type face: :class:`~google.cloud.proto.vision.v1.\
+        :type face: :class:`~google.cloud.vision_v1.proto.\
                        image_annotator_pb2.AnnotateImageResponse`
         :param face: ``AnnotateImageResponse`` from gRPC call.
 
@@ -397,7 +397,7 @@ class FaceImageProperties(object):
     def from_pb(cls, face):
         """Factory: construct image properties from image.
 
-        :type face: :class:`~google.cloud.proto.vision.v1.image_annotator_pb2.\
+        :type face: :class:`~google.cloud.vision_v1.proto.image_annotator_pb2.\
                     FaceAnnotation`
         :param face: Protobuf instace of `Face`.
 
@@ -508,7 +508,7 @@ class Landmark(object):
     def from_pb(cls, landmark):
         """Factory: construct an instance of a Landmark from a response.
 
-        :type landmark: :class:`~google.cloud.proto.vision.v1.\
+        :type landmark: :class:`~google.cloud.vision_v1.proto.\
                         image_annotator_pb.FaceAnnotation.Landmark`
         :param landmark: Landmark representation from Vision API.
 

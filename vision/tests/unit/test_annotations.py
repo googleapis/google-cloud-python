@@ -16,8 +16,8 @@ import unittest
 
 
 def _make_pb_entity():
-    from google.cloud.proto.vision.v1 import geometry_pb2
-    from google.cloud.proto.vision.v1 import image_annotator_pb2
+    from google.cloud.vision_v1.proto import geometry_pb2
+    from google.cloud.vision_v1.proto import image_annotator_pb2
     from google.type import latlng_pb2
 
     description = 'testing 1 2 3'
@@ -78,7 +78,7 @@ class TestAnnotations(unittest.TestCase):
     def test_from_pb(self):
         from google.cloud.vision.likelihood import Likelihood
         from google.cloud.vision.safe_search import SafeSearchAnnotation
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         image_response = image_annotator_pb2.AnnotateImageResponse()
         annotations = self._make_one().from_pb(image_response)
@@ -132,7 +132,7 @@ class Test__make_faces_from_pb(unittest.TestCase):
         return _make_faces_from_pb(annotations)
 
     def test_it(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
         from google.cloud.vision.face import Face
 
         faces_pb = [image_annotator_pb2.FaceAnnotation()]
@@ -149,7 +149,7 @@ class Test__make_image_properties_from_pb(unittest.TestCase):
         return _make_image_properties_from_pb(annotations)
 
     def test_it(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
         from google.protobuf.wrappers_pb2 import FloatValue
         from google.type.color_pb2 import Color
 
@@ -180,7 +180,7 @@ class Test__process_image_annotations(unittest.TestCase):
         return _process_image_annotations(image)
 
     def test_it(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         description = 'testing 1 2 3'
         locale = 'US'

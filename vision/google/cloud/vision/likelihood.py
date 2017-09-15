@@ -17,7 +17,7 @@
 
 from enum import Enum
 
-from google.cloud.proto.vision.v1 import image_annotator_pb2
+from google.cloud.vision_v1.proto import image_annotator_pb2
 
 
 def _get_pb_likelihood(likelihood):

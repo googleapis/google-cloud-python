@@ -20,22 +20,22 @@ class WebDetection(object):
 
     :type web_entities: list
     :param web_entities: List of
-                         :class:`google.cloud.proto.vision.v1.\
+                         :class:`google.cloud.vision_v1.proto.\
                          web_detection_pb2.WebDetection.WebEntity`.
 
     :type full_matching_images: list
     :param full_matching_images: List of
-                                 :class:`google.cloud.proto.vision.v1.\
+                                 :class:`google.cloud.vision_v1.proto.\
                                  web_detection_pb2.WebDetection.WebImage`.
 
     :type partial_matching_images: list
     :param partial_matching_images: List of
-                                    :class:`google.cloud.proto.vision.v1.\
+                                    :class:`google.cloud.vision_v1.proto.\
                                     web_detection_pb2.WebDetection.WebImage`.
 
     :type pages_with_matching_images: list
     :param pages_with_matching_images: List of
-                                       :class:`google.cloud.proto.vision.v1.\
+                                       :class:`google.cloud.vision_v1.proto.\
                                        web_detection_pb2.WebDetection.\
                                        WebPage`.
     """
@@ -79,7 +79,7 @@ class WebDetection(object):
     def from_pb(cls, detection):
         """Factory: construct ``WebDetection`` from Vision API response.
 
-        :type detection: :class:`~google.cloud.proto.vision.v1.\
+        :type detection: :class:`~google.cloud.vision_v1.proto.\
                           web_detection_pb2.WebDetection`
         :param detection: Dictionary representing a ``WebDetection``.
 
@@ -171,7 +171,7 @@ class WebEntity(object):
     def from_pb(cls, web_entity):
         """Factory: construct ``WebEntity`` from Vision API response.
 
-        :type web_entity: :class:`~google.cloud.proto.vision.v1.\
+        :type web_entity: :class:`~google.cloud.vision_v1.proto.\
                           web_detection_pb2.WebDetection.WebEntity`
         :param web_entity: Dictionary representing a web entity
 
@@ -242,7 +242,7 @@ class WebImage(object):
     def from_pb(cls, web_image):
         """Factory: construct ``WebImage`` from Vision API response.
 
-        :type web_image: :class:`~google.cloud.proto.vision.v1.\
+        :type web_image: :class:`~google.cloud.vision_v1.proto.\
                          web_detection_pb2.WebDetection.WebImage`
         :param web_image: Dictionary representing a web image
 
@@ -303,7 +303,7 @@ class WebPage(object):
     def from_pb(cls, web_page):
         """Factory: construct ``WebPage`` from Vision API response.
 
-        :type web_page: :class:`~google.cloud.proto.vision.v1.\
+        :type web_page: :class:`~google.cloud.vision_v1.proto.\
                         web_detection_pb2.WebDetection.WebPage`
         :param web_page: Dictionary representing a web image
 

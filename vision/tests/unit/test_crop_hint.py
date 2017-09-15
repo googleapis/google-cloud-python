@@ -37,8 +37,8 @@ class TestCropHint(unittest.TestCase):
         self.assertEqual(crop_hints.importance_fraction, 1.22)
 
     def test_crop_hint_annotation_pb(self):
-        from google.cloud.proto.vision.v1 import geometry_pb2
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import geometry_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         vertex = geometry_pb2.Vertex(x=1, y=2)
         bounds = geometry_pb2.BoundingPoly(vertices=[vertex])
