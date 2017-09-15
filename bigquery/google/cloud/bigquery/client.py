@@ -166,6 +166,20 @@ class Client(ClientWithProject):
 
         return DatasetReference(project, dataset_name)
 
+    def get_dataset(self, dataset_ref):
+        """Fetch the dataset referenced by ``dataset_ref``
+
+        :type dataset_ref:
+            :class:`google.cloud.bigquery.dataset.DatasetReference`
+        :param dataset_ref: the dataset to use.
+
+        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
+        :returns: a ``Dataset`` instance
+        """
+        api_response = self._connection.api_request(
+            method='GET', path=dataset_ref.path)
+        return Dataset.from_api_repr(api_response, self)
+
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
 
