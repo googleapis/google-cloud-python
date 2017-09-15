@@ -121,19 +121,20 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(dataset.exists())
         self.assertEqual(dataset.dataset_id, DATASET_ID)
 
-    def test_reload_dataset(self):
-        DATASET_ID = _make_dataset_id('reload_dataset')
-        dataset = Dataset(DATASET_ID, Config.CLIENT)
+    def test_get_dataset(self):
+        DATASET_ID = _make_dataset_id('get_dataset')
+        client = Config.CLIENT
+        dataset = Dataset(DATASET_ID, client)
         dataset.friendly_name = 'Friendly'
         dataset.description = 'Description'
-
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
+        dataset_ref = client.dataset(DATASET_ID)
 
-        other = Dataset(DATASET_ID, Config.CLIENT)
-        other.reload()
-        self.assertEqual(other.friendly_name, 'Friendly')
-        self.assertEqual(other.description, 'Description')
+        got = client.get_dataset(dataset_ref)
+
+        self.assertEqual(got.friendly_name, 'Friendly')
+        self.assertEqual(got.description, 'Description')
 
     def test_patch_dataset(self):
         dataset = Dataset(_make_dataset_id('patch_dataset'), Config.CLIENT)
