@@ -38,9 +38,12 @@ def unit_tests(session, python_version):
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
-    session.run('py.test', '--quiet',
-        '--cov=google.cloud.language', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
+    session.run(
+        'py.test', '--quiet',
+        '--cov=google.cloud.language_v1',
+        '--cov=google.cloud.language_v1beta2',
+        '--cov-append', '--cov-config=.coveragerc',
+        '--cov-report=', '--cov-fail-under=97',
         'tests/unit',
     )
 
@@ -67,7 +70,7 @@ def system_tests(session, python_version):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '--quiet', 'tests/system/')
 
 
 @nox.session
