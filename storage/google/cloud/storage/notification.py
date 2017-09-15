@@ -190,6 +190,9 @@ class BucketNotification(object):
     def delete(self, client=None):
         """Delete this notification.
 
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/delete
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
