@@ -123,7 +123,7 @@ class Key(object):
         :returns: True if the keys compare equal, else False.
         """
         if not isinstance(other, Key):
-            return False
+            return NotImplemented
 
         if self.is_partial or other.is_partial:
             return False
@@ -143,7 +143,7 @@ class Key(object):
         :rtype: bool
         :returns: False if the keys compare equal, else True.
         """
-        return not self.__eq__(other)
+        return not self == other
 
     def __hash__(self):
         """Hash a keys for use in a dictionary lookp.
@@ -306,6 +306,11 @@ class Key(object):
         "Reference"). The returned string can be used as the ``urlsafe``
         argument to ``ndb.Key(urlsafe=...)``. The base64 encoded values
         will have padding removed.
+
+        .. note::
+
+            The string returned by ``to_legacy_urlsafe`` is equivalent, but
+            not identical, to the string returned by ``ndb``.
 
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.

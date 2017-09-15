@@ -45,18 +45,43 @@ fails if the result set is too large,
 
 .. code:: python
 
-    result = snapshot.read(
-        table='table-name', columns=['first_name', 'last_name', 'age'],
-        key_set=['phred@example.com', 'bharney@example.com'])
+    with database.snapshot() as snapshot:
+        result = snapshot.read(
+            table='table-name', columns=['first_name', 'last_name', 'age'],
+            key_set=['phred@example.com', 'bharney@example.com'])
 
-    for row in result.rows:
-        print(row)
+        for row in result.rows:
+            print(row)
 
 .. note::
 
-   If streaming a chunk fails due to a "resumable" error,
-   :meth:`Session.read` retries the ``StreamingRead`` API reqeust,
-   passing the ``resume_token`` from the last partial result streamed.
+   The result set returned by
+   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
+   iterated after the snapshot's session has been returned to the database's
+   session pool.  Therefore, unless your application creates sessions
+   manually, perform all iteration within the context of  the
+   ``with database.snapshot()`` block.
+
+.. note::
+
+   If streaming a chunk raises an exception, the application can
+   retry the ``read``, passing the ``resume_token`` from ``StreamingResultSet``
+   which raised the error.  E.g.:
+
+   .. code:: python
+
+      result = snapshot.read(table, columns, keys)
+      while True:
+          try:
+              for row in result.rows:
+                  print row
+          except Exception:
+               result = snapshot.read(
+                  table, columns, keys, resume_token=result.resume_token)
+               continue
+          else:
+              break
+
 
 
 Execute a SQL Select Statement
@@ -68,14 +93,44 @@ fails if the result set is too large,
 
 .. code:: python
 
-    QUERY = (
-        'SELECT e.first_name, e.last_name, p.telephone '
-        'FROM employees as e, phones as p '
-        'WHERE p.employee_id == e.employee_id')
-    result = snapshot.execute_sql(QUERY)
+    with database.snapshot() as snapshot:
+        QUERY = (
+            'SELECT e.first_name, e.last_name, p.telephone '
+            'FROM employees as e, phones as p '
+            'WHERE p.employee_id == e.employee_id')
+        result = snapshot.execute_sql(QUERY)
 
-    for row in result.rows:
-        print(row)
+        for row in result.rows:
+            print(row)
+
+.. note::
+
+   The result set returned by
+   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
+   iterated after the snapshot's session has been returned to the database's
+   session pool.  Therefore, unless your application creates sessions
+   manually, perform all iteration within the context of  the
+   ``with database.snapshot()`` block.
+
+.. note::
+
+   If streaming a chunk raises an exception, the application can
+   retry the query, passing the ``resume_token`` from ``StreamingResultSet``
+   which raised the error.  E.g.:
+
+   .. code:: python
+
+      result = snapshot.execute_sql(QUERY)
+      while True:
+          try:
+              for row in result.rows:
+                  print row
+          except Exception:
+               result = snapshot.execute_sql(
+                  QUERY, resume_token=result.resume_token)
+               continue
+          else:
+              break
 
 
 Next Step

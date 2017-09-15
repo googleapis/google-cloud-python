@@ -29,24 +29,28 @@ class Transaction(Batch):
 
     .. testsetup:: txn-put-multi, txn-api
 
-       from google.cloud import datastore
-       from tests.system.test_system import Config  # system tests
+        import os
+        import uuid
 
-       client = datastore.Client()
-       key1 = client.key('_Doctest')
-       entity1 = datastore.Entity(key=key1)
-       entity1['foo'] = 1337
+        from google.cloud import datastore
+        from tests.system.test_system import Config  # system tests
 
-       key2 = client.key('_Doctest', 'abcd1234')
-       entity2 = datastore.Entity(key=key2)
-       entity2['foo'] = 42
+        unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
+        client = datastore.Client(namespace='ns{}'.format(unique))
+        key1 = client.key('_Doctest')
+        entity1 = datastore.Entity(key=key1)
+        entity1['foo'] = 1337
 
-       Config.TO_DELETE.extend([entity1, entity2])
+        key2 = client.key('_Doctest', 'abcd1234')
+        entity2 = datastore.Entity(key=key2)
+        entity2['foo'] = 42
+
+        Config.TO_DELETE.extend([entity1, entity2])
 
     .. doctest:: txn-put-multi
 
-       >>> with client.transaction():
-       ...     client.put_multi([entity1, entity2])
+        >>> with client.transaction():
+        ...     client.put_multi([entity1, entity2])
 
     Because it derives from :class:`~google.cloud.datastore.batch.Batch`,
     :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods:
@@ -62,51 +66,59 @@ class Transaction(Batch):
 
     .. testsetup:: txn-error
 
-       from google.cloud import datastore
+        import os
+        import uuid
 
-       client = datastore.Client()
+        from google.cloud import datastore
 
-       def do_some_work():
-           return
+        unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
+        client = datastore.Client(namespace='ns{}'.format(unique))
 
-       class SomeException(Exception):
-           pass
+        def do_some_work():
+            return
+
+        class SomeException(Exception):
+            pass
 
     .. doctest:: txn-error
 
-       >>> with client.transaction():
-       ...     do_some_work()
-       ...     raise SomeException  # rolls back
-       Traceback (most recent call last):
-         ...
-       SomeException
+        >>> with client.transaction():
+        ...     do_some_work()
+        ...     raise SomeException  # rolls back
+        Traceback (most recent call last):
+          ...
+        SomeException
 
     If the transaction block exits without an exception, it will commit
     by default.
 
     .. warning::
 
-       Inside a transaction, automatically assigned IDs for
-       entities will not be available at save time!  That means, if you
-       try:
+        Inside a transaction, automatically assigned IDs for
+        entities will not be available at save time!  That means, if you
+        try:
 
-       .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual
+        .. testsetup:: txn-entity-key, txn-entity-key-after, txn-manual
 
-          from google.cloud import datastore
-          from tests.system.test_system import Config  # system tests
+            import os
+            import uuid
 
-          client = datastore.Client()
+            from google.cloud import datastore
+            from tests.system.test_system import Config  # system tests
 
-          def Entity(*args, **kwargs):
-              entity = datastore.Entity(*args, **kwargs)
-              Config.TO_DELETE.append(entity)
-              return entity
+            unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
+            client = datastore.Client(namespace='ns{}'.format(unique))
 
-       .. doctest:: txn-entity-key
+            def Entity(*args, **kwargs):
+                entity = datastore.Entity(*args, **kwargs)
+                Config.TO_DELETE.append(entity)
+                return entity
 
-          >>> with client.transaction():
-          ...     entity = Entity(key=client.key('Thing'))
-          ...     client.put(entity)
+        .. doctest:: txn-entity-key
+
+            >>> with client.transaction():
+            ...     entity = Entity(key=client.key('Thing'))
+            ...     client.put(entity)
 
        ``entity`` won't have a complete key until the transaction is
        committed.

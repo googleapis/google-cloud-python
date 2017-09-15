@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -51,12 +51,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.25.0, < 0.26dev',
+    'google-cloud-core >= 0.27.0, < 0.28dev',
 ]
 
 setup(
     name='google-cloud-translate',
-    version='0.25.0',
+    version='1.2.0',
     description='Python Client for Google Cloud Translation API',
     long_description=README,
     namespace_packages=[

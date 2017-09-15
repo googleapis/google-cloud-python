@@ -45,6 +45,64 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
 
+    def test__get_query_results_miss_w_explicit_project_and_timeout(self):
+        from google.cloud.exceptions import NotFound
+
+        project = 'PROJECT'
+        creds = _make_credentials()
+        client = self._make_one(project, creds)
+        conn = client._connection = _Connection()
+
+        with self.assertRaises(NotFound):
+            client._get_query_results(
+                'nothere', project='other-project', timeout_ms=500)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(
+            req['path'], '/projects/other-project/queries/nothere')
+        self.assertEqual(
+            req['query_params'], {'maxResults': 0, 'timeoutMs': 500})
+
+    def test__get_query_results_hit(self):
+        project = 'PROJECT'
+        job_id = 'query_job'
+        data = {
+            'kind': 'bigquery#getQueryResultsResponse',
+            'etag': 'some-tag',
+            'schema': {
+                'fields': [
+                    {
+                        'name': 'title',
+                        'type': 'STRING',
+                        'mode': 'NULLABLE'
+                    },
+                    {
+                        'name': 'unique_words',
+                        'type': 'INTEGER',
+                        'mode': 'NULLABLE'
+                    }
+                ]
+            },
+            'jobReference': {
+                'projectId': project,
+                'jobId': job_id,
+            },
+            'totalRows': '10',
+            'totalBytesProcessed': '2464625',
+            'jobComplete': True,
+            'cacheHit': False,
+        }
+
+        creds = _make_credentials()
+        client = self._make_one(project, creds)
+        client._connection = _Connection(data)
+        query_results = client._get_query_results(job_id)
+
+        self.assertEqual(query_results.total_rows, 10)
+        self.assertTrue(query_results.complete)
+
     def test_list_projects_defaults(self):
         import six
         from google.cloud.bigquery.client import Project
@@ -607,6 +665,11 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
+        from google.cloud.exceptions import NotFound
         self._requested.append(kw)
+
+        if len(self._responses) == 0:
+            raise NotFound('miss')
+
         response, self._responses = self._responses[0], self._responses[1:]
         return response

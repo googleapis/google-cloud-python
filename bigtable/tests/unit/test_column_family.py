@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import unittest
+
+import mock
 
 
 class TestMaxVersionsGCRule(unittest.TestCase):
@@ -29,8 +30,8 @@ class TestMaxVersionsGCRule(unittest.TestCase):
 
     def test___eq__type_differ(self):
         gc_rule1 = self._make_one(10)
-        gc_rule2 = object()
-        self.assertNotEqual(gc_rule1, gc_rule2)
+        self.assertNotEqual(gc_rule1, object())
+        self.assertEqual(gc_rule1, mock.ANY)
 
     def test___eq__same_value(self):
         gc_rule1 = self._make_one(2)

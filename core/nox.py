@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import os
 
 import nox
 
@@ -29,16 +30,27 @@ def unit_tests(session, python_version):
     session.virtualenv_dirname = 'unit-' + python_version
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov',
-                    'grpcio >= 1.0.2')
+    session.install(
+        'mock',
+        'pytest',
+        'pytest-cov',
+        'grpcio >= 1.0.2',
+    )
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run(
-        'py.test', '--quiet',
-        '--cov=google.cloud', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit',
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud',
+        '--cov=google.api.core',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=97',
+        os.path.join('tests', 'unit'),
+        *session.posargs
     )
 
 
@@ -50,9 +62,10 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8', 'pylint', 'gcp-devrel-py-tools')
+    session.install(
+        'flake8', 'flake8-import-order', 'pylint', 'gcp-devrel-py-tools')
     session.install('.')
-    session.run('flake8', 'google/cloud/core')
+    session.run('flake8', 'google', 'tests')
     session.run(
         'gcp-devrel-py-tools', 'run-pylint',
         '--config', 'pylint.config.py',

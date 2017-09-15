@@ -59,37 +59,31 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(pickle.PicklingError):
             pickle.dumps(client_obj)
 
-    def test_ctor_defaults(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud import client
+    def test_constructor_defaults(self):
+        credentials = _make_credentials()
 
-        CREDENTIALS = _make_credentials()
-        FUNC_CALLS = []
-
-        def mock_get_credentials():
-            FUNC_CALLS.append('get_credentials')
-            return CREDENTIALS
-
-        with _Monkey(client, get_credentials=mock_get_credentials):
+        patch = mock.patch(
+            'google.auth.default', return_value=(credentials, None))
+        with patch as default:
             client_obj = self._make_one()
 
-        self.assertIs(client_obj._credentials, CREDENTIALS)
+        self.assertIs(client_obj._credentials, credentials)
         self.assertIsNone(client_obj._http_internal)
-        self.assertEqual(FUNC_CALLS, ['get_credentials'])
+        default.assert_called_once_with()
 
-    def test_ctor_explicit(self):
-        CREDENTIALS = _make_credentials()
-        HTTP = object()
-        client_obj = self._make_one(credentials=CREDENTIALS, _http=HTTP)
+    def test_constructor_explicit(self):
+        credentials = _make_credentials()
+        http = mock.sentinel.http
+        client_obj = self._make_one(credentials=credentials, _http=http)
 
-        self.assertIs(client_obj._credentials, CREDENTIALS)
-        self.assertIs(client_obj._http_internal, HTTP)
+        self.assertIs(client_obj._credentials, credentials)
+        self.assertIs(client_obj._http_internal, http)
 
-    def test_ctor_bad_credentials(self):
-        CREDENTIALS = object()
+    def test_constructor_bad_credentials(self):
+        credentials = mock.sentinel.credentials
 
         with self.assertRaises(ValueError):
-            self._make_one(credentials=CREDENTIALS)
+            self._make_one(credentials=credentials)
 
     def test_from_service_account_json(self):
         from google.cloud import _helpers
@@ -138,17 +132,17 @@ class TestClient(unittest.TestCase):
         client = self._make_one(credentials=credentials)
         self.assertIsNone(client._http_internal)
 
-        patch = mock.patch('google_auth_httplib2.AuthorizedHttp',
-                           return_value=mock.sentinel.http)
-        with patch as mocked:
+        authorized_session_patch = mock.patch(
+            'google.auth.transport.requests.AuthorizedSession',
+            return_value=mock.sentinel.http)
+        with authorized_session_patch as AuthorizedSession:
             self.assertIs(client._http, mock.sentinel.http)
             # Check the mock.
-            mocked.assert_called_once_with(credentials)
-            self.assertEqual(mocked.call_count, 1)
+            AuthorizedSession.assert_called_once_with(credentials)
             # Make sure the cached value is used on subsequent access.
             self.assertIs(client._http_internal, mock.sentinel.http)
             self.assertIs(client._http, mock.sentinel.http)
-            self.assertEqual(mocked.call_count, 1)
+            self.assertEqual(AuthorizedSession.call_count, 1)
 
 
 class TestClientWithProject(unittest.TestCase):
@@ -162,34 +156,27 @@ class TestClientWithProject(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def test_ctor_defaults(self):
-        from google.cloud._testing import _Monkey
-        from google.cloud import client
+    def test_constructor_defaults(self):
+        credentials = _make_credentials()
+        patch1 = mock.patch(
+            'google.auth.default', return_value=(credentials, None))
 
-        PROJECT = 'PROJECT'
-        CREDENTIALS = _make_credentials()
-        FUNC_CALLS = []
+        project = 'prahj-ekt'
+        patch2 = mock.patch(
+            'google.cloud.client._determine_default_project',
+            return_value=project)
 
-        def mock_determine_proj(project):
-            FUNC_CALLS.append((project, '_determine_default_project'))
-            return PROJECT
+        with patch1 as default:
+            with patch2 as _determine_default_project:
+                client_obj = self._make_one()
 
-        def mock_get_credentials():
-            FUNC_CALLS.append('get_credentials')
-            return CREDENTIALS
-
-        with _Monkey(client, get_credentials=mock_get_credentials,
-                     _determine_default_project=mock_determine_proj):
-            client_obj = self._make_one()
-
-        self.assertEqual(client_obj.project, PROJECT)
-        self.assertIs(client_obj._credentials, CREDENTIALS)
+        self.assertEqual(client_obj.project, project)
+        self.assertIs(client_obj._credentials, credentials)
         self.assertIsNone(client_obj._http_internal)
-        self.assertEqual(
-            FUNC_CALLS,
-            [(None, '_determine_default_project'), 'get_credentials'])
+        default.assert_called_once_with()
+        _determine_default_project.assert_called_once_with(None)
 
-    def test_ctor_missing_project(self):
+    def test_constructor_missing_project(self):
         from google.cloud._testing import _Monkey
         from google.cloud import client
 
@@ -204,7 +191,7 @@ class TestClientWithProject(unittest.TestCase):
 
         self.assertEqual(FUNC_CALLS, [(None, '_determine_default_project')])
 
-    def test_ctor_w_invalid_project(self):
+    def test_constructor_w_invalid_project(self):
         CREDENTIALS = _make_credentials()
         HTTP = object()
         with self.assertRaises(ValueError):
@@ -227,11 +214,11 @@ class TestClientWithProject(unittest.TestCase):
         self.assertIs(client_obj._credentials, CREDENTIALS)
         self.assertIs(client_obj._http_internal, HTTP)
 
-    def test_ctor_explicit_bytes(self):
+    def test_constructor_explicit_bytes(self):
         PROJECT = b'PROJECT'
         self._explicit_ctor_helper(PROJECT)
 
-    def test_ctor_explicit_unicode(self):
+    def test_constructor_explicit_unicode(self):
         PROJECT = u'PROJECT'
         self._explicit_ctor_helper(PROJECT)
 

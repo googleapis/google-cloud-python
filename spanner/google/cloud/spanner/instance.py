@@ -16,6 +16,7 @@
 
 import re
 
+from google.api.core import page_iterator
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
@@ -27,8 +28,6 @@ from grpc import StatusCode
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.iterator import GAXIterator
-from google.cloud.operation import register_type
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.database import Database
 from google.cloud.spanner.pool import BurstyPool
@@ -40,10 +39,6 @@ _INSTANCE_NAME_RE = re.compile(
     r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 
 DEFAULT_NODE_COUNT = 1
-
-register_type(admin_v1_pb2.Instance)
-register_type(admin_v1_pb2.CreateInstanceMetadata)
-register_type(admin_v1_pb2.UpdateInstanceMetadata)
 
 
 class Instance(object):
@@ -114,11 +109,10 @@ class Instance(object):
 
         :rtype: :class:`Instance`
         :returns: The instance parsed from the protobuf response.
-        :raises: :class:`ValueError <exceptions.ValueError>` if the instance
-                 name does not match
-                 ``projects/{project}/instances/{instance_id}``
-                 or if the parsed project ID does not match the project ID
-                 on the client.
+        :raises ValueError:
+            if the instance name does not match
+            ``projects/{project}/instances/{instance_id}`` or if the parsed
+            project ID does not match the project ID on the client.
         """
         match = _INSTANCE_NAME_RE.match(instance_pb.name)
         if match is None:
@@ -154,7 +148,7 @@ class Instance(object):
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         # NOTE: This does not compare the configuration values, such as
         #       the display_name. Instead, it only compares
         #       identifying values instance ID and client. This is
@@ -165,7 +159,7 @@ class Instance(object):
                 other._client == self._client)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def copy(self):
         """Make a copy of this instance.
@@ -204,8 +198,11 @@ class Instance(object):
 
            before calling :meth:`create`.
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.api.core.operation.Operation`
         :returns: an operation instance
+        :raises Conflict: if the instance already exists
+        :raises GaxError:
+            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._client.instance_admin_api
         instance_pb = admin_v1_pb2.Instance(
@@ -228,7 +225,6 @@ class Instance(object):
                 raise Conflict(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'CreateInstance'}
         return future
 
     def exists(self):
@@ -236,6 +232,11 @@ class Instance(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
+
+        :rtype: bool
+        :returns: True if the instance exists, else false
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._client.instance_admin_api
         options = _options_with_prefix(self.name)
@@ -254,6 +255,9 @@ class Instance(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig
+
+        :raises NotFound: if the instance does not exist
+        :raises GaxError: for other errors returned from the call
         """
         api = self._client.instance_admin_api
         options = _options_with_prefix(self.name)
@@ -285,8 +289,10 @@ class Instance(object):
 
             before calling :meth:`update`.
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.api.core.operation.Operation`
         :returns: an operation instance
+        :raises NotFound: if the instance does not exist
+        :raises GaxError: for other errors returned from the call
         """
         api = self._client.instance_admin_api
         instance_pb = admin_v1_pb2.Instance(
@@ -309,7 +315,6 @@ class Instance(object):
                 raise NotFound(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'UpdateInstance'}
         return future
 
     def delete(self):
@@ -369,7 +374,7 @@ class Instance(object):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.spanner.database.Database`
             resources within the current instance.
@@ -379,7 +384,8 @@ class Instance(object):
         options = _options_with_prefix(self.name, page_token=page_token)
         page_iter = self._client.database_admin_api.list_databases(
             self.name, page_size=page_size, options=options)
-        iterator = GAXIterator(self._client, page_iter, _item_to_database)
+        iterator = page_iterator._GAXIterator(
+            self._client, page_iter, _item_to_database)
         iterator.instance = self
         return iterator
 
@@ -387,7 +393,7 @@ class Instance(object):
 def _item_to_database(iterator, database_pb):
     """Convert a database protobuf to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type database_pb: :class:`~google.spanner.admin.database.v1.Database`

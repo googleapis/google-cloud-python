@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-publisher@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -51,19 +51,29 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.25.0, < 0.26dev',
+    'google-cloud-core >= 0.27.0, < 0.28dev',
+    'google-gax >= 0.15.14, < 0.16dev',
+    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
 ]
+EXTRAS_REQUIRE = {
+    ':python_version<"3.4"': ['enum34'],
+}
 
 setup(
     name='google-cloud-language',
-    version='0.25.0',
+    version='0.28.0',
     description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
+        'google.cloud.gapic',
+        'google.cloud.gapic.language',
+        'google.cloud.proto',
+        'google.cloud.proto.language',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
+    extras_require=EXTRAS_REQUIRE,
     **SETUP_BASE
 )

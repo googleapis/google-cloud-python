@@ -16,7 +16,7 @@
 
 import six
 
-from google.cloud.iterator import HTTPIterator
+from google.api.core import page_iterator
 from google.cloud.bigquery._helpers import _TypedProperty
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
@@ -75,6 +75,12 @@ class QueryResults(object):
         self.udf_resources = udf_resources
         self.query_parameters = query_parameters
         self._job = None
+
+    @classmethod
+    def from_api_repr(cls, api_response, client):
+        instance = cls(None, client)
+        instance._set_properties(api_response)
+        return instance
 
     @classmethod
     def from_query_job(cls, job):
@@ -310,7 +316,7 @@ class QueryResults(object):
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
-        :type api_response: httplib2.Response
+        :type api_response: dict
         :param api_response: response returned from an API call
         """
         self._properties.clear()
@@ -414,7 +420,7 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
                   which counts the total number of rows **in the result
@@ -434,17 +440,21 @@ class QueryResults(object):
         if timeout_ms is not None:
             params['timeoutMs'] = timeout_ms
 
+        if max_results is not None:
+            params['maxResults'] = max_results
+
         path = '/projects/%s/queries/%s' % (self.project, self.name)
-        iterator = HTTPIterator(client=client, path=path,
-                                item_to_value=_item_to_row,
-                                items_key='rows',
-                                page_token=page_token,
-                                max_results=max_results,
-                                page_start=_rows_page_start_query,
-                                extra_params=params)
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_row,
+            items_key='rows',
+            page_token=page_token,
+            page_start=_rows_page_start_query,
+            next_token='pageToken',
+            extra_params=params)
         iterator.query_result = self
-        # Over-ride the key used to retrieve the next page token.
-        iterator._NEXT_TOKEN = 'pageToken'
         return iterator
 
 
@@ -457,7 +467,7 @@ def _rows_page_start_query(iterator, page, response):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type page: :class:`~google.cloud.iterator.Page`

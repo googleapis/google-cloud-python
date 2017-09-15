@@ -31,6 +31,7 @@ else:
 
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
+from google.cloud.logging._helpers import retrieve_metadata_server
 from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging._http import _MetricsAPI as JSONMetricsAPI
@@ -55,8 +56,8 @@ _APPENGINE_FLEXIBLE_ENV_VM = 'GAE_APPENGINE_HOSTNAME'
 _APPENGINE_FLEXIBLE_ENV_FLEX = 'GAE_INSTANCE'
 """Environment variable set in App Engine when env:flex is set."""
 
-_CONTAINER_ENGINE_ENV = 'KUBERNETES_SERVICE'
-"""Environment variable set in a Google Container Engine environment."""
+_GKE_CLUSTER_NAME = 'instance/attributes/cluster-name'
+"""Attribute in metadata server when in GKE environment."""
 
 
 class Client(ClientWithProject):
@@ -73,10 +74,10 @@ class Client(ClientWithProject):
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type _http: :class:`~httplib2.Http`
+    :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                  :meth:`requests.Session.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
@@ -194,7 +195,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
                   accessible to the current client.
         """
@@ -243,7 +244,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            sinks.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.logging.sink.Sink`
                   accessible to the current client.
@@ -288,7 +289,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            metrics.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.metric.Metric`
                   accessible to the current client.
         """
@@ -301,10 +302,12 @@ class Client(ClientWithProject):
         :rtype: :class:`logging.Handler`
         :returns: The default log handler based on the environment
         """
+        gke_cluster_name = retrieve_metadata_server(_GKE_CLUSTER_NAME)
+
         if (_APPENGINE_FLEXIBLE_ENV_VM in os.environ or
                 _APPENGINE_FLEXIBLE_ENV_FLEX in os.environ):
             return AppEngineHandler(self)
-        elif _CONTAINER_ENGINE_ENV in os.environ:
+        elif gke_cluster_name is not None:
             return ContainerEngineHandler()
         else:
             return CloudLoggingHandler(self)

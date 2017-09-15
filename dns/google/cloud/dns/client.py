@@ -14,12 +14,11 @@
 
 """Client for interacting with the Google Cloud DNS API."""
 
-
+from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
 
 from google.cloud.dns._http import Connection
 from google.cloud.dns.zone import ManagedZone
-from google.cloud.iterator import HTTPIterator
 
 
 class Client(ClientWithProject):
@@ -36,10 +35,10 @@ class Client(ClientWithProject):
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type _http: :class:`~httplib2.Http`
+    :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                  :meth:`requests.Session.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
@@ -86,14 +85,18 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            zones.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`
                   belonging to this project.
         """
         path = '/projects/%s/managedZones' % (self.project,)
-        return HTTPIterator(
-            client=self, path=path, item_to_value=_item_to_zone,
-            items_key='managedZones', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_zone,
+            items_key='managedZones',
+            page_token=page_token,
             max_results=max_results)
 
     def zone(self, name, dns_name=None, description=None):
@@ -122,7 +125,7 @@ class Client(ClientWithProject):
 def _item_to_zone(iterator, resource):
     """Convert a JSON managed zone to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict

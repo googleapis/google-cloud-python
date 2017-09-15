@@ -71,10 +71,26 @@ def _timestamp_from_json(value, field):
 
 
 def _datetime_from_json(value, field):
-    """Coerce 'value' to a datetime, if set or not nullable."""
+    """Coerce 'value' to a datetime, if set or not nullable.
+
+    Args:
+        value (str): The timestamp.
+        field (.SchemaField): The field corresponding to the value.
+
+    Returns:
+        Optional[datetime.datetime]: The parsed datetime object from
+        ``value`` if the ``field`` is not null (otherwise it is
+        :data:`None`).
+    """
     if _not_null(value, field):
-        # value will be a string, in YYYY-MM-DDTHH:MM:SS form.
-        return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
+        if '.' in value:
+            # YYYY-MM-DDTHH:MM:SS.ffffff
+            return datetime.datetime.strptime(value, _RFC3339_MICROS_NO_ZULU)
+        else:
+            # YYYY-MM-DDTHH:MM:SS
+            return datetime.datetime.strptime(value, _RFC3339_NO_FRACTION)
+    else:
+        return None
 
 
 def _date_from_json(value, field):
@@ -306,19 +322,9 @@ class _TypedProperty(_ConfigurationProperty):
 class _EnumProperty(_ConfigurationProperty):
     """Pseudo-enumeration class.
 
-    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
-    be a sequence of strings.
-
     :type name: str
     :param name:  name of the property.
     """
-    def _validate(self, value):
-        """Check that ``value`` is one of the allowed values.
-
-        :raises: ValueError if value is not allowed.
-        """
-        if value not in self.ALLOWED:
-            raise ValueError('Pass one of: %s' % ', '.join(self.ALLOWED))
 
 
 class UDFResource(object):
@@ -338,9 +344,14 @@ class UDFResource(object):
         self.value = value
 
     def __eq__(self, other):
+        if not isinstance(other, UDFResource):
+            return NotImplemented
         return(
             self.udf_type == other.udf_type and
             self.value == other.value)
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class UDFResourcesProperty(object):
@@ -689,7 +700,7 @@ def _item_to_row(iterator, resource):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -705,7 +716,7 @@ def _item_to_row(iterator, resource):
 def _rows_page_start(iterator, page, response):
     """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type page: :class:`~google.cloud.iterator.Page`

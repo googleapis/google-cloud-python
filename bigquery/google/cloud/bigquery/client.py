@@ -14,7 +14,7 @@
 
 """Client for interacting with the Google BigQuery API."""
 
-
+from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -23,7 +23,6 @@ from google.cloud.bigquery.job import ExtractTableToStorageJob
 from google.cloud.bigquery.job import LoadTableFromStorageJob
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.query import QueryResults
-from google.cloud.iterator import HTTPIterator
 
 
 class Project(object):
@@ -64,10 +63,10 @@ class Client(ClientWithProject):
                         passed), falls back to the default inferred from the
                         environment.
 
-    :type _http: :class:`~httplib2.Http`
+    :type _http: :class:`~requests.Session`
     :param _http: (Optional) HTTP object to make requests. Can be any object
                   that defines ``request()`` with the same interface as
-                  :meth:`~httplib2.Http.request`. If not passed, an
+                  :meth:`requests.Session.request`. If not passed, an
                   ``_http`` object is created that is bound to the
                   ``credentials`` for the current object.
                   This parameter should be considered private, and could
@@ -98,13 +97,17 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            projects.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.client.Project`
                   accessible to the current client.
         """
-        return HTTPIterator(
-            client=self, path='/projects', item_to_value=_item_to_project,
-            items_key='projects', page_token=page_token,
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path='/projects',
+            item_to_value=_item_to_project,
+            items_key='projects',
+            page_token=page_token,
             max_results=max_results)
 
     def list_datasets(self, include_all=False, max_results=None,
@@ -126,7 +129,7 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            datasets.
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.
                   accessible to the current client.
         """
@@ -134,10 +137,15 @@ class Client(ClientWithProject):
         if include_all:
             extra_params['all'] = True
         path = '/projects/%s/datasets' % (self.project,)
-        return HTTPIterator(
-            client=self, path=path, item_to_value=_item_to_dataset,
-            items_key='datasets', page_token=page_token,
-            max_results=max_results, extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_dataset,
+            items_key='datasets',
+            page_token=page_token,
+            max_results=max_results,
+            extra_params=extra_params)
 
     def dataset(self, dataset_name, project=None):
         """Construct a dataset bound to this client.
@@ -153,6 +161,41 @@ class Client(ClientWithProject):
         :returns: a new ``Dataset`` instance
         """
         return Dataset(dataset_name, client=self, project=project)
+
+    def _get_query_results(self, job_id, project=None, timeout_ms=None):
+        """Get the query results object for a query job.
+
+        :type job_id: str
+        :param job_id: Name of the query job.
+
+        :type project: str
+        :param project:
+            (Optional) project ID for the query job (defaults to the project of
+            the client).
+
+        :type timeout_ms: int
+        :param timeout_ms:
+            (Optional) number of milliseconds the the API call should wait for
+            the query to complete before the request times out.
+
+        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
+        :returns: a new ``QueryResults`` instance
+        """
+
+        extra_params = {'maxResults': 0}
+
+        if project is None:
+            project = self.project
+
+        if timeout_ms is not None:
+            extra_params['timeoutMs'] = timeout_ms
+
+        path = '/projects/{}/queries/{}'.format(project, job_id)
+
+        resource = self._connection.api_request(
+            method='GET', path=path, query_params=extra_params)
+
+        return QueryResults.from_api_repr(resource, self)
 
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
@@ -207,7 +250,7 @@ class Client(ClientWithProject):
                              * ``"pending"``
                              * ``"running"``
 
-        :rtype: :class:`~google.cloud.iterator.Iterator`
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterable of job instances.
         """
         extra_params = {'projection': 'full'}
@@ -219,10 +262,15 @@ class Client(ClientWithProject):
             extra_params['stateFilter'] = state_filter
 
         path = '/projects/%s/jobs' % (self.project,)
-        return HTTPIterator(
-            client=self, path=path, item_to_value=_item_to_job,
-            items_key='jobs', page_token=page_token,
-            max_results=max_results, extra_params=extra_params)
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_job,
+            items_key='jobs',
+            page_token=page_token,
+            max_results=max_results,
+            extra_params=extra_params)
 
     def load_table_from_storage(self, job_name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.
@@ -349,7 +397,7 @@ class Client(ClientWithProject):
 def _item_to_project(iterator, resource):
     """Convert a JSON project to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -365,7 +413,7 @@ def _item_to_project(iterator, resource):
 def _item_to_dataset(iterator, resource):
     """Convert a JSON dataset to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -380,7 +428,7 @@ def _item_to_dataset(iterator, resource):
 def _item_to_job(iterator, resource):
     """Convert a JSON job to the native object.
 
-    :type iterator: :class:`~google.cloud.iterator.Iterator`
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict

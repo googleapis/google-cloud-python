@@ -36,7 +36,7 @@ def unit_tests(session, python_version):
     # Install all test dependencies, then install this package in-place.
     session.install(
         'mock', 'pytest', 'pytest-cov',
-        'flask', 'django', *LOCAL_DEPS)
+        'flask', 'webapp2', 'webob', 'django', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -71,7 +71,14 @@ def system_tests(session, python_version):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '-vvv', 'tests/system.py', *session.posargs)
+    session.run(
+        'py.test',
+        '-vvv',
+        '-s',
+        'tests/system.py',
+        *session.posargs,
+        success_codes=range(0, 100)
+    )
 
 
 @nox.session

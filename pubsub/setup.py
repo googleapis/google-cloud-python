@@ -27,7 +27,7 @@ with open(os.path.join(PACKAGE_ROOT, 'README.rst')) as file_obj:
 #       consolidate.
 SETUP_BASE = {
     'author': 'Google Cloud Platform',
-    'author_email': 'jjg+google-cloud-python@google.com',
+    'author_email': 'googleapis-packages@google.com',
     'scripts': [],
     'url': 'https://github.com/GoogleCloudPlatform/google-cloud-python',
     'license': 'Apache 2.0',
@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -51,19 +51,26 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.25.0, < 0.26dev',
+    'google-cloud-core >= 0.27.0, < 0.28dev',
+    'google-gax >= 0.15.13, < 0.16dev',
+    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
+    'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
     'grpcio >= 1.0.2, < 2.0dev',
-    'gapic-google-cloud-pubsub-v1 >= 0.15.0, < 0.16dev',
+    'psutil >= 5.2.2, < 6.0dev',
 ]
 
 setup(
     name='google-cloud-pubsub',
-    version='0.26.0',
+    version='0.28.3',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
+        'google.cloud.gapic',
+        'google.cloud.gapic.pubsub',
+        'google.cloud.proto',
+        'google.cloud.proto.pubsub',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,

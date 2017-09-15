@@ -9,7 +9,7 @@ Python Client for Google Cloud Pub / Sub
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/usage.html
 
 Quick Start
 -----------
@@ -26,7 +26,7 @@ possible. Check out the `Authentication section`_ in our documentation to
 learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
-.. _Authentication section: http://google-cloud-python.readthedocs.io/en/latest/google-cloud-auth.html
+.. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
 .. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Using the API
@@ -45,22 +45,71 @@ independently written applications.
 See the ``google-cloud-python`` API `Pub/Sub documentation`_ to learn how to connect
 to Cloud Pub/Sub using this Client Library.
 
-.. _Pub/Sub documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/pubsub-usage.html
+.. _Pub/Sub documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/index.html
 
-To get started with this API, you'll need to create
 
-.. code:: python
+Publishing
+----------
 
+To publish data to Cloud Pub/Sub you must create a topic, and then publish
+messages to it
+
+.. code-block:: python
+
+    import os
     from google.cloud import pubsub
 
-    client = pubsub.Client()
-    topic = client.topic('topic_name')
-    topic.create()
+    publisher = pubsub.PublisherClient()
+    topic = 'projects/{project_id}/topics/{topic}'.format(
+        project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+        topic='MY_TOPIC_NAME',  # Set this to something appropriate.
+    )
+    publisher.create_topic()
+    publisher.publish(topic, b'My first message!', spam='eggs')
 
-    topic.publish('this is the message_payload',
-                  attr1='value1', attr2='value2')
+To learn more, consult the `publishing documentation`_.
+
+.. _publishing documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/publisher/index.html
+
+
+Subscribing
+-----------
+
+To subscribe to data in Cloud Pub/Sub, you create a subscription based on
+the topic, and subscribe to that.
+
+.. code-block:: python
+
+    import os
+    from google.cloud import pubsub
+
+    subscriber = pubsub.SubscriberClient()
+    topic = 'projects/{project_id}/topics/{topic}'.format(
+        project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+        topic='MY_TOPIC_NAME',  # Set this to something appropriate.
+    )
+    subscription_name = 'projects/{project_id}/subscriptions/{sub}'.format(
+        project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
+        sub='MY_SUBSCRIPTION_NAME',  # Set this to something appropriate.
+    )
+    subscription = subscriber.create_subscription(topic, subscription)
+
+The subscription is opened asychronously, and messages are processed by
+use of a callback.
+
+.. code-block:: python
+
+    def callback(message):
+        print(message.data)
+        message.ack()
+    subscription.open(callback)
+
+To learn more, consult the `subscriber documentation`_.
+
+.. _subscriber documentation: http://google-cloud-python.readthedocs.io/en/latest/pubsub/subscriber/index.html
+
 
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
-   :target: https://pypi.python.org/pypi/google-cloud-pubsub
+   :target: https://pypi.org/project/google-cloud-pubsub/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-pubsub.svg
-   :target: https://pypi.python.org/pypi/google-cloud-pubsub
+   :target: https://pypi.org/project/google-cloud-pubsub/

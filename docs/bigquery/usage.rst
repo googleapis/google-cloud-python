@@ -273,7 +273,6 @@ Background a query, loading the results into a table:
 
 .. note::
 
-   - ``google.cloud.bigquery`` generates a UUID for each job.
    - The ``created`` and ``state`` fields are not set until the job
      is submitted to the BigQuery back-end.
 
@@ -307,7 +306,7 @@ Retrieve the results:
 .. code-block:: python
 
    >>> results = job.results()
-   >>> rows, total_count, token = query.fetch_data()  # API requet
+   >>> rows, total_count, token = query.fetch_data()  # API request
    >>> while True:
    ...     do_something_with(rows)
    ...     if token is None:

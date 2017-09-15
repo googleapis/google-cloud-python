@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 
 class TestInstance(unittest.TestCase):
 
@@ -230,13 +232,13 @@ class TestInstance(unittest.TestCase):
 
     def test_create(self):
         import datetime
+        from google.api.core import operation
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from tests.unit._testing import _FakeStub
-        from google.cloud.operation import Operation
         from google.cloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         NOW = datetime.datetime.utcnow()
@@ -263,15 +265,11 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         result = instance.create()
 
-        self.assertIsInstance(result, Operation)
-        self.assertEqual(result.name, self.OP_NAME)
-        self.assertIs(result.target, instance)
-        self.assertIs(result.client, client)
+        self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(result.operation.name, self.OP_NAME)
         self.assertIsInstance(result.metadata,
                               messages_v2_pb2.CreateInstanceMetadata)
         self.assertEqual(result.metadata.request_time, NOW_PB)
-        self.assertEqual(result.caller_metadata,
-                         {'request_type': 'CreateInstance'})
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
@@ -287,11 +285,11 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(kwargs, {})
 
     def test_create_w_explicit_serve_nodes(self):
+        from google.api.core import operation
         from google.longrunning import operations_pb2
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from tests.unit._testing import _FakeStub
-        from google.cloud.operation import Operation
 
         SERVE_NODES = 5
 
@@ -308,10 +306,8 @@ class TestInstance(unittest.TestCase):
         # Perform the method and check the result.
         result = instance.create()
 
-        self.assertIsInstance(result, Operation)
-        self.assertEqual(result.name, self.OP_NAME)
-        self.assertIs(result.target, instance)
-        self.assertIs(result.client, client)
+        self.assertIsInstance(result, operation.Operation)
+        self.assertEqual(result.operation.name, self.OP_NAME)
 
         self.assertEqual(len(stub.method_calls), 1)
         api_name, args, kwargs = stub.method_calls[0]
@@ -582,6 +578,7 @@ class _Client(object):
     def __init__(self, project):
         self.project = project
         self.project_name = 'projects/' + self.project
+        self._operations_stub = mock.sentinel.operations_stub
 
     def copy(self):
         from copy import deepcopy

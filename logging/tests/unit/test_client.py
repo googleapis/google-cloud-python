@@ -560,13 +560,13 @@ class TestClient(unittest.TestCase):
         })
 
     def test_get_default_handler_app_engine(self):
-        import httplib2
+        import requests
         import os
         from google.cloud._testing import _Monkey
         from google.cloud.logging.client import _APPENGINE_FLEXIBLE_ENV_VM
         from google.cloud.logging.handlers import AppEngineHandler
 
-        http_mock = mock.Mock(spec=httplib2.Http)
+        http_mock = mock.Mock(spec=requests.Session)
         credentials = _make_credentials()
         deepcopy = mock.Mock(return_value=http_mock)
 
@@ -581,25 +581,27 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(handler, AppEngineHandler)
 
     def test_get_default_handler_container_engine(self):
-        import os
-        from google.cloud._testing import _Monkey
-        from google.cloud.logging.client import _CONTAINER_ENGINE_ENV
         from google.cloud.logging.handlers import ContainerEngineHandler
 
-        client = self._make_one(project=self.PROJECT,
-                                credentials=_make_credentials(),
-                                _use_grpc=False)
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=_make_credentials(),
+            _use_grpc=False)
 
-        with _Monkey(os, environ={_CONTAINER_ENGINE_ENV: 'True'}):
+        patch = mock.patch(
+            'google.cloud.logging.client.retrieve_metadata_server',
+            return_value='test-gke-cluster')
+
+        with patch:
             handler = client.get_default_handler()
 
         self.assertIsInstance(handler, ContainerEngineHandler)
 
     def test_get_default_handler_general(self):
-        import httplib2
+        import requests
         from google.cloud.logging.handlers import CloudLoggingHandler
 
-        http_mock = mock.Mock(spec=httplib2.Http)
+        http_mock = mock.Mock(spec=requests.Session)
         credentials = _make_credentials()
         deepcopy = mock.Mock(return_value=http_mock)
 
@@ -613,9 +615,9 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(handler, CloudLoggingHandler)
 
     def test_setup_logging(self):
-        import httplib2
+        import requests
 
-        http_mock = mock.Mock(spec=httplib2.Http)
+        http_mock = mock.Mock(spec=requests.Session)
         deepcopy = mock.Mock(return_value=http_mock)
         setup_logging = mock.Mock(spec=[])
 

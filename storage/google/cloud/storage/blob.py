@@ -34,25 +34,23 @@ import os
 import time
 import warnings
 
-import httplib2
 from six.moves.urllib.parse import quote
 
-import google.auth.transport.requests
 from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
 from google.resumable_media.requests import Download
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
+from google.cloud import exceptions
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud._helpers import _bytes_to_unicode
-from google.cloud.credentials import generate_signed_url
 from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import make_exception
 from google.cloud.iam import Policy
 from google.cloud.storage._helpers import _PropertyMixin
 from google.cloud.storage._helpers import _scalar_property
+from google.cloud.storage._signing import generate_signed_url
 from google.cloud.storage.acl import ObjectACL
 
 
@@ -113,7 +111,7 @@ class Blob(_PropertyMixin):
     :type encryption_key: bytes
     :param encryption_key:
         Optional 32 byte encryption key for customer-supplied encryption.
-        See https://cloud.google.com/storage/docs/encryption#customer-supplied
+        See https://cloud.google.com/storage/docs/encryption#customer-supplied.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -243,12 +241,12 @@ class Blob(_PropertyMixin):
         .. note::
 
             If you are on Google Compute Engine, you can't generate a signed
-            URL. Follow `Issue 922`_ for updates on this. If you'd like to
+            URL. Follow `Issue 50`_ for updates on this. If you'd like to
             be able to generate a signed URL from GCE, you can use a standard
             service account from a JSON file rather than a GCE service account.
 
-        .. _Issue 922: https://github.com/GoogleCloudPlatform/\
-                       google-cloud-python/issues/922
+        .. _Issue 50: https://github.com/GoogleCloudPlatform/\
+                      google-auth-library-python/issues/50
 
         If you have a blob that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
@@ -362,22 +360,20 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
-    def _make_transport(self, client):
-        """Make an authenticated transport with a client's credentials.
+    def _get_transport(self, client):
+        """Return the client's transport.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
         :rtype transport:
             :class:`~google.auth.transport.requests.AuthorizedSession`
         :returns: The transport (with credentials) that will
                   make authenticated requests.
         """
         client = self._require_client(client)
-        # Create a ``requests`` transport with the client's credentials.
-        transport = google.auth.transport.requests.AuthorizedSession(
-            client._credentials)
-        return transport
+        return client._http
 
     def _get_download_url(self):
         """Get the download URL for the current blob.
@@ -418,9 +414,8 @@ class Blob(_PropertyMixin):
         :param headers: Optional headers to be sent with the request(s).
         """
         if self.chunk_size is None:
-            download = Download(download_url, headers=headers)
-            response = download.consume(transport)
-            file_obj.write(response.content)
+            download = Download(download_url, stream=file_obj, headers=headers)
+            download.consume(transport)
         else:
             download = ChunkedDownload(
                 download_url, self.chunk_size, file_obj, headers=headers)
@@ -463,12 +458,12 @@ class Blob(_PropertyMixin):
         """
         download_url = self._get_download_url()
         headers = _get_encryption_headers(self._encryption_key)
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
 
         try:
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
-            _raise_from_invalid_response(exc, download_url)
+            _raise_from_invalid_response(exc)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -638,7 +633,7 @@ class Blob(_PropertyMixin):
                 msg = _READ_LESS_THAN_SIZE.format(size, len(data))
                 raise ValueError(msg)
 
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
@@ -708,7 +703,7 @@ class Blob(_PropertyMixin):
         if chunk_size is None:
             chunk_size = self.chunk_size
 
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
         if extra_headers is not None:
@@ -1399,6 +1394,11 @@ class Blob(_PropertyMixin):
 
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
+        :setter: Update arbitrary/application specific metadata for the
+                 object.
+        :getter: Retrieve arbitrary/application specific metadata for
+                 the object.
+
         :rtype: dict or ``NoneType``
         :returns: The metadata associated with the blob or ``None`` if the
                   property is not set locally.
@@ -1592,20 +1592,14 @@ def _maybe_rewind(stream, rewind=False):
         stream.seek(0, os.SEEK_SET)
 
 
-def _raise_from_invalid_response(error, error_info=None):
+def _raise_from_invalid_response(error):
     """Re-wrap and raise an ``InvalidResponse`` exception.
 
     :type error: :exc:`google.resumable_media.InvalidResponse`
     :param error: A caught exception from the ``google-resumable-media``
                   library.
 
-    :type error_info: str
-    :param error_info: (Optional) Extra information about the failed request.
-
     :raises: :class:`~google.cloud.exceptions.GoogleCloudError` corresponding
              to the failed status code
     """
-    response = error.response
-    faux_response = httplib2.Response({'status': response.status_code})
-    raise make_exception(faux_response, response.content,
-                         error_info=error_info, use_json=False)
+    raise exceptions.from_http_response(error.response)

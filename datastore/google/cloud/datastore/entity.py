@@ -42,29 +42,33 @@ class Entity(dict):
 
     .. testsetup:: entity-ctor
 
-       from google.cloud import datastore
-       from tests.system.test_system import Config  # system tests
+        import os
+        import uuid
 
-       client = datastore.Client()
-       key = client.key('EntityKind', 1234, namespace='_Doctest')
-       entity = datastore.Entity(key=key)
-       entity['property'] = 'value'
-       Config.TO_DELETE.append(entity)
+        from google.cloud import datastore
+        from tests.system.test_system import Config  # system tests
 
-       client.put(entity)
+        unique = os.getenv('CIRCLE_BUILD_NUM', str(uuid.uuid4())[0:8])
+        client = datastore.Client(namespace='ns{}'.format(unique))
+        key = client.key('EntityKind', 1234, namespace='_Doctest')
+        entity = datastore.Entity(key=key)
+        entity['property'] = 'value'
+        Config.TO_DELETE.append(entity)
+
+        client.put(entity)
 
     .. doctest:: entity-ctor
 
-       >>> client.get(key)
-       <Entity('EntityKind', 1234) {'property': 'value'}>
+        >>> client.get(key)
+        <Entity('EntityKind', 1234) {'property': 'value'}>
 
     You can the set values on the entity just like you would on any
     other dictionary.
 
     .. doctest:: entity-ctor
 
-       >>> entity['age'] = 20
-       >>> entity['name'] = 'JJ'
+        >>> entity['age'] = 20
+        >>> entity['name'] = 'JJ'
 
     However, not all types are allowed as a value for a Google Cloud Datastore
     entity. The following basic types are supported by the API:
@@ -79,10 +83,12 @@ class Entity(dict):
     * :class:`~google.cloud.datastore.helpers.GeoPoint`
     * :data:`None`
 
-    In addition, two container types are supported:
+    In addition, three container types are supported:
 
     * :class:`list`
     * :class:`~google.cloud.datastore.entity.Entity`
+    * :class:`dict` (will just be treated like an ``Entity`` without
+      a key or ``exclude_from_indexes``)
 
     Each entry in a list must be one of the value types (basic or
     container) and each value in an
@@ -129,8 +135,9 @@ class Entity(dict):
     def __init__(self, key=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
         self.key = key
-        self._exclude_from_indexes = set(_ensure_tuple_or_list(
+        self.exclude_from_indexes = set(_ensure_tuple_or_list(
             'exclude_from_indexes', exclude_from_indexes))
+        """Names of fields which are *not* to be indexed for this entity."""
         # NOTE: This will be populated when parsing a protobuf in
         #       google.cloud.datastore.helpers.entity_from_protobuf.
         self._meanings = {}
@@ -145,10 +152,10 @@ class Entity(dict):
         :returns: True if the entities compare equal, else False.
         """
         if not isinstance(other, Entity):
-            return False
+            return NotImplemented
 
         return (self.key == other.key and
-                self._exclude_from_indexes == other._exclude_from_indexes and
+                self.exclude_from_indexes == other.exclude_from_indexes and
                 self._meanings == other._meanings and
                 super(Entity, self).__eq__(other))
 
@@ -161,7 +168,7 @@ class Entity(dict):
         :rtype: bool
         :returns: False if the entities compare equal, else True.
         """
-        return not self.__eq__(other)
+        return not self == other
 
     @property
     def kind(self):
@@ -175,15 +182,6 @@ class Entity(dict):
         """
         if self.key:
             return self.key.kind
-
-    @property
-    def exclude_from_indexes(self):
-        """Names of fields which are *not* to be indexed for this entity.
-
-        :rtype: sequence of field names
-        :returns: The set of fields excluded from indexes.
-        """
-        return frozenset(self._exclude_from_indexes)
 
     def __repr__(self):
         if self.key:

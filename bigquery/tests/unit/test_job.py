@@ -12,7 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
+
+from six.moves import http_client
 import unittest
+
+
+class Test__error_result_to_exception(unittest.TestCase):
+    def _call_fut(self, *args, **kwargs):
+        from google.cloud.bigquery import job
+        return job._error_result_to_exception(*args, **kwargs)
+
+    def test_simple(self):
+        error_result = {
+            'reason': 'invalid',
+            'message': 'bad request'
+        }
+        exception = self._call_fut(error_result)
+        self.assertEqual(exception.code, http_client.BAD_REQUEST)
+        self.assertTrue(exception.message.startswith('bad request'))
+        self.assertIn(error_result, exception.errors)
+
+    def test_missing_reason(self):
+        error_result = {}
+        exception = self._call_fut(error_result)
+        self.assertEqual(exception.code, http_client.INTERNAL_SERVER_ERROR)
 
 
 class _Base(object):
@@ -147,6 +171,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         }
 
         if ended:
+            resource['status'] = {'state': 'DONE'}
             resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
             resource['statistics']['load']['inputFileBytes'] = self.INPUT_BYTES
             resource['statistics']['load']['outputBytes'] = self.OUTPUT_BYTES
@@ -165,6 +190,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                              config['allowQuotedNewlines'])
         else:
             self.assertIsNone(job.allow_quoted_newlines)
+        if 'autodetect' in config:
+            self.assertEqual(
+                job.autodetect, config['autodetect'])
+        else:
+            self.assertIsNone(job.autodetect)
         if 'ignoreUnknownValues' in config:
             self.assertEqual(job.ignore_unknown_values,
                              config['ignoreUnknownValues'])
@@ -218,6 +248,11 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
                              config['maxBadRecords'])
         else:
             self.assertIsNone(job.max_bad_records)
+        if 'nullMarker' in config:
+            self.assertEqual(job.null_marker,
+                             config['nullMarker'])
+        else:
+            self.assertIsNone(job.null_marker)
         if 'quote' in config:
             self.assertEqual(job.quote_character,
                              config['quote'])
@@ -253,11 +288,13 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         # set/read from resource['configuration']['load']
         self.assertIsNone(job.allow_jagged_rows)
         self.assertIsNone(job.allow_quoted_newlines)
+        self.assertIsNone(job.autodetect)
         self.assertIsNone(job.create_disposition)
         self.assertIsNone(job.encoding)
         self.assertIsNone(job.field_delimiter)
         self.assertIsNone(job.ignore_unknown_values)
         self.assertIsNone(job.max_bad_records)
+        self.assertIsNone(job.null_marker)
         self.assertIsNone(job.quote_character)
         self.assertIsNone(job.skip_leading_rows)
         self.assertIsNone(job.source_format)
@@ -273,6 +310,37 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client,
                              schema=[full_name, age])
         self.assertEqual(job.schema, [full_name, age])
+
+    def test_done(self):
+        client = _Client(self.PROJECT)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+        self.assertTrue(job.done())
+
+    def test_result(self):
+        client = _Client(self.PROJECT)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        result = job.result()
+
+        self.assertIs(result, job)
+
+    def test_result_invokes_begins(self):
+        begun_resource = self._makeResource()
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(begun_resource, done_resource)
+        client = _Client(self.PROJECT, connection=connection)
+        table = _Table()
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+
+        job.result()
+
+        self.assertEqual(len(connection._requested), 2)
+        begin_request,  reload_request = connection._requested
+        self.assertEqual(begin_request['method'], 'POST')
+        self.assertEqual(reload_request['method'], 'GET')
 
     def test_schema_setter_non_list(self):
         client = _Client(self.PROJECT)
@@ -301,6 +369,41 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         job.schema = [full_name, age]
         self.assertEqual(job.schema, [full_name, age])
+
+    def test_schema_setter_w_autodetect(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = _Client(self.PROJECT)
+        table = _Table()
+        full_name = SchemaField('full_name', 'STRING')
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job.autodetect = False
+        job.schema = [full_name]
+        self.assertEqual(job.schema, [full_name])
+
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job.autodetect = True
+        with self.assertRaises(ValueError):
+            job.schema = [full_name]
+
+    def test_autodetect_setter_w_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        client = _Client(self.PROJECT)
+        table = _Table()
+        full_name = SchemaField('full_name', 'STRING')
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+
+        job.autodetect = True
+        job.schema = []
+        self.assertEqual(job.schema, [])
+
+        job.autodetect = False
+        job.schema = [full_name]
+        self.assertEqual(job.autodetect, False)
+
+        with self.assertRaises(ValueError):
+            job.autodetect = True
 
     def test_props_set_by_server(self):
         import datetime
@@ -467,6 +570,47 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_begin_w_autodetect(self):
+        path = '/projects/{}/jobs'.format(self.PROJECT)
+        resource = self._makeResource()
+        resource['configuration']['load']['autodetect'] = True
+        # Ensure None for missing server-set props
+        del resource['statistics']['creationTime']
+        del resource['etag']
+        del resource['selfLink']
+        del resource['user_email']
+        conn = _Connection(resource)
+        client = _Client(project=self.PROJECT, connection=conn)
+        table = _Table()
+        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job.autodetect = True
+        job.begin()
+
+        sent = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [self.SOURCE1],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.TABLE_NAME,
+                    },
+                    'autodetect': True
+                },
+            },
+        }
+        expected_request = {
+            'method': 'POST',
+            'path': path,
+            'data': sent,
+        }
+        self.assertEqual(conn._requested, [expected_request])
+        self._verifyResourceProperties(job, resource)
+
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -486,6 +630,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             'fieldDelimiter': '|',
             'ignoreUnknownValues': True,
             'maxBadRecords': 100,
+            'nullMarker': r'\N',
             'quote': "'",
             'skipLeadingRows': 1,
             'sourceFormat': 'CSV',
@@ -513,6 +658,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         job.field_delimiter = '|'
         job.ignore_unknown_values = True
         job.max_bad_records = 100
+        job.null_marker = r'\N'
         job.quote_character = "'"
         job.skip_leading_rows = 1
         job.source_format = 'CSV'
@@ -1307,6 +1453,10 @@ class TestQueryJob(unittest.TestCase, _Base):
             started, ended)
         config = resource['configuration']['query']
         config['query'] = self.QUERY
+
+        if ended:
+            resource['status'] = {'state': 'DONE'}
+
         return resource
 
     def _verifyBooleanResourceProperties(self, job, config):
@@ -1514,14 +1664,118 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIs(dataset._client, client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
-    def test_results(self):
+    def test_cancelled(self):
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        job._properties['status'] = {
+            'state': 'DONE',
+            'errorResult': {
+                'reason': 'stopped'
+            }
+        }
+
+        self.assertTrue(job.cancelled())
+
+    def test_done(self):
+        client = _Client(self.PROJECT)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+        self.assertTrue(job.done())
+
+    def test_query_results(self):
+        from google.cloud.bigquery.query import QueryResults
+
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+        }
+        connection = _Connection(query_resource)
+        client = _Client(self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        results = job.query_results()
+        self.assertIsInstance(results, QueryResults)
+
+    def test_query_results_w_cached_value(self):
         from google.cloud.bigquery.query import QueryResults
 
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
-        results = job.results()
-        self.assertIsInstance(results, QueryResults)
-        self.assertIs(results._job, job)
+        query_results = QueryResults(None, client)
+        job._query_results = query_results
+
+        results = job.query_results()
+
+        self.assertIs(results, query_results)
+
+    def test_result(self):
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+        }
+        connection = _Connection(query_resource, query_resource)
+        client = _Client(self.PROJECT, connection=connection)
+        resource = self._makeResource(ended=True)
+        job = self._get_target_class().from_api_repr(resource, client)
+
+        result = job.result()
+
+        self.assertEqual(list(result), [])
+
+    def test_result_invokes_begins(self):
+        begun_resource = self._makeResource()
+        incomplete_resource = {'jobComplete': False}
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(
+            begun_resource, incomplete_resource, query_resource, done_resource,
+            query_resource)
+        client = _Client(self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+
+        job.result()
+
+        self.assertEqual(len(connection._requested), 4)
+        begin_request, _, query_request, reload_request = connection._requested
+        self.assertEqual(begin_request['method'], 'POST')
+        self.assertEqual(query_request['method'], 'GET')
+        self.assertEqual(reload_request['method'], 'GET')
+
+    def test_result_error(self):
+        from google.cloud import exceptions
+
+        client = _Client(self.PROJECT)
+        job = self._make_one(self.JOB_NAME, self.QUERY, client)
+        error_result = {
+            'debugInfo': 'DEBUG',
+            'location': 'LOCATION',
+            'message': 'MESSAGE',
+            'reason': 'invalid'
+        }
+        job._properties['status'] = {
+            'errorResult': error_result,
+            'errors': [error_result],
+            'state': 'DONE'
+        }
+        job._set_future_result()
+
+        with self.assertRaises(exceptions.GoogleCloudError) as exc_info:
+            job.result()
+
+        self.assertIsInstance(exc_info.exception, exceptions.GoogleCloudError)
+        self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -1910,6 +2164,12 @@ class _Client(object):
         from google.cloud.bigquery.dataset import Dataset
 
         return Dataset(name, client=self)
+
+    def _get_query_results(self, job_id):
+        from google.cloud.bigquery.query import QueryResults
+
+        resource = self._connection.api_request(method='GET')
+        return QueryResults.from_api_repr(resource, self)
 
 
 class _Table(object):

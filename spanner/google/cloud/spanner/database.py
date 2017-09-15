@@ -15,11 +15,11 @@
 """User friendly container for Cloud Spanner Database."""
 
 import re
+import threading
 
+import google.auth.credentials
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.cloud.proto.spanner.admin.database.v1 import (
-    spanner_database_admin_pb2 as admin_v1_pb2)
 from google.cloud.gapic.spanner.v1.spanner_client import SpannerClient
 from grpc import StatusCode
 import six
@@ -27,7 +27,6 @@ import six
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.operation import register_type
 from google.cloud.spanner import __version__
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner.batch import Batch
@@ -38,15 +37,14 @@ from google.cloud.spanner.pool import SessionCheckout
 # pylint: enable=ungrouped-imports
 
 
+SPANNER_DATA_SCOPE = 'https://www.googleapis.com/auth/spanner.data'
+
+
 _DATABASE_NAME_RE = re.compile(
     r'^projects/(?P<project>[^/]+)/'
     r'instances/(?P<instance_id>[a-z][-a-z0-9]*)/'
     r'databases/(?P<database_id>[a-z][a-z0-9_\-]*[a-z0-9])$'
     )
-
-register_type(admin_v1_pb2.Database)
-register_type(admin_v1_pb2.CreateDatabaseMetadata)
-register_type(admin_v1_pb2.UpdateDatabaseDdlMetadata)
 
 
 class Database(object):
@@ -82,6 +80,7 @@ class Database(object):
         self.database_id = database_id
         self._instance = instance
         self._ddl_statements = _check_ddl_statements(ddl_statements)
+        self._local = threading.local()
 
         if pool is None:
             pool = BurstyPool()
@@ -106,9 +105,8 @@ class Database(object):
 
         :rtype: :class:`Database`
         :returns: The database parsed from the protobuf response.
-        :raises:
-            :class:`ValueError <exceptions.ValueError>` if the instance
-            name does not match the expected format
+        :raises ValueError:
+            if the instance name does not match the expected format
             or if the parsed project ID does not match the project ID
             on the instance's client, or if the parsed instance ID does
             not match the instance's ID.
@@ -162,18 +160,24 @@ class Database(object):
     def spanner_api(self):
         """Helper for session-related API calls."""
         if self._spanner_api is None:
+            credentials = self._instance._client.credentials
+            if isinstance(credentials, google.auth.credentials.Scoped):
+                credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             self._spanner_api = SpannerClient(
-                lib_name='gccl', lib_version=__version__)
+                lib_name='gccl',
+                lib_version=__version__,
+                credentials=credentials,
+            )
         return self._spanner_api
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return (other.database_id == self.database_id and
                 other._instance == self._instance)
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     def create(self):
         """Create this database within its instance
@@ -182,6 +186,13 @@ class Database(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase
+
+        :rtype: :class:`~google.api.core.operation.Operation`
+        :returns: a future used to poll the status of the create request
+        :raises Conflict: if the database already exists
+        :raises NotFound: if the instance owning the database does not exist
+        :raises GaxError:
+            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -205,7 +216,6 @@ class Database(object):
                 ))
             raise
 
-        future.caller_metadata = {'request_type': 'CreateDatabase'}
         return future
 
     def exists(self):
@@ -213,6 +223,11 @@ class Database(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
+
+        :rtype: bool
+        :returns: True if the database exists, else false.
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -232,6 +247,10 @@ class Database(object):
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
+
+        :raises NotFound: if the database does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
         options = _options_with_prefix(self.name)
@@ -252,8 +271,11 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
-        :rtype: :class:`google.cloud.operation.Operation`
+        :rtype: :class:`google.api.core.operation.Operation`
         :returns: an operation instance
+        :raises NotFound: if the database does not exist
+        :raises GaxError:
+            for errors other than ``NOT_FOUND`` returned from the call
         """
         client = self._instance._client
         api = client.database_admin_api
@@ -267,7 +289,6 @@ class Database(object):
                 raise NotFound(self.name)
             raise
 
-        future.caller_metadata = {'request_type': 'UpdateDatabaseDdl'}
         return future
 
     def drop(self):
@@ -294,67 +315,35 @@ class Database(object):
         """
         return Session(self)
 
-    def read(self, table, columns, keyset, index='', limit=0,
-             resume_token=b''):
-        """Perform a ``StreamingRead`` API request for rows in a table.
+    def snapshot(self, **kw):
+        """Return an object which wraps a snapshot.
 
-        :type table: str
-        :param table: name of the table from which to fetch data
+        The wrapper *must* be used as a context manager, with the snapshot
+        as the value returned by the wrapper.
 
-        :type columns: list of str
-        :param columns: names of columns to be retrieved
+        See
+        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
 
-        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`
-        :param keyset: keys / ranges identifying rows to be retrieved
+        :type kw: dict
+        :param kw:
+            Passed through to
+            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
 
-        :type index: str
-        :param index: (Optional) name of index to use, rather than the
-                      table's primary key
-
-        :type limit: int
-        :param limit: (Optional) maxiumn number of rows to return
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted read
-
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
-        :returns: a result set instance which can be used to consume rows.
+        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
+        :returns: new wrapper
         """
-        with SessionCheckout(self._pool) as session:
-            return session.read(
-                table, columns, keyset, index, limit, resume_token)
+        return SnapshotCheckout(self, **kw)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=b''):
-        """Perform an ``ExecuteStreamingSql`` API request.
+    def batch(self):
+        """Return an object which wraps a batch.
 
-        :type sql: str
-        :param sql: SQL query statement
+        The wrapper *must* be used as a context manager, with the batch
+        as the value returned by the wrapper.
 
-        :type params: dict, {str -> column value}
-        :param params: values for parameter replacement.  Keys must match
-                       the names used in ``sql``.
-
-        :type param_types:
-            dict, {str -> :class:`google.spanner.v1.type_pb2.TypeCode`}
-        :param param_types: (Optional) explicit types for one or more param
-                            values;  overrides default type detection on the
-                            back-end.
-
-        :type query_mode:
-            :class:`google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
-        :param query_mode: Mode governing return of results / query plan. See
-            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted query
-
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
-        :returns: a result set instance which can be used to consume rows.
+        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`
+        :returns: new wrapper
         """
-        with SessionCheckout(self._pool) as session:
-            return session.execute_sql(
-                sql, params, param_types, query_mode, resume_token)
+        return BatchCheckout(self)
 
     def run_in_transaction(self, func, *args, **kw):
         """Perform a unit of work in a transaction, retrying on abort.
@@ -375,62 +364,20 @@ class Database(object):
         :rtype: :class:`datetime.datetime`
         :returns: timestamp of committed transaction
         """
-        with SessionCheckout(self._pool) as session:
-            return session.run_in_transaction(func, *args, **kw)
+        # Sanity check: Is there a transaction already running?
+        # If there is, then raise a red flag. Otherwise, mark that this one
+        # is running.
+        if getattr(self._local, 'transaction_running', False):
+            raise RuntimeError('Spanner does not support nested transactions.')
+        self._local.transaction_running = True
 
-    def batch(self):
-        """Return an object which wraps a batch.
-
-        The wrapper *must* be used as a context manager, with the batch
-        as the value returned by the wrapper.
-
-        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`
-        :returns: new wrapper
-        """
-        return BatchCheckout(self)
-
-    def snapshot(self, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
-        """Return an object which wraps a snapshot.
-
-        The wrapper *must* be used as a context manager, with the snapshot
-        as the value returned by the wrapper.
-
-        See
-        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
-
-        If no options are passed, reads will use the ``strong`` model, reading
-        at a timestamp where all previously committed transactions are visible.
-
-        :type read_timestamp: :class:`datetime.datetime`
-        :param read_timestamp: Execute all reads at the given timestamp.
-
-        :type min_read_timestamp: :class:`datetime.datetime`
-        :param min_read_timestamp: Execute all reads at a
-                                   timestamp >= ``min_read_timestamp``.
-
-        :type max_staleness: :class:`datetime.timedelta`
-        :param max_staleness: Read data at a
-                              timestamp >= NOW - ``max_staleness`` seconds.
-
-        :type exact_staleness: :class:`datetime.timedelta`
-        :param exact_staleness: Execute all reads at a timestamp that is
-                                ``exact_staleness`` old.
-
-        :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`
-        :returns: a snapshot bound to this session
-        :raises: :exc:`ValueError` if the session has not yet been created.
-
-        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
-        :returns: new wrapper
-        """
-        return SnapshotCheckout(
-            self,
-            read_timestamp=read_timestamp,
-            min_read_timestamp=min_read_timestamp,
-            max_staleness=max_staleness,
-            exact_staleness=exact_staleness,
-        )
+        # Check out a session and run the function in a transaction; once
+        # done, flip the sanity check bit back.
+        try:
+            with SessionCheckout(self._pool) as session:
+                return session.run_in_transaction(func, *args, **kw)
+        finally:
+            self._local.transaction_running = False
 
 
 class BatchCheckout(object):
@@ -476,40 +423,20 @@ class SnapshotCheckout(object):
     :type database: :class:`~google.cloud.spannder.database.Database`
     :param database: database to use
 
-    :type read_timestamp: :class:`datetime.datetime`
-    :param read_timestamp: Execute all reads at the given timestamp.
-
-    :type min_read_timestamp: :class:`datetime.datetime`
-    :param min_read_timestamp: Execute all reads at a
-                               timestamp >= ``min_read_timestamp``.
-
-    :type max_staleness: :class:`datetime.timedelta`
-    :param max_staleness: Read data at a
-                          timestamp >= NOW - ``max_staleness`` seconds.
-
-    :type exact_staleness: :class:`datetime.timedelta`
-    :param exact_staleness: Execute all reads at a timestamp that is
-                            ``exact_staleness`` old.
+    :type kw: dict
+    :param kw:
+        Passed through to
+        :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
     """
-    def __init__(self, database, read_timestamp=None, min_read_timestamp=None,
-                 max_staleness=None, exact_staleness=None):
+    def __init__(self, database, **kw):
         self._database = database
         self._session = None
-        self._read_timestamp = read_timestamp
-        self._min_read_timestamp = min_read_timestamp
-        self._max_staleness = max_staleness
-        self._exact_staleness = exact_staleness
+        self._kw = kw
 
     def __enter__(self):
         """Begin ``with`` block."""
         session = self._session = self._database._pool.get()
-        return Snapshot(
-            session,
-            read_timestamp=self._read_timestamp,
-            min_read_timestamp=self._min_read_timestamp,
-            max_staleness=self._max_staleness,
-            exact_staleness=self._exact_staleness,
-        )
+        return Snapshot(session, **self._kw)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """End ``with`` block."""
@@ -527,6 +454,9 @@ def _check_ddl_statements(value):
 
     :rtype: tuple
     :returns: tuple of validated DDL statement strings.
+    :raises ValueError:
+        if elements in ``value`` are not strings, or if ``value`` contains
+        a ``CREATE DATABASE`` statement.
     """
     if not all(isinstance(line, six.string_types) for line in value):
         raise ValueError("Pass a list of strings")
