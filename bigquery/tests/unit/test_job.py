@@ -82,8 +82,8 @@ class Test__error_result_to_exception(unittest.TestCase):
 class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
-    DS_NAME = 'datset_name'
-    TABLE_NAME = 'table_name'
+    DS_ID = 'datset_id'
+    TABLE_ID = 'table_id'
     JOB_NAME = 'job_name'
 
     def _make_one(self, *args, **kw):
@@ -206,8 +206,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         config['sourceUris'] = [self.SOURCE1]
         config['destinationTable'] = {
             'projectId': self.PROJECT,
-            'datasetId': self.DS_NAME,
-            'tableId': self.TABLE_NAME,
+            'datasetId': self.DS_ID,
+            'tableId': self.TABLE_ID,
         }
 
         if ended:
@@ -275,8 +275,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         table_ref = config['destinationTable']
         self.assertEqual(job.destination.project, table_ref['projectId'])
-        self.assertEqual(job.destination.dataset_name, table_ref['datasetId'])
-        self.assertEqual(job.destination.name, table_ref['tableId'])
+        self.assertEqual(job.destination.dataset_id, table_ref['datasetId'])
+        self.assertEqual(job.destination.table_id, table_ref['tableId'])
 
         if 'fieldDelimiter' in config:
             self.assertEqual(job.field_delimiter,
@@ -519,7 +519,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {
-            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'jobReference': {
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_NAME,
@@ -543,8 +543,8 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'sourceUris': [self.SOURCE1],
                     'destinationTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
-                        'tableId': self.TABLE_NAME,
+                        'datasetId': self.DS_ID,
+                        'tableId': self.TABLE_ID,
                     },
                 }
             },
@@ -603,8 +603,8 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'sourceUris': [self.SOURCE1],
                     'destinationTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
-                        'tableId': self.TABLE_NAME,
+                        'datasetId': self.DS_ID,
+                        'tableId': self.TABLE_ID,
                     },
                 },
             },
@@ -638,8 +638,8 @@ class TestLoadJob(unittest.TestCase, _Base):
                     'sourceUris': [self.SOURCE1],
                     'destinationTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
-                        'tableId': self.TABLE_NAME,
+                        'datasetId': self.DS_ID,
+                        'tableId': self.TABLE_ID,
                     },
                     'autodetect': True
                 },
@@ -662,8 +662,8 @@ class TestLoadJob(unittest.TestCase, _Base):
             'sourceUris': [self.SOURCE1],
             'destinationTable': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
-                'tableId': self.TABLE_NAME,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID,
             },
             'allowJaggedRows': True,
             'allowQuotedNewlines': True,
@@ -848,12 +848,12 @@ class TestCopyJob(unittest.TestCase, _Base):
         config = resource['configuration']['copy']
         config['sourceTables'] = [{
             'projectId': self.PROJECT,
-            'datasetId': self.DS_NAME,
+            'datasetId': self.DS_ID,
             'tableId': self.SOURCE_TABLE,
         }]
         config['destinationTable'] = {
             'projectId': self.PROJECT,
-            'datasetId': self.DS_NAME,
+            'datasetId': self.DS_ID,
             'tableId': self.DESTINATION_TABLE,
         }
 
@@ -866,8 +866,8 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         table_ref = config['destinationTable']
         self.assertEqual(job.destination.project, table_ref['projectId'])
-        self.assertEqual(job.destination.dataset_name, table_ref['datasetId'])
-        self.assertEqual(job.destination.name, table_ref['tableId'])
+        self.assertEqual(job.destination.dataset_id, table_ref['datasetId'])
+        self.assertEqual(job.destination.table_id, table_ref['tableId'])
 
         sources = config.get('sourceTables')
         if sources is None:
@@ -875,8 +875,8 @@ class TestCopyJob(unittest.TestCase, _Base):
         self.assertEqual(len(sources), len(job.sources))
         for table_ref, table in zip(sources, job.sources):
             self.assertEqual(table.project, table_ref['projectId'])
-            self.assertEqual(table.dataset_name, table_ref['datasetId'])
-            self.assertEqual(table.name, table_ref['tableId'])
+            self.assertEqual(table.dataset_id, table_ref['datasetId'])
+            self.assertEqual(table.table_id, table_ref['tableId'])
 
         if 'createDisposition' in config:
             self.assertEqual(job.create_disposition,
@@ -921,7 +921,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {
-            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'jobReference': {
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_NAME,
@@ -944,12 +944,12 @@ class TestCopyJob(unittest.TestCase, _Base):
                 'copy': {
                     'sourceTables': [{
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.SOURCE_TABLE,
                     }],
                     'destinationTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.DESTINATION_TABLE,
                     },
                 }
@@ -973,12 +973,12 @@ class TestCopyJob(unittest.TestCase, _Base):
                 'copy': {
                     'sourceTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.SOURCE_TABLE,
                     },
                     'destinationTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.DESTINATION_TABLE,
                     },
                 }
@@ -1002,7 +1002,7 @@ class TestCopyJob(unittest.TestCase, _Base):
                 'copy': {
                     'destinationTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.DESTINATION_TABLE,
                     },
                 }
@@ -1051,12 +1051,12 @@ class TestCopyJob(unittest.TestCase, _Base):
                 'copy': {
                     'sourceTables': [{
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.SOURCE_TABLE
                     }],
                     'destinationTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.DESTINATION_TABLE,
                     },
                 },
@@ -1071,12 +1071,12 @@ class TestCopyJob(unittest.TestCase, _Base):
         COPY_CONFIGURATION = {
             'sourceTables': [{
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.SOURCE_TABLE,
             }],
             'destinationTable': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.DESTINATION_TABLE,
             },
             'createDisposition': 'CREATE_NEVER',
@@ -1203,7 +1203,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         config = resource['configuration']['extract']
         config['sourceTable'] = {
             'projectId': self.PROJECT,
-            'datasetId': self.DS_NAME,
+            'datasetId': self.DS_ID,
             'tableId': self.SOURCE_TABLE,
         }
         config['destinationUris'] = [self.DESTINATION_URI]
@@ -1218,8 +1218,8 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         table_ref = config['sourceTable']
         self.assertEqual(job.source.project, table_ref['projectId'])
-        self.assertEqual(job.source.dataset_name, table_ref['datasetId'])
-        self.assertEqual(job.source.name, table_ref['tableId'])
+        self.assertEqual(job.source.dataset_id, table_ref['datasetId'])
+        self.assertEqual(job.source.table_id, table_ref['tableId'])
 
         if 'compression' in config:
             self.assertEqual(job.compression,
@@ -1295,7 +1295,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {
-            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'jobReference': {
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_NAME,
@@ -1318,7 +1318,7 @@ class TestExtractJob(unittest.TestCase, _Base):
                 'extract': {
                     'sourceTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.SOURCE_TABLE,
                     },
                     'destinationUris': [self.DESTINATION_URI],
@@ -1369,7 +1369,7 @@ class TestExtractJob(unittest.TestCase, _Base):
                 'extract': {
                     'sourceTable': {
                         'projectId': self.PROJECT,
-                        'datasetId': self.DS_NAME,
+                        'datasetId': self.DS_ID,
                         'tableId': self.SOURCE_TABLE
                     },
                     'destinationUris': [self.DESTINATION_URI],
@@ -1385,7 +1385,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         EXTRACT_CONFIGURATION = {
             'sourceTable': {
                 'projectId': self.PROJECT,
-                'datasetId': self.DS_NAME,
+                'datasetId': self.DS_ID,
                 'tableId': self.SOURCE_TABLE,
             },
             'destinationUris': [self.DESTINATION_URI],
@@ -1604,7 +1604,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             dataset = job.default_dataset
             ds_ref = {
                 'projectId': dataset.project,
-                'datasetId': dataset.name,
+                'datasetId': dataset.dataset_id,
             }
             self.assertEqual(ds_ref, query_config['defaultDataset'])
         else:
@@ -1613,8 +1613,8 @@ class TestQueryJob(unittest.TestCase, _Base):
             table = job.destination
             tb_ref = {
                 'projectId': table.project,
-                'datasetId': table.dataset_name,
-                'tableId': table.name
+                'datasetId': table.dataset_id,
+                'tableId': table.table_id
             }
             self.assertEqual(tb_ref, query_config['destinationTable'])
         else:
@@ -1687,7 +1687,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._setUpConstants()
         client = _Client(self.PROJECT)
         RESOURCE = {
-            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'jobReference': {
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_NAME,
@@ -1723,7 +1723,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         query_config['writeDisposition'] = 'WRITE_TRUNCATE'
         query_config['destinationTable'] = {
             'projectId': self.PROJECT,
-            'datasetId': self.DS_NAME,
+            'datasetId': self.DS_ID,
             'tableId': self.DESTINATION_TABLE,
         }
         klass = self._get_target_class()
@@ -1934,23 +1934,23 @@ class TestQueryJob(unittest.TestCase, _Base):
         local1, local2, remote = job.referenced_tables
 
         self.assertIsInstance(local1, Table)
-        self.assertEqual(local1.name, 'local1')
+        self.assertEqual(local1.table_id, 'local1')
         self.assertIsInstance(local1._dataset, Dataset)
-        self.assertEqual(local1.dataset_name, 'dataset')
+        self.assertEqual(local1.dataset_id, 'dataset')
         self.assertEqual(local1.project, self.PROJECT)
         self.assertIs(local1._dataset._client, client)
 
         self.assertIsInstance(local2, Table)
-        self.assertEqual(local2.name, 'local2')
+        self.assertEqual(local2.table_id, 'local2')
         self.assertIsInstance(local2._dataset, Dataset)
-        self.assertEqual(local2.dataset_name, 'dataset')
+        self.assertEqual(local2.dataset_id, 'dataset')
         self.assertEqual(local2.project, self.PROJECT)
         self.assertIs(local2._dataset._client, client)
 
         self.assertIsInstance(remote, Table)
-        self.assertEqual(remote.name, 'other-table')
+        self.assertEqual(remote.table_id, 'other-table')
         self.assertIsInstance(remote._dataset, Dataset)
-        self.assertEqual(remote.dataset_name, 'other-dataset')
+        self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
         self.assertIs(remote._dataset._client, client)
 
@@ -2128,7 +2128,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.dataset import Dataset
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        DS_NAME = 'DATASET'
+        DS_ID = 'DATASET'
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
@@ -2139,7 +2139,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
 
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
-        job.default_dataset = Dataset(DS_NAME, client)
+        job.default_dataset = Dataset(DS_ID, client)
 
         job.begin()
 
@@ -2159,7 +2159,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                     'query': self.QUERY,
                     'defaultDataset': {
                         'projectId': self.PROJECT,
-                        'datasetId': DS_NAME,
+                        'datasetId': DS_ID,
                     },
                 },
             },
@@ -2173,7 +2173,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         TABLE = 'TABLE'
-        DS_NAME = 'DATASET'
+        DS_ID = 'DATASET'
         RESOURCE = self._makeResource(ended=True)
         QUERY_CONFIGURATION = {
             'query': self.QUERY,
@@ -2181,11 +2181,11 @@ class TestQueryJob(unittest.TestCase, _Base):
             'createDisposition': 'CREATE_NEVER',
             'defaultDataset': {
                 'projectId': self.PROJECT,
-                'datasetId': DS_NAME,
+                'datasetId': DS_ID,
             },
             'destinationTable': {
                 'projectId': self.PROJECT,
-                'datasetId': DS_NAME,
+                'datasetId': DS_ID,
                 'tableId': TABLE,
             },
             'flattenResults': True,
@@ -2203,7 +2203,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_NAME, self.QUERY, client1)
 
-        dataset = Dataset(DS_NAME, client1)
+        dataset = Dataset(DS_ID, client1)
         table = Table(TABLE, dataset)
 
         job.allow_large_results = True
@@ -2464,14 +2464,14 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.dataset import Table
 
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
-        DS_NAME = 'DATASET'
+        DS_ID = 'DATASET'
         DEST_TABLE = 'dest_table'
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_NAME, None, client)
 
-        dataset = Dataset(DS_NAME, client)
+        dataset = Dataset(DS_ID, client)
         table = Table(DEST_TABLE, dataset)
         job.destination = table
 
@@ -2487,13 +2487,13 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_reload_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
-        DS_NAME = 'DATASET'
+        DS_ID = 'DATASET'
         DEST_TABLE = 'dest_table'
         RESOURCE = self._makeResource()
         q_config = RESOURCE['configuration']['query']
         q_config['destinationTable'] = {
             'projectId': self.PROJECT,
-            'datasetId': DS_NAME,
+            'datasetId': DS_ID,
             'tableId': DEST_TABLE,
         }
         conn1 = _Connection()
@@ -2697,11 +2697,6 @@ class _Client(object):
         self.project = project
         self._connection = connection
 
-    def dataset(self, name, project=None):
-        from google.cloud.bigquery.dataset import Dataset
-
-        return Dataset(name, client=self, project=project)
-
     def _get_query_results(self, job_id):
         from google.cloud.bigquery.query import QueryResults
 
@@ -2711,22 +2706,22 @@ class _Client(object):
 
 class _Table(object):
 
-    def __init__(self, name=None):
-        self._name = name
+    def __init__(self, table_id=None):
+        self._table_id = table_id
 
     @property
-    def name(self):
-        if self._name is not None:
-            return self._name
-        return TestLoadJob.TABLE_NAME
+    def table_id(self):
+        if self._table_id is not None:
+            return self._table_id
+        return TestLoadJob.TABLE_ID
 
     @property
     def project(self):
         return TestLoadJob.PROJECT
 
     @property
-    def dataset_name(self):
-        return TestLoadJob.DS_NAME
+    def dataset_id(self):
+        return TestLoadJob.DS_ID
 
 
 class _Connection(object):

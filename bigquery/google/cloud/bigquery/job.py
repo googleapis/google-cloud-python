@@ -773,8 +773,8 @@ class LoadJob(_AsyncJob):
                     'sourceUris': self.source_uris,
                     'destinationTable': {
                         'projectId': self.destination.project,
-                        'datasetId': self.destination.dataset_name,
-                        'tableId': self.destination.name,
+                        'datasetId': self.destination.dataset_id,
+                        'tableId': self.destination.table_id,
                     },
                 },
             },
@@ -900,8 +900,8 @@ class CopyJob(_AsyncJob):
 
         source_refs = [{
             'projectId': table.project,
-            'datasetId': table.dataset_name,
-            'tableId': table.name,
+            'datasetId': table.dataset_id,
+            'tableId': table.table_id,
         } for table in self.sources]
 
         resource = {
@@ -914,8 +914,8 @@ class CopyJob(_AsyncJob):
                     'sourceTables': source_refs,
                     'destinationTable': {
                         'projectId': self.destination.project,
-                        'datasetId': self.destination.dataset_name,
-                        'tableId': self.destination.name,
+                        'datasetId': self.destination.dataset_id,
+                        'tableId': self.destination.table_id,
                     },
                 },
             },
@@ -1058,8 +1058,8 @@ class ExtractJob(_AsyncJob):
 
         source_ref = {
             'projectId': self.source.project,
-            'datasetId': self.source.dataset_name,
-            'tableId': self.source.name,
+            'datasetId': self.source.dataset_id,
+            'tableId': self.source.table_id,
         }
 
         resource = {
@@ -1247,8 +1247,8 @@ class QueryJob(_AsyncJob):
         if self.destination is not None:
             return {
                 'projectId': self.destination.project,
-                'datasetId': self.destination.dataset_name,
-                'tableId': self.destination.name,
+                'datasetId': self.destination.dataset_id,
+                'tableId': self.destination.table_id,
             }
 
     def _populate_config_resource_booleans(self, configuration):
@@ -1271,7 +1271,7 @@ class QueryJob(_AsyncJob):
         if self.default_dataset is not None:
             configuration['defaultDataset'] = {
                 'projectId': self.default_dataset.project,
-                'datasetId': self.default_dataset.name,
+                'datasetId': self.default_dataset.dataset_id,
             }
         if self.destination is not None:
             table_res = self._destination_table_resource()
@@ -1362,8 +1362,8 @@ class QueryJob(_AsyncJob):
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
                 project = dest_remote['projectId']
-                dataset = self._client.dataset(
-                    dest_remote['datasetId'], project=project)
+                dataset = Dataset(
+                    dest_remote['datasetId'], self._client, project=project)
                 self.destination = dataset.table(dest_remote['tableId'])
 
         def_ds = configuration.get('defaultDataset')
@@ -1372,7 +1372,7 @@ class QueryJob(_AsyncJob):
                 del self.default_dataset
         else:
             project = def_ds['projectId']
-            self.default_dataset = self._client.dataset(def_ds['datasetId'])
+            self.default_dataset = Dataset(def_ds['datasetId'], self._client)
 
         udf_resources = []
         for udf_mapping in configuration.get(self._UDF_KEY, ()):
@@ -1528,7 +1528,7 @@ class QueryJob(_AsyncJob):
             ds_name = table['datasetId']
             t_dataset = datasets_by_project_name.get((t_project, ds_name))
             if t_dataset is None:
-                t_dataset = client.dataset(ds_name, project=t_project)
+                t_dataset = Dataset(ds_name, client, project=t_project)
                 datasets_by_project_name[(t_project, ds_name)] = t_dataset
 
             t_name = table['tableId']

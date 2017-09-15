@@ -210,7 +210,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(datasets), len(DATA['datasets']))
         for found, expected in zip(datasets, DATA['datasets']):
             self.assertIsInstance(found, Dataset)
-            self.assertEqual(found.dataset_id, expected['id'])
+            self.assertEqual(found.full_dataset_id, expected['id'])
             self.assertEqual(found.friendly_name, expected['friendlyName'])
         self.assertEqual(token, TOKEN)
 
@@ -246,8 +246,21 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'],
                          {'all': True, 'maxResults': 3, 'pageToken': TOKEN})
 
-    def test_dataset(self):
-        from google.cloud.bigquery.dataset import Dataset
+    def test_dataset_with_specified_project(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DATASET = 'dataset_name'
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        dataset = client.dataset(DATASET, PROJECT)
+        self.assertIsInstance(dataset, DatasetReference)
+        self.assertEqual(dataset.dataset_id, DATASET)
+        self.assertEqual(dataset.project_id, PROJECT)
+
+    def test_dataset_with_default_project(self):
+        from google.cloud.bigquery.dataset import DatasetReference
 
         PROJECT = 'PROJECT'
         DATASET = 'dataset_name'
@@ -255,9 +268,9 @@ class TestClient(unittest.TestCase):
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
         dataset = client.dataset(DATASET)
-        self.assertIsInstance(dataset, Dataset)
-        self.assertEqual(dataset.name, DATASET)
-        self.assertIs(dataset._client, client)
+        self.assertIsInstance(dataset, DatasetReference)
+        self.assertEqual(dataset.dataset_id, DATASET)
+        self.assertEqual(dataset.project_id, PROJECT)
 
     def test_get_dataset(self):
         project = 'PROJECT'

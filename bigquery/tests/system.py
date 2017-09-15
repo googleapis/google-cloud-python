@@ -25,6 +25,7 @@ import uuid
 import six
 
 from google.cloud import bigquery
+from google.cloud.bigquery.dataset import Dataset
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi
 from google.cloud.exceptions import Forbidden
@@ -43,7 +44,7 @@ def _has_rows(result):
     return len(result) > 0
 
 
-def _make_dataset_name(prefix):
+def _make_dataset_id(prefix):
     return '%s%s' % (prefix, unique_resource_id())
 
 
@@ -110,25 +111,25 @@ class TestBigQuery(unittest.TestCase):
                 doomed.delete()
 
     def test_create_dataset(self):
-        DATASET_NAME = _make_dataset_name('create_dataset')
-        dataset = Config.CLIENT.dataset(DATASET_NAME)
+        DATASET_ID = _make_dataset_id('create_dataset')
+        dataset = Dataset(DATASET_ID, Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
 
         self.assertTrue(dataset.exists())
-        self.assertEqual(dataset.name, DATASET_NAME)
+        self.assertEqual(dataset.dataset_id, DATASET_ID)
 
     def test_get_dataset(self):
-        DATASET_NAME = _make_dataset_name('get_dataset')
+        DATASET_ID = _make_dataset_id('get_dataset')
         client = Config.CLIENT
-        dataset = Dataset(DATASET_NAME, client)
+        dataset = Dataset(DATASET_ID, client)
         dataset.friendly_name = 'Friendly'
         dataset.description = 'Description'
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
-        dataset_ref = client.dataset(DATASET_NAME)
+        dataset_ref = client.dataset(DATASET_ID)
 
         got = client.get_dataset(dataset_ref)
 
@@ -136,7 +137,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(got.description, 'Description')
 
     def test_patch_dataset(self):
-        dataset = Config.CLIENT.dataset(_make_dataset_name('patch_dataset'))
+        dataset = Dataset(_make_dataset_id('patch_dataset'), Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
@@ -150,7 +151,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(dataset.description, 'Description')
 
     def test_update_dataset(self):
-        dataset = Config.CLIENT.dataset(_make_dataset_name('update_dataset'))
+        dataset = Dataset(_make_dataset_id('update_dataset'), Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
@@ -175,8 +176,8 @@ class TestBigQuery(unittest.TestCase):
             'newer' + unique_resource_id(),
             'newest' + unique_resource_id(),
         ]
-        for dataset_name in datasets_to_create:
-            created_dataset = Config.CLIENT.dataset(dataset_name)
+        for dataset_id in datasets_to_create:
+            created_dataset = Dataset(dataset_id, Config.CLIENT)
             retry_403(created_dataset.create)()
             self.to_delete.append(created_dataset)
 
@@ -185,12 +186,12 @@ class TestBigQuery(unittest.TestCase):
         all_datasets = list(iterator)
         self.assertIsNone(iterator.next_page_token)
         created = [dataset for dataset in all_datasets
-                   if dataset.name in datasets_to_create and
+                   if dataset.dataset_id in datasets_to_create and
                    dataset.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(datasets_to_create))
 
     def test_create_table(self):
-        dataset = Config.CLIENT.dataset(_make_dataset_name('create_table'))
+        dataset = Dataset(_make_dataset_id('create_table'), Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
@@ -208,8 +209,8 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(table.name, TABLE_NAME)
 
     def test_list_tables(self):
-        DATASET_NAME = _make_dataset_name('list_tables')
-        dataset = Config.CLIENT.dataset(DATASET_NAME)
+        DATASET_ID = _make_dataset_id('list_tables')
+        dataset = Dataset(DATASET_ID, Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
@@ -241,11 +242,11 @@ class TestBigQuery(unittest.TestCase):
         self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
                    if (table.name in tables_to_create and
-                       table.dataset_name == DATASET_NAME)]
+                       table.dataset_id == DATASET_ID)]
         self.assertEqual(len(created), len(tables_to_create))
 
     def test_patch_table(self):
-        dataset = Config.CLIENT.dataset(_make_dataset_name('patch_table'))
+        dataset = Dataset(_make_dataset_id('patch_table'), Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
@@ -267,7 +268,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(table.description, 'Description')
 
     def test_update_table(self):
-        dataset = Config.CLIENT.dataset(_make_dataset_name('update_table'))
+        dataset = Dataset(_make_dataset_id('update_table'), Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
@@ -310,8 +311,8 @@ class TestBigQuery(unittest.TestCase):
             ('Bhettye Rhubble', 27, None),
         ]
         ROW_IDS = range(len(ROWS))
-        dataset = Config.CLIENT.dataset(
-            _make_dataset_name('insert_data_then_dump'))
+        dataset = Dataset(
+            _make_dataset_id('insert_data_then_dump'), Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
@@ -354,8 +355,8 @@ class TestBigQuery(unittest.TestCase):
         ]
         TABLE_NAME = 'test_table'
 
-        dataset = Config.CLIENT.dataset(
-            _make_dataset_name('load_local_then_dump'))
+        dataset = Dataset(
+            _make_dataset_id('load_local_then_dump'), Config.CLIENT)
 
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
@@ -403,8 +404,8 @@ class TestBigQuery(unittest.TestCase):
             ("orange", 590),
             ("red", 650)]
 
-        dataset = Config.CLIENT.dataset(
-            _make_dataset_name('load_local_then_dump'))
+        dataset = Dataset(
+            _make_dataset_id('load_local_then_dump'), Config.CLIENT)
 
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
@@ -467,8 +468,8 @@ class TestBigQuery(unittest.TestCase):
 
         self.to_delete.insert(0, blob)
 
-        dataset = Config.CLIENT.dataset(
-            _make_dataset_name('load_gcs_then_dump'))
+        dataset = Dataset(
+            _make_dataset_id('load_gcs_then_dump'), Config.CLIENT)
 
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
@@ -537,8 +538,8 @@ class TestBigQuery(unittest.TestCase):
 
         self.to_delete.insert(0, blob)
 
-        dataset = Config.CLIENT.dataset(
-            _make_dataset_name('load_gcs_then_dump'))
+        dataset = Dataset(
+            _make_dataset_id('load_gcs_then_dump'), Config.CLIENT)
 
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
@@ -570,12 +571,12 @@ class TestBigQuery(unittest.TestCase):
             sorted(actual_rows, key=by_age), sorted(rows, key=by_age))
 
     def test_job_cancel(self):
-        DATASET_NAME = _make_dataset_name('job_cancel')
-        JOB_NAME = 'fetch_' + DATASET_NAME
+        DATASET_ID = _make_dataset_id('job_cancel')
+        JOB_NAME = 'fetch_' + DATASET_ID
         TABLE_NAME = 'test_table'
-        QUERY = 'SELECT * FROM %s.%s' % (DATASET_NAME, TABLE_NAME)
+        QUERY = 'SELECT * FROM %s.%s' % (DATASET_ID, TABLE_NAME)
 
-        dataset = Config.CLIENT.dataset(DATASET_NAME)
+        dataset = Dataset(DATASET_ID, Config.CLIENT)
 
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
@@ -766,7 +767,7 @@ class TestBigQuery(unittest.TestCase):
     def _load_table_for_dml(self, rows, dataset_name, table_name):
         from google.cloud._testing import _NamedTemporaryFile
 
-        dataset = Config.CLIENT.dataset(dataset_name)
+        dataset = Dataset(dataset_name, Config.CLIENT)
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
 
@@ -796,7 +797,7 @@ class TestBigQuery(unittest.TestCase):
         self._fetch_single_page(table)
 
     def test_sync_query_w_dml(self):
-        dataset_name = _make_dataset_name('dml_tests')
+        dataset_name = _make_dataset_id('dml_tests')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
         query_template = """UPDATE {}.{}
@@ -812,7 +813,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(query.num_dml_affected_rows, 1)
 
     def test_dbapi_w_dml(self):
-        dataset_name = _make_dataset_name('dml_tests')
+        dataset_name = _make_dataset_id('dml_tests')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
         query_template = """UPDATE {}.{}
@@ -1079,10 +1080,10 @@ class TestBigQuery(unittest.TestCase):
 
     def test_dump_table_w_public_data(self):
         PUBLIC = 'bigquery-public-data'
-        DATASET_NAME = 'samples'
+        DATASET_ID = 'samples'
         TABLE_NAME = 'natality'
 
-        dataset = Config.CLIENT.dataset(DATASET_NAME, project=PUBLIC)
+        dataset = Dataset(DATASET_ID, Config.CLIENT, project=PUBLIC)
         table = dataset.table(TABLE_NAME)
         # Reload table to get the schema before fetching the rows.
         table.reload()
@@ -1090,11 +1091,11 @@ class TestBigQuery(unittest.TestCase):
 
     def test_large_query_w_public_data(self):
         PUBLIC = 'bigquery-public-data'
-        DATASET_NAME = 'samples'
+        DATASET_ID = 'samples'
         TABLE_NAME = 'natality'
         LIMIT = 1000
         SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
-            PUBLIC, DATASET_NAME, TABLE_NAME, LIMIT)
+            PUBLIC, DATASET_ID, TABLE_NAME, LIMIT)
 
         query = Config.CLIENT.run_sync_query(SQL)
         query.use_legacy_sql = False
@@ -1135,8 +1136,8 @@ class TestBigQuery(unittest.TestCase):
             ('Some value', record)
         ]
         table_name = 'test_table'
-        dataset = Config.CLIENT.dataset(
-            _make_dataset_name('issue_2951'))
+        dataset = Dataset(
+            _make_dataset_id('issue_2951'), Config.CLIENT)
 
         retry_403(dataset.create)()
         self.to_delete.append(dataset)
@@ -1155,8 +1156,8 @@ class TestBigQuery(unittest.TestCase):
     def test_create_table_insert_fetch_nested_schema(self):
 
         table_name = 'test_table'
-        dataset = Config.CLIENT.dataset(
-            _make_dataset_name('create_table_nested_schema'))
+        dataset = Dataset(
+            _make_dataset_id('create_table_nested_schema'), Config.CLIENT)
         self.assertFalse(dataset.exists())
 
         retry_403(dataset.create)()
