@@ -126,6 +126,56 @@ class TestLanguageServiceClient(unittest.TestCase):
         self.assertRaises(errors.GaxError, client.analyze_entities, document)
 
     @mock.patch('google.gax.config.create_stub', spec=True)
+    def test_analyze_entity_sentiment(self, mock_create_stub):
+        # Mock gRPC layer
+        grpc_stub = mock.Mock()
+        mock_create_stub.return_value = grpc_stub
+
+        client = language_v1.LanguageServiceClient()
+
+        # Mock request
+        document = {}
+
+        # Mock response
+        language = 'language-1613589672'
+        expected_response = {'language': language}
+        expected_response = language_service_pb2.AnalyzeEntitySentimentResponse(
+            **expected_response)
+        grpc_stub.AnalyzeEntitySentiment.return_value = expected_response
+
+        response = client.analyze_entity_sentiment(document)
+        self.assertEqual(expected_response, response)
+
+        grpc_stub.AnalyzeEntitySentiment.assert_called_once()
+        args, kwargs = grpc_stub.AnalyzeEntitySentiment.call_args
+        self.assertEqual(len(args), 2)
+        self.assertEqual(len(kwargs), 1)
+        self.assertIn('metadata', kwargs)
+        actual_request = args[0]
+
+        expected_request = language_service_pb2.AnalyzeEntitySentimentRequest(
+            document=document)
+        self.assertEqual(expected_request, actual_request)
+
+    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
+    @mock.patch('google.gax.config.create_stub', spec=True)
+    def test_analyze_entity_sentiment_exception(self, mock_create_stub):
+        # Mock gRPC layer
+        grpc_stub = mock.Mock()
+        mock_create_stub.return_value = grpc_stub
+
+        client = language_v1.LanguageServiceClient()
+
+        # Mock request
+        document = {}
+
+        # Mock exception response
+        grpc_stub.AnalyzeEntitySentiment.side_effect = CustomException()
+
+        self.assertRaises(errors.GaxError, client.analyze_entity_sentiment,
+                          document)
+
+    @mock.patch('google.gax.config.create_stub', spec=True)
     def test_analyze_syntax(self, mock_create_stub):
         # Mock gRPC layer
         grpc_stub = mock.Mock()

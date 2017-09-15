@@ -27,6 +27,11 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
+                "AnalyzeEntitySentiment": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
                 "AnalyzeSyntax": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
