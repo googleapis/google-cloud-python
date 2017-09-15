@@ -164,16 +164,15 @@ class WriteDisposition(_EnumProperty):
 class _AsyncJob(google.api.core.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
-    :type name: str
-    :param name: the name of the job
+    :type job_id: str
+    :param job_id: the job's ID in the project associated with the client.
 
     :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
+    :param client: A client which holds credentials and project configuration.
     """
-    def __init__(self, name, client):
+    def __init__(self, job_id, client):
         super(_AsyncJob, self).__init__()
-        self.name = name
+        self.job_id = job_id
         self._client = client
         self._properties = {}
         self._result_set = False
@@ -217,9 +216,9 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         """URL path for the job's APIs.
 
         :rtype: str
-        :returns: the path based on project and job name.
+        :returns: the path based on project and job ID.
         """
-        return '/projects/%s/jobs/%s' % (self.project, self.name)
+        return '/projects/%s/jobs/%s' % (self.project, self.job_id)
 
     @property
     def etag(self):
@@ -367,7 +366,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
 
         :rtype: dict
         :returns: tuple (string, dict), where the first element is the
-                  job name and the second contains job-specific configuration.
+                  job ID and the second contains job-specific configuration.
         :raises: :class:`KeyError` if the resource has no identifier, or
                  is missing the appropriate configuration.
         """
@@ -375,13 +374,13 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
                 'jobId' not in resource['jobReference']):
             raise KeyError('Resource lacks required identity information: '
                            '["jobReference"]["jobId"]')
-        name = resource['jobReference']['jobId']
+        job_id = resource['jobReference']['jobId']
         if ('configuration' not in resource or
                 cls._JOB_TYPE not in resource['configuration']):
             raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._JOB_TYPE)
         config = resource['configuration'][cls._JOB_TYPE]
-        return name, config
+        return job_id, config
 
     def begin(self, client=None):
         """API call:  begin the job via a POST request
@@ -560,8 +559,9 @@ class _LoadConfiguration(object):
 class LoadJob(_AsyncJob):
     """Asynchronous job for loading data into a table from remote URI.
 
-    :type name: str
-    :param name: the name of the job
+    :type job_id: str
+    :param job_id:
+        The job's ID, belonging to the project associated with the client.
 
     :type destination: :class:`google.cloud.bigquery.table.Table`
     :param destination: Table into which data is to be loaded.
@@ -766,7 +766,7 @@ class LoadJob(_AsyncJob):
         resource = {
             'jobReference': {
                 'projectId': self.project,
-                'jobId': self.name,
+                'jobId': self.job_id,
             },
             'configuration': {
                 self._JOB_TYPE: {
@@ -834,12 +834,12 @@ class LoadJob(_AsyncJob):
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: Job parsed from ``resource``.
         """
-        name, config = cls._get_resource_config(resource)
+        job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
         dataset = Dataset(dest_config['datasetId'], client)
         destination = Table(dest_config['tableId'], dataset)
         source_urls = config.get('sourceUris', ())
-        job = cls(name, destination, source_urls, client=client)
+        job = cls(job_id, destination, source_urls, client=client)
         job._set_properties(resource)
         return job
 
@@ -856,8 +856,8 @@ class _CopyConfiguration(object):
 class CopyJob(_AsyncJob):
     """Asynchronous job: copy data into a table from other tables.
 
-    :type name: str
-    :param name: the name of the job
+    :type job_id: str
+    :param job_id: the job's ID, within the project belonging to ``client``.
 
     :type destination: :class:`google.cloud.bigquery.table.Table`
     :param destination: Table into which data is to be loaded.
@@ -872,8 +872,8 @@ class CopyJob(_AsyncJob):
 
     _JOB_TYPE = 'copy'
 
-    def __init__(self, name, destination, sources, client):
-        super(CopyJob, self).__init__(name, client)
+    def __init__(self, job_id, destination, sources, client):
+        super(CopyJob, self).__init__(job_id, client)
         self.destination = destination
         self.sources = sources
         self._configuration = _CopyConfiguration()
@@ -907,7 +907,7 @@ class CopyJob(_AsyncJob):
         resource = {
             'jobReference': {
                 'projectId': self.project,
-                'jobId': self.name,
+                'jobId': self.job_id,
             },
             'configuration': {
                 self._JOB_TYPE: {
@@ -949,7 +949,7 @@ class CopyJob(_AsyncJob):
         :rtype: :class:`google.cloud.bigquery.job.CopyJob`
         :returns: Job parsed from ``resource``.
         """
-        name, config = cls._get_resource_config(resource)
+        job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
         dataset = Dataset(dest_config['datasetId'], client)
         destination = Table(dest_config['tableId'], dataset)
@@ -964,7 +964,7 @@ class CopyJob(_AsyncJob):
         for source_config in source_configs:
             dataset = Dataset(source_config['datasetId'], client)
             sources.append(Table(source_config['tableId'], dataset))
-        job = cls(name, destination, sources, client=client)
+        job = cls(job_id, destination, sources, client=client)
         job._set_properties(resource)
         return job
 
@@ -983,8 +983,8 @@ class _ExtractConfiguration(object):
 class ExtractJob(_AsyncJob):
     """Asynchronous job: extract data from a table into Cloud Storage.
 
-    :type name: str
-    :param name: the name of the job
+    :type job_id: str
+    :param job_id: the job's ID, within the project belonging to ``client``.
 
     :type source: :class:`google.cloud.bigquery.table.Table`
     :param source: Table into which data is to be loaded.
@@ -1000,8 +1000,8 @@ class ExtractJob(_AsyncJob):
     """
     _JOB_TYPE = 'extract'
 
-    def __init__(self, name, source, destination_uris, client):
-        super(ExtractJob, self).__init__(name, client)
+    def __init__(self, job_id, source, destination_uris, client):
+        super(ExtractJob, self).__init__(job_id, client)
         self.source = source
         self.destination_uris = destination_uris
         self._configuration = _ExtractConfiguration()
@@ -1065,7 +1065,7 @@ class ExtractJob(_AsyncJob):
         resource = {
             'jobReference': {
                 'projectId': self.project,
-                'jobId': self.name,
+                'jobId': self.job_id,
             },
             'configuration': {
                 self._JOB_TYPE: {
@@ -1106,12 +1106,12 @@ class ExtractJob(_AsyncJob):
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: Job parsed from ``resource``.
         """
-        name, config = cls._get_resource_config(resource)
+        job_id, config = cls._get_resource_config(resource)
         source_config = config['sourceTable']
         dataset = Dataset(source_config['datasetId'], client)
         source = Table(source_config['tableId'], dataset)
         destination_uris = config['destinationUris']
-        job = cls(name, source, destination_uris, client=client)
+        job = cls(job_id, source, destination_uris, client=client)
         job._set_properties(resource)
         return job
 
@@ -1138,8 +1138,8 @@ class _AsyncQueryConfiguration(object):
 class QueryJob(_AsyncJob):
     """Asynchronous job: query tables.
 
-    :type name: str
-    :param name: the name of the job
+    :type job_id: str
+    :param job_id: the job's ID, within the project belonging to ``client``.
 
     :type query: str
     :param query: SQL query string
@@ -1163,9 +1163,9 @@ class QueryJob(_AsyncJob):
     _UDF_KEY = 'userDefinedFunctionResources'
     _QUERY_PARAMETERS_KEY = 'queryParameters'
 
-    def __init__(self, name, query, client,
+    def __init__(self, job_id, query, client,
                  udf_resources=(), query_parameters=()):
-        super(QueryJob, self).__init__(name, client)
+        super(QueryJob, self).__init__(job_id, client)
         self.query = query
         self.udf_resources = udf_resources
         self.query_parameters = query_parameters
@@ -1306,7 +1306,7 @@ class QueryJob(_AsyncJob):
         resource = {
             'jobReference': {
                 'projectId': self.project,
-                'jobId': self.name,
+                'jobId': self.job_id,
             },
             'configuration': {
                 self._JOB_TYPE: {
@@ -1399,9 +1399,9 @@ class QueryJob(_AsyncJob):
         :rtype: :class:`google.cloud.bigquery.job.RunAsyncQueryJob`
         :returns: Job parsed from ``resource``.
         """
-        name, config = cls._get_resource_config(resource)
+        job_id, config = cls._get_resource_config(resource)
         query = config['query']
-        job = cls(name, query, client=client)
+        job = cls(job_id, query, client=client)
         job._set_properties(resource)
         return job
 
@@ -1573,7 +1573,7 @@ class QueryJob(_AsyncJob):
         :returns: results instance
         """
         if not self._query_results:
-            self._query_results = self._client._get_query_results(self.name)
+            self._query_results = self._client._get_query_results(self.job_id)
         return self._query_results
 
     def done(self):
@@ -1585,7 +1585,7 @@ class QueryJob(_AsyncJob):
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
         if self.state != _DONE_STATE:
-            self._query_results = self._client._get_query_results(self.name)
+            self._query_results = self._client._get_query_results(self.job_id)
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
