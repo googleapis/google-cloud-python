@@ -296,7 +296,7 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % path)
-        self.assertEqual(dataset.name, dataset_id)
+        self.assertEqual(dataset.dataset_id, dataset_id)
 
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
