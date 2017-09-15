@@ -14,15 +14,18 @@
 
 from __future__ import absolute_import
 
-from google.cloud.gapic.videointelligence.v1beta1.video_intelligence_service_client import VideoIntelligenceServiceClient
-from google.cloud.gapic.videointelligence.v1beta1 import enums
-
 from google.cloud.videointelligence_v1beta1 import types
+from google.cloud.videointelligence_v1beta1.gapic import enums
+from google.cloud.videointelligence_v1beta1.gapic import video_intelligence_service_client
 
+
+class VideoIntelligenceServiceClient(
+        video_intelligence_service_client.VideoIntelligenceServiceClient):
+    __doc__ = video_intelligence_service_client.VideoIntelligenceServiceClient.__doc__
+    enums = enums
 
 
 __all__ = (
     'enums',
     'types',
-    'VideoIntelligenceServiceClient',
-)
+    'VideoIntelligenceServiceClient', )
