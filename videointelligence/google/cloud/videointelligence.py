@@ -14,9 +14,9 @@
 
 from __future__ import absolute_import
 
-from google.cloud.videointelligence_v1beta1 import enums
-from google.cloud.videointelligence_v1beta1 import types
-from google.cloud.videointelligence_v1beta1 import (
+from google.cloud.videointelligence_v1beta2 import enums
+from google.cloud.videointelligence_v1beta2 import types
+from google.cloud.videointelligence_v1beta2 import (
     VideoIntelligenceServiceClient,
 )
 
