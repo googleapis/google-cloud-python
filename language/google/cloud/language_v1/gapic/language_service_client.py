@@ -90,8 +90,6 @@ class LanguageServiceClient(object):
                 client library metrics. Ultimately serializes to a string
                 (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
                 considered private.
-
-        Returns: LanguageServiceClient
         """
         # Unless the calling application specifically requested
         # OAuth scopes, request everything.
@@ -139,6 +137,9 @@ class LanguageServiceClient(object):
         self._analyze_entities = api_callable.create_api_call(
             self.language_service_stub.AnalyzeEntities,
             settings=defaults['analyze_entities'])
+        self._analyze_entity_sentiment = api_callable.create_api_call(
+            self.language_service_stub.AnalyzeEntitySentiment,
+            settings=defaults['analyze_entity_sentiment'])
         self._analyze_syntax = api_callable.create_api_call(
             self.language_service_stub.AnalyzeSyntax,
             settings=defaults['analyze_syntax'])
@@ -212,6 +213,42 @@ class LanguageServiceClient(object):
         request = language_service_pb2.AnalyzeEntitiesRequest(
             document=document, encoding_type=encoding_type)
         return self._analyze_entities(request, options)
+
+    def analyze_entity_sentiment(self,
+                                 document,
+                                 encoding_type=None,
+                                 options=None):
+        """
+        Finds entities, similar to ``AnalyzeEntities`` in the text and analyzes
+        sentiment associated with each entity and its mentions.
+
+        Example:
+            >>> from google.cloud import language_v1
+            >>>
+            >>> client = language_v1.LanguageServiceClient()
+            >>>
+            >>> document = {}
+            >>>
+            >>> response = client.analyze_entity_sentiment(document)
+
+        Args:
+            document (Union[dict, ~google.cloud.language_v1.types.Document]): Input document.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.language_v1.types.Document`
+            encoding_type (~google.cloud.language_v1.types.EncodingType): The encoding type used by the API to calculate offsets.
+            options (~google.gax.CallOptions): Overrides the default
+                settings for this call, e.g, timeout, retries etc.
+
+        Returns:
+            A :class:`~google.cloud.language_v1.types.AnalyzeEntitySentimentResponse` instance.
+
+        Raises:
+            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
+            :exc:`ValueError` if the parameters are invalid.
+        """
+        request = language_service_pb2.AnalyzeEntitySentimentRequest(
+            document=document, encoding_type=encoding_type)
+        return self._analyze_entity_sentiment(request, options)
 
     def analyze_syntax(self, document, encoding_type=None, options=None):
         """
