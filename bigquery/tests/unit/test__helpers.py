@@ -16,7 +16,6 @@ import base64
 import datetime
 import unittest
 
-import pytest
 import mock
 
 
@@ -214,7 +213,6 @@ class Test_timestamp_query_param_from_json(unittest.TestCase):
     def test_w_timestamp_invalid(self):
         with self.assertRaises(ValueError):
             self._call_fut('definitely-not-a-timestamp', _Field('NULLABLE'))
-
 
 
 class Test_timestamp_from_json(unittest.TestCase):
