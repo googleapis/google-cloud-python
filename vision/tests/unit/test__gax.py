@@ -43,7 +43,7 @@ class TestGAXClient(unittest.TestCase):
         self.assertIs(api._client, client)
 
     def test_gapic_credentials(self):
-        from google.cloud.gapic.vision.v1.image_annotator_client import (
+        from google.cloud.vision_v1.gapic.image_annotator_client import (
             ImageAnnotatorClient)
 
         from google.cloud.vision import Client
@@ -65,7 +65,7 @@ class TestGAXClient(unittest.TestCase):
             self.assertIs(kwargs['credentials'], credentials)
 
     def test_kwarg_lib_name(self):
-        from google.cloud.gapic.vision.v1.image_annotator_client import (
+        from google.cloud.vision_v1.gapic.image_annotator_client import (
             ImageAnnotatorClient)
         from google.cloud.vision import __version__
         from google.cloud.vision import Client
@@ -151,7 +151,7 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
     def test_annotate_multiple_results(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
         from google.cloud.vision.annotations import Annotations
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
@@ -184,7 +184,7 @@ class TestGAXClient(unittest.TestCase):
         gax_api._annotator_client.batch_annotate_images.assert_called()
 
     def test_annotate_with_pb_requests_results(self):
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
         from google.cloud.vision.annotations import Annotations
 
         client = mock.Mock(spec_set=['_credentials'])
@@ -233,7 +233,7 @@ class Test__to_gapic_feature(unittest.TestCase):
     def test__to_gapic_feature(self):
         from google.cloud.vision.feature import Feature
         from google.cloud.vision.feature import FeatureTypes
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         feature = Feature(FeatureTypes.LABEL_DETECTION, 5)
         feature_pb = self._call_fut(feature)
@@ -250,7 +250,7 @@ class Test__to_gapic_image(unittest.TestCase):
 
     def test__to_gapic_image_content(self):
         from google.cloud.vision.image import Image
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         image_content = b'abc 1 2 3'
         client = object()
@@ -261,7 +261,7 @@ class Test__to_gapic_image(unittest.TestCase):
 
     def test__to_gapic_gcs_image_uri(self):
         from google.cloud.vision.image import Image
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         image_uri = 'gs://1234/34.jpg'
         client = object()
@@ -272,7 +272,7 @@ class Test__to_gapic_image(unittest.TestCase):
 
     def test__to_gapic_image_uri(self):
         from google.cloud.vision.image import Image
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         image_uri = 'http://1234/34.jpg'
         client = object()

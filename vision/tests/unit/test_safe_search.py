@@ -39,9 +39,9 @@ class TestSafeSearchAnnotation(unittest.TestCase):
 
     def test_pb_safe_search_annotation(self):
         from google.cloud.vision.likelihood import Likelihood
-        from google.cloud.proto.vision.v1.image_annotator_pb2 import (
+        from google.cloud.vision_v1.proto.image_annotator_pb2 import (
             Likelihood as LikelihoodPB)
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         possible = LikelihoodPB.Value('POSSIBLE')
         possible_name = Likelihood.POSSIBLE
@@ -58,7 +58,7 @@ class TestSafeSearchAnnotation(unittest.TestCase):
 
     def test_empty_pb_safe_search_annotation(self):
         from google.cloud.vision.likelihood import Likelihood
-        from google.cloud.proto.vision.v1 import image_annotator_pb2
+        from google.cloud.vision_v1.proto import image_annotator_pb2
 
         unknown = Likelihood.UNKNOWN
         safe_search_annotation = image_annotator_pb2.SafeSearchAnnotation()

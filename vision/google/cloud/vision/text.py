@@ -16,7 +16,7 @@
 
 import json
 
-from google.cloud.proto.vision.v1 import text_annotation_pb2
+from google.cloud.vision_v1.proto import text_annotation_pb2
 from google.protobuf import json_format
 
 
@@ -25,7 +25,7 @@ class TextAnnotation(object):
 
     :type pages: list
     :param pages: List of
-                  :class:`~google.cloud.proto.vision.v1.\
+                  :class:`~google.cloud.vision_v1.proto.\
                   text_annotation_pb2.Page`.
 
     :type text: str
@@ -54,7 +54,7 @@ class TextAnnotation(object):
     def from_pb(cls, annotation):
         """Factory: construct an instance of ``TextAnnotation`` from protobuf.
 
-        :type annotation: :class:`~google.cloud.proto.vision.v1.\
+        :type annotation: :class:`~google.cloud.vision_v1.proto.\
                           text_annotation_pb2.TextAnnotation`
         :param annotation: Populated instance of ``TextAnnotation``.
 
@@ -68,7 +68,7 @@ class TextAnnotation(object):
         """Pages found in text image.
 
         :rtype: list
-        :returns: List of :class:`~google.cloud.proto.vision.v1.\
+        :returns: List of :class:`~google.cloud.vision_v1.proto.\
                           text_annotation_pb2.Page`.
         """
         return self._pages
