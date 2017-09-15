@@ -127,6 +127,15 @@ class DatasetReference(object):
         """
         return self._dataset_id
 
+    @property
+    def path(self):
+        """URL path for the dataset's APIs.
+
+        :rtype: str
+        :returns: the path based on project and dataset name.
+        """
+        return '/projects/%s/datasets/%s' % (self.project_id, self.dataset_id)
+
     def table(self, table_id):
         """Constructs a TableReference.
 
@@ -504,23 +513,6 @@ class Dataset(object):
             return False
         else:
             return True
-
-    def reload(self, client=None):
-        """API call:  refresh dataset properties via a GET request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-
-        api_response = client._connection.api_request(
-            method='GET', path=self.path)
-        self._set_properties(api_response)
 
     def patch(self, client=None, **kw):
         """API call:  update individual dataset properties via a PATCH request.
