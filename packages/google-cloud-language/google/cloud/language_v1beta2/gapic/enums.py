@@ -1,10 +1,10 @@
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,16 +24,16 @@ class EncodingType(object):
 
     Attributes:
       NONE (int): If ``EncodingType`` is not specified, encoding-dependent information (such as
-        ``begin_offset``) will be set at ``-1``.
+      ``begin_offset``) will be set at ``-1``.
       UTF8 (int): Encoding-dependent information (such as ``begin_offset``) is calculated based
-        on the UTF-8 encoding of the input. C++ and Go are examples of languages
-        that use this encoding natively.
+      on the UTF-8 encoding of the input. C++ and Go are examples of languages
+      that use this encoding natively.
       UTF16 (int): Encoding-dependent information (such as ``begin_offset``) is calculated based
-        on the UTF-16 encoding of the input. Java and Javascript are examples of
-        languages that use this encoding natively.
+      on the UTF-16 encoding of the input. Java and Javascript are examples of
+      languages that use this encoding natively.
       UTF32 (int): Encoding-dependent information (such as ``begin_offset``) is calculated based
-        on the UTF-32 encoding of the input. Python is an example of a language
-        that uses this encoding natively.
+      on the UTF-32 encoding of the input. Python is an example of a language
+      that uses this encoding natively.
     """
     NONE = 0
     UTF8 = 1
@@ -292,7 +292,7 @@ class PartOfSpeech(object):
 
         Attributes:
           RECIPROCITY_UNKNOWN (int): Reciprocity is not applicable in the analyzed language or is not
-            predicted.
+          predicted.
           RECIPROCAL (int): Reciprocal
           NON_RECIPROCAL (int): Non-reciprocal
         """
@@ -421,6 +421,12 @@ class DependencyEdge(object):
           NUMC (int): Compound of numeric modifier
           COP (int): Copula
           DISLOCATED (int): Dislocated relation (for fronted/topicalized elements)
+          ASP (int): Aspect marker
+          GMOD (int): Genitive modifier
+          GOBJ (int): Genitive object
+          INFMOD (int): Infinitival modifier
+          MES (int): Measure
+          NCOMP (int): Nominal complement of a noun
         """
         UNKNOWN = 0
         ABBREV = 1
@@ -499,6 +505,12 @@ class DependencyEdge(object):
         NUMC = 74
         COP = 75
         DISLOCATED = 76
+        ASP = 77
+        GMOD = 78
+        GOBJ = 79
+        INFMOD = 80
+        MES = 81
+        NCOMP = 82
 
 
 class EntityMention(object):

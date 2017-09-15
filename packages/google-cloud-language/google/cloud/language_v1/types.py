@@ -15,16 +15,20 @@
 from __future__ import absolute_import
 import sys
 
-from google.cloud.proto.language.v1 import language_service_pb2
-
 from google.gax.utils.messages import get_messages
 
+from google.api import http_pb2
+from google.cloud.language_v1.proto import language_service_pb2
+from google.protobuf import descriptor_pb2
 
 names = []
-for name, message in get_messages(language_service_pb2).items():
-    message.__module__ = 'google.cloud.language_v1.types'
-    setattr(sys.modules[__name__], name, message)
-    names.append(name)
-
+for module in (
+        http_pb2,
+        language_service_pb2,
+        descriptor_pb2, ):
+    for name, message in get_messages(module).items():
+        message.__module__ = 'google.cloud.language_v1.types'
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
 
 __all__ = tuple(sorted(names))
