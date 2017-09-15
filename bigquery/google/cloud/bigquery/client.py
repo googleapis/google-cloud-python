@@ -148,11 +148,11 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params)
 
-    def dataset(self, dataset_name, project=None):
+    def dataset(self, dataset_id, project=None):
         """Construct a reference to a dataset.
 
-        :type dataset_name: str
-        :param dataset_name: Name of the dataset.
+        :type dataset_id: str
+        :param dataset_id: ID of the dataset.
 
         :type project: str
         :param project: (Optional) project ID for the dataset (defaults to
@@ -164,7 +164,30 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
 
-        return DatasetReference(project, dataset_name)
+        return DatasetReference(project, dataset_id)
+
+    def create_dataset(self, dataset):
+        """API call:  create the dataset via a PUT request.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
+
+        :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
+        :param dataset: A ``Dataset`` populated with the desired initial state.
+                        If project is missing, it defaults to the project of
+                        the client.
+
+        :rtype: ":class:`~google.cloud.bigquery.dataset.Dataset`"
+        :returns: a new ``Dataset`` returned from the service.
+        """
+        if dataset.project is None:
+          dataset._project = self.project
+        path = '/projects/%s/datasets' % (dataset.project,)
+        api_response = self._connection.api_request(
+            method='POST', path=path, data=dataset._build_resource())
+        ds = Dataset(dataset.dataset_id, project=dataset.project, client=self)
+        ds._set_properties(api_response)
+        return ds
 
     def get_dataset(self, dataset_ref):
         """Fetch the dataset referenced by ``dataset_ref``

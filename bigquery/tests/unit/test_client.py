@@ -297,6 +297,77 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         self.assertEqual(dataset.dataset_id, dataset_id)
 
+    def test_create_dataset_minimal(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        PATH = 'projects/%s/datasets' % PROJECT
+        RESOURCE = {
+            'datasetReference':
+                {'projectId': PROJECT, 'datasetId': DS_ID},
+            'etag': "etag",
+            'id': "%s:%s" % (PROJECT, DS_ID),
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection(RESOURCE)
+        ds = client.create_dataset(Dataset(DS_ID))
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'datasetReference':
+                {'projectId': PROJECT, 'datasetId': DS_ID},
+        }
+        self.assertEqual(req['data'], SENT)
+        self.assertEqual(ds.dataset_id, DS_ID)
+        self.assertEqual(ds.project, PROJECT)
+        self.assertEqual(ds.etag, RESOURCE['etag'])
+        self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
+
+    def test_create_dataset_w_attrs(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        PATH = 'projects/%s/datasets' % PROJECT
+        DESCRIPTION = 'DESC'
+        FRIENDLY_NAME = 'FN'
+        RESOURCE = {
+            'datasetReference':
+                {'projectId': PROJECT, 'datasetId': DS_ID},
+            'etag': "etag",
+            'id': "%s:%s" % (PROJECT, DS_ID),
+            'description': DESCRIPTION,
+            'friendlyName': FRIENDLY_NAME,
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection(RESOURCE)
+        ds_arg = Dataset(DS_ID, project=PROJECT)
+        ds_arg.description = DESCRIPTION
+        ds_arg.friendly_name = FRIENDLY_NAME
+        ds = client.create_dataset(ds_arg)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'datasetReference':
+                {'projectId': PROJECT, 'datasetId': DS_ID},
+            'description': DESCRIPTION,
+            'friendlyName': FRIENDLY_NAME,
+        }
+        self.assertEqual(req['data'], SENT)
+        self.assertEqual(ds.dataset_id, DS_ID)
+        self.assertEqual(ds.project, PROJECT)
+        self.assertEqual(ds.etag, RESOURCE['etag'])
+        self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
+        self.assertEqual(ds.description, DESCRIPTION)
+        self.assertEqual(ds.friendly_name, FRIENDLY_NAME)
+
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _make_credentials()
