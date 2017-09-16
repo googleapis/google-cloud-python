@@ -243,3 +243,52 @@ class TestBucketNotification(unittest.TestCase):
             path=path,
             data=data,
         )
+
+    def test_delete_wo_notification_id(self):
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(
+            bucket, self.TOPIC_NAME)
+
+        with self.assertRaises(ValueError):
+            notification.delete()
+
+    def test_delete_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        NOTIFICATION_ID = '123'
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.side_effect = NotFound('testing')
+
+        with self.assertRaises(NotFound):
+            notification.delete()
+
+        path = '/b/{}/notificationConfigs/{}'.format(
+            self.BUCKET_NAME, NOTIFICATION_ID)
+        api_request.assert_called_once_with(
+            method='DELETE',
+            path=path,
+        )
+
+    def test_delete_hit(self):
+        NOTIFICATION_ID = '123'
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        alt_client = self._make_client()
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.return_value = None
+
+        notification.delete(client=client)
+
+        path = '/b/{}/notificationConfigs/{}'.format(
+            self.BUCKET_NAME, NOTIFICATION_ID)
+        api_request.assert_called_once_with(
+            method='DELETE',
+            path=path,
+        )
