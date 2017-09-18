@@ -98,7 +98,7 @@ class TestDatasetReference(unittest.TestCase):
 
     def test_ctor_defaults(self):
         dataset_ref = self._make_one('some-project-1', 'dataset_1')
-        self.assertEqual(dataset_ref.project_id, 'some-project-1')
+        self.assertEqual(dataset_ref.project, 'some-project-1')
         self.assertEqual(dataset_ref.dataset_id, 'dataset_1')
 
     def test_table(self):
