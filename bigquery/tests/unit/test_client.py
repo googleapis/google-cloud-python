@@ -335,6 +335,12 @@ class TestClient(unittest.TestCase):
         PATH = 'projects/%s/datasets' % PROJECT
         DESCRIPTION = 'DESC'
         FRIENDLY_NAME = 'FN'
+        USER_EMAIL = 'phred@example.com'
+        VIEW = {
+            'projectId': 'my-proj',
+            'datasetId': 'starry-skies',
+            'tableId': 'northern-hemisphere',
+        }
         RESOURCE = {
             'datasetReference':
                 {'projectId': PROJECT, 'datasetId': DS_ID},
@@ -342,12 +348,17 @@ class TestClient(unittest.TestCase):
             'id': "%s:%s" % (PROJECT, DS_ID),
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
+            'access': [
+                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
+                {'view': VIEW},
+            ],
         }
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         conn = client._connection = _Connection(RESOURCE)
-        entry = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
-        ds_arg = Dataset(DS_ID, project=PROJECT, access_entries=[entry])
+        entries = [AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
+                   AccessEntry(None, 'view', VIEW)]
+        ds_arg = Dataset(DS_ID, project=PROJECT, access_entries=entries)
         ds_arg.description = DESCRIPTION
         ds_arg.friendly_name = FRIENDLY_NAME
         ds = client.create_dataset(ds_arg)
@@ -360,7 +371,10 @@ class TestClient(unittest.TestCase):
                 {'projectId': PROJECT, 'datasetId': DS_ID},
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
-            'access': [{'role': entry.role, 'userByEmail': entry.entity_id}],
+            'access': [
+                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
+                {'view': VIEW},
+            ],
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(ds.dataset_id, DS_ID)
