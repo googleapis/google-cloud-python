@@ -257,7 +257,7 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET, PROJECT)
         self.assertIsInstance(dataset, DatasetReference)
         self.assertEqual(dataset.dataset_id, DATASET)
-        self.assertEqual(dataset.project_id, PROJECT)
+        self.assertEqual(dataset.project, PROJECT)
 
     def test_dataset_with_default_project(self):
         from google.cloud.bigquery.dataset import DatasetReference
@@ -270,7 +270,7 @@ class TestClient(unittest.TestCase):
         dataset = client.dataset(DATASET)
         self.assertIsInstance(dataset, DatasetReference)
         self.assertEqual(dataset.dataset_id, DATASET)
-        self.assertEqual(dataset.project_id, PROJECT)
+        self.assertEqual(dataset.project, PROJECT)
 
     def test_get_dataset(self):
         project = 'PROJECT'
