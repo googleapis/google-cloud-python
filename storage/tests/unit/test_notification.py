@@ -31,6 +31,12 @@ class TestBucketNotification(unittest.TestCase):
         'attr2': 'value2',
     }
     BLOB_NAME_PREFIX = 'blob-name-prefix/'
+    NOTIFICATION_ID = '123'
+    SELF_LINK = 'https://example.com/notification/123'
+    ETAG = 'DEADBEEF'
+    CREATE_PATH = '/b/{}/notificationConfigs'.format(BUCKET_NAME)
+    NOTIFICATION_PATH = '/b/{}/notificationConfigs/{}'.format(
+            BUCKET_NAME, NOTIFICATION_ID)
 
     @staticmethod
     def event_types():
@@ -108,57 +114,50 @@ class TestBucketNotification(unittest.TestCase):
     def test_notification_id(self):
         client = self._make_client()
         bucket = self._make_bucket(client)
-        NOTIFICATION_ID = '123'
 
         notification = self._make_one(
             bucket, self.TOPIC_NAME)
 
         self.assertIsNone(notification.notification_id)
 
-        notification._properties['id'] = NOTIFICATION_ID
-        self.assertEqual(notification.notification_id, NOTIFICATION_ID)
+        notification._properties['id'] = self.NOTIFICATION_ID
+        self.assertEqual(notification.notification_id, self.NOTIFICATION_ID)
 
     def test_etag(self):
         client = self._make_client()
         bucket = self._make_bucket(client)
-        ETAG = 'DEADBEEF'
 
         notification = self._make_one(
             bucket, self.TOPIC_NAME)
 
         self.assertIsNone(notification.etag)
 
-        notification._properties['etag'] = ETAG
-        self.assertEqual(notification.etag, ETAG)
+        notification._properties['etag'] = self.ETAG
+        self.assertEqual(notification.etag, self.ETAG)
 
     def test_self_link(self):
         client = self._make_client()
         bucket = self._make_bucket(client)
-        SELF_LINK = 'https://example.com/notification/123'
 
         notification = self._make_one(
             bucket, self.TOPIC_NAME)
 
         self.assertIsNone(notification.self_link)
 
-        notification._properties['selfLink'] = SELF_LINK
-        self.assertEqual(notification.self_link, SELF_LINK)
+        notification._properties['selfLink'] = self.SELF_LINK
+        self.assertEqual(notification.self_link, self.SELF_LINK)
 
     def test_create_w_existing_notification_id(self):
-        NOTIFICATION_ID = '123'
         client = self._make_client()
         bucket = self._make_bucket(client)
         notification = self._make_one(
             bucket, self.TOPIC_NAME)
-        notification._properties['id'] = NOTIFICATION_ID
+        notification._properties['id'] = self.NOTIFICATION_ID
 
         with self.assertRaises(ValueError):
             notification.create()
 
     def test_create_w_defaults(self):
-        NOTIFICATION_ID = '123'
-        ETAG = 'DEADBEEF'
-        SELF_LINK = 'https://example.com/notification/123'
         client = self._make_client()
         bucket = self._make_bucket(client)
         notification = self._make_one(
@@ -166,35 +165,31 @@ class TestBucketNotification(unittest.TestCase):
         api_request = client._connection.api_request
         api_request.return_value = {
             'topic': self.TOPIC_REF,
-            'id': NOTIFICATION_ID,
-            'etag': ETAG,
-            'selfLink': SELF_LINK,
+            'id': self.NOTIFICATION_ID,
+            'etag': self.ETAG,
+            'selfLink': self.SELF_LINK,
         }
 
         notification.create()
 
-        self.assertEqual(notification.notification_id, NOTIFICATION_ID)
-        self.assertEqual(notification.etag, ETAG)
-        self.assertEqual(notification.self_link, SELF_LINK)
+        self.assertEqual(notification.notification_id, self.NOTIFICATION_ID)
+        self.assertEqual(notification.etag, self.ETAG)
+        self.assertEqual(notification.self_link, self.SELF_LINK)
         self.assertIsNone(notification.custom_attributes)
         self.assertIsNone(notification.event_types)
         self.assertIsNone(notification.blob_name_prefix)
         self.assertIsNone(notification.payload_format)
 
-        path = '/b/{}/notificationConfigs'.format(self.BUCKET_NAME)
         data = {
             'topic': self.TOPIC_REF,
         }
         api_request.assert_called_once_with(
             method='POST',
-            path=path,
+            path=self.CREATE_PATH,
             data=data,
         )
 
     def test_create_w_explicit_client(self):
-        NOTIFICATION_ID = '123'
-        ETAG = 'DEADBEEF'
-        SELF_LINK = 'https://example.com/notification/123'
         client = self._make_client()
         alt_client = self._make_client()
         bucket = self._make_bucket(client)
@@ -213,9 +208,9 @@ class TestBucketNotification(unittest.TestCase):
             'event_types': self.event_types(),
             'blob_name_prefix': self.BLOB_NAME_PREFIX,
             'payload_format': self.payload_format(),
-            'id': NOTIFICATION_ID,
-            'etag': ETAG,
-            'selfLink': SELF_LINK,
+            'id': self.NOTIFICATION_ID,
+            'etag': self.ETAG,
+            'selfLink': self.SELF_LINK,
         }
 
         notification.create(client=alt_client)
@@ -226,11 +221,10 @@ class TestBucketNotification(unittest.TestCase):
         self.assertEqual(notification.blob_name_prefix, self.BLOB_NAME_PREFIX)
         self.assertEqual(
             notification.payload_format, self.payload_format())
-        self.assertEqual(notification.notification_id, NOTIFICATION_ID)
-        self.assertEqual(notification.etag, ETAG)
-        self.assertEqual(notification.self_link, SELF_LINK)
+        self.assertEqual(notification.notification_id, self.NOTIFICATION_ID)
+        self.assertEqual(notification.etag, self.ETAG)
+        self.assertEqual(notification.self_link, self.SELF_LINK)
 
-        path = '/b/{}/notificationConfigs'.format(self.BUCKET_NAME)
         data = {
             'topic': self.TOPIC_ALT_REF,
             'custom_attributes': self.CUSTOM_ATTRIBUTES,
@@ -240,8 +234,110 @@ class TestBucketNotification(unittest.TestCase):
         }
         api_request.assert_called_once_with(
             method='POST',
-            path=path,
+            path=self.CREATE_PATH,
             data=data,
+        )
+
+    def test_exists_wo_notification_id(self):
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(
+            bucket, self.TOPIC_NAME)
+
+        with self.assertRaises(ValueError):
+            notification.exists()
+
+    def test_exists_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = self.NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.side_effect = NotFound('testing')
+
+        self.assertFalse(notification.exists())
+
+        api_request.assert_called_once_with(
+            method='GET',
+            path=self.NOTIFICATION_PATH,
+        )
+
+    def test_exists_hit(self):
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        alt_client = self._make_client()
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = self.NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.return_value = {
+            'topic': self.TOPIC_REF,
+            'id': self.NOTIFICATION_ID,
+            'etag': self.ETAG,
+            'selfLink': self.SELF_LINK,
+        }
+
+        self.assertTrue(notification.exists(client=client))
+
+        api_request.assert_called_once_with(
+            method='GET',
+            path=self.NOTIFICATION_PATH,
+        )
+
+    def test_reload_wo_notification_id(self):
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(
+            bucket, self.TOPIC_NAME)
+
+        with self.assertRaises(ValueError):
+            notification.reload()
+
+    def test_reload_miss(self):
+        from google.cloud.exceptions import NotFound
+
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = self.NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.side_effect = NotFound('testing')
+
+        with self.assertRaises(NotFound):
+            notification.reload()
+
+        api_request.assert_called_once_with(
+            method='GET',
+            path=self.NOTIFICATION_PATH,
+        )
+
+    def test_reload_hit(self):
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        alt_client = self._make_client()
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties['id'] = self.NOTIFICATION_ID
+        api_request = client._connection.api_request
+        api_request.return_value = {
+            'topic': self.TOPIC_REF,
+            'id': self.NOTIFICATION_ID,
+            'etag': self.ETAG,
+            'selfLink': self.SELF_LINK,
+        }
+
+        notification.reload(client=client)
+
+        self.assertEqual(notification.etag, self.ETAG)
+        self.assertEqual(notification.self_link, self.SELF_LINK)
+        self.assertIsNone(notification.custom_attributes)
+        self.assertIsNone(notification.event_types)
+        self.assertIsNone(notification.blob_name_prefix)
+        self.assertIsNone(notification.payload_format)
+
+        api_request.assert_called_once_with(
+            method='GET',
+            path=self.NOTIFICATION_PATH,
         )
 
     def test_delete_wo_notification_id(self):
@@ -256,39 +352,33 @@ class TestBucketNotification(unittest.TestCase):
     def test_delete_miss(self):
         from google.cloud.exceptions import NotFound
 
-        NOTIFICATION_ID = '123'
         client = self._make_client()
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
-        notification._properties['id'] = NOTIFICATION_ID
+        notification._properties['id'] = self.NOTIFICATION_ID
         api_request = client._connection.api_request
         api_request.side_effect = NotFound('testing')
 
         with self.assertRaises(NotFound):
             notification.delete()
 
-        path = '/b/{}/notificationConfigs/{}'.format(
-            self.BUCKET_NAME, NOTIFICATION_ID)
         api_request.assert_called_once_with(
             method='DELETE',
-            path=path,
+            path=self.NOTIFICATION_PATH,
         )
 
     def test_delete_hit(self):
-        NOTIFICATION_ID = '123'
         client = self._make_client()
         bucket = self._make_bucket(client)
         alt_client = self._make_client()
         notification = self._make_one(bucket, self.TOPIC_NAME)
-        notification._properties['id'] = NOTIFICATION_ID
+        notification._properties['id'] = self.NOTIFICATION_ID
         api_request = client._connection.api_request
         api_request.return_value = None
 
         notification.delete(client=client)
 
-        path = '/b/{}/notificationConfigs/{}'.format(
-            self.BUCKET_NAME, NOTIFICATION_ID)
         api_request.assert_called_once_with(
             method='DELETE',
-            path=path,
+            path=self.NOTIFICATION_PATH,
         )

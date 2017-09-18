@@ -14,6 +14,9 @@
 
 """Support for bucket notification resources."""
 
+from google.api.core.exceptions import NotFound
+
+
 OBJECT_FINALIZE_EVENT_TYPE = 'OBJECT_FINALIZE'
 OBJECT_METADATA_UPDATE_EVENT_TYPE = 'OBJECT_METADATA_UPDATE'
 OBJECT_DELETE_EVENT_TYPE = 'OBJECT_DELETE'
@@ -161,6 +164,15 @@ class BucketNotification(object):
             client = self.client
         return client
 
+    def _set_properties(self, response):
+        """Helper for :meth:`reload`.
+
+        :type response: dict
+        :param response: resource mapping from server
+        """
+        self._properties.clear()
+        self._properties.update(response)
+
     def create(self, client=None):
         """API wrapper: create the notification.
 
@@ -187,6 +199,54 @@ class BucketNotification(object):
             data=properties,
         )
 
+    def exists(self, client=None):
+        """Test whether this notification exists.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/get
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: bool
+        :returns: True, if the notification exists, else False.
+        :raises ValueError: if the notification has no ID.
+        """
+        if self.notification_id is None:
+            raise ValueError("Notification not intialized by server")
+
+        client = self._require_client(client)
+        try:
+            client._connection.api_request(method='GET', path=self.path)
+        except NotFound:
+            return False
+        else:
+            return True
+
+    def reload(self, client=None):
+        """Update this notification from the server configuration.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/get
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: bool
+        :returns: True, if the notification exists, else False.
+        :raises ValueError: if the notification has no ID.
+        """
+        if self.notification_id is None:
+            raise ValueError("Notification not intialized by server")
+
+        client = self._require_client(client)
+        response = client._connection.api_request(method='GET', path=self.path)
+        self._set_properties(response)
+
     def delete(self, client=None):
         """Delete this notification.
 
@@ -200,6 +260,7 @@ class BucketNotification(object):
 
         :raises: :class:`google.api.core.exceptions.NotFound`:
             if the notification does not exist.
+        :raises ValueError: if the notification has no ID.
         """
         if self.notification_id is None:
             raise ValueError("Notification not intialized by server")
