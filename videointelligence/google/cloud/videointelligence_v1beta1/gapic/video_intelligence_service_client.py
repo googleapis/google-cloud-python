@@ -130,6 +130,7 @@ class VideoIntelligenceServiceClient(object):
             ssl_credentials=ssl_credentials)
 
         self.operations_client = operations_client.OperationsClient(
+            service_path=self.SERVICE_ADDRESS,
             channel=channel,
             credentials=credentials,
             ssl_credentials=ssl_credentials,

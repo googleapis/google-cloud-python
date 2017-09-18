@@ -11,7 +11,7 @@ customer conversations happening in a call center or a messaging
 app. You can analyze text uploaded in your request or integrate
 with your document storage on Google Cloud Storage.
 
-.. _Google Natural Language: https://cloud.google.com/natural-language/docs/getting-started
+.. _Google Natural Language: https://cloud.google.com/natural-language/docs/quickstart-client-libraries
 
 
 ********************************
@@ -111,9 +111,9 @@ to content stored in `Google Cloud Storage`_.
      ...     type=language.enums.HTML,
      ... )
 
-.. _analyzeEntities: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeEntities
-.. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment
-.. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText
+.. _analyzeEntities: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntities
+.. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment
+.. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
 ****************
