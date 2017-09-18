@@ -98,25 +98,25 @@ class DatasetReference(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type project_id: str
-    :param project_id: the ID of the project
+    :type project: str
+    :param project: the ID of the project
 
     :type dataset_id: str
     :param dataset_id: the ID of the dataset
     """
 
-    def __init__(self, project_id, dataset_id):
-        self._project_id = project_id
+    def __init__(self, project, dataset_id):
+        self._project = project
         self._dataset_id = dataset_id
 
     @property
-    def project_id(self):
+    def project(self):
         """Project ID of the dataset.
 
         :rtype: str
         :returns: the project ID.
         """
-        return self._project_id
+        return self._project
 
     @property
     def dataset_id(self):
@@ -134,7 +134,7 @@ class DatasetReference(object):
         :rtype: str
         :returns: the path based on project and dataset name.
         """
-        return '/projects/%s/datasets/%s' % (self.project_id, self.dataset_id)
+        return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
 
     def table(self, table_id):
         """Constructs a TableReference.
