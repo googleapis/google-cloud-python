@@ -21,7 +21,6 @@ import mock
 from six.moves import http_client
 import pytest
 
-from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.dataset import DatasetReference
 
 
@@ -436,8 +435,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         client = _Client(self.PROJECT)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
         RESOURCE = {}
         klass = self._get_target_class()
         with self.assertRaises(KeyError):
@@ -1280,7 +1277,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
         score = SchemaField('score', 'FLOAT', mode='NULLABLE')
-        table = self._make_one(table_ref, schema=[full_name, age, voter, score],
+        table = self._make_one(table_ref,
+                               schema=[full_name, age, voter, score],
                                client=client1)
 
         iterator = table.fetch_data(
@@ -1452,7 +1450,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
         bogus = SchemaField('joined', 'STRING', mode='BOGUS')
-        table = self._make_one(table_ref, schema=[full_name, age, colors, bogus],
+        table = self._make_one(table_ref,
+                               schema=[full_name, age, colors, bogus],
                                client=client)
 
         with self.assertRaises(ValueError) as exc:

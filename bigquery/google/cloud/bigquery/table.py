@@ -115,7 +115,7 @@ class Table(object):
         :rtype: str
         :returns: the project (derived from the dataset).
         """
-        return self._dataset.project_id
+        return self._dataset.project
 
     @property
     def dataset_id(self):
@@ -538,7 +538,7 @@ class Table(object):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'tableReference': {
-                'projectId': self._dataset.project_id,
+                'projectId': self._dataset.project,
                 'datasetId': self._dataset.dataset_id,
                 'tableId': self.table_id},
         }
@@ -584,7 +584,7 @@ class Table(object):
         """
         client = self._require_client(client)
         path = '/projects/%s/datasets/%s/tables' % (
-            self._dataset.project_id, self._dataset.dataset_id)
+            self._dataset.project, self._dataset.dataset_id)
         api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)

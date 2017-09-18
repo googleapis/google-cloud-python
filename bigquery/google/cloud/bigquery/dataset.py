@@ -598,7 +598,8 @@ class Dataset(object):
         :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: a new ``Table`` instance
         """
-        return Table(name, dataset=self, schema=schema)
+        table_ref = TableReference(self, name)
+        return Table(table_ref, schema=schema, client=self._client)
 
 
 def _item_to_table(iterator, resource):
