@@ -1220,7 +1220,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         self.assertEqual(job.destination_uris, config['destinationUris'])
 
         table_ref = config['sourceTable']
-        self.assertEqual(job.source.dataset.project_id, table_ref['projectId'])
+        self.assertEqual(job.source.dataset.project, table_ref['projectId'])
         self.assertEqual(job.source.dataset.dataset_id, table_ref['datasetId'])
         self.assertEqual(job.source.table_id, table_ref['tableId'])
 

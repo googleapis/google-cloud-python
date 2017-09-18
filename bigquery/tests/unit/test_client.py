@@ -763,6 +763,8 @@ class TestClient(unittest.TestCase):
 
     def test_extract_table_generated_job_id(self):
         from google.cloud.bigquery.job import ExtractJob
+        from google.cloud.bigquery.job import ExtractJobConfig
+        from google.cloud.bigquery.job import DestinationFormat
 
         PROJECT = 'PROJECT'
         JOB = 'job_name'
@@ -782,6 +784,7 @@ class TestClient(unittest.TestCase):
                         'tableId': SOURCE,
                     },
                     'destinationUris': [DESTINATION],
+                    'destinationFormat': 'NEWLINE_DELIMITED_JSON',
                 },
             },
         }
@@ -791,8 +794,11 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _Connection(RESOURCE)
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
+        job_config = ExtractJobConfig()
+        job_config.destination_format = (
+            DestinationFormat.NEWLINE_DELIMITED_JSON)
 
-        job = client.extract_table(source, DESTINATION)
+        job = client.extract_table(source, DESTINATION, job_config=job_config)
 
         # Check that extract_table actually starts the job.
         self.assertEqual(len(conn._requested), 1)

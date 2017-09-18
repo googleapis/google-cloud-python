@@ -566,9 +566,8 @@ class TestBigQuery(unittest.TestCase):
                 blob.upload_from_file(csv_read, content_type='text/csv')
         self.to_delete.insert(0, blob)
 
-        dataset = Dataset(
-            table.dataset.dataset_id, Config.CLIENT)
-        retry_403(dataset.create)()
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+            Dataset(table.dataset.dataset_id))
         self.to_delete.append(dataset)
         table = dataset.table(table.table_id)
         self.to_delete.insert(0, table)

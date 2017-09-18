@@ -387,9 +387,8 @@ class Client(ClientWithProject):
         """
         return CopyJob(job_id, destination, sources, client=self)
 
-    def extract_table(
-            self, source, *destination_uris, job_config=None, job_id=None):
-        """Construct a job for extracting a table into Cloud Storage files.
+    def extract_table(self, source, *destination_uris, **kwargs):
+        """Start a job to extract a table into Cloud Storage files.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
@@ -402,16 +401,27 @@ class Client(ClientWithProject):
             URIs of Cloud Storage file(s) into which table data is to be
             extracted; in format ``gs://<bucket_name>/<object_name_or_glob>``.
 
-        :type job_config: :class:`google.cloud.bigquery.job.ExtractJobConfig`
-        :param job_config:
-            (Optional) Extra configuration options for the extract job.
+        :type kwargs: dict
+        :param kwargs: Additional keyword arguments.
 
-        :type job_id: str
-        :param job_id: (Optional) The ID of the job.
+        :Keyword Arguments:
+            * *job_config*
+              (:class:`google.cloud.bigquery.job.ExtractJobConfig`) --
+              (Optional) Extra configuration options for the extract job.
+            * *job_id* (``str``) --
+              Additional content
+              (Optional) The ID of the job.
 
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
+        job_config = None
+        if 'job_config' in kwargs:
+            job_config = kwargs['job_config']
+
+        job_id = None
+        if 'job_id' in kwargs:
+            job_id = kwargs['job_id']
         if job_id is None:
             job_id = str(uuid.uuid4())
 

@@ -1017,8 +1017,7 @@ class ExtractJobConfig(object):
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        resource = copy.deepcopy(self._properties)
-        return resource
+        return copy.deepcopy(self._properties)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -1120,7 +1119,7 @@ class ExtractJob(_AsyncJob):
         """Generate a resource for :meth:`begin`."""
 
         source_ref = {
-            'projectId': self.source.dataset.project_id,
+            'projectId': self.source.dataset.project,
             'datasetId': self.source.dataset.dataset_id,
             'tableId': self.source.table_id,
         }
