@@ -155,8 +155,8 @@ class Dataset(object):
     :param dataset_id: the ID of the dataset
 
     :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
+    :param client: (Optional) A client which holds credentials and project
+                   configuration for the dataset (which requires a project).
 
     :type access_entries: list of :class:`AccessEntry`
     :param access_entries: roles granted to entities for this dataset
@@ -168,13 +168,17 @@ class Dataset(object):
 
     _access_entries = None
 
-    def __init__(self, dataset_id, client, access_entries=(), project=None):
-        self.dataset_id = dataset_id
+    def __init__(self,
+                 dataset_id,
+                 client=None,
+                 access_entries=(),
+                 project=None):
+        self._dataset_id = dataset_id
         self._client = client
         self._properties = {}
         # Let the @property do validation.
         self.access_entries = access_entries
-        self._project = project or client.project
+        self._project = project or (client and client.project)
 
     @property
     def project(self):
@@ -228,6 +232,15 @@ class Dataset(object):
         if creation_time is not None:
             # creation_time will be in milliseconds.
             return _datetime_from_microseconds(1000.0 * creation_time)
+
+    @property
+    def dataset_id(self):
+        """Dataset ID.
+
+        :rtype: str
+        :returns: the dataset ID.
+        """
+        return self._dataset_id
 
     @property
     def full_dataset_id(self):
@@ -472,23 +485,6 @@ class Dataset(object):
             resource['access'] = self._build_access_resource()
 
         return resource
-
-    def create(self, client=None):
-        """API call:  create the dataset via a PUT request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        path = '/projects/%s/datasets' % (self.project,)
-        api_response = client._connection.api_request(
-            method='POST', path=path, data=self._build_resource())
-        self._set_properties(api_response)
 
     def exists(self, client=None):
         """API call:  test for the existence of the dataset via a GET request
