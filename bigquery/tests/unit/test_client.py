@@ -328,7 +328,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
 
     def test_create_dataset_w_attrs(self):
-        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset, AccessEntry
 
         PROJECT = 'PROJECT'
         DS_ID = 'DATASET_ID'
@@ -346,7 +346,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         conn = client._connection = _Connection(RESOURCE)
-        ds_arg = Dataset(DS_ID, project=PROJECT)
+        entry = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
+        ds_arg = Dataset(DS_ID, project=PROJECT, access_entries=[entry])
         ds_arg.description = DESCRIPTION
         ds_arg.friendly_name = FRIENDLY_NAME
         ds = client.create_dataset(ds_arg)
@@ -359,6 +360,7 @@ class TestClient(unittest.TestCase):
                 {'projectId': PROJECT, 'datasetId': DS_ID},
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
+            'access': [{'role': entry.role, 'userByEmail': entry.entity_id}],
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(ds.dataset_id, DS_ID)
