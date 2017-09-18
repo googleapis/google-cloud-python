@@ -350,8 +350,7 @@ class TestClient(unittest.TestCase):
             'friendlyName': FRIENDLY_NAME,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'view': VIEW},
-            ],
+                {'view': VIEW}],
         }
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
@@ -373,8 +372,7 @@ class TestClient(unittest.TestCase):
             'friendlyName': FRIENDLY_NAME,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'view': VIEW},
-            ],
+                {'view': VIEW}],
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(ds.dataset_id, DS_ID)
