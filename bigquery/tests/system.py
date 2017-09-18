@@ -25,10 +25,10 @@ import uuid
 import six
 
 from google.cloud import bigquery
-from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi
-from google.cloud.exceptions import Forbidden
+from google.cloud.exceptions import Forbidden, NotFound
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
@@ -91,7 +91,6 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete = []
 
     def tearDown(self):
-        from google.cloud.bigquery.dataset import Dataset
         from google.cloud.storage import Bucket
         from google.cloud.exceptions import BadRequest
         from google.cloud.exceptions import Conflict
@@ -115,7 +114,7 @@ class TestBigQuery(unittest.TestCase):
         dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(DATASET_ID))
         self.to_delete.append(dataset)
 
-        self.assertTrue(dataset.exists())
+        self.assertTrue(_dataset_exists(dataset))
         self.assertEqual(dataset.dataset_id, DATASET_ID)
 
     def test_get_dataset(self):
@@ -138,7 +137,7 @@ class TestBigQuery(unittest.TestCase):
             Dataset(_make_dataset_id('patch_dataset')))
         self.to_delete.append(dataset)
 
-        self.assertTrue(dataset.exists())
+        self.assertTrue(_dataset_exists(dataset))
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.description)
         dataset.patch(friendly_name='Friendly', description='Description')
@@ -150,7 +149,7 @@ class TestBigQuery(unittest.TestCase):
             Dataset(_make_dataset_id('update_dataset')))
         self.to_delete.append(dataset)
 
-        self.assertTrue(dataset.exists())
+        self.assertTrue(_dataset_exists(dataset))
         after = [entry for entry in dataset.access_entries
                  if entry.entity_id != 'projectWriters']
         dataset.access_entries = after
@@ -1196,3 +1195,11 @@ class TestBigQuery(unittest.TestCase):
 
 def _job_done(instance):
     return instance.state.lower() == 'done'
+
+def _dataset_exists(ds):
+    try:
+        Config.CLIENT.get_dataset(DatasetReference(ds.project, ds.dataset_id))
+        return True
+    except NotFound:
+        return False
+    
