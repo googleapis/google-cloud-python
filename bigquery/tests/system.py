@@ -1196,10 +1196,10 @@ class TestBigQuery(unittest.TestCase):
 def _job_done(instance):
     return instance.state.lower() == 'done'
 
+
 def _dataset_exists(ds):
     try:
         Config.CLIENT.get_dataset(DatasetReference(ds.project, ds.dataset_id))
         return True
     except NotFound:
         return False
-    

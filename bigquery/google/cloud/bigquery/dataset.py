@@ -17,7 +17,6 @@ import six
 
 from google.api.core import page_iterator
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 
