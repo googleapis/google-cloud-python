@@ -29,7 +29,7 @@ setup(
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     name='google-cloud-videointelligence',
-    version='0.27.1',
+    version='0.27.2',
     description='Python Client for Google Cloud Video Intelligence',
     long_description=readme,
     namespace_packages=[
