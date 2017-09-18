@@ -31,6 +31,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery import dataset
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
@@ -90,11 +91,8 @@ class Table(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type table_id: str
-    :param table_id: the ID of the table
-
-    :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
-    :param dataset: The dataset which contains the table.
+    :type table_ref: :class:`google.cloud.bigquery.table.TableReference`
+    :param table_ref: a pointer to a table
 
     :type schema: list of :class:`SchemaField`
     :param schema: The table's schema
@@ -102,12 +100,13 @@ class Table(object):
 
     _schema = None
 
-    def __init__(self, table_id, dataset, schema=()):
-        self._table_id = table_id
-        self._dataset = dataset
+    def __init__(self, table_ref, schema=(), client=None):
+        self._table_id = table_ref.table_id
+        self._dataset = table_ref.dataset
         self._properties = {}
         # Let the @property do validation.
         self.schema = schema
+        self._client = client
 
     @property
     def project(self):
@@ -116,7 +115,7 @@ class Table(object):
         :rtype: str
         :returns: the project (derived from the dataset).
         """
-        return self._dataset.project
+        return self._dataset.project_id
 
     @property
     def dataset_id(self):
@@ -477,7 +476,7 @@ class Table(object):
         return [row[0] for row in query.rows]
 
     @classmethod
-    def from_api_repr(cls, resource, dataset):
+    def from_api_repr(cls, resource, client):
         """Factory:  construct a table given its API representation
 
         :type resource: dict
@@ -493,8 +492,12 @@ class Table(object):
                 'tableId' not in resource['tableReference']):
             raise KeyError('Resource lacks required identity information:'
                            '["tableReference"]["tableId"]')
+        project_id = resource['tableReference']['projectId']
         table_id = resource['tableReference']['tableId']
-        table = cls(table_id, dataset=dataset)
+        dataset_id = resource['tableReference']['datasetId']
+        dataset_ref = dataset.DatasetReference(project_id, dataset_id)
+
+        table = cls(dataset_ref.table(table_id), client=client)
         table._set_properties(resource)
         return table
 
@@ -510,7 +513,7 @@ class Table(object):
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
-            client = self._dataset._client
+            client = self._client
         return client
 
     def _set_properties(self, api_response):
@@ -535,7 +538,7 @@ class Table(object):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'tableReference': {
-                'projectId': self._dataset.project,
+                'projectId': self._dataset.project_id,
                 'datasetId': self._dataset.dataset_id,
                 'tableId': self.table_id},
         }
@@ -581,7 +584,7 @@ class Table(object):
         """
         client = self._require_client(client)
         path = '/projects/%s/datasets/%s/tables' % (
-            self._dataset.project, self._dataset.dataset_id)
+            self._dataset.project_id, self._dataset.dataset_id)
         api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
