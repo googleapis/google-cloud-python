@@ -17,7 +17,6 @@ import six
 
 from google.api.core import page_iterator
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 
@@ -485,30 +484,6 @@ class Dataset(object):
             resource['access'] = self._build_access_resource()
 
         return resource
-
-    def exists(self, client=None):
-        """API call:  test for the existence of the dataset via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: bool
-        :returns: Boolean indicating existence of the dataset.
-        """
-        client = self._require_client(client)
-
-        try:
-            client._connection.api_request(method='GET', path=self.path,
-                                           query_params={'fields': 'id'})
-        except NotFound:
-            return False
-        else:
-            return True
 
     def patch(self, client=None, **kw):
         """API call:  update individual dataset properties via a PATCH request.
