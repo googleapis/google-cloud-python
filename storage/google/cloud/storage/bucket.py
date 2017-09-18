@@ -425,7 +425,7 @@ class Bucket(_PropertyMixin):
         return iterator
 
     def list_notifications(self, client=None):
-        """List pubsub notifications for this bucket.
+        """List Pub / Sub notifications for this bucket.
 
         See:
         https://cloud.google.com/storage/docs/json_api/v1/notifications/list

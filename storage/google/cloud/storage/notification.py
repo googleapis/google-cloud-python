@@ -108,7 +108,8 @@ class BucketNotification(object):
         :returns: the new notification instance
         :raises ValueError:
             if resource is missing 'topic' key, or if it is not formatted
-            per documented spec.
+            per the spec documented in
+            https://cloud.google.com/storage/docs/json_api/v1/notifications/insert#topic
         """
         topic_path = resource.get('topic')
         if topic_path is None:
@@ -117,7 +118,10 @@ class BucketNotification(object):
         match = _TOPIC_REF_RE.match(topic_path)
         if match is None:
             raise ValueError(
-                'Resource has invalid topic: {}'.format(topic_path))
+                'Resource has invalid topic: {}; see {}'.format(
+                    topic_path,
+                    'https://cloud.google.com/storage/docs/json_api/v1/'
+                    'notifications/insert#topic'))
 
         name = match.group('name')
         project = match.group('project')
