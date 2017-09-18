@@ -14,6 +14,8 @@
 
 """Support for bucket notification resources."""
 
+import re
+
 from google.api.core.exceptions import NotFound
 
 
@@ -25,7 +27,12 @@ OBJECT_ARCHIVE_EVENT_TYPE = 'OBJECT_ARCHIVE'
 JSON_API_V1_PAYLOAD_FORMAT = 'JSON_API_V1'
 NONE_PAYLOAD_FORMAT = 'NONE'
 
-_TOPIC_REF = '//pubsub.googleapis.com/projects/{}/topics/{}'
+_TOPIC_REF_FMT = '//pubsub.googleapis.com/projects/{}/topics/{}'
+_PROJECT_PATTERN = r'(?P<project>[a-z]+-[a-z]+-\d+)'
+_TOPIC_NAME_PATTERN = r'(?P<name>[A-Za-z](\w|[-_.~+%])+)'
+_TOPIC_REF_PATTERN = _TOPIC_REF_FMT.format(
+    _PROJECT_PATTERN, _TOPIC_NAME_PATTERN)
+_TOPIC_REF_RE = re.compile(_TOPIC_REF_PATTERN)
 
 
 class BucketNotification(object):
@@ -84,6 +91,40 @@ class BucketNotification(object):
 
         if payload_format is not None:
             self._properties['payload_format'] = payload_format
+
+    @classmethod
+    def from_api_repr(cls, resource, bucket):
+        """Construct an instance from the JSON repr returned by the server.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/notifications
+
+        :type resource: dict
+        :param resource: JSON repr of the notification
+
+        :type bucket: :class:`google.cloud.storage.bucket.Bucket`
+        :param bucket: Bucket to which the notification is bound.
+
+        :rtype: :class:`BucketNotification`
+        :returns: the new notification instance
+        :raises ValueError:
+            if resource is missing 'topic' key, or if it is not formatted
+            per documented spec.
+        """
+        topic_path = resource.get('topic')
+        if topic_path is None:
+            raise ValueError('Resource has no topic')
+
+        match = _TOPIC_REF_RE.match(topic_path)
+        if match is None:
+            raise ValueError(
+                'Resource has invalid topic: {}'.format(topic_path))
+
+        name = match.group('name')
+        project = match.group('project')
+        instance = cls(bucket, name, topic_project=project)
+        instance._properties = resource
+
+        return instance
 
     @property
     def bucket(self):
@@ -191,7 +232,7 @@ class BucketNotification(object):
 
         path = '/b/{}/notificationConfigs'.format(self.bucket.name)
         properties = self._properties.copy()
-        properties['topic'] = _TOPIC_REF.format(
+        properties['topic'] = _TOPIC_REF_FMT.format(
             self.topic_project, self.topic_name)
         self._properties = client._connection.api_request(
             method='POST',

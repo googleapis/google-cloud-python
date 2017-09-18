@@ -111,6 +111,79 @@ class TestBucketNotification(unittest.TestCase):
         self.assertEqual(
             notification.payload_format, self.payload_format())
 
+    def test_from_api_repr_no_topic(self):
+        klass = self._get_target_class()
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        resource = {}
+
+        with self.assertRaises(ValueError):
+            klass.from_api_repr(resource, bucket=bucket)
+
+    def test_from_api_repr_invalid_topic(self):
+        klass = self._get_target_class()
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        resource = {
+            'topic': '@#$%',
+        }
+
+        with self.assertRaises(ValueError):
+            klass.from_api_repr(resource, bucket=bucket)
+
+    def test_from_api_repr_minimal(self):
+        klass = self._get_target_class()
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        resource = {
+            'topic': self.TOPIC_REF,
+            'id': self.NOTIFICATION_ID,
+            'etag': self.ETAG,
+            'selfLink': self.SELF_LINK,
+        }
+
+        notification = klass.from_api_repr(resource, bucket=bucket)
+
+        self.assertIs(notification.bucket, bucket)
+        self.assertEqual(notification.topic_name, self.TOPIC_NAME)
+        self.assertEqual(notification.topic_project, self.BUCKET_PROJECT)
+        self.assertIsNone(notification.custom_attributes)
+        self.assertIsNone(notification.event_types)
+        self.assertIsNone(notification.blob_name_prefix)
+        self.assertIsNone(notification.payload_format)
+        self.assertEqual(notification.etag, self.ETAG)
+        self.assertEqual(notification.self_link, self.SELF_LINK)
+
+    def test_from_api_repr_explicit(self):
+        klass = self._get_target_class()
+        client = self._make_client()
+        bucket = self._make_bucket(client)
+        resource = {
+            'topic': self.TOPIC_ALT_REF,
+            'custom_attributes': self.CUSTOM_ATTRIBUTES,
+            'event_types': self.event_types(),
+            'blob_name_prefix': self.BLOB_NAME_PREFIX,
+            'payload_format': self.payload_format(),
+            'id': self.NOTIFICATION_ID,
+            'etag': self.ETAG,
+            'selfLink': self.SELF_LINK,
+        }
+
+        notification = klass.from_api_repr(resource, bucket=bucket)
+
+        self.assertIs(notification.bucket, bucket)
+        self.assertEqual(notification.topic_name, self.TOPIC_NAME)
+        self.assertEqual(notification.topic_project, self.TOPIC_ALT_PROJECT)
+        self.assertEqual(
+            notification.custom_attributes, self.CUSTOM_ATTRIBUTES)
+        self.assertEqual(notification.event_types, self.event_types())
+        self.assertEqual(notification.blob_name_prefix, self.BLOB_NAME_PREFIX)
+        self.assertEqual(
+            notification.payload_format, self.payload_format())
+        self.assertEqual(notification.notification_id, self.NOTIFICATION_ID)
+        self.assertEqual(notification.etag, self.ETAG)
+        self.assertEqual(notification.self_link, self.SELF_LINK)
+
     def test_notification_id(self):
         client = self._make_client()
         bucket = self._make_bucket(client)
