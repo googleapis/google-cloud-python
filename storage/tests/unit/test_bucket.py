@@ -74,6 +74,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_notification_defaults(self):
         from google.cloud.storage.notification import BucketNotification
+        from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
         PROJECT = 'PROJECT'
         BUCKET_NAME = 'BUCKET_NAME'
@@ -89,7 +90,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNone(notification.custom_attributes)
         self.assertIsNone(notification.event_types)
         self.assertIsNone(notification.blob_name_prefix)
-        self.assertIsNone(notification.payload_format)
+        self.assertEqual(notification.payload_format, NONE_PAYLOAD_FORMAT)
 
     def test_notification_explicit(self):
         from google.cloud.storage.notification import (
@@ -392,6 +393,8 @@ class Test_Bucket(unittest.TestCase):
     def test_list_notifications(self):
         from google.cloud.storage.notification import BucketNotification
         from google.cloud.storage.notification import _TOPIC_REF_FMT
+        from google.cloud.storage.notification import (
+            JSON_API_V1_PAYLOAD_FORMAT, NONE_PAYLOAD_FORMAT)
 
         NAME = 'name'
 
@@ -405,11 +408,13 @@ class Test_Bucket(unittest.TestCase):
             'id': '1',
             'etag': 'DEADBEEF',
             'selfLink': 'https://example.com/notification/1',
+            'payload_format': NONE_PAYLOAD_FORMAT,
         }, {
             'topic': _TOPIC_REF_FMT.format(*topic_refs[1]),
             'id': '2',
             'etag': 'FACECABB',
             'selfLink': 'https://example.com/notification/2',
+            'payload_format': JSON_API_V1_PAYLOAD_FORMAT,
         }]
         connection = _Connection({'items': resources})
         client = _Client(connection)

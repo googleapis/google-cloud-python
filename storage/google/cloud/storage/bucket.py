@@ -36,6 +36,7 @@ from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.blob import _get_encryption_headers
 from google.cloud.storage.notification import BucketNotification
+from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
 
 def _blobs_page_start(iterator, page, response):
@@ -185,7 +186,7 @@ class Bucket(_PropertyMixin):
                      custom_attributes=None,
                      event_types=None,
                      blob_name_prefix=None,
-                     payload_format=None):
+                     payload_format=NONE_PAYLOAD_FORMAT):
         """Factory:  create a notification resource for the bucket.
 
         See: :class:`.BucketNotification` for parameters.

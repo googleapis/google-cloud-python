@@ -70,7 +70,7 @@ class BucketNotification(object):
     """
     def __init__(self, bucket, topic_name,
                  topic_project=None, custom_attributes=None, event_types=None,
-                 blob_name_prefix=None, payload_format=None):
+                 blob_name_prefix=None, payload_format=NONE_PAYLOAD_FORMAT):
         self._bucket = bucket
         self._topic_name = topic_name
 
@@ -89,8 +89,7 @@ class BucketNotification(object):
         if blob_name_prefix is not None:
             self._properties['blob_name_prefix'] = blob_name_prefix
 
-        if payload_format is not None:
-            self._properties['payload_format'] = payload_format
+        self._properties['payload_format'] = payload_format
 
     @classmethod
     def from_api_repr(cls, resource, bucket):
