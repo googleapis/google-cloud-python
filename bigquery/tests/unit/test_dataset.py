@@ -386,37 +386,6 @@ class TestDataset(unittest.TestCase):
         with self.assertRaises(ValueError):
             dataset._parse_access_entries(ACCESS)
 
-    def test_exists_miss_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_ID, client=client)
-
-        self.assertFalse(dataset.exists())
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
-
-    def test_exists_hit_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_ID, client=CLIENT1)
-
-        self.assertTrue(dataset.exists(client=CLIENT2))
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
-
     def test_patch_w_invalid_expiration(self):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -727,13 +696,6 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from google.cloud.exceptions import NotFound
-
         self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except IndexError:
-            raise NotFound('miss')
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
