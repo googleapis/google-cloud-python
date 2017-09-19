@@ -17,6 +17,9 @@ import copy
 from six.moves import http_client
 import unittest
 
+from google.cloud.bigquery.job import ExtractJobConfig
+from google.cloud.bigquery.dataset import DatasetReference
+
 
 class Test__bool_or_none(unittest.TestCase):
 
@@ -1217,31 +1220,31 @@ class TestExtractJob(unittest.TestCase, _Base):
         self.assertEqual(job.destination_uris, config['destinationUris'])
 
         table_ref = config['sourceTable']
-        self.assertEqual(job.source.project, table_ref['projectId'])
-        self.assertEqual(job.source.dataset_id, table_ref['datasetId'])
+        self.assertEqual(job.source.dataset.project, table_ref['projectId'])
+        self.assertEqual(job.source.dataset.dataset_id, table_ref['datasetId'])
         self.assertEqual(job.source.table_id, table_ref['tableId'])
 
         if 'compression' in config:
-            self.assertEqual(job.compression,
-                             config['compression'])
+            self.assertEqual(
+                job.compression, config['compression'])
         else:
             self.assertIsNone(job.compression)
 
         if 'destinationFormat' in config:
-            self.assertEqual(job.destination_format,
-                             config['destinationFormat'])
+            self.assertEqual(
+                job.destination_format, config['destinationFormat'])
         else:
             self.assertIsNone(job.destination_format)
 
         if 'fieldDelimiter' in config:
-            self.assertEqual(job.field_delimiter,
-                             config['fieldDelimiter'])
+            self.assertEqual(
+                job.field_delimiter, config['fieldDelimiter'])
         else:
             self.assertIsNone(job.field_delimiter)
 
         if 'printHeader' in config:
-            self.assertEqual(job.print_header,
-                             config['printHeader'])
+            self.assertEqual(
+                job.print_header, config['printHeader'])
         else:
             self.assertIsNone(job.print_header)
 
@@ -1260,7 +1263,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         self._verifyInitialReadonlyProperties(job)
 
-        # set/read from resource['configuration']['copy']
+        # set/read from resource['configuration']['extract']
         self.assertIsNone(job.compression)
         self.assertIsNone(job.destination_format)
         self.assertIsNone(job.field_delimiter)
@@ -1350,7 +1353,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
+        source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        source = source_dataset.table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
                              client)
 
@@ -1399,14 +1403,15 @@ class TestExtractJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
+        source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        source = source_dataset.table(self.SOURCE_TABLE)
+        job_config = ExtractJobConfig()
+        job_config.compression = 'GZIP'
+        job_config.destination_format = 'NEWLINE_DELIMITED_JSON'
+        job_config.field_delimiter = '|'
+        job_config.print_header = False
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
-                             client1)
-
-        job.compression = 'GZIP'
-        job.destination_format = 'NEWLINE_DELIMITED_JSON'
-        job.field_delimiter = '|'
-        job.print_header = False
+                             client1, job_config)
 
         job.begin(client=client2)
 
@@ -1467,7 +1472,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
+        source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        source = source_dataset.table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
                              client)
 
@@ -1486,7 +1492,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
+        source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        source = source_dataset.table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_NAME, source, [self.DESTINATION_URI],
                              client1)
 
