@@ -24,8 +24,7 @@ from google.cloud.firestore_v1beta1 import query as query_mod
 from google.cloud.firestore_v1beta1.proto import document_pb2
 
 
-_AUTO_ID_CHARS = (
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
+_AUTO_ID_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'
 
 
 class CollectionReference(object):
