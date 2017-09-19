@@ -49,6 +49,7 @@ def docs(session):
         'trace/',
         'translate/',
         'vision/',
+        'videointelligence/',
     )
 
     # Build the docs!
