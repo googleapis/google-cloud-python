@@ -14,6 +14,8 @@
 
 """Client for interacting with the Google BigQuery API."""
 
+from __future__ import absolute_import
+
 from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
