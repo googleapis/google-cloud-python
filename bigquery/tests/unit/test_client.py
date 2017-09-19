@@ -441,14 +441,14 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
-        conn = client._connection = _Connection(RESOURCE)
+        conn = client._connection = _Connection(RESOURCE, RESOURCE)
         ds = Dataset(DS_ID, project=PROJECT)
         ds.description = DESCRIPTION
         ds.friendly_name = FRIENDLY_NAME
         ds.location = LOCATION
         ds.default_table_expiration_ms = EXP
         ds2 = client.update_dataset(
-            ds, ["description", "friendly_name", "location"])
+            ds, ['description', 'friendly_name', 'location'])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'PATCH')
@@ -458,10 +458,17 @@ class TestClient(unittest.TestCase):
             'location': LOCATION,
         }
         self.assertEqual(req['data'], SENT)
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], '/' + PATH)
+        self.assertIsNone(req['headers'])
         self.assertEqual(ds2.description, ds.description)
         self.assertEqual(ds2.friendly_name, ds.friendly_name)
         self.assertEqual(ds2.location, ds.location)
+
+        # ETag becomes If-Match header.
+        ds._properties['etag'] = 'etag'
+        client.update_dataset(ds, [])
+        req = conn._requested[1]
+        self.assertEqual(req['headers']['If-Match'], 'etag')
 
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
