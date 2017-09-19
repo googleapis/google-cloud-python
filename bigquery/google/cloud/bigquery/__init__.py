@@ -32,6 +32,7 @@ from google.cloud.bigquery._helpers import StructQueryParameter
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.job import ExtractJobConfig
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 
@@ -41,6 +42,7 @@ __all__ = [
     'ArrayQueryParameter',
     'Client',
     'Dataset',
+    'ExtractJobConfig',
     'ScalarQueryParameter',
     'SchemaField',
     'StructQueryParameter',
