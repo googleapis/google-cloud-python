@@ -14,6 +14,8 @@
 
 """Define API Datasets."""
 
+from __future__ import absolute_import
+
 import datetime
 import os
 
@@ -90,11 +92,8 @@ class Table(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type table_id: str
-    :param table_id: the ID of the table
-
-    :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
-    :param dataset: The dataset which contains the table.
+    :type table_ref: :class:`google.cloud.bigquery.table.TableReference`
+    :param table_ref: a pointer to a table
 
     :type schema: list of :class:`SchemaField`
     :param schema: The table's schema
@@ -102,12 +101,13 @@ class Table(object):
 
     _schema = None
 
-    def __init__(self, table_id, dataset, schema=()):
-        self._table_id = table_id
-        self._dataset = dataset
+    def __init__(self, table_ref, schema=(), client=None):
+        self._table_id = table_ref.table_id
+        self._dataset = table_ref.dataset
         self._properties = {}
         # Let the @property do validation.
         self.schema = schema
+        self._client = client
 
     @property
     def project(self):
@@ -477,7 +477,7 @@ class Table(object):
         return [row[0] for row in query.rows]
 
     @classmethod
-    def from_api_repr(cls, resource, dataset):
+    def from_api_repr(cls, resource, client):
         """Factory:  construct a table given its API representation
 
         :type resource: dict
@@ -489,12 +489,18 @@ class Table(object):
         :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: Table parsed from ``resource``.
         """
+        from google.cloud.bigquery import dataset
+
         if ('tableReference' not in resource or
                 'tableId' not in resource['tableReference']):
             raise KeyError('Resource lacks required identity information:'
                            '["tableReference"]["tableId"]')
+        project_id = resource['tableReference']['projectId']
         table_id = resource['tableReference']['tableId']
-        table = cls(table_id, dataset=dataset)
+        dataset_id = resource['tableReference']['datasetId']
+        dataset_ref = dataset.DatasetReference(project_id, dataset_id)
+
+        table = cls(dataset_ref.table(table_id), client=client)
         table._set_properties(resource)
         return table
 
@@ -510,7 +516,7 @@ class Table(object):
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
-            client = self._dataset._client
+            client = self._client
         return client
 
     def _set_properties(self, api_response):
