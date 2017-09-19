@@ -273,7 +273,6 @@ Background a query, loading the results into a table:
 
 .. note::
 
-   - ``google.cloud.bigquery`` generates a UUID for each job.
    - The ``created`` and ``state`` fields are not set until the job
      is submitted to the BigQuery back-end.
 

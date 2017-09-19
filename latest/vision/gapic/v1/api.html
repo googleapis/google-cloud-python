@@ -45,39 +45,33 @@
 <span id="vision-client-api"></span><h1>Vision Client API<a class="headerlink" href="#module-google.cloud.vision_v1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient">
-<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.</code><code class="descname">ImageAnnotatorClient</code><span class="sig-paren">(</span><em>service_path='vision.googleapis.com'</em>, <em>port=443</em>, <em>channel=None</em>, <em>credentials=None</em>, <em>ssl_credentials=None</em>, <em>scopes=None</em>, <em>client_config=None</em>, <em>app_name=None</em>, <em>app_version=''</em>, <em>lib_name=None</em>, <em>lib_version=''</em>, <em>metrics_headers=()</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1.html#ImageAnnotatorClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient" title="Permalink to this definition">#</a></dt>
-<dd><p>Service that performs Google Cloud Vision API detection tasks over
-client images, such as face, landmark, logo, label, and text detection. The
+<em class="property">class </em><code class="descclassname">google.cloud.vision_v1.</code><code class="descname">ImageAnnotatorClient</code><span class="sig-paren">(</span><em>channel=None</em>, <em>credentials=None</em>, <em>ssl_credentials=None</em>, <em>scopes=None</em>, <em>client_config=None</em>, <em>lib_name=None</em>, <em>lib_version=''</em>, <em>metrics_headers=()</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1.html#ImageAnnotatorClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Service that performs Google Cloud Vision API detection tasks over client
+images, such as face, landmark, logo, label, and text detection. The
 ImageAnnotator service returns detected entities from the images.</p>
 <p>Constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>service_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – The domain name of the API remote host.</li>
-<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The port on which to connect to the remote host.</li>
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.6.0)"><code class="xref py py-class docutils literal"><span class="pre">grpc.Channel</span></code></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.6.0)"><em>Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
 which to make calls.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – The authorization credentials to attach to
-requests. These credentials identify this application to the
-service.</li>
-<li><strong>ssl_credentials</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.ChannelCredentials" title="(in grpcio v1.6.0)"><code class="xref py py-class docutils literal"><span class="pre">grpc.ChannelCredentials</span></code></a>) – A
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.1.0)"><em>Credentials</em></a>) – The authorization
+credentials to attach to requests. These credentials identify this
+application to the service.</li>
+<li><strong>ssl_credentials</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.ChannelCredentials" title="(in grpcio v1.6.0)"><em>ChannelCredentials</em></a>) – A
 <code class="docutils literal"><span class="pre">ChannelCredentials</span></code> instance for use with an SSL-enabled
 channel.</li>
-<li><strong>scopes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a><em>]</em>) – A list of OAuth2 scopes to attach to requests.</li>
+<li><strong>scopes</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – A list of OAuth2 scopes to attach to requests.</li>
 <li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary for call options for each method. See
 <code class="xref py py-func docutils literal"><span class="pre">google.gax.construct_settings()</span></code> for the structure of
 this data. Falls back to the default config if not specified
 or the specified config is missing data points.</li>
-<li><strong>app_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – The name of the application calling
-the service. Recommended for analytics purposes.</li>
-<li><strong>app_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – The version of the application calling
-the service. Recommended for analytics purposes.</li>
-<li><strong>lib_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – The API library software used for calling
+<li><strong>lib_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The API library software used for calling
 the service. (Unless you are writing an API client itself,
 leave this as default.)</li>
-<li><strong>lib_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) – The API library software version used
+<li><strong>lib_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The API library software version used
 for calling the service. (Unless you are writing an API client
 itself, leave this as default.)</li>
 <li><strong>metrics_headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of values for tracking
@@ -87,11 +81,9 @@ considered private.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A ImageAnnotatorClient object.</p>
-</td>
-</tr>
 </tbody>
 </table>
+<p>Returns: ImageAnnotatorClient</p>
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.annotate_image">
 <code class="descname">annotate_image</code><span class="sig-paren">(</span><em>request</em>, <em>options=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.annotate_image" title="Permalink to this definition">#</a></dt>
@@ -113,7 +105,7 @@ considered private.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>request</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>) – </li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the default
 settings for this call, e.g, timeout, retries, etc.</li>
 </ul>
 </td>
@@ -127,12 +119,15 @@ settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images">
-<code class="descname">batch_annotate_images</code><span class="sig-paren">(</span><em>requests</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/gapic/vision/v1/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
+<code class="descname">batch_annotate_images</code><span class="sig-paren">(</span><em>requests</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/vision_v1/gapic/image_annotator_client.html#ImageAnnotatorClient.batch_annotate_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.batch_annotate_images" title="Permalink to this definition">#</a></dt>
 <dd><p>Run image detection and annotation for a batch of images.</p>
 <p class="rubric">Example</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.gapic.vision.v1</span> <span class="k">import</span> <span class="n">image_annotator_client</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">image_annotator_client</span><span class="o">.</span><span class="n">ImageAnnotatorClient</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">vision_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">vision_v1</span><span class="o">.</span><span class="n">ImageAnnotatorClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">requests</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">batch_annotate_images</span><span class="p">(</span><span class="n">requests</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -141,17 +136,19 @@ settings for this call, e.g, timeout, retries, etc.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>requests</strong> (list[<code class="xref py py-class docutils literal"><span class="pre">google.cloud.proto.vision.v1.image_annotator_pb2.AnnotateImageRequest</span></code>]) – Individual image annotation requests for this batch.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the default
+<li><strong>requests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><em>AnnotateImageRequest</em></a><em>]</em><em>]</em>) – Individual image annotation requests for this batch.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a></li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal"><span class="pre">google.cloud.proto.vision.v1.image_annotator_pb2.BatchAnnotateImagesResponse</span></code> instance.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="types.html#google.cloud.vision_v1.types.BatchAnnotateImagesResponse" title="google.cloud.vision_v1.types.BatchAnnotateImagesResponse"><code class="xref py py-class docutils literal"><span class="pre">BatchAnnotateImagesResponse</span></code></a> instance.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.14)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -170,7 +167,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -197,7 +194,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -216,7 +213,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.ImageAnnotatorClient.enums">
-<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.gapic.vision.v1.enums' from '/home/tseaver/projects/agendaless/Google/src/google-cloud-python/.nox/docs/lib/python3.6/site-packages/google/cloud/gapic/vision/v1/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.enums" title="Permalink to this definition">#</a></dt>
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.vision_v1.gapic.enums' from '/home/dhermes/google_contracting/foog/.nox/docs/lib/python3.6/site-packages/google/cloud/vision_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.vision_v1.ImageAnnotatorClient.enums" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -229,7 +226,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -256,7 +253,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -283,7 +280,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -310,7 +307,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -337,7 +334,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -364,7 +361,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -391,7 +388,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -418,7 +415,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>image</strong> (<a class="reference internal" href="types.html#google.cloud.vision_v1.types.Image" title="google.cloud.vision_v1.types.Image"><code class="xref py py-class docutils literal"><span class="pre">Image</span></code></a>) – The image to analyze.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.14)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">google.gax.CallOptions</span></code></a>) – Overrides the
 default settings for this call, e.g, timeout, retries, etc.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Additional properties to be set on the
 <a class="reference internal" href="types.html#google.cloud.vision_v1.types.AnnotateImageRequest" title="google.cloud.vision_v1.types.AnnotateImageRequest"><code class="xref py py-class docutils literal"><span class="pre">AnnotateImageRequest</span></code></a>.</li>
@@ -501,6 +498,7 @@ default settings for this call, e.g, timeout, retries, etc.</li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">API Reference</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
 </ul>
 
 <div class="relations">
