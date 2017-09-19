@@ -145,6 +145,7 @@ class TestDataset(unittest.TestCase):
             'lastModifiedTime': self.WHEN_TS * 1000,
             'location': 'US',
             'selfLink': self.RESOURCE_URL,
+            'defaultTableExpirationMs': 3600,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'role': 'OWNER', 'groupByEmail': GROUP_EMAIL},
