@@ -2169,6 +2169,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.dataset import Table
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -2203,8 +2204,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_NAME, self.QUERY, client1)
 
+        dataset_ref = DatasetReference(self.PROJECT, DS_ID)
         dataset = Dataset(DS_ID, client1)
-        table = Table(TABLE, dataset)
+        table_ref = dataset_ref.table(TABLE)
+        table = Table(table_ref, client=client1)
 
         job.allow_large_results = True
         job.create_disposition = 'CREATE_NEVER'
@@ -2460,8 +2463,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
-        from google.cloud.bigquery.dataset import Dataset
-        from google.cloud.bigquery.dataset import Table
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table
 
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         DS_ID = 'DATASET'
@@ -2471,8 +2474,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_NAME, None, client)
 
-        dataset = Dataset(DS_ID, client)
-        table = Table(DEST_TABLE, dataset)
+        dataset_ref = DatasetReference(self.PROJECT, DS_ID)
+        table_ref = dataset_ref.table(DEST_TABLE)
+        table = Table(table_ref, client=client)
         job.destination = table
 
         job.reload()

@@ -26,6 +26,7 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import ArrayQueryParameter
@@ -837,7 +838,8 @@ class LoadJob(_AsyncJob):
         job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
         dataset = Dataset(dest_config['datasetId'], client)
-        destination = Table(dest_config['tableId'], dataset)
+        table_ref = TableReference(dataset, dest_config['tableId'])
+        destination = Table(table_ref, client=client)
         source_urls = config.get('sourceUris', ())
         job = cls(job_id, destination, source_urls, client=client)
         job._set_properties(resource)
@@ -952,7 +954,8 @@ class CopyJob(_AsyncJob):
         job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
         dataset = Dataset(dest_config['datasetId'], client)
-        destination = Table(dest_config['tableId'], dataset)
+        table_ref = TableReference(dataset, dest_config['tableId'])
+        destination = Table(table_ref, client=client)
         sources = []
         source_configs = config.get('sourceTables')
         if source_configs is None:
@@ -963,7 +966,8 @@ class CopyJob(_AsyncJob):
             source_configs = [single]
         for source_config in source_configs:
             dataset = Dataset(source_config['datasetId'], client)
-            sources.append(Table(source_config['tableId'], dataset))
+            table_ref = TableReference(dataset, source_config['tableId'])
+            sources.append(Table(table_ref, client=client))
         job = cls(job_id, destination, sources, client=client)
         job._set_properties(resource)
         return job
@@ -1109,7 +1113,8 @@ class ExtractJob(_AsyncJob):
         job_id, config = cls._get_resource_config(resource)
         source_config = config['sourceTable']
         dataset = Dataset(source_config['datasetId'], client)
-        source = Table(source_config['tableId'], dataset)
+        table_ref = TableReference(dataset, source_config['tableId'])
+        source = Table(table_ref, client=client)
         destination_uris = config['destinationUris']
         job = cls(job_id, source, destination_uris, client=client)
         job._set_properties(resource)
