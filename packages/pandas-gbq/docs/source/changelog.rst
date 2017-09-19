@@ -6,7 +6,7 @@ Changelog
 
 - :func:`read_gbq` now raises ``QueryTimeout`` if the request exceeds the ``query.timeoutMs`` value specified in the BigQuery configuration. (:issue:`76`)
 - Environment variable ``PANDAS_GBQ_CREDENTIALS_FILE`` can now be used to override the default location where the BigQuery user account credentials are stored. (:issue:`86`)
-
+- BigQuery user account credentials are now stored in an application-specific hidden user folder on the operating system. (:issue:`41`)
 
 0.2.0 / 2017-07-24
 ------------------

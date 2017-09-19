@@ -37,7 +37,9 @@ is possible with either user or service account credentials.
 Authentication via user account credentials is as simple as following the prompts in a browser window
 which will automatically open for you. You authenticate to the specified
 ``BigQuery`` account using the product name ``pandas GBQ``.
-The remote authentication is supported via specifying ``auth_local_webserver`` in ``read_gbq``.
+The remote authentication is supported via the ``auth_local_webserver`` in ``read_gbq``. By default,
+account credentials are stored in an application-specific hidden user folder on the operating system. You
+can override the default credentials location via the ``PANDAS_GBQ_CREDENTIALS_FILE`` environment variable.
 Additional information on the authentication mechanism can be found
 `here <https://developers.google.com/identity/protocols/OAuth2#clientside/>`__.
 

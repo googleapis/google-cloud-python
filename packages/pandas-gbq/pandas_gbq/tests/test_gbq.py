@@ -1388,6 +1388,7 @@ class TestToGBQIntegrationWithLocalUserAccountAuth(object):
         # put here any instruction you want to be run *BEFORE* *EVERY* test
         # is executed.
 
+        gbq.GbqConnector(_get_project_id(), auth_local_webserver=True)
         self.dataset_prefix = _get_dataset_prefix_random()
         clean_gbq_environment(self.dataset_prefix)
         self.destination_table = "{0}{1}.{2}".format(self.dataset_prefix, "2",

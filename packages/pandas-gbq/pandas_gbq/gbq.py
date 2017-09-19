@@ -208,6 +208,7 @@ class GbqConnector(object):
         self.private_key = private_key
         self.auth_local_webserver = auth_local_webserver
         self.dialect = dialect
+        self.credentials_path = _get_credentials_file()
         self.credentials = self.get_credentials()
         self.service = self.get_service()
 
@@ -279,8 +280,21 @@ class GbqConnector(object):
         from google_auth_httplib2 import Request
         from google.oauth2.credentials import Credentials
 
+        # Use the default credentials location under ~/.config and the
+        # equivalent directory on windows if the user has not specified a
+        # credentials path.
+        if not self.credentials_path:
+            self.credentials_path = self.get_default_credentials_path()
+
+            # Previously, pandas-gbq saved user account credentials in the
+            # current working directory. If the bigquery_credentials.dat file
+            # exists in the current working directory, move the credentials to
+            # the new default location.
+            if os.path.isfile('bigquery_credentials.dat'):
+                os.rename('bigquery_credentials.dat', self.credentials_path)
+
         try:
-            with open(_get_credentials_file()) as credentials_file:
+            with open(self.credentials_path) as credentials_file:
                 credentials_json = json.load(credentials_file)
         except (IOError, ValueError):
             return None
@@ -301,6 +315,33 @@ class GbqConnector(object):
 
         return _try_credentials(self.project_id, credentials)
 
+    def get_default_credentials_path(self):
+        """
+        Gets the default path to the BigQuery credentials
+
+        .. versionadded 0.3.0
+
+        Returns
+        -------
+        Path to the BigQuery credentials
+        """
+
+        import os
+
+        if os.name == 'nt':
+            config_path = os.environ['APPDATA']
+        else:
+            config_path = os.path.join(os.path.expanduser('~'), '.config')
+
+        config_path = os.path.join(config_path, 'pandas_gbq')
+
+        # Create a pandas_gbq directory in an application-specific hidden
+        # user folder on the operating system.
+        if not os.path.exists(config_path):
+            os.makedirs(config_path)
+
+        return os.path.join(config_path, 'bigquery_credentials.dat')
+
     def save_user_account_credentials(self, credentials):
         """
         Saves user account credentials to a local file.
@@ -308,7 +349,7 @@ class GbqConnector(object):
         .. versionadded 0.2.0
         """
         try:
-            with open(_get_credentials_file(), 'w') as credentials_file:
+            with open(self.credentials_path, 'w') as credentials_file:
                 credentials_json = {
                     'refresh_token': credentials.refresh_token,
                     'id_token': credentials.id_token,
@@ -793,7 +834,7 @@ class GbqConnector(object):
 
 def _get_credentials_file():
     return os.environ.get(
-        'PANDAS_GBQ_CREDENTIALS_FILE', 'bigquery_credentials.dat')
+        'PANDAS_GBQ_CREDENTIALS_FILE')
 
 
 def _parse_data(schema, rows):
