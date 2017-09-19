@@ -383,6 +383,35 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds.description, DESCRIPTION)
         self.assertEqual(ds.friendly_name, FRIENDLY_NAME)
 
+    def test_get_table(self):
+        project = 'PROJECT'
+        dataset_id = 'dataset_id'
+        table_id = 'table-id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=project, credentials=creds, _http=http)
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+        }
+        conn = client._connection = _Connection(resource)
+        dataset_ref = client.dataset(dataset_id)
+        table_ref = dataset_ref.table(table_id)
+
+        table = client.get_table(table_ref)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % path)
+        self.assertEqual(table.table_id, table_id)
+
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _make_credentials()

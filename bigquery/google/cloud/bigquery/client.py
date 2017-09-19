@@ -23,6 +23,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.dataset import Table
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
@@ -219,8 +220,7 @@ class Client(ClientWithProject):
         """
         api_response = self._connection.api_request(
             method='GET', path=table_ref.path)
-        # return Table.from_api_repr(api_response, [DATASET HERE])
-        assert False
+        return Table.from_api_repr(api_response, self)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.

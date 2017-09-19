@@ -402,8 +402,7 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(job.output_rows, len(ROWS))
 
-        # Reload table to get the schema before fetching the rows.
-        table.reload()
+        table = Config.CLIENT.get_table(table)
         rows = self._fetch_single_page(table)
         by_wavelength = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_wavelength),
@@ -532,7 +531,7 @@ class TestBigQuery(unittest.TestCase):
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
-        table.reload()
+        table = Config.CLIENT.get_table(table)
         field_name = SchemaField(
             u'Full_Name', u'string', u'NULLABLE', None, ())
         field_age = SchemaField(u'Age', u'integer', u'NULLABLE', None, ())
@@ -1163,9 +1162,8 @@ class TestBigQuery(unittest.TestCase):
         TABLE_NAME = 'natality'
 
         dataset = Dataset(DATASET_ID, Config.CLIENT, project=PUBLIC)
-        table = dataset.table(TABLE_NAME)
-        # Reload table to get the schema before fetching the rows.
-        table.reload()
+        table_ref = dataset.table(TABLE_NAME)
+        table = Config.CLIENT.get_table(table_ref)
         self._fetch_single_page(table)
 
     def test_large_query_w_public_data(self):
