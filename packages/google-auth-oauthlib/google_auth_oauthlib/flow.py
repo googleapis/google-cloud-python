@@ -87,7 +87,9 @@ class Flow(object):
         https://console.developers.google.com/apis/credentials
     """
 
-    def __init__(self, oauth2session, client_type, client_config):
+    def __init__(
+            self, oauth2session, client_type, client_config,
+            redirect_uri=None):
         """
         Args:
             oauth2session (requests_oauthlib.OAuth2Session):
@@ -96,6 +98,9 @@ class Flow(object):
                 ``installed``.
             client_config (Mapping[str, Any]): The client
                 configuration in the Google `client secrets`_ format.
+            redirect_uri (str): The OAuth 2.0 redirect URI if known at flow
+                creation time. Otherwise, it will need to be set using
+                :attr:`redirect_uri`.
 
         .. _client secrets:
             https://developers.google.com/api-client-library/python/guide
@@ -107,6 +112,7 @@ class Flow(object):
         """Mapping[str, Any]: The OAuth 2.0 client configuration."""
         self.oauth2session = oauth2session
         """requests_oauthlib.OAuth2Session: The OAuth 2.0 session."""
+        self.redirect_uri = redirect_uri
 
     @classmethod
     def from_client_config(cls, client_config, scopes, **kwargs):
@@ -200,9 +206,9 @@ class Flow(object):
                 :class:`Flow` instance to obtain the token, you will need to
                 specify the ``state`` when constructing the :class:`Flow`.
         """
+        kwargs.setdefault('access_type', 'offline')
         url, state = self.oauth2session.authorization_url(
-            self.client_config['auth_uri'],
-            access_type='offline', **kwargs)
+            self.client_config['auth_uri'], **kwargs)
 
         return url, state
 
@@ -229,10 +235,9 @@ class Flow(object):
                 :meth:`credentials` to obtain a
                 :class:`~google.auth.credentials.Credentials` instance.
         """
+        kwargs.setdefault('client_secret', self.client_config['client_secret'])
         return self.oauth2session.fetch_token(
-            self.client_config['token_uri'],
-            client_secret=self.client_config['client_secret'],
-            **kwargs)
+            self.client_config['token_uri'], **kwargs)
 
     @property
     def credentials(self):
