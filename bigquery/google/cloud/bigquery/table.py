@@ -68,6 +68,15 @@ class TableReference(object):
         self._table_id = table_id
 
     @property
+    def project(self):
+        """Project bound to the table.
+
+        :rtype: str
+        :returns: the project (derived from the dataset reference).
+        """
+        return self._dataset_ref.project
+
+    @property
     def dataset(self):
         """Pointer to the dataset.
 
@@ -75,6 +84,15 @@ class TableReference(object):
         :returns: a pointer to the dataset.
         """
         return self._dataset_ref
+
+    @property
+    def dataset_id(self):
+        """ID of dataset containing the table.
+
+        :rtype: str
+        :returns: the ID (derived from the dataset reference).
+        """
+        return self._dataset_ref.dataset_id
 
     @property
     def table_id(self):
