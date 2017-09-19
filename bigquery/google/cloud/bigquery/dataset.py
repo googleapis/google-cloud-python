@@ -13,6 +13,9 @@
 # limitations under the License.
 
 """Define API Datasets."""
+
+from __future__ import absolute_import
+
 import six
 
 from google.api.core import page_iterator
@@ -598,7 +601,8 @@ class Dataset(object):
         :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: a new ``Table`` instance
         """
-        return Table(name, dataset=self, schema=schema)
+        table_ref = TableReference(self, name)
+        return Table(table_ref, schema=schema, client=self._client)
 
 
 def _item_to_table(iterator, resource):
