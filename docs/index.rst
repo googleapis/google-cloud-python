@@ -19,6 +19,7 @@
   storage/client
   translate/usage
   vision/index
+  videointelligence/index
 
 Google Cloud Client Library for Python
 ======================================
