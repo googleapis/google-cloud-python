@@ -198,6 +198,21 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(table.exists())
         self.assertEqual(table.table_id, TABLE_NAME)
 
+    def test_get_table_w_public_dataset(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_ID = 'samples'
+        TABLE_ID = 'shakespeare'
+        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_ID)
+
+        table = Config.CLIENT.get_table(table_ref)
+
+        self.assertEqual(table.table_id, TABLE_ID)
+        self.assertEqual(table.dataset_id, DATASET_ID)
+        self.assertEqual(table.project, PUBLIC)
+        schema_names = [field.name for field in table.schema]
+        self.assertEqual(
+            schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
+
     def test_list_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
         dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(DATASET_ID))
