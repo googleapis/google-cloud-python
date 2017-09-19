@@ -14,6 +14,8 @@
 
 """Define API Datasets."""
 
+from __future__ import absolute_import
+
 import datetime
 import os
 
@@ -31,7 +33,6 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery import dataset
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
@@ -488,6 +489,8 @@ class Table(object):
         :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: Table parsed from ``resource``.
         """
+        from google.cloud.bigquery import dataset
+
         if ('tableReference' not in resource or
                 'tableId' not in resource['tableReference']):
             raise KeyError('Resource lacks required identity information:'
