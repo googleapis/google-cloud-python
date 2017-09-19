@@ -55,6 +55,7 @@ The Google Natural Language API has three supported methods
 
 - `analyzeEntities`_
 - `analyzeSentiment`_
+- `analyzeEntitySentiment`_
 - `annotateText`_
 
 and each method uses a :class:`~.language_v1.types.Document` for representing
@@ -113,6 +114,7 @@ to content stored in `Google Cloud Storage`_.
 
 .. _analyzeEntities: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntities
 .. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment
+.. _analyzeEntitySentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntitySentiment
 .. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
@@ -195,6 +197,45 @@ analyzes the sentiment of the provided text. This method returns a
   Language methods, so they provide useful offsets for the data they return.
   While the correct value varies by environment, in Python you *usually*
   want ``UTF32``.
+
+
+************************
+Analyze Entity Sentiment
+************************
+
+The :meth:`~.language_v1.LanguageServiceClient.analyze_entity_sentiment`
+method is effectively the amalgamation of
+:meth:`~.language_v1.LanguageServiceClient.analyze_entities` and
+:meth:`~.language_v1.LanguageServiceClient.analyze_sentiment`.
+This method returns a
+:class:`~.language_v1.types.AnalyzeEntitySentimentResponse`.
+
+.. code-block:: python
+
+    >>> document = language.types.Document(
+    ...     content='Mona said that jogging is very fun.',
+    ...     type='PLAIN_TEXT',
+    ... )
+    >>> response = client.analyze_sentiment(
+    ...     document=document,
+    ...     encoding_type='UTF32',
+    ... )
+    >>> entities = response.entities
+    >>> entities[0].name
+    'Mona'
+    >>> entities[1].name
+    'jogging'
+    >>> entities[1].sentiment.magnitude
+    0.8
+    >>> entities[1].sentiment.score
+    0.8
+
+.. note::
+
+    It is recommended to send an ``encoding_type`` argument to Natural
+    Language methods, so they provide useful offsets for the data they return.
+    While the correct value varies by environment, in Python you *usually*
+    want ``UTF32``.
 
 
 *************
