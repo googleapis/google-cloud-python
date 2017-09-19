@@ -16,6 +16,8 @@
 
 from __future__ import absolute_import
 
+import uuid
+
 from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
@@ -385,27 +387,44 @@ class Client(ClientWithProject):
         """
         return CopyJob(job_id, destination, sources, client=self)
 
-    def extract_table_to_storage(self, job_id, source, *destination_uris):
-        """Construct a job for extracting a table into Cloud Storage files.
+    def extract_table(self, source, *destination_uris, **kwargs):
+        """Start a job to extract a table into Cloud Storage files.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
 
-        :type job_id: str
-        :param job_id: Name of the job.
-
-        :type source: :class:`google.cloud.bigquery.table.Table`
+        :type source: :class:`google.cloud.bigquery.table.TableReference`
         :param source: table to be extracted.
 
         :type destination_uris: sequence of string
-        :param destination_uris: URIs of CloudStorage file(s) into which
-                                 table data is to be extracted; in format
-                                 ``gs://<bucket_name>/<object_name_or_glob>``.
+        :param destination_uris:
+            URIs of Cloud Storage file(s) into which table data is to be
+            extracted; in format ``gs://<bucket_name>/<object_name_or_glob>``.
+
+        :type kwargs: dict
+        :param kwargs: Additional keyword arguments.
+
+        :Keyword Arguments:
+            * *job_config*
+              (:class:`google.cloud.bigquery.job.ExtractJobConfig`) --
+              (Optional) Extra configuration options for the extract job.
+            * *job_id* (``str``) --
+              Additional content
+              (Optional) The ID of the job.
 
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
-        return ExtractJob(job_id, source, destination_uris, client=self)
+        job_config = kwargs.get('job_config')
+        job_id = kwargs.get('job_id')
+        if job_id is None:
+            job_id = str(uuid.uuid4())
+
+        job = ExtractJob(
+            job_id, source, list(destination_uris), client=self,
+            job_config=job_config)
+        job.begin()
+        return job
 
     def run_async_query(self, job_id, query,
                         udf_resources=(), query_parameters=()):
