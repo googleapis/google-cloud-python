@@ -222,6 +222,50 @@ class Client(ClientWithProject):
             method='GET', path=table_ref.path)
         return Table.from_api_repr(api_response, self)
 
+    def update_dataset(self, dataset, fields):
+        """Change some fields of a dataset.
+
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None`` in
+        ``dataset``, it will be deleted.
+
+        If ``dataset.etag`` is not ``None``, the update will only
+        succeed if the dataset on the server has the same ETag. Thus
+        reading a dataset with ``get_dataset``, changing its fields,
+        and then passing it ``update_dataset`` will ensure that the changes
+        will only be saved if no modifications to the dataset occurred
+        since the read.
+
+        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
+        :param dataset: the dataset to update.
+
+        :type fields: sequence of string
+        :param fields: the fields of ``dataset`` to change.
+
+        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
+        :returns: the modified ``Dataset`` instance
+        :raises: ValueError for fields that cannot be updated.
+
+        """
+        if dataset.project is None:
+            dataset._project = self.project
+        path = '/projects/%s/datasets/%s' % (dataset.project,
+                                             dataset.dataset_id)
+        partial = {}
+        for f in fields:
+            if f not in Dataset._updateable_fields:
+                raise ValueError('Cannot update Dataset field %s' % f)
+            partial[Dataset._updateable_fields[f]] = getattr(dataset, f)
+        if dataset.etag is not None:
+            headers = {'If-Match': dataset.etag}
+        else:
+            headers = None
+        api_response = self._connection.api_request(
+            method='PATCH', path=path, data=partial, headers=headers)
+        ds = Dataset(dataset.dataset_id, project=dataset.project, client=self)
+        ds._set_properties(api_response)
+        return ds
+
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
 

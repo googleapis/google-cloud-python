@@ -411,6 +411,58 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         self.assertEqual(table.table_id, table_id)
 
+    def test_update_dataset_w_invalid_field(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        client = self._make_one(project=PROJECT)
+        with self.assertRaises(ValueError):
+            client.update_dataset(Dataset(DS_ID), ["foo"])
+
+    def test_update_dataset(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        PATH = 'projects/%s/datasets/%s' % (PROJECT, DS_ID)
+        DESCRIPTION = 'DESCRIPTION'
+        FRIENDLY_NAME = 'TITLE'
+        LOCATION = 'loc'
+        EXP = 17
+        RESOURCE = {
+            'datasetReference':
+                {'projectId': PROJECT, 'datasetId': DS_ID},
+            'etag': "etag",
+            'description': DESCRIPTION,
+            'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+            'defaultTableExpirationMs': EXP,
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection(RESOURCE)
+        ds = Dataset(DS_ID, project=PROJECT)
+        ds.description = DESCRIPTION
+        ds.friendly_name = FRIENDLY_NAME
+        ds.location = LOCATION
+        ds.default_table_expiration_ms = EXP
+        ds2 = client.update_dataset(
+            ds, ["description", "friendly_name", "location"])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        SENT = {
+            'description': DESCRIPTION,
+            'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+        }
+        self.assertEqual(req['data'], SENT)
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(ds2.description, ds.description)
+        self.assertEqual(ds2.friendly_name, ds.friendly_name)
+        self.assertEqual(ds2.location, ds.location)
+
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _make_credentials()
