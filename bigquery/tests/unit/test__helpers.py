@@ -763,6 +763,49 @@ class Test_ConfigurationProperty(unittest.TestCase):
         self.assertIsNone(wrapper._configuration._attr)
 
 
+class Test_TypedApiResourceProperty(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import _TypedApiResourceProperty
+
+        return _TypedApiResourceProperty
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_it(self):
+
+        class Wrapper(object):
+            attr = self._make_one('attr', 'back', int)
+
+            def __init__(self):
+                self._properties = {}
+
+        self.assertIsNotNone(Wrapper.attr)
+
+        wrapper = Wrapper()
+        with self.assertRaises(ValueError):
+            wrapper.attr = 'BOGUS'
+
+        wrapper.attr = 42
+        self.assertEqual(wrapper.attr, 42)
+        self.assertEqual(wrapper._properties['back'], 42)
+
+        wrapper.attr = None
+        self.assertIsNone(wrapper.attr)
+        self.assertIsNone(wrapper._properties['back'])
+
+        wrapper.attr = 23
+        self.assertEqual(wrapper.attr, 23)
+        self.assertEqual(wrapper._properties['back'], 23)
+
+        del wrapper.attr
+        self.assertIsNone(wrapper.attr)
+        with self.assertRaises(KeyError):
+            wrapper._properties['back']
+
+
 class Test_TypedProperty(unittest.TestCase):
 
     @staticmethod

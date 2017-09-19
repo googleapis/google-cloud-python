@@ -299,6 +299,82 @@ _SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
 _SCALAR_VALUE_TO_JSON_PARAM['TIMESTAMP'] = _timestamp_to_json_parameter
 
 
+class _ApiResourceProperty(object):
+    """Base property implementation.
+
+    Values will be stored on a `_properties` helper attribute of the
+    property's job instance.
+
+    :type name: str
+    :param name:  name of the property
+
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
+    """
+
+    def __init__(self, name, resource_name):
+        self.name = name
+        self.resource_name = resource_name
+
+    def __get__(self, instance, owner):
+        """Descriptor protocol:  accessor"""
+        if instance is None:
+            return self
+        return instance._properties.get(self.resource_name)
+
+    def _validate(self, value):
+        """Subclasses override to impose validation policy."""
+        pass
+
+    def __set__(self, instance, value):
+        """Descriptor protocol:  mutator"""
+        self._validate(value)
+        instance._properties[self.resource_name] = value
+
+    def __delete__(self, instance):
+        """Descriptor protocol:  deleter"""
+        del instance._properties[self.resource_name]
+
+
+class _TypedApiResourceProperty(_ApiResourceProperty):
+    """Property implementation:  validates based on value type.
+
+    :type name: str
+    :param name:  name of the property
+
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
+
+    :type property_type: type or sequence of types
+    :param property_type: type to be validated
+    """
+    def __init__(self, name, resource_name, property_type):
+        super(_TypedApiResourceProperty, self).__init__(
+            name, resource_name)
+        self.property_type = property_type
+
+    def _validate(self, value):
+        """Ensure that 'value' is of the appropriate type.
+
+        :raises: ValueError on a type mismatch.
+        """
+        if value is None:
+            return
+        if not isinstance(value, self.property_type):
+            raise ValueError('Required type: %s' % (self.property_type,))
+
+
+class _EnumApiResourceProperty(_ApiResourceProperty):
+    """Pseudo-enumeration class.
+
+    :type name: str
+    :param name:  name of the property.
+
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
+    """
+
+
 class _ConfigurationProperty(object):
     """Base property implementation.
 
