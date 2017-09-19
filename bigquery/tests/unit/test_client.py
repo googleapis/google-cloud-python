@@ -336,6 +336,7 @@ class TestClient(unittest.TestCase):
         PATH = 'projects/%s/datasets' % PROJECT
         DESCRIPTION = 'DESC'
         FRIENDLY_NAME = 'FN'
+        LOCATION = 'US'
         USER_EMAIL = 'phred@example.com'
         VIEW = {
             'projectId': 'my-proj',
@@ -349,6 +350,8 @@ class TestClient(unittest.TestCase):
             'id': "%s:%s" % (PROJECT, DS_ID),
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+            'defaultTableExpirationMs': 3600,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'view': VIEW}],
@@ -361,6 +364,8 @@ class TestClient(unittest.TestCase):
         ds_arg = Dataset(DS_ID, project=PROJECT, access_entries=entries)
         ds_arg.description = DESCRIPTION
         ds_arg.friendly_name = FRIENDLY_NAME
+        ds_arg.default_table_expiration_ms = 3600
+        ds_arg.location = LOCATION
         ds = client.create_dataset(ds_arg)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -371,6 +376,8 @@ class TestClient(unittest.TestCase):
                 {'projectId': PROJECT, 'datasetId': DS_ID},
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+            'defaultTableExpirationMs': 3600,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'view': VIEW}],
@@ -382,6 +389,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
         self.assertEqual(ds.description, DESCRIPTION)
         self.assertEqual(ds.friendly_name, FRIENDLY_NAME)
+        self.assertEqual(ds.location, LOCATION)
+        self.assertEqual(ds.default_table_expiration_ms, 3600)
 
     def test_get_table(self):
         project = 'PROJECT'
