@@ -43,7 +43,7 @@
             
   <div class="section" id="natural-language">
 <h1>Natural Language<a class="headerlink" href="#natural-language" title="Permalink to this headline">#</a></h1>
-<p>The <a class="reference external" href="https://cloud.google.com/natural-language/docs/getting-started">Google Natural Language</a> API can be used to reveal the
+<p>The <a class="reference external" href="https://cloud.google.com/natural-language/docs/quickstart-client-libraries">Google Natural Language</a> API can be used to reveal the
 structure and meaning of text via powerful machine
 learning models. You can use it to extract information about
 people, places, events and much more, mentioned in text documents,
@@ -85,9 +85,10 @@ this will be detected automatically.</p>
 <h2>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">#</a></h2>
 <p>The Google Natural Language API has three supported methods</p>
 <ul class="simple">
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeEntities">analyzeEntities</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment">analyzeSentiment</a></li>
-<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText">annotateText</a></li>
+<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntities">analyzeEntities</a></li>
+<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment">analyzeSentiment</a></li>
+<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntitySentiment">analyzeEntitySentiment</a></li>
+<li><a class="reference external" href="https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText">annotateText</a></li>
 </ul>
 <p>and each method uses a <a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.Document" title="google.cloud.language_v1.types.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a> for representing
 text.</p>
@@ -215,6 +216,41 @@ While the correct value varies by environment, in Python you <em>usually</em>
 want <code class="docutils literal"><span class="pre">UTF32</span></code>.</p>
 </div>
 </div>
+<div class="section" id="analyze-entity-sentiment">
+<h2>Analyze Entity Sentiment<a class="headerlink" href="#analyze-entity-sentiment" title="Permalink to this headline">#</a></h2>
+<p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entity_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_entity_sentiment"><code class="xref py py-meth docutils literal"><span class="pre">analyze_entity_sentiment()</span></code></a>
+method is effectively the amalgamation of
+<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_entities" title="google.cloud.language_v1.LanguageServiceClient.analyze_entities"><code class="xref py py-meth docutils literal"><span class="pre">analyze_entities()</span></code></a> and
+<a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.analyze_sentiment" title="google.cloud.language_v1.LanguageServiceClient.analyze_sentiment"><code class="xref py py-meth docutils literal"><span class="pre">analyze_sentiment()</span></code></a>.
+This method returns a
+<a class="reference internal" href="gapic/v1/types.html#google.cloud.language_v1.types.AnalyzeEntitySentimentResponse" title="google.cloud.language_v1.types.AnalyzeEntitySentimentResponse"><code class="xref py py-class docutils literal"><span class="pre">AnalyzeEntitySentimentResponse</span></code></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">language</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">content</span><span class="o">=</span><span class="s1">&#39;Mona said that jogging is very fun.&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;PLAIN_TEXT&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">analyze_sentiment</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">document</span><span class="o">=</span><span class="n">document</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">encoding_type</span><span class="o">=</span><span class="s1">&#39;UTF32&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">entities</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;Mona&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;jogging&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sentiment</span><span class="o">.</span><span class="n">magnitude</span>
+<span class="go">0.8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sentiment</span><span class="o">.</span><span class="n">score</span>
+<span class="go">0.8</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is recommended to send an <code class="docutils literal"><span class="pre">encoding_type</span></code> argument to Natural
+Language methods, so they provide useful offsets for the data they return.
+While the correct value varies by environment, in Python you <em>usually</em>
+want <code class="docutils literal"><span class="pre">UTF32</span></code>.</p>
+</div>
+</div>
 <div class="section" id="annotate-text">
 <h2>Annotate Text<a class="headerlink" href="#annotate-text" title="Permalink to this headline">#</a></h2>
 <p>The <a class="reference internal" href="gapic/v1/api.html#google.cloud.language_v1.LanguageServiceClient.annotate_text" title="google.cloud.language_v1.LanguageServiceClient.annotate_text"><code class="xref py py-meth docutils literal"><span class="pre">annotate_text()</span></code></a> method
@@ -300,6 +336,7 @@ deprecated or removed after its features become GA.</p>
 <li class="toctree-l2"><a class="reference internal" href="#documents">Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#analyze-entities">Analyze Entities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#analyze-sentiment">Analyze Sentiment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analyze-entity-sentiment">Analyze Entity Sentiment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#annotate-text">Annotate Text</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-reference">API Reference</a></li>
 </ul>
@@ -315,6 +352,7 @@ deprecated or removed after its features become GA.</p>
 <li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
 </ul>
 
 <div class="relations">

@@ -299,8 +299,16 @@ for each schema field on the current table and in the
 same order as the schema fields.</li>
 <li><strong>row_ids</strong> (<em>list of string</em>) – Unique ids, one per row being inserted.  If not
 passed, no de-duplication occurs.</li>
-<li><strong>skip_invalid_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) skip rows w/ invalid data?</li>
-<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) ignore columns beyond schema?</li>
+<li><strong>skip_invalid_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional)  Insert all valid rows of a
+request, even if invalid rows exist.
+The default value is False, which causes
+the entire request to fail if any invalid
+rows exist.</li>
+<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Accept rows that contain
+values that do not match the schema.
+The unknown values are ignored. Default
+is False, which treats unknown values as
+errors.</li>
 <li><strong>template_suffix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) treat <code class="docutils literal"><span class="pre">name</span></code> as a template table and provide a suffix.
 BigQuery will create the table <code class="docutils literal"><span class="pre">&lt;name&gt;</span> <span class="pre">+</span> <span class="pre">&lt;template_suffix&gt;</span></code> based
 on the schema of the template table. See
@@ -786,6 +794,7 @@ None (the default).</td>
 <li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
 </ul>
 
 <div class="relations">

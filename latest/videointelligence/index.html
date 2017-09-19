@@ -1,0 +1,243 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Video Intelligence &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Video Intelligence Client API" href="gapic/v1beta2/api.html" />
+    <link rel="prev" title="Vision Client Types" href="../vision/gapic/v1/types.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="video-intelligence">
+<h1>Video Intelligence<a class="headerlink" href="#video-intelligence" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://cloud.google.com/video-intelligence/">Google Cloud Video Intelligence</a> API makes videos searchable, and
+discoverable, by extracting metadata with an easy to use API.
+You can now search every moment of every video file in your catalog
+and find every occurrence as well as its significance. It quickly
+annotates videos stored in <a class="reference external" href="https://cloud.google.com/storage/">Google Cloud Storage</a>, and helps you
+identify key nouns entities of your video, and when they occur
+within the video. Separate signal from noise, by retrieving
+relevant information at the video, shot or per frame.</p>
+<div class="section" id="authentication-and-configuration">
+<h2>Authentication and Configuration<a class="headerlink" href="#authentication-and-configuration" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">google-cloud-python</span></code>,
+see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
+</li>
+<li><p class="first">In addition to any authentication configuration, you should also set the
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variable for the project you’d
+like to interact with. If the <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment
+variable is not present, the project ID from JSON file credentials is used.</p>
+<p>If you are using Google App Engine or Google Compute Engine
+this will be detected automatically.</p>
+</li>
+<li><p class="first">After configuring your environment, create a
+<a class="reference internal" href="gapic/v1beta2/api.html#google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient" title="google.cloud.videointelligence_v1beta2.VideoIntelligenceServiceClient"><code class="xref py py-class docutils literal"><span class="pre">VideoIntelligenceServiceClient</span></code></a>.</p>
+</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> explicitly.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="annotating-a-video">
+<h2>Annotating a Video<a class="headerlink" href="#annotating-a-video" title="Permalink to this headline">#</a></h2>
+<p>To annotate a video, just determine which annotation features you want, and point
+the API at your video:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">videointelligence</span><span class="o">.</span><span class="n">VideoIntelligenceServiceClient</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">annotate_video</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">input_uri</span><span class="o">=</span><span class="s1">&#39;gs://cloudmleap/video/next/animals.mp4&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;LABEL_DETECTION&#39;</span><span class="p">,</span> <span class="s1">&#39;SHOT_CHANGE_DETECTION&#39;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">annotationResults</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">labelAnnotations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;Android&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">annotationResults</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">labelAnnotations</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;Animation&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>The video intelligence API is currently in beta. While the <code class="docutils literal"><span class="pre">v1beta2</span></code> endpoint
+will continue to work for some time, when the GA version comes out, the client
+library will automatically move to it.</p>
+<p>If you wish, you can pin to the beta version explicitly, and it will continue
+to be supported. If so, use the following import statement:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">videointelligence_v1beta2</span>
+</pre></div>
+</div>
+</div>
+<p>This package includes clients for multiple versions of the Natural Language
+API. By default, you will get <code class="docutils literal"><span class="pre">v1beta2</span></code>, the latest beta version. When the GA
+version is released, it will become the default (as described in the warning above).</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1beta2/api.html">Video Intelligence Client API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1beta2/types.html">Video Intelligence Client Types</a></li>
+</ul>
+</div>
+<p>The previous beta release, spelled <code class="docutils literal"><span class="pre">v1beta1</span></code>, is provided to continue to support
+code previously written against it. In order to use this,
+you will want to import from <code class="docutils literal"><span class="pre">google.cloud.videointelligence_v1beta1</span></code> in lieu of
+<code class="docutils literal"><span class="pre">google.cloud.videointelligence_v1beta1</span></code>.</p>
+<p>An API and type reference is provided the first beta also:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/api.html">Video Intelligence Beta 1 Client API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1beta1/types.html">Video Intelligence Beta 1 Client Types</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
+    <img
+        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Video Intelligence</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authentication-and-configuration">Authentication and Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#annotating-a-video">Annotating a Video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-reference">API Reference</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../vision/gapic/v1/types.html" title="previous chapter">Vision Client Types</a></li>
+      <li>Next: <a href="gapic/v1beta2/api.html" title="next chapter">Video Intelligence Client API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/videointelligence/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -57,22 +57,37 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.proto.vision.v1</span> <span class="k">import</span> <span class="n">geometry_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.vision.v1</span> <span class="k">import</span> <span class="n">image_annotator_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.vision.v1</span> <span class="k">import</span> <span class="n">text_annotation_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.vision.v1</span> <span class="k">import</span> <span class="n">web_detection_pb2</span>
-
 <span class="kn">from</span> <span class="nn">google.gax.utils.messages</span> <span class="k">import</span> <span class="n">get_messages</span>
 
+<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">http_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.proto</span> <span class="k">import</span> <span class="n">geometry_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.proto</span> <span class="k">import</span> <span class="n">image_annotator_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.proto</span> <span class="k">import</span> <span class="n">text_annotation_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.proto</span> <span class="k">import</span> <span class="n">web_detection_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">any_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">wrappers_pb2</span>
+<span class="kn">from</span> <span class="nn">google.rpc</span> <span class="k">import</span> <span class="n">status_pb2</span>
+<span class="kn">from</span> <span class="nn">google.type</span> <span class="k">import</span> <span class="n">color_pb2</span>
+<span class="kn">from</span> <span class="nn">google.type</span> <span class="k">import</span> <span class="n">latlng_pb2</span>
 
 <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">(</span><span class="n">geometry_pb2</span><span class="p">,</span> <span class="n">image_annotator_pb2</span><span class="p">,</span>
-               <span class="n">text_annotation_pb2</span><span class="p">,</span> <span class="n">web_detection_pb2</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="n">http_pb2</span><span class="p">,</span>
+        <span class="n">geometry_pb2</span><span class="p">,</span>
+        <span class="n">image_annotator_pb2</span><span class="p">,</span>
+        <span class="n">text_annotation_pb2</span><span class="p">,</span>
+        <span class="n">web_detection_pb2</span><span class="p">,</span>
+        <span class="n">any_pb2</span><span class="p">,</span>
+        <span class="n">descriptor_pb2</span><span class="p">,</span>
+        <span class="n">wrappers_pb2</span><span class="p">,</span>
+        <span class="n">status_pb2</span><span class="p">,</span>
+        <span class="n">color_pb2</span><span class="p">,</span>
+        <span class="n">latlng_pb2</span><span class="p">,</span> <span class="p">):</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">get_messages</span><span class="p">(</span><span class="n">module</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">message</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.vision_v1.types&#39;</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
         <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
 </pre></div>
@@ -131,6 +146,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
 </ul>
 
 <div class="relations">

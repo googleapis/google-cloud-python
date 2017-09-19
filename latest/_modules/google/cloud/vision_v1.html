@@ -56,12 +56,12 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.gapic.vision.v1</span> <span class="k">import</span> <span class="n">image_annotator_client</span> <span class="k">as</span> <span class="n">iac</span>
-<span class="kn">from</span> <span class="nn">google.cloud.gapic.vision.v1</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_helpers.decorators</span> <span class="k">import</span> <span class="n">add_single_feature_methods</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_helpers</span> <span class="k">import</span> <span class="n">VisionHelpers</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.vision.decorators</span> <span class="k">import</span> <span class="n">add_single_feature_methods</span>
-<span class="kn">from</span> <span class="nn">google.cloud.vision.helpers</span> <span class="k">import</span> <span class="n">VisionHelpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.vision_v1</span> <span class="k">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="kn">from</span> <span class="nn">google.cloud.vision_v1.gapic</span> <span class="k">import</span> <span class="n">image_annotator_client</span> <span class="k">as</span> <span class="n">iac</span>
 
 
 <div class="viewcode-block" id="ImageAnnotatorClient"><a class="viewcode-back" href="../../../vision/gapic/v1/api.html#google.cloud.vision_v1.ImageAnnotatorClient">[docs]</a><span class="nd">@add_single_feature_methods</span>
@@ -72,9 +72,8 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span>
     <span class="s1">&#39;enums&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ImageAnnotatorClient&#39;</span><span class="p">,</span>
     <span class="s1">&#39;types&#39;</span><span class="p">,</span>
-<span class="p">)</span>
+    <span class="s1">&#39;ImageAnnotatorClient&#39;</span><span class="p">,</span> <span class="p">)</span>
 </pre></div>
 
           </div>
@@ -131,6 +130,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
 </ul>
 
 <div class="relations">

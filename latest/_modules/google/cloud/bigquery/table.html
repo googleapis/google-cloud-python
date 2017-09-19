@@ -835,10 +835,18 @@
 <span class="sd">                        passed, no de-duplication occurs.</span>
 
 <span class="sd">        :type skip_invalid_rows: bool</span>
-<span class="sd">        :param skip_invalid_rows: (Optional) skip rows w/ invalid data?</span>
+<span class="sd">        :param skip_invalid_rows: (Optional)  Insert all valid rows of a</span>
+<span class="sd">                                  request, even if invalid rows exist.</span>
+<span class="sd">                                  The default value is False, which causes</span>
+<span class="sd">                                  the entire request to fail if any invalid</span>
+<span class="sd">                                  rows exist.</span>
 
 <span class="sd">        :type ignore_unknown_values: bool</span>
-<span class="sd">        :param ignore_unknown_values: (Optional) ignore columns beyond schema?</span>
+<span class="sd">        :param ignore_unknown_values: (Optional) Accept rows that contain</span>
+<span class="sd">                                      values that do not match the schema.</span>
+<span class="sd">                                      The unknown values are ignored. Default</span>
+<span class="sd">                                      is False, which treats unknown values as</span>
+<span class="sd">                                      errors.</span>
 
 <span class="sd">        :type template_suffix: str</span>
 <span class="sd">        :param template_suffix:</span>
@@ -1437,6 +1445,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
 </ul>
 
 <div class="relations">
