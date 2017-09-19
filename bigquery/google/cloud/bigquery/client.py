@@ -415,13 +415,8 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
-        job_config = None
-        if 'job_config' in kwargs:
-            job_config = kwargs['job_config']
-
-        job_id = None
-        if 'job_id' in kwargs:
-            job_id = kwargs['job_id']
+        job_config = kwargs.get('job_config')
+        job_id = kwargs.get('job_id')
         if job_id is None:
             job_id = str(uuid.uuid4())
 

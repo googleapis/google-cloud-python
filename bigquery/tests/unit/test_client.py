@@ -719,8 +719,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.job import ExtractJob
 
         PROJECT = 'PROJECT'
-        JOB = 'job_name'
-        DATASET = 'dataset_name'
+        JOB = 'job_id'
+        DATASET = 'dataset_id'
         SOURCE = 'source_table'
         DESTINATION = 'gs://bucket_name/object_name'
         RESOURCE = {
@@ -767,8 +767,8 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.job import DestinationFormat
 
         PROJECT = 'PROJECT'
-        JOB = 'job_name'
-        DATASET = 'dataset_name'
+        JOB = 'job_id'
+        DATASET = 'dataset_id'
         SOURCE = 'source_table'
         DESTINATION = 'gs://bucket_name/object_name'
         RESOURCE = {
