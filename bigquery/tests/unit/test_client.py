@@ -401,8 +401,7 @@ class TestClient(unittest.TestCase):
             },
         }
         conn = client._connection = _Connection(resource)
-        dataset_ref = client.dataset(dataset_id)
-        table_ref = dataset_ref.table(table_id)
+        table_ref = client.dataset(dataset_id).table(table_id)
 
         table = client.get_table(table_ref)
 
