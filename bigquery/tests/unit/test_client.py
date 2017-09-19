@@ -425,7 +425,8 @@ class TestClient(unittest.TestCase):
 
         PROJECT = 'PROJECT'
         DS_ID = 'DATASET_ID'
-        client = self._make_one(project=PROJECT)
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
         with self.assertRaises(ValueError):
             client.update_dataset(Dataset(DS_ID), ["foo"])
 
