@@ -238,7 +238,7 @@ class Client(ClientWithProject):
         :param dataset: the dataset to update.
 
         :type fields: sequence of string
-        :param fields: the fields of ``dataset`` to change, spelled as the 
+        :param fields: the fields of ``dataset`` to change, spelled as the
                        Dataset properties (e.g. "friendly_name").
 
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
