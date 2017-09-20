@@ -36,7 +36,7 @@ from google.auth import credentials
 from google.oauth2 import _client
 
 
-class Credentials(credentials.Scoped, credentials.Credentials):
+class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
     """Credentials using OAuth 2.0 access and refresh tokens."""
 
     def __init__(self, token, refresh_token=None, id_token=None,
@@ -108,15 +108,6 @@ class Credentials(credentials.Scoped, credentials.Credentials):
         """False: OAuth 2.0 credentials have their scopes set when
         the initial token is requested and can not be changed."""
         return False
-
-    def with_scopes(self, scopes):
-        """Unavailable, OAuth 2.0 credentials can not be re-scoped.
-
-        OAuth 2.0 credentials have their scopes set when the initial token is
-        requested and can not be changed.
-        """
-        raise NotImplementedError(
-            'OAuth 2.0 Credentials can not modify their scopes.')
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
