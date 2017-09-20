@@ -23,6 +23,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.dataset import Table
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
@@ -206,6 +207,20 @@ class Client(ClientWithProject):
         api_response = self._connection.api_request(
             method='GET', path=dataset_ref.path)
         return Dataset.from_api_repr(api_response, self)
+
+    def get_table(self, table_ref):
+        """Fetch the table referenced by ``table_ref``
+
+        :type table_ref:
+            :class:`google.cloud.bigquery.table.TableReference`
+        :param table_ref: the table to use.
+
+        :rtype: :class:`google.cloud.bigquery.table.Table`
+        :returns: a ``Table`` instance
+        """
+        api_response = self._connection.api_request(
+            method='GET', path=table_ref.path)
+        return Table.from_api_repr(api_response, self)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
