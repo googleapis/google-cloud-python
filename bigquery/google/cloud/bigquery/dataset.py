@@ -488,61 +488,6 @@ class Dataset(object):
 
         return resource
 
-    def patch(self, client=None, **kw):
-        """API call:  update individual dataset properties via a PATCH request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/patch
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :type kw: ``dict``
-        :param kw: properties to be patched.
-
-        :raises: ValueError for invalid value types.
-        """
-        client = self._require_client(client)
-
-        partial = {}
-
-        if 'default_table_expiration_ms' in kw:
-            value = kw['default_table_expiration_ms']
-            if not isinstance(value, six.integer_types) and value is not None:
-                raise ValueError("Pass an integer, or None")
-            partial['defaultTableExpirationMs'] = value
-
-        if 'description' in kw:
-            partial['description'] = kw['description']
-
-        if 'friendly_name' in kw:
-            partial['friendlyName'] = kw['friendly_name']
-
-        if 'location' in kw:
-            partial['location'] = kw['location']
-
-        api_response = client._connection.api_request(
-            method='PATCH', path=self.path, data=partial)
-        self._set_properties(api_response)
-
-    def update(self, client=None):
-        """API call:  update dataset properties via a PUT request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/update
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        api_response = client._connection.api_request(
-            method='PUT', path=self.path, data=self._build_resource())
-        self._set_properties(api_response)
-
     def delete(self, client=None):
         """API call:  delete the dataset via a DELETE request.
 
