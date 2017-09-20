@@ -252,9 +252,12 @@ class Client(ClientWithProject):
                                              dataset.dataset_id)
         partial = {}
         for f in fields:
-            if f not in Dataset._updateable_fields:
-                raise ValueError('Cannot update Dataset field %s' % f)
-            partial[Dataset._updateable_fields[f]] = getattr(dataset, f)
+            if not hasattr(dataset, f):
+                raise ValueError('No Dataset field %s' % f)
+            # snake case to camel case
+            words = f.split('_')
+            api_field = words[0] + ''.join(map(str.capitalize, words[1:]))
+            partial[api_field] = getattr(dataset, f)
         if dataset.etag is not None:
             headers = {'If-Match': dataset.etag}
         else:

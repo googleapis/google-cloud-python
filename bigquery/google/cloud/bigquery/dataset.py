@@ -170,16 +170,6 @@ class Dataset(object):
 
     _access_entries = None
 
-    # TODO(jba): add labels (P0)
-    # TODO(jba): add access (P1)
-    # Map from valid updateable field names to API resource names.
-    _updateable_fields = {
-        'default_table_expiration_ms': 'defaultTableExpirationMs',
-        'description': 'description',
-        'friendly_name': 'friendlyName',
-        'location': 'location',
-    }
-
     def __init__(self,
                  dataset_id,
                  client=None,
