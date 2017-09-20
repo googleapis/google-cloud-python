@@ -243,8 +243,6 @@ class Client(ClientWithProject):
 
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: the modified ``Dataset`` instance
-        :raises: ValueError for fields that cannot be updated.
-
         """
         if dataset.project is None:
             dataset._project = self.project
@@ -265,6 +263,22 @@ class Client(ClientWithProject):
         api_response = self._connection.api_request(
             method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response, self)
+
+    def delete_dataset(self, dataset):
+        """Delete a dataset.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
+
+        :type dataset: One of:
+                       :class:`~google.cloud.bigquery.dataset.Dataset`
+                       :class:`~google.cloud.bigquery.dataset.DatasetReference`
+
+        :param dataset: the dataset to delete, or a reference to it.
+        """
+        if not isinstance(dataset, (Dataset, DatasetReference)):
+            raise TypeError('dataset must be a Dataset or a DatasetReference')
+        self._connection.api_request(method='DELETE', path=dataset.path)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
