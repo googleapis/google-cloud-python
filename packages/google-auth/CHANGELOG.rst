@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v1.1.1
+------
+
+- ``google.oauth.credentials.Credentials`` now correctly inherits from ``ReadOnlyScoped`` instead of ``Scoped``. (#200)
+
 v1.1.0
 ------
 
