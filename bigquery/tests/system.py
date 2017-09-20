@@ -198,6 +198,21 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(table.exists())
         self.assertEqual(table.table_id, TABLE_NAME)
 
+    def test_get_table_w_public_dataset(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_ID = 'samples'
+        TABLE_ID = 'shakespeare'
+        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_ID)
+
+        table = Config.CLIENT.get_table(table_ref)
+
+        self.assertEqual(table.table_id, TABLE_ID)
+        self.assertEqual(table.dataset_id, DATASET_ID)
+        self.assertEqual(table.project, PUBLIC)
+        schema_names = [field.name for field in table.schema]
+        self.assertEqual(
+            schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
+
     def test_list_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
         dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(DATASET_ID))
@@ -402,8 +417,7 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(job.output_rows, len(ROWS))
 
-        # Reload table to get the schema before fetching the rows.
-        table.reload()
+        table = Config.CLIENT.get_table(table)
         rows = self._fetch_single_page(table)
         by_wavelength = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_wavelength),
@@ -532,7 +546,7 @@ class TestBigQuery(unittest.TestCase):
         retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
-        table.reload()
+        table = Config.CLIENT.get_table(table)
         field_name = SchemaField(
             u'Full_Name', u'string', u'NULLABLE', None, ())
         field_age = SchemaField(u'Age', u'integer', u'NULLABLE', None, ())
@@ -1163,9 +1177,8 @@ class TestBigQuery(unittest.TestCase):
         TABLE_NAME = 'natality'
 
         dataset = Dataset(DATASET_ID, Config.CLIENT, project=PUBLIC)
-        table = dataset.table(TABLE_NAME)
-        # Reload table to get the schema before fetching the rows.
-        table.reload()
+        table_ref = dataset.table(TABLE_NAME)
+        table = Config.CLIENT.get_table(table_ref)
         self._fetch_single_page(table)
 
     def test_large_query_w_public_data(self):
