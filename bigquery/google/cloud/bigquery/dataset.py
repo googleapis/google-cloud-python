@@ -394,21 +394,6 @@ class Dataset(object):
         dataset._set_properties(resource)
         return dataset
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`google.cloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
-
     @staticmethod
     def _parse_access_entries(access):
         """Parse a resource fragment into a set of access entries.

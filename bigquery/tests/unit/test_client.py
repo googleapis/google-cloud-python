@@ -498,7 +498,6 @@ class TestClient(unittest.TestCase):
     def test_delete_dataset_wrong_type(self):
         PROJECT = 'PROJECT'
         DS_ID = 'DATASET_ID'
-        PATH = 'projects/%s/datasets/%s' % (PROJECT, DS_ID)
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
