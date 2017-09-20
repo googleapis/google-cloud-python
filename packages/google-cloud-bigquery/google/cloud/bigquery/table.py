@@ -35,7 +35,7 @@ from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
-_TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'table.reload()'"
+_TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
 _MARKER = object()
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
 _BASE_UPLOAD_TEMPLATE = (
@@ -84,6 +84,15 @@ class TableReference(object):
         :returns: the table ID.
         """
         return self._table_id
+
+    @property
+    def path(self):
+        """URL path for the table's APIs.
+
+        :rtype: str
+        :returns: the path based on project, dataset and table IDs.
+        """
+        return '%s/tables/%s' % (self._dataset_ref.path, self._table_id)
 
 
 class Table(object):
@@ -616,23 +625,6 @@ class Table(object):
         else:
             return True
 
-    def reload(self, client=None):
-        """API call:  refresh table properties via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-
-        api_response = client._connection.api_request(
-            method='GET', path=self.path)
-        self._set_properties(api_response)
-
     def patch(self,
               client=None,
               friendly_name=_MARKER,
@@ -750,7 +742,7 @@ class Table(object):
            up-to-date with the schema as defined on the back-end:  if the
            two schemas are not identical, the values returned may be
            incomplete.  To ensure that the local copy of the schema is
-           up-to-date, call :meth:`reload`.
+           up-to-date, call ``client.get_table``.
 
         :type max_results: int
         :param max_results: (Optional) Maximum number of rows to return.
