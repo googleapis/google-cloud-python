@@ -394,21 +394,6 @@ class Dataset(object):
         dataset._set_properties(resource)
         return dataset
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`google.cloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
-
     @staticmethod
     def _parse_access_entries(access):
         """Parse a resource fragment into a set of access entries.
@@ -487,20 +472,6 @@ class Dataset(object):
             resource['access'] = self._build_access_resource()
 
         return resource
-
-    def delete(self, client=None):
-        """API call:  delete the dataset via a DELETE request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        client._connection.api_request(method='DELETE', path=self.path)
 
     def list_tables(self, max_results=None, page_token=None):
         """List tables for the project associated with this client.
