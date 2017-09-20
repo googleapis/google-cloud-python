@@ -64,7 +64,8 @@ class TableReference(object):
     """
 
     def __init__(self, dataset_ref, table_id):
-        self._dataset_ref = dataset_ref
+        self._project = dataset_ref.project
+        self._dataset_id = dataset_ref.dataset_id
         self._table_id = table_id
 
     @property
@@ -74,16 +75,7 @@ class TableReference(object):
         :rtype: str
         :returns: the project (derived from the dataset reference).
         """
-        return self._dataset_ref.project
-
-    @property
-    def dataset(self):
-        """Pointer to the dataset.
-
-        :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`
-        :returns: a pointer to the dataset.
-        """
-        return self._dataset_ref
+        return self._project
 
     @property
     def dataset_id(self):
@@ -92,7 +84,7 @@ class TableReference(object):
         :rtype: str
         :returns: the ID (derived from the dataset reference).
         """
-        return self._dataset_ref.dataset_id
+        return self._dataset_id
 
     @property
     def table_id(self):
@@ -110,7 +102,8 @@ class TableReference(object):
         :rtype: str
         :returns: the path based on project, dataset and table IDs.
         """
-        return '%s/tables/%s' % (self._dataset_ref.path, self._table_id)
+        return '/projects/%s/datasets/%s/tables/%s' % (
+            self._project, self._dataset_id, self._table_id)
 
 
 class Table(object):
@@ -129,8 +122,9 @@ class Table(object):
     _schema = None
 
     def __init__(self, table_ref, schema=(), client=None):
+        self._project = table_ref.project
         self._table_id = table_ref.table_id
-        self._dataset = table_ref.dataset
+        self._dataset_id = table_ref.dataset_id
         self._properties = {}
         # Let the @property do validation.
         self.schema = schema
@@ -143,7 +137,7 @@ class Table(object):
         :rtype: str
         :returns: the project (derived from the dataset).
         """
-        return self._dataset.project
+        return self._project
 
     @property
     def dataset_id(self):
@@ -152,7 +146,7 @@ class Table(object):
         :rtype: str
         :returns: the ID (derived from the dataset).
         """
-        return self._dataset.dataset_id
+        return self._dataset_id
 
     @property
     def table_id(self):
@@ -170,7 +164,8 @@ class Table(object):
         :rtype: str
         :returns: the path based on project, dataset and table IDs.
         """
-        return '%s/tables/%s' % (self._dataset.path, self.table_id)
+        return '/projects/%s/datasets/%s/tables/%s' % (
+            self._project, self._dataset_id, self._table_id)
 
     @property
     def schema(self):
@@ -568,8 +563,8 @@ class Table(object):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'tableReference': {
-                'projectId': self._dataset.project,
-                'datasetId': self._dataset.dataset_id,
+                'projectId': self._project,
+                'datasetId': self._dataset_id,
                 'tableId': self.table_id},
         }
         if self.description is not None:
@@ -614,7 +609,7 @@ class Table(object):
         """
         client = self._require_client(client)
         path = '/projects/%s/datasets/%s/tables' % (
-            self._dataset.project, self._dataset.dataset_id)
+            self._project, self._dataset_id)
         api_response = client._connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
@@ -1198,7 +1193,8 @@ class Table(object):
         _maybe_rewind(file_obj, rewind=rewind)
         _check_mode(file_obj)
         metadata = _get_upload_metadata(
-            source_format, self._schema, self._dataset, self.table_id)
+            source_format, self._schema, self._project,
+            self._dataset_id, self.table_id)
         _configure_job_metadata(metadata, allow_jagged_rows,
                                 allow_quoted_newlines, create_disposition,
                                 encoding, field_delimiter,
@@ -1363,7 +1359,7 @@ def _get_upload_headers(user_agent):
     }
 
 
-def _get_upload_metadata(source_format, schema, dataset, table_id):
+def _get_upload_metadata(source_format, schema, project, dataset_id, table_id):
     """Get base metadata for creating a table.
 
     :type source_format: str
@@ -1373,8 +1369,11 @@ def _get_upload_metadata(source_format, schema, dataset, table_id):
     :type schema: list
     :param schema: List of :class:`SchemaField` associated with a table.
 
-    :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
-    :param dataset: A dataset which contains a table.
+    :type project: str
+    :param table_id: The project bound to the table.
+
+    :type dataset_id: str
+    :param table_id: The dataset_id of the dataset.
 
     :type table_id: str
     :param table_id: The table_id of the table.
@@ -1385,8 +1384,8 @@ def _get_upload_metadata(source_format, schema, dataset, table_id):
     load_config = {
         'sourceFormat': source_format,
         'destinationTable': {
-            'projectId': dataset.project,
-            'datasetId': dataset.dataset_id,
+            'projectId': project,
+            'datasetId': dataset_id,
             'tableId': table_id,
         },
     }

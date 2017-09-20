@@ -581,7 +581,7 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, blob)
 
         dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(table.dataset.dataset_id))
+            Dataset(table.dataset_id))
         self.to_delete.append(dataset)
         table = dataset.table(table.table_id)
         self.to_delete.insert(0, table)
