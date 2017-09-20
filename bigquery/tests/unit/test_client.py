@@ -336,6 +336,7 @@ class TestClient(unittest.TestCase):
         PATH = 'projects/%s/datasets' % PROJECT
         DESCRIPTION = 'DESC'
         FRIENDLY_NAME = 'FN'
+        LOCATION = 'US'
         USER_EMAIL = 'phred@example.com'
         VIEW = {
             'projectId': 'my-proj',
@@ -349,6 +350,8 @@ class TestClient(unittest.TestCase):
             'id': "%s:%s" % (PROJECT, DS_ID),
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+            'defaultTableExpirationMs': 3600,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'view': VIEW}],
@@ -361,6 +364,8 @@ class TestClient(unittest.TestCase):
         ds_arg = Dataset(DS_ID, project=PROJECT, access_entries=entries)
         ds_arg.description = DESCRIPTION
         ds_arg.friendly_name = FRIENDLY_NAME
+        ds_arg.default_table_expiration_ms = 3600
+        ds_arg.location = LOCATION
         ds = client.create_dataset(ds_arg)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -371,6 +376,8 @@ class TestClient(unittest.TestCase):
                 {'projectId': PROJECT, 'datasetId': DS_ID},
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+            'defaultTableExpirationMs': 3600,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'view': VIEW}],
@@ -382,6 +389,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
         self.assertEqual(ds.description, DESCRIPTION)
         self.assertEqual(ds.friendly_name, FRIENDLY_NAME)
+        self.assertEqual(ds.location, LOCATION)
+        self.assertEqual(ds.default_table_expiration_ms, 3600)
 
     def test_get_table(self):
         project = 'PROJECT'
@@ -410,6 +419,66 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % path)
         self.assertEqual(table.table_id, table_id)
+
+    def test_update_dataset_w_invalid_field(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        with self.assertRaises(ValueError):
+            client.update_dataset(Dataset(DS_ID), ["foo"])
+
+    def test_update_dataset(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        PATH = 'projects/%s/datasets/%s' % (PROJECT, DS_ID)
+        DESCRIPTION = 'DESCRIPTION'
+        FRIENDLY_NAME = 'TITLE'
+        LOCATION = 'loc'
+        EXP = 17
+        RESOURCE = {
+            'datasetReference':
+                {'projectId': PROJECT, 'datasetId': DS_ID},
+            'etag': "etag",
+            'description': DESCRIPTION,
+            'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+            'defaultTableExpirationMs': EXP,
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection(RESOURCE, RESOURCE)
+        ds = Dataset(DS_ID, project=PROJECT)
+        ds.description = DESCRIPTION
+        ds.friendly_name = FRIENDLY_NAME
+        ds.location = LOCATION
+        ds.default_table_expiration_ms = EXP
+        ds2 = client.update_dataset(
+            ds, ['description', 'friendly_name', 'location'])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        SENT = {
+            'description': DESCRIPTION,
+            'friendlyName': FRIENDLY_NAME,
+            'location': LOCATION,
+        }
+        self.assertEqual(req['data'], SENT)
+        self.assertEqual(req['path'], '/' + PATH)
+        self.assertIsNone(req['headers'])
+        self.assertEqual(ds2.description, ds.description)
+        self.assertEqual(ds2.friendly_name, ds.friendly_name)
+        self.assertEqual(ds2.location, ds.location)
+
+        # ETag becomes If-Match header.
+        ds._properties['etag'] = 'etag'
+        client.update_dataset(ds, [])
+        req = conn._requested[1]
+        self.assertEqual(req['headers']['If-Match'], 'etag')
 
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
