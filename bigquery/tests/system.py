@@ -105,7 +105,7 @@ class TestBigQuery(unittest.TestCase):
             if isinstance(doomed, Bucket):
                 retry_409(doomed.delete)(force=True)
             elif isinstance(doomed, Dataset):
-                retry_in_use(doomed.delete)()
+                retry_in_use(Config.CLIENT.delete_dataset)(doomed)
             else:
                 doomed.delete()
 
