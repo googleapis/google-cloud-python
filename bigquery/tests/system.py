@@ -202,13 +202,13 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
 
-    def test_list_tables(self):
+    def test_list_dataset_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
         dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(DATASET_ID))
         self.to_delete.append(dataset)
 
         # Retrieve tables before any are created for the dataset.
-        iterator = dataset.list_tables()
+        iterator = Config.CLIENT.list_dataset_tables(dataset)
         all_tables = list(iterator)
         self.assertEqual(all_tables, [])
         self.assertIsNone(iterator.next_page_token)
@@ -230,7 +230,7 @@ class TestBigQuery(unittest.TestCase):
             self.to_delete.insert(0, created_table)
 
         # Retrieve the tables.
-        iterator = dataset.list_tables()
+        iterator = Config.CLIENT.list_dataset_tables(dataset)
         all_tables = list(iterator)
         self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
