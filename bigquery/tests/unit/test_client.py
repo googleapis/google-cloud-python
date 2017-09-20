@@ -480,6 +480,29 @@ class TestClient(unittest.TestCase):
         req = conn._requested[1]
         self.assertEqual(req['headers']['If-Match'], 'etag')
 
+    def test_delete_dataset(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        PATH = 'projects/%s/datasets/%s' % (PROJECT, DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection({}, {})
+        for arg in (client.dataset(DS_ID), Dataset(DS_ID, project=PROJECT)):
+            client.delete_dataset(arg)
+            req = conn._requested[0]
+            self.assertEqual(req['method'], 'DELETE')
+            self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_delete_dataset_wrong_type(self):
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.delete_dataset(client.dataset(DS_ID).table("foo"))
+
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _make_credentials()
