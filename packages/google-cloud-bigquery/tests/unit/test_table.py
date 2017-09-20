@@ -864,45 +864,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
-    def test_reload_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
-
-        table.reload()
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(table, RESOURCE)
-
-    def test_reload_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        RESOURCE = self._makeResource()
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client1)
-
-        table.reload(client=client2)
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(table, RESOURCE)
-
     def test_patch_w_invalid_expiration(self):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
