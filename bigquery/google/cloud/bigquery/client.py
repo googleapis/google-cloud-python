@@ -190,9 +190,7 @@ class Client(ClientWithProject):
         path = '/projects/%s/datasets' % (dataset.project,)
         api_response = self._connection.api_request(
             method='POST', path=path, data=dataset._build_resource())
-        ds = Dataset(dataset.dataset_id, project=dataset.project, client=self)
-        ds._set_properties(api_response)
-        return ds
+        return Dataset.from_api_repr(api_response, self)
 
     def get_dataset(self, dataset_ref):
         """Fetch the dataset referenced by ``dataset_ref``
@@ -221,6 +219,52 @@ class Client(ClientWithProject):
         api_response = self._connection.api_request(
             method='GET', path=table_ref.path)
         return Table.from_api_repr(api_response, self)
+
+    def update_dataset(self, dataset, fields):
+        """Change some fields of a dataset.
+
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None`` in
+        ``dataset``, it will be deleted.
+
+        If ``dataset.etag`` is not ``None``, the update will only
+        succeed if the dataset on the server has the same ETag. Thus
+        reading a dataset with ``get_dataset``, changing its fields,
+        and then passing it ``update_dataset`` will ensure that the changes
+        will only be saved if no modifications to the dataset occurred
+        since the read.
+
+        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
+        :param dataset: the dataset to update.
+
+        :type fields: sequence of string
+        :param fields: the fields of ``dataset`` to change, spelled as the
+                       Dataset properties (e.g. "friendly_name").
+
+        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
+        :returns: the modified ``Dataset`` instance
+        :raises: ValueError for fields that cannot be updated.
+
+        """
+        if dataset.project is None:
+            dataset._project = self.project
+        path = '/projects/%s/datasets/%s' % (dataset.project,
+                                             dataset.dataset_id)
+        partial = {}
+        for f in fields:
+            if not hasattr(dataset, f):
+                raise ValueError('No Dataset field %s' % f)
+            # snake case to camel case
+            words = f.split('_')
+            api_field = words[0] + ''.join(map(str.capitalize, words[1:]))
+            partial[api_field] = getattr(dataset, f)
+        if dataset.etag is not None:
+            headers = {'If-Match': dataset.etag}
+        else:
+            headers = None
+        api_response = self._connection.api_request(
+            method='PATCH', path=path, data=partial, headers=headers)
+        return Dataset.from_api_repr(api_response, self)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
