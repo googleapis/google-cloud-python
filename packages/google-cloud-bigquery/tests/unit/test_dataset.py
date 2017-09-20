@@ -388,35 +388,6 @@ class TestDataset(unittest.TestCase):
         with self.assertRaises(ValueError):
             dataset._parse_access_entries(ACCESS)
 
-    def test_delete_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_ID, client=client)
-
-        dataset.delete()
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % PATH)
-
-    def test_delete_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = self._make_one(self.DS_ID, client=CLIENT1)
-
-        dataset.delete(client=CLIENT2)
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % PATH)
-
     def test_list_tables_empty(self):
         import six
 
