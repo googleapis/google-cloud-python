@@ -1220,8 +1220,8 @@ class TestExtractJob(unittest.TestCase, _Base):
         self.assertEqual(job.destination_uris, config['destinationUris'])
 
         table_ref = config['sourceTable']
-        self.assertEqual(job.source.dataset.project, table_ref['projectId'])
-        self.assertEqual(job.source.dataset.dataset_id, table_ref['datasetId'])
+        self.assertEqual(job.source.project, table_ref['projectId'])
+        self.assertEqual(job.source.dataset_id, table_ref['datasetId'])
         self.assertEqual(job.source.table_id, table_ref['tableId'])
 
         if 'compression' in config:
@@ -1908,7 +1908,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(job.statement_type, statement_type)
 
     def test_referenced_tables(self):
-        from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.table import Table
 
         ref_tables_resource = [{
@@ -1942,24 +1941,21 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         self.assertIsInstance(local1, Table)
         self.assertEqual(local1.table_id, 'local1')
-        self.assertIsInstance(local1._dataset, Dataset)
         self.assertEqual(local1.dataset_id, 'dataset')
         self.assertEqual(local1.project, self.PROJECT)
-        self.assertIs(local1._dataset._client, client)
+        self.assertIs(local1._client, client)
 
         self.assertIsInstance(local2, Table)
         self.assertEqual(local2.table_id, 'local2')
-        self.assertIsInstance(local2._dataset, Dataset)
         self.assertEqual(local2.dataset_id, 'dataset')
         self.assertEqual(local2.project, self.PROJECT)
-        self.assertIs(local2._dataset._client, client)
+        self.assertIs(local2._client, client)
 
         self.assertIsInstance(remote, Table)
         self.assertEqual(remote.table_id, 'other-table')
-        self.assertIsInstance(remote._dataset, Dataset)
         self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
-        self.assertIs(remote._dataset._client, client)
+        self.assertIs(remote._client, client)
 
     def test_undeclared_query_paramters(self):
         from google.cloud.bigquery._helpers import ArrayQueryParameter
