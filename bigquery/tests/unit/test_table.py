@@ -55,7 +55,7 @@ class TestTableReference(unittest.TestCase):
         dataset_ref = DatasetReference('project_1', 'dataset_1')
 
         table_ref = self._make_one(dataset_ref, 'table_1')
-        self.assertIs(table_ref.dataset, dataset_ref)
+        self.assertEqual(table_ref.dataset_id, dataset_ref.dataset_id)
         self.assertEqual(table_ref.table_id, 'table_1')
 
 
@@ -173,7 +173,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref, client=client)
 
         self.assertEqual(table.table_id, self.TABLE_NAME)
-        self.assertIs(table._dataset, dataset)
         self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(
@@ -1710,7 +1709,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         data = b'goodbye gudbi gootbee'
         stream = io.BytesIO(data)
         metadata = _get_upload_metadata(
-            'CSV', table._schema, table._dataset, table.table_id)
+            'CSV', table._schema, table.project,
+            table.dataset_id, table.table_id)
         upload, transport = table._initiate_resumable_upload(
             client, stream, metadata, num_retries)
 
@@ -1777,7 +1777,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         data = b'Bzzzz-zap \x00\x01\xf4'
         stream = io.BytesIO(data)
         metadata = _get_upload_metadata(
-            'CSV', table._schema, table._dataset, table.table_id)
+            'CSV', table._schema, table.project,
+            table.dataset_id, table.table_id)
         size = len(data)
         response = table._do_multipart_upload(
             client, stream, metadata, size, num_retries)
@@ -1928,7 +1929,7 @@ class TestTableUpload(object):
                 'load': {
                     'sourceFormat': config_args['source_format'],
                     'destinationTable': {
-                        'projectId': table._dataset.project,
+                        'projectId': table.project,
                         'datasetId': table.dataset_id,
                         'tableId': table.table_id,
                     },
@@ -2254,10 +2255,11 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
 class Test__get_upload_metadata(unittest.TestCase):
 
     @staticmethod
-    def _call_fut(source_format, schema, dataset, name):
+    def _call_fut(source_format, schema, project, dataset_id, name):
         from google.cloud.bigquery.table import _get_upload_metadata
 
-        return _get_upload_metadata(source_format, schema, dataset, name)
+        return _get_upload_metadata(
+            source_format, schema, project, dataset_id, name)
 
     def test_empty_schema(self):
         source_format = 'AVRO'
@@ -2265,7 +2267,8 @@ class Test__get_upload_metadata(unittest.TestCase):
                             spec=['dataset_id', 'project'])
         dataset.dataset_id = 'market'  # mock.Mock() treats `name` specially.
         table_name = 'chairs'
-        metadata = self._call_fut(source_format, [], dataset, table_name)
+        metadata = self._call_fut(source_format, [], dataset.project,
+                                  dataset.dataset_id, table_name)
 
         expected = {
             'configuration': {
@@ -2290,7 +2293,8 @@ class Test__get_upload_metadata(unittest.TestCase):
         dataset.dataset_id = 'movie'  # mock.Mock() treats `name` specially.
         table_name = 'teebull-neem'
         metadata = self._call_fut(
-            source_format, [full_name], dataset, table_name)
+            source_format, [full_name], dataset.project,
+            dataset.dataset_id, table_name)
 
         expected = {
             'configuration': {
