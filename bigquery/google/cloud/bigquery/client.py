@@ -190,9 +190,7 @@ class Client(ClientWithProject):
         path = '/projects/%s/datasets' % (dataset.project,)
         api_response = self._connection.api_request(
             method='POST', path=path, data=dataset._build_resource())
-        ds = Dataset(dataset.dataset_id, project=dataset.project, client=self)
-        ds._set_properties(api_response)
-        return ds
+        return Dataset.from_api_repr(api_response, self)
 
     def get_dataset(self, dataset_ref):
         """Fetch the dataset referenced by ``dataset_ref``
@@ -240,7 +238,8 @@ class Client(ClientWithProject):
         :param dataset: the dataset to update.
 
         :type fields: sequence of string
-        :param fields: the fields of ``dataset`` to change.
+        :param fields: the fields of ``dataset`` to change, spelled as the 
+                       Dataset properties (e.g. "friendly_name").
 
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: the modified ``Dataset`` instance
@@ -262,9 +261,7 @@ class Client(ClientWithProject):
             headers = None
         api_response = self._connection.api_request(
             method='PATCH', path=path, data=partial, headers=headers)
-        ds = Dataset(dataset.dataset_id, project=dataset.project, client=self)
-        ds._set_properties(api_response)
-        return ds
+        return Dataset.from_api_repr(api_response, self)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
