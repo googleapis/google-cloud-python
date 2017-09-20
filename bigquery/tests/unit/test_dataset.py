@@ -104,7 +104,8 @@ class TestDatasetReference(unittest.TestCase):
     def test_table(self):
         dataset_ref = self._make_one('some-project-1', 'dataset_1')
         table_ref = dataset_ref.table('table_1')
-        self.assertIs(table_ref.dataset, dataset_ref)
+        self.assertEqual(table_ref.dataset_id, 'dataset_1')
+        self.assertEqual(table_ref.project, 'some-project-1')
         self.assertEqual(table_ref.table_id, 'table_1')
 
 
@@ -543,7 +544,8 @@ class TestDataset(unittest.TestCase):
         table = dataset.table('table_id')
         self.assertIsInstance(table, Table)
         self.assertEqual(table.table_id, 'table_id')
-        self.assertIs(table._dataset, dataset)
+        self.assertEqual(table.dataset_id, self.DS_ID)
+        self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.schema, [])
 
     def test_table_w_schema(self):
@@ -558,7 +560,8 @@ class TestDataset(unittest.TestCase):
         table = dataset.table('table_id', schema=[full_name, age])
         self.assertIsInstance(table, Table)
         self.assertEqual(table.table_id, 'table_id')
-        self.assertIs(table._dataset, dataset)
+        self.assertEqual(table.dataset_id, self.DS_ID)
+        self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.schema, [full_name, age])
 
 

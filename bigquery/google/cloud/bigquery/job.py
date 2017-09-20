@@ -1119,8 +1119,8 @@ class ExtractJob(_AsyncJob):
         """Generate a resource for :meth:`begin`."""
 
         source_ref = {
-            'projectId': self.source.dataset.project,
-            'datasetId': self.source.dataset.dataset_id,
+            'projectId': self.source.project,
+            'datasetId': self.source.dataset_id,
             'tableId': self.source.table_id,
         }
 
