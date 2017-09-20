@@ -560,23 +560,18 @@ class TestClient(unittest.TestCase):
         })
 
     def test_get_default_handler_app_engine(self):
-        import requests
         import os
         from google.cloud._testing import _Monkey
         from google.cloud.logging.client import _APPENGINE_FLEXIBLE_ENV_VM
         from google.cloud.logging.handlers import AppEngineHandler
 
-        http_mock = mock.Mock(spec=requests.Session)
         credentials = _make_credentials()
-        deepcopy = mock.Mock(return_value=http_mock)
 
         with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: 'True'}):
-            with mock.patch('copy.deepcopy', new=deepcopy):
-                client = self._make_one(project=self.PROJECT,
-                                        credentials=credentials,
-                                        _use_grpc=False)
-                handler = client.get_default_handler()
-                deepcopy.assert_called_once_with(client._http)
+            client = self._make_one(project=self.PROJECT,
+                                    credentials=credentials,
+                                    _use_grpc=False)
+            handler = client.get_default_handler()
 
         self.assertIsInstance(handler, AppEngineHandler)
 
@@ -598,39 +593,28 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(handler, ContainerEngineHandler)
 
     def test_get_default_handler_general(self):
-        import requests
         from google.cloud.logging.handlers import CloudLoggingHandler
 
-        http_mock = mock.Mock(spec=requests.Session)
         credentials = _make_credentials()
-        deepcopy = mock.Mock(return_value=http_mock)
 
-        with mock.patch('copy.deepcopy', new=deepcopy):
-            client = self._make_one(project=self.PROJECT,
-                                    credentials=credentials,
-                                    _use_grpc=False)
-            handler = client.get_default_handler()
-            deepcopy.assert_called_once_with(client._http)
+        client = self._make_one(project=self.PROJECT,
+                                credentials=credentials,
+                                _use_grpc=False)
+        handler = client.get_default_handler()
 
         self.assertIsInstance(handler, CloudLoggingHandler)
 
     def test_setup_logging(self):
-        import requests
-
-        http_mock = mock.Mock(spec=requests.Session)
-        deepcopy = mock.Mock(return_value=http_mock)
         setup_logging = mock.Mock(spec=[])
 
         credentials = _make_credentials()
 
-        with mock.patch('copy.deepcopy', new=deepcopy):
-            with mock.patch('google.cloud.logging.client.setup_logging',
-                            new=setup_logging):
-                client = self._make_one(project=self.PROJECT,
-                                        credentials=credentials,
-                                        _use_grpc=False)
-                client.setup_logging()
-                deepcopy.assert_called_once_with(client._http)
+        with mock.patch('google.cloud.logging.client.setup_logging',
+                        new=setup_logging):
+            client = self._make_one(project=self.PROJECT,
+                                    credentials=credentials,
+                                    _use_grpc=False)
+            client.setup_logging()
 
         setup_logging.assert_called()
 
