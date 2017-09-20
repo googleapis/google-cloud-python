@@ -25,24 +25,30 @@ class TestStreamedResultSet(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, response_iterator, restart=object(), source=None):
+        return self._getTargetClass()(
+            response_iterator, restart, source=source)
 
     def test_ctor_defaults(self):
         iterator = _MockCancellableIterator()
-        streamed = self._make_one(iterator)
+        restart = object()
+        streamed = self._make_one(iterator, restart)
         self.assertIs(streamed._response_iterator, iterator)
+        self.assertIs(streamed._restart, restart)
         self.assertIsNone(streamed._source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
         self.assertIsNone(streamed.resume_token)
+        self.assertIsNone(streamed.resume_token)
 
     def test_ctor_w_source(self):
         iterator = _MockCancellableIterator()
+        restart = object()
         source = object()
-        streamed = self._make_one(iterator, source=source)
+        streamed = self._make_one(iterator, restart, source=source)
         self.assertIs(streamed._response_iterator, iterator)
+        self.assertIs(streamed._restart, restart)
         self.assertIs(streamed._source, source)
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
@@ -128,7 +134,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_partial_result_set(
-            values, metadata=None, stats=None, chunked_value=False):
+            values, metadata=None, stats=None, chunked_value=False, **kw):
         from google.cloud.proto.spanner.v1.result_set_pb2 import (
             PartialResultSet)
         return PartialResultSet(
@@ -136,6 +142,7 @@ class TestStreamedResultSet(unittest.TestCase):
             metadata=metadata,
             stats=stats,
             chunked_value=chunked_value,
+            **kw
         )
 
     def test_properties_set(self):
@@ -470,7 +477,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._current_row = []
         streamed._merge_values([])
-        self.assertEqual(streamed.rows, [])
+        self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_empty_and_partial(self):
@@ -486,7 +493,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual(streamed.rows, [])
+        self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed._current_row, BARE)
 
     def test_merge_values_empty_and_filled(self):
@@ -502,7 +509,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual(streamed.rows, [BARE])
+        self.assertEqual(streamed._pending_rows, [BARE])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_empty_and_filled_plus(self):
@@ -522,7 +529,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual(streamed.rows, [BARE[0:3], BARE[3:6]])
+        self.assertEqual(streamed._pending_rows, [BARE[0:3], BARE[3:6]])
         self.assertEqual(streamed._current_row, BARE[6:])
 
     def test_merge_values_partial_and_empty(self):
@@ -539,7 +546,7 @@ class TestStreamedResultSet(unittest.TestCase):
         ]
         streamed._current_row[:] = BEFORE
         streamed._merge_values([])
-        self.assertEqual(streamed.rows, [])
+        self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed._current_row, BEFORE)
 
     def test_merge_values_partial_and_partial(self):
@@ -556,7 +563,7 @@ class TestStreamedResultSet(unittest.TestCase):
         MERGED = [42]
         TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
-        self.assertEqual(streamed.rows, [])
+        self.assertEqual(streamed._pending_rows, [])
         self.assertEqual(streamed._current_row, BEFORE + MERGED)
 
     def test_merge_values_partial_and_filled(self):
@@ -575,7 +582,7 @@ class TestStreamedResultSet(unittest.TestCase):
         MERGED = [42, True]
         TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
-        self.assertEqual(streamed.rows, [BEFORE + MERGED])
+        self.assertEqual(streamed._pending_rows, [BEFORE + MERGED])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_partial_and_filled_plus(self):
@@ -599,56 +606,120 @@ class TestStreamedResultSet(unittest.TestCase):
         TO_MERGE = [self._make_value(item) for item in MERGED]
         VALUES = BEFORE + MERGED
         streamed._merge_values(TO_MERGE)
-        self.assertEqual(streamed.rows, [VALUES[0:3], VALUES[3:6]])
+        self.assertEqual(streamed._pending_rows, [VALUES[0:3], VALUES[3:6]])
         self.assertEqual(streamed._current_row, VALUES[6:])
 
-    def test_one_or_none_no_value(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            self.assertIsNone(streamed.one_or_none())
-
-    def test_one_or_none_single_value(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._rows = ['foo']
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            self.assertEqual(streamed.one_or_none(), 'foo')
-
-    def test_one_or_none_multiple_values(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._rows = ['foo', 'bar']
-        with self.assertRaises(ValueError):
-            streamed.one_or_none()
-
-    def test_one_or_none_consumed_stream(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._metadata = object()
-        with self.assertRaises(RuntimeError):
-            streamed.one_or_none()
-
-    def test_one_single_value(self):
-        streamed = self._make_one(_MockCancellableIterator())
-        streamed._rows = ['foo']
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            self.assertEqual(streamed.one(), 'foo')
-
-    def test_one_no_value(self):
-        from google.cloud import exceptions
-
-        iterator = _MockCancellableIterator(['foo'])
-        streamed = self._make_one(iterator)
-        with mock.patch.object(streamed, 'consume_next') as consume_next:
-            consume_next.side_effect = StopIteration
-            with self.assertRaises(exceptions.NotFound):
-                streamed.one()
-
-    def test_consume_next_empty(self):
+    def test__flush_pending_rows_both_empty(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
+        streamed._flush_pending_rows()
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed.rows, [])
+
+    def test__flush_pending_rows_complete_empty(self):
+        row1, row2 = ('foo',), ('bar',)
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        streamed._pending_rows = [row1, row2]
+        streamed._flush_pending_rows()
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed.rows, [row1, row2])
+
+    def test__flush_pending_rows_pending_empty(self):
+        row1, row2 = ('foo',), ('bar',)
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        streamed._complete_rows = [row1, row2]
+        streamed._flush_pending_rows()
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed.rows, [row1, row2])
+
+    def test__flush_pending_rows_neither_empty(self):
+        row1, row2, row3, row4 = ('foo',), ('bar',), ('baz',), ('spam',)
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        streamed._complete_rows = [row1, row2]
+        streamed._pending_rows = [row3, row4]
+        streamed._flush_pending_rows()
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed.rows, [row1, row2, row3, row4])
+
+    def test__do_restart_no_token(self):
+        restart = mock.Mock()
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+
+        streamed._do_restart()
+
+        restart.assert_called_once_with()
+
+    def test__do_restart_empty(self):
+        TOKEN = b'DEADBEEF'
+        restart = mock.Mock()
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+        streamed._resume_token = TOKEN
+
+        streamed._do_restart()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        self.assertIsNone(streamed._pending_chunk)
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed._current_row, [])
+        restart.assert_called_once_with(TOKEN)
+
+    def test__do_restart_non_empty(self):
+        TOKEN = b'DEADBEEF'
+        restart = mock.Mock()
+        row1, row2, row3 = ('foo',), ('bar',), ('baz',)
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+        streamed._resume_token = TOKEN
+        streamed._pending_chunk = self._make_value(u'Phred ')
+        streamed._current_row = [row1]
+        streamed._pending_rows = [row2, row3]
+
+        streamed._do_restart()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        self.assertIsNone(streamed._pending_chunk)
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed._current_row, [])
+        restart.assert_called_once_with(TOKEN)
+
+    def test_consume_next_w_service_no_token_yet(self):
+        restart = mock.Mock()
+        iterator = _ServiceUnavailableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+
+        streamed.consume_next()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        restart.assert_called_once_with()
+
+    def test_consume_next_w_service_unavailable(self):
+        TOKEN = b'DEADBEEF'
+        restart = mock.Mock()
+        iterator = _ServiceUnavailableIterator()
+        streamed = self._make_one(iterator, restart=restart)
+        streamed._resume_token = TOKEN
+
+        streamed.consume_next()
+
+        self.assertIs(streamed._response_iterator, restart.return_value)
+        restart.assert_called_once_with(TOKEN)
+
+    def test_consume_next_empty(self):
+        row1, row2 = ('foo',), ('bar',)
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        streamed._pending_rows = [row1, row2]
+
         with self.assertRaises(StopIteration):
             streamed.consume_next()
+
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed.rows, [row1, row2])
 
     def test_consume_next_first_set_partial(self):
         TXN_ID = b'DEADBEEF'
@@ -665,36 +736,48 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator(result_set)
         source = mock.Mock(_transaction_id=None, spec=['_transaction_id'])
         streamed = self._make_one(iterator, source=source)
+
         streamed.consume_next()
+
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, None)
         self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_first_set_partial_existing_txn_id(self):
         TXN_ID = b'DEADBEEF'
+        PRIOR_TOKEN = b'B4'
+        NEW_TOKEN = b'AF2'
         FIELDS = [
             self._make_scalar_field('full_name', 'STRING'),
             self._make_scalar_field('age', 'INT64'),
             self._make_scalar_field('married', 'BOOL'),
         ]
+        row1, row2 = ('foo',), ('bar',)
         metadata = self._make_result_set_metadata(
             FIELDS, transaction_id=b'')
         BARE = [u'Phred Phlyntstone', 42]
         VALUES = [self._make_value(bare) for bare in BARE]
-        result_set = self._make_partial_result_set(VALUES, metadata=metadata)
+        result_set = self._make_partial_result_set(
+            VALUES, metadata=metadata, resume_token=NEW_TOKEN)
         iterator = _MockCancellableIterator(result_set)
         source = mock.Mock(_transaction_id=TXN_ID, spec=['_transaction_id'])
         streamed = self._make_one(iterator, source=source)
+        streamed._resume_token = PRIOR_TOKEN
+        streamed._pending_rows = [row1, row2]
+
         streamed.consume_next()
-        self.assertEqual(streamed.rows, [])
+
+        self.assertEqual(streamed._pending_rows, [])
+        self.assertEqual(streamed.rows, [row1, row2])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, NEW_TOKEN)
         self.assertEqual(source._transaction_id, TXN_ID)
 
-    def test_consume_next_w_partial_result(self):
+    def test_consume_next_w_partial_result_no_resume_token(self):
+        PRIOR_TOKEN = b'DEADBEEF'
         FIELDS = [
             self._make_scalar_field('full_name', 'STRING'),
             self._make_scalar_field('age', 'INT64'),
@@ -706,12 +789,15 @@ class TestStreamedResultSet(unittest.TestCase):
         result_set = self._make_partial_result_set(VALUES, chunked_value=True)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
+        streamed._resume_token = PRIOR_TOKEN
         streamed._metadata = self._make_result_set_metadata(FIELDS)
+
         streamed.consume_next()
+
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, VALUES[0])
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, PRIOR_TOKEN)
 
     def test_consume_next_w_pending_chunk(self):
         FIELDS = [
@@ -730,14 +816,16 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._pending_chunk = self._make_value(u'Phred ')
+
         streamed.consume_next()
-        self.assertEqual(streamed.rows, [
+
+        self.assertEqual(streamed._pending_rows, [
             [u'Phred Phlyntstone', BARE[1], BARE[2]],
             [BARE[3], BARE[4], BARE[5]],
         ])
         self.assertEqual(streamed._current_row, [BARE[6]])
         self.assertIsNone(streamed._pending_chunk)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, None)
 
     def test_consume_next_last_set(self):
         FIELDS = [
@@ -745,6 +833,7 @@ class TestStreamedResultSet(unittest.TestCase):
             self._make_scalar_field('age', 'INT64'),
             self._make_scalar_field('married', 'BOOL'),
         ]
+        row1, row2 = ('foo',), ('bar',)
         metadata = self._make_result_set_metadata(FIELDS)
         stats = self._make_result_set_stats(
             rows_returned="1",
@@ -757,11 +846,15 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
         streamed._metadata = metadata
+        streamed._pending_rows = [row1, row2]
+
         streamed.consume_next()
-        self.assertEqual(streamed.rows, [BARE])
+
+        self.assertEqual(streamed.rows, [row1, row2])
+        self.assertEqual(streamed._pending_rows, [BARE])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._stats, stats)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
+        self.assertEqual(streamed.resume_token, None)
 
     def test_consume_all_empty(self):
         iterator = _MockCancellableIterator()
@@ -886,7 +979,7 @@ class TestStreamedResultSet(unittest.TestCase):
         result_set2 = self._make_partial_result_set(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
         streamed = self._make_one(iterator)
-        streamed._rows[:] = ALREADY
+        streamed._complete_rows[:] = ALREADY
         found = list(streamed)
         self.assertEqual(found, ALREADY + [
             [BARE[0], BARE[1], BARE[2]],
@@ -897,10 +990,63 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed._current_row, [])
         self.assertIsNone(streamed._pending_chunk)
 
+    def test_one_single_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._complete_rows = ['foo']
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertEqual(streamed.one(), 'foo')
+
+    def test_one_no_value(self):
+        from google.cloud import exceptions
+
+        iterator = _MockCancellableIterator(['foo'])
+        streamed = self._make_one(iterator)
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            with self.assertRaises(exceptions.NotFound):
+                streamed.one()
+
+    def test_one_or_none_no_value(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertIsNone(streamed.one_or_none())
+
+    def test_one_or_none_single_value(self):
+        row = ('foo',)
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._complete_rows = [row]
+        with mock.patch.object(streamed, 'consume_next') as consume_next:
+            consume_next.side_effect = StopIteration
+            self.assertEqual(streamed.one_or_none(), row)
+
+    def test_one_or_none_multiple_values(self):
+        row1, row2 = ('foo',), ('bar',)
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._complete_rows = [row1, row2]
+        with self.assertRaises(ValueError):
+            streamed.one_or_none()
+
+    def test_one_or_none_consumed_stream(self):
+        streamed = self._make_one(_MockCancellableIterator())
+        streamed._metadata = object()
+        with self.assertRaises(RuntimeError):
+            streamed.one_or_none()
+
+
+class _ServiceUnavailableIterator(object):
+
+    def next(self):
+        from google.cloud import exceptions
+
+        raise exceptions.ServiceUnavailable('testing')
+
+    def __next__(self):  # pragma: NO COVER Py3k
+        return self.next()
+
 
 class _MockCancellableIterator(object):
-
-    cancel_calls = 0
 
     def __init__(self, *values):
         self.iter_values = iter(values)
@@ -921,8 +1067,9 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
         return StreamedResultSet
 
-    def _make_one(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
+    def _make_one(self, response_iterator, restart=object(), source=None):
+        return self._getTargetClass()(
+            response_iterator, restart, source=source)
 
     def _load_json_test(self, test_name):
         import os

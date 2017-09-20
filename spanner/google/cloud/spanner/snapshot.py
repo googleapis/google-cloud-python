@@ -14,6 +14,8 @@
 
 """Model a set of read-only queries to a database as a snapshot."""
 
+import functools
+
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
@@ -49,8 +51,7 @@ class _SnapshotBase(_SessionWrapper):
         """
         raise NotImplementedError
 
-    def read(self, table, columns, keyset, index='', limit=0,
-             resume_token=b''):
+    def read(self, table, columns, keyset, index='', limit=0):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -68,9 +69,6 @@ class _SnapshotBase(_SessionWrapper):
 
         :type limit: int
         :param limit: (Optional) maxiumn number of rows to return
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted read
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -91,18 +89,22 @@ class _SnapshotBase(_SessionWrapper):
 
         iterator = api.streaming_read(
             self._session.name, table, columns, keyset.to_pb(),
-            transaction=transaction, index=index, limit=limit,
-            resume_token=resume_token, options=options)
+            index=index, limit=limit,
+            transaction=transaction, options=options)
 
         self._read_request_count += 1
 
-        if self._multi_use:
-            return StreamedResultSet(iterator, source=self)
-        else:
-            return StreamedResultSet(iterator)
+        restart = functools.partial(
+            api.streaming_read, self._session.name, table, columns, keyset,
+            index=index, limit=limit,
+            transaction=transaction, options=options)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=b''):
+        if self._multi_use:
+            return StreamedResultSet(iterator, restart, source=self)
+        else:
+            return StreamedResultSet(iterator, restart)
+
+    def execute_sql(self, sql, params=None, param_types=None, query_mode=None):
         """Perform an ``ExecuteStreamingSql`` API request for rows in a table.
 
         :type sql: str
@@ -121,9 +123,6 @@ class _SnapshotBase(_SessionWrapper):
             :class:`google.cloud.proto.spanner.v1.ExecuteSqlRequest.QueryMode`
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted query
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -152,15 +151,20 @@ class _SnapshotBase(_SessionWrapper):
         api = database.spanner_api
         iterator = api.execute_streaming_sql(
             self._session.name, sql,
-            transaction=transaction, params=params_pb, param_types=param_types,
-            query_mode=query_mode, resume_token=resume_token, options=options)
+            params=params_pb, param_types=param_types, query_mode=query_mode,
+            transaction=transaction, options=options)
 
         self._read_request_count += 1
 
+        restart = functools.partial(
+            api.execute_streaming_sql, self._session.name, sql,
+            params=params, param_types=param_types, query_mode=query_mode,
+            transaction=transaction, options=options)
+
         if self._multi_use:
-            return StreamedResultSet(iterator, source=self)
+            return StreamedResultSet(iterator, restart, source=self)
         else:
-            return StreamedResultSet(iterator)
+            return StreamedResultSet(iterator, restart)
 
 
 class Snapshot(_SnapshotBase):
