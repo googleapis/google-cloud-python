@@ -264,16 +264,21 @@ class Client(ClientWithProject):
             method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response, self)
 
-    def delete_dataset(self, dataset_ref):
+    def delete_dataset(self, dataset):
         """Delete a dataset.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
 
-        :type dataset_ref: :class:`~google.cloud.bigquery.dataset.DatasetReference`
-        :param dataset_ref: a reference to the dataset to delete.
+        :type dataset: One of:
+                       :class:`~google.cloud.bigquery.dataset.Dataset`
+                       :class:`~google.cloud.bigquery.dataset.DatasetReference`
+
+        :param dataset: the dataset to delete, or a reference to it.
         """
-        self._connection.api_request(method='DELETE', path=dataset_ref.path)
+        if not isinstance(dataset, (Dataset, DatasetReference)):
+            raise TypeError('dataset must be a Dataset or a DatasetReference')
+        self._connection.api_request(method='DELETE', path=dataset.path)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
