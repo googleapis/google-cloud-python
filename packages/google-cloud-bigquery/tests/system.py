@@ -132,7 +132,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(got.friendly_name, 'Friendly')
         self.assertEqual(got.description, 'Description')
 
-    def test_patch_dataset(self):
+    def test_update_dataset(self):
         dataset = retry_403(Config.CLIENT.create_dataset)(
             Dataset(_make_dataset_id('patch_dataset')))
         self.to_delete.append(dataset)
@@ -140,27 +140,14 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_dataset_exists(dataset))
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.description)
-        dataset.patch(friendly_name='Friendly', description='Description')
-        self.assertEqual(dataset.friendly_name, 'Friendly')
-        self.assertEqual(dataset.description, 'Description')
+        dataset.friendly_name = 'Friendly'
+        dataset.description = 'Description'
+        ds2 = Config.CLIENT.update_dataset(dataset,
+                                           ['friendly_name', 'description'])
+        self.assertEqual(ds2.friendly_name, 'Friendly')
+        self.assertEqual(ds2.description, 'Description')
 
-    def test_update_dataset(self):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('update_dataset')))
-        self.to_delete.append(dataset)
-
-        self.assertTrue(_dataset_exists(dataset))
-        after = [entry for entry in dataset.access_entries
-                 if entry.entity_id != 'projectWriters']
-        dataset.access_entries = after
-
-        retry_403(dataset.update)()
-
-        self.assertEqual(len(dataset.access_entries), len(after))
-        for found, expected in zip(dataset.access_entries, after):
-            self.assertEqual(found.role, expected.role)
-            self.assertEqual(found.entity_type, expected.entity_type)
-            self.assertEqual(found.entity_id, expected.entity_id)
+    # TODO(jba): test that read-modify-write with ETag works.
 
     def test_list_datasets(self):
         datasets_to_create = [
