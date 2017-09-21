@@ -210,11 +210,9 @@ class TestDataset(unittest.TestCase):
             self.assertEqual(dataset.access_entries, [])
 
     def test_ctor_defaults(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID, project=self.PROJECT)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
-        self.assertIs(dataset._client, client)
-        self.assertEqual(dataset.project, client.project)
+        self.assertEqual(dataset.project, self.PROJECT)
         self.assertEqual(
             dataset.path,
             '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID))
@@ -238,12 +236,10 @@ class TestDataset(unittest.TestCase):
         bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
         entries = [phred, bharney]
         OTHER_PROJECT = 'foo-bar-123'
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client,
+        dataset = self._make_one(self.DS_ID,
                                  access_entries=entries,
                                  project=OTHER_PROJECT)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
-        self.assertIs(dataset._client, client)
         self.assertEqual(dataset.project, OTHER_PROJECT)
         self.assertEqual(
             dataset.path,
@@ -262,16 +258,14 @@ class TestDataset(unittest.TestCase):
         self.assertIsNone(dataset.location)
 
     def test_access_entries_setter_non_list(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         with self.assertRaises(TypeError):
             dataset.access_entries = object()
 
     def test_access_entries_setter_invalid_field(self):
         from google.cloud.bigquery.dataset import AccessEntry
 
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         with self.assertRaises(ValueError):
             dataset.access_entries = [phred, object()]
@@ -279,72 +273,61 @@ class TestDataset(unittest.TestCase):
     def test_access_entries_setter(self):
         from google.cloud.bigquery.dataset import AccessEntry
 
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         phred = AccessEntry('OWNER', 'userByEmail', 'phred@example.com')
         bharney = AccessEntry('OWNER', 'userByEmail', 'bharney@example.com')
         dataset.access_entries = [phred, bharney]
         self.assertEqual(dataset.access_entries, [phred, bharney])
 
     def test_default_table_expiration_ms_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         with self.assertRaises(ValueError):
             dataset.default_table_expiration_ms = 'bogus'
 
     def test_default_table_expiration_ms_setter(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         dataset.default_table_expiration_ms = 12345
         self.assertEqual(dataset.default_table_expiration_ms, 12345)
 
     def test_description_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         with self.assertRaises(ValueError):
             dataset.description = 12345
 
     def test_description_setter(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         dataset.description = 'DESCRIPTION'
         self.assertEqual(dataset.description, 'DESCRIPTION')
 
     def test_friendly_name_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         with self.assertRaises(ValueError):
             dataset.friendly_name = 12345
 
     def test_friendly_name_setter(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         dataset.friendly_name = 'FRIENDLY'
         self.assertEqual(dataset.friendly_name, 'FRIENDLY')
 
     def test_location_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         with self.assertRaises(ValueError):
             dataset.location = 12345
 
     def test_location_setter(self):
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client)
+        dataset = self._make_one(self.DS_ID)
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
         RESOURCE = {}
         klass = self._get_target_class()
         with self.assertRaises(KeyError):
-            klass.from_api_repr(RESOURCE, client=client)
+            klass.from_api_repr(RESOURCE)
 
     def test_from_api_repr_bare(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
         RESOURCE = {
             'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'datasetReference': {
@@ -353,24 +336,20 @@ class TestDataset(unittest.TestCase):
             }
         }
         klass = self._get_target_class()
-        dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertIs(dataset._client, client)
+        dataset = klass.from_api_repr(RESOURCE)
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
         klass = self._get_target_class()
-        dataset = klass.from_api_repr(RESOURCE, client=client)
-        self.assertIs(dataset._client, client)
+        dataset = klass.from_api_repr(RESOURCE)
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test__parse_access_entries_w_unknown_entity_type(self):
         ACCESS = [
             {'role': 'READER', 'unknown': 'UNKNOWN'},
         ]
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client=client)
+        dataset = self._make_one(self.DS_ID)
         with self.assertRaises(ValueError):
             dataset._parse_access_entries(ACCESS)
 
@@ -383,24 +362,16 @@ class TestDataset(unittest.TestCase):
                 'userByEmail': USER_EMAIL,
             },
         ]
-        client = _Client(self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client=client)
+        dataset = self._make_one(self.DS_ID)
         with self.assertRaises(ValueError):
             dataset._parse_access_entries(ACCESS)
 
     def test_table(self):
         from google.cloud.bigquery.table import TableReference
 
-        client = _Client(project=self.PROJECT)
-        dataset = self._make_one(self.DS_ID, client=client)
+        dataset = self._make_one(self.DS_ID, project=self.PROJECT)
         table = dataset.table('table_id')
         self.assertIsInstance(table, TableReference)
         self.assertEqual(table.table_id, 'table_id')
         self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(table.project, self.PROJECT)
-
-
-class _Client(object):
-
-    def __init__(self, project='project'):
-        self.project = project

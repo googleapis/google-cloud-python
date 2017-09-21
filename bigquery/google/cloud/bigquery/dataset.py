@@ -157,38 +157,31 @@ class Dataset(object):
     :type dataset_id: str
     :param dataset_id: the ID of the dataset
 
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: (Optional) A client which holds credentials and project
-                   configuration for the dataset (which requires a project).
-
     :type access_entries: list of :class:`AccessEntry`
     :param access_entries: roles granted to entities for this dataset
 
     :type project: str
-    :param project: (Optional) project ID for the dataset (defaults to
-                    the project of the client).
+    :param project: (Optional) project ID for the dataset.
     """
 
     _access_entries = None
 
     def __init__(self,
                  dataset_id,
-                 client=None,
                  access_entries=(),
                  project=None):
         self._dataset_id = dataset_id
-        self._client = client
         self._properties = {}
         # Let the @property do validation.
         self.access_entries = access_entries
-        self._project = project or (client and client.project)
+        self._project = project
 
     @property
     def project(self):
         """Project bound to the dataset.
 
         :rtype: str
-        :returns: the project (derived from the client).
+        :returns: the project.
         """
         return self._project
 
@@ -373,25 +366,21 @@ class Dataset(object):
         self._properties['location'] = value
 
     @classmethod
-    def from_api_repr(cls, resource, client):
+    def from_api_repr(cls, resource):
         """Factory:  construct a dataset given its API representation
 
         :type resource: dict
         :param resource: dataset resource representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.client.Client`
-        :param client: Client which holds credentials and project
-                       configuration for the dataset.
-
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: Dataset parsed from ``resource``.
         """
-        if ('datasetReference' not in resource or
-                'datasetId' not in resource['datasetReference']):
+        dsr = resource.get('datasetReference')
+        if dsr is None or 'datasetId' not in dsr:
             raise KeyError('Resource lacks required identity information:'
                            '["datasetReference"]["datasetId"]')
-        dataset_id = resource['datasetReference']['datasetId']
-        dataset = cls(dataset_id, client=client)
+        dataset_id = dsr['datasetId']
+        dataset = cls(dataset_id, project=dsr['projectId'])
         dataset._set_properties(resource)
         return dataset
 
