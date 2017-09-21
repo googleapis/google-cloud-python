@@ -23,7 +23,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery.dataset import Table
+from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
@@ -263,6 +263,44 @@ class Client(ClientWithProject):
         api_response = self._connection.api_request(
             method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response, self)
+
+    def list_dataset_tables(self, dataset, max_results=None, page_token=None):
+        """List tables in the dataset.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
+
+        :type dataset: One of:
+                       :class:`~google.cloud.bigquery.dataset.Dataset`
+                       :class:`~google.cloud.bigquery.dataset.DatasetReference`
+        :param dataset: the dataset whose tables to list, or a reference to it.
+
+        :type max_results: int
+        :param max_results: (Optional) Maximum number of tables to return.
+                            If not passed, defaults to a value set by the API.
+
+        :type page_token: str
+        :param page_token: (Optional) Opaque marker for the next "page" of
+                           datasets. If not passed, the API will return the
+                           first page of datasets.
+
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
+                  contained within the current dataset.
+        """
+        if not isinstance(dataset, (Dataset, DatasetReference)):
+            raise TypeError('dataset must be a Dataset or a DatasetReference')
+        path = '%s/tables' % dataset.path
+        result = page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path=path,
+            item_to_value=_item_to_table,
+            items_key='tables',
+            page_token=page_token,
+            max_results=max_results)
+        result.dataset = dataset
+        return result
 
     def delete_dataset(self, dataset):
         """Delete a dataset.
@@ -600,3 +638,18 @@ def _item_to_job(iterator, resource):
     :returns: The next job in the page.
     """
     return iterator.client.job_from_resource(resource)
+
+
+def _item_to_table(iterator, resource):
+    """Convert a JSON table to the native object.
+
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :param iterator: The iterator that is currently in use.
+
+    :type resource: dict
+    :param resource: An item to be converted to a table.
+
+    :rtype: :class:`~google.cloud.bigquery.table.Table`
+    :returns: The next table in the page.
+    """
+    return Table.from_api_repr(resource, iterator.client)
