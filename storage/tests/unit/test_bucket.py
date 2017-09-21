@@ -389,6 +389,54 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
+    def test_list_notifications(self):
+        from google.cloud.storage.notification import BucketNotification
+        from google.cloud.storage.notification import _TOPIC_REF_FMT
+
+        NAME = 'name'
+
+        topic_refs = [
+            ('my-project-123', 'topic-1'),
+            ('other-project-456', 'topic-2'),
+        ]
+
+        resources = [{
+            'topic': _TOPIC_REF_FMT.format(*topic_refs[0]),
+            'id': '1',
+            'etag': 'DEADBEEF',
+            'selfLink': 'https://example.com/notification/1',
+        }, {
+            'topic': _TOPIC_REF_FMT.format(*topic_refs[1]),
+            'id': '2',
+            'etag': 'FACECABB',
+            'selfLink': 'https://example.com/notification/2',
+        }]
+        connection = _Connection({'items': resources})
+        client = _Client(connection)
+        bucket = self._make_one(client=client, name=NAME)
+
+        notifications = list(bucket.list_notifications())
+
+        self.assertEqual(len(notifications), len(resources))
+        for notification, resource, topic_ref in zip(
+            notifications, resources, topic_refs):
+            self.assertIsInstance(notification, BucketNotification)
+            self.assertEqual(notification.topic_project, topic_ref[0])
+            self.assertEqual(notification.topic_name, topic_ref[1])
+            self.assertEqual(notification.notification_id, resource['id'])
+            self.assertEqual(notification.etag, resource['etag'])
+            self.assertEqual(notification.self_link, resource['selfLink'])
+            self.assertEqual(
+                notification.custom_attributes,
+                resource.get('custom_attributes'))
+            self.assertEqual(
+                notification.event_types, resource.get('event_types'))
+            self.assertEqual(
+                notification.blob_name_prefix,
+                resource.get('blob_name_prefix'))
+            self.assertEqual(
+                notification.payload_format, resource.get('payload_format'))
+
     def test_delete_miss(self):
         from google.cloud.exceptions import NotFound
 

@@ -77,6 +77,26 @@ def _item_to_blob(iterator, item):
     return blob
 
 
+def _item_to_notification(iterator, item):
+    """Convert a JSON blob to the native object.
+
+    .. note::
+
+        This assumes that the ``bucket`` attribute has been
+        added to the iterator after being created.
+
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type item: dict
+    :param item: An item to be converted to a blob.
+
+    :rtype: :class:`.BucketNotification`
+    :returns: The next notification being iterated.
+    """
+    return BucketNotification.from_api_repr(item, bucket=iterator.bucket)
+
+
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
@@ -168,10 +188,9 @@ class Bucket(_PropertyMixin):
                      payload_format=None):
         """Factory:  create a notification resource for the bucket.
 
-        See: :class:`google.cloud.storage.notification.BucketNotification`
-        for parameters.
+        See: :class:`.BucketNotification` for parameters.
 
-        :rtype: :class:`google.cloud.storage.notification.BucketNotification`
+        :rtype: :class:`.BucketNotification`
         """
         return BucketNotification(
             self, topic_name,
@@ -403,6 +422,30 @@ class Bucket(_PropertyMixin):
             page_start=_blobs_page_start)
         iterator.bucket = self
         iterator.prefixes = set()
+        return iterator
+
+    def list_notifications(self, client=None):
+        """List Pub / Sub notifications for this bucket.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/list
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: list of :class:`.BucketNotification`
+        :returns: notification instances
+        """
+        client = self._require_client(client)
+        path = self.path + '/notificationConfigs'
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_notification)
+        iterator.bucket = self
         return iterator
 
     def delete(self, force=False, client=None):
