@@ -388,129 +388,10 @@ class TestDataset(unittest.TestCase):
         with self.assertRaises(ValueError):
             dataset._parse_access_entries(ACCESS)
 
-    def test_list_tables_empty(self):
-        import six
-
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_ID, client=client)
-
-        iterator = dataset.list_tables()
-        self.assertIs(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
-        tables = list(page)
-        token = iterator.next_page_token
-
-        self.assertEqual(tables, [])
-        self.assertIsNone(token)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
-        self.assertEqual(req['path'], '/%s' % PATH)
-
-    def test_list_tables_defaults(self):
-        import six
-        from google.cloud.bigquery.table import Table
-
-        TABLE_1 = 'table_one'
-        TABLE_2 = 'table_two'
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
-        TOKEN = 'TOKEN'
-        DATA = {
-            'nextPageToken': TOKEN,
-            'tables': [
-                {'kind': 'bigquery#table',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_1),
-                 'tableReference': {'tableId': TABLE_1,
-                                    'datasetId': self.DS_ID,
-                                    'projectId': self.PROJECT},
-                 'type': 'TABLE'},
-                {'kind': 'bigquery#table',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_2),
-                 'tableReference': {'tableId': TABLE_2,
-                                    'datasetId': self.DS_ID,
-                                    'projectId': self.PROJECT},
-                 'type': 'TABLE'},
-            ]
-        }
-
-        conn = _Connection(DATA)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_ID, client=client)
-
-        iterator = dataset.list_tables()
-        self.assertIs(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
-        tables = list(page)
-        token = iterator.next_page_token
-
-        self.assertEqual(len(tables), len(DATA['tables']))
-        for found, expected in zip(tables, DATA['tables']):
-            self.assertIsInstance(found, Table)
-            self.assertEqual(found.full_table_id, expected['id'])
-            self.assertEqual(found.table_type, expected['type'])
-        self.assertEqual(token, TOKEN)
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-
-    def test_list_tables_explicit(self):
-        import six
-        from google.cloud.bigquery.table import Table
-
-        TABLE_1 = 'table_one'
-        TABLE_2 = 'table_two'
-        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
-        TOKEN = 'TOKEN'
-        DATA = {
-            'tables': [
-                {'kind': 'bigquery#dataset',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_1),
-                 'tableReference': {'tableId': TABLE_1,
-                                    'datasetId': self.DS_ID,
-                                    'projectId': self.PROJECT},
-                 'type': 'TABLE'},
-                {'kind': 'bigquery#dataset',
-                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_2),
-                 'tableReference': {'tableId': TABLE_2,
-                                    'datasetId': self.DS_ID,
-                                    'projectId': self.PROJECT},
-                 'type': 'TABLE'},
-            ]
-        }
-
-        conn = _Connection(DATA)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_ID, client=client)
-
-        iterator = dataset.list_tables(max_results=3, page_token=TOKEN)
-        self.assertIs(iterator.dataset, dataset)
-        page = six.next(iterator.pages)
-        tables = list(page)
-        token = iterator.next_page_token
-
-        self.assertEqual(len(tables), len(DATA['tables']))
-        for found, expected in zip(tables, DATA['tables']):
-            self.assertIsInstance(found, Table)
-            self.assertEqual(found.full_table_id, expected['id'])
-            self.assertEqual(found.table_type, expected['type'])
-        self.assertIsNone(token)
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['query_params'],
-                         {'maxResults': 3, 'pageToken': TOKEN})
-
     def test_table(self):
         from google.cloud.bigquery.table import TableReference
 
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         dataset = self._make_one(self.DS_ID, client=client)
         table = dataset.table('table_id')
         self.assertIsInstance(table, TableReference)
@@ -521,18 +402,5 @@ class TestDataset(unittest.TestCase):
 
 class _Client(object):
 
-    def __init__(self, project='project', connection=None):
+    def __init__(self, project='project'):
         self.project = project
-        self._connection = connection
-
-
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
