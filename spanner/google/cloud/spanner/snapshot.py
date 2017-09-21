@@ -14,6 +14,8 @@
 
 """Model a set of read-only queries to a database as a snapshot."""
 
+import functools
+
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
@@ -116,10 +118,13 @@ class _SnapshotBase(_SessionWrapper):
         options = _options_with_prefix(database.name)
         transaction = self._make_txn_selector()
 
-        iterator = api.streaming_read(
+        restart = functools.partial(
+            api.streaming_read,
             self._session.name, table, columns, keyset.to_pb(),
             transaction=transaction, index=index, limit=limit,
             options=options)
+
+        iterator = _restart_on_unavailable(restart)
 
         self._read_request_count += 1
 
@@ -173,10 +178,14 @@ class _SnapshotBase(_SessionWrapper):
         options = _options_with_prefix(database.name)
         transaction = self._make_txn_selector()
         api = database.spanner_api
-        iterator = api.execute_streaming_sql(
+
+        restart = functools.partial(
+            api.execute_streaming_sql,
             self._session.name, sql,
             transaction=transaction, params=params_pb, param_types=param_types,
             query_mode=query_mode, options=options)
+
+        iterator = _restart_on_unavailable(restart)
 
         self._read_request_count += 1
 

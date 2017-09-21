@@ -159,7 +159,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived = self._makeDerived(session)
 
         with self.assertRaises(GaxError):
-            derived.read(TABLE_NAME, COLUMNS, KEYSET)
+            list(derived.read(TABLE_NAME, COLUMNS, KEYSET))
 
         (r_session, table, columns, key_set, transaction, index,
          limit, resume_token, options) = api._streaming_read_with
@@ -294,7 +294,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived = self._makeDerived(session)
 
         with self.assertRaises(GaxError):
-            derived.execute_sql(SQL_QUERY)
+            list(derived.execute_sql(SQL_QUERY))
 
         (r_session, sql, transaction, params, param_types,
          resume_token, query_mode, options) = api._executed_streaming_sql_with
