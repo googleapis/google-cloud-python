@@ -265,7 +265,6 @@ class TestSession(unittest.TestCase):
         KEYSET = KeySet(keys=KEYS)
         INDEX = 'email-address-index'
         LIMIT = 20
-        TOKEN = b'DEADBEEF'
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
         session._session_id = 'DEADBEEF'
@@ -279,28 +278,26 @@ class TestSession(unittest.TestCase):
                 self._session = session
                 self._kwargs = kwargs.copy()
 
-            def read(self, table, columns, keyset, index='', limit=0,
-                     resume_token=b''):
+            def read(self, table, columns, keyset, index='', limit=0):
                 _read_with.append(
-                    (table, columns, keyset, index, limit, resume_token))
+                    (table, columns, keyset, index, limit))
                 return expected
 
         with _Monkey(MUT, Snapshot=_Snapshot):
             found = session.read(
                 TABLE_NAME, COLUMNS, KEYSET,
-                index=INDEX, limit=LIMIT, resume_token=TOKEN)
+                index=INDEX, limit=LIMIT)
 
         self.assertIs(found, expected)
 
         self.assertEqual(len(_read_with), 1)
-        (table, columns, key_set, index, limit, resume_token) = _read_with[0]
+        (table, columns, key_set, index, limit) = _read_with[0]
 
         self.assertEqual(table, TABLE_NAME)
         self.assertEqual(columns, COLUMNS)
         self.assertEqual(key_set, KEYSET)
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
-        self.assertEqual(resume_token, TOKEN)
 
     def test_execute_sql_not_created(self):
         SQL = 'SELECT first_name, age FROM citizens'
@@ -330,25 +327,23 @@ class TestSession(unittest.TestCase):
                 self._kwargs = kwargs.copy()
 
             def execute_sql(
-                    self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=None):
+                    self, sql, params=None, param_types=None, query_mode=None):
                 _executed_sql_with.append(
-                    (sql, params, param_types, query_mode, resume_token))
+                    (sql, params, param_types, query_mode))
                 return expected
 
         with _Monkey(MUT, Snapshot=_Snapshot):
-            found = session.execute_sql(SQL, resume_token=TOKEN)
+            found = session.execute_sql(SQL)
 
         self.assertIs(found, expected)
 
         self.assertEqual(len(_executed_sql_with), 1)
-        sql, params, param_types, query_mode, token = _executed_sql_with[0]
+        sql, params, param_types, query_mode = _executed_sql_with[0]
 
         self.assertEqual(sql, SQL)
         self.assertEqual(params, None)
         self.assertEqual(param_types, None)
         self.assertEqual(query_mode, None)
-        self.assertEqual(token, TOKEN)
 
     def test_batch_not_created(self):
         database = _Database(self.DATABASE_NAME)
