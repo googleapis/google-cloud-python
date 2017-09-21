@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import unittest
 
 import mock
@@ -1320,58 +1321,167 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(job.query_parameters, query_parameters)
 
-    def test_run_sync_query_defaults(self):
-        from google.cloud.bigquery.query import QueryResults
+    def test_query_rows_defaults(self):
+        from google.api.core.page_iterator import HTTPIterator
 
+        JOB = 'job-id'
         PROJECT = 'PROJECT'
-        QUERY = 'select count(*) from persons'
+        QUERY = 'SELECT COUNT(*) FROM persons'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                },
+            },
+            'status': {
+                'state': 'DONE',
+            },
+        }
+        RESULTS_RESOURCE = {
+            'jobReference': RESOURCE['jobReference'],
+            'jobComplete': True,
+            'schema': {
+                'fields': [
+                    {'name': 'field0', 'type': 'INTEGER', 'mode': 'NULLABLE'},
+                ]
+            },
+            'totalRows': '3',
+            'pageToken': 'next-page',
+        }
+        FIRST_PAGE = copy.deepcopy(RESULTS_RESOURCE)
+        FIRST_PAGE['rows'] = [
+            {'f': [{'v': '1'}]},
+            {'f': [{'v': '2'}]},
+        ]
+        LAST_PAGE = copy.deepcopy(RESULTS_RESOURCE)
+        LAST_PAGE['rows'] = [
+            {'f': [{'v': '3'}]},
+        ]
+        del LAST_PAGE['pageToken']
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        query = client.run_sync_query(QUERY)
-        self.assertIsInstance(query, QueryResults)
-        self.assertIs(query._client, client)
-        self.assertIsNone(query.name)
-        self.assertEqual(query.query, QUERY)
-        self.assertEqual(query.udf_resources, [])
-        self.assertEqual(query.query_parameters, [])
+        conn = client._connection = _Connection(
+            RESOURCE, RESULTS_RESOURCE, FIRST_PAGE, LAST_PAGE)
 
-    def test_run_sync_query_w_udf_resources(self):
-        from google.cloud.bigquery._helpers import UDFResource
-        from google.cloud.bigquery.query import QueryResults
+        rows_iter = client.query_rows(QUERY)
+        rows = [row for row in rows_iter]
 
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        self.assertEqual(rows, [(1,), (2,), (3,)])
+        self.assertIs(rows_iter.client, client)
+        self.assertIsInstance(rows_iter, HTTPIterator)
+        self.assertEqual(len(conn._requested), 4)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        self.assertIsInstance(
+            req['data']['jobReference']['jobId'], six.string_types)
+
+    def test_query_rows_w_job_id(self):
+        from google.api.core.page_iterator import HTTPIterator
+
+        JOB = 'job-id'
         PROJECT = 'PROJECT'
-        QUERY = 'select count(*) from persons'
+        QUERY = 'SELECT COUNT(*) FROM persons'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                },
+            },
+            'status': {
+                'state': 'DONE',
+            },
+        }
+        RESULTS_RESOURCE = {
+            'jobReference': RESOURCE['jobReference'],
+            'jobComplete': True,
+            'schema': {
+                'fields': [
+                    {'name': 'field0', 'type': 'INTEGER', 'mode': 'NULLABLE'},
+                ]
+            },
+            'totalRows': '0',
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        query = client.run_sync_query(QUERY, udf_resources=udf_resources)
-        self.assertIsInstance(query, QueryResults)
-        self.assertIs(query._client, client)
-        self.assertIsNone(query.name)
-        self.assertEqual(query.query, QUERY)
-        self.assertEqual(query.udf_resources, udf_resources)
-        self.assertEqual(query.query_parameters, [])
+        conn = client._connection = _Connection(
+            RESOURCE, RESULTS_RESOURCE, RESULTS_RESOURCE)
 
-    def test_run_sync_query_w_query_parameters(self):
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
-        from google.cloud.bigquery.query import QueryResults
+        rows_iter = client.query_rows(QUERY, job_id=JOB)
+        rows = [row for row in rows_iter]
 
+        self.assertEqual(rows, [])
+        self.assertIs(rows_iter.client, client)
+        self.assertIsInstance(rows_iter, HTTPIterator)
+        self.assertEqual(len(conn._requested), 3)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        self.assertEqual(req['data']['jobReference']['jobId'], JOB)
+
+    def test_query_rows_w_job_config(self):
+        from google.cloud.bigquery.job import QueryJobConfig
+        from google.api.core.page_iterator import HTTPIterator
+
+        JOB = 'job-id'
         PROJECT = 'PROJECT'
-        QUERY = 'select count(*) from persons'
+        QUERY = 'SELECT COUNT(*) FROM persons'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                    'useLegacySql': True,
+                },
+                'dryRun': True,
+            },
+            'status': {
+                'state': 'DONE',
+            },
+        }
+        RESULTS_RESOURCE = {
+            'jobReference': RESOURCE['jobReference'],
+            'jobComplete': True,
+            'schema': {
+                'fields': [
+                    {'name': 'field0', 'type': 'INTEGER', 'mode': 'NULLABLE'},
+                ]
+            },
+            'totalRows': '0',
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
-        query = client.run_sync_query(QUERY, query_parameters=query_parameters)
-        self.assertIsInstance(query, QueryResults)
-        self.assertIs(query._client, client)
-        self.assertIsNone(query.name)
-        self.assertEqual(query.query, QUERY)
-        self.assertEqual(query.udf_resources, [])
-        self.assertEqual(query.query_parameters, query_parameters)
+        conn = client._connection = _Connection(
+            RESOURCE, RESULTS_RESOURCE, RESULTS_RESOURCE)
+
+        job_config = QueryJobConfig()
+        job_config.use_legacy_sql = True
+        job_config.dry_run = True
+        rows_iter = client.query_rows(QUERY, job_id=JOB, job_config=job_config)
+
+        self.assertIsInstance(rows_iter, HTTPIterator)
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[0]
+        configuration = req['data']['configuration']
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        self.assertEqual(req['data']['jobReference']['jobId'], JOB)
+        self.assertEqual(configuration['query']['useLegacySql'], True)
+        self.assertEqual(configuration['dryRun'], True)
 
 
 class _Connection(object):

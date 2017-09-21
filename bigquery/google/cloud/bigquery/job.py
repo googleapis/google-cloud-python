@@ -1218,11 +1218,53 @@ class ExtractJob(_AsyncJob):
         return job
 
 
-class _AsyncQueryConfiguration(object):
-    """User-settable configuration options for asynchronous query jobs.
+class QueryJobConfig(object):
+    """Configuration options for query jobs.
 
-    Values which are ``None`` -> server defaults.
+    All properties in this class are optional. Values which are ``None`` ->
+    server defaults.
     """
+
+    def __init__(self):
+        self._properties = {}
+        # TODO(swast): Default to standard SQL syntax.
+
+    def to_api_repr(self):
+        """Build an API representation of the copy job config.
+
+        :rtype: dict
+        :returns: A dictionary in the format used by the BigQuery API.
+        """
+        return copy.deepcopy(self._properties)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct a job configuration given its API representation
+
+        :type resource: dict
+        :param resource:
+            An extract job configuration in the same representation as is
+            returned from the API.
+
+        :rtype: :class:`google.cloud.bigquery.job.ExtractJobConfig`
+        :returns: Configuration parsed from ``resource``.
+        """
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        return config
+
+    use_legacy_sql = _TypedApiResourceProperty(
+        'use_legacy_sql', 'useLegacySql', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/\
+    reference/v2/jobs#configuration.query.useLegacySql
+    """
+
+    dry_run = _TypedApiResourceProperty('dry_run', 'dryRun', bool)
+    """See
+    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun
+    """
+
     _allow_large_results = None
     _create_disposition = None
     _default_dataset = None
@@ -1231,7 +1273,6 @@ class _AsyncQueryConfiguration(object):
     _priority = None
     _use_query_cache = None
     _use_legacy_sql = None
-    _dry_run = None
     _write_disposition = None
     _maximum_billing_tier = None
     _maximum_bytes_billed = None
@@ -1260,19 +1301,59 @@ class QueryJob(_AsyncJob):
         An iterable of
         :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
         (empty by default)
+
+    :type job_config: :class:`~google.cloud.bigquery.job.QueryJobConfig`
+    :param job_config:
+        (Optional) Extra configuration options for the query job.
     """
     _JOB_TYPE = 'query'
     _UDF_KEY = 'userDefinedFunctionResources'
     _QUERY_PARAMETERS_KEY = 'queryParameters'
 
     def __init__(self, job_id, query, client,
-                 udf_resources=(), query_parameters=()):
+                 udf_resources=(), query_parameters=(), job_config=None):
         super(QueryJob, self).__init__(job_id, client)
+
+        if job_config is None:
+            job_config = QueryJobConfig()
+
         self.query = query
         self.udf_resources = udf_resources
         self.query_parameters = query_parameters
-        self._configuration = _AsyncQueryConfiguration()
+        self._configuration = job_config
         self._query_results = None
+
+    @property
+    def use_legacy_sql(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql`.
+        """
+        return self._configuration.use_legacy_sql
+
+    @use_legacy_sql.setter
+    def use_legacy_sql(self, value):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql`.
+        """
+        # TODO(swast): remove this method and only allow setting use_legacy_sql
+        #              on QueryJobConfig objects.
+        self._configuration.use_legacy_sql = value
+
+    @property
+    def dry_run(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.dry_run`.
+        """
+        return self._configuration.dry_run
+
+    @dry_run.setter
+    def dry_run(self, value):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.dry_run`.
+        """
+        # TODO(swast): remove this method and only allow setting dry_run
+        #              on QueryJobConfig objects.
+        self._configuration.dry_run = value
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
     """See
@@ -1314,20 +1395,8 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
     """
 
-    use_legacy_sql = _TypedProperty('use_legacy_sql', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/\
-    reference/v2/jobs#configuration.query.useLegacySql
-    """
-
-    dry_run = _TypedProperty('dry_run', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/\
-    reference/rest/v2/jobs#configuration.dryRun
-    """
-
-    write_disposition = WriteDisposition('write_disposition',
-                                         'writeDisposition')
+    write_disposition = WriteDisposition(
+        'write_disposition', 'writeDisposition')
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
     """
@@ -1363,8 +1432,6 @@ class QueryJob(_AsyncJob):
             configuration['flattenResults'] = self.flatten_results
         if self.use_query_cache is not None:
             configuration['useQueryCache'] = self.use_query_cache
-        if self.use_legacy_sql is not None:
-            configuration['useLegacySql'] = self.use_legacy_sql
 
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
@@ -1406,6 +1473,7 @@ class QueryJob(_AsyncJob):
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
+        configuration = self._configuration.to_api_repr()
 
         resource = {
             'jobReference': {
@@ -1413,16 +1481,18 @@ class QueryJob(_AsyncJob):
                 'jobId': self.job_id,
             },
             'configuration': {
-                self._JOB_TYPE: {
-                    'query': self.query,
-                },
+                self._JOB_TYPE: configuration,
             },
         }
 
-        if self.dry_run is not None:
-            resource['configuration']['dryRun'] = self.dry_run
+        # The dryRun property only applies to query jobs, but it is defined at
+        # a level higher up. We need to remove it from the query config.
+        if 'dryRun' in configuration:
+            dry_run = configuration['dryRun']
+            del configuration['dryRun']
+            resource['configuration']['dryRun'] = dry_run
 
-        configuration = resource['configuration'][self._JOB_TYPE]
+        configuration['query'] = self.query
         self._populate_config_resource(configuration)
 
         return resource
@@ -1436,19 +1506,28 @@ class QueryJob(_AsyncJob):
            the client's project.
         """
         configuration = cleaned['configuration']['query']
-
         self.query = configuration['query']
+
+        # The dryRun property only applies to query jobs, but it is defined at
+        # a level higher up. We need to copy it to the query config.
+        self._configuration.dry_run = cleaned['configuration'].get('dryRun')
 
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
+        # The dryRun property only applies to query jobs, but it is defined at
+        # a level higher up. We need to copy it to the query config.
+        # It should already be correctly set by the _scrub_local_properties()
+        # method.
+        dry_run = self.dry_run
+        self._configuration = QueryJobConfig.from_api_repr(configuration)
+        self._configuration.dry_run = dry_run
+
         self.allow_large_results = _bool_or_none(
             configuration.get('allowLargeResults'))
         self.flatten_results = _bool_or_none(
             configuration.get('flattenResults'))
         self.use_query_cache = _bool_or_none(
             configuration.get('useQueryCache'))
-        self.use_legacy_sql = _bool_or_none(
-            configuration.get('useLegacySql'))
 
         self.create_disposition = configuration.get('createDisposition')
         self.priority = configuration.get('priority')
@@ -1463,12 +1542,9 @@ class QueryJob(_AsyncJob):
             if self.destination is not None:
                 del self.destination
         else:
-            dest_local = self._destination_table_resource()
-            if dest_remote != dest_local:
-                project = dest_remote['projectId']
-                dataset = Dataset(DatasetReference(project,
-                                                   dest_remote['datasetId']))
-                self.destination = dataset.table(dest_remote['tableId'])
+            dataset = DatasetReference(
+                dest_remote['projectId'], dest_remote['datasetId'])
+            self.destination = dataset.table(dest_remote['tableId'])
 
         def_ds = configuration.get('defaultDataset')
         if def_ds is None:

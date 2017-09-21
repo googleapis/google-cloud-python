@@ -697,7 +697,7 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
-    def test_sync_query_w_legacy_sql_types(self):
+    def test_query_rows_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
@@ -728,12 +728,13 @@ class TestBigQuery(unittest.TestCase):
             },
         ]
         for example in examples:
-            query = Config.CLIENT.run_sync_query(example['sql'])
-            query.use_legacy_sql = True
-            query.run()
-            self.assertEqual(len(query.rows), 1)
-            self.assertEqual(len(query.rows[0]), 1)
-            self.assertEqual(query.rows[0][0], example['expected'])
+            job_config = bigquery.QueryJobConfig()
+            job_config.use_legacy_sql = True
+            rows = list(Config.CLIENT.query_rows(
+                example['sql'], job_config=job_config))
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(len(rows[0]), 1)
+            self.assertEqual(rows[0][0], example['expected'])
 
     def _generate_standard_sql_types_examples(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
@@ -829,15 +830,20 @@ class TestBigQuery(unittest.TestCase):
             },
         ]
 
-    def test_sync_query_w_standard_sql_types(self):
+    def test_query_rows_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
         for example in examples:
-            query = Config.CLIENT.run_sync_query(example['sql'])
-            query.use_legacy_sql = False
-            query.run()
-            self.assertEqual(len(query.rows), 1)
-            self.assertEqual(len(query.rows[0]), 1)
-            self.assertEqual(query.rows[0][0], example['expected'])
+            rows = list(Config.CLIENT.query_rows(example['sql']))
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(len(rows[0]), 1)
+            self.assertEqual(rows[0][0], example['expected'])
+
+    def test_query_rows_w_failed_query(self):
+        from google.api.core.exceptions import BadRequest
+
+        with self.assertRaises(BadRequest):
+            Config.CLIENT.query_rows('invalid syntax;')
+            # TODO(swast): Ensure that job ID is surfaced in the exception.
 
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
@@ -890,7 +896,7 @@ class TestBigQuery(unittest.TestCase):
         job.result(timeout=JOB_TIMEOUT)
         self._fetch_single_page(table)
 
-    def test_sync_query_w_dml(self):
+    def test_query_w_dml(self):
         dataset_name = _make_dataset_id('dml_tests')
         table_name = 'test_table'
         self._load_table_for_dml([('Hello World',)], dataset_name, table_name)
@@ -899,12 +905,14 @@ class TestBigQuery(unittest.TestCase):
             WHERE greeting = 'Hello World'
             """
 
-        query = Config.CLIENT.run_sync_query(
+        query_job = Config.CLIENT.run_async_query(
+            'test_query_w_dml_{}'.format(unique_resource_id()),
             query_template.format(dataset_name, table_name))
-        query.use_legacy_sql = False
-        query.run()
+        query_job.use_legacy_sql = False
+        query_job.begin()
+        query_job.result()
 
-        self.assertEqual(query.num_dml_affected_rows, 1)
+        self.assertEqual(query_job.num_dml_affected_rows, 1)
 
     def test_dbapi_w_dml(self):
         dataset_name = _make_dataset_id('dml_tests')
@@ -921,7 +929,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(Config.CURSOR.rowcount, 1)
         self.assertIsNone(Config.CURSOR.fetchone())
 
-    def test_sync_query_w_query_params(self):
+    def test_query_w_query_params(self):
         from google.cloud.bigquery._helpers import ArrayQueryParameter
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery._helpers import StructQueryParameter
@@ -1082,14 +1090,16 @@ class TestBigQuery(unittest.TestCase):
             },
         ]
         for example in examples:
-            query = Config.CLIENT.run_sync_query(
+            query_job = Config.CLIENT.run_async_query(
+                'test_query_w_query_params{}'.format(unique_resource_id()),
                 example['sql'],
                 query_parameters=example['query_parameters'])
-            query.use_legacy_sql = False
-            query.run()
-            self.assertEqual(len(query.rows), 1)
-            self.assertEqual(len(query.rows[0]), 1)
-            self.assertEqual(query.rows[0][0], example['expected'])
+            query_job.use_legacy_sql = False
+            query_job.begin()
+            rows = [row for row in query_job.result()]
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(len(rows[0]), 1)
+            self.assertEqual(rows[0][0], example['expected'])
 
     def test_dbapi_w_query_parameters(self):
         examples = [
@@ -1215,11 +1225,8 @@ class TestBigQuery(unittest.TestCase):
         SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
             PUBLIC, DATASET_ID, TABLE_NAME, LIMIT)
 
-        query = Config.CLIENT.run_sync_query(SQL)
-        query.use_legacy_sql = False
-        query.run()
+        iterator = Config.CLIENT.query_rows(SQL)
 
-        iterator = query.fetch_data(max_results=100)
         rows = list(iterator)
         self.assertEqual(len(rows), LIMIT)
 
