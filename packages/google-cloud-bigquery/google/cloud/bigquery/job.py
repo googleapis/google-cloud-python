@@ -1248,7 +1248,7 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.defaultDataset
     """
 
-    destination = _TypedProperty('destination', Table)
+    destination = _TypedProperty('destination', TableReference)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
     """

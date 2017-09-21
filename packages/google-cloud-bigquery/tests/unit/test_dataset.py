@@ -506,34 +506,17 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': 3, 'pageToken': TOKEN})
 
-    def test_table_wo_schema(self):
-        from google.cloud.bigquery.table import Table
+    def test_table(self):
+        from google.cloud.bigquery.table import TableReference
 
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._make_one(self.DS_ID, client=client)
         table = dataset.table('table_id')
-        self.assertIsInstance(table, Table)
+        self.assertIsInstance(table, TableReference)
         self.assertEqual(table.table_id, 'table_id')
         self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(table.project, self.PROJECT)
-        self.assertEqual(table.schema, [])
-
-    def test_table_w_schema(self):
-        from google.cloud.bigquery.schema import SchemaField
-        from google.cloud.bigquery.table import Table
-
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._make_one(self.DS_ID, client=client)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = dataset.table('table_id', schema=[full_name, age])
-        self.assertIsInstance(table, Table)
-        self.assertEqual(table.table_id, 'table_id')
-        self.assertEqual(table.dataset_id, self.DS_ID)
-        self.assertEqual(table.project, self.PROJECT)
-        self.assertEqual(table.schema, [full_name, age])
 
 
 class _Client(object):
