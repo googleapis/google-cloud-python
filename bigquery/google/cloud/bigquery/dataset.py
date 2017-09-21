@@ -18,9 +18,7 @@ from __future__ import absolute_import
 
 import six
 
-from google.api.core import page_iterator
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 
 
@@ -476,38 +474,6 @@ class Dataset(object):
 
         return resource
 
-    def list_tables(self, max_results=None, page_token=None):
-        """List tables for the project associated with this client.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
-
-        :type max_results: int
-        :param max_results: (Optional) Maximum number of tables to return.
-                            If not passed, defaults to a value set by the API.
-
-        :type page_token: str
-        :param page_token: (Optional) Opaque marker for the next "page" of
-                           datasets. If not passed, the API will return the
-                           first page of datasets.
-
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
-                  contained within the current dataset.
-        """
-        path = '/projects/%s/datasets/%s/tables' % (
-            self.project, self.dataset_id)
-        result = page_iterator.HTTPIterator(
-            client=self._client,
-            api_request=self._client._connection.api_request,
-            path=path,
-            item_to_value=_item_to_table,
-            items_key='tables',
-            page_token=page_token,
-            max_results=max_results)
-        result.dataset = self
-        return result
-
     def table(self, table_id):
         """Constructs a TableReference.
 
@@ -518,18 +484,3 @@ class Dataset(object):
         :returns: a TableReference for a table in this dataset.
         """
         return TableReference(self, table_id)
-
-
-def _item_to_table(iterator, resource):
-    """Convert a JSON table to the native object.
-
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a table.
-
-    :rtype: :class:`~google.cloud.bigquery.table.Table`
-    :returns: The next table in the page.
-    """
-    return Table.from_api_repr(resource, iterator.dataset)

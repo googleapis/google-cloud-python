@@ -480,6 +480,142 @@ class TestClient(unittest.TestCase):
         req = conn._requested[1]
         self.assertEqual(req['headers']['If-Match'], 'etag')
 
+    def test_list_dataset_tables_empty(self):
+        import six
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection({})
+
+        dataset = client.dataset(DS_ID)
+        iterator = client.list_dataset_tables(dataset)
+        self.assertIs(iterator.dataset, dataset)
+        page = six.next(iterator.pages)
+        tables = list(page)
+        token = iterator.next_page_token
+
+        self.assertEqual(tables, [])
+        self.assertIsNone(token)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        PATH = 'projects/%s/datasets/%s/tables' % (PROJECT, DS_ID)
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_dataset_tables_defaults(self):
+        import six
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        TABLE_1 = 'table_one'
+        TABLE_2 = 'table_two'
+        PATH = 'projects/%s/datasets/%s/tables' % (PROJECT, DS_ID)
+        TOKEN = 'TOKEN'
+        DATA = {
+            'nextPageToken': TOKEN,
+            'tables': [
+                {'kind': 'bigquery#table',
+                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_1),
+                 'tableReference': {'tableId': TABLE_1,
+                                    'datasetId': DS_ID,
+                                    'projectId': PROJECT},
+                 'type': 'TABLE'},
+                {'kind': 'bigquery#table',
+                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_2),
+                 'tableReference': {'tableId': TABLE_2,
+                                    'datasetId': DS_ID,
+                                    'projectId': PROJECT},
+                 'type': 'TABLE'},
+            ]
+        }
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection(DATA)
+        dataset = client.dataset(DS_ID)
+
+        iterator = client.list_dataset_tables(dataset)
+        self.assertIs(iterator.dataset, dataset)
+        page = six.next(iterator.pages)
+        tables = list(page)
+        token = iterator.next_page_token
+
+        self.assertEqual(len(tables), len(DATA['tables']))
+        for found, expected in zip(tables, DATA['tables']):
+            self.assertIsInstance(found, Table)
+            self.assertEqual(found.full_table_id, expected['id'])
+            self.assertEqual(found.table_type, expected['type'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_dataset_tables_explicit(self):
+        import six
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        TABLE_1 = 'table_one'
+        TABLE_2 = 'table_two'
+        PATH = 'projects/%s/datasets/%s/tables' % (PROJECT, DS_ID)
+        TOKEN = 'TOKEN'
+        DATA = {
+            'tables': [
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_1),
+                 'tableReference': {'tableId': TABLE_1,
+                                    'datasetId': DS_ID,
+                                    'projectId': PROJECT},
+                 'type': 'TABLE'},
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_2),
+                 'tableReference': {'tableId': TABLE_2,
+                                    'datasetId': DS_ID,
+                                    'projectId': PROJECT},
+                 'type': 'TABLE'},
+            ]
+        }
+
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        conn = client._connection = _Connection(DATA)
+        dataset = client.dataset(DS_ID)
+
+        iterator = client.list_dataset_tables(
+            dataset, max_results=3, page_token=TOKEN)
+        self.assertIs(iterator.dataset, dataset)
+        page = six.next(iterator.pages)
+        tables = list(page)
+        token = iterator.next_page_token
+
+        self.assertEqual(len(tables), len(DATA['tables']))
+        for found, expected in zip(tables, DATA['tables']):
+            self.assertIsInstance(found, Table)
+            self.assertEqual(found.full_table_id, expected['id'])
+            self.assertEqual(found.table_type, expected['type'])
+        self.assertIsNone(token)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 3, 'pageToken': TOKEN})
+
+    def test_list_dataset_tables_wrong_type(self):
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        creds = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.list_dataset_tables(client.dataset(DS_ID).table("foo"))
+
     def test_delete_dataset(self):
         from google.cloud.bigquery.dataset import Dataset
 
