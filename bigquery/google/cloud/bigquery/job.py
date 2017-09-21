@@ -842,7 +842,8 @@ class LoadJob(_AsyncJob):
         """
         job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
-        dataset = Dataset(dest_config['datasetId'], client)
+        dataset = Dataset(dest_config['datasetId'],
+                          project=dest_config['projectId'])
         table_ref = TableReference(dataset, dest_config['tableId'])
         destination = Table(table_ref, client=client)
         source_urls = config.get('sourceUris', ())
@@ -958,7 +959,8 @@ class CopyJob(_AsyncJob):
         """
         job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
-        dataset = Dataset(dest_config['datasetId'], client)
+        dataset = Dataset(dest_config['datasetId'],
+                          project=dest_config['projectId'])
         table_ref = TableReference(dataset, dest_config['tableId'])
         destination = Table(table_ref, client=client)
         sources = []
@@ -970,7 +972,8 @@ class CopyJob(_AsyncJob):
                     "Resource missing 'sourceTables' / 'sourceTable'")
             source_configs = [single]
         for source_config in source_configs:
-            dataset = Dataset(source_config['datasetId'], client)
+            dataset = Dataset(source_config['datasetId'],
+                              project=source_config['projectId'])
             table_ref = TableReference(dataset, source_config['tableId'])
             sources.append(Table(table_ref, client=client))
         job = cls(job_id, destination, sources, client=client)
@@ -1423,8 +1426,7 @@ class QueryJob(_AsyncJob):
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
                 project = dest_remote['projectId']
-                dataset = Dataset(
-                    dest_remote['datasetId'], self._client, project=project)
+                dataset = Dataset(dest_remote['datasetId'], project=project)
                 self.destination = dataset.table(dest_remote['tableId'])
 
         def_ds = configuration.get('defaultDataset')
@@ -1432,8 +1434,8 @@ class QueryJob(_AsyncJob):
             if self.default_dataset is not None:
                 del self.default_dataset
         else:
-            project = def_ds['projectId']
-            self.default_dataset = Dataset(def_ds['datasetId'], self._client)
+            self.default_dataset = Dataset(def_ds['datasetId'],
+                                           project=def_ds['projectId'])
 
         udf_resources = []
         for udf_mapping in configuration.get(self._UDF_KEY, ()):
@@ -1579,7 +1581,6 @@ class QueryJob(_AsyncJob):
                   if the query has not yet completed.
         """
         tables = []
-        client = self._require_client(None)
         datasets_by_project_name = {}
 
         for table in self._job_statistics().get('referencedTables', ()):
@@ -1589,7 +1590,7 @@ class QueryJob(_AsyncJob):
             ds_name = table['datasetId']
             t_dataset = datasets_by_project_name.get((t_project, ds_name))
             if t_dataset is None:
-                t_dataset = Dataset(ds_name, client, project=t_project)
+                t_dataset = Dataset(ds_name, project=t_project)
                 datasets_by_project_name[(t_project, ds_name)] = t_dataset
 
             t_name = table['tableId']

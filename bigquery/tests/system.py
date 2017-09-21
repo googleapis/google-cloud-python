@@ -117,11 +117,12 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertTrue(_dataset_exists(dataset))
         self.assertEqual(dataset.dataset_id, DATASET_ID)
+        self.assertEqual(dataset.project, Config.CLIENT.project)
 
     def test_get_dataset(self):
         DATASET_ID = _make_dataset_id('get_dataset')
         client = Config.CLIENT
-        dataset_arg = Dataset(DATASET_ID)
+        dataset_arg = Dataset(DATASET_ID, project=client.project)
         dataset_arg.friendly_name = 'Friendly'
         dataset_arg.description = 'Description'
         dataset = retry_403(client.create_dataset)(dataset_arg)
@@ -1195,7 +1196,7 @@ class TestBigQuery(unittest.TestCase):
         DATASET_ID = 'samples'
         TABLE_NAME = 'natality'
 
-        dataset = Dataset(DATASET_ID, Config.CLIENT, project=PUBLIC)
+        dataset = Dataset(DATASET_ID, project=PUBLIC)
         table_ref = dataset.table(TABLE_NAME)
         table = Config.CLIENT.get_table(table_ref)
         self._fetch_single_page(table)
