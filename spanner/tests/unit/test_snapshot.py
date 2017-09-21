@@ -226,7 +226,7 @@ class Test_SnapshotBase(unittest.TestCase):
 
         result_set = derived.read(
             TABLE_NAME, COLUMNS, KEYSET,
-            index=INDEX, limit=LIMIT, resume_token=TOKEN)
+            index=INDEX, limit=LIMIT)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -236,6 +236,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self.assertIsNone(result_set._source)
 
         result_set.consume_all()
+
         self.assertEqual(list(result_set.rows), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
@@ -257,7 +258,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self.assertTrue(transaction.single_use.read_only.strong)
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
-        self.assertEqual(resume_token, TOKEN)
+        self.assertEqual(resume_token, b'')
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
@@ -365,7 +366,7 @@ class Test_SnapshotBase(unittest.TestCase):
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
-            query_mode=MODE, resume_token=TOKEN)
+            query_mode=MODE)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -375,6 +376,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self.assertIsNone(result_set._source)
 
         result_set.consume_all()
+
         self.assertEqual(list(result_set.rows), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
@@ -397,7 +399,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(params, expected_params)
         self.assertEqual(param_types, PARAM_TYPES)
         self.assertEqual(query_mode, MODE)
-        self.assertEqual(resume_token, TOKEN)
+        self.assertEqual(resume_token, b'')
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
@@ -775,7 +777,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
     # pylint: disable=too-many-arguments
     def streaming_read(self, session, table, columns, key_set,
                        transaction=None, index='', limit=0,
-                       resume_token='', options=None):
+                       resume_token=b'', options=None):
         from google.gax.errors import GaxError
 
         self._streaming_read_with = (
@@ -788,7 +790,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
 
     def execute_streaming_sql(self, session, sql, transaction=None,
                               params=None, param_types=None,
-                              resume_token='', query_mode=None, options=None):
+                              resume_token=b'', query_mode=None, options=None):
         from google.gax.errors import GaxError
 
         self._executed_streaming_sql_with = (
