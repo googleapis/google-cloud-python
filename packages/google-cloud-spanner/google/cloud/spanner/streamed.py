@@ -298,13 +298,15 @@ def _merge_struct(lhs, rhs, type_):
 
 
 _MERGE_BY_TYPE = {
-    type_pb2.BOOL: _unmergeable,
-    type_pb2.INT64: _merge_string,
-    type_pb2.FLOAT64: _merge_float64,
-    type_pb2.STRING: _merge_string,
     type_pb2.ARRAY: _merge_array,
-    type_pb2.STRUCT: _merge_struct,
+    type_pb2.BOOL: _unmergeable,
     type_pb2.BYTES: _merge_string,
+    type_pb2.DATE: _merge_string,
+    type_pb2.FLOAT64: _merge_float64,
+    type_pb2.INT64: _merge_string,
+    type_pb2.STRING: _merge_string,
+    type_pb2.STRUCT: _merge_struct,
+    type_pb2.TIMESTAMP: _merge_string,
 }
 
 
