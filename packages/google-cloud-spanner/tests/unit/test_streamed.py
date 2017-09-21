@@ -36,7 +36,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
-        self.assertIsNone(streamed.resume_token)
 
     def test_ctor_w_source(self):
         iterator = _MockCancellableIterator()
@@ -47,7 +46,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
-        self.assertIsNone(streamed.resume_token)
 
     def test_fields_unset(self):
         iterator = _MockCancellableIterator()
@@ -669,7 +667,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
         self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_first_set_partial_existing_txn_id(self):
@@ -691,7 +688,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
         self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_w_partial_result(self):
@@ -711,7 +707,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, VALUES[0])
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
 
     def test_consume_next_w_pending_chunk(self):
         FIELDS = [
@@ -737,7 +732,6 @@ class TestStreamedResultSet(unittest.TestCase):
         ])
         self.assertEqual(streamed._current_row, [BARE[6]])
         self.assertIsNone(streamed._pending_chunk)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
 
     def test_consume_next_last_set(self):
         FIELDS = [
@@ -761,7 +755,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.rows, [BARE])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._stats, stats)
-        self.assertEqual(streamed.resume_token, result_set.resume_token)
 
     def test_consume_all_empty(self):
         iterator = _MockCancellableIterator()

@@ -15,6 +15,8 @@
 
 import unittest
 
+import mock
+
 from google.cloud._testing import _GAXBaseAPI
 
 
@@ -29,6 +31,85 @@ PARAM_TYPES = {'max_age': 'INT64'}
 SQL_QUERY_WITH_BYTES_PARAM = """\
 SELECT image_name FROM images WHERE @bytes IN image_data"""
 PARAMS_WITH_BYTES = {'bytes': b'DEADBEEF'}
+
+
+class Test_restart_on_unavailable(unittest.TestCase):
+
+    def _call_fut(self, restart):
+        from google.cloud.spanner.snapshot import _restart_on_unavailable
+
+        return _restart_on_unavailable(restart)
+
+    def _make_item(self, value, resume_token=''):
+        return mock.Mock(
+            value=value, resume_token=resume_token,
+            spec=['value', 'resume_token'])
+
+    def test_iteration_w_empty_raw(self):
+        ITEMS = ()
+        raw = _MockIterator()
+        restart = mock.Mock(spec=[], return_value=raw)
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), [])
+
+    def test_iteration_w_non_empty_raw(self):
+        ITEMS = (self._make_item(0), self._make_item(1))
+        raw = _MockIterator(*ITEMS)
+        restart = mock.Mock(spec=[], return_value=raw)
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(ITEMS))
+        restart.assert_called_once_with()
+
+    def test_iteration_w_raw_w_resume_tken(self):
+        ITEMS = (
+            self._make_item(0),
+            self._make_item(1, resume_token='DEADBEEF'),
+            self._make_item(2),
+            self._make_item(3),
+        )
+        raw = _MockIterator(*ITEMS)
+        restart = mock.Mock(spec=[], return_value=raw)
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(ITEMS))
+        restart.assert_called_once_with()
+
+    def test_iteration_w_raw_raising_unavailable(self):
+        FIRST = (
+            self._make_item(0),
+            self._make_item(1, resume_token='DEADBEEF'),
+        )
+        SECOND = (  # discarded after 503
+            self._make_item(2),
+        )
+        LAST = (
+            self._make_item(3),
+        )
+        before = _MockIterator(*(FIRST + SECOND), fail_after=True)
+        after = _MockIterator(*LAST)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(FIRST + LAST))
+        self.assertEqual(
+            restart.mock_calls,
+            [mock.call(), mock.call(resume_token='DEADBEEF')])
+
+    def test_iteration_w_raw_raising_unavailable_after_token(self):
+        FIRST = (
+            self._make_item(0),
+            self._make_item(1, resume_token='DEADBEEF'),
+        )
+        SECOND = (
+            self._make_item(2),
+            self._make_item(3),
+        )
+        before = _MockIterator(*FIRST, fail_after=True)
+        after = _MockIterator(*SECOND)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(FIRST + SECOND))
+        self.assertEqual(
+            restart.mock_calls,
+            [mock.call(), mock.call(resume_token='DEADBEEF')])
 
 
 class Test_SnapshotBase(unittest.TestCase):
@@ -95,7 +176,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived = self._makeDerived(session)
 
         with self.assertRaises(GaxError):
-            derived.read(TABLE_NAME, COLUMNS, KEYSET)
+            list(derived.read(TABLE_NAME, COLUMNS, KEYSET))
 
         (r_session, table, columns, key_set, transaction, index,
          limit, resume_token, options) = api._streaming_read_with
@@ -152,7 +233,7 @@ class Test_SnapshotBase(unittest.TestCase):
         TOKEN = b'DEADBEEF'
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
-            _streaming_read_response=_MockCancellableIterator(*result_sets))
+            _streaming_read_response=_MockIterator(*result_sets))
         session = _Session(database)
         derived = self._makeDerived(session)
         derived._multi_use = multi_use
@@ -162,7 +243,7 @@ class Test_SnapshotBase(unittest.TestCase):
 
         result_set = derived.read(
             TABLE_NAME, COLUMNS, KEYSET,
-            index=INDEX, limit=LIMIT, resume_token=TOKEN)
+            index=INDEX, limit=LIMIT)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -172,6 +253,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self.assertIsNone(result_set._source)
 
         result_set.consume_all()
+
         self.assertEqual(list(result_set.rows), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
@@ -193,7 +275,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self.assertTrue(transaction.single_use.read_only.strong)
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
-        self.assertEqual(resume_token, TOKEN)
+        self.assertEqual(resume_token, b'')
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
@@ -229,7 +311,7 @@ class Test_SnapshotBase(unittest.TestCase):
         derived = self._makeDerived(session)
 
         with self.assertRaises(GaxError):
-            derived.execute_sql(SQL_QUERY)
+            list(derived.execute_sql(SQL_QUERY))
 
         (r_session, sql, transaction, params, param_types,
          resume_token, query_mode, options) = api._executed_streaming_sql_with
@@ -288,7 +370,7 @@ class Test_SnapshotBase(unittest.TestCase):
             PartialResultSet(values=VALUE_PBS[0], metadata=metadata_pb),
             PartialResultSet(values=VALUE_PBS[1], stats=stats_pb),
         ]
-        iterator = _MockCancellableIterator(*result_sets)
+        iterator = _MockIterator(*result_sets)
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(
             _execute_streaming_sql_response=iterator)
@@ -301,7 +383,7 @@ class Test_SnapshotBase(unittest.TestCase):
 
         result_set = derived.execute_sql(
             SQL_QUERY_WITH_PARAM, PARAMS, PARAM_TYPES,
-            query_mode=MODE, resume_token=TOKEN)
+            query_mode=MODE)
 
         self.assertEqual(derived._read_request_count, count + 1)
 
@@ -311,6 +393,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self.assertIsNone(result_set._source)
 
         result_set.consume_all()
+
         self.assertEqual(list(result_set.rows), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
@@ -333,7 +416,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(params, expected_params)
         self.assertEqual(param_types, PARAM_TYPES)
         self.assertEqual(query_mode, MODE)
-        self.assertEqual(resume_token, TOKEN)
+        self.assertEqual(resume_token, b'')
         self.assertEqual(options.kwargs['metadata'],
                          [('google-cloud-resource-prefix', database.name)])
 
@@ -356,20 +439,6 @@ class Test_SnapshotBase(unittest.TestCase):
     def test_execute_sql_w_multi_use_w_first_w_count_gt_0(self):
         with self.assertRaises(ValueError):
             self._execute_sql_helper(multi_use=True, first=True, count=1)
-
-
-class _MockCancellableIterator(object):
-
-    cancel_calls = 0
-
-    def __init__(self, *values):
-        self.iter_values = iter(values)
-
-    def next(self):
-        return next(self.iter_values)
-
-    def __next__(self):  # pragma: NO COVER Py3k
-        return self.next()
 
 
 class TestSnapshot(unittest.TestCase):
@@ -725,7 +794,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
     # pylint: disable=too-many-arguments
     def streaming_read(self, session, table, columns, key_set,
                        transaction=None, index='', limit=0,
-                       resume_token='', options=None):
+                       resume_token=b'', options=None):
         from google.gax.errors import GaxError
 
         self._streaming_read_with = (
@@ -738,7 +807,7 @@ class _FauxSpannerAPI(_GAXBaseAPI):
 
     def execute_streaming_sql(self, session, sql, transaction=None,
                               params=None, param_types=None,
-                              resume_token='', query_mode=None, options=None):
+                              resume_token=b'', query_mode=None, options=None):
         from google.gax.errors import GaxError
 
         self._executed_streaming_sql_with = (
@@ -747,3 +816,25 @@ class _FauxSpannerAPI(_GAXBaseAPI):
         if self._random_gax_error:
             raise GaxError('error')
         return self._execute_streaming_sql_response
+
+
+class _MockIterator(object):
+
+    def __init__(self, *values, **kw):
+        self._iter_values = iter(values)
+        self._fail_after = kw.pop('fail_after', False)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        from google.api.core.exceptions import ServiceUnavailable
+
+        try:
+            return next(self._iter_values)
+        except StopIteration:
+            if self._fail_after:
+                raise ServiceUnavailable('testing')
+            raise
+
+    next = __next__

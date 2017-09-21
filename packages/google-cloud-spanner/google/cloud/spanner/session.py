@@ -165,8 +165,7 @@ class Session(object):
 
         return Snapshot(self, **kw)
 
-    def read(self, table, columns, keyset, index='', limit=0,
-             resume_token=b''):
+    def read(self, table, columns, keyset, index='', limit=0):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -185,17 +184,12 @@ class Session(object):
         :type limit: int
         :param limit: (Optional) maxiumn number of rows to return
 
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted read
-
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
-        return self.snapshot().read(
-            table, columns, keyset, index, limit, resume_token)
+        return self.snapshot().read(table, columns, keyset, index, limit)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=b''):
+    def execute_sql(self, sql, params=None, param_types=None, query_mode=None):
         """Perform an ``ExecuteStreamingSql`` API request.
 
         :type sql: str
@@ -216,14 +210,11 @@ class Session(object):
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted query
-
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
         return self.snapshot().execute_sql(
-            sql, params, param_types, query_mode, resume_token)
+            sql, params, param_types, query_mode)
 
     def batch(self):
         """Factory to create a batch for this session.
