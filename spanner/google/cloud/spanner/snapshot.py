@@ -14,16 +14,49 @@
 
 """Model a set of read-only queries to a database as a snapshot."""
 
+import functools
+
 from google.protobuf.struct_pb2 import Struct
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
 
+from google.api.core.exceptions import ServiceUnavailable
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.spanner._helpers import _make_value_pb
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner._helpers import _SessionWrapper
 from google.cloud.spanner.streamed import StreamedResultSet
+
+
+def _restart_on_unavailable(restart):
+    """Restart iteration after :exc:`.ServiceUnavailable`.
+
+    :type restart: callable
+    :param restart: curried function returning iterator
+    """
+    resume_token = ''
+    item_buffer = []
+    iterator = restart()
+    while True:
+        try:
+            for item in iterator:
+                item_buffer.append(item)
+                if item.resume_token:
+                    resume_token = item.resume_token
+                    break
+        except ServiceUnavailable:
+            del item_buffer[:]
+            iterator = restart(resume_token=resume_token)
+            continue
+
+        if len(item_buffer) == 0:
+            break
+
+        for item in item_buffer:
+            yield item
+
+        del item_buffer[:]
 
 
 class _SnapshotBase(_SessionWrapper):
@@ -49,8 +82,7 @@ class _SnapshotBase(_SessionWrapper):
         """
         raise NotImplementedError
 
-    def read(self, table, columns, keyset, index='', limit=0,
-             resume_token=b''):
+    def read(self, table, columns, keyset, index='', limit=0):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -69,9 +101,6 @@ class _SnapshotBase(_SessionWrapper):
         :type limit: int
         :param limit: (Optional) maxiumn number of rows to return
 
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted read
-
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         :raises ValueError:
@@ -89,10 +118,13 @@ class _SnapshotBase(_SessionWrapper):
         options = _options_with_prefix(database.name)
         transaction = self._make_txn_selector()
 
-        iterator = api.streaming_read(
+        restart = functools.partial(
+            api.streaming_read,
             self._session.name, table, columns, keyset.to_pb(),
             transaction=transaction, index=index, limit=limit,
-            resume_token=resume_token, options=options)
+            options=options)
+
+        iterator = _restart_on_unavailable(restart)
 
         self._read_request_count += 1
 
@@ -101,8 +133,7 @@ class _SnapshotBase(_SessionWrapper):
         else:
             return StreamedResultSet(iterator)
 
-    def execute_sql(self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=b''):
+    def execute_sql(self, sql, params=None, param_types=None, query_mode=None):
         """Perform an ``ExecuteStreamingSql`` API request for rows in a table.
 
         :type sql: str
@@ -121,9 +152,6 @@ class _SnapshotBase(_SessionWrapper):
             :class:`google.cloud.proto.spanner.v1.ExecuteSqlRequest.QueryMode`
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
-
-        :type resume_token: bytes
-        :param resume_token: token for resuming previously-interrupted query
 
         :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -150,10 +178,14 @@ class _SnapshotBase(_SessionWrapper):
         options = _options_with_prefix(database.name)
         transaction = self._make_txn_selector()
         api = database.spanner_api
-        iterator = api.execute_streaming_sql(
+
+        restart = functools.partial(
+            api.execute_streaming_sql,
             self._session.name, sql,
             transaction=transaction, params=params_pb, param_types=param_types,
-            query_mode=query_mode, resume_token=resume_token, options=options)
+            query_mode=query_mode, options=options)
+
+        iterator = _restart_on_unavailable(restart)
 
         self._read_request_count += 1
 
