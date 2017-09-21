@@ -190,7 +190,7 @@ class Client(ClientWithProject):
         path = '/projects/%s/datasets' % (dataset.project,)
         api_response = self._connection.api_request(
             method='POST', path=path, data=dataset._build_resource())
-        return Dataset.from_api_repr(api_response, self)
+        return Dataset.from_api_repr(api_response)
 
     def get_dataset(self, dataset_ref):
         """Fetch the dataset referenced by ``dataset_ref``
@@ -204,7 +204,7 @@ class Client(ClientWithProject):
         """
         api_response = self._connection.api_request(
             method='GET', path=dataset_ref.path)
-        return Dataset.from_api_repr(api_response, self)
+        return Dataset.from_api_repr(api_response)
 
     def get_table(self, table_ref):
         """Fetch the table referenced by ``table_ref``
@@ -262,7 +262,7 @@ class Client(ClientWithProject):
             headers = None
         api_response = self._connection.api_request(
             method='PATCH', path=path, data=partial, headers=headers)
-        return Dataset.from_api_repr(api_response, self)
+        return Dataset.from_api_repr(api_response)
 
     def list_dataset_tables(self, dataset, max_results=None, page_token=None):
         """List tables in the dataset.
@@ -622,7 +622,7 @@ def _item_to_dataset(iterator, resource):
     :rtype: :class:`.Dataset`
     :returns: The next dataset in the page.
     """
-    return Dataset.from_api_repr(resource, iterator.client)
+    return Dataset.from_api_repr(resource)
 
 
 def _item_to_job(iterator, resource):
