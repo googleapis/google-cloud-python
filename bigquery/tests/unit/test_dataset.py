@@ -135,7 +135,7 @@ class TestDatasetReference(unittest.TestCase):
                 'projectId': 'project_1',
                 'datasetId': 'dataset_1',
             })
-        
+
         self.assertEqual(expected, got)
 
     def test___eq___wrong_type(self):

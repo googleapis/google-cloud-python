@@ -191,7 +191,6 @@ class DatasetReference(object):
         return 'DatasetReference{}'.format(self._key())
 
 
-
 class Dataset(object):
     """Datasets are containers for tables.
 

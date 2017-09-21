@@ -85,7 +85,7 @@ class TestTableReference(unittest.TestCase):
                 'datasetId': 'dataset_1',
                 'tableId': 'table_1',
             })
-        
+
         self.assertEqual(expected, got)
 
     def test___eq___wrong_type(self):
@@ -125,7 +125,7 @@ class TestTableReference(unittest.TestCase):
         table = self._make_one(dataset, 'table_1')
         other = self._make_one(dataset, 'table_1')
         self.assertEqual(table, other)
-    
+
     def test___hash__set_equality(self):
         from google.cloud.bigquery.dataset import DatasetReference
         dataset = DatasetReference('project_1', 'dataset_1')
