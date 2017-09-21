@@ -84,12 +84,29 @@ class Test_restart_on_unavailable(unittest.TestCase):
         LAST = (
             self._make_item(3),
         )
-        ITEMS = FIRST + SECOND + LAST
         before = _MockIterator(*(FIRST + SECOND), fail_after=True)
         after = _MockIterator(*LAST)
         restart = mock.Mock(spec=[], side_effect=[before, after])
         resumable = self._call_fut(restart)
         self.assertEqual(list(resumable), list(FIRST + LAST))
+        self.assertEqual(
+            restart.mock_calls,
+            [mock.call(), mock.call(resume_token='DEADBEEF')])
+
+    def test_iteration_w_raw_raising_unavailable_after_token(self):
+        FIRST = (
+            self._make_item(0),
+            self._make_item(1, resume_token='DEADBEEF'),
+        )
+        SECOND = (
+            self._make_item(2),
+            self._make_item(3),
+        )
+        before = _MockIterator(*FIRST, fail_after=True)
+        after = _MockIterator(*SECOND)
+        restart = mock.Mock(spec=[], side_effect=[before, after])
+        resumable = self._call_fut(restart)
+        self.assertEqual(list(resumable), list(FIRST + SECOND))
         self.assertEqual(
             restart.mock_calls,
             [mock.call(), mock.call(resume_token='DEADBEEF')])
