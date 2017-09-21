@@ -135,7 +135,7 @@ class TableReference(object):
         }
 
     def _key(self):
-        """A tuple key that unique-ly describes this field.
+        """A tuple key that uniquely describes this field.
 
         Used to compute this instance's hashcode and evaluate equality.
 
