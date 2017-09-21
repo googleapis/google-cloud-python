@@ -31,18 +31,12 @@ import platform
 from google.gapic.longrunning import operations_client
 from google.gax import api_callable
 from google.gax import config
+from google.gax import path_template
 import google.gax
-
-import google.api.core.gapic_v1.config
-import google.api.core.gapic_v1.method
-import google.api.core.operation
 
 from google.cloud.videointelligence_v1beta2.gapic import enums
 from google.cloud.videointelligence_v1beta2.gapic import video_intelligence_service_client_config
 from google.cloud.videointelligence_v1beta2.proto import video_intelligence_pb2
-
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-videointelligence').version
 
 
 class VideoIntelligenceServiceClient(object):
@@ -63,9 +57,10 @@ class VideoIntelligenceServiceClient(object):
                  credentials=None,
                  ssl_credentials=None,
                  scopes=None,
-                 client_config=video_intelligence_service_client_config.config,
+                 client_config=None,
                  lib_name=None,
-                 lib_version=''):
+                 lib_version='',
+                 metrics_headers=()):
         """Constructor.
 
         Args:
@@ -79,14 +74,20 @@ class VideoIntelligenceServiceClient(object):
                 channel.
             scopes (Sequence[str]): A list of OAuth2 scopes to attach to requests.
             client_config (dict):
-                A dictionary of call options for each method. If not specified
-                the default configuration is used.
+                A dictionary for call options for each method. See
+                :func:`google.gax.construct_settings` for the structure of
+                this data. Falls back to the default config if not specified
+                or the specified config is missing data points.
             lib_name (str): The API library software used for calling
                 the service. (Unless you are writing an API client itself,
                 leave this as default.)
             lib_version (str): The API library software version used
                 for calling the service. (Unless you are writing an API client
                 itself, leave this as default.)
+            metrics_headers (dict): A dictionary of values for tracking
+                client library metrics. Ultimately serializes to a string
+                (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
+                considered private.
         """
         # Unless the calling application specifically requested
         # OAuth scopes, request everything.
@@ -97,6 +98,28 @@ class VideoIntelligenceServiceClient(object):
         if client_config is None:
             client_config = {}
 
+        # Initialize metrics_headers as an ordered dictionary
+        # (cuts down on cardinality of the resulting string slightly).
+        metrics_headers = collections.OrderedDict(metrics_headers)
+        metrics_headers['gl-python'] = platform.python_version()
+
+        # The library may or may not be set, depending on what is
+        # calling this client. Newer client libraries set the library name
+        # and version.
+        if lib_name:
+            metrics_headers[lib_name] = lib_version
+
+        # Finally, track the GAPIC package version.
+        metrics_headers['gapic'] = pkg_resources.get_distribution(
+            'google-cloud-videointelligence', ).version
+
+        # Load the configuration defaults.
+        defaults = api_callable.construct_settings(
+            'google.cloud.videointelligence.v1beta2.VideoIntelligenceService',
+            video_intelligence_service_client_config.config,
+            client_config,
+            config.STATUS_CODE_NAMES,
+            metrics_headers=metrics_headers, )
         self.video_intelligence_service_stub = config.create_stub(
             video_intelligence_pb2.VideoIntelligenceServiceStub,
             channel=channel,
@@ -112,40 +135,12 @@ class VideoIntelligenceServiceClient(object):
             credentials=credentials,
             ssl_credentials=ssl_credentials,
             scopes=scopes,
-            client_config=client_config)
+            client_config=client_config,
+            metrics_headers=metrics_headers, )
 
-        # --------------------------------
-
-        # Metrics are used to track API client usage. Prepare headers for
-        # this particular client library.
-
-        metrics_data = 'gapic/{}'.format(_GAPIC_LIBRARY_VERSION)
-
-        # If the library name is set, include that in the headers.
-        if lib_name:
-            metrics_data = '{} {}/{}'.format(
-                metrics_data, lib_name, lib_version)
-
-        metadata = {
-            google.api.core.gapic_v1.method.METRICS_METADATA_KEY: metrics_data
-        }
-
-        # The interface config contains all of the default settings for retry
-        # and timeout for each RPC method.
-        interface_config = (
-            client_config
-            ['interfaces']
-            ['google.cloud.videointelligence.v1beta2.VideoIntelligenceService']
-        )
-        # TODO: Merge client config and interface config
-        method_configs = google.api.core.gapic_v1.config.create_method_configs(
-            interface_config)
-
-        # Create the wrapped gRPC methods for each RPC method.
-        self._annotate_video = google.api.core.gapic_v1.method.create_method(
+        self._annotate_video = api_callable.create_api_call(
             self.video_intelligence_service_stub.AnnotateVideo,
-            method_configs['AnnotateVideo'],
-            metadata=metadata)
+            settings=defaults['annotate_video'])
 
     # Service calls
     def annotate_video(self,
@@ -155,8 +150,7 @@ class VideoIntelligenceServiceClient(object):
                        video_context=None,
                        output_uri=None,
                        location_id=None,
-                       retry=None,
-                       timeout=None):
+                       options=None):
         """
         Performs asynchronous video annotation. Progress and results can be
         retrieved through the ``google.longrunning.Operations`` interface.
@@ -226,9 +220,7 @@ class VideoIntelligenceServiceClient(object):
             video_context=video_context,
             output_uri=output_uri,
             location_id=location_id)
-        operation = self._annotate_video(request, retry=retry, timeout=timeout)
-        return google.api.core.operation.from_grpc(
-            operation,
-            self.operations_client.operations_stub,
+        return google.gax._OperationFuture(
+            self._annotate_video(request, options), self.operations_client,
             video_intelligence_pb2.AnnotateVideoResponse,
-            metadata_type=video_intelligence_pb2.AnnotateVideoProgress)
+            video_intelligence_pb2.AnnotateVideoProgress, options)
