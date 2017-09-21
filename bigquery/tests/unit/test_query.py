@@ -206,7 +206,7 @@ class TestQueryResults(unittest.TestCase):
         job = QueryJob(
             self.JOB_NAME, self.QUERY, client,
             udf_resources=[UDFResource("resourceUri", RESOURCE_URI)])
-        dataset = job.default_dataset = Dataset(DS_NAME, client)
+        dataset = job.default_dataset = Dataset(DS_NAME)
         job.use_query_cache = True
         job.use_legacy_sql = True
         klass = self._get_target_class()
@@ -744,7 +744,7 @@ class _Client(object):
     def dataset(self, name):
         from google.cloud.bigquery.dataset import Dataset
 
-        return Dataset(name, client=self)
+        return Dataset(name)
 
 
 class _Connection(object):
