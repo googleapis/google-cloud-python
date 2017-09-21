@@ -18,12 +18,43 @@ from google.protobuf.struct_pb2 import Struct
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
 from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
 
+from google.api.core.exceptions import ServiceUnavailable
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.spanner._helpers import _make_value_pb
 from google.cloud.spanner._helpers import _options_with_prefix
 from google.cloud.spanner._helpers import _SessionWrapper
 from google.cloud.spanner.streamed import StreamedResultSet
+
+
+def _restart_on_unavailable(restart):
+    """Restart iteration after :exc:`.ServiceUnavailable`.
+
+    :type restart: callable
+    :param restart: curried function returning iterator
+    """
+    resume_token = ''
+    item_buffer = []
+    iterator = restart()
+    while True:
+        try:
+            for item in iterator:
+                item_buffer.append(item)
+                if item.resume_token:
+                    resume_token = item.resume_token
+                    break
+        except ServiceUnavailable:
+            del item_buffer[:]
+            iterator = restart(resume_token=resume_token)
+            continue
+
+        if len(item_buffer) == 0:
+            break
+
+        for item in item_buffer:
+            yield item
+
+        del item_buffer[:]
 
 
 class _SnapshotBase(_SessionWrapper):
