@@ -61,32 +61,29 @@ INTERFACE_CONFIG = {
 
 
 def test_create_method_configs():
-    method_configs = config.create_method_configs(INTERFACE_CONFIG)
+    method_configs = config.parse_method_configs(INTERFACE_CONFIG)
 
-    annotate_video_config = method_configs['AnnotateVideo']
-    assert isinstance(annotate_video_config, config.RetryableMethodConfig)
-    assert annotate_video_config.retry_exceptions == [
-        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable]
-    assert annotate_video_config.initial_delay == 1.0
-    assert annotate_video_config.delay_multiplier == 2.5
-    assert annotate_video_config.max_delay == 120.0
-    assert annotate_video_config.deadline == 600.0
-    assert annotate_video_config.initial_timeout == 120.0
-    assert annotate_video_config.timeout_multiplier == 1.0
-    assert annotate_video_config.max_timeout == 120.0
+    retry, timeout = method_configs['AnnotateVideo']
+    assert retry._predicate(exceptions.DeadlineExceeded(None))
+    assert retry._predicate(exceptions.ServiceUnavailable(None))
+    assert retry._initial == 1.0
+    assert retry._multiplier == 2.5
+    assert retry._maximum == 120.0
+    assert retry._deadline == 600.0
+    assert timeout._initial == 120.0
+    assert timeout._multiplier == 1.0
+    assert timeout._maximum == 120.0
 
-    other_config = method_configs['Other']
-    assert isinstance(annotate_video_config, config.RetryableMethodConfig)
-    assert other_config.retry_exceptions == [
-        exceptions.FailedPrecondition]
-    assert other_config.initial_delay == 1.0
-    assert other_config.delay_multiplier == 1.0
-    assert other_config.max_delay == 1.0
-    assert other_config.deadline == 1.0
-    assert other_config.initial_timeout == 1.0
-    assert other_config.timeout_multiplier == 1.0
-    assert other_config.max_timeout == 1.0
+    retry, timeout = method_configs['Other']
+    assert retry._predicate(exceptions.FailedPrecondition(None))
+    assert retry._initial == 1.0
+    assert retry._multiplier == 1.0
+    assert retry._maximum == 1.0
+    assert retry._deadline == 1.0
+    assert timeout._initial == 1.0
+    assert timeout._multiplier == 1.0
+    assert timeout._maximum == 1.0
 
-    plain_config = method_configs['Plain']
-    assert isinstance(plain_config, config.MethodConfig)
-    assert plain_config.timeout == 30.0
+    retry, timeout = method_configs['Plain']
+    assert retry is None
+    assert timeout._timeout == 30.0

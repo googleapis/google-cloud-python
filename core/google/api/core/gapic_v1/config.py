@@ -24,37 +24,30 @@ import grpc
 import six
 
 from google.api.core import exceptions
+from google.api.core import retry
+from google.api.core import timeout
 
 
 _MILLIS_PER_SECOND = 1000.0
 
 
-MethodConfig = collections.namedtuple('MethodConfig', [
-    'timeout',
-])
-
-RetryableMethodConfig = collections.namedtuple('RetryableMethodConfig', [
-    # Retry settings
-    'retry_exceptions',
-    'initial_delay',
-    'delay_multiplier',
-    'max_delay',
-    'deadline',
-    # Timeout settings
-    'initial_timeout',
-    'timeout_multiplier',
-    'max_timeout',
-])
-
-
 def _exception_class_for_grpc_status_name(name):
-    """Returns the Google API exception class for a gRPC error code name."""
+    """Returns the Google API exception class for a gRPC error code name.
+
+    Args:
+        name (str): The name of the gRPC status code, for example,
+            ``UNAVAILABLE``.
+
+    Returns:
+        type: The appropriate subclass of
+            :class:`google.api.core.exceptions.GoogleAPICallError`.
+    """
     return exceptions.exception_class_for_grpc_status(
         getattr(grpc.StatusCode, name))
 
 
-def _make_retryable_config(retry_params, retry_codes):
-    """Creates a retryable method configuration.
+def _retry_from_retry_config(retry_params, retry_codes):
+    """Creates a Retry object given a gapic retry configuration.
 
     Args:
         retry_params (dict): The retry parameter values, for example::
@@ -73,38 +66,67 @@ def _make_retryable_config(retry_params, retry_codes):
             names.
 
     Returns:
-        RetryableMethodConfig: Configuration for the method.
+        google.api.core.retry.Retry: The default retry object for the method.
     """
-    return RetryableMethodConfig(
-        retry_exceptions=[
-            _exception_class_for_grpc_status_name(code)
-            for code in retry_codes],
-        initial_delay=(
+    exception_classes = [
+        _exception_class_for_grpc_status_name(code) for code in retry_codes]
+    return retry.Retry(
+        retry.if_exception_type(*exception_classes),
+        initial=(
             retry_params['initial_retry_delay_millis'] / _MILLIS_PER_SECOND),
-        delay_multiplier=retry_params['retry_delay_multiplier'],
-        max_delay=(
+        maximum=(
             retry_params['max_retry_delay_millis'] / _MILLIS_PER_SECOND),
-        deadline=(
-            retry_params['total_timeout_millis'] / _MILLIS_PER_SECOND),
-        initial_timeout=(
+        multiplier=retry_params['retry_delay_multiplier'],
+        deadline=retry_params['total_timeout_millis'] / _MILLIS_PER_SECOND)
+
+
+def _timeout_from_retry_config(retry_params):
+    """Creates a ExponentialTimeout object given a gapic retry configuration.
+
+    Args:
+        retry_params (dict): The retry parameter values, for example::
+
+            {
+                "initial_retry_delay_millis": 1000,
+                "retry_delay_multiplier": 2.5,
+                "max_retry_delay_millis": 120000,
+                "initial_rpc_timeout_millis": 120000,
+                "rpc_timeout_multiplier": 1.0,
+                "max_rpc_timeout_millis": 120000,
+                "total_timeout_millis": 600000
+            }
+
+    Returns:
+        google.api.core.retry.ExponentialTimeout: The default time object for
+            the method.
+    """
+    return timeout.ExponentialTimeout(
+        initial=(
             retry_params['initial_rpc_timeout_millis'] / _MILLIS_PER_SECOND),
-        timeout_multiplier=retry_params['rpc_timeout_multiplier'],
-        max_timeout=(
+        maximum=(
             retry_params['max_rpc_timeout_millis'] / _MILLIS_PER_SECOND),
-    )
+        multiplier=retry_params['rpc_timeout_multiplier'],
+        deadline=(
+            retry_params['total_timeout_millis'] / _MILLIS_PER_SECOND))
 
 
-def create_method_configs(interface_config):
-    """Creates method configs for each method in a gapic interface config.
+MethodConfig = collections.namedtuple('MethodConfig', ['retry', 'timeout'])
+
+
+def parse_method_configs(interface_config):
+    """Creates default retry and timeout objects for each method in a gapic
+    interface config.
 
     Args:
         interface_config (Mapping): The interface config section of the full
-            gapic library config. For example,
+            gapic library config. For example, If the full configuration has
+            an interface named ``google.example.v1.ExampleService`` you would
+            pass in just that interface's configuration, for example
             ``gapic_config['interfaces']['google.example.v1.ExampleService']``.
 
     Returns:
-        Mapping[str, Union[MethodConfig, RetryableMethodConfig]]: A mapping
-            of RPC method names to their associated parsed configuration.
+        Mapping[str, MethodConfig]: A mapping of RPC method names to their
+            configuration.
     """
     # Grab all the retry codes
     retry_codes_map = {
@@ -123,17 +145,25 @@ def create_method_configs(interface_config):
     # Iterate through all the API methods and create a flat MethodConfig
     # instance for each one.
     method_configs = {}
+
     for method_name, method_params in six.iteritems(
             interface_config.get('methods', {})):
         retry_params_name = method_params.get('retry_params_name')
-        if retry_params_name is not None:
-            config = _make_retryable_config(
-                retry_params_map[retry_params_name],
-                retry_codes_map[method_params['retry_codes_name']])
-        else:
-            config = MethodConfig(
-                timeout=method_params['timeout_millis'] / _MILLIS_PER_SECOND)
 
-        method_configs[method_name] = config
+        if retry_params_name is not None:
+            retry_params = retry_params_map[retry_params_name]
+            retry_ = _retry_from_retry_config(
+                retry_params,
+                retry_codes_map[method_params['retry_codes_name']])
+            timeout_ = _timeout_from_retry_config(retry_params)
+
+        # No retry config, so this is a non-retryable method.
+        else:
+            retry_ = None
+            timeout_ = timeout.ConstantTimeout(
+                method_params['timeout_millis'] / _MILLIS_PER_SECOND)
+
+        method_configs[method_name] = MethodConfig(
+            retry=retry_, timeout=timeout_)
 
     return method_configs
