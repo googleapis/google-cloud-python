@@ -58,6 +58,98 @@ class TestTableReference(unittest.TestCase):
         self.assertEqual(table_ref.dataset_id, dataset_ref.dataset_id)
         self.assertEqual(table_ref.table_id, 'table_1')
 
+    def test_to_api_repr(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset_ref = DatasetReference('project_1', 'dataset_1')
+        table_ref = self._make_one(dataset_ref, 'table_1')
+
+        resource = table_ref.to_api_repr()
+
+        self.assertEqual(
+            resource,
+            {
+                'projectId': 'project_1',
+                'datasetId': 'dataset_1',
+                'tableId': 'table_1',
+            })
+
+    def test_from_api_repr(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import TableReference
+        dataset_ref = DatasetReference('project_1', 'dataset_1')
+        expected = self._make_one(dataset_ref, 'table_1')
+
+        got = TableReference.from_api_repr(
+            {
+                'projectId': 'project_1',
+                'datasetId': 'dataset_1',
+                'tableId': 'table_1',
+            })
+        
+        self.assertEqual(expected, got)
+
+    def test___eq___wrong_type(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset_ref = DatasetReference('project_1', 'dataset_1')
+        table = self._make_one(dataset_ref, 'table_1')
+        other = object()
+        self.assertNotEqual(table, other)
+        self.assertEqual(table, mock.ANY)
+
+    def test___eq___project_mismatch(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset = DatasetReference('project_1', 'dataset_1')
+        other_dataset = DatasetReference('project_2', 'dataset_1')
+        table = self._make_one(dataset, 'table_1')
+        other = self._make_one(other_dataset, 'table_1')
+        self.assertNotEqual(table, other)
+
+    def test___eq___dataset_mismatch(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset = DatasetReference('project_1', 'dataset_1')
+        other_dataset = DatasetReference('project_1', 'dataset_2')
+        table = self._make_one(dataset, 'table_1')
+        other = self._make_one(other_dataset, 'table_1')
+        self.assertNotEqual(table, other)
+
+    def test___eq___table_mismatch(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset = DatasetReference('project_1', 'dataset_1')
+        table = self._make_one(dataset, 'table_1')
+        other = self._make_one(dataset, 'table_2')
+        self.assertNotEqual(table, other)
+
+    def test___eq___equality(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset = DatasetReference('project_1', 'dataset_1')
+        table = self._make_one(dataset, 'table_1')
+        other = self._make_one(dataset, 'table_1')
+        self.assertEqual(table, other)
+    
+    def test___hash__set_equality(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset = DatasetReference('project_1', 'dataset_1')
+        table1 = self._make_one(dataset, 'table1')
+        table2 = self._make_one(dataset, 'table2')
+        set_one = {table1, table2}
+        set_two = {table1, table2}
+        self.assertEqual(set_one, set_two)
+
+    def test___hash__not_equals(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        dataset = DatasetReference('project_1', 'dataset_1')
+        table1 = self._make_one(dataset, 'table1')
+        table2 = self._make_one(dataset, 'table2')
+        set_one = {table1}
+        set_two = {table2}
+        self.assertNotEqual(set_one, set_two)
+
+    def test___repr__(self):
+        dataset = DatasetReference('project1', 'dataset1')
+        table1 = self._make_one(dataset, 'table1')
+        expected = "TableReference('project1', 'dataset1', 'table1')"
+        self.assertEqual(repr(table1), expected)
+
 
 class TestTable(unittest.TestCase, _SchemaBase):
 
