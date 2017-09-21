@@ -141,6 +141,9 @@ class DatasetReference(object):
     def table(self, table_id):
         """Constructs a TableReference.
 
+        :type table_id: str
+        :param table_id: the ID of the table.
+
         :rtype: :class:`google.cloud.bigquery.table.TableReference`
         :returns: a TableReference for a table in this dataset.
         """
@@ -505,20 +508,16 @@ class Dataset(object):
         result.dataset = self
         return result
 
-    def table(self, name, schema=()):
-        """Construct a table bound to this dataset.
+    def table(self, table_id):
+        """Constructs a TableReference.
 
-        :type name: str
-        :param name: Name of the table.
+        :type table_id: str
+        :param table_id: the ID of the table.
 
-        :type schema: list of :class:`google.cloud.bigquery.table.SchemaField`
-        :param schema: The table's schema
-
-        :rtype: :class:`google.cloud.bigquery.table.Table`
-        :returns: a new ``Table`` instance
+        :rtype: :class:`google.cloud.bigquery.table.TableReference`
+        :returns: a TableReference for a table in this dataset.
         """
-        table_ref = TableReference(self, name)
-        return Table(table_ref, schema=schema, client=self._client)
+        return TableReference(self, table_id)
 
 
 def _item_to_table(iterator, resource):

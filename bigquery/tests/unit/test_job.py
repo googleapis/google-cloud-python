@@ -1908,7 +1908,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(job.statement_type, statement_type)
 
     def test_referenced_tables(self):
-        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TableReference
 
         ref_tables_resource = [{
             'projectId': self.PROJECT,
@@ -1939,23 +1939,20 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         local1, local2, remote = job.referenced_tables
 
-        self.assertIsInstance(local1, Table)
+        self.assertIsInstance(local1, TableReference)
         self.assertEqual(local1.table_id, 'local1')
         self.assertEqual(local1.dataset_id, 'dataset')
         self.assertEqual(local1.project, self.PROJECT)
-        self.assertIs(local1._client, client)
 
-        self.assertIsInstance(local2, Table)
+        self.assertIsInstance(local2, TableReference)
         self.assertEqual(local2.table_id, 'local2')
         self.assertEqual(local2.dataset_id, 'dataset')
         self.assertEqual(local2.project, self.PROJECT)
-        self.assertIs(local2._client, client)
 
-        self.assertIsInstance(remote, Table)
+        self.assertIsInstance(remote, TableReference)
         self.assertEqual(remote.table_id, 'other-table')
         self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
-        self.assertIs(remote._client, client)
 
     def test_undeclared_query_paramters(self):
         from google.cloud.bigquery._helpers import ArrayQueryParameter
@@ -2173,7 +2170,6 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_begin_w_alternate_client(self):
         from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.dataset import DatasetReference
-        from google.cloud.bigquery.dataset import Table
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         TABLE = 'TABLE'
@@ -2210,12 +2206,11 @@ class TestQueryJob(unittest.TestCase, _Base):
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
         dataset = Dataset(DS_ID, client1)
         table_ref = dataset_ref.table(TABLE)
-        table = Table(table_ref, client=client1)
 
         job.allow_large_results = True
         job.create_disposition = 'CREATE_NEVER'
         job.default_dataset = dataset
-        job.destination = table
+        job.destination = table_ref
         job.flatten_results = True
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
@@ -2467,7 +2462,6 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_reload_w_bound_client(self):
         from google.cloud.bigquery.dataset import DatasetReference
-        from google.cloud.bigquery.table import Table
 
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         DS_ID = 'DATASET'
@@ -2479,8 +2473,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
         table_ref = dataset_ref.table(DEST_TABLE)
-        table = Table(table_ref, client=client)
-        job.destination = table
+        job.destination = table_ref
 
         job.reload()
 
