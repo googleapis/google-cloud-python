@@ -596,24 +596,6 @@ class Table(object):
 
         return resource
 
-    def create(self, client=None):
-        """API call:  create the table via a PUT request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        path = '/projects/%s/datasets/%s/tables' % (
-            self._project, self._dataset_id)
-        api_response = client._connection.api_request(
-            method='POST', path=path, data=self._build_resource())
-        self._set_properties(api_response)
-
     def exists(self, client=None):
         """API call:  test for the existence of the table via a GET request
 

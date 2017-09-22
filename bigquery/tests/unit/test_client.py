@@ -504,7 +504,6 @@ class TestClient(unittest.TestCase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
-
         }
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),

@@ -197,8 +197,8 @@ class TestBigQuery(unittest.TestCase):
         self.assertFalse(table.exists())
 
         got = retry_403(Config.CLIENT.create_table)(table)
-
         self.to_delete.insert(0, got)
+        
         self.assertTrue(got.exists())
         self.assertEqual(got.table_id, table_id)
 
@@ -237,8 +237,8 @@ class TestBigQuery(unittest.TestCase):
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         for table_name in tables_to_create:
             table = Table(dataset.table(table_name),
-                                  schema=[full_name, age],
-                                  client=Config.CLIENT)
+                          schema=[full_name, age],
+                          client=Config.CLIENT)
             created_table = Config.CLIENT.create_table(table)
             self.to_delete.insert(0, created_table)
 

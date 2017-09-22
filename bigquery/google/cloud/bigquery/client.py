@@ -191,7 +191,7 @@ class Client(ClientWithProject):
         return Dataset.from_api_repr(api_response)
 
     def create_table(self, table):
-        """API call:  create the table via a PUT request
+        """API call:  create a table via a PUT request
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
