@@ -52,7 +52,6 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'gapic-google-cloud-spanner-v1 >= 0.15.0, < 0.16dev',
-    'gapic-google-cloud-spanner-admin-instance-v1 >= 0.15.0, < 0.16dev',
     'google-auth >= 1.1.0',
     'google-cloud-core >= 0.27.0, < 0.28dev',
     'google-gax>=0.15.15, <0.16dev',

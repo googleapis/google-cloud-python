@@ -85,7 +85,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance, new_instance)
 
     def test__update_from_pb_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         display_name = 'display_name'
@@ -99,7 +99,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, display_name)
 
     def test__update_from_pb_no_display_name(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         instance_pb = admin_v1_pb2.Instance()
@@ -110,7 +110,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, None)
 
     def test_from_pb_bad_instance_name(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         instance_name = 'INCORRECT_FORMAT'
@@ -121,7 +121,7 @@ class TestInstance(unittest.TestCase):
             klass.from_pb(instance_pb, None)
 
     def test_from_pb_project_mistmatch(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         ALT_PROJECT = 'ALT_PROJECT'
@@ -136,7 +136,7 @@ class TestInstance(unittest.TestCase):
             klass.from_pb(instance_pb, client)
 
     def test_from_pb_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         client = _Client(project=self.PROJECT)
@@ -283,7 +283,7 @@ class TestInstance(unittest.TestCase):
                          [('google-cloud-resource-prefix', instance.name)])
 
     def test_exists_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         client = _Client(self.PROJECT)
@@ -338,7 +338,7 @@ class TestInstance(unittest.TestCase):
                          [('google-cloud-resource-prefix', instance.name)])
 
     def test_reload_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         client = _Client(self.PROJECT)
