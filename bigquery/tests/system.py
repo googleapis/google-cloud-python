@@ -179,16 +179,8 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(created), len(datasets_to_create))
 
     def test_create_table(self):
-<<<<<<< HEAD
         dataset = self.temp_dataset(_make_dataset_id('create_table'))
-
-        TABLE_NAME = 'test_table'
-=======
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-                Dataset(_make_dataset_id('create_table')))
-        self.to_delete.append(dataset)
         table_id = 'test_table'
->>>>>>> fdfa865fb9... adds client.create_table()
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
@@ -1218,20 +1210,10 @@ class TestBigQuery(unittest.TestCase):
             ('Some value', record)
         ]
         table_name = 'test_table'
-<<<<<<< HEAD
         dataset = self.temp_dataset(_make_dataset_id('issue_2951'))
-        table = Table(dataset.table(table_name), schema=schema,
-                      client=Config.CLIENT)
-        table.create()
-=======
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('issue_2951')))
-        self.to_delete.append(dataset)
-
         table_arg = Table(dataset.table(table_name), schema=schema,
                           client=Config.CLIENT)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
->>>>>>> 61b3878692... passes system tests
         self.to_delete.insert(0, table)
 
         table.insert_data(to_insert)
