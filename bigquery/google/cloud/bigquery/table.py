@@ -105,6 +105,63 @@ class TableReference(object):
         return '/projects/%s/datasets/%s/tables/%s' % (
             self._project, self._dataset_id, self._table_id)
 
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct a table reference given its API representation
+
+        :type resource: dict
+        :param resource: table reference representation returned from the API
+
+        :rtype: :class:`google.cloud.bigquery.table.TableReference`
+        :returns: Table reference parsed from ``resource``.
+        """
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        project = resource['projectId']
+        dataset_id = resource['datasetId']
+        table_id = resource['tableId']
+        return cls(DatasetReference(project, dataset_id), table_id)
+
+    def to_api_repr(self):
+        """Construct the API resource representation of this table reference.
+
+        :rtype: dict
+        :returns: Table reference as represented as an API resource
+        """
+        return {
+            'projectId': self._project,
+            'datasetId': self._dataset_id,
+            'tableId': self._table_id,
+        }
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            tuple: The contents of this :class:`DatasetReference`.
+        """
+        return (
+            self._project,
+            self._dataset_id,
+            self._table_id,
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, TableReference):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __repr__(self):
+        return 'TableReference{}'.format(self._key())
+
 
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
