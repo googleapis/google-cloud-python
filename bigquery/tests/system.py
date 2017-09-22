@@ -887,6 +887,16 @@ class TestBigQuery(unittest.TestCase):
             name='friends', array_type='STRING',
             values=[phred_name, bharney_name])
         with_friends_param = StructQueryParameter(None, friends_param)
+        top_left_param = StructQueryParameter(
+            'top_left',
+            ScalarQueryParameter('x', 'INT64', 12),
+            ScalarQueryParameter('y', 'INT64', 102))
+        bottom_right_param = StructQueryParameter(
+            'bottom_right',
+            ScalarQueryParameter('x', 'INT64', 22),
+            ScalarQueryParameter('y', 'INT64', 92))
+        rectangle_param = StructQueryParameter(
+            'rectangle', top_left_param, bottom_right_param)
         examples = [
             {
                 'sql': 'SELECT @question',
@@ -942,6 +952,14 @@ class TestBigQuery(unittest.TestCase):
                 'sql': 'SELECT (@hitchhiker.question, @hitchhiker.answer)',
                 'expected': ({'_field_1': question, '_field_2': answer}),
                 'query_parameters': [struct_param],
+            },
+            {
+                'sql':
+                    'SELECT '
+                    '((@rectangle.bottom_right.x - @rectangle.top_left.x) '
+                    '* (@rectangle.top_left.y - @rectangle.bottom_right.y))',
+                'expected': 100,
+                'query_parameters': [rectangle_param],
             },
             {
                 'sql': 'SELECT ?',
