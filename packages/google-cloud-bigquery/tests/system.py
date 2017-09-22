@@ -136,21 +136,33 @@ class TestBigQuery(unittest.TestCase):
 
     def test_update_dataset(self):
         dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('patch_dataset')))
+            Dataset(_make_dataset_id('update_dataset')))
         self.to_delete.append(dataset)
 
         self.assertTrue(_dataset_exists(dataset))
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.description)
+        self.assertEquals(dataset.labels, {})
+
         dataset.friendly_name = 'Friendly'
         dataset.description = 'Description'
-        ds2 = Config.CLIENT.update_dataset(dataset,
-                                           ['friendly_name', 'description'])
+        dataset.labels = {'priority': 'high', 'color': 'blue'}
+        ds2 = Config.CLIENT.update_dataset(
+            dataset,
+            ('friendly_name', 'description', 'labels'))
         self.assertEqual(ds2.friendly_name, 'Friendly')
         self.assertEqual(ds2.description, 'Description')
+        self.assertEqual(ds2.labels, {'priority': 'high', 'color': 'blue'})
+
+        ds2.labels = {
+            'color': 'green',   # change
+            'shape': 'circle',  # add
+            'priority': None,   # delete
+        }
+        ds3 = Config.CLIENT.update_dataset(ds2, ['labels'])
+        self.assertEqual(ds3.labels, {'color': 'green', 'shape': 'circle'})
 
     # TODO(jba): test that read-modify-write with ETag works.
-
     def test_list_datasets(self):
         datasets_to_create = [
             'new' + unique_resource_id(),
