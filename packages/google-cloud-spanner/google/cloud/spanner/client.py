@@ -27,7 +27,7 @@ In the hierarchy of API concepts
 from google.api.core import page_iterator
 from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
-from google.cloud.gapic.spanner_admin_database.v1.database_admin_client import (  # noqa
+from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
     DatabaseAdminClient)
 from google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client import (  # noqa
     InstanceAdminClient)

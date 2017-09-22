@@ -51,12 +51,14 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.27.0, < 0.28dev',
-    'google-auth >= 1.1.0',
-    'grpcio >= 1.2.0, < 2.0dev',
     'gapic-google-cloud-spanner-v1 >= 0.15.0, < 0.16dev',
-    'gapic-google-cloud-spanner-admin-database-v1 >= 0.15.0, < 0.16dev',
     'gapic-google-cloud-spanner-admin-instance-v1 >= 0.15.0, < 0.16dev',
+    'google-auth >= 1.1.0',
+    'google-cloud-core >= 0.27.0, < 0.28dev',
+    'google-gax>=0.15.15, <0.16dev',
+    'googleapis-common-protos[grpc]>=1.5.2, <2.0dev',
+    'grpc-google-iam-v1>=0.11.4, <0.12dev',
+    'requests>=2.18.4, <3.0dev',
 ]
 
 setup(
