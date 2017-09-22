@@ -17,7 +17,7 @@
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
 from google.cloud import exceptions
-from google.cloud.proto.spanner.v1 import type_pb2
+from google.cloud.spanner_v1.proto import type_pb2
 import six
 
 # pylint: disable=ungrouped-imports
@@ -31,7 +31,7 @@ class StreamedResultSet(object):
     :type response_iterator:
     :param response_iterator:
         Iterator yielding
-        :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`
+        :class:`google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet`
         instances.
 
     :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`
@@ -61,7 +61,7 @@ class StreamedResultSet(object):
     def fields(self):
         """Field descriptors for result set columns.
 
-        :rtype: list of :class:`~google.cloud.proto.spanner.v1.type_pb2.Field`
+        :rtype: list of :class:`~google.cloud.spanner_v1.proto.type_pb2.Field`
         :returns: list of fields describing column names / types.
         """
         return self._metadata.row_type.fields
@@ -80,7 +80,7 @@ class StreamedResultSet(object):
         """Result set statistics
 
         :rtype:
-           :class:`~google.cloud.proto.spanner.v1.result_set_pb2.ResultSetStats`
+           :class:`~google.cloud.spanner_v1.proto.result_set_pb2.ResultSetStats`
         :returns: structure describing status about the response
         """
         return self._stats
@@ -222,7 +222,7 @@ class Unmergeable(ValueError):
     :type rhs: :class:`google.protobuf.struct_pb2.Value`
     :param rhs: remaining value to be merged
 
-    :type type_: :class:`google.cloud.proto.spanner.v1.type_pb2.Type`
+    :type type_: :class:`google.cloud.spanner_v1.proto.type_pb2.Type`
     :param type_: field type of values being merged
     """
     def __init__(self, lhs, rhs, type_):

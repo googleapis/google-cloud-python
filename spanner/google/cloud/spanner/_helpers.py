@@ -22,7 +22,7 @@ import six
 from google.gax import CallOptions
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
-from google.cloud.proto.spanner.v1 import type_pb2
+from google.cloud.spanner_v1.proto import type_pb2
 
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_to_rfc3339
@@ -187,7 +187,7 @@ def _parse_value_pb(value_pb, field_type):
     :type value_pb: :class:`~google.protobuf.struct_pb2.Value`
     :param value_pb: protobuf to convert
 
-    :type field_type: :class:`~google.cloud.proto.spanner.v1.type_pb2.Type`
+    :type field_type: :class:`~google.cloud.spanner_v1.proto.type_pb2.Type`
     :param field_type: type code for the value
 
     :rtype: varies on field_type
@@ -233,7 +233,7 @@ def _parse_list_value_pbs(rows, row_type):
     :type rows: list of :class:`~google.protobuf.struct_pb2.ListValue`
     :param rows: row data returned from a read/query
 
-    :type row_type: :class:`~google.cloud.proto.spanner.v1.type_pb2.StructType`
+    :type row_type: :class:`~google.cloud.spanner_v1.proto.type_pb2.StructType`
     :param row_type: row schema specification
 
     :rtype: list of list of cell data

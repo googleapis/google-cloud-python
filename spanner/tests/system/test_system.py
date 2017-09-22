@@ -21,15 +21,15 @@ import threading
 import time
 import unittest
 
-from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
-from google.cloud.proto.spanner.v1.type_pb2 import BOOL
-from google.cloud.proto.spanner.v1.type_pb2 import BYTES
-from google.cloud.proto.spanner.v1.type_pb2 import DATE
-from google.cloud.proto.spanner.v1.type_pb2 import FLOAT64
-from google.cloud.proto.spanner.v1.type_pb2 import INT64
-from google.cloud.proto.spanner.v1.type_pb2 import STRING
-from google.cloud.proto.spanner.v1.type_pb2 import TIMESTAMP
-from google.cloud.proto.spanner.v1.type_pb2 import Type
+from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
+from google.cloud.spanner_v1.proto.type_pb2 import BOOL
+from google.cloud.spanner_v1.proto.type_pb2 import BYTES
+from google.cloud.spanner_v1.proto.type_pb2 import DATE
+from google.cloud.spanner_v1.proto.type_pb2 import FLOAT64
+from google.cloud.spanner_v1.proto.type_pb2 import INT64
+from google.cloud.spanner_v1.proto.type_pb2 import STRING
+from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
+from google.cloud.spanner_v1.proto.type_pb2 import Type
 
 from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous

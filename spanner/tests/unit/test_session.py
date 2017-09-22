@@ -437,7 +437,7 @@ class TestSession(unittest.TestCase):
         self.assertEqual(kw, {})
 
     def test_run_in_transaction_callback_raises_abort(self):
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud.spanner.transaction import Transaction
 
@@ -481,8 +481,8 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_args_w_kwargs_wo_abort(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -528,8 +528,8 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_abort_no_retry_metadata(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -575,8 +575,8 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_abort_w_retry_metadata(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -636,8 +636,8 @@ class TestSession(unittest.TestCase):
         import datetime
         from google.gax.errors import GaxError
         from grpc import StatusCode
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -702,8 +702,8 @@ class TestSession(unittest.TestCase):
         from google.gax.errors import GaxError
         from google.gax.grpc import exc_to_code
         from grpc import StatusCode
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -763,7 +763,7 @@ class TestSession(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.gax.errors import GaxError
         from google.gax.grpc import exc_to_code
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from grpc import StatusCode
         from google.cloud.spanner.transaction import Transaction

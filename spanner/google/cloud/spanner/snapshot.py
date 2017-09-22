@@ -15,8 +15,8 @@
 """Model a set of read-only queries to a database as a snapshot."""
 
 from google.protobuf.struct_pb2 import Struct
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
+from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
+from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
@@ -118,7 +118,7 @@ class _SnapshotBase(_SessionWrapper):
             required if parameters are passed.
 
         :type query_mode:
-            :class:`google.cloud.proto.spanner.v1.ExecuteSqlRequest.QueryMode`
+            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
