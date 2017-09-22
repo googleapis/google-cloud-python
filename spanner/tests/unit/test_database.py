@@ -106,7 +106,7 @@ class TestDatabase(_BaseTest):
         self.assertEqual(list(database.ddl_statements), DDL_STATEMENTS)
 
     def test_from_pb_bad_database_name(self):
-        from google.cloud.proto.spanner.admin.database.v1 import (
+        from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
 
         database_name = 'INCORRECT_FORMAT'
@@ -117,7 +117,7 @@ class TestDatabase(_BaseTest):
             klass.from_pb(database_pb, None)
 
     def test_from_pb_project_mistmatch(self):
-        from google.cloud.proto.spanner.admin.database.v1 import (
+        from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
 
         ALT_PROJECT = 'ALT_PROJECT'
@@ -130,7 +130,7 @@ class TestDatabase(_BaseTest):
             klass.from_pb(database_pb, instance)
 
     def test_from_pb_instance_mistmatch(self):
-        from google.cloud.proto.spanner.admin.database.v1 import (
+        from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
 
         ALT_INSTANCE = '/projects/%s/instances/ALT-INSTANCE' % (
@@ -144,7 +144,7 @@ class TestDatabase(_BaseTest):
             klass.from_pb(database_pb, instance)
 
     def test_from_pb_success_w_explicit_pool(self):
-        from google.cloud.proto.spanner.admin.database.v1 import (
+        from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
 
         client = _Client()
@@ -161,7 +161,7 @@ class TestDatabase(_BaseTest):
         self.assertIs(database._pool, pool)
 
     def test_from_pb_success_w_hyphen_w_default_pool(self):
-        from google.cloud.proto.spanner.admin.database.v1 import (
+        from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
         from google.cloud.spanner.pool import BurstyPool
 
@@ -411,7 +411,7 @@ class TestDatabase(_BaseTest):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_exists_success(self):
-        from google.cloud.proto.spanner.admin.database.v1 import (
+        from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
         from tests._fixtures import DDL_STATEMENTS
 
@@ -468,7 +468,7 @@ class TestDatabase(_BaseTest):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_reload_success(self):
-        from google.cloud.proto.spanner.admin.database.v1 import (
+        from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
         from tests._fixtures import DDL_STATEMENTS
 
