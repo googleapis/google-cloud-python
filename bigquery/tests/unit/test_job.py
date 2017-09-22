@@ -1608,10 +1608,10 @@ class TestQueryJob(unittest.TestCase, _Base):
         else:
             self.assertIsNone(job.create_disposition)
         if 'defaultDataset' in query_config:
-            dataset = job.default_dataset
+            ds_ref = job.default_dataset
             ds_ref = {
-                'projectId': dataset.project,
-                'datasetId': dataset.dataset_id,
+                'projectId': ds_ref.project,
+                'datasetId': ds_ref.dataset_id,
             }
             self.assertEqual(ds_ref, query_config['defaultDataset'])
         else:
@@ -2125,7 +2125,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(exc_info.exception.code, http_client.BAD_REQUEST)
 
     def test_begin_w_bound_client(self):
-        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import DatasetReference
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         DS_ID = 'DATASET'
@@ -2139,7 +2139,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
 
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
-        job.default_dataset = Dataset(DatasetReference(self.PROJECT, DS_ID))
+        job.default_dataset = DatasetReference(self.PROJECT, DS_ID)
 
         job.begin()
 
@@ -2168,7 +2168,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
-        from google.cloud.bigquery.dataset import Dataset
         from google.cloud.bigquery.dataset import DatasetReference
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -2204,12 +2203,11 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_NAME, self.QUERY, client1)
 
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
-        dataset = Dataset(dataset_ref)
         table_ref = dataset_ref.table(TABLE)
 
         job.allow_large_results = True
         job.create_disposition = 'CREATE_NEVER'
-        job.default_dataset = dataset
+        job.default_dataset = dataset_ref
         job.destination = table_ref
         job.flatten_results = True
         job.priority = 'INTERACTIVE'
