@@ -19,7 +19,7 @@ import six
 from google.api.core import page_iterator
 from google.cloud.bigquery._helpers import _TypedProperty
 from google.cloud.bigquery._helpers import _rows_from_json
-from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import QueryParametersProperty
@@ -273,7 +273,7 @@ class QueryResults(object):
         """
         return _parse_schema_resource(self._properties.get('schema', {}))
 
-    default_dataset = _TypedProperty('default_dataset', Dataset)
+    default_dataset = _TypedProperty('default_dataset', DatasetReference)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#defaultDataset
     """

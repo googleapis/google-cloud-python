@@ -196,7 +196,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(query.query_parameters, query_parameters)
 
     def test_from_query_job(self):
-        from google.cloud.bigquery.dataset import Dataset, DatasetReference
+        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery._helpers import UDFResource
 
@@ -206,8 +206,8 @@ class TestQueryResults(unittest.TestCase):
         job = QueryJob(
             self.JOB_NAME, self.QUERY, client,
             udf_resources=[UDFResource("resourceUri", RESOURCE_URI)])
-        dataset = Dataset(DatasetReference(self.PROJECT, DS_ID))
-        job.default_dataset = dataset
+        ds_ref = DatasetReference(self.PROJECT, DS_ID)
+        job.default_dataset = ds_ref
         job.use_query_cache = True
         job.use_legacy_sql = True
         klass = self._get_target_class()
@@ -219,7 +219,7 @@ class TestQueryResults(unittest.TestCase):
         self.assertIs(query._client, client)
         self.assertIs(query._job, job)
         self.assertEqual(query.udf_resources, job.udf_resources)
-        self.assertIs(query.default_dataset, dataset)
+        self.assertIs(query.default_dataset, ds_ref)
         self.assertTrue(query.use_query_cache)
         self.assertTrue(query.use_legacy_sql)
 
@@ -743,9 +743,9 @@ class _Client(object):
         self._connection = connection
 
     def dataset(self, dataset_id):
-        from google.cloud.bigquery.dataset import Dataset, DatasetReference
+        from google.cloud.bigquery.dataset import DatasetReference
 
-        return Dataset(DatasetReference(self.project, dataset_id))
+        return DatasetReference(self.project, dataset_id)
 
 
 class _Connection(object):
