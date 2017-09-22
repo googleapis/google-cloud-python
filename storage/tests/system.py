@@ -567,14 +567,26 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         return 'projects/{}/topics/{}'.format(
             Config.CLIENT.project, self.TOPIC_NAME)
 
-    def setUp(self):
-        self.case_buckets_to_delete = []
+    def _intialize_topic(self):
         try:
             from google.cloud.pubsub_v1 import PublisherClient
         except ImportError:
             raise unittest.SkipTest("Cannot import pubsub")
         self.publisher_client = PublisherClient()
         retry_429(self.publisher_client.create_topic)(self.topic_path)
+        policy = self.publisher_client.get_iam_policy(self.topic_path)
+        binding = policy.bindings.add()
+        binding.role = 'roles/pubsub.publisher'
+        binding.members.append(
+            'serviceAccount:{}'
+            '@gs-project-accounts.iam.gserviceaccount.com'.format(
+                Config.CLIENT.project))
+        self.publisher_client.set_iam_policy(self.topic_path, policy)
+
+
+    def setUp(self):
+        self.case_buckets_to_delete = []
+        self._intialize_topic()
 
     def tearDown(self):
         retry_429(self.publisher_client.delete_topic)(self.topic_path)
