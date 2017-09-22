@@ -107,7 +107,7 @@ class TestClient(unittest.TestCase):
 
     def test_admin_api_lib_name(self):
         from google.cloud.spanner import __version__
-        from google.cloud.gapic.spanner_admin_database import v1 as db
+        from google.cloud.spanner_admin_database_v1 import gapic as db
         from google.cloud.gapic.spanner_admin_instance import v1 as inst
 
         # Get the actual admin client classes.
