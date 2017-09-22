@@ -179,19 +179,28 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(created), len(datasets_to_create))
 
     def test_create_table(self):
+<<<<<<< HEAD
         dataset = self.temp_dataset(_make_dataset_id('create_table'))
 
         TABLE_NAME = 'test_table'
+=======
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+                Dataset(_make_dataset_id('create_table')))
+        self.to_delete.append(dataset)
+        table_id = 'test_table'
+>>>>>>> fdfa865fb9... adds client.create_table()
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+        table = Table(dataset.table(table_id), schema=[full_name, age],
                       client=Config.CLIENT)
         self.assertFalse(table.exists())
-        table.create()
-        self.to_delete.insert(0, table)
-        self.assertTrue(table.exists())
-        self.assertEqual(table.table_id, TABLE_NAME)
+
+        got = retry_403(Config.CLIENT.create_table)(table)
+
+        self.to_delete.insert(0, got)
+        self.assertTrue(got.exists())
+        self.assertEqual(got.table_id, table_id)
 
     def test_get_table_w_public_dataset(self):
         PUBLIC = 'bigquery-public-data'
@@ -227,10 +236,10 @@ class TestBigQuery(unittest.TestCase):
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         for table_name in tables_to_create:
-            created_table = Table(dataset.table(table_name),
+            table = Table(dataset.table(table_name),
                                   schema=[full_name, age],
                                   client=Config.CLIENT)
-            created_table.create()
+            created_table = Config.CLIENT.create_table(table)
             self.to_delete.insert(0, created_table)
 
         # Retrieve the tables.
