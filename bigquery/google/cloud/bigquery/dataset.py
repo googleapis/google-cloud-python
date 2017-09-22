@@ -171,7 +171,7 @@ class Dataset(object):
                  access_entries=(),
                  project=None):
         self._dataset_id = dataset_id
-        self._properties = {}
+        self._properties = {'labels': {}}
         # Let the @property do validation.
         self.access_entries = access_entries
         self._project = project
@@ -365,6 +365,32 @@ class Dataset(object):
             raise ValueError("Pass a string, or None")
         self._properties['location'] = value
 
+    @property
+    def labels(self):
+        """Labels for the dataset.
+
+        This method always returns a dict. To change a dataset's labels,
+        modify the dict, then call ``Client.update_dataset``. To delete a
+        label, set its value to ``None`` before updating.
+
+        :rtype: dict, {str -> str}
+        :returns: A dict of the the dataset's labels.
+        """
+        return self._properties['labels']
+
+    @labels.setter
+    def labels(self, value):
+        """Update labels for the dataset.
+
+        :type value: dict, {str -> str}
+        :param value: new labels
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, dict):
+            raise ValueError("Pass a dict")
+        self._properties['labels'] = value
+
     @classmethod
     def from_api_repr(cls, resource):
         """Factory:  construct a dataset given its API representation
@@ -427,6 +453,8 @@ class Dataset(object):
         if 'defaultTableExpirationMs' in cleaned:
             cleaned['defaultTableExpirationMs'] = int(
                 cleaned['defaultTableExpirationMs'])
+        if 'labels' not in cleaned:
+            cleaned['labels'] = {}
         self._properties.update(cleaned)
 
     def _build_access_resource(self):
@@ -460,6 +488,8 @@ class Dataset(object):
 
         if len(self.access_entries) > 0:
             resource['access'] = self._build_access_resource()
+
+        resource['labels'] = self.labels  # labels is never None
 
         return resource
 

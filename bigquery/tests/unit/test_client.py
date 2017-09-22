@@ -321,6 +321,7 @@ class TestClient(unittest.TestCase):
         SENT = {
             'datasetReference':
                 {'projectId': PROJECT, 'datasetId': DS_ID},
+            'labels': {},
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(ds.dataset_id, DS_ID)
@@ -338,6 +339,7 @@ class TestClient(unittest.TestCase):
         FRIENDLY_NAME = 'FN'
         LOCATION = 'US'
         USER_EMAIL = 'phred@example.com'
+        LABELS = {'color': 'red'}
         VIEW = {
             'projectId': 'my-proj',
             'datasetId': 'starry-skies',
@@ -352,6 +354,7 @@ class TestClient(unittest.TestCase):
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
             'defaultTableExpirationMs': 3600,
+            'labels': LABELS,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'view': VIEW}],
@@ -366,6 +369,7 @@ class TestClient(unittest.TestCase):
         ds_arg.friendly_name = FRIENDLY_NAME
         ds_arg.default_table_expiration_ms = 3600
         ds_arg.location = LOCATION
+        ds_arg.labels = LABELS
         ds = client.create_dataset(ds_arg)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -381,6 +385,7 @@ class TestClient(unittest.TestCase):
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'view': VIEW}],
+            'labels': LABELS,
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(ds.dataset_id, DS_ID)
@@ -391,6 +396,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds.friendly_name, FRIENDLY_NAME)
         self.assertEqual(ds.location, LOCATION)
         self.assertEqual(ds.default_table_expiration_ms, 3600)
+        self.assertEqual(ds.labels, LABELS)
 
     def test_get_table(self):
         project = 'PROJECT'
@@ -439,6 +445,7 @@ class TestClient(unittest.TestCase):
         DESCRIPTION = 'DESCRIPTION'
         FRIENDLY_NAME = 'TITLE'
         LOCATION = 'loc'
+        LABELS = {'priority': 'high'}
         EXP = 17
         RESOURCE = {
             'datasetReference':
@@ -448,6 +455,7 @@ class TestClient(unittest.TestCase):
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
             'defaultTableExpirationMs': EXP,
+            'labels': LABELS,
         }
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
@@ -457,8 +465,9 @@ class TestClient(unittest.TestCase):
         ds.friendly_name = FRIENDLY_NAME
         ds.location = LOCATION
         ds.default_table_expiration_ms = EXP
+        ds.labels = LABELS
         ds2 = client.update_dataset(
-            ds, ['description', 'friendly_name', 'location'])
+            ds, ['description', 'friendly_name', 'location', 'labels'])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'PATCH')
@@ -466,6 +475,7 @@ class TestClient(unittest.TestCase):
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
+            'labels': LABELS,
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(req['path'], '/' + PATH)
@@ -473,6 +483,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds2.description, ds.description)
         self.assertEqual(ds2.friendly_name, ds.friendly_name)
         self.assertEqual(ds2.location, ds.location)
+        self.assertEqual(ds2.labels, ds.labels)
 
         # ETag becomes If-Match header.
         ds._properties['etag'] = 'etag'
