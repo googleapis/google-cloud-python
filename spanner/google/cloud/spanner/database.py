@@ -20,7 +20,7 @@ import threading
 import google.auth.credentials
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.cloud.gapic.spanner.v1.spanner_client import SpannerClient
+from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
 from grpc import StatusCode
 import six
 
