@@ -34,6 +34,7 @@ The following client libraries have **beta** support:
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
+-  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
 -  `Google Cloud Video Intelligence`_ (`Video Intelligence README`_)
 -  `Google Cloud Vision`_ (`Vision README`_)
@@ -50,7 +51,6 @@ Cloud Platform services:
 -  `Google Cloud DNS`_ (`DNS README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
--  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
 -  `Stackdriver Monitoring`_ (`Monitoring README`_)
 
