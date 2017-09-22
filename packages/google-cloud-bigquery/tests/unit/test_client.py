@@ -399,6 +399,151 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds.default_table_expiration_ms, 3600)
         self.assertEqual(ds.labels, LABELS)
 
+    def test_create_table_w_day_partition(self):
+        from google.cloud.bigquery.table import Table
+
+        project = 'PROJECT'
+        dataset_id = 'dataset_id'
+        table_id = 'table-id'
+        path = 'projects/%s/datasets/%s/tables' % (
+            project, dataset_id)
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+        }
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, client=client)
+        table.partitioning_type = 'DAY'
+
+        got = client.create_table(table)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'timePartitioning': {'type': 'DAY'},
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(got.table_id, table_id)
+
+    def test_create_table_w_day_partition_and_expire(self):
+        from google.cloud.bigquery.table import Table
+
+        project = 'PROJECT'
+        dataset_id = 'dataset_id'
+        table_id = 'table-id'
+        path = 'projects/%s/datasets/%s/tables' % (
+            project, dataset_id)
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+        }
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, client=client)
+        table.partitioning_type = 'DAY'
+        table.partition_expiration = 100
+
+        got = client.create_table(table)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(table.partition_expiration, 100)
+        self.assertEqual(got.table_id, table_id)
+
+    def test_create_table_w_schema_and_query(self):
+        from google.cloud.bigquery.table import Table, SchemaField
+
+        project = 'PROJECT'
+        dataset_id = 'dataset_id'
+        table_id = 'table-id'
+        path = 'projects/%s/datasets/%s/tables' % (
+            project, dataset_id)
+        query = 'SELECT * from %s:%s' % (dataset_id, table_id)
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
+            },
+            'view': {
+                'query': query,
+                'useLegacySql': True
+            },
+        }
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, schema=schema, client=client)
+        table.view_query = query
+
+        got = client.create_table(table)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
+            },
+            'view': {'query': query},
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(got.table_id, table_id)
+        self.assertEqual(got.project, project)
+        self.assertEqual(got.dataset_id, dataset_id)
+        self.assertEqual(got.schema, schema)
+        self.assertEqual(got.view_query, query)
+
     def test_get_table(self):
         project = 'PROJECT'
         dataset_id = 'dataset_id'
