@@ -313,7 +313,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         conn = client._connection = _Connection(RESOURCE)
-        ds = client.create_dataset(Dataset(DS_ID))
+        ds = client.create_dataset(Dataset(client.dataset(DS_ID)))
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -364,7 +364,8 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _Connection(RESOURCE)
         entries = [AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
                    AccessEntry(None, 'view', VIEW)]
-        ds_arg = Dataset(DS_ID, project=PROJECT, access_entries=entries)
+        ds_arg = Dataset(client.dataset(DS_ID))
+        ds_arg.access_entries = entries
         ds_arg.description = DESCRIPTION
         ds_arg.friendly_name = FRIENDLY_NAME
         ds_arg.default_table_expiration_ms = 3600
@@ -434,7 +435,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         with self.assertRaises(ValueError):
-            client.update_dataset(Dataset(DS_ID), ["foo"])
+            client.update_dataset(Dataset(client.dataset(DS_ID)), ["foo"])
 
     def test_update_dataset(self):
         from google.cloud.bigquery.dataset import Dataset
@@ -460,7 +461,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         conn = client._connection = _Connection(RESOURCE, RESOURCE)
-        ds = Dataset(DS_ID, project=PROJECT)
+        ds = Dataset(client.dataset(DS_ID))
         ds.description = DESCRIPTION
         ds.friendly_name = FRIENDLY_NAME
         ds.location = LOCATION
@@ -636,7 +637,8 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=creds)
         conn = client._connection = _Connection({}, {})
-        for arg in (client.dataset(DS_ID), Dataset(DS_ID, project=PROJECT)):
+        ds_ref = client.dataset(DS_ID)
+        for arg in (ds_ref, Dataset(ds_ref)):
             client.delete_dataset(arg)
             req = conn._requested[0]
             self.assertEqual(req['method'], 'DELETE')
