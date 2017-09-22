@@ -196,17 +196,18 @@ class TestQueryResults(unittest.TestCase):
         self.assertEqual(query.query_parameters, query_parameters)
 
     def test_from_query_job(self):
-        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset, DatasetReference
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery._helpers import UDFResource
 
-        DS_NAME = 'DATASET'
+        DS_ID = 'DATASET'
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         client = _Client(self.PROJECT)
         job = QueryJob(
             self.JOB_NAME, self.QUERY, client,
             udf_resources=[UDFResource("resourceUri", RESOURCE_URI)])
-        dataset = job.default_dataset = Dataset(DS_NAME)
+        dataset = Dataset(DatasetReference(self.PROJECT, DS_ID))
+        job.default_dataset = dataset
         job.use_query_cache = True
         job.use_legacy_sql = True
         klass = self._get_target_class()
@@ -741,10 +742,10 @@ class _Client(object):
         self.project = project
         self._connection = connection
 
-    def dataset(self, name):
-        from google.cloud.bigquery.dataset import Dataset
+    def dataset(self, dataset_id):
+        from google.cloud.bigquery.dataset import Dataset, DatasetReference
 
-        return Dataset(name)
+        return Dataset(DatasetReference(self.project, dataset_id))
 
 
 class _Connection(object):
