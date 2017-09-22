@@ -25,6 +25,8 @@ Spanner
 
   gapic/v1/admin_database_api
   gapic/v1/admin_database_types
+  gapic/v1/admin_instance_api
+  gapic/v1/admin_instance_types
 
 API requests are sent to the `Cloud Spanner`_ API via RPC over
 HTTP/2.  In order to support this, we'll rely on `gRPC`_.
