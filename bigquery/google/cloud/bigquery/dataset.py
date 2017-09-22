@@ -106,6 +106,10 @@ class DatasetReference(object):
     """
 
     def __init__(self, project, dataset_id):
+        if not isinstance(project, six.string_types):
+            raise ValueError("Pass a string for project")
+        if not isinstance(dataset_id, six.string_types):
+            raise ValueError("Pass a string for dataset_id")
         self._project = project
         self._dataset_id = dataset_id
 
@@ -154,27 +158,15 @@ class Dataset(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type dataset_id: str
-    :param dataset_id: the ID of the dataset
-
-    :type access_entries: list of :class:`AccessEntry`
-    :param access_entries: roles granted to entities for this dataset
-
-    :type project: str
-    :param project: (Optional) project ID for the dataset.
+    :type dataset_ref: :class:`~google.cloud.bigquery.dataset.DatasetReference`
+    :param dataset_ref: a pointer to a dataset
     """
 
-    _access_entries = None
-
-    def __init__(self,
-                 dataset_id,
-                 access_entries=(),
-                 project=None):
-        self._dataset_id = dataset_id
+    def __init__(self, dataset_ref):
+        self._project = dataset_ref.project
+        self._dataset_id = dataset_ref.dataset_id
         self._properties = {'labels': {}}
-        # Let the @property do validation.
-        self.access_entries = access_entries
-        self._project = project
+        self._access_entries = ()
 
     @property
     def project(self):
@@ -406,7 +398,7 @@ class Dataset(object):
             raise KeyError('Resource lacks required identity information:'
                            '["datasetReference"]["datasetId"]')
         dataset_id = dsr['datasetId']
-        dataset = cls(dataset_id, project=dsr['projectId'])
+        dataset = cls(DatasetReference(dsr['projectId'], dataset_id))
         dataset._set_properties(resource)
         return dataset
 
