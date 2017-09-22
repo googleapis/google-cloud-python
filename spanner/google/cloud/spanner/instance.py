@@ -20,7 +20,7 @@ from google.api.core import page_iterator
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.cloud.proto.spanner.admin.instance.v1 import (
+from google.cloud.spanner_admin_instance_v1.proto import (
     spanner_instance_admin_pb2 as admin_v1_pb2)
 from google.protobuf.field_mask_pb2 import FieldMask
 from grpc import StatusCode
