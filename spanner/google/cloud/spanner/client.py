@@ -29,7 +29,7 @@ from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
     DatabaseAdminClient)
-from google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client import (  # noqa
+from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (  # noqa
     InstanceAdminClient)
 # pylint: enable=line-too-long
 
