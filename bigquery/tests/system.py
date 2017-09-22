@@ -112,8 +112,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id('create_dataset')
-        dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(DATASET_ID))
-        self.to_delete.append(dataset)
+        dataset = self.temp_dataset(DATASET_ID)
 
         self.assertTrue(_dataset_exists(dataset))
         self.assertEqual(dataset.dataset_id, DATASET_ID)
@@ -122,7 +121,7 @@ class TestBigQuery(unittest.TestCase):
     def test_get_dataset(self):
         DATASET_ID = _make_dataset_id('get_dataset')
         client = Config.CLIENT
-        dataset_arg = Dataset(DATASET_ID, project=client.project)
+        dataset_arg = Dataset(client.dataset(DATASET_ID))
         dataset_arg.friendly_name = 'Friendly'
         dataset_arg.description = 'Description'
         dataset = retry_403(client.create_dataset)(dataset_arg)
@@ -135,10 +134,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(got.description, 'Description')
 
     def test_update_dataset(self):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('update_dataset')))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(_make_dataset_id('update_dataset'))
         self.assertTrue(_dataset_exists(dataset))
         self.assertIsNone(dataset.friendly_name)
         self.assertIsNone(dataset.description)
@@ -163,6 +159,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(ds3.labels, {'color': 'green', 'shape': 'circle'})
 
     # TODO(jba): test that read-modify-write with ETag works.
+
     def test_list_datasets(self):
         datasets_to_create = [
             'new' + unique_resource_id(),
@@ -170,9 +167,7 @@ class TestBigQuery(unittest.TestCase):
             'newest' + unique_resource_id(),
         ]
         for dataset_id in datasets_to_create:
-            created_dataset = retry_403(Config.CLIENT.create_dataset)(
-                Dataset(dataset_id))
-            self.to_delete.append(created_dataset)
+            self.temp_dataset(dataset_id)
 
         # Retrieve the datasets.
         iterator = Config.CLIENT.list_datasets()
@@ -184,9 +179,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(created), len(datasets_to_create))
 
     def test_create_table(self):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-                Dataset(_make_dataset_id('create_table')))
-        self.to_delete.append(dataset)
+        dataset = self.temp_dataset(_make_dataset_id('create_table'))
 
         TABLE_NAME = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
@@ -217,9 +210,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_list_dataset_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
-        dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(DATASET_ID))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(DATASET_ID)
         # Retrieve tables before any are created for the dataset.
         iterator = Config.CLIENT.list_dataset_tables(dataset)
         all_tables = list(iterator)
@@ -252,9 +243,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(created), len(tables_to_create))
 
     def test_patch_table(self):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('patch_table')))
-        self.to_delete.append(dataset)
+        dataset = self.temp_dataset(_make_dataset_id('patch_table'))
 
         TABLE_NAME = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
@@ -273,9 +262,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(table.description, 'Description')
 
     def test_update_table(self):
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('update_table')))
-        self.to_delete.append(dataset)
+        dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
         TABLE_NAME = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
@@ -316,10 +303,7 @@ class TestBigQuery(unittest.TestCase):
         ]
         ROW_IDS = range(len(ROWS))
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('insert_data_then_dump')))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(_make_dataset_id('insert_data_then_dump'))
         TABLE_NAME = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
@@ -358,10 +342,7 @@ class TestBigQuery(unittest.TestCase):
         ]
         TABLE_NAME = 'test_table'
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('load_local_then_dump')))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
@@ -406,10 +387,7 @@ class TestBigQuery(unittest.TestCase):
             ("orange", 590),
             ("red", 650)]
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('load_local_then_dump')))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
         table = Table(dataset.table(TABLE_NAME), client=Config.CLIENT)
         self.to_delete.insert(0, table)
 
@@ -467,9 +445,7 @@ class TestBigQuery(unittest.TestCase):
 
         self.to_delete.insert(0, blob)
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('load_gcs_then_dump')))
-        self.to_delete.append(dataset)
+        dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
 
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
@@ -536,10 +512,7 @@ class TestBigQuery(unittest.TestCase):
 
         self.to_delete.insert(0, blob)
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('load_gcs_then_dump')))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
         table_ref = dataset.table(table_name)
 
         job = Config.CLIENT.load_table_from_storage(
@@ -589,9 +562,7 @@ class TestBigQuery(unittest.TestCase):
                 blob.upload_from_file(csv_read, content_type='text/csv')
         self.to_delete.insert(0, blob)
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(table.dataset_id))
-        self.to_delete.append(dataset)
+        dataset = self.temp_dataset(table.dataset_id)
         table_ref = dataset.table(table.table_id)
         job = Config.CLIENT.load_table_from_storage(
             'bq_extract_storage_test_' + local_id, table_ref, gs_url)
@@ -676,8 +647,7 @@ class TestBigQuery(unittest.TestCase):
         TABLE_NAME = 'test_table'
         QUERY = 'SELECT * FROM %s.%s' % (DATASET_ID, TABLE_NAME)
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(DATASET_ID))
-        self.to_delete.append(dataset)
+        dataset = self.temp_dataset(DATASET_ID)
 
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
@@ -866,9 +836,7 @@ class TestBigQuery(unittest.TestCase):
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
 
-        dataset = retry_403(Config.CLIENT.create_dataset)(Dataset(dataset_id))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(dataset_id)
         greeting = bigquery.SchemaField(
             'greeting', 'STRING', mode='NULLABLE')
         table = Table(dataset.table(table_id), schema=[greeting],
@@ -1208,8 +1176,7 @@ class TestBigQuery(unittest.TestCase):
         DATASET_ID = 'samples'
         TABLE_NAME = 'natality'
 
-        dataset = Dataset(DATASET_ID, project=PUBLIC)
-        table_ref = dataset.table(TABLE_NAME)
+        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
         table = Config.CLIENT.get_table(table_ref)
         self._fetch_single_page(table)
 
@@ -1260,10 +1227,7 @@ class TestBigQuery(unittest.TestCase):
             ('Some value', record)
         ]
         table_name = 'test_table'
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('issue_2951')))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(_make_dataset_id('issue_2951'))
         table = Table(dataset.table(table_name), schema=schema,
                       client=Config.CLIENT)
         table.create()
@@ -1278,10 +1242,8 @@ class TestBigQuery(unittest.TestCase):
 
     def test_create_table_insert_fetch_nested_schema(self):
         table_name = 'test_table'
-        dataset = retry_403(Config.CLIENT.create_dataset)(
-            Dataset(_make_dataset_id('create_table_nested_schema')))
-        self.to_delete.append(dataset)
-
+        dataset = self.temp_dataset(
+            _make_dataset_id('create_table_nested_schema'))
         schema = _load_json_schema()
         table = Table(dataset.table(table_name), schema=schema,
                       client=Config.CLIENT)
@@ -1338,6 +1300,12 @@ class TestBigQuery(unittest.TestCase):
             parts = time.strptime(expected[7], '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)              # FavoriteTime
+
+    def temp_dataset(self, dataset_id):
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+            Dataset(Config.CLIENT.dataset(dataset_id)))
+        self.to_delete.append(dataset)
+        return dataset
 
 
 def _job_done(instance):
