@@ -842,8 +842,9 @@ class LoadJob(_AsyncJob):
         """
         job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
-        dataset = Dataset(dest_config['datasetId'],
-                          project=dest_config['projectId'])
+        ds_ref = DatasetReference(dest_config['projectId'],
+                                  dest_config['datasetId'],)
+        dataset = Dataset(ds_ref)
         table_ref = TableReference(dataset, dest_config['tableId'])
         destination = Table(table_ref, client=client)
         source_urls = config.get('sourceUris', ())
@@ -959,8 +960,9 @@ class CopyJob(_AsyncJob):
         """
         job_id, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
-        dataset = Dataset(dest_config['datasetId'],
-                          project=dest_config['projectId'])
+        ds_ref = DatasetReference(dest_config['projectId'],
+                                  dest_config['datasetId'],)
+        dataset = Dataset(ds_ref)
         table_ref = TableReference(dataset, dest_config['tableId'])
         destination = Table(table_ref, client=client)
         sources = []
@@ -972,9 +974,9 @@ class CopyJob(_AsyncJob):
                     "Resource missing 'sourceTables' / 'sourceTable'")
             source_configs = [single]
         for source_config in source_configs:
-            dataset = Dataset(source_config['datasetId'],
-                              project=source_config['projectId'])
-            table_ref = TableReference(dataset, source_config['tableId'])
+            ds_ref = DatasetReference(source_config['projectId'],
+                                      source_config['datasetId'])
+            table_ref = ds_ref.table(source_config['tableId'])
             sources.append(Table(table_ref, client=client))
         job = cls(job_id, destination, sources, client=client)
         job._set_properties(resource)
@@ -1426,7 +1428,8 @@ class QueryJob(_AsyncJob):
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
                 project = dest_remote['projectId']
-                dataset = Dataset(dest_remote['datasetId'], project=project)
+                dataset = Dataset(DatasetReference(project,
+                                                   dest_remote['datasetId']))
                 self.destination = dataset.table(dest_remote['tableId'])
 
         def_ds = configuration.get('defaultDataset')
@@ -1434,9 +1437,8 @@ class QueryJob(_AsyncJob):
             if self.default_dataset is not None:
                 del self.default_dataset
         else:
-            self.default_dataset = Dataset(def_ds['datasetId'],
-                                           project=def_ds['projectId'])
-
+            self.default_dataset = Dataset(
+                DatasetReference(def_ds['projectId'], def_ds['datasetId']))
         udf_resources = []
         for udf_mapping in configuration.get(self._UDF_KEY, ()):
             key_val, = udf_mapping.items()
@@ -1587,11 +1589,11 @@ class QueryJob(_AsyncJob):
 
             t_project = table['projectId']
 
-            ds_name = table['datasetId']
-            t_dataset = datasets_by_project_name.get((t_project, ds_name))
+            ds_id = table['datasetId']
+            t_dataset = datasets_by_project_name.get((t_project, ds_id))
             if t_dataset is None:
-                t_dataset = Dataset(ds_name, project=t_project)
-                datasets_by_project_name[(t_project, ds_name)] = t_dataset
+                t_dataset = DatasetReference(t_project, ds_id)
+                datasets_by_project_name[(t_project, ds_id)] = t_dataset
 
             t_name = table['tableId']
             tables.append(t_dataset.table(t_name))
