@@ -1248,7 +1248,7 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
     """
 
-    default_dataset = _TypedProperty('default_dataset', Dataset)
+    default_dataset = _TypedProperty('default_dataset', DatasetReference)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.defaultDataset
     """
@@ -1437,8 +1437,8 @@ class QueryJob(_AsyncJob):
             if self.default_dataset is not None:
                 del self.default_dataset
         else:
-            self.default_dataset = Dataset(
-                DatasetReference(def_ds['projectId'], def_ds['datasetId']))
+            self.default_dataset = DatasetReference(
+                def_ds['projectId'], def_ds['datasetId'])
         udf_resources = []
         for udf_mapping in configuration.get(self._UDF_KEY, ()):
             key_val, = udf_mapping.items()
