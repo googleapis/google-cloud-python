@@ -180,18 +180,19 @@ class TestBigQuery(unittest.TestCase):
 
     def test_create_table(self):
         dataset = self.temp_dataset(_make_dataset_id('create_table'))
-
-        TABLE_NAME = 'test_table'
+        table_id = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                      client=Config.CLIENT)
-        self.assertFalse(table.exists())
-        table.create()
+        table_arg = Table(dataset.table(table_id), schema=[full_name, age],
+                          client=Config.CLIENT)
+        self.assertFalse(table_arg.exists())
+
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
+
         self.assertTrue(table.exists())
-        self.assertEqual(table.table_id, TABLE_NAME)
+        self.assertEqual(table.table_id, table_id)
 
     def test_get_table_w_public_dataset(self):
         PUBLIC = 'bigquery-public-data'
@@ -227,10 +228,10 @@ class TestBigQuery(unittest.TestCase):
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         for table_name in tables_to_create:
-            created_table = Table(dataset.table(table_name),
-                                  schema=[full_name, age],
-                                  client=Config.CLIENT)
-            created_table.create()
+            table = Table(dataset.table(table_name),
+                          schema=[full_name, age],
+                          client=Config.CLIENT)
+            created_table = retry_403(Config.CLIENT.create_table)(table)
             self.to_delete.insert(0, created_table)
 
         # Retrieve the tables.
@@ -249,10 +250,10 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                      client=Config.CLIENT)
-        self.assertFalse(table.exists())
-        table.create()
+        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+                          client=Config.CLIENT)
+        self.assertFalse(table_arg.exists())
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
         self.assertIsNone(table.friendly_name)
@@ -268,10 +269,10 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                      client=Config.CLIENT)
-        self.assertFalse(table.exists())
-        table.create()
+        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+                          client=Config.CLIENT)
+        self.assertFalse(table_arg.exists())
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
         voter = bigquery.SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
@@ -309,10 +310,10 @@ class TestBigQuery(unittest.TestCase):
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         now = bigquery.SchemaField('now', 'TIMESTAMP')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age, now],
-                      client=Config.CLIENT)
-        self.assertFalse(table.exists())
-        table.create()
+        table_arg = Table(dataset.table(TABLE_NAME),
+                          schema=[full_name, age, now], client=Config.CLIENT)
+        self.assertFalse(table_arg.exists())
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
 
@@ -346,9 +347,9 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                      client=Config.CLIENT)
-        table.create()
+        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+                          client=Config.CLIENT)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
         with _NamedTemporaryFile() as temp:
@@ -450,9 +451,9 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                      client=Config.CLIENT)
-        table.create()
+        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+                          client=Config.CLIENT)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
         job = Config.CLIENT.load_table_from_storage(
@@ -652,9 +653,9 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                      client=Config.CLIENT)
-        table.create()
+        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+                          client=Config.CLIENT)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
         job = Config.CLIENT.run_async_query(JOB_NAME, QUERY)
@@ -839,9 +840,9 @@ class TestBigQuery(unittest.TestCase):
         dataset = self.temp_dataset(dataset_id)
         greeting = bigquery.SchemaField(
             'greeting', 'STRING', mode='NULLABLE')
-        table = Table(dataset.table(table_id), schema=[greeting],
-                      client=Config.CLIENT)
-        table.create()
+        table_arg = Table(dataset.table(table_id), schema=[greeting],
+                          client=Config.CLIENT)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
         with _NamedTemporaryFile() as temp:
@@ -1210,9 +1211,9 @@ class TestBigQuery(unittest.TestCase):
         ]
         table_name = 'test_table'
         dataset = self.temp_dataset(_make_dataset_id('issue_2951'))
-        table = Table(dataset.table(table_name), schema=schema,
-                      client=Config.CLIENT)
-        table.create()
+        table_arg = Table(dataset.table(table_name), schema=schema,
+                          client=Config.CLIENT)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
         table.insert_data(to_insert)
@@ -1227,9 +1228,9 @@ class TestBigQuery(unittest.TestCase):
         dataset = self.temp_dataset(
             _make_dataset_id('create_table_nested_schema'))
         schema = _load_json_schema()
-        table = Table(dataset.table(table_name), schema=schema,
-                      client=Config.CLIENT)
-        table.create()
+        table_arg = Table(dataset.table(table_name), schema=schema,
+                          client=Config.CLIENT)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
         self.assertEqual(table.table_id, table_name)
