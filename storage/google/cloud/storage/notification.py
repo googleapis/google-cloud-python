@@ -87,7 +87,7 @@ class BucketNotification(object):
             self._properties['event_types'] = event_types
 
         if blob_name_prefix is not None:
-            self._properties['blob_name_prefix'] = blob_name_prefix
+            self._properties['object_name_prefix'] = blob_name_prefix
 
         self._properties['payload_format'] = payload_format
 
@@ -161,7 +161,7 @@ class BucketNotification(object):
     def blob_name_prefix(self):
         """Prefix of blob names for which notification events are published.
         """
-        return self._properties.get('blob_name_prefix')
+        return self._properties.get('object_name_prefix')
 
     @property
     def payload_format(self):

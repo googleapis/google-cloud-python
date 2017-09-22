@@ -167,7 +167,7 @@ class TestBucketNotification(unittest.TestCase):
             'topic': self.TOPIC_ALT_REF,
             'custom_attributes': self.CUSTOM_ATTRIBUTES,
             'event_types': self.event_types(),
-            'blob_name_prefix': self.BLOB_NAME_PREFIX,
+            'object_name_prefix': self.BLOB_NAME_PREFIX,
             'payload_format': self.payload_format(),
             'id': self.NOTIFICATION_ID,
             'etag': self.ETAG,
@@ -288,7 +288,7 @@ class TestBucketNotification(unittest.TestCase):
             'topic': self.TOPIC_ALT_REF,
             'custom_attributes': self.CUSTOM_ATTRIBUTES,
             'event_types': self.event_types(),
-            'blob_name_prefix': self.BLOB_NAME_PREFIX,
+            'object_name_prefix': self.BLOB_NAME_PREFIX,
             'payload_format': self.payload_format(),
             'id': self.NOTIFICATION_ID,
             'etag': self.ETAG,
@@ -311,7 +311,7 @@ class TestBucketNotification(unittest.TestCase):
             'topic': self.TOPIC_ALT_REF,
             'custom_attributes': self.CUSTOM_ATTRIBUTES,
             'event_types': self.event_types(),
-            'blob_name_prefix': self.BLOB_NAME_PREFIX,
+            'object_name_prefix': self.BLOB_NAME_PREFIX,
             'payload_format': self.payload_format(),
         }
         api_request.assert_called_once_with(
