@@ -185,8 +185,6 @@ class Client(ClientWithProject):
         :rtype: ":class:`~google.cloud.bigquery.dataset.Dataset`"
         :returns: a new ``Dataset`` returned from the service.
         """
-        if dataset.project is None:
-            dataset._project = self.project
         path = '/projects/%s/datasets' % (dataset.project,)
         api_response = self._connection.api_request(
             method='POST', path=path, data=dataset._build_resource())
@@ -244,8 +242,6 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: the modified ``Dataset`` instance
         """
-        if dataset.project is None:
-            dataset._project = self.project
         path = '/projects/%s/datasets/%s' % (dataset.project,
                                              dataset.dataset_id)
         partial = {}

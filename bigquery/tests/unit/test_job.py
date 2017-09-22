@@ -2139,7 +2139,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
 
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
-        job.default_dataset = Dataset(DS_ID, project=self.PROJECT)
+        job.default_dataset = Dataset(DatasetReference(self.PROJECT, DS_ID))
 
         job.begin()
 
@@ -2204,7 +2204,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_NAME, self.QUERY, client1)
 
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
-        dataset = Dataset(DS_ID, project=self.PROJECT)
+        dataset = Dataset(dataset_ref)
         table_ref = dataset_ref.table(TABLE)
 
         job.allow_large_results = True
