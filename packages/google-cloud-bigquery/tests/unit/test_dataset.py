@@ -114,6 +114,70 @@ class TestDatasetReference(unittest.TestCase):
         self.assertEqual(table_ref.project, 'some-project-1')
         self.assertEqual(table_ref.table_id, 'table_1')
 
+    def test_to_api_repr(self):
+        dataset = self._make_one('project_1', 'dataset_1')
+
+        resource = dataset.to_api_repr()
+
+        self.assertEqual(
+            resource,
+            {
+                'projectId': 'project_1',
+                'datasetId': 'dataset_1',
+            })
+
+    def test_from_api_repr(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        expected = self._make_one('project_1', 'dataset_1')
+
+        got = DatasetReference.from_api_repr(
+            {
+                'projectId': 'project_1',
+                'datasetId': 'dataset_1',
+            })
+
+        self.assertEqual(expected, got)
+
+    def test___eq___wrong_type(self):
+        dataset = self._make_one('project_1', 'dataset_1')
+        other = object()
+        self.assertNotEqual(dataset, other)
+        self.assertEqual(dataset, mock.ANY)
+
+    def test___eq___project_mismatch(self):
+        dataset = self._make_one('project_1', 'dataset_1')
+        other = self._make_one('project_2', 'dataset_1')
+        self.assertNotEqual(dataset, other)
+
+    def test___eq___dataset_mismatch(self):
+        dataset = self._make_one('project_1', 'dataset_1')
+        other = self._make_one('project_1', 'dataset_2')
+        self.assertNotEqual(dataset, other)
+
+    def test___eq___equality(self):
+        dataset = self._make_one('project_1', 'dataset_1')
+        other = self._make_one('project_1', 'dataset_1')
+        self.assertEqual(dataset, other)
+
+    def test___hash__set_equality(self):
+        dataset1 = self._make_one('project_1', 'dataset_1')
+        dataset2 = self._make_one('project_1', 'dataset_2')
+        set_one = {dataset1, dataset2}
+        set_two = {dataset1, dataset2}
+        self.assertEqual(set_one, set_two)
+
+    def test___hash__not_equals(self):
+        dataset1 = self._make_one('project_1', 'dataset_1')
+        dataset2 = self._make_one('project_1', 'dataset_2')
+        set_one = {dataset1}
+        set_two = {dataset2}
+        self.assertNotEqual(set_one, set_two)
+
+    def test___repr__(self):
+        dataset = self._make_one('project1', 'dataset1')
+        expected = "DatasetReference('project1', 'dataset1')"
+        self.assertEqual(repr(dataset), expected)
+
 
 class TestDataset(unittest.TestCase):
     from google.cloud.bigquery.dataset import DatasetReference
