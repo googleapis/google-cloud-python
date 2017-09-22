@@ -75,7 +75,7 @@ class Test_BatchBase(_BaseTest):
             base._check_state()
 
     def test_insert(self):
-        from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -92,7 +92,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_update(self):
-        from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -109,7 +109,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_insert_or_update(self):
-        from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -126,7 +126,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_replace(self):
-        from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -143,7 +143,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_delete(self):
-        from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
         from google.cloud.spanner.keyset import KeySet
 
         keys = [[0], [1], [2]]
@@ -195,9 +195,9 @@ class TestBatch(_BaseTest):
 
     def test_commit_grpc_error(self):
         from google.gax.errors import GaxError
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionOptions)
-        from google.cloud.proto.spanner.v1.mutation_pb2 import (
+        from google.cloud.spanner_v1.proto.mutation_pb2 import (
             Mutation as MutationPB)
         from google.cloud.spanner.keyset import KeySet
 
@@ -234,8 +234,8 @@ class TestBatch(_BaseTest):
 
     def test_commit_ok(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionOptions)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -282,8 +282,8 @@ class TestBatch(_BaseTest):
 
     def test_context_mgr_success(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionOptions)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -312,7 +312,7 @@ class TestBatch(_BaseTest):
 
     def test_context_mgr_failure(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 

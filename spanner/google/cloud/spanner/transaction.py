@@ -14,8 +14,8 @@
 
 """Spanner read-write transaction support."""
 
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionSelector
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
+from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
+from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 
 from google.cloud._helpers import _pb_timestamp_to_datetime
 from google.cloud.spanner._helpers import _options_with_prefix

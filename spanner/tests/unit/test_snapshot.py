@@ -57,7 +57,7 @@ class Test_SnapshotBase(unittest.TestCase):
             _multi_use = False
 
             def _make_txn_selector(self):
-                from google.cloud.proto.spanner.v1.transaction_pb2 import (
+                from google.cloud.spanner_v1.proto.transaction_pb2 import (
                     TransactionOptions, TransactionSelector)
 
                 if self._transaction_id:
@@ -82,7 +82,7 @@ class Test_SnapshotBase(unittest.TestCase):
             base._make_txn_selector()
 
     def test_read_grpc_error(self):
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionSelector)
         from google.gax.errors import GaxError
         from google.cloud.spanner.keyset import KeySet
@@ -114,12 +114,12 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def _read_helper(self, multi_use, first=True, count=0):
         from google.protobuf.struct_pb2 import Struct
-        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+        from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionSelector)
-        from google.cloud.proto.spanner.v1.type_pb2 import Type, StructType
-        from google.cloud.proto.spanner.v1.type_pb2 import STRING, INT64
+        from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
+        from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
         from google.cloud.spanner.keyset import KeySet
         from google.cloud.spanner._helpers import _make_value_pb
 
@@ -218,7 +218,7 @@ class Test_SnapshotBase(unittest.TestCase):
             self._read_helper(multi_use=True, first=True, count=1)
 
     def test_execute_sql_grpc_error(self):
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionSelector)
         from google.gax.errors import GaxError
 
@@ -255,12 +255,12 @@ class Test_SnapshotBase(unittest.TestCase):
 
     def _execute_sql_helper(self, multi_use, first=True, count=0):
         from google.protobuf.struct_pb2 import Struct
-        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+        from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet, ResultSetMetadata, ResultSetStats)
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionSelector)
-        from google.cloud.proto.spanner.v1.type_pb2 import Type, StructType
-        from google.cloud.proto.spanner.v1.type_pb2 import STRING, INT64
+        from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
+        from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
         from google.cloud.spanner._helpers import _make_value_pb
 
         TXN_ID = b'DEADBEEF'
@@ -651,7 +651,7 @@ class TestSnapshot(unittest.TestCase):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_begin_ok_exact_staleness(self):
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
 
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
@@ -677,7 +677,7 @@ class TestSnapshot(unittest.TestCase):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_begin_ok_exact_strong(self):
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
 
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)

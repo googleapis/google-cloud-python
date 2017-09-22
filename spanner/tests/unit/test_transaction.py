@@ -137,7 +137,7 @@ class TestTransaction(unittest.TestCase):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_begin_ok(self):
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
 
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
@@ -279,7 +279,7 @@ class TestTransaction(unittest.TestCase):
 
     def test_commit_ok(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
         from google.cloud.spanner.keyset import KeySet
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -311,8 +311,8 @@ class TestTransaction(unittest.TestCase):
 
     def test_context_mgr_success(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -344,7 +344,7 @@ class TestTransaction(unittest.TestCase):
     def test_context_mgr_failure(self):
         from google.protobuf.empty_pb2 import Empty
         empty_pb = Empty()
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
 
         transaction_pb = TransactionPB(id=self.TRANSACTION_ID)
