@@ -483,7 +483,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(table.partition_expiration, 100)
         self.assertEqual(got.table_id, table_id)
 
-    def test_create_table_w_schema(self):
+    def test_create_table_w_schema_and_query(self):
         from google.cloud.bigquery.table import Table, SchemaField
 
         project = 'PROJECT'
@@ -491,6 +491,7 @@ class TestClient(unittest.TestCase):
         table_id = 'table-id'
         path = 'projects/%s/datasets/%s/tables' % (
             project, dataset_id)
+        query = 'SELECT * from %s:%s' % (dataset_id, table_id)
         creds = _make_credentials()
         client = self._make_one(project=project, credentials=creds)
         resource = {
@@ -504,6 +505,10 @@ class TestClient(unittest.TestCase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
+            'view': {
+                'query': query,
+                'useLegacySql': True
+            },
         }
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
@@ -512,6 +517,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _Connection(resource)
         table_ref = client.dataset(dataset_id).table(table_id)
         table = Table(table_ref, schema=schema, client=client)
+        table.view_query = query
 
         got = client.create_table(table)
 
@@ -529,12 +535,14 @@ class TestClient(unittest.TestCase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
+            'view': {'query': query},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, table_id)
         self.assertEqual(got.project, project)
         self.assertEqual(got.dataset_id, dataset_id)
         self.assertEqual(got.schema, schema)
+        self.assertEqual(got.view_query, query)
 
     def test_get_table(self):
         project = 'PROJECT'
