@@ -607,7 +607,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         retry_429(notification.create)()
         try:
             self.assertTrue(notification.exists())
-            self.assertIsNotNone(notification.id)
+            self.assertIsNotNone(notification.notification_id)
             notifications = list(bucket.list_notifications())
             self.assertEqual(len(notifications), 1)
             self.assertEqual(notifications[0].topic_name, self.TOPIC_NAME)
@@ -628,7 +628,7 @@ class TestStorageNotificationCRUD(unittest.TestCase):
         retry_429(notification.create)()
         try:
             self.assertTrue(notification.exists())
-            self.assertIsNotNone(notification.id)
+            self.assertIsNotNone(notification.notification_id)
             self.assertEqual(
                 notification.custom_attributes, self.CUSTOM_ATTRIBUTES)
             self.assertEqual(notification.event_types, self.event_types())
