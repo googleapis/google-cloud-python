@@ -55,15 +55,15 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_scalar_field(name, type_):
-        from google.cloud.proto.spanner.v1.type_pb2 import StructType
-        from google.cloud.proto.spanner.v1.type_pb2 import Type
+        from google.cloud.spanner_v1.proto.type_pb2 import StructType
+        from google.cloud.spanner_v1.proto.type_pb2 import Type
 
         return StructType.Field(name=name, type=Type(code=type_))
 
     @staticmethod
     def _make_array_field(name, element_type_code=None, element_type=None):
-        from google.cloud.proto.spanner.v1.type_pb2 import StructType
-        from google.cloud.proto.spanner.v1.type_pb2 import Type
+        from google.cloud.spanner_v1.proto.type_pb2 import StructType
+        from google.cloud.spanner_v1.proto.type_pb2 import Type
 
         if element_type is None:
             element_type = Type(code=element_type_code)
@@ -73,8 +73,8 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_struct_type(struct_type_fields):
-        from google.cloud.proto.spanner.v1.type_pb2 import StructType
-        from google.cloud.proto.spanner.v1.type_pb2 import Type
+        from google.cloud.spanner_v1.proto.type_pb2 import StructType
+        from google.cloud.spanner_v1.proto.type_pb2 import Type
 
         fields = [
             StructType.Field(name=key, type=Type(code=value))
@@ -101,7 +101,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_result_set_metadata(fields=(), transaction_id=None):
-        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+        from google.cloud.spanner_v1.proto.result_set_pb2 import (
             ResultSetMetadata)
         metadata = ResultSetMetadata()
         for field in fields:
@@ -112,7 +112,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_result_set_stats(query_plan=None, **kw):
-        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+        from google.cloud.spanner_v1.proto.result_set_pb2 import (
             ResultSetStats)
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner._helpers import _make_value_pb
@@ -127,7 +127,7 @@ class TestStreamedResultSet(unittest.TestCase):
     @staticmethod
     def _make_partial_result_set(
             values, metadata=None, stats=None, chunked_value=False):
-        from google.cloud.proto.spanner.v1.result_set_pb2 import (
+        from google.cloud.spanner_v1.proto.result_set_pb2 import (
             PartialResultSet)
         return PartialResultSet(
             values=values,
@@ -347,8 +347,8 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_array_of_int(self):
-        from google.cloud.proto.spanner.v1.type_pb2 import StructType
-        from google.cloud.proto.spanner.v1.type_pb2 import Type
+        from google.cloud.spanner_v1.proto.type_pb2 import StructType
+        from google.cloud.spanner_v1.proto.type_pb2 import Type
 
         subarray_type = Type(
             code='ARRAY', array_element_type=Type(code='INT64'))
@@ -379,8 +379,8 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_array_of_string(self):
-        from google.cloud.proto.spanner.v1.type_pb2 import StructType
-        from google.cloud.proto.spanner.v1.type_pb2 import Type
+        from google.cloud.spanner_v1.proto.type_pb2 import StructType
+        from google.cloud.spanner_v1.proto.type_pb2 import Type
 
         subarray_type = Type(
             code='ARRAY', array_element_type=Type(code='STRING'))
@@ -1015,7 +1015,7 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
 def _generate_partial_result_sets(prs_text_pbs):
     from google.protobuf.json_format import Parse
-    from google.cloud.proto.spanner.v1.result_set_pb2 import PartialResultSet
+    from google.cloud.spanner_v1.proto.result_set_pb2 import PartialResultSet
 
     partial_result_sets = []
 
@@ -1048,7 +1048,7 @@ def _normalize_float(cell):
 
 def _normalize_results(rows_data, fields):
     """Helper for _parse_streaming_read_acceptance_tests"""
-    from google.cloud.proto.spanner.v1 import type_pb2
+    from google.cloud.spanner_v1.proto import type_pb2
 
     normalized = []
     for row_data in rows_data:

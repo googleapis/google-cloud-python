@@ -14,8 +14,8 @@
 
 """Context manager for Cloud Spanner batched writes."""
 
-from google.cloud.proto.spanner.v1.mutation_pb2 import Mutation
-from google.cloud.proto.spanner.v1.transaction_pb2 import TransactionOptions
+from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
+from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _pb_timestamp_to_datetime
@@ -182,7 +182,7 @@ def _make_write_pb(table, columns, values):
     :type values: list of lists
     :param values: Values to be modified.
 
-    :rtype: :class:`google.cloud.proto.spanner.v1.mutation_pb2.Mutation.Write`
+    :rtype: :class:`google.cloud.spanner_v1.proto.mutation_pb2.Mutation.Write`
     :returns: Write protobuf
     """
     return Mutation.Write(

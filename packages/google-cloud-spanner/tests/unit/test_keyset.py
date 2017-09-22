@@ -93,7 +93,7 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange.end_closed, None)
 
     def test_to_pb_w_start_closed_and_end_open(self):
-        from google.cloud.proto.spanner.v1.keys_pb2 import KeyRange
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
         KEY_1 = [u'key_1']
         KEY_2 = [u'key_2']
@@ -107,7 +107,7 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange_pb.end_open.values[0].string_value, KEY_2[0])
 
     def test_to_pb_w_start_open_and_end_closed(self):
-        from google.cloud.proto.spanner.v1.keys_pb2 import KeyRange
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
         KEY_1 = [u'key_1']
         KEY_2 = [u'key_2']
@@ -173,7 +173,7 @@ class TestKeySet(unittest.TestCase):
             self._make_one(all_=True, ranges=[range_1, range_2])
 
     def test_to_pb_w_all(self):
-        from google.cloud.proto.spanner.v1.keys_pb2 import KeySet
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeySet
 
         keyset = self._make_one(all_=True)
 
@@ -185,7 +185,7 @@ class TestKeySet(unittest.TestCase):
         self.assertEqual(len(result.ranges), 0)
 
     def test_to_pb_w_only_keys(self):
-        from google.cloud.proto.spanner.v1.keys_pb2 import KeySet
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeySet
 
         KEYS = [[u'key1'], [u'key2']]
         keyset = self._make_one(keys=KEYS)
@@ -203,7 +203,7 @@ class TestKeySet(unittest.TestCase):
         self.assertEqual(len(result.ranges), 0)
 
     def test_to_pb_w_only_ranges(self):
-        from google.cloud.proto.spanner.v1.keys_pb2 import KeySet
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeySet
         from google.cloud.spanner.keyset import KeyRange
 
         KEY_1 = u'KEY_1'

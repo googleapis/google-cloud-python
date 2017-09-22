@@ -14,8 +14,8 @@
 
 """Wrap representation of Spanner keys / ranges."""
 
-from google.cloud.proto.spanner.v1.keys_pb2 import KeyRange as KeyRangePB
-from google.cloud.proto.spanner.v1.keys_pb2 import KeySet as KeySetPB
+from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange as KeyRangePB
+from google.cloud.spanner_v1.proto.keys_pb2 import KeySet as KeySetPB
 
 from google.cloud.spanner._helpers import _make_list_value_pb
 from google.cloud.spanner._helpers import _make_list_value_pbs
@@ -55,7 +55,7 @@ class KeyRange(object):
     def to_pb(self):
         """Construct a KeyRange protobuf.
 
-        :rtype: :class:`~google.cloud.proto.spanner.v1.keys_pb2.KeyRange`
+        :rtype: :class:`~google.cloud.spanner_v1.proto.keys_pb2.KeyRange`
         :returns: protobuf corresponding to this instance.
         """
         kwargs = {}
@@ -97,7 +97,7 @@ class KeySet(object):
     def to_pb(self):
         """Construct a KeySet protobuf.
 
-        :rtype: :class:`~google.cloud.proto.spanner.v1.keys_pb2.KeySet`
+        :rtype: :class:`~google.cloud.spanner_v1.proto.keys_pb2.KeySet`
         :returns: protobuf corresponding to this instance.
         """
         if self.all_:

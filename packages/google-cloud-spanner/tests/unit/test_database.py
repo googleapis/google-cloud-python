@@ -750,8 +750,8 @@ class TestBatchCheckout(_BaseTest):
 
     def test_context_mgr_success(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionOptions)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
