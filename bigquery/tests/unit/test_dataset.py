@@ -319,6 +319,16 @@ class TestDataset(unittest.TestCase):
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
 
+    def test_labels_setter(self):
+        dataset = self._make_one(self.DS_ID)
+        dataset.labels = {'color': 'green'}
+        self.assertEqual(dataset.labels, {'color': 'green'})
+
+    def test_labels_setter_bad_value(self):
+        dataset = self._make_one(self.DS_ID)
+        with self.assertRaises(ValueError):
+            dataset.labels = None
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         RESOURCE = {}
