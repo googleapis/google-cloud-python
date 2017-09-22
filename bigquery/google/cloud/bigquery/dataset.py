@@ -151,6 +151,45 @@ class DatasetReference(object):
         """
         return TableReference(self, table_id)
 
+    @classmethod
+    def from_api_repr(cls, resource):
+        project = resource['projectId']
+        dataset_id = resource['datasetId']
+        return cls(project, dataset_id)
+
+    def to_api_repr(self):
+        return {
+            'projectId': self._project,
+            'datasetId': self._dataset_id,
+        }
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            tuple: The contents of this :class:`DatasetReference`.
+        """
+        return (
+            self._project,
+            self._dataset_id,
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, DatasetReference):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __repr__(self):
+        return 'DatasetReference{}'.format(self._key())
+
 
 class Dataset(object):
     """Datasets are containers for tables.
