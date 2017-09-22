@@ -430,7 +430,7 @@ class SpannerClient(object):
 
                 Parameters can appear anywhere that a literal value is expected.  The same
                 parameter name can be used more than once, for example:
-                  ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+                ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
 
                 It is an error to execute an SQL query with unbound parameters.
 
@@ -519,7 +519,7 @@ class SpannerClient(object):
 
                 Parameters can appear anywhere that a literal value is expected.  The same
                 parameter name can be used more than once, for example:
-                  ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+                ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
 
                 It is an error to execute an SQL query with unbound parameters.
 
