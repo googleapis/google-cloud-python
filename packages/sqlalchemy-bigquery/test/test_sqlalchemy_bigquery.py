@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
 from sqlalchemy import types, func, case
 from sqlalchemy.sql import expression, select, literal_column
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.orm import sessionmaker
+from pytz import timezone
 import pytest
 import sqlalchemy
 import datetime
@@ -11,7 +15,7 @@ import datetime
 
 ONE_ROW_CONTENTS = [
     588,
-    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=datetime.timezone.utc),
+    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
     'W 52 St & 11 Ave',
     40.76727216,
     False,
@@ -54,7 +58,7 @@ def query(table):
             col1,
             col2,
         ])
-        .where(col1 < datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        .where(col1 < '2017-01-01 00:00:00')
         .group_by(col1)
         .order_by(col2)
     )

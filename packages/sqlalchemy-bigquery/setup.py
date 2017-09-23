@@ -18,7 +18,11 @@ setup(
     ],
     install_requires=[
         'sqlalchemy>=1.1.9',
-        'google-cloud-bigquery>=0.27.0'
+        'google-cloud-bigquery>=0.27.0',
+        'future',
+    ],
+    tests_require=[
+        'pytz'
     ],
     entry_points={
         'sqlalchemy.dialects': [

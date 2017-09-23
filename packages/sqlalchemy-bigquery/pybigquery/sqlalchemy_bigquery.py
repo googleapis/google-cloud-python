@@ -59,7 +59,7 @@ _type_map = {
 class BigQueryExecutionContext(DefaultExecutionContext):
     def create_cursor(self):
         # Set arraysize
-        c = super().create_cursor()
+        c = super(BigQueryExecutionContext, self).create_cursor()
         if self.dialect.arraysize:
             c.arraysize = self.dialect.arraysize
         return c
@@ -91,8 +91,8 @@ class BigQueryDialect(DefaultDialect):
     supports_native_boolean = True
     supports_simple_order_by_label = True
 
-    def __init__(self, arraysize=5000, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, arraysize=5000, *args, **kwargs):
+        super(BigQueryDialect, self).__init__(*args, **kwargs)
         self.arraysize = arraysize
 
     @classmethod
