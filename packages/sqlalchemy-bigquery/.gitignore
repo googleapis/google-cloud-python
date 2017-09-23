@@ -5,3 +5,6 @@
 *.pyc
 .cache/
 *.iml
+/pybigquery.egg-info
+/dist
+/build
