@@ -167,7 +167,7 @@ def test_joins(session, table, table_one_row):
     assert len(result) > 0
 
 
-def test_querying_wildcard_tables(engine, query):
+def test_querying_wildcard_tables(engine):
     table = Table('bigquery-public-data.noaa_gsod.gsod*', MetaData(bind=engine), autoload=True)
     rows = table.select().limit(1).execute().first()
     assert len(rows) > 0
