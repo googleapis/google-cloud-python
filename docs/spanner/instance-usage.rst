@@ -141,32 +141,24 @@ Delete an instance using its
 
 .. _check-on-current-instance-operation:
 
-Check on Current Instance Operation
------------------------------------
+Resolve Current Instance Operation
+----------------------------------
 
 The :meth:`~google.cloud.spanner.instance.Instance.create` and
 :meth:`~google.cloud.spanner.instance.Instance.update` methods of instance
 object trigger long-running operations on the server, and return instances
 of the :class:`~google.cloud.spanner.instance.Operation` class.
 
-You can check if a long-running operation has finished
-by using its :meth:`~google.cloud.spanner.instance.Operation.finished`
-method:
+If you want to block on the completion of those operations, use the
+``result`` method on the returned objects:
 
 .. code:: python
 
     >>> operation = instance.create()
-    >>> operation.finished()
-    True
+    >>> result = operation.result()
 
-.. note::
+This method will raise an exception if the operation fails.
 
-    Once an :class:`~google.cloud.spanner.instance.Operation` object
-    has returned :data:`True` from its
-    :meth:`~google.cloud.spanner.instance.Operation.finished` method, the
-    object should not be re-used. Subsequent calls to
-    :meth:`~google.cloud.spanner.instance.Operation.finished`
-    will result in an :exc`ValueError` being raised.
 
 Next Step
 ---------
