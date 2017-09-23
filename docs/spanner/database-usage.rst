@@ -8,12 +8,16 @@ interact with individual databases for that instance.
 List Databases
 --------------
 
-To list of all existing databases for an instance, use its
+To iterate over all existing databases for an instance, use its
 :meth:`~google.cloud.spanner.instance.Instance.list_databases` method:
 
 .. code:: python
 
-    databases, token = instance.list_databases()
+    for database in instance.list_databases():
+        # `database` is a `Database` object.
+
+This method yields :class:`~.spanner_admin_database_v1.types.Database`
+objects.
 
 
 Database Factory
