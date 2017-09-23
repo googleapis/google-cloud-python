@@ -24,6 +24,7 @@ import uuid
 
 import six
 
+from google.api.core.exceptions import PreconditionFailed
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud.bigquery.table import Table
@@ -158,7 +159,11 @@ class TestBigQuery(unittest.TestCase):
         ds3 = Config.CLIENT.update_dataset(ds2, ['labels'])
         self.assertEqual(ds3.labels, {'color': 'green', 'shape': 'circle'})
 
-    # TODO(jba): test that read-modify-write with ETag works.
+        # If we try to update using d2 again, it will fail because the
+        # previous update changed the ETag.
+        ds2.description = 'no good'
+        with self.assertRaises(PreconditionFailed):
+            Config.CLIENT.update_dataset(ds2, ['description'])
 
     def test_list_datasets(self):
         datasets_to_create = [
