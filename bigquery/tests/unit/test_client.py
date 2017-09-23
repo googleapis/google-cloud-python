@@ -505,10 +505,7 @@ class TestClient(unittest.TestCase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
-            'view': {
-                'query': query,
-                'useLegacySql': True
-            },
+            'view': {'query': query},
         }
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
