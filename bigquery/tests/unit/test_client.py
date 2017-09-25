@@ -1113,17 +1113,55 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         SOURCE = 'source_table'
         DESTINATION = 'destination_table'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': SOURCE,
+                    },
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': DESTINATION,
+                    },
+                },
+            },
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(RESOURCE)
         dataset = client.dataset(DATASET)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
-        job = client.copy_table(JOB, destination, source)
+
+        job = client.copy_table(source, destination, job_id=JOB)
+
+        # Check that copy_table actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/%s/jobs' % PROJECT)
+
         self.assertIsInstance(job, CopyJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)
         self.assertEqual(list(job.sources), [source])
+        self.assertIs(job.destination, destination)
+
+        conn = client._connection = _Connection(RESOURCE)
+        source2 = dataset.table(SOURCE + '2')
+        job = client.copy_table([source, source2], destination, job_id=JOB)
+        self.assertIsInstance(job, CopyJob)
+        self.assertIs(job._client, client)
+        self.assertEqual(job.job_id, JOB)
+        self.assertEqual(list(job.sources), [source, source2])
         self.assertIs(job.destination, destination)
 
     def test_extract_table(self):
