@@ -96,26 +96,13 @@ Check on Current Database Operation
 The :meth:`~google.cloud.spanner.database.Database.create` and
 :meth:`~google.cloud.spanner.database.Database.update` methods of instance
 object trigger long-running operations on the server, and return instances
-of the :class:`~google.cloud.spanner.database.Operation` class.
-
-You can check if a long-running operation has finished
-by using its :meth:`~google.cloud.spanner.database.Operation.finished`
-method:
+conforming to the :class:`~.concurrent.futures.Future` class.
 
 .. code:: python
 
     >>> operation = instance.create()
-    >>> operation.finished()
-    True
+    >>> operation.result()
 
-.. note::
-
-    Once an :class:`~google.cloud.spanner.instance.Operation` object
-    has returned :data:`True` from its
-    :meth:`~google.cloud.spanner.instance.Operation.finished` method, the
-    object should not be re-used. Subsequent calls to
-    :meth:`~google.cloud.spanner.instance.Operation.finished`
-    will result in an :exc`ValueError` being raised.
 
 Non-Admin Database Usage
 ========================
