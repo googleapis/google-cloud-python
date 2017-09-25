@@ -285,6 +285,34 @@ class Client(ClientWithProject):
             method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response)
 
+    def update_table(self, table, properties):
+        """API call:  update table properties via a PUT request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
+
+        :type table:
+            :class:`google.cloud.bigquery.table.Table`
+        :param table_ref: the table to update.
+
+        :rtype: :class:`google.cloud.bigquery.table.Table`
+        :returns: a ``Table`` instance
+        """
+        resource = table._build_resource()
+        partial = {}
+        for p in properties:
+            # snake case to camel case
+            words = p.split('_')
+            api_field = words[0] + ''.join(map(str.capitalize, words[1:]))
+            partial[api_field] = resource.get(api_field)
+        if table.etag is not None:
+            headers = {'If-Match': table.etag}
+        else:
+            headers = None
+        api_response = self._connection.api_request(
+            method='PATCH', path=table.path, data=partial, headers=headers)
+        return Table.from_api_repr(api_response, client=self)
+
     def list_dataset_tables(self, dataset, max_results=None, page_token=None):
         """List tables in the dataset.
 
