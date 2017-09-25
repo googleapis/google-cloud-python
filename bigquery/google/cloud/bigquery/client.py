@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import collections
 import uuid
 
 from google.api.core import page_iterator
@@ -492,25 +493,39 @@ class Client(ClientWithProject):
         """
         return LoadJob(job_id, destination, source_uris, client=self)
 
-    def copy_table(self, job_id, destination, *sources):
-        """Construct a job for copying one or more tables into another table.
+    def copy_table(self, sources, destination, job_id=None, job_config=None):
+        """Start a job for copying one or more tables into another table.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
 
-        :type job_id: str
-        :param job_id: Name of the job.
+        :type sources: One of:
+                       :class:`~google.cloud.bigquery.table.TableReference`
+                       sequence of
+                       :class:`~google.cloud.bigquery.table.TableReference`
+        :param sources: Table or tables to be copied.
 
-        :type destination: :class:`google.cloud.bigquery.table.Table`
+
+        :type destination: :class:`google.cloud.bigquery.table.TableReference`
         :param destination: Table into which data is to be copied.
 
-        :type sources: sequence of :class:`google.cloud.bigquery.table.Table`
-        :param sources: tables to be copied.
+        :type job_id: str
+        :param job_id: (Optional) The ID of the job.
+
+        :type job_config: :class:`google.cloud.bigquery.job.CopyJobConfig`
+        :param job_config: (Optional) Extra configuration options for the job.
 
         :rtype: :class:`google.cloud.bigquery.job.CopyJob`
         :returns: a new ``CopyJob`` instance
         """
-        return CopyJob(job_id, destination, sources, client=self)
+        job_id = _make_job_id(job_id)
+
+        if not isinstance(sources, collections.Sequence):
+            sources = [sources]
+        job = CopyJob(job_id, sources, destination, client=self,
+                      job_config=job_config)
+        job.begin()
+        return job
 
     def extract_table(self, source, *destination_uris, **kwargs):
         """Start a job to extract a table into Cloud Storage files.
@@ -541,9 +556,7 @@ class Client(ClientWithProject):
         :returns: a new ``ExtractJob`` instance
         """
         job_config = kwargs.get('job_config')
-        job_id = kwargs.get('job_id')
-        if job_id is None:
-            job_id = str(uuid.uuid4())
+        job_id = _make_job_id(kwargs.get('job_id'))
 
         job = ExtractJob(
             job_id, source, list(destination_uris), client=self,
@@ -667,3 +680,17 @@ def _item_to_table(iterator, resource):
     :returns: The next table in the page.
     """
     return Table.from_api_repr(resource, iterator.client)
+
+
+def _make_job_id(job_id):
+    """Construct an ID for a new job.
+
+    :type job_id: str or ``NoneType``
+    :param job_id: the user-provided job ID
+
+    :rtype: str
+    :returns: A job ID
+    """
+    if job_id is None:
+        return str(uuid.uuid4())
+    return job_id

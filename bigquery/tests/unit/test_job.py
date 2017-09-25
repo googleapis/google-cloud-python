@@ -17,7 +17,7 @@ import copy
 from six.moves import http_client
 import unittest
 
-from google.cloud.bigquery.job import ExtractJobConfig
+from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
 
 
@@ -83,9 +83,12 @@ class Test__error_result_to_exception(unittest.TestCase):
 
 
 class _Base(object):
+    from google.cloud.bigquery.dataset import DatasetReference
+
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
     DS_ID = 'datset_id'
+    DS_REF = DatasetReference(PROJECT, DS_ID)
     TABLE_ID = 'table_id'
     JOB_NAME = 'job_name'
 
@@ -103,6 +106,11 @@ class _Base(object):
         self.JOB_ID = '%s:%s' % (self.PROJECT, self.JOB_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.USER_EMAIL = 'phred@example.com'
+
+    def _table_ref(self, table_id):
+        from google.cloud.bigquery.table import TableReference
+
+        return TableReference(self.DS_REF, table_id)
 
     def _makeResource(self, started=False, ended=False):
         self._setUpConstants()
@@ -895,9 +903,9 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._make_one(self.JOB_NAME, destination, [source], client)
+        source = self._table_ref(self.SOURCE_TABLE)
+        destination = self._table_ref(self.DESTINATION_TABLE)
+        job = self._make_one(self.JOB_NAME, [source], destination, client)
         self.assertIs(job.destination, destination)
         self.assertEqual(job.sources, [source])
         self.assertIs(job._client, client)
@@ -1035,9 +1043,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._make_one(self.JOB_NAME, destination, [source], client)
+        source = self._table_ref(self.SOURCE_TABLE)
+        destination = self._table_ref(self.DESTINATION_TABLE)
+        job = self._make_one(self.JOB_NAME, [source], destination, client)
 
         job.begin()
 
@@ -1090,13 +1098,13 @@ class TestCopyJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._make_one(self.JOB_NAME, destination, [source], client1)
-
-        job.create_disposition = 'CREATE_NEVER'
-        job.write_disposition = 'WRITE_TRUNCATE'
-
+        source = self._table_ref(self.SOURCE_TABLE)
+        destination = self._table_ref(self.DESTINATION_TABLE)
+        config = CopyJobConfig()
+        config.create_disposition = 'CREATE_NEVER'
+        config.write_disposition = 'WRITE_TRUNCATE'
+        job = self._make_one(self.JOB_NAME, [source], destination, client1,
+                             config)
         job.begin(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
@@ -1120,9 +1128,10 @@ class TestCopyJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._make_one(self.JOB_NAME, destination, [source], client)
+
+        source = self._table_ref(self.SOURCE_TABLE)
+        destination = self._table_ref(self.DESTINATION_TABLE)
+        job = self._make_one(self.JOB_NAME, [source], destination, client)
 
         self.assertFalse(job.exists())
 
@@ -1138,9 +1147,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._make_one(self.JOB_NAME, destination, [source], client1)
+        source = self._table_ref(self.SOURCE_TABLE)
+        destination = self._table_ref(self.DESTINATION_TABLE)
+        job = self._make_one(self.JOB_NAME, [source], destination, client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -1156,9 +1165,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._make_one(self.JOB_NAME, destination, [source], client)
+        source = self._table_ref(self.SOURCE_TABLE)
+        destination = self._table_ref(self.DESTINATION_TABLE)
+        job = self._make_one(self.JOB_NAME, [source], destination, client)
 
         job.reload()
 
@@ -1175,9 +1184,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._make_one(self.JOB_NAME, destination, [source], client1)
+        source = self._table_ref(self.SOURCE_TABLE)
+        destination = self._table_ref(self.DESTINATION_TABLE)
+        job = self._make_one(self.JOB_NAME, [source], destination, client1)
 
         job.reload(client=client2)
 
@@ -2709,8 +2718,6 @@ class _Table(object):
 
     @property
     def table_id(self):
-        if self._table_id is not None:
-            return self._table_id
         return TestLoadJob.TABLE_ID
 
     @property
