@@ -220,12 +220,15 @@ constructor:
 
 .. code-block:: python
 
-   from google.cloud.spanner import Client
-   from google.cloud.spanner import FixedSizePool
-   client = Client()
-   instance = client.instance(INSTANCE_NAME)
-   pool = FixedSizePool(size=10, default_timeout=5)
-   database = instanc.database(DATABASE_NAME, pool=pool)
+    from google.cloud import spanner
+
+    # Instantiate the Spanner client, and get the appropriate instance.
+    client = spanner.Client()
+    instance = client.instance(INSTANCE_NAME)
+
+    # Create a database with a pool of a fixed size.
+    pool = spanner.FixedSizePool(size=10, default_timeout=5)
+    database = instance.database(DATABASE_NAME, pool=pool)
 
 Note that creating a database with a pool may presume that its database
 already exists, as it may need to pre-create sessions (rather than creating
