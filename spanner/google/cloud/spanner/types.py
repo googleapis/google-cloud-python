@@ -17,7 +17,7 @@
 from google.cloud.spanner_v1.proto import type_pb2
 
 
-# Scalar paramter types
+# Scalar parameter types
 STRING_PARAM_TYPE = type_pb2.Type(code=type_pb2.STRING)
 BYTES_PARAM_TYPE = type_pb2.Type(code=type_pb2.BYTES)
 BOOL_PARAM_TYPE = type_pb2.Type(code=type_pb2.BOOL)
