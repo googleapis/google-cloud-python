@@ -43,7 +43,6 @@ class StreamedResultSet(object):
         self._counter = 0           # Counter for processed responses
         self._metadata = None       # Until set from first PRS
         self._stats = None          # Until set from last PRS
-        self._resume_token = None   # To resume from last received PRS
         self._current_row = []      # Accumulated values for incomplete row
         self._pending_chunk = None  # Incomplete value
         self._source = source       # Source snapshot
@@ -85,15 +84,6 @@ class StreamedResultSet(object):
         """
         return self._stats
 
-    @property
-    def resume_token(self):
-        """Token for resuming interrupted read / query.
-
-        :rtype: bytes
-        :returns: token from last chunk of results.
-        """
-        return self._resume_token
-
     def _merge_chunk(self, value):
         """Merge pending chunk with next value.
 
@@ -132,7 +122,6 @@ class StreamedResultSet(object):
         """
         response = six.next(self._response_iterator)
         self._counter += 1
-        self._resume_token = response.resume_token
 
         if self._metadata is None:  # first response
             metadata = self._metadata = response.metadata
@@ -298,13 +287,15 @@ def _merge_struct(lhs, rhs, type_):
 
 
 _MERGE_BY_TYPE = {
-    type_pb2.BOOL: _unmergeable,
-    type_pb2.INT64: _merge_string,
-    type_pb2.FLOAT64: _merge_float64,
-    type_pb2.STRING: _merge_string,
     type_pb2.ARRAY: _merge_array,
-    type_pb2.STRUCT: _merge_struct,
+    type_pb2.BOOL: _unmergeable,
     type_pb2.BYTES: _merge_string,
+    type_pb2.DATE: _merge_string,
+    type_pb2.FLOAT64: _merge_float64,
+    type_pb2.INT64: _merge_string,
+    type_pb2.STRING: _merge_string,
+    type_pb2.STRUCT: _merge_struct,
+    type_pb2.TIMESTAMP: _merge_string,
 }
 
 
