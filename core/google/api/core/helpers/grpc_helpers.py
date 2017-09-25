@@ -22,8 +22,8 @@ from google.api.core import exceptions
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (
-  grpc.UnaryStreamMultiCallable,
-  grpc.StreamStreamMultiCallable,
+    grpc.UnaryStreamMultiCallable,
+    grpc.StreamStreamMultiCallable,
 )
 
 
