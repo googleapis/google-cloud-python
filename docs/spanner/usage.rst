@@ -12,23 +12,7 @@ Spanner
   snapshot-usage
   transaction-usage
   advanced-session-pool-topics
-
-  client-api
-  instance-api
-  database-api
-  session-api
-  keyset-api
-  snapshot-api
-  batch-api
-  transaction-api
-  streamed-api
-
-  gapic/v1/api
-  gapic/v1/types
-  gapic/v1/admin_database_api
-  gapic/v1/admin_database_types
-  gapic/v1/admin_instance_api
-  gapic/v1/admin_instance_types
+  api-reference
 
 API requests are sent to the `Cloud Spanner`_ API via RPC over
 HTTP/2.  In order to support this, we'll rely on `gRPC`_.
