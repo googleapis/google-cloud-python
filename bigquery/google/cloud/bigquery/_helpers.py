@@ -527,14 +527,6 @@ class ScalarQueryParameter(AbstractQueryParameter):
         self.type_ = type_
         self.value = value
 
-    def __eq__(self, other):
-        if not isinstance(other, ScalarQueryParameter):
-            return NotImplemented
-        return(
-            self.name == other.name and
-            self.type_ == other.type_ and
-            self.value == other.value)
-
     @classmethod
     def positional(cls, type_, value):
         """Factory for positional paramater.
@@ -636,14 +628,6 @@ class ArrayQueryParameter(AbstractQueryParameter):
         self.name = name
         self.array_type = array_type
         self.values = values
-
-    def __eq__(self, other):
-        if not isinstance(other, ArrayQueryParameter):
-            return NotImplemented
-        return(
-            self.name == other.name and
-            self.array_type == other.array_type and
-            self.values == other.values)
 
     @classmethod
     def positional(cls, array_type, values):
@@ -788,14 +772,6 @@ class StructQueryParameter(AbstractQueryParameter):
             else:
                 types[sub.name] = sub.type_
                 values[sub.name] = sub.value
-
-    def __eq__(self, other):
-        if not isinstance(other, StructQueryParameter):
-            return NotImplemented
-        return(
-            self.name == other.name and
-            self.struct_types == other.struct_types and
-            self.struct_values == other.struct_values)
 
     @classmethod
     def positional(cls, *sub_params):
