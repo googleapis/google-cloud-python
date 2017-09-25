@@ -1,8 +1,11 @@
 API Reference
 =============
 
+The following classes and methods constitute the Spanner client.
+Most likely, you will be interacting almost exclusively with these:
+
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     client-api
     instance-api
@@ -13,6 +16,14 @@ API Reference
     batch-api
     transaction-api
     streamed-api
+
+
+The classes and methods above depend on the following, lower-level
+classes and methods. Documentation for these is provided for completion,
+and some advanced use cases may wish to interact with these directly:
+
+.. toctree::
+    :maxdepth: 1
 
     gapic/v1/api
     gapic/v1/types
