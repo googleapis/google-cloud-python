@@ -53,9 +53,9 @@ trigger its creation on the server:
 .. note::
 
     Creating an instance triggers a "long-running operation" and
-    returns an :class:`google.cloud.spanner.database.Operation`
-    object.  See :ref:`check-on-current-database-operation` for polling
-    to find out if the operation is completed.
+    returns an :class:`~concurrent.futures.Future`-like object. Use
+    the :meth:`~concurrent.futures.Future.result` method to wait for
+    and inspect the result.
 
 
 Update an existing Database
