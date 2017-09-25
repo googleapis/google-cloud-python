@@ -1,17 +1,5 @@
 Spanner
-=======
-
-.. toctree::
-  :maxdepth: 2
-  :hidden:
-
-  instance-usage
-  database-usage
-  batch-usage
-  snapshot-usage
-  transaction-usage
-  advanced-session-pool-topics
-  api-reference
+^^^^^^^
 
 `Cloud Spanner`_ is the world’s first fully managed relational database service
 to offer both strong consistency and horizontal scalability for
@@ -22,6 +10,24 @@ to hundreds or thousands of servers to handle the biggest transactional
 workloads.
 
 .. _Cloud Spanner: https://cloud.google.com/spanner/
+
+.. toctree::
+  :maxdepth: 1
+  :titlesonly:
+  :hidden:
+
+  instance-usage
+  database-usage
+  batch-usage
+  snapshot-usage
+  transaction-usage
+  advanced-session-pool-topics
+  api-reference
+
+Spanner Client
+==============
+
+.. _spanner-client:
 
 
 Instantiating a Client
