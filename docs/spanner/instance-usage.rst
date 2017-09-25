@@ -11,13 +11,14 @@ Each instance within a project maps to a named "instance configuration",
 specifying the location and other parameters for a set of instances.  These
 configurations are defined by the server, and cannot be changed.
 
-To list of all instance configurations available to your project, use the
+To iterate over all instance configurations available to your project, use the
 :meth:`~google.cloud.spanner.client.Client.list_instance_configs`
 method of the client:
 
 .. code:: python
 
-    configs, token = client.list_instance_configs()
+    for config in client.list_instance_configs():
+        # `config` is an instance of `InstanceConfig`
 
 
 To fetch a single instance configuration, use the
@@ -28,17 +29,24 @@ method of the client:
 
     config = client.get_instance_configuration('config-name')
 
+Each of these methods provide
+:class:`~.spanner_admin_instance_v1.types.InstanceConfig` objects.
+
 
 List Instances
 --------------
 
-If you want a comprehensive list of all existing instances, use the
+If you want a comprehensive list of all existing instances, iterate over the
 :meth:`~google.cloud.spanner.client.Client.list_instances` method of
 the client:
 
 .. code:: python
 
-    instances, token = client.list_instances()
+    for instance in client.list_instances():
+        # `instance` is an instance of `Instance`
+
+This iterator yields :class:`~.spanner_admin_instance_v1.types.Instance`
+objects.
 
 
 Instance Factory
@@ -57,7 +65,7 @@ To create a :class:`~google.cloud.spanner.instance.Instance` object:
 - ``configuration_name`` is the name of the instance configuration to which the
   instance will be bound.  It must be one of the names configured for your
   project, discoverable via
-  :meth:`google.cloud.spanner.client.Client.list_instance_configs`.
+  :meth:`~google.cloud.spanner.client.Client.list_instance_configs`.
 
 - ``node_count`` is a postitive integral count of the number of nodes used
   by the instance.  More nodes allows for higher performance, but at a higher
