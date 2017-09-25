@@ -53,27 +53,27 @@ class RpcErrorImpl(grpc.RpcError, grpc.Call):
 
 def test_wrap_unary_errors():
     grpc_error = RpcErrorImpl(grpc.StatusCode.INVALID_ARGUMENT)
-    callable = mock.Mock(spec=['__call__'], side_effect=grpc_error)
+    callable_ = mock.Mock(spec=['__call__'], side_effect=grpc_error)
 
-    wrapped_callable = grpc_helpers._wrap_unary_errors(callable)
+    wrapped_callable = grpc_helpers._wrap_unary_errors(callable_)
 
     with pytest.raises(exceptions.InvalidArgument) as exc_info:
         wrapped_callable(1, 2, three='four')
 
-    callable.assert_called_once_with(1, 2, three='four')
+    callable_.assert_called_once_with(1, 2, three='four')
     assert exc_info.value.response == grpc_error
 
 
 def test_wrap_stream_errors_invocation():
     grpc_error = RpcErrorImpl(grpc.StatusCode.INVALID_ARGUMENT)
-    callable = mock.Mock(spec=['__call__'], side_effect=grpc_error)
+    callable_ = mock.Mock(spec=['__call__'], side_effect=grpc_error)
 
-    wrapped_callable = grpc_helpers._wrap_stream_errors(callable)
+    wrapped_callable = grpc_helpers._wrap_stream_errors(callable_)
 
     with pytest.raises(exceptions.InvalidArgument) as exc_info:
         wrapped_callable(1, 2, three='four')
 
-    callable.assert_called_once_with(1, 2, three='four')
+    callable_.assert_called_once_with(1, 2, three='four')
     assert exc_info.value.response == grpc_error
 
 
@@ -96,9 +96,9 @@ class RpcResponseIteratorImpl(object):
 def test_wrap_stream_errors_iterator():
     grpc_error = RpcErrorImpl(grpc.StatusCode.UNAVAILABLE)
     response_iter = RpcResponseIteratorImpl(grpc_error)
-    callable = mock.Mock(spec=['__call__'], return_value=response_iter)
+    callable_ = mock.Mock(spec=['__call__'], return_value=response_iter)
 
-    wrapped_callable = grpc_helpers._wrap_stream_errors(callable)
+    wrapped_callable = grpc_helpers._wrap_stream_errors(callable_)
 
     got_iterator = wrapped_callable(1, 2, three='four')
 
@@ -106,25 +106,25 @@ def test_wrap_stream_errors_iterator():
         next(got_iterator)
 
     assert got_iterator == response_iter
-    callable.assert_called_once_with(1, 2, three='four')
+    callable_.assert_called_once_with(1, 2, three='four')
     assert exc_info.value.response == grpc_error
 
 
 @mock.patch('google.api.core.helpers.grpc_helpers._wrap_unary_errors')
 def test_wrap_errors_non_streaming(wrap_unary_errors):
-    callable = mock.create_autospec(grpc.UnaryUnaryMultiCallable)
+    callable_ = mock.create_autospec(grpc.UnaryUnaryMultiCallable)
 
-    result = grpc_helpers.wrap_errors(callable)
+    result = grpc_helpers.wrap_errors(callable_)
 
     assert result == wrap_unary_errors.return_value
-    wrap_unary_errors.assert_called_once_with(callable)
+    wrap_unary_errors.assert_called_once_with(callable_)
 
 
 @mock.patch('google.api.core.helpers.grpc_helpers._wrap_stream_errors')
 def test_wrap_errors_streaming(wrap_stream_errors):
-    callable = mock.create_autospec(grpc.UnaryStreamMultiCallable)
+    callable_ = mock.create_autospec(grpc.UnaryStreamMultiCallable)
 
-    result = grpc_helpers.wrap_errors(callable)
+    result = grpc_helpers.wrap_errors(callable_)
 
     assert result == wrap_stream_errors.return_value
-    wrap_stream_errors.assert_called_once_with(callable)
+    wrap_stream_errors.assert_called_once_with(callable_)

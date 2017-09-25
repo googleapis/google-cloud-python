@@ -27,43 +27,43 @@ _STREAM_WRAP_CLASSES = (
 )
 
 
-def _patch_callable_name(callable):
+def _patch_callable_name(callable_):
     """Fix-up gRPC callable attributes.
 
     gRPC callable lack the ``__name__`` attribute which causes
     :func:`functools.wraps` to error. This adds the attribute if needed.
     """
-    if not hasattr(callable, '__name__'):
-        callable.__name__ = callable.__class__.__name__
+    if not hasattr(callable_, '__name__'):
+        callable_.__name__ = callable_.__class__.__name__
 
 
-def _wrap_unary_errors(callable):
+def _wrap_unary_errors(callable_):
     """Map errors for Unary-Unary and Stream-Unary gRPC callables."""
-    _patch_callable_name(callable)
+    _patch_callable_name(callable_)
 
-    @six.wraps(callable)
+    @six.wraps(callable_)
     def error_remapped_callable(*args, **kwargs):
         try:
-            return callable(*args, **kwargs)
+            return callable_(*args, **kwargs)
         except grpc.RpcError as exc:
             six.raise_from(exceptions.from_grpc_error(exc), exc)
 
     return error_remapped_callable
 
 
-def _wrap_stream_errors(callable):
+def _wrap_stream_errors(callable_):
     """Wrap errors for Unary-Stream and Stream-Stream gRPC callables.
 
     The callables that return iterators require a bit more logic to re-map
     errors when iterating. This wraps both the initial invocation and the
     iterator of the return value to re-map errors.
     """
-    _patch_callable_name(callable)
+    _patch_callable_name(callable_)
 
-    @six.wraps(callable)
+    @six.wraps(callable_)
     def error_remapped_callable(*args, **kwargs):
         try:
-            result = callable(*args, **kwargs)
+            result = callable_(*args, **kwargs)
             # Note: we are patching the private grpc._channel._Rendezvous._next
             # method as magic methods (__next__ in this case) can not be
             # patched on a per-instance basis (see
@@ -82,7 +82,7 @@ def _wrap_stream_errors(callable):
     return error_remapped_callable
 
 
-def wrap_errors(callable):
+def wrap_errors(callable_):
     """Wrap a gRPC callable and map :class:`grpc.RpcErrors` to friendly error
     classes.
 
@@ -93,12 +93,12 @@ def wrap_errors(callable):
     is useful for extracting metadata from the original error.
 
     Args:
-        callable (Callable): A gRPC callable.
+        callable_ (Callable): A gRPC callable.
 
     Returns:
         Callable: The wrapped gRPC callable.
     """
-    if isinstance(callable, _STREAM_WRAP_CLASSES):
-        return _wrap_stream_errors(callable)
+    if isinstance(callable_, _STREAM_WRAP_CLASSES):
+        return _wrap_stream_errors(callable_)
     else:
-        return _wrap_unary_errors(callable)
+        return _wrap_unary_errors(callable_)
