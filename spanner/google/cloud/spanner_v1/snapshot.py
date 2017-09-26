@@ -64,7 +64,7 @@ class _SnapshotBase(_SessionWrapper):
 
     Allows reuse of API request methods with different transaction selector.
 
-    :type session: :class:`~google.cloud.spanner.session.Session`
+    :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit
     """
     _multi_use = False
@@ -91,7 +91,7 @@ class _SnapshotBase(_SessionWrapper):
         :type columns: list of str
         :param columns: names of columns to be retrieved
 
-        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`
+        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`
         :param keyset: keys / ranges identifying rows to be retrieved
 
         :type index: str
@@ -101,7 +101,7 @@ class _SnapshotBase(_SessionWrapper):
         :type limit: int
         :param limit: (Optional) maxiumn number of rows to return
 
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
@@ -153,7 +153,7 @@ class _SnapshotBase(_SessionWrapper):
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
@@ -204,7 +204,7 @@ class Snapshot(_SnapshotBase):
     If no options are passed, reads will use the ``strong`` model, reading
     at a timestamp where all previously committed transactions are visible.
 
-    :type session: :class:`~google.cloud.spanner.session.Session`
+    :type session: :class:`~google.cloud.spanner_v1.session.Session`
     :param session: the session used to perform the commit.
 
     :type read_timestamp: :class:`datetime.datetime`

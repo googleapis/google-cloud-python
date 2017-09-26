@@ -18,10 +18,10 @@ This is the base from which all interactions with the API occur.
 
 In the hierarchy of API concepts
 
-* a :class:`~google.cloud.spanner.client.Client` owns an
-  :class:`~google.cloud.spanner.instance.Instance`
-* a :class:`~google.cloud.spanner.instance.Instance` owns a
-  :class:`~google.cloud.spanner.database.Database`
+* a :class:`~google.cloud.spanner_v1.client.Client` owns an
+  :class:`~google.cloud.spanner_v1.instance.Instance`
+* a :class:`~google.cloud.spanner_v1.instance.Instance` owns a
+  :class:`~google.cloud.spanner_v1.database.Database`
 """
 
 from google.api.core import page_iterator
@@ -197,7 +197,7 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
             Iterator of
-            :class:`~google.cloud.spanner.instance.InstanceConfig`
+            :class:`~google.cloud.spanner_v1.instance.InstanceConfig`
             resources within the client's project.
         """
         if page_token is None:
@@ -236,7 +236,7 @@ class Client(ClientWithProject):
         :param node_count: (Optional) The number of nodes in the instance's
                             cluster; used to set up the instance's cluster.
 
-        :rtype: :class:`~google.cloud.spanner.instance.Instance`
+        :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
         :returns: an instance owned by this client.
         """
         return Instance(
@@ -260,7 +260,7 @@ class Client(ClientWithProject):
 
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
-            Iterator of :class:`~google.cloud.spanner.instance.Instance`
+            Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`
             resources within the client's project.
         """
         if page_token is None:
@@ -285,7 +285,7 @@ def _item_to_instance_config(
         :class:`~google.spanner.admin.instance.v1.InstanceConfig`
     :param config_pb: An instance config returned from the API.
 
-    :rtype: :class:`~google.cloud.spanner.instance.InstanceConfig`
+    :rtype: :class:`~google.cloud.spanner_v1.instance.InstanceConfig`
     :returns: The next instance config in the page.
     """
     return InstanceConfig.from_pb(config_pb)
@@ -300,7 +300,7 @@ def _item_to_instance(iterator, instance_pb):
     :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`
     :param instance_pb: An instance returned from the API.
 
-    :rtype: :class:`~google.cloud.spanner.instance.Instance`
+    :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
     :returns: The next instance in the page.
     """
     return Instance.from_pb(instance_pb, iterator.client)

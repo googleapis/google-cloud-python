@@ -46,7 +46,7 @@ class Session(object):
     * Use :meth:`exists` to check for the existence of the session
     * :meth:`drop` the session
 
-    :type database: :class:`~google.cloud.spanner.database.Database`
+    :type database: :class:`~google.cloud.spanner_v1.database.Database`
     :param database: The database to which the session is bound.
     """
 
@@ -154,9 +154,9 @@ class Session(object):
 
         :type kw: dict
         :param kw: Passed through to
-                   :class:`~google.cloud.spanner.snapshot.Snapshot` ctor.
+                   :class:`~google.cloud.spanner_v1.snapshot.Snapshot` ctor.
 
-        :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`
+        :rtype: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
         :returns: a snapshot bound to this session
         :raises ValueError: if the session has not yet been created.
         """
@@ -174,7 +174,7 @@ class Session(object):
         :type columns: list of str
         :param columns: names of columns to be retrieved
 
-        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`
+        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`
         :param keyset: keys / ranges identifying rows to be retrieved
 
         :type index: str
@@ -184,7 +184,7 @@ class Session(object):
         :type limit: int
         :param limit: (Optional) maxiumn number of rows to return
 
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
         return self.snapshot().read(table, columns, keyset, index, limit)
@@ -210,7 +210,7 @@ class Session(object):
         :param query_mode: Mode governing return of results / query plan. See
             https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1
 
-        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`
+        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
         return self.snapshot().execute_sql(
@@ -219,7 +219,7 @@ class Session(object):
     def batch(self):
         """Factory to create a batch for this session.
 
-        :rtype: :class:`~google.cloud.spanner.batch.Batch`
+        :rtype: :class:`~google.cloud.spanner_v1.batch.Batch`
         :returns: a batch bound to this session
         :raises ValueError: if the session has not yet been created.
         """
@@ -231,7 +231,7 @@ class Session(object):
     def transaction(self):
         """Create a transaction to perform a set of reads with shared staleness.
 
-        :rtype: :class:`~google.cloud.spanner.transaction.Transaction`
+        :rtype: :class:`~google.cloud.spanner_v1.transaction.Transaction`
         :returns: a transaction bound to this session
         :raises ValueError: if the session has not yet been created.
         """

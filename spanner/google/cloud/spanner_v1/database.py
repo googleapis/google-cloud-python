@@ -60,7 +60,7 @@ class Database(object):
     :type database_id: str
     :param database_id: The ID of the database.
 
-    :type instance: :class:`~google.cloud.spanner.instance.Instance`
+    :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`
     :param instance: The instance that owns the database.
 
     :type ddl_statements: list of string
@@ -68,10 +68,10 @@ class Database(object):
                            CREATE DATABASE statement.
 
     :type pool: concrete subclass of
-                :class:`~google.cloud.spanner.pool.AbstractSessionPool`.
+                :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`.
     :param pool: (Optional) session pool to be used by database.  If not
                  passed, the database will construct an instance of
-                 :class:`~google.cloud.spanner.pool.BurstyPool`.
+                 :class:`~google.cloud.spanner_v1.pool.BurstyPool`.
     """
 
     _spanner_api = None
@@ -96,11 +96,11 @@ class Database(object):
             :class:`google.spanner.v2.spanner_instance_admin_pb2.Instance`
         :param database_pb: A instance protobuf object.
 
-        :type instance: :class:`~google.cloud.spanner.instance.Instance`
+        :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`
         :param instance: The instance that owns the database.
 
         :type pool: concrete subclass of
-                    :class:`~google.cloud.spanner.pool.AbstractSessionPool`.
+                    :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`.
         :param pool: (Optional) session pool to be used by database.
 
         :rtype: :class:`Database`
@@ -310,7 +310,7 @@ class Database(object):
     def session(self):
         """Factory to create a session for this database.
 
-        :rtype: :class:`~google.cloud.spanner.session.Session`
+        :rtype: :class:`~google.cloud.spanner_v1.session.Session`
         :returns: a session bound to this database.
         """
         return Session(self)
@@ -327,9 +327,9 @@ class Database(object):
         :type kw: dict
         :param kw:
             Passed through to
-            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
+            :class:`~google.cloud.spanner_v1.snapshot.Snapshot` constructor.
 
-        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`
+        :rtype: :class:`~google.cloud.spanner_v1.database.SnapshotCheckout`
         :returns: new wrapper
         """
         return SnapshotCheckout(self, **kw)
@@ -340,7 +340,7 @@ class Database(object):
         The wrapper *must* be used as a context manager, with the batch
         as the value returned by the wrapper.
 
-        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`
+        :rtype: :class:`~google.cloud.spanner_v1.database.BatchCheckout`
         :returns: new wrapper
         """
         return BatchCheckout(self)
@@ -426,7 +426,7 @@ class SnapshotCheckout(object):
     :type kw: dict
     :param kw:
         Passed through to
-        :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.
+        :class:`~google.cloud.spanner_v1.snapshot.Snapshot` constructor.
     """
     def __init__(self, database, **kw):
         self._database = database
