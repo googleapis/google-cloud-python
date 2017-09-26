@@ -35,10 +35,10 @@ from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (
 
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
-from google.cloud.spanner import __version__
-from google.cloud.spanner._helpers import _options_with_prefix
-from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
-from google.cloud.spanner.instance import Instance
+from google.cloud.spanner_v1 import __version__
+from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
+from google.cloud.spanner_v1.instance import Instance
 
 SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
 
