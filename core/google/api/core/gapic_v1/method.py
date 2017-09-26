@@ -18,10 +18,13 @@ This is used by gapic clients to provide common error mapping, retry, timeout,
 pagination, and long-running operations to gRPC methods.
 """
 
+import functools
 import platform
 
 import pkg_resources
+import six
 
+from google.api.core import page_iterator
 from google.api.core import timeout
 from google.api.core.helpers import grpc_helpers
 
@@ -238,4 +241,40 @@ def wrap_method(
     if metadata is not None:
         metadata = _prepare_metadata(metadata)
 
-    return _GapicCallable(func, default_retry, default_timeout, metadata)
+    return six.wraps(func)(
+        _GapicCallable(func, default_retry, default_timeout, metadata))
+
+
+def wrap_with_paging(
+        func, items_field, request_token_field, response_token_field):
+    """Wrap an RPC method to return a page iterator.
+
+    Args:
+        func (Callable): The RPC method. This should already have been
+            wrapped with common functionality using :func:`wrap_method`.
+            request (protobuf.Message): The request message.
+        items_field (str): The field in the response message that has the
+            items for the page.
+        request_token_field (str): The field in the request message used to
+            specify the page token.
+        response_token_field (str): The field in the response message that has
+            the token for the next page.
+
+    Returns:
+        Callable: Returns a callable that when invoked will call the RPC
+            method and return a
+            :class:`google.api.core.page_iterator.Iterator`.
+    """
+    @six.wraps(func)
+    def paged_method(request, **kwargs):
+        """Wrapper that invokes a method and returns a page iterator."""
+        iterator = page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(func, **kwargs),
+            request=request,
+            items_field=items_field,
+            request_token_field=request_token_field,
+            response_token_field=response_token_field)
+        return iterator
+
+    return paged_method
