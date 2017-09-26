@@ -1,7 +1,7 @@
 Spanner
 ^^^^^^^
 
-`Cloud Spanner`_ is the world’s first fully managed relational database service
+`Cloud Spanner`_ is the world's first fully managed relational database service
 to offer both strong consistency and horizontal scalability for
 mission-critical online transaction processing (OLTP) applications. With Cloud
 Spanner you enjoy all the traditional benefits of a relational database; but
