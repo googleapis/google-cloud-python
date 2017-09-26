@@ -156,7 +156,9 @@ def test_wrap_with_paging():
         spec=['items', 'page_token', 'next_page_token'],
         items=[3, 4],
         next_page_token=None)
-    method = mock.Mock(spec=['__call__'], side_effect=(page_one, page_two))
+    method = mock.Mock(
+        spec=['__call__', '__name__'], side_effect=(page_one, page_two))
+    method.__name__ = 'mockmethod'
 
     wrapped_method = google.api.core.gapic_v1.method.wrap_with_paging(
         method, 'items', 'page_token', 'next_page_token')
