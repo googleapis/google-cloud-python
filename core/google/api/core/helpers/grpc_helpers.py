@@ -17,6 +17,10 @@
 import grpc
 import six
 
+import google.auth
+import google.auth.transport.grpc
+import google.auth.transport.requests
+
 from google.api.core import exceptions
 
 
@@ -102,3 +106,29 @@ def wrap_errors(callable_):
         return _wrap_stream_errors(callable_)
     else:
         return _wrap_unary_errors(callable_)
+
+
+def create_channel(target, credentials=None, scopes=None, **kwargs):
+    """Create a secure channel with credentials.
+
+    Args:
+        target (str): The target service address in the format 'hostname:port'.
+        credentials (google.auth.credentials.Credentials): The credentials. If
+            not specified, then this function will attempt to ascertain the
+            credentials from the environment using :func:`google.auth.default`.
+        scopes (Sequence[str]): A optional list of scopes needed for this
+            service. These are only used when credentials are not specified and
+            are passed to :func:`google.auth.default`.
+        kwargs: Additional key-word args passed to
+            :func:`google.auth.transport.grpc.secure_authorized_channel`.
+
+    Returns:
+        grpc.Channel: The created channel.
+    """
+    if credentials is None:
+        credentials, _ = google.auth.default(scopes=scopes)
+
+    request = google.auth.transport.requests.Request()
+
+    return google.auth.transport.grpc.secure_authorized_channel(
+        credentials, request, target, **kwargs)
