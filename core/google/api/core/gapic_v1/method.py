@@ -74,6 +74,40 @@ def _prepare_metadata(metadata):
     return list(metadata.items())
 
 
+def _determine_timeout(default_timeout, specified_timeout, retry):
+    """Determines how timeout should be applied to a wrapped method.
+
+    Args:
+        default_timeout (Optional[Timeout]): The default timeout specified
+            at method creation time.
+        specified_timeout (Optional[Timeout]): The timeout specified at
+            invocation time.
+        retry (Optional[Retry]): The retry specified at invocation time.
+
+    Returns:
+        Optional[Timeout]: The timeout to apply to the method or ``None``.
+    """
+    if specified_timeout is False:
+        return None
+
+    if specified_timeout is None:
+        # If timeout is the default and the default timeout is exponential and
+        # a non-default retry is specified, make sure the timeout's deadline
+        # matches the retry's. This handles the case where the user leaves
+        # the timeout default but specifies a lower deadline via the retry.
+        if retry and isinstance(default_timeout, timeout.ExponentialTimeout):
+            return default_timeout.with_deadline(retry._deadline)
+        else:
+            return default_timeout
+
+    # If timeout is specified as a number instead of a Timeout instance,
+    # convert it to a ConstantTimeout.
+    if isinstance(specified_timeout, (int, float)):
+        return timeout.ConstantTimeout(specified_timeout)
+    else:
+        return specified_timeout
+
+
 class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
@@ -82,9 +116,9 @@ class _GapicCallable(object):
             False, should accept a timeout argument. If metadata is not
             False, it should accept a metadata argument.
         retry (google.api.core.retry.Retry): The default retry for the
-            callable. If False, this callable will not retry.
+            callable. If falsy, this callable will not retry.
         timeout (google.api.core.timeout.Timeout): The default timeout
-            for the callable. If ``False``, this callable will not specify
+            for the callable. If falsy, this callable will not specify
             a timeout argument to the low-level RPC method.
         metadata (Sequence[Tuple[str, str]]): gRPC call metadata that's
             passed to the low-level RPC method. If ``False``, this callable
@@ -99,33 +133,22 @@ class _GapicCallable(object):
 
     def __call__(self, *args, **kwargs):
         """Invoke the low-level RPC with retry, timeout, and metadata."""
-        # Note: Due to Python 2 lacking keyword-only arguments we use this
-        # pattern to extract the retry and timeout params.
-        retry_ = kwargs.pop('retry', None)
-        if retry_ is None:
-            retry_ = self._retry
+        # Note: Due to Python 2 lacking keyword-only arguments we kwargs to
+        # to extract the retry and timeout params.
+        timeout_ = _determine_timeout(
+            self._timeout,
+            kwargs.pop('timeout', None),
+            # Use the invocation-specified retry only for this, as we only
+            # want to adjust the timeout deadline if the *user* specified
+            # a different retry.
+            kwargs.get('retry', None))
 
-        timeout_ = kwargs.pop('timeout', None)
-        if timeout_ is None:
-            timeout_ = self._timeout
-
-        # If timeout is specified as a number instead of a Timeout instance,
-        # convert it to a ConstantTimeout.
-        if timeout_ is not False and isinstance(timeout_, (int, float)):
-            timeout_ = timeout.ConstantTimeout(timeout_)
-
-        # If timeout is the default and the default timeout is exponential and
-        # a non-default retry is specified, make sure the timeout's deadline
-        # matches the retry's. This handles the case where the user leaves
-        # the timeout default but specifies a lower deadline via the retry.
-        if (timeout_ is self._timeout
-                and retry_ is not False
-                and retry_ is not self._retry
-                and isinstance(timeout_, timeout.ExponentialTimeout)):
-            timeout_ = timeout_.with_deadline(retry_._deadline)
+        retry = kwargs.pop('retry', None)
+        if retry is None:
+            retry = self._retry
 
         # Apply all applicable decorators.
-        wrapped_func = _apply_decorators(self._target, [retry_, timeout_])
+        wrapped_func = _apply_decorators(self._target, [retry, timeout_])
 
         # Set the metadata for the call using the metadata calculated by
         # _prepare_metadata.
@@ -195,17 +218,17 @@ def wrap_method(func, default_retry=None, default_timeout=None, metadata=None):
     equivalent to just calling ``get_topic`` but with error re-mapping.
 
     Args:
-        func (Callable[Any]): The function to wrap. If timeout is not
-            False, should accept a timeout argument. If metadata is not False,
-            it should accept a metadata argument.
+        func (Callable[Any]): The function to wrap. It should accept an
+            optional ``timeout`` argument. If ``metadata`` is not ``False``, it
+            should accept a ``metadata`` argument.
         default_retry (Optional[google.api.core.Retry]): The default retry
-            strategy.
+            strategy. If falsy, the method will not retry by default.
         default_timeout (Optional[google.api.core.Timeout]): The default
             timeout strategy. If an int or float is specified, the timeout will
             always be set to that value.
         metadata (Union(Mapping[str, str], False)): A dict of metadata keys and
             values. This will be augmented with common ``x-google-api-client``
-            metadata. If False, metadata will not be passed to the function
+            metadata. If ``False``, metadata will not be passed to the function
             at all.
 
     Returns:
