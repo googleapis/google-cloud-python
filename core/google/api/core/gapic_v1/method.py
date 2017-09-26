@@ -110,9 +110,7 @@ class _GapicCallable(object):
     """Callable that applies retry, timeout, and metadata logic.
 
     Args:
-        target (Callable): The low-level RPC method. If timeout is not
-            False, should accept a timeout argument. If metadata is not
-            False, it should accept a metadata argument.
+        target (Callable): The low-level RPC method.
         retry (google.api.core.retry.Retry): The default retry for the
             callable. If ``None``, this callable will not retry by default
         timeout (google.api.core.timeout.Timeout): The default timeout
@@ -210,14 +208,14 @@ def wrap_method(
                     wrap_errors() ->
                         get_topic()
 
-    Note that if ``timeout`` or ``retry`` is ``False``, then they are not
+    Note that if ``timeout`` or ``retry`` is ``None``, then they are not
     applied to the function. For example,
-    ``wrapped_get_topic(timeout=False, retry=False)`` is more or less
+    ``wrapped_get_topic(timeout=None, retry=None)`` is more or less
     equivalent to just calling ``get_topic`` but with error re-mapping.
 
     Args:
         func (Callable[Any]): The function to wrap. It should accept an
-            optional ``timeout`` argument. If ``metadata`` is not ``False``, it
+            optional ``timeout`` argument. If ``metadata`` is not ``None``, it
             should accept a ``metadata`` argument.
         default_retry (Optional[google.api.core.Retry]): The default retry
             strategy. If ``None``, the method will not retry by default.
