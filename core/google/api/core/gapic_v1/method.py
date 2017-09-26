@@ -54,14 +54,11 @@ def _prepare_metadata(metadata):
     """Transforms metadata to gRPC format and adds global metrics.
 
     Args:
-        metadata (Optional[Mapping[str, str]]): Any current metadata.
+        metadata (Mapping[str, str]): Any current metadata.
 
     Returns:
         Sequence[Tuple(str, str)]: The gRPC-friendly metadata keys and values.
     """
-    if metadata is None:
-        metadata = {}
-
     client_metadata = 'api-core/{} gl-python/{} grpc/{}'.format(
         _API_CORE_VERSION, _PY_VERSION, _API_CORE_VERSION)
 
@@ -117,7 +114,7 @@ class _GapicCallable(object):
             for the callable. If ``None``, this callable will not specify
             a timeout argument to the low-level RPC method by default.
         metadata (Optional[Sequence[Tuple[str, str]]]): gRPC call metadata
-            that's passed to the low-level RPC method. If falsy, no metadata
+            that's passed to the low-level RPC method. If ``None``, no metadata
             will be passed to the low-level RPC method.
     """
 
@@ -130,7 +127,7 @@ class _GapicCallable(object):
     def __call__(self, *args, **kwargs):
         """Invoke the low-level RPC with retry, timeout, and metadata."""
         # Note: Due to Python 2 lacking keyword-only arguments we use kwargs to
-        # to extract the retry and timeout params.
+        # extract the retry and timeout params.
         timeout_ = _determine_timeout(
             self._timeout,
             kwargs.pop('timeout', self._timeout),
@@ -146,7 +143,7 @@ class _GapicCallable(object):
 
         # Set the metadata for the call using the metadata calculated by
         # _prepare_metadata.
-        if self._metadata:
+        if self._metadata is not None:
             kwargs['metadata'] = self._metadata
 
         return wrapped_func(*args, **kwargs)
@@ -225,7 +222,7 @@ def wrap_method(
         metadata (Optional(Mapping[str, str])): A dict of metadata keys and
             values. This will be augmented with common ``x-google-api-client``
             metadata. If ``None``, metadata will not be passed to the function
-            at all, if ``USE_DEFAULT_METADATA`` (the default) then only the
+            at all, if :attr:`USE_DEFAULT_METADATA` (the default) then only the
             common metadata will be provided.
 
     Returns:
