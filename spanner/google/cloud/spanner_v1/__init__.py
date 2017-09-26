@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import pkg_resources
+__version__ = pkg_resources.get_distribution('google-cloud-spanner').version
 
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1 import types
@@ -26,8 +27,6 @@ from google.cloud.spanner_v1.pool import AbstractSessionPool
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import FixedSizePool
 
-
-__version__ = pkg_resources.get_distribution('google-cloud-spanner').version
 
 __all__ = (
     # google.cloud.spanner_v1
