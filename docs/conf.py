@@ -122,7 +122,6 @@ html_theme_options = {
     'github_user': 'GoogleCloudPlatform',
     'github_repo': 'google-cloud-python',
     'github_banner': True,
-    'travis_button': True,
     'font_family': "'Roboto', Georgia, sans",
     'head_font_family': "'Roboto', Georgia, serif",
     'code_font_family': "'Roboto Mono', 'Consolas', monospace",
