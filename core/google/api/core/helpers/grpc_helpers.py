@@ -17,11 +17,10 @@
 import grpc
 import six
 
+from google.api.core import exceptions
 import google.auth
 import google.auth.transport.grpc
 import google.auth.transport.requests
-
-from google.api.core import exceptions
 
 
 # The list of gRPC Callable interfaces that return iterators.
