@@ -20,7 +20,7 @@ import unittest
 class TestAbstractSessionPool(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.pool import AbstractSessionPool
+        from google.cloud.spanner_v1.pool import AbstractSessionPool
 
         return AbstractSessionPool
 
@@ -54,7 +54,7 @@ class TestAbstractSessionPool(unittest.TestCase):
             pool.clear()
 
     def test_session_wo_kwargs(self):
-        from google.cloud.spanner.pool import SessionCheckout
+        from google.cloud.spanner_v1.pool import SessionCheckout
 
         pool = self._make_one()
         checkout = pool.session()
@@ -64,7 +64,7 @@ class TestAbstractSessionPool(unittest.TestCase):
         self.assertEqual(checkout._kwargs, {})
 
     def test_session_w_kwargs(self):
-        from google.cloud.spanner.pool import SessionCheckout
+        from google.cloud.spanner_v1.pool import SessionCheckout
 
         pool = self._make_one()
         checkout = pool.session(foo='bar')
@@ -77,7 +77,7 @@ class TestAbstractSessionPool(unittest.TestCase):
 class TestFixedSizePool(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.pool import FixedSizePool
+        from google.cloud.spanner_v1.pool import FixedSizePool
 
         return FixedSizePool
 
@@ -210,7 +210,7 @@ class TestFixedSizePool(unittest.TestCase):
 class TestBurstyPool(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.pool import BurstyPool
+        from google.cloud.spanner_v1.pool import BurstyPool
 
         return BurstyPool
 
@@ -326,7 +326,7 @@ class TestBurstyPool(unittest.TestCase):
 class TestPingingPool(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.pool import PingingPool
+        from google.cloud.spanner_v1.pool import PingingPool
 
         return PingingPool
 
@@ -382,7 +382,7 @@ class TestPingingPool(unittest.TestCase):
     def test_get_hit_w_ping(self):
         import datetime
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner import pool as MUT
+        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=4)
         database = _Database('name')
@@ -404,7 +404,7 @@ class TestPingingPool(unittest.TestCase):
     def test_get_hit_w_ping_expired(self):
         import datetime
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner import pool as MUT
+        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=4)
         database = _Database('name')
@@ -464,7 +464,7 @@ class TestPingingPool(unittest.TestCase):
     def test_put_non_full(self):
         import datetime
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner import pool as MUT
+        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=1)
         queue = pool._sessions = _Queue()
@@ -515,7 +515,7 @@ class TestPingingPool(unittest.TestCase):
     def test_ping_oldest_stale_but_exists(self):
         import datetime
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner import pool as MUT
+        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=1)
         database = _Database('name')
@@ -532,7 +532,7 @@ class TestPingingPool(unittest.TestCase):
     def test_ping_oldest_stale_and_not_exists(self):
         import datetime
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner import pool as MUT
+        from google.cloud.spanner_v1 import pool as MUT
 
         pool = self._make_one(size=1)
         database = _Database('name')
@@ -552,7 +552,7 @@ class TestPingingPool(unittest.TestCase):
 class TestTransactionPingingPool(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.pool import TransactionPingingPool
+        from google.cloud.spanner_v1.pool import TransactionPingingPool
 
         return TransactionPingingPool
 
@@ -601,7 +601,7 @@ class TestTransactionPingingPool(unittest.TestCase):
     def test_bind_w_timestamp_race(self):
         import datetime
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner import pool as MUT
+        from google.cloud.spanner_v1 import pool as MUT
         NOW = datetime.datetime.utcnow()
         pool = self._make_one()
         database = _Database('name')
@@ -715,7 +715,7 @@ class TestTransactionPingingPool(unittest.TestCase):
 class TestSessionCheckout(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.pool import SessionCheckout
+        from google.cloud.spanner_v1.pool import SessionCheckout
 
         return SessionCheckout
 

@@ -42,9 +42,9 @@ class TestClient(unittest.TestCase):
     USER_AGENT = 'you-sir-age-int'
 
     def _get_target_class(self):
-        from google.cloud.spanner.client import Client
+        from google.cloud import spanner
 
-        return Client
+        return spanner.Client
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
@@ -52,7 +52,7 @@ class TestClient(unittest.TestCase):
     def _constructor_test_helper(self, expected_scopes, creds,
                                  user_agent=None,
                                  expected_creds=None):
-        from google.cloud.spanner import client as MUT
+        from google.cloud.spanner_v1 import client as MUT
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
         client = self._make_one(project=self.PROJECT, credentials=creds,
@@ -69,7 +69,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.user_agent, user_agent)
 
     def test_constructor_default_scopes(self):
-        from google.cloud.spanner import client as MUT
+        from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (
             MUT.SPANNER_ADMIN_SCOPE,
@@ -78,7 +78,7 @@ class TestClient(unittest.TestCase):
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_constructor_custom_user_agent_and_timeout(self):
-        from google.cloud.spanner import client as MUT
+        from google.cloud.spanner_v1 import client as MUT
 
         CUSTOM_USER_AGENT = 'custom-application'
         expected_scopes = (
@@ -106,7 +106,7 @@ class TestClient(unittest.TestCase):
         self._constructor_test_helper(expected_scopes, creds)
 
     def test_admin_api_lib_name(self):
-        from google.cloud.spanner import __version__
+        from google.cloud.spanner_v1 import __version__
         from google.cloud.spanner_admin_database_v1 import gapic as db
         from google.cloud.spanner_admin_instance_v1 import gapic as inst
 
@@ -145,16 +145,15 @@ class TestClient(unittest.TestCase):
                              __version__)
 
     def test_instance_admin_api(self):
-        from google.cloud.spanner import __version__
-        from google.cloud.spanner.client import SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1 import __version__
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
-        patch = mock.patch('google.cloud.spanner.client.InstanceAdminClient')
-
-        with patch as instance_admin_client:
+        inst_module = 'google.cloud.spanner_v1.client.InstanceAdminClient'
+        with mock.patch(inst_module) as instance_admin_client:
             api = client.instance_admin_api
 
         self.assertIs(api, instance_admin_client.return_value)
@@ -171,16 +170,15 @@ class TestClient(unittest.TestCase):
         credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_database_admin_api(self):
-        from google.cloud.spanner import __version__
-        from google.cloud.spanner.client import SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1 import __version__
+        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         expected_scopes = (SPANNER_ADMIN_SCOPE,)
 
-        patch = mock.patch('google.cloud.spanner.client.DatabaseAdminClient')
-
-        with patch as database_admin_client:
+        db_module = 'google.cloud.spanner_v1.client.DatabaseAdminClient'
+        with mock.patch(db_module) as database_admin_client:
             api = client.database_admin_api
 
         self.assertIs(api, database_admin_client.return_value)
@@ -225,7 +223,7 @@ class TestClient(unittest.TestCase):
     def test_list_instance_configs_wo_paging(self):
         from google.cloud._testing import _GAXPageIterator
         from google.gax import INITIAL_PAGE
-        from google.cloud.spanner.client import InstanceConfig
+        from google.cloud.spanner_v1.client import InstanceConfig
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -255,7 +253,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_instance_configs_w_paging(self):
         from google.cloud._testing import _GAXPageIterator
-        from google.cloud.spanner.client import InstanceConfig
+        from google.cloud.spanner_v1.client import InstanceConfig
 
         SIZE = 15
         TOKEN_RETURNED = 'TOKEN_RETURNED'
@@ -290,8 +288,8 @@ class TestClient(unittest.TestCase):
             [('google-cloud-resource-prefix', client.project_name)])
 
     def test_instance_factory_defaults(self):
-        from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
-        from google.cloud.spanner.instance import Instance
+        from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
+        from google.cloud.spanner_v1.instance import Instance
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -306,7 +304,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(instance._client, client)
 
     def test_instance_factory_explicit(self):
-        from google.cloud.spanner.instance import Instance
+        from google.cloud.spanner_v1.instance import Instance
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -325,7 +323,7 @@ class TestClient(unittest.TestCase):
     def test_list_instances_wo_paging(self):
         from google.cloud._testing import _GAXPageIterator
         from google.gax import INITIAL_PAGE
-        from google.cloud.spanner.instance import Instance
+        from google.cloud.spanner_v1.instance import Instance
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -360,7 +358,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_instances_w_paging(self):
         from google.cloud._testing import _GAXPageIterator
-        from google.cloud.spanner.instance import Instance
+        from google.cloud.spanner_v1.instance import Instance
 
         SIZE = 15
         TOKEN_RETURNED = 'TOKEN_RETURNED'

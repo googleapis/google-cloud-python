@@ -21,7 +21,7 @@ from google.cloud.spanner_v1.proto import type_pb2
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.spanner._helpers import _parse_value_pb
+from google.cloud.spanner_v1._helpers import _parse_value_pb
 # pylint: enable=ungrouped-imports
 
 
@@ -34,7 +34,7 @@ class StreamedResultSet(object):
         :class:`google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet`
         instances.
 
-    :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`
+    :type source: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
     :param source: Snapshot from which the result set was fetched.
     """
     def __init__(self, response_iterator, source=None):

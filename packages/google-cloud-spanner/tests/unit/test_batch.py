@@ -43,7 +43,7 @@ class _BaseTest(unittest.TestCase):
 class Test_BatchBase(_BaseTest):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.batch import _BatchBase
+        from google.cloud.spanner_v1.batch import _BatchBase
 
         return _BatchBase
 
@@ -144,7 +144,7 @@ class Test_BatchBase(_BaseTest):
 
     def test_delete(self):
         from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
@@ -170,7 +170,7 @@ class Test_BatchBase(_BaseTest):
 class TestBatch(_BaseTest):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.batch import Batch
+        from google.cloud.spanner_v1.batch import Batch
 
         return Batch
 
@@ -180,7 +180,7 @@ class TestBatch(_BaseTest):
         self.assertIs(batch._session, session)
 
     def test_commit_already_committed(self):
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
@@ -199,7 +199,7 @@ class TestBatch(_BaseTest):
             TransactionOptions)
         from google.cloud.spanner_v1.proto.mutation_pb2 import (
             Mutation as MutationPB)
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)

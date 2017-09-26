@@ -17,17 +17,17 @@
 from google.cloud.spanner_v1.proto import type_pb2
 
 
-# Scalar paramter types
-STRING_PARAM_TYPE = type_pb2.Type(code=type_pb2.STRING)
-BYTES_PARAM_TYPE = type_pb2.Type(code=type_pb2.BYTES)
-BOOL_PARAM_TYPE = type_pb2.Type(code=type_pb2.BOOL)
-INT64_PARAM_TYPE = type_pb2.Type(code=type_pb2.INT64)
-FLOAT64_PARAM_TYPE = type_pb2.Type(code=type_pb2.FLOAT64)
-DATE_PARAM_TYPE = type_pb2.Type(code=type_pb2.DATE)
-TIMESTAMP_PARAM_TYPE = type_pb2.Type(code=type_pb2.TIMESTAMP)
+# Scalar parameter types
+STRING = type_pb2.Type(code=type_pb2.STRING)
+BYTES = type_pb2.Type(code=type_pb2.BYTES)
+BOOE = type_pb2.Type(code=type_pb2.BOOL)
+INT64 = type_pb2.Type(code=type_pb2.INT64)
+FLOAT64 = type_pb2.Type(code=type_pb2.FLOAT64)
+DATE = type_pb2.Type(code=type_pb2.DATE)
+TIMESTAMP = type_pb2.Type(code=type_pb2.TIMESTAMP)
 
 
-def ArrayParamType(element_type):  # pylint: disable=invalid-name
+def Array(element_type):  # pylint: disable=invalid-name
     """Construct an array paramter type description protobuf.
 
     :type element_type: :class:`type_pb2.Type`
@@ -49,12 +49,12 @@ def StructField(name, field_type):  # pylint: disable=invalid-name
     :param field_type: the type of the field
 
     :rtype: :class:`type_pb2.StructType.Field`
-    :returns: the appropriate array-type protobuf
+    :returns: the appropriate struct-field-type protobuf
     """
     return type_pb2.StructType.Field(name=name, type=field_type)
 
 
-def StructParamType(fields):  # pylint: disable=invalid-name
+def Struct(fields):  # pylint: disable=invalid-name
     """Construct a struct paramter type description protobuf.
 
     :type fields: list of :class:`type_pb2.StructType.Field`
@@ -65,4 +65,5 @@ def StructParamType(fields):  # pylint: disable=invalid-name
     """
     return type_pb2.Type(
         code=type_pb2.STRUCT,
-        struct_type=type_pb2.StructType(fields=fields))
+        struct_type=type_pb2.StructType(fields=fields),
+    )

@@ -36,7 +36,7 @@ PARAMS_WITH_BYTES = {'bytes': b'DEADBEEF'}
 class Test_restart_on_unavailable(unittest.TestCase):
 
     def _call_fut(self, restart):
-        from google.cloud.spanner.snapshot import _restart_on_unavailable
+        from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 
         return _restart_on_unavailable(restart)
 
@@ -123,7 +123,7 @@ class Test_SnapshotBase(unittest.TestCase):
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
 
     def _getTargetClass(self):
-        from google.cloud.spanner.snapshot import _SnapshotBase
+        from google.cloud.spanner_v1.snapshot import _SnapshotBase
 
         return _SnapshotBase
 
@@ -166,7 +166,7 @@ class Test_SnapshotBase(unittest.TestCase):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionSelector)
         from google.gax.errors import GaxError
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         KEYSET = KeySet(all_=True)
         database = _Database()
@@ -201,8 +201,8 @@ class Test_SnapshotBase(unittest.TestCase):
             TransactionSelector)
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
-        from google.cloud.spanner.keyset import KeySet
-        from google.cloud.spanner._helpers import _make_value_pb
+        from google.cloud.spanner_v1.keyset import KeySet
+        from google.cloud.spanner_v1._helpers import _make_value_pb
 
         TXN_ID = b'DEADBEEF'
         VALUES = [
@@ -343,7 +343,7 @@ class Test_SnapshotBase(unittest.TestCase):
             TransactionSelector)
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
-        from google.cloud.spanner._helpers import _make_value_pb
+        from google.cloud.spanner_v1._helpers import _make_value_pb
 
         TXN_ID = b'DEADBEEF'
         VALUES = [
@@ -453,7 +453,7 @@ class TestSnapshot(unittest.TestCase):
     TRANSACTION_ID = b'DEADBEEF'
 
     def _getTargetClass(self):
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
         return Snapshot
 
     def _make_one(self, *args, **kwargs):

@@ -18,7 +18,13 @@ import unittest
 
 from google.gax import errors
 
-from google.cloud import spanner_v1
+# -----------------------------------------------------------------------------
+# Manual change to the GAPIC unit tests because we do not export
+# the `SpannerClient` at the usual location because there is a thick wrapper
+# around it.
+from google.cloud.spanner_v1.gapic import spanner_client as spanner_v1
+# -----------------------------------------------------------------------------
+
 from google.cloud.spanner_v1.proto import keys_pb2
 from google.cloud.spanner_v1.proto import result_set_pb2
 from google.cloud.spanner_v1.proto import spanner_pb2

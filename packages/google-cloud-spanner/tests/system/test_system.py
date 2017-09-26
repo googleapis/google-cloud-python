@@ -33,11 +33,11 @@ from google.cloud.spanner_v1.proto.type_pb2 import Type
 
 from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous
-from google.cloud.spanner._helpers import TimestampWithNanoseconds
-from google.cloud.spanner.client import Client
-from google.cloud.spanner.keyset import KeyRange
-from google.cloud.spanner.keyset import KeySet
-from google.cloud.spanner.pool import BurstyPool
+from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
+from google.cloud.spanner import Client
+from google.cloud.spanner import KeyRange
+from google.cloud.spanner import KeySet
+from google.cloud.spanner import BurstyPool
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
