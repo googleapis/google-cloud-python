@@ -22,7 +22,6 @@ import platform
 
 import pkg_resources
 
-from google.api.core import retry
 from google.api.core import timeout
 from google.api.core.helpers import grpc_helpers
 
@@ -42,9 +41,9 @@ def _apply_decorators(func, decorators):
     ``decorators`` may contain items that are ``None`` or ``False`` which will
     be ignored.
     """
-    decorators = list(filter(_is_not_none_or_false, decorators))
+    decorators = filter(_is_not_none_or_false, reversed(decorators))
 
-    for decorator in reversed(decorators):
+    for decorator in decorators:
         func = decorator(func)
 
     return func
@@ -76,23 +75,23 @@ def _prepare_metadata(metadata):
 
 
 class _GapicCallable(object):
-    """Callable that applies retry, timeout, and metadata logic."""
+    """Callable that applies retry, timeout, and metadata logic.
+
+    Args:
+        target (Callable): The low-level RPC method. If timeout is not
+            False, should accept a timeout argument. If metadata is not
+            False, it should accept a metadata argument.
+        retry (google.api.core.retry.Retry): The default retry for the
+            callable. If False, this callable will not retry.
+        timeout (google.api.core.timeout.Timeout): The default timeout
+            for the callable. If ``False``, this callable will not specify
+            a timeout argument to the low-level RPC method.
+        metadata (Sequence[Tuple[str, str]]): gRPC call metadata that's
+            passed to the low-level RPC method. If ``False``, this callable
+            will not specify a metadata argument to the method.
+    """
 
     def __init__(self, target, retry, timeout, metadata):
-        """
-        Args:
-            target (Callable): The low-level RPC method. If timeout is not
-                False, should accept a timeout argument. If metadata is not
-                False, it should accept a metadata argument.
-            retry (google.api.core.retry.Retry): The default retry for the
-                callable. If False, this callable will not retry.
-            timeout (google.api.core.timeout.Timeout): The default timeout
-                for the callable. If False, this callable will not specify
-                a timeout argument to the low-level RPC method.
-            metadata (Sequence[Tuple[str, str]]): gRPC call metadata that's
-                passed to the low-level RPC method. If False, this callable
-                will not specify a metadata argument to the method.
-        """
         self._target = target
         self._retry = retry
         self._timeout = timeout
@@ -120,8 +119,8 @@ class _GapicCallable(object):
         # matches the retry's. This handles the case where the user leaves
         # the timeout default but specifies a lower deadline via the retry.
         if (timeout_ is self._timeout
-                and retry is not False
-                and retry is not self._retry
+                and retry_ is not False
+                and retry_ is not self._retry
                 and isinstance(timeout_, timeout.ExponentialTimeout)):
             timeout_ = timeout_.with_deadline(retry_._deadline)
 
