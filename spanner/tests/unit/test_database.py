@@ -19,7 +19,7 @@ import mock
 
 from google.cloud._testing import _GAXBaseAPI
 
-from google.cloud.spanner import __version__
+from google.cloud.spanner_v1 import __version__
 
 
 def _make_credentials():  # pragma: NO COVER
@@ -51,12 +51,12 @@ class _BaseTest(unittest.TestCase):
 class TestDatabase(_BaseTest):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.database import Database
+        from google.cloud.spanner_v1.database import Database
 
         return Database
 
     def test_ctor_defaults(self):
-        from google.cloud.spanner.pool import BurstyPool
+        from google.cloud.spanner_v1.pool import BurstyPool
 
         instance = _Instance(self.INSTANCE_NAME)
 
@@ -163,7 +163,7 @@ class TestDatabase(_BaseTest):
     def test_from_pb_success_w_hyphen_w_default_pool(self):
         from google.cloud.spanner_admin_database_v1.proto import (
             spanner_database_admin_pb2 as admin_v1_pb2)
-        from google.cloud.spanner.pool import BurstyPool
+        from google.cloud.spanner_v1.pool import BurstyPool
 
         DATABASE_ID_HYPHEN = 'database-id'
         DATABASE_NAME_HYPHEN = (
@@ -196,7 +196,7 @@ class TestDatabase(_BaseTest):
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        patch = mock.patch('google.cloud.spanner.database.SpannerClient')
+        patch = mock.patch('google.cloud.spanner_v1.database.SpannerClient')
 
         with patch as spanner_client:
             api = database.spanner_api
@@ -214,7 +214,7 @@ class TestDatabase(_BaseTest):
 
     def test_spanner_api_w_scoped_creds(self):
         import google.auth.credentials
-        from google.cloud.spanner.database import SPANNER_DATA_SCOPE
+        from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE
 
         class _CredentialsWithScopes(
                 google.auth.credentials.Scoped):
@@ -236,7 +236,7 @@ class TestDatabase(_BaseTest):
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        patch = mock.patch('google.cloud.spanner.database.SpannerClient')
+        patch = mock.patch('google.cloud.spanner_v1.database.SpannerClient')
 
         with patch as spanner_client:
             api = database.spanner_api
@@ -608,7 +608,7 @@ class TestDatabase(_BaseTest):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_session_factory(self):
-        from google.cloud.spanner.session import Session
+        from google.cloud.spanner_v1.session import Session
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -622,7 +622,7 @@ class TestDatabase(_BaseTest):
         self.assertIs(session._database, database)
 
     def test_snapshot_defaults(self):
-        from google.cloud.spanner.database import SnapshotCheckout
+        from google.cloud.spanner_v1.database import SnapshotCheckout
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -639,7 +639,7 @@ class TestDatabase(_BaseTest):
     def test_snapshot_w_read_timestamp_and_multi_use(self):
         import datetime
         from google.cloud._helpers import UTC
-        from google.cloud.spanner.database import SnapshotCheckout
+        from google.cloud.spanner_v1.database import SnapshotCheckout
 
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         client = _Client()
@@ -657,7 +657,7 @@ class TestDatabase(_BaseTest):
             checkout._kw, {'read_timestamp': now, 'multi_use': True})
 
     def test_batch(self):
-        from google.cloud.spanner.database import BatchCheckout
+        from google.cloud.spanner_v1.database import BatchCheckout
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -739,7 +739,7 @@ class TestDatabase(_BaseTest):
 class TestBatchCheckout(_BaseTest):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.database import BatchCheckout
+        from google.cloud.spanner_v1.database import BatchCheckout
 
         return BatchCheckout
 
@@ -755,7 +755,7 @@ class TestBatchCheckout(_BaseTest):
             TransactionOptions)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.batch import Batch
+        from google.cloud.spanner_v1.batch import Batch
 
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         now_pb = _datetime_to_pb_timestamp(now)
@@ -785,7 +785,7 @@ class TestBatchCheckout(_BaseTest):
                          [('google-cloud-resource-prefix', database.name)])
 
     def test_context_mgr_failure(self):
-        from google.cloud.spanner.batch import Batch
+        from google.cloud.spanner_v1.batch import Batch
 
         database = _Database(self.DATABASE_NAME)
         pool = database._pool = _Pool()
@@ -810,12 +810,12 @@ class TestBatchCheckout(_BaseTest):
 class TestSnapshotCheckout(_BaseTest):
 
     def _getTargetClass(self):
-        from google.cloud.spanner.database import SnapshotCheckout
+        from google.cloud.spanner_v1.database import SnapshotCheckout
 
         return SnapshotCheckout
 
     def test_ctor_defaults(self):
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         database = _Database(self.DATABASE_NAME)
         session = _Session(database)
@@ -838,7 +838,7 @@ class TestSnapshotCheckout(_BaseTest):
     def test_ctor_w_read_timestamp_and_multi_use(self):
         import datetime
         from google.cloud._helpers import UTC
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         now = datetime.datetime.utcnow().replace(tzinfo=UTC)
         database = _Database(self.DATABASE_NAME)
@@ -861,7 +861,7 @@ class TestSnapshotCheckout(_BaseTest):
         self.assertIs(pool._session, session)
 
     def test_context_mgr_failure(self):
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         database = _Database(self.DATABASE_NAME)
         pool = database._pool = _Pool()
