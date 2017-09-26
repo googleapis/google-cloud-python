@@ -1,0 +1,320 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Transactions &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="transactions">
+<span id="spanner-txn"></span><h1>Transactions<a class="headerlink" href="#transactions" title="Permalink to this headline">#</a></h1>
+<p>Each session can have at most one active transaction at a time. After
+the active transaction is completed, the session can immediately be
+re-used for the next transaction. It is not necessary to create a new
+session for each transaction.</p>
+</div>
+<div class="section" id="transaction-modes">
+<h1>Transaction Modes<a class="headerlink" href="#transaction-modes" title="Permalink to this headline">#</a></h1>
+<p>Cloud Spanner supports two transaction modes:</p>
+<ol class="arabic simple">
+<li>Locking read-write. This type of transaction is the only way to write
+data into Cloud Spanner. These transactions rely on pessimistic
+locking and, if necessary, two-phase commit. Locking read-write
+transactions may abort, requiring the application to retry.</li>
+<li>Snapshot read-only. This transaction type provides guaranteed
+consistency across several reads, but does not allow writes. Snapshot
+read-only transactions can be configured to read at timestamps in the
+past. Snapshot read-only transactions do not need to be committed.</li>
+</ol>
+<p>For transactions that only read, snapshot read-only transactions provide
+simpler semantics and are almost always faster. In particular, read-only
+transactions do not take locks, so they do not conflict with read-write
+transactions. As a consequence of not taking locks, they also do not
+abort, so retry loops are not needed.</p>
+<p>Transactions may only read/write data in a single database. They may,
+however, read/write data in different tables within that database.</p>
+<div class="section" id="locking-read-write-transactions">
+<h2>Locking Read-Write Transactions<a class="headerlink" href="#locking-read-write-transactions" title="Permalink to this headline">#</a></h2>
+<p>Locking transactions may be used to atomically read-modify-write data
+anywhere in a database. This type of transaction is externally
+consistent.</p>
+<p>Clients should attempt to minimize the amount of time a transaction is
+active. Faster transactions commit with higher probability and cause
+less contention. Cloud Spanner attempts to keep read locks active as
+long as the transaction continues to do reads, and the transaction has
+not been terminated by [Commit][google.spanner.v1.Spanner.Commit] or
+[Rollback][google.spanner.v1.Spanner.Rollback]. Long periods of
+inactivity at the client may cause Cloud Spanner to release a
+transaction’s locks and abort it.</p>
+<p>Reads performed within a transaction acquire locks on the data being
+read. Writes can only be done at commit time, after all reads have been
+completed. Conceptually, a read-write transaction consists of zero or
+more reads or SQL queries followed by
+[Commit][google.spanner.v1.Spanner.Commit]. At any time before
+[Commit][google.spanner.v1.Spanner.Commit], the client can send a
+[Rollback][google.spanner.v1.Spanner.Rollback] request to abort the
+transaction.</p>
+<div class="section" id="semantics">
+<h3>Semantics<a class="headerlink" href="#semantics" title="Permalink to this headline">#</a></h3>
+<p>Cloud Spanner can commit the transaction if all read locks it acquired
+are still valid at commit time, and it is able to acquire write locks
+for all writes. Cloud Spanner can abort the transaction for any reason.
+If a commit attempt returns <code class="docutils literal"><span class="pre">ABORTED</span></code>, Cloud Spanner guarantees that
+the transaction has not modified any user data in Cloud Spanner.</p>
+<p>Unless the transaction commits, Cloud Spanner makes no guarantees about
+how long the transaction’s locks were held for. It is an error to use
+Cloud Spanner locks for any sort of mutual exclusion other than between
+Cloud Spanner transactions themselves.</p>
+</div>
+<div class="section" id="retrying-aborted-transactions">
+<h3>Retrying Aborted Transactions<a class="headerlink" href="#retrying-aborted-transactions" title="Permalink to this headline">#</a></h3>
+<p>When a transaction aborts, the application can choose to retry the whole
+transaction again. To maximize the chances of successfully committing
+the retry, the client should execute the retry in the same session as
+the original attempt. The original session’s lock priority increases
+with each consecutive abort, meaning that each attempt has a slightly
+better chance of success than the previous.</p>
+<p>Under some circumstances (e.g., many transactions attempting to modify
+the same row(s)), a transaction can abort many times in a short period
+before successfully committing. Thus, it is not a good idea to cap the
+number of retries a transaction can attempt; instead, it is better to
+limit the total amount of wall time spent retrying.</p>
+</div>
+<div class="section" id="idle-transactions">
+<h3>Idle Transactions<a class="headerlink" href="#idle-transactions" title="Permalink to this headline">#</a></h3>
+<p>A transaction is considered idle if it has no outstanding reads or SQL
+queries and has not started a read or SQL query within the last 10
+seconds. Idle transactions can be aborted by Cloud Spanner so that they
+don’t hold on to locks indefinitely. In that case, the commit will fail
+with error <code class="docutils literal"><span class="pre">ABORTED</span></code>.</p>
+<p>If this behavior is undesirable, periodically executing a simple SQL
+query in the transaction (e.g., <code class="docutils literal"><span class="pre">SELECT</span> <span class="pre">1</span></code>) prevents the transaction
+from becoming idle.</p>
+</div>
+</div>
+<div class="section" id="snapshot-read-only-transactions">
+<h2>Snapshot Read-Only Transactions<a class="headerlink" href="#snapshot-read-only-transactions" title="Permalink to this headline">#</a></h2>
+<p>Snapshot read-only transactions provides a simpler method than locking
+read-write transactions for doing several consistent reads. However,
+this type of transaction does not support writes.</p>
+<p>Snapshot transactions do not take locks. Instead, they work by choosing
+a Cloud Spanner timestamp, then executing all reads at that timestamp.
+Since they do not acquire locks, they do not block concurrent read-write
+transactions.</p>
+<p>Unlike locking read-write transactions, snapshot read-only transactions
+never abort. They can fail if the chosen read timestamp is garbage
+collected; however, the default garbage collection policy is generous
+enough that most applications do not need to worry about this in
+practice.</p>
+<p>Snapshot read-only transactions do not need to call
+[Commit][google.spanner.v1.Spanner.Commit] or
+[Rollback][google.spanner.v1.Spanner.Rollback] (and in fact are not
+permitted to do so).</p>
+<p>To execute a snapshot transaction, the client specifies a timestamp
+bound, which tells Cloud Spanner how to choose a read timestamp.</p>
+<p>The types of timestamp bound are:</p>
+<ul class="simple">
+<li>Strong (the default).</li>
+<li>Bounded staleness.</li>
+<li>Exact staleness.</li>
+</ul>
+<p>If the Cloud Spanner database to be read is geographically distributed,
+stale read-only transactions can execute more quickly than strong or
+read-write transaction, because they are able to execute far from the
+leader replica.</p>
+<p>Each type of timestamp bound is discussed in detail below.</p>
+<div class="section" id="strong">
+<h3>Strong<a class="headerlink" href="#strong" title="Permalink to this headline">#</a></h3>
+<p>Strong reads are guaranteed to see the effects of all transactions that
+have committed before the start of the read. Furthermore, all rows
+yielded by a single read are consistent with each other – if any part
+of the read observes a transaction, all parts of the read see the
+transaction.</p>
+<p>Strong reads are not repeatable: two consecutive strong read-only
+transactions might return inconsistent results if there are concurrent
+writes. If consistency across reads is required, the reads should be
+executed within a transaction or at an exact read timestamp.</p>
+<p>See
+[TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong].</p>
+</div>
+<div class="section" id="exact-staleness">
+<h3>Exact Staleness<a class="headerlink" href="#exact-staleness" title="Permalink to this headline">#</a></h3>
+<p>These timestamp bounds execute reads at a user-specified timestamp.
+Reads at a timestamp are guaranteed to see a consistent prefix of the
+global transaction history: they observe modifications done by all
+transactions with a commit timestamp &lt;= the read timestamp, and observe
+none of the modifications done by transactions with a larger commit
+timestamp. They will block until all conflicting transactions that may
+be assigned commit timestamps &lt;= the read timestamp have finished.</p>
+<p>The timestamp can either be expressed as an absolute Cloud Spanner
+commit timestamp or a staleness relative to the current time.</p>
+<p>These modes do not require a “negotiation phase” to pick a timestamp. As
+a result, they execute slightly faster than the equivalent boundedly
+stale concurrency modes. On the other hand, boundedly stale reads
+usually return fresher results.</p>
+<p>See
+[TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp]
+and
+[TransactionOptions.ReadOnly.exact_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness].</p>
+</div>
+<div class="section" id="bounded-staleness">
+<h3>Bounded Staleness<a class="headerlink" href="#bounded-staleness" title="Permalink to this headline">#</a></h3>
+<p>Bounded staleness modes allow Cloud Spanner to pick the read timestamp,
+subject to a user-provided staleness bound. Cloud Spanner chooses the
+newest timestamp within the staleness bound that allows execution of the
+reads at the closest available replica without blocking.</p>
+<p>All rows yielded are consistent with each other – if any part of the
+read observes a transaction, all parts of the read see the transaction.
+Boundedly stale reads are not repeatable: two stale reads, even if they
+use the same staleness bound, can execute at different timestamps and
+thus return inconsistent results.</p>
+<p>Boundedly stale reads execute in two phases: the first phase negotiates
+a timestamp among all replicas needed to serve the read. In the second
+phase, reads are executed at the negotiated timestamp.</p>
+<p>As a result of the two phase execution, bounded staleness reads are
+usually a little slower than comparable exact staleness reads. However,
+they are typically able to return fresher results, and are more likely
+to execute at the closest replica.</p>
+<p>Because the timestamp negotiation requires up-front knowledge of which
+rows will be read, it can only be used with single-use read-only
+transactions.</p>
+<p>See
+[TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness]
+and
+[TransactionOptions.ReadOnly.min_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp].</p>
+</div>
+<div class="section" id="old-read-timestamps-and-garbage-collection">
+<h3>Old Read Timestamps and Garbage Collection<a class="headerlink" href="#old-read-timestamps-and-garbage-collection" title="Permalink to this headline">#</a></h3>
+<p>Cloud Spanner continuously garbage collects deleted and overwritten data
+in the background to reclaim storage space. This process is known as
+“version GC”. By default, version GC reclaims versions after they are
+one hour old. Because of this, Cloud Spanner cannot perform reads at
+read timestamps more than one hour in the past. This restriction also
+applies to in-progress reads and/or SQL queries whose timestamp become
+too old while executing. Reads and SQL queries with too-old read
+timestamps fail with the error <code class="docutils literal"><span class="pre">FAILED_PRECONDITION</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/spanner/gapic/v1/transactions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

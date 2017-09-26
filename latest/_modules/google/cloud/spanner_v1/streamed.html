@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.streamed &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.streamed &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.streamed</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.streamed</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -59,24 +59,24 @@
 <span class="kn">from</span> <span class="nn">google.protobuf.struct_pb2</span> <span class="k">import</span> <span class="n">ListValue</span>
 <span class="kn">from</span> <span class="nn">google.protobuf.struct_pb2</span> <span class="k">import</span> <span class="n">Value</span>
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1</span> <span class="k">import</span> <span class="n">type_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto</span> <span class="k">import</span> <span class="n">type_pb2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="c1"># pylint: disable=ungrouped-imports</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_parse_value_pb</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_parse_value_pb</span>
 <span class="c1"># pylint: enable=ungrouped-imports</span>
 
 
-<div class="viewcode-block" id="StreamedResultSet"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet">[docs]</a><span class="k">class</span> <span class="nc">StreamedResultSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamedResultSet"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet">[docs]</a><span class="k">class</span> <span class="nc">StreamedResultSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Process a sequence of partial result sets into a single set of row data.</span>
 
 <span class="sd">    :type response_iterator:</span>
 <span class="sd">    :param response_iterator:</span>
 <span class="sd">        Iterator yielding</span>
-<span class="sd">        :class:`google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet`</span>
+<span class="sd">        :class:`google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet`</span>
 <span class="sd">        instances.</span>
 
-<span class="sd">    :type source: :class:`~google.cloud.spanner.snapshot.Snapshot`</span>
+<span class="sd">    :type source: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`</span>
 <span class="sd">    :param source: Snapshot from which the result set was fetched.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response_iterator</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -85,7 +85,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">=</span> <span class="mi">0</span>           <span class="c1"># Counter for processed responses</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="kc">None</span>       <span class="c1"># Until set from first PRS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span> <span class="o">=</span> <span class="kc">None</span>          <span class="c1"># Until set from last PRS</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume_token</span> <span class="o">=</span> <span class="kc">None</span>   <span class="c1"># To resume from last received PRS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_row</span> <span class="o">=</span> <span class="p">[]</span>      <span class="c1"># Accumulated values for incomplete row</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pending_chunk</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Incomplete value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">source</span>       <span class="c1"># Source snapshot</span>
@@ -103,7 +102,7 @@
     <span class="k">def</span> <span class="nf">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Field descriptors for result set columns.</span>
 
-<span class="sd">        :rtype: list of :class:`~google.cloud.proto.spanner.v1.type_pb2.Field`</span>
+<span class="sd">        :rtype: list of :class:`~google.cloud.spanner_v1.proto.type_pb2.Field`</span>
 <span class="sd">        :returns: list of fields describing column names / types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="o">.</span><span class="n">row_type</span><span class="o">.</span><span class="n">fields</span>
@@ -122,19 +121,10 @@
         <span class="sd">&quot;&quot;&quot;Result set statistics</span>
 
 <span class="sd">        :rtype:</span>
-<span class="sd">           :class:`~google.cloud.proto.spanner.v1.result_set_pb2.ResultSetStats`</span>
+<span class="sd">           :class:`~google.cloud.spanner_v1.proto.result_set_pb2.ResultSetStats`</span>
 <span class="sd">        :returns: structure describing status about the response</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stats</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">resume_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Token for resuming interrupted read / query.</span>
-
-<span class="sd">        :rtype: bytes</span>
-<span class="sd">        :returns: token from last chunk of results.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resume_token</span>
 
     <span class="k">def</span> <span class="nf">_merge_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Merge pending chunk with next value.</span>
@@ -167,14 +157,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_row</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_current_row</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="StreamedResultSet.consume_next"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.consume_next">[docs]</a>    <span class="k">def</span> <span class="nf">consume_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamedResultSet.consume_next"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_next">[docs]</a>    <span class="k">def</span> <span class="nf">consume_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Consume the next partial result set from the stream.</span>
 
 <span class="sd">        Parse the result set into new/existing rows in :attr:`_rows`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">resume_token</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first response</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span>
@@ -195,7 +184,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_merge_values</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamedResultSet.consume_all"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamedResultSet.consume_all"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Consume the streamed responses until there are no more.&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -212,7 +201,7 @@
             <span class="k">while</span> <span class="n">iter_rows</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">iter_rows</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-<div class="viewcode-block" id="StreamedResultSet.one"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamedResultSet.one"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet.one">[docs]</a>    <span class="k">def</span> <span class="nf">one</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return exactly one result, or raise an exception.</span>
 
 <span class="sd">        :raises: :exc:`NotFound`: If there are no results.</span>
@@ -225,7 +214,7 @@
             <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;No rows matched the given query.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">answer</span></div>
 
-<div class="viewcode-block" id="StreamedResultSet.one_or_none"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet.one_or_none">[docs]</a>    <span class="k">def</span> <span class="nf">one_or_none</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StreamedResultSet.one_or_none"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet.one_or_none">[docs]</a>    <span class="k">def</span> <span class="nf">one_or_none</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return exactly one result, or None if there are no results.</span>
 
 <span class="sd">        :raises: :exc:`ValueError`: If there are multiple results.</span>
@@ -255,7 +244,7 @@
             <span class="k">return</span> <span class="n">answer</span></div></div>
 
 
-<div class="viewcode-block" id="Unmergeable"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner.streamed.Unmergeable">[docs]</a><span class="k">class</span> <span class="nc">Unmergeable</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<div class="viewcode-block" id="Unmergeable"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.Unmergeable">[docs]</a><span class="k">class</span> <span class="nc">Unmergeable</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Unable to merge two values.</span>
 
 <span class="sd">    :type lhs: :class:`google.protobuf.struct_pb2.Value`</span>
@@ -264,7 +253,7 @@
 <span class="sd">    :type rhs: :class:`google.protobuf.struct_pb2.Value`</span>
 <span class="sd">    :param rhs: remaining value to be merged</span>
 
-<span class="sd">    :type type_: :class:`google.cloud.proto.spanner.v1.type_pb2.Type`</span>
+<span class="sd">    :type type_: :class:`google.cloud.spanner_v1.proto.type_pb2.Type`</span>
 <span class="sd">    :param type_: field type of values being merged</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
@@ -340,13 +329,15 @@
 
 
 <span class="n">_MERGE_BY_TYPE</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">type_pb2</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span> <span class="n">_unmergeable</span><span class="p">,</span>
-    <span class="n">type_pb2</span><span class="o">.</span><span class="n">INT64</span><span class="p">:</span> <span class="n">_merge_string</span><span class="p">,</span>
-    <span class="n">type_pb2</span><span class="o">.</span><span class="n">FLOAT64</span><span class="p">:</span> <span class="n">_merge_float64</span><span class="p">,</span>
-    <span class="n">type_pb2</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="n">_merge_string</span><span class="p">,</span>
     <span class="n">type_pb2</span><span class="o">.</span><span class="n">ARRAY</span><span class="p">:</span> <span class="n">_merge_array</span><span class="p">,</span>
-    <span class="n">type_pb2</span><span class="o">.</span><span class="n">STRUCT</span><span class="p">:</span> <span class="n">_merge_struct</span><span class="p">,</span>
+    <span class="n">type_pb2</span><span class="o">.</span><span class="n">BOOL</span><span class="p">:</span> <span class="n">_unmergeable</span><span class="p">,</span>
     <span class="n">type_pb2</span><span class="o">.</span><span class="n">BYTES</span><span class="p">:</span> <span class="n">_merge_string</span><span class="p">,</span>
+    <span class="n">type_pb2</span><span class="o">.</span><span class="n">DATE</span><span class="p">:</span> <span class="n">_merge_string</span><span class="p">,</span>
+    <span class="n">type_pb2</span><span class="o">.</span><span class="n">FLOAT64</span><span class="p">:</span> <span class="n">_merge_float64</span><span class="p">,</span>
+    <span class="n">type_pb2</span><span class="o">.</span><span class="n">INT64</span><span class="p">:</span> <span class="n">_merge_string</span><span class="p">,</span>
+    <span class="n">type_pb2</span><span class="o">.</span><span class="n">STRING</span><span class="p">:</span> <span class="n">_merge_string</span><span class="p">,</span>
+    <span class="n">type_pb2</span><span class="o">.</span><span class="n">STRUCT</span><span class="p">:</span> <span class="n">_merge_struct</span><span class="p">,</span>
+    <span class="n">type_pb2</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">:</span> <span class="n">_merge_string</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -377,18 +368,6 @@
 
 
 
-
-
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
 
 
 <h3>Navigation</h3>
@@ -440,7 +419,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

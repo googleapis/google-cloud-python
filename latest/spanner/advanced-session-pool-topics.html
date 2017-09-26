@@ -24,7 +24,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Spanner Client" href="client-api.html" />
+    <link rel="next" title="API Reference" href="api-reference.html" />
     <link rel="prev" title="Read-write Transactions" href="transaction-usage.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -47,7 +47,7 @@
 <h2>Custom Session Pool Implementations<a class="headerlink" href="#custom-session-pool-implementations" title="Permalink to this headline">#</a></h2>
 <p>You can supply your own pool implementation, which must satisfy the
 contract laid out in
-<a class="reference internal" href="session-api.html#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code></a>:</p>
+<code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.spanner.pool</span> <span class="kn">import</span> <span class="n">AbstractSessionPool</span>
 
 <span class="k">class</span> <span class="nc">MyCustomPool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
@@ -74,10 +74,10 @@ contract laid out in
 <h2>Lowering latency for read / query operations<a class="headerlink" href="#lowering-latency-for-read-query-operations" title="Permalink to this headline">#</a></h2>
 <p>Some applications may need to minimize latency for read operations, including
 particularly the overhead of making an API request to create or refresh a
-session.  <a class="reference internal" href="session-api.html#google.cloud.spanner.pool.PingingPool" title="google.cloud.spanner.pool.PingingPool"><code class="xref py py-class docutils literal"><span class="pre">PingingPool</span></code></a> is designed for such
+session.  <code class="xref py py-class docutils literal"><span class="pre">PingingPool</span></code> is designed for such
 applications, which need to configure a background thread to do the work of
 keeping the sessions fresh.</p>
-<p>Create an instance of <a class="reference internal" href="session-api.html#google.cloud.spanner.pool.PingingPool" title="google.cloud.spanner.pool.PingingPool"><code class="xref py py-class docutils literal"><span class="pre">PingingPool</span></code></a>:</p>
+<p>Create an instance of <code class="xref py py-class docutils literal"><span class="pre">PingingPool</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner.pool</span> <span class="kn">import</span> <span class="n">PingingPool</span>
 
@@ -102,11 +102,11 @@ from becoming stale:</p>
 <p>Some applications may need to minimize latency for read write operations,
 including particularly the overhead of making an API request to create or
 refresh a session or to begin a session’s transaction.
-<a class="reference internal" href="session-api.html#google.cloud.spanner.pool.TransactionPingingPool" title="google.cloud.spanner.pool.TransactionPingingPool"><code class="xref py py-class docutils literal"><span class="pre">TransactionPingingPool</span></code></a> is designed for
+<code class="xref py py-class docutils literal"><span class="pre">TransactionPingingPool</span></code> is designed for
 such applications, which need to configure a background thread to do the work
 of keeping the sessions fresh and starting their transactions after use.</p>
 <p>Create an instance of
-<a class="reference internal" href="session-api.html#google.cloud.spanner.pool.TransactionPingingPool" title="google.cloud.spanner.pool.TransactionPingingPool"><code class="xref py py-class docutils literal"><span class="pre">TransactionPingingPool</span></code></a>:</p>
+<code class="xref py py-class docutils literal"><span class="pre">TransactionPingingPool</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner.pool</span> <span class="kn">import</span> <span class="n">TransactionPingingPool</span>
 
@@ -153,18 +153,6 @@ started before it is used:</p>
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -177,24 +165,15 @@ started before it is used:</p>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -213,7 +192,7 @@ started before it is used:</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
       <li>Previous: <a href="transaction-usage.html" title="previous chapter">Read-write Transactions</a></li>
-      <li>Next: <a href="client-api.html" title="next chapter">Spanner Client</a></li>
+      <li>Next: <a href="api-reference.html" title="next chapter">API Reference</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -236,7 +215,7 @@ started before it is used:</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

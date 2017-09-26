@@ -41,12 +41,12 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.spanner.keyset">
-<span id="keyset-api"></span><h1>Keyset API<a class="headerlink" href="#module-google.cloud.spanner.keyset" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.spanner_v1.keyset">
+<span id="keyset-api"></span><h1>Keyset API<a class="headerlink" href="#module-google.cloud.spanner_v1.keyset" title="Permalink to this headline">#</a></h1>
 <p>Wrap representation of Spanner keys / ranges.</p>
 <dl class="class">
-<dt id="google.cloud.spanner.keyset.KeyRange">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.keyset.</code><code class="descname">KeyRange</code><span class="sig-paren">(</span><em>start_open=None</em>, <em>start_closed=None</em>, <em>end_open=None</em>, <em>end_closed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/keyset.html#KeyRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.keyset.KeyRange" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.keyset.KeyRange">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.keyset.</code><code class="descname">KeyRange</code><span class="sig-paren">(</span><em>start_open=None</em>, <em>start_closed=None</em>, <em>end_open=None</em>, <em>end_closed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/keyset.html#KeyRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.keyset.KeyRange" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Identify range of table rows via start / end points.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -64,8 +64,8 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.keyset.KeyRange.to_pb">
-<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/keyset.html#KeyRange.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.keyset.KeyRange.to_pb" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.keyset.KeyRange.to_pb">
+<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/keyset.html#KeyRange.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.keyset.KeyRange.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a KeyRange protobuf.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -82,8 +82,8 @@
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.keyset.KeySet">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.keyset.</code><code class="descname">KeySet</code><span class="sig-paren">(</span><em>keys=()</em>, <em>ranges=()</em>, <em>all_=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/keyset.html#KeySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.keyset.KeySet" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.keyset.KeySet">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.keyset.</code><code class="descname">KeySet</code><span class="sig-paren">(</span><em>keys=()</em>, <em>ranges=()</em>, <em>all_=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/keyset.html#KeySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.keyset.KeySet" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Identify table rows via keys / ranges.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -92,7 +92,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>keys</strong> (<em>list of list of scalars</em>) – keys identifying individual rows within a table.</li>
-<li><strong>ranges</strong> (list of <a class="reference internal" href="#google.cloud.spanner.keyset.KeyRange" title="google.cloud.spanner.keyset.KeyRange"><code class="xref py py-class docutils literal"><span class="pre">KeyRange</span></code></a>) – ranges identifying rows within a table.</li>
+<li><strong>ranges</strong> (list of <a class="reference internal" href="#google.cloud.spanner_v1.keyset.KeyRange" title="google.cloud.spanner_v1.keyset.KeyRange"><code class="xref py py-class docutils literal"><span class="pre">KeyRange</span></code></a>) – ranges identifying rows within a table.</li>
 <li><strong>all</strong> (<em>boolean</em>) – if True, identify all rows within a table</li>
 </ul>
 </td>
@@ -100,8 +100,8 @@
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.keyset.KeySet.to_pb">
-<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/keyset.html#KeySet.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.keyset.KeySet.to_pb" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.keyset.KeySet.to_pb">
+<code class="descname">to_pb</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/keyset.html#KeySet.to_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.keyset.KeySet.to_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a KeySet protobuf.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -143,18 +143,6 @@
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -167,24 +155,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -202,8 +181,10 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
+  <li><a href="api-reference.html">API Reference</a><ul>
       <li>Previous: <a href="session-api.html" title="previous chapter">Session API</a></li>
       <li>Next: <a href="snapshot-api.html" title="next chapter">Snapshot API</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -226,7 +207,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Read-only Transactions via Snapshots" href="snapshot-usage.html" />
-    <link rel="prev" title="Database Admin API" href="database-usage.html" />
+    <link rel="prev" title="Database Admin" href="database-usage.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -43,12 +43,12 @@
             
   <div class="section" id="batching-modifications">
 <h1>Batching Modifications<a class="headerlink" href="#batching-modifications" title="Permalink to this headline">#</a></h1>
-<p>A <a class="reference internal" href="batch-api.html#google.cloud.spanner.batch.Batch" title="google.cloud.spanner.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a> represents a set of data
+<p>A <code class="xref py py-class docutils literal"><span class="pre">Batch</span></code> represents a set of data
 modification operations to be performed on tables in a dataset.  Use of a
 <code class="docutils literal"><span class="pre">Batch</span></code> does not require creating an explicit
-<a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> or
-<a class="reference internal" href="transaction-api.html#google.cloud.spanner.transaction.Transaction" title="google.cloud.spanner.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>.  Until
-<a class="reference internal" href="batch-api.html#google.cloud.spanner.batch.Batch.commit" title="google.cloud.spanner.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> is called on a <code class="docutils literal"><span class="pre">Batch</span></code>,
+<code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code> or
+<code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code>.  Until
+<code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> is called on a <code class="docutils literal"><span class="pre">Batch</span></code>,
 no changes are propagated to the back-end.</p>
 <div class="section" id="starting-a-batch">
 <h2>Starting a Batch<a class="headerlink" href="#starting-a-batch" title="Permalink to this headline">#</a></h2>
@@ -228,18 +228,6 @@ if the <code class="docutils literal"><span class="pre">with</span></code> block
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -252,24 +240,15 @@ if the <code class="docutils literal"><span class="pre">with</span></code> block
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -287,7 +266,7 @@ if the <code class="docutils literal"><span class="pre">with</span></code> block
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
-      <li>Previous: <a href="database-usage.html" title="previous chapter">Database Admin API</a></li>
+      <li>Previous: <a href="database-usage.html" title="previous chapter">Database Admin</a></li>
       <li>Next: <a href="snapshot-usage.html" title="next chapter">Read-only Transactions via Snapshots</a></li>
   </ul></li>
   </ul></li>
@@ -311,7 +290,7 @@ if the <code class="docutils literal"><span class="pre">with</span></code> block
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

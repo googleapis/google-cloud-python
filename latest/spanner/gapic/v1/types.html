@@ -1,0 +1,1312 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Spanner Client Types &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Spanner Admin Database Client API" href="admin_database_api.html" />
+    <link rel="prev" title="Spanner Client API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.spanner_v1.types">
+<span id="spanner-client-types"></span><h1>Spanner Client Types<a class="headerlink" href="#module-google.cloud.spanner_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.BeginTransactionRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">BeginTransactionRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.BeginTransactionRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.BeginTransactionRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.BeginTransactionRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The session in which the transaction runs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.BeginTransactionRequest.options">
+<code class="descname">options</code><a class="headerlink" href="#google.cloud.spanner_v1.types.BeginTransactionRequest.options" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. Options for the new transaction.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.CommitRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">CommitRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for [Commit][google.spanner.v1.Spanner.Commit].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CommitRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The session in which the transaction to be committed
+is running.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CommitRequest.transaction">
+<code class="descname">transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitRequest.transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The transaction in which to commit.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CommitRequest.transaction_id">
+<code class="descname">transaction_id</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitRequest.transaction_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Commit a previously-started transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CommitRequest.single_use_transaction">
+<code class="descname">single_use_transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitRequest.single_use_transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Execute mutations in a temporary transaction. Note that unlike
+commit of a previously-started transaction, commit with a
+temporary transaction is non-idempotent. That is, if the
+<code class="docutils literal"><span class="pre">CommitRequest</span></code> is sent to Cloud Spanner more than once (for
+instance, due to retries in the application, or in the
+transport library), it is possible that the mutations are
+executed more than once. If this is undesirable, use
+[BeginTransaction][google.spanner.v1.Spanner.BeginTransaction]
+and [Commit][google.spanner.v1.Spanner.Commit] instead.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CommitRequest.mutations">
+<code class="descname">mutations</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitRequest.mutations" title="Permalink to this definition">#</a></dt>
+<dd><p>The mutations to be executed when this transaction commits.
+All mutations are applied atomically, in the order they appear
+in this list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.CommitResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">CommitResponse</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The response for [Commit][google.spanner.v1.Spanner.Commit].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CommitResponse.commit_timestamp">
+<code class="descname">commit_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CommitResponse.commit_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>The Cloud Spanner timestamp at which the transaction
+committed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.CreateSessionRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">CreateSessionRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CreateSessionRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[CreateSession][google.spanner.v1.Spanner.CreateSession].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CreateSessionRequest.database">
+<code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CreateSessionRequest.database" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The database in which the new session is created.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.DeleteSessionRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">DeleteSessionRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DeleteSessionRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[DeleteSession][google.spanner.v1.Spanner.DeleteSession].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.DeleteSessionRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.DeleteSessionRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the session to delete.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ExecuteSqlRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
+[ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The session in which the SQL query should be
+performed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.transaction">
+<code class="descname">transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>The transaction to use. If none is provided, the default is a
+temporary read-only transaction with strong concurrency.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.sql">
+<code class="descname">sql</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.sql" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The SQL query string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.params">
+<code class="descname">params</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.params" title="Permalink to this definition">#</a></dt>
+<dd><p>The SQL query string can contain parameter placeholders. A
+parameter placeholder consists of <code class="docutils literal"><span class="pre">'&#64;'</span></code> followed by the
+parameter name. Parameter names consist of any combination of
+letters, numbers, and underscores.  Parameters can appear
+anywhere that a literal value is expected. The same parameter
+name can be used more than once, for example: <code class="docutils literal"><span class="pre">&quot;WHERE</span> <span class="pre">id</span> <span class="pre">&gt;</span>
+<span class="pre">&#64;msg_id</span> <span class="pre">AND</span> <span class="pre">id</span> <span class="pre">&lt;</span> <span class="pre">&#64;msg_id</span> <span class="pre">+</span> <span class="pre">100&quot;</span></code>  It is an error to execute
+an SQL query with unbound parameters.  Parameter values are
+specified using <code class="docutils literal"><span class="pre">params</span></code>, which is a JSON object whose keys
+are parameter names, and whose values are the corresponding
+parameter values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.param_types">
+<code class="descname">param_types</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.param_types" title="Permalink to this definition">#</a></dt>
+<dd><p>It is not always possible for Cloud Spanner to infer the right
+SQL type from a JSON value. For example, values of type
+<code class="docutils literal"><span class="pre">BYTES</span></code> and values of type <code class="docutils literal"><span class="pre">STRING</span></code> both appear in
+[params][google.spanner.v1.ExecuteSqlRequest.params] as JSON
+strings.  In these cases, <code class="docutils literal"><span class="pre">param_types</span></code> can be used to
+specify the exact SQL type for some or all of the SQL query
+parameters. See the definition of
+[Type][google.spanner.v1.Type] for more information about SQL
+types.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.resume_token">
+<code class="descname">resume_token</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.resume_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this request is resuming a previously interrupted SQL query
+execution, <code class="docutils literal"><span class="pre">resume_token</span></code> should be copied from the last
+[PartialResultSet][google.spanner.v1.PartialResultSet] yielded
+before the interruption. Doing this enables the new SQL query
+execution to resume where the last one left off. The rest of
+the request parameters must exactly match the request that
+yielded this token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ExecuteSqlRequest.query_mode">
+<code class="descname">query_mode</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ExecuteSqlRequest.query_mode" title="Permalink to this definition">#</a></dt>
+<dd><p>Used to control the amount of debugging information returned
+in [ResultSetStats][google.spanner.v1.ResultSetStats].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.GetSessionRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">GetSessionRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GetSessionRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for [GetSession][google.spanner.v1.Spanner.GetSession].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.GetSessionRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.GetSessionRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the session to retrieve.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.KeyRange">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">KeyRange</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeyRange" title="Permalink to this definition">#</a></dt>
+<dd><p>KeyRange represents a range of rows in a table or index.</p>
+<p>A range has a start key and an end key. These keys can be open or
+closed, indicating if the range includes rows with that key.</p>
+<p>Keys are represented by lists, where the ith value in the list
+corresponds to the ith component of the table or index primary key.
+Individual values are encoded as described
+[here][google.spanner.v1.TypeCode].</p>
+<p>For example, consider the following table definition:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">UserEvents</span> <span class="p">(</span>
+  <span class="n">UserName</span> <span class="n">STRING</span><span class="p">(</span><span class="n">MAX</span><span class="p">),</span>
+  <span class="n">EventDate</span> <span class="n">STRING</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="p">)</span> <span class="n">PRIMARY</span> <span class="n">KEY</span><span class="p">(</span><span class="n">UserName</span><span class="p">,</span> <span class="n">EventDate</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The following keys name rows in this table:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;2014-09-23&quot;</span><span class="p">]</span>
+<span class="p">[</span><span class="s2">&quot;Alfred&quot;</span><span class="p">,</span> <span class="s2">&quot;2015-06-12&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Since the <code class="docutils literal"><span class="pre">UserEvents</span></code> table’s <code class="docutils literal"><span class="pre">PRIMARY</span> <span class="pre">KEY</span></code> clause names two
+columns, each <code class="docutils literal"><span class="pre">UserEvents</span></code> key has two elements; the first is the
+<code class="docutils literal"><span class="pre">UserName</span></code>, and the second is the <code class="docutils literal"><span class="pre">EventDate</span></code>.</p>
+<p>Key ranges with multiple components are interpreted lexicographically by
+component using the table or index key’s declared sort order. For
+example, the following range returns all events for user <code class="docutils literal"><span class="pre">&quot;Bob&quot;</span></code> that
+occurred in the year 2015:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;2015-01-01&quot;</span><span class="p">]</span>
+<span class="s2">&quot;end_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;2015-12-31&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Start and end keys can omit trailing key components. This affects the
+inclusion and exclusion of rows that exactly match the provided key
+components: if the key is closed, then rows that exactly match the
+provided components are included; if the key is open, then rows that
+exactly match are not included.</p>
+<p>For example, the following range includes all events for <code class="docutils literal"><span class="pre">&quot;Bob&quot;</span></code> that
+occurred during and after the year 2000:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;2000-01-01&quot;</span><span class="p">]</span>
+<span class="s2">&quot;end_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The next example retrieves all events for <code class="docutils literal"><span class="pre">&quot;Bob&quot;</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">]</span>
+<span class="s2">&quot;end_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>To retrieve events before the year 2000:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">]</span>
+<span class="s2">&quot;end_open&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;2000-01-01&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The following range includes all rows in the table:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="s2">&quot;end_closed&quot;</span><span class="p">:</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<p>This range returns all users whose <code class="docutils literal"><span class="pre">UserName</span></code> begins with any
+character from A to C:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="s2">&quot;end_open&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This range returns all users whose <code class="docutils literal"><span class="pre">UserName</span></code> begins with B:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">]</span>
+<span class="s2">&quot;end_open&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Key ranges honor column sort order. For example, suppose a table is
+defined as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CREATE</span> <span class="n">TABLE</span> <span class="n">DescendingSortedTable</span> <span class="p">{</span>
+  <span class="n">Key</span> <span class="n">INT64</span><span class="p">,</span>
+  <span class="o">...</span>
+<span class="p">)</span> <span class="n">PRIMARY</span> <span class="n">KEY</span><span class="p">(</span><span class="n">Key</span> <span class="n">DESC</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The following range retrieves all rows with key values between 1 and 100
+inclusive:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;start_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;100&quot;</span><span class="p">]</span>
+<span class="s2">&quot;end_closed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note that 100 is passed as the start, and 1 is passed as the end,
+because <code class="docutils literal"><span class="pre">Key</span></code> is a descending column in the schema.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeyRange.start_key_type">
+<code class="descname">start_key_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeyRange.start_key_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The start key must be provided. It can be either closed or
+open.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeyRange.start_closed">
+<code class="descname">start_closed</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeyRange.start_closed" title="Permalink to this definition">#</a></dt>
+<dd><p>If the start is closed, then the range includes all rows whose
+first <code class="docutils literal"><span class="pre">len(start_closed)</span></code> key columns exactly match
+<code class="docutils literal"><span class="pre">start_closed</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeyRange.start_open">
+<code class="descname">start_open</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeyRange.start_open" title="Permalink to this definition">#</a></dt>
+<dd><p>If the start is open, then the range excludes rows whose first
+<code class="docutils literal"><span class="pre">len(start_open)</span></code> key columns exactly match <code class="docutils literal"><span class="pre">start_open</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeyRange.end_key_type">
+<code class="descname">end_key_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeyRange.end_key_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The end key must be provided. It can be either closed or open.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeyRange.end_closed">
+<code class="descname">end_closed</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeyRange.end_closed" title="Permalink to this definition">#</a></dt>
+<dd><p>If the end is closed, then the range includes all rows whose
+first <code class="docutils literal"><span class="pre">len(end_closed)</span></code> key columns exactly match
+<code class="docutils literal"><span class="pre">end_closed</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeyRange.end_open">
+<code class="descname">end_open</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeyRange.end_open" title="Permalink to this definition">#</a></dt>
+<dd><p>If the end is open, then the range excludes rows whose first
+<code class="docutils literal"><span class="pre">len(end_open)</span></code> key columns exactly match <code class="docutils literal"><span class="pre">end_open</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.KeySet">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">KeySet</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeySet" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">KeySet</span></code> defines a collection of Cloud Spanner keys and/or key ranges.
+All the keys are expected to be in the same table or index. The keys
+need not be sorted in any particular way.</p>
+<p>If the same key is specified multiple times in the set (for example if
+two ranges, two keys, or a key and a range overlap), Cloud Spanner
+behaves as if the key were only specified once.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeySet.keys">
+<code class="descname">keys</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeySet.keys" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of specific keys. Entries in <code class="docutils literal"><span class="pre">keys</span></code> should have
+exactly as many elements as there are columns in the primary
+or index key with which this <code class="docutils literal"><span class="pre">KeySet</span></code> is used. Individual
+key values are encoded as described
+[here][google.spanner.v1.TypeCode].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeySet.ranges">
+<code class="descname">ranges</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeySet.ranges" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of key ranges. See
+[KeyRange][google.spanner.v1.KeyRange] for more information
+about key range specifications.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.KeySet.all">
+<code class="descname">all</code><a class="headerlink" href="#google.cloud.spanner_v1.types.KeySet.all" title="Permalink to this definition">#</a></dt>
+<dd><p>For convenience <code class="docutils literal"><span class="pre">all</span></code> can be set to <code class="docutils literal"><span class="pre">true</span></code> to indicate
+that this <code class="docutils literal"><span class="pre">KeySet</span></code> matches all keys in the table or index.
+Note that any keys specified in <code class="docutils literal"><span class="pre">keys</span></code> or <code class="docutils literal"><span class="pre">ranges</span></code> are
+only yielded once.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.Mutation">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Mutation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation" title="Permalink to this definition">#</a></dt>
+<dd><p>A modification to one or more Cloud Spanner rows. Mutations can be
+applied to a Cloud Spanner database by sending them in a
+[Commit][google.spanner.v1.Spanner.Commit] call.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The table whose rows will be deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.columns">
+<code class="descname">columns</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.columns" title="Permalink to this definition">#</a></dt>
+<dd><p>The names of the columns in
+[table][google.spanner.v1.Mutation.Write.table] to be written.
+The list of columns must contain enough columns to allow Cloud
+Spanner to derive values for all primary key columns in the
+row(s) to be modified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.values" title="Permalink to this definition">#</a></dt>
+<dd><p>The values to be written. <code class="docutils literal"><span class="pre">values</span></code> can contain more than one
+list of values. If it does, then multiple rows are written,
+one for each entry in <code class="docutils literal"><span class="pre">values</span></code>. Each list in <code class="docutils literal"><span class="pre">values</span></code> must
+have exactly as many entries as there are entries in
+[columns][google.spanner.v1.Mutation.Write.columns] above.
+Sending multiple lists is equivalent to sending multiple
+<code class="docutils literal"><span class="pre">Mutation</span></code>s, each containing one <code class="docutils literal"><span class="pre">values</span></code> entry and
+repeating [table][google.spanner.v1.Mutation.Write.table] and
+[columns][google.spanner.v1.Mutation.Write.columns].
+Individual values in each list are encoded as described
+[here][google.spanner.v1.TypeCode].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.key_set">
+<code class="descname">key_set</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.key_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The primary keys of the rows within
+[table][google.spanner.v1.Mutation.Delete.table] to delete.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.operation">
+<code class="descname">operation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.operation" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The operation to perform.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.insert">
+<code class="descname">insert</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.insert" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert new rows in a table. If any of the rows already exist,
+the write or transaction fails with error <code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.update">
+<code class="descname">update</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Update existing rows in a table. If any of the rows does not
+already exist, the transaction fails with error <code class="docutils literal"><span class="pre">NOT_FOUND</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.insert_or_update">
+<code class="descname">insert_or_update</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.insert_or_update" title="Permalink to this definition">#</a></dt>
+<dd><p>Like [insert][google.spanner.v1.Mutation.insert], except that
+if the row already exists, then its column values are
+overwritten with the ones provided. Any column values not
+explicitly written are preserved.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.replace">
+<code class="descname">replace</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.replace" title="Permalink to this definition">#</a></dt>
+<dd><p>Like [insert][google.spanner.v1.Mutation.insert], except that
+if the row already exists, it is deleted, and the column
+values provided are inserted instead. Unlike [insert_or_upda
+te][google.spanner.v1.Mutation.insert_or_update], this means
+any values not explicitly written become <code class="docutils literal"><span class="pre">NULL</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.delete">
+<code class="descname">delete</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete rows from a table. Succeeds whether or not the named
+rows were present.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.Mutation.Delete">
+<em class="property">class </em><code class="descname">Delete</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Arguments to [delete][google.spanner.v1.Mutation.delete] operations.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.Mutation.Write">
+<em class="property">class </em><code class="descname">Write</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Write" title="Permalink to this definition">#</a></dt>
+<dd><p>Arguments to [insert][google.spanner.v1.Mutation.insert],
+[update][google.spanner.v1.Mutation.update],
+[insert_or_update][google.spanner.v1.Mutation.insert_or_update], and
+[replace][google.spanner.v1.Mutation.replace] operations.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.PartialResultSet">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">PartialResultSet</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartialResultSet" title="Permalink to this definition">#</a></dt>
+<dd><p>Partial results from a streaming read or SQL query. Streaming reads and
+SQL queries better tolerate large result sets, large rows, and large
+values, but are a little trickier to consume.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PartialResultSet.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartialResultSet.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata about the result set, such as row type information.
+Only present in the first response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PartialResultSet.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartialResultSet.values" title="Permalink to this definition">#</a></dt>
+<dd><p>A streamed result set consists of a stream of values, which
+might be split into many <code class="docutils literal"><span class="pre">PartialResultSet</span></code> messages to
+accommodate large rows and/or large values. Every N complete
+values defines a row, where N is equal to the number of
+entries in [metadata.row_type.fields][google.spanner.v1.Struc
+tType.fields].  Most values are encoded based on type as
+described [here][google.spanner.v1.TypeCode].  It is possible
+that the last value in values is “chunked”, meaning that the
+rest of the value is sent in subsequent <code class="docutils literal"><span class="pre">PartialResultSet</span></code>          (s). This is denoted by the [chunked_value][google.spanner.v1
+.PartialResultSet.chunked_value] field. Two or more chunked
+values can be merged to form a complete value as follows:  -
+<code class="docutils literal"><span class="pre">bool/number/null</span></code>: cannot be chunked -  <code class="docutils literal"><span class="pre">string</span></code>:
+concatenate the strings -  <code class="docutils literal"><span class="pre">list</span></code>: concatenate the lists. If
+the last element in a list is a    <code class="docutils literal"><span class="pre">string</span></code>, <code class="docutils literal"><span class="pre">list</span></code>, or
+<code class="docutils literal"><span class="pre">object</span></code>, merge it with the first element    in the next
+list by applying these rules recursively. -  <code class="docutils literal"><span class="pre">object</span></code>:
+concatenate the (field name, field value) pairs. If a    field
+name is duplicated, then apply these rules recursively to
+merge    the field values.  Some examples of merging:  ::
+# Strings are concatenated.     “foo”, “bar” =&gt; “foobar”
+# Lists of non-strings are concatenated.     [2, 3], [4] =&gt;
+[2, 3, 4]      # Lists are concatenated, but the last and
+first elements are merged     # because they are strings.
+[“a”, “b”], [“c”, “d”] =&gt; [“a”, “bc”, “d”]      # Lists are
+concatenated, but the last and first elements are merged     #
+because they are lists. Recursively, the last and first
+elements     # of the inner lists are merged because they are
+strings.     [“a”, [“b”, “c”]], [[“d”], “e”] =&gt; [“a”, [“b”,
+“cd”], “e”]      # Non-overlapping object fields are combined.
+{“a”: “1”}, {“b”: “2”} =&gt; {“a”: “1”, “b”: 2”}      #
+Overlapping object fields are merged.     {“a”: “1”}, {“a”:
+“2”} =&gt; {“a”: “12”}      # Examples of merging objects
+containing lists of strings.     {“a”: [“1”]}, {“a”: [“2”]} =&gt;
+{“a”: [“12”]}  For a more complete example, suppose a
+streaming SQL query is yielding a result set whose rows
+contain a single string field. The following
+<code class="docutils literal"><span class="pre">PartialResultSet</span></code>s might be yielded:  ::      {
+“metadata”: { … }       “values”: [“Hello”, “W”]
+“chunked_value”: true       “resume_token”: “Af65…”     }
+{       “values”: [“orl”]       “chunked_value”: true
+“resume_token”: “Bqp2…”     }     {       “values”: [“d”]
+“resume_token”: “Zx1B…”     }  This sequence of
+<code class="docutils literal"><span class="pre">PartialResultSet</span></code>s encodes two rows, one containing the
+field value <code class="docutils literal"><span class="pre">&quot;Hello&quot;</span></code>, and a second containing the field
+value <code class="docutils literal"><span class="pre">&quot;World&quot;</span> <span class="pre">=</span> <span class="pre">&quot;W&quot;</span> <span class="pre">+</span> <span class="pre">&quot;orl&quot;</span> <span class="pre">+</span> <span class="pre">&quot;d&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PartialResultSet.chunked_value">
+<code class="descname">chunked_value</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartialResultSet.chunked_value" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, then the final value in
+[values][google.spanner.v1.PartialResultSet.values] is
+chunked, and must be combined with more values from subsequent
+<code class="docutils literal"><span class="pre">PartialResultSet</span></code>s to obtain a complete field value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PartialResultSet.resume_token">
+<code class="descname">resume_token</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartialResultSet.resume_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Streaming calls might be interrupted for a variety of reasons,
+such as TCP connection loss. If this occurs, the stream of
+results can be resumed by re-sending the original request and
+including <code class="docutils literal"><span class="pre">resume_token</span></code>. Note that executing any other
+transaction in the same session invalidates the token.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PartialResultSet.stats">
+<code class="descname">stats</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PartialResultSet.stats" title="Permalink to this definition">#</a></dt>
+<dd><p>Query plan and execution statistics for the query that
+produced this streaming result set. These can be requested by
+setting [ExecuteSqlRequest.query_mode][google.spanner.v1.Exec
+uteSqlRequest.query_mode] and are sent only once with the
+last response in the stream.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.PlanNode">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">PlanNode</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode" title="Permalink to this definition">#</a></dt>
+<dd><p>Node information for nodes appearing in a
+[QueryPlan.plan_nodes][google.spanner.v1.QueryPlan.plan_nodes].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.child_index">
+<code class="descname">child_index</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.child_index" title="Permalink to this definition">#</a></dt>
+<dd><p>The node to which the link points.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the link. For example, in Hash Joins this could be
+used to distinguish between the build child and the probe
+child, or in the case of the child being an output variable,
+to represent the tag associated with the output variable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.variable">
+<code class="descname">variable</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.variable" title="Permalink to this definition">#</a></dt>
+<dd><p>Only present if the child node is
+[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] and
+corresponds to an output variable of the parent node. The
+field carries the name of the output variable. For example, a
+<code class="docutils literal"><span class="pre">TableScan</span></code> operator that reads rows from a table will have
+child links to the <code class="docutils literal"><span class="pre">SCALAR</span></code> nodes representing the output
+variables created for each column that is read by the
+operator. The corresponding <code class="docutils literal"><span class="pre">variable</span></code> fields will be set to
+the variable names assigned to the columns.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.description" title="Permalink to this definition">#</a></dt>
+<dd><p>A string representation of the expression subtree rooted at
+this node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.subqueries">
+<code class="descname">subqueries</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.subqueries" title="Permalink to this definition">#</a></dt>
+<dd><p>A mapping of (subquery variable name) -&gt; (subquery node id)
+for cases where the <code class="docutils literal"><span class="pre">description</span></code> string of this node
+references a <code class="docutils literal"><span class="pre">SCALAR</span></code> subquery contained in the expression
+subtree rooted at this node. The referenced <code class="docutils literal"><span class="pre">SCALAR</span></code>
+subquery may not necessarily be a direct child of this node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.index">
+<code class="descname">index</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.index" title="Permalink to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal"><span class="pre">PlanNode</span></code>’s index in [node
+list][google.spanner.v1.QueryPlan.plan_nodes].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.kind">
+<code class="descname">kind</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Used to determine the type of node. May be needed for
+visualizing different kinds of nodes differently. For example,
+If the node is a
+[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] node, it will
+have a condensed representation which can be used to directly
+embed a description of the node in its parent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The display name for the node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.child_links">
+<code class="descname">child_links</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.child_links" title="Permalink to this definition">#</a></dt>
+<dd><p>List of child node <code class="docutils literal"><span class="pre">index</span></code>es and their relationship to
+this parent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.short_representation">
+<code class="descname">short_representation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.short_representation" title="Permalink to this definition">#</a></dt>
+<dd><p>Condensed representation for
+[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] nodes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Attributes relevant to the node contained in a group of key-
+value pairs. For example, a Parameter Reference node could
+have the following information in its metadata:  ::      {
+“parameter_reference”: “param1”,       “parameter_type”:
+“array”     }</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.execution_stats">
+<code class="descname">execution_stats</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.execution_stats" title="Permalink to this definition">#</a></dt>
+<dd><p>The execution statistics associated with the node, contained
+in a group of key-value pairs. Only present if the plan was
+returned as a result of a profile query. For example, number
+of executions, number of rows/time per execution etc.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ChildLink">
+<em class="property">class </em><code class="descname">ChildLink</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ChildLink" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata associated with a parent-child relationship appearing in a
+[PlanNode][google.spanner.v1.PlanNode].</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ShortRepresentation">
+<em class="property">class </em><code class="descname">ShortRepresentation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ShortRepresentation" title="Permalink to this definition">#</a></dt>
+<dd><p>Condensed representation of a node and its subtree. Only present for
+<code class="docutils literal"><span class="pre">SCALAR</span></code> [PlanNode(s)][google.spanner.v1.PlanNode].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.QueryPlan">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">QueryPlan</code><a class="headerlink" href="#google.cloud.spanner_v1.types.QueryPlan" title="Permalink to this definition">#</a></dt>
+<dd><p>Contains an ordered list of nodes appearing in the query plan.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.QueryPlan.plan_nodes">
+<code class="descname">plan_nodes</code><a class="headerlink" href="#google.cloud.spanner_v1.types.QueryPlan.plan_nodes" title="Permalink to this definition">#</a></dt>
+<dd><p>The nodes in the query plan. Plan nodes are returned in pre-
+order starting with the plan root. Each
+[PlanNode][google.spanner.v1.PlanNode]’s <code class="docutils literal"><span class="pre">id</span></code> corresponds to
+its index in <code class="docutils literal"><span class="pre">plan_nodes</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ReadRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ReadRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for [Read][google.spanner.v1.Spanner.Read] and
+[StreamingRead][google.spanner.v1.Spanner.StreamingRead].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The session in which the read should be performed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.transaction">
+<code class="descname">transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>The transaction to use. If none is provided, the default is a
+temporary read-only transaction with strong concurrency.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the table in the database to be read.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.index">
+<code class="descname">index</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.index" title="Permalink to this definition">#</a></dt>
+<dd><p>If non-empty, the name of an index on
+[table][google.spanner.v1.ReadRequest.table]. This index is
+used instead of the table primary key when interpreting
+[key_set][google.spanner.v1.ReadRequest.key_set] and sorting
+result rows. See
+[key_set][google.spanner.v1.ReadRequest.key_set] for further
+information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.columns">
+<code class="descname">columns</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.columns" title="Permalink to this definition">#</a></dt>
+<dd><p>The columns of [table][google.spanner.v1.ReadRequest.table] to
+be returned for each row matching this request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.key_set">
+<code class="descname">key_set</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.key_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. <code class="docutils literal"><span class="pre">key_set</span></code> identifies the rows to be yielded.
+<code class="docutils literal"><span class="pre">key_set</span></code> names the primary keys of the rows in
+[table][google.spanner.v1.ReadRequest.table] to be yielded,
+unless [index][google.spanner.v1.ReadRequest.index] is
+present. If [index][google.spanner.v1.ReadRequest.index] is
+present, then
+[key_set][google.spanner.v1.ReadRequest.key_set] instead
+names index keys in
+[index][google.spanner.v1.ReadRequest.index].  Rows are
+yielded in table primary key order (if
+[index][google.spanner.v1.ReadRequest.index] is empty) or
+index key order (if
+[index][google.spanner.v1.ReadRequest.index] is non-empty).
+It is not an error for the <code class="docutils literal"><span class="pre">key_set</span></code> to name rows that do
+not exist in the database. Read yields nothing for nonexistent
+rows.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.limit">
+<code class="descname">limit</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.limit" title="Permalink to this definition">#</a></dt>
+<dd><p>If greater than zero, only the first <code class="docutils literal"><span class="pre">limit</span></code> rows are
+yielded. If <code class="docutils literal"><span class="pre">limit</span></code> is zero, the default is no limit.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ReadRequest.resume_token">
+<code class="descname">resume_token</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ReadRequest.resume_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If this request is resuming a previously interrupted read,
+<code class="docutils literal"><span class="pre">resume_token</span></code> should be copied from the last
+[PartialResultSet][google.spanner.v1.PartialResultSet] yielded
+before the interruption. Doing this enables the new read to
+resume where the last read left off. The rest of the request
+parameters must exactly match the request that yielded this
+token.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ResultSet">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ResultSet</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSet" title="Permalink to this definition">#</a></dt>
+<dd><p>Results from [Read][google.spanner.v1.Spanner.Read] or
+[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ResultSet.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSet.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata about the result set, such as row type information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ResultSet.rows">
+<code class="descname">rows</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSet.rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Each element in <code class="docutils literal"><span class="pre">rows</span></code> is a row whose format is defined by [
+metadata.row_type][google.spanner.v1.ResultSetMetadata.row_t
+ype]. The ith element in each row matches the ith field in [me
+tadata.row_type][google.spanner.v1.ResultSetMetadata.row_typ
+e]. Elements are encoded based on type as described
+[here][google.spanner.v1.TypeCode].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ResultSet.stats">
+<code class="descname">stats</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSet.stats" title="Permalink to this definition">#</a></dt>
+<dd><p>Query plan and execution statistics for the query that
+produced this result set. These can be requested by setting [E
+xecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequ
+est.query_mode].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ResultSetMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ResultSetMetadata</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSetMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata about a [ResultSet][google.spanner.v1.ResultSet] or
+[PartialResultSet][google.spanner.v1.PartialResultSet].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ResultSetMetadata.row_type">
+<code class="descname">row_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSetMetadata.row_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates the field names and types for the rows in the result
+set. For example, a SQL query like <code class="docutils literal"><span class="pre">&quot;SELECT</span> <span class="pre">UserId,</span> <span class="pre">UserName</span>
+<span class="pre">FROM</span> <span class="pre">Users&quot;</span></code> could return a <code class="docutils literal"><span class="pre">row_type</span></code> value like:  ::
+“fields”: [       { “name”: “UserId”, “type”: { “code”:
+“INT64” } },       { “name”: “UserName”, “type”: { “code”:
+“STRING” } },     ]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ResultSetMetadata.transaction">
+<code class="descname">transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSetMetadata.transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>If the read or SQL query began a transaction as a side-effect,
+the information about the new transaction is yielded here.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ResultSetStats">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ResultSetStats</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSetStats" title="Permalink to this definition">#</a></dt>
+<dd><p>Additional statistics about a [ResultSet][google.spanner.v1.ResultSet]
+or [PartialResultSet][google.spanner.v1.PartialResultSet].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ResultSetStats.query_plan">
+<code class="descname">query_plan</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSetStats.query_plan" title="Permalink to this definition">#</a></dt>
+<dd><p>[QueryPlan][google.spanner.v1.QueryPlan] for the query
+associated with this result.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ResultSetStats.query_stats">
+<code class="descname">query_stats</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ResultSetStats.query_stats" title="Permalink to this definition">#</a></dt>
+<dd><p>Aggregated statistics from the execution of the query. Only
+present when the query is profiled. For example, a query could
+return the statistics as follows:  ::      {
+“rows_returned”: “3”,       “elapsed_time”: “1.22 secs”,
+“cpu_time”: “1.19 secs”     }</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.RollbackRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">RollbackRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.RollbackRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for [Rollback][google.spanner.v1.Spanner.Rollback].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.RollbackRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.RollbackRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The session in which the transaction to roll back is
+running.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.RollbackRequest.transaction_id">
+<code class="descname">transaction_id</code><a class="headerlink" href="#google.cloud.spanner_v1.types.RollbackRequest.transaction_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The transaction to roll back.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.Session">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session" title="Permalink to this definition">#</a></dt>
+<dd><p>A session in the Cloud Spanner API.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Session.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the session.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.StructType">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">StructType</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">StructType</span></code> defines the fields of a
+[STRUCT][google.spanner.v1.TypeCode.STRUCT] type.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.StructType.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the field. For reads, this is the column name. For
+SQL queries, it is the column alias (e.g., <code class="docutils literal"><span class="pre">&quot;Word&quot;</span></code> in the
+query <code class="docutils literal"><span class="pre">&quot;SELECT</span> <span class="pre">'hello'</span> <span class="pre">AS</span> <span class="pre">Word&quot;</span></code>), or the column name (e.g.,
+<code class="docutils literal"><span class="pre">&quot;ColName&quot;</span></code> in the query <code class="docutils literal"><span class="pre">&quot;SELECT</span> <span class="pre">ColName</span> <span class="pre">FROM</span> <span class="pre">Table&quot;</span></code>).
+Some columns might have an empty name (e.g., !”SELECT
+UPPER(ColName)”`). Note that a query result can contain
+multiple fields with the same name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.StructType.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the field.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.StructType.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of fields that make up this struct. Order is
+significant, because values of this struct type are
+represented as lists, where the order of field values matches
+the order of fields in the
+[StructType][google.spanner.v1.StructType]. In turn, the order
+of fields matches the order of columns in a read request, or
+the order of fields in the <code class="docutils literal"><span class="pre">SELECT</span></code> clause of a query.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.StructType.Field">
+<em class="property">class </em><code class="descname">Field</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.Field" title="Permalink to this definition">#</a></dt>
+<dd><p>Message representing a single field of a struct.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.Transaction">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>A transaction.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Transaction.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Transaction.id" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">id</span></code> may be used to identify the transaction in subsequent
+[Read][google.spanner.v1.Spanner.Read],
+[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql],
+[Commit][google.spanner.v1.Spanner.Commit], or
+[Rollback][google.spanner.v1.Spanner.Rollback] calls.  Single-
+use read-only transactions do not have IDs, because single-use
+transactions do not support multiple requests.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Transaction.read_timestamp">
+<code class="descname">read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Transaction.read_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>For snapshot read-only transactions, the read timestamp chosen
+for the transaction. Not returned by default: see [Transaction
+Options.ReadOnly.return_read_timestamp][google.spanner.v1.Tr
+ansactionOptions.ReadOnly.return_read_timestamp].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">TransactionOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>See <a class="reference internal" href="transactions.html#spanner-txn"><span class="std std-ref">Transactions</span></a> for more information on these.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.timestamp_bound">
+<code class="descname">timestamp_bound</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.timestamp_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>How to choose the timestamp for the read-only transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.strong">
+<code class="descname">strong</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.strong" title="Permalink to this definition">#</a></dt>
+<dd><p>Read at a timestamp where all previously committed
+transactions are visible.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.min_read_timestamp">
+<code class="descname">min_read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.min_read_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes all reads at a timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.
+This is useful for requesting fresher data than some previous
+read, or data that is fresh enough to observe the effects of
+some previously committed transaction whose timestamp is
+known.  Note that this option can only be used in single-use
+transactions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.max_staleness">
+<code class="descname">max_staleness</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.max_staleness" title="Permalink to this definition">#</a></dt>
+<dd><p>Read data at a timestamp &gt;= <code class="docutils literal"><span class="pre">NOW</span> <span class="pre">-</span> <span class="pre">max_staleness</span></code> seconds.
+Guarantees that all writes that have committed more than the
+specified number of seconds ago are visible. Because Cloud
+Spanner chooses the exact timestamp, this mode works even if
+the client’s local clock is substantially skewed from Cloud
+Spanner commit timestamps.  Useful for reading the freshest
+data available at a nearby replica, while bounding the
+possible staleness if the local replica has fallen behind.
+Note that this option can only be used in single-use
+transactions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.read_timestamp">
+<code class="descname">read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.read_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes all reads at the given timestamp. Unlike other modes,
+reads at a specific timestamp are repeatable; the same read at
+the same timestamp always returns the same data. If the
+timestamp is in the future, the read will block until the
+specified timestamp, modulo the read’s deadline.  Useful for
+large scale consistent reads such as mapreduces, or for
+coordinating many reads against a consistent snapshot of the
+data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.exact_staleness">
+<code class="descname">exact_staleness</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.exact_staleness" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes all reads at a timestamp that is <code class="docutils literal"><span class="pre">exact_staleness</span></code>
+old. The timestamp is chosen soon after the read is started.
+Guarantees that all writes that have committed more than the
+specified number of seconds ago are visible. Because Cloud
+Spanner chooses the exact timestamp, this mode works even if
+the client’s local clock is substantially skewed from Cloud
+Spanner commit timestamps.  Useful for reading at nearby
+replicas without the distributed timestamp negotiation
+overhead of <code class="docutils literal"><span class="pre">max_staleness</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.return_read_timestamp">
+<code class="descname">return_read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.return_read_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, the Cloud Spanner-selected read timestamp is included
+in the [Transaction][google.spanner.v1.Transaction] message
+that describes the transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.mode">
+<code class="descname">mode</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.mode" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The type of transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.read_write">
+<code class="descname">read_write</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.read_write" title="Permalink to this definition">#</a></dt>
+<dd><p>Transaction may write.  Authorization to begin a read-write
+transaction requires
+<code class="docutils literal"><span class="pre">spanner.databases.beginOrRollbackReadWriteTransaction</span></code>
+permission on the <code class="docutils literal"><span class="pre">session</span></code> resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.read_only">
+<code class="descname">read_only</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.read_only" title="Permalink to this definition">#</a></dt>
+<dd><p>Transaction will not write.  Authorization to begin a read-
+only transaction requires
+<code class="docutils literal"><span class="pre">spanner.databases.beginReadOnlyTransaction</span></code> permission on
+the <code class="docutils literal"><span class="pre">session</span></code> resource.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly">
+<em class="property">class </em><code class="descname">ReadOnly</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly" title="Permalink to this definition">#</a></dt>
+<dd><p>Options for read-only transactions.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadWrite">
+<em class="property">class </em><code class="descname">ReadWrite</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadWrite" title="Permalink to this definition">#</a></dt>
+<dd><p>Options for read-write transactions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.TransactionSelector">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">TransactionSelector</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionSelector" title="Permalink to this definition">#</a></dt>
+<dd><p>This message is used to select the transaction in which a
+[Read][google.spanner.v1.Spanner.Read] or
+[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] call runs.</p>
+<p>See [TransactionOptions][google.spanner.v1.TransactionOptions] for more
+information about transactions.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionSelector.selector">
+<code class="descname">selector</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionSelector.selector" title="Permalink to this definition">#</a></dt>
+<dd><p>If no fields are set, the default is a single use transaction
+with strong concurrency.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionSelector.single_use">
+<code class="descname">single_use</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionSelector.single_use" title="Permalink to this definition">#</a></dt>
+<dd><p>Execute the read or SQL query in a temporary transaction. This
+is the most efficient way to execute a transaction that
+consists of a single SQL query.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionSelector.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionSelector.id" title="Permalink to this definition">#</a></dt>
+<dd><p>Execute the read or SQL query in a previously-started
+transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionSelector.begin">
+<code class="descname">begin</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionSelector.begin" title="Permalink to this definition">#</a></dt>
+<dd><p>Begin a new transaction and execute this read or SQL query in
+it. The transaction ID of the new transaction is returned in [
+ResultSetMetadata.transaction][google.spanner.v1.ResultSetMeta
+data.transaction], which is a
+[Transaction][google.spanner.v1.Transaction].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.Type">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Type" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">Type</span></code> indicates the type of a Cloud Spanner value, as might be stored
+in a table cell or returned from an SQL query.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Type.code">
+<code class="descname">code</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Type.code" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The [TypeCode][google.spanner.v1.TypeCode] for this
+type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Type.array_element_type">
+<code class="descname">array_element_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Type.array_element_type" title="Permalink to this definition">#</a></dt>
+<dd><p>If [code][google.spanner.v1.Type.code] ==
+[ARRAY][google.spanner.v1.TypeCode.ARRAY], then
+<code class="docutils literal"><span class="pre">array_element_type</span></code> is the type of the array elements.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Type.struct_type">
+<code class="descname">struct_type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Type.struct_type" title="Permalink to this definition">#</a></dt>
+<dd><p>If [code][google.spanner.v1.Type.code] ==
+[STRUCT][google.spanner.v1.TypeCode.STRUCT], then
+<code class="docutils literal"><span class="pre">struct_type</span></code> provides type information for the struct’s
+fields.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../usage.html">Spanner</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../database-usage.html">Database Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../batch-usage.html">Batching Modifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#spanner-client">Spanner Client</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../usage.html">Spanner</a><ul>
+  <li><a href="../../api-reference.html">API Reference</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Spanner Client API</a></li>
+      <li>Next: <a href="admin_database_api.html" title="next chapter">Spanner Admin Database Client API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/spanner/gapic/v1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

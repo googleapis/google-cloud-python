@@ -1,7 +1,7 @@
 Spanner Client
 ==============
 
-.. automodule:: google.cloud.spanner.client
+.. automodule:: google.cloud.spanner_v1.client
   :members:
   :show-inheritance:
 

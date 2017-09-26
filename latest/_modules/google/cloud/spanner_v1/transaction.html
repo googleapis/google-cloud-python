@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.transaction &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.transaction &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.transaction</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.transaction</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -56,19 +56,19 @@
 
 <span class="sd">&quot;&quot;&quot;Spanner read-write transaction support.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionSelector</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionOptions</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionSelector</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionOptions</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_pb_timestamp_to_datetime</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.snapshot</span> <span class="k">import</span> <span class="n">_SnapshotBase</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.batch</span> <span class="k">import</span> <span class="n">_BatchBase</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.snapshot</span> <span class="k">import</span> <span class="n">_SnapshotBase</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.batch</span> <span class="k">import</span> <span class="n">_BatchBase</span>
 
 
-<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">_SnapshotBase</span><span class="p">,</span> <span class="n">_BatchBase</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner_v1.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">_SnapshotBase</span><span class="p">,</span> <span class="n">_BatchBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Implement read-write transaction semantics for a session.</span>
 
-<span class="sd">    :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">    :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">    :param session: the session used to perform the commit</span>
 
 <span class="sd">    :raises ValueError: if session has an existing transaction</span>
@@ -109,7 +109,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_state</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Transaction.begin"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner.transaction.Transaction.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction.begin"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner_v1.transaction.Transaction.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin a transaction on the database.</span>
 
 <span class="sd">        :rtype: bytes</span>
@@ -136,7 +136,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">id</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span></div>
 
-<div class="viewcode-block" id="Transaction.rollback"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner.transaction.Transaction.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction.rollback"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner_v1.transaction.Transaction.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Roll back a transaction on the database.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_state</span><span class="p">()</span>
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
@@ -146,7 +146,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rolled_back</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_transaction</span></div>
 
-<div class="viewcode-block" id="Transaction.commit"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner.transaction.Transaction.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction.commit"><a class="viewcode-back" href="../../../../spanner/transaction-api.html#google.cloud.spanner_v1.transaction.Transaction.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commit mutations to the database.</span>
 
 <span class="sd">        :rtype: datetime</span>
@@ -205,18 +205,6 @@
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
@@ -266,7 +254,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

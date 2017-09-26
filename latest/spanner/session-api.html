@@ -41,43 +41,43 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.spanner.session">
-<span id="session-api"></span><h1>Session API<a class="headerlink" href="#module-google.cloud.spanner.session" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.spanner_v1.session">
+<span id="session-api"></span><h1>Session API<a class="headerlink" href="#module-google.cloud.spanner_v1.session" title="Permalink to this headline">#</a></h1>
 <p>Wrapper for Cloud Spanner Session objects.</p>
 <dl class="data">
-<dt id="google.cloud.spanner.session.DEFAULT_RETRY_TIMEOUT_SECS">
-<code class="descclassname">google.cloud.spanner.session.</code><code class="descname">DEFAULT_RETRY_TIMEOUT_SECS</code><em class="property"> = 30</em><a class="headerlink" href="#google.cloud.spanner.session.DEFAULT_RETRY_TIMEOUT_SECS" title="Permalink to this definition">#</a></dt>
-<dd><p>Default timeout used by <a class="reference internal" href="#google.cloud.spanner.session.Session.run_in_transaction" title="google.cloud.spanner.session.Session.run_in_transaction"><code class="xref py py-meth docutils literal"><span class="pre">Session.run_in_transaction()</span></code></a>.</p>
+<dt id="google.cloud.spanner_v1.session.DEFAULT_RETRY_TIMEOUT_SECS">
+<code class="descclassname">google.cloud.spanner_v1.session.</code><code class="descname">DEFAULT_RETRY_TIMEOUT_SECS</code><em class="property"> = 30</em><a class="headerlink" href="#google.cloud.spanner_v1.session.DEFAULT_RETRY_TIMEOUT_SECS" title="Permalink to this definition">#</a></dt>
+<dd><p>Default timeout used by <a class="reference internal" href="#google.cloud.spanner_v1.session.Session.run_in_transaction" title="google.cloud.spanner_v1.session.Session.run_in_transaction"><code class="xref py py-meth docutils literal"><span class="pre">Session.run_in_transaction()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.session.Session">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.session.</code><code class="descname">Session</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.session.</code><code class="descname">Session</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of a Cloud Spanner Session.</p>
-<p>We can use a <a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a> to:</p>
+<p>We can use a <a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a> to:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#google.cloud.spanner.session.Session.create" title="google.cloud.spanner.session.Session.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> the session</li>
-<li>Use <a class="reference internal" href="#google.cloud.spanner.session.Session.exists" title="google.cloud.spanner.session.Session.exists"><code class="xref py py-meth docutils literal"><span class="pre">exists()</span></code></a> to check for the existence of the session</li>
+<li><a class="reference internal" href="#google.cloud.spanner_v1.session.Session.create" title="google.cloud.spanner_v1.session.Session.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> the session</li>
+<li>Use <a class="reference internal" href="#google.cloud.spanner_v1.session.Session.exists" title="google.cloud.spanner_v1.session.Session.exists"><code class="xref py py-meth docutils literal"><span class="pre">exists()</span></code></a> to check for the existence of the session</li>
 <li><code class="xref py py-meth docutils literal"><span class="pre">drop()</span></code> the session</li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – The database to which the session is bound.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner_v1.database.Database" title="google.cloud.spanner_v1.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – The database to which the session is bound.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.batch">
-<code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.batch" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.batch">
+<code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to create a batch for this session.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="batch-api.html#google.cloud.spanner.batch.Batch" title="google.cloud.spanner.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="batch-api.html#google.cloud.spanner_v1.batch.Batch" title="google.cloud.spanner_v1.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a batch bound to this session</td>
 </tr>
@@ -88,8 +88,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.create">
-<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.create" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Create this session, bound to its database.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.CreateSession">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.CreateSession</a></p>
@@ -97,15 +97,15 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if <a class="reference internal" href="#google.cloud.spanner.session.Session.session_id" title="google.cloud.spanner.session.Session.session_id"><code class="xref py py-attr docutils literal"><span class="pre">session_id</span></code></a> is already set.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if <a class="reference internal" href="#google.cloud.spanner_v1.session.Session.session_id" title="google.cloud.spanner_v1.session.Session.session_id"><code class="xref py py-attr docutils literal"><span class="pre">session_id</span></code></a> is already set.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.delete" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete this session.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession</a></p>
@@ -114,7 +114,7 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <a class="reference internal" href="#google.cloud.spanner.session.Session.session_id" title="google.cloud.spanner.session.Session.session_id"><code class="xref py py-attr docutils literal"><span class="pre">session_id</span></code></a> is not already set.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <a class="reference internal" href="#google.cloud.spanner_v1.session.Session.session_id" title="google.cloud.spanner_v1.session.Session.session_id"><code class="xref py py-attr docutils literal"><span class="pre">session_id</span></code></a> is not already set.</li>
 <li><strong>NotFound</strong> – if the session does not exist</li>
 <li><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</li>
 </ul>
@@ -125,8 +125,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.execute_sql">
-<code class="descname">execute_sql</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em>, <em>resume_token=b''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.execute_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.execute_sql" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.execute_sql">
+<code class="descname">execute_sql</code><span class="sig-paren">(</span><em>sql</em>, <em>params=None</em>, <em>param_types=None</em>, <em>query_mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.execute_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.execute_sql" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform an <code class="docutils literal"><span class="pre">ExecuteStreamingSql</span></code> API request.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -141,11 +141,10 @@ values;  overrides default type detection on the
 back-end.</li>
 <li><strong>query_mode</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode</span></code>) – Mode governing return of results / query plan. See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</a></li>
-<li><strong>resume_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – token for resuming previously-interrupted query</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet" title="google.cloud.spanner.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet" title="google.cloud.spanner_v1.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a result set instance which can be used to consume rows.</p>
@@ -156,8 +155,8 @@ back-end.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.exists" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>Test for the existence of this session.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.GetSession</a></p>
@@ -176,8 +175,8 @@ back-end.</li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.session.Session.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner.session.Session.name" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.name" title="Permalink to this definition">#</a></dt>
 <dd><p>Session name used in requests.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -202,8 +201,8 @@ return value is not cached.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.read">
-<code class="descname">read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=''</em>, <em>limit=0</em>, <em>resume_token=b''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.read" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.read">
+<code class="descname">read</code><span class="sig-paren">(</span><em>table</em>, <em>columns</em>, <em>keyset</em>, <em>index=''</em>, <em>limit=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.read" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform a <code class="docutils literal"><span class="pre">StreamingRead</span></code> API request for rows in a table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -212,15 +211,14 @@ return value is not cached.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>table</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of the table from which to fetch data</li>
 <li><strong>columns</strong> (<em>list of str</em>) – names of columns to be retrieved</li>
-<li><strong>keyset</strong> (<a class="reference internal" href="keyset-api.html#google.cloud.spanner.keyset.KeySet" title="google.cloud.spanner.keyset.KeySet"><code class="xref py py-class docutils literal"><span class="pre">KeySet</span></code></a>) – keys / ranges identifying rows to be retrieved</li>
+<li><strong>keyset</strong> (<a class="reference internal" href="keyset-api.html#google.cloud.spanner_v1.keyset.KeySet" title="google.cloud.spanner_v1.keyset.KeySet"><code class="xref py py-class docutils literal"><span class="pre">KeySet</span></code></a>) – keys / ranges identifying rows to be retrieved</li>
 <li><strong>index</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) name of index to use, rather than the
 table’s primary key</li>
 <li><strong>limit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) maxiumn number of rows to return</li>
-<li><strong>resume_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – token for resuming previously-interrupted read</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner.streamed.StreamedResultSet" title="google.cloud.spanner.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet" title="google.cloud.spanner_v1.streamed.StreamedResultSet"><code class="xref py py-class docutils literal"><span class="pre">StreamedResultSet</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a result set instance which can be used to consume rows.</p>
@@ -231,8 +229,8 @@ table’s primary key</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.run_in_transaction">
-<code class="descname">run_in_transaction</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.run_in_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.run_in_transaction" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.run_in_transaction">
+<code class="descname">run_in_transaction</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.run_in_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.run_in_transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Perform a unit of work in a transaction, retrying on abort.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -263,14 +261,14 @@ override the default timeout.</li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.session.Session.session_id">
-<code class="descname">session_id</code><a class="headerlink" href="#google.cloud.spanner.session.Session.session_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Read-only ID, set by the back-end during <a class="reference internal" href="#google.cloud.spanner.session.Session.create" title="google.cloud.spanner.session.Session.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>.</p>
+<dt id="google.cloud.spanner_v1.session.Session.session_id">
+<code class="descname">session_id</code><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.session_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Read-only ID, set by the back-end during <a class="reference internal" href="#google.cloud.spanner_v1.session.Session.create" title="google.cloud.spanner_v1.session.Session.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.snapshot">
-<code class="descname">snapshot</code><span class="sig-paren">(</span><em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.snapshot" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.snapshot">
+<code class="descname">snapshot</code><span class="sig-paren">(</span><em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.snapshot" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a snapshot to perform a set of reads with shared staleness.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</a></p>
@@ -279,9 +277,9 @@ override the default timeout.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kw</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Passed through to
-<a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> ctor.</td>
+<a class="reference internal" href="snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot" title="google.cloud.spanner_v1.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> ctor.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot" title="google.cloud.spanner_v1.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a snapshot bound to this session</td>
 </tr>
@@ -292,14 +290,14 @@ override the default timeout.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.session.Session.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/session.html#Session.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.session.Session.transaction" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.session.Session.transaction">
+<code class="descname">transaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/session.html#Session.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.session.Session.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a transaction to perform a set of reads with shared staleness.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="transaction-api.html#google.cloud.spanner.transaction.Transaction" title="google.cloud.spanner.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="transaction-api.html#google.cloud.spanner_v1.transaction.Transaction" title="google.cloud.spanner_v1.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a transaction bound to this session</td>
 </tr>
@@ -312,23 +310,23 @@ override the default timeout.</li>
 </dd></dl>
 
 </div>
-<div class="section" id="module-google.cloud.spanner.pool">
-<span id="session-pools-api"></span><h1>Session Pools API<a class="headerlink" href="#module-google.cloud.spanner.pool" title="Permalink to this headline">#</a></h1>
+<div class="section" id="module-google.cloud.spanner_v1.pool">
+<span id="session-pools-api"></span><h1>Session Pools API<a class="headerlink" href="#module-google.cloud.spanner_v1.pool" title="Permalink to this headline">#</a></h1>
 <p>Pools managing shared Session objects.</p>
 <dl class="class">
-<dt id="google.cloud.spanner.pool.AbstractSessionPool">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.pool.</code><code class="descname">AbstractSessionPool</code><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#AbstractSessionPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.AbstractSessionPool" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.AbstractSessionPool">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.pool.</code><code class="descname">AbstractSessionPool</code><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#AbstractSessionPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.AbstractSessionPool" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Specifies required API for concrete session pool implementations.</p>
 <dl class="method">
-<dt id="google.cloud.spanner.pool.AbstractSessionPool.bind">
-<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#AbstractSessionPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.AbstractSessionPool.bind" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.AbstractSessionPool.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#AbstractSessionPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.AbstractSessionPool.bind" title="Permalink to this definition">#</a></dt>
 <dd><p>Associate the pool with a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner_v1.database.Database" title="google.cloud.spanner_v1.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -346,8 +344,8 @@ using the database.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.AbstractSessionPool.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#AbstractSessionPool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.AbstractSessionPool.clear" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.AbstractSessionPool.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#AbstractSessionPool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.AbstractSessionPool.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete all sessions in the pool.</p>
 <p>Concrete implementations of this method are allowed to raise an
 error to signal that the pool is full, or to block until it is
@@ -363,8 +361,8 @@ not full.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.AbstractSessionPool.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#AbstractSessionPool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.AbstractSessionPool.get" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.AbstractSessionPool.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#AbstractSessionPool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.AbstractSessionPool.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Check a session out from the pool.</p>
 <p>Concrete implementations of this method are allowed to raise an
 error to signal that the pool is exhausted, or to block until a
@@ -380,14 +378,14 @@ session is available.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.AbstractSessionPool.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#AbstractSessionPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.AbstractSessionPool.put" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.AbstractSessionPool.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#AbstractSessionPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.AbstractSessionPool.put" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a session to the pool.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 </tbody>
 </table>
@@ -405,8 +403,8 @@ not full.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.AbstractSessionPool.session">
-<code class="descname">session</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#AbstractSessionPool.session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.AbstractSessionPool.session" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.AbstractSessionPool.session">
+<code class="descname">session</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#AbstractSessionPool.session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.AbstractSessionPool.session" title="Permalink to this definition">#</a></dt>
 <dd><p>Check out a session from the pool.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -427,16 +425,16 @@ accessing the session and returning it to the pool.</td>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.pool.BurstyPool">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.pool.</code><code class="descname">BurstyPool</code><span class="sig-paren">(</span><em>target_size=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#BurstyPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.BurstyPool" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.pool.AbstractSessionPool</span></code></a></p>
+<dt id="google.cloud.spanner_v1.pool.BurstyPool">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.pool.</code><code class="descname">BurstyPool</code><span class="sig-paren">(</span><em>target_size=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#BurstyPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.BurstyPool" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner_v1.pool.AbstractSessionPool" title="google.cloud.spanner_v1.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.pool.AbstractSessionPool</span></code></a></p>
 <p>Concrete session pool implementation:</p>
 <ul class="simple">
 <li>“Pings” existing sessions via <code class="xref py py-meth docutils literal"><span class="pre">session.exists()</span></code> before returning
 them.</li>
-<li>Creates a new session, rather than blocking, when <a class="reference internal" href="#google.cloud.spanner.pool.BurstyPool.get" title="google.cloud.spanner.pool.BurstyPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called
+<li>Creates a new session, rather than blocking, when <a class="reference internal" href="#google.cloud.spanner_v1.pool.BurstyPool.get" title="google.cloud.spanner_v1.pool.BurstyPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called
 on an empty pool.</li>
-<li>Discards the returned session, rather than blocking, when <a class="reference internal" href="#google.cloud.spanner.pool.BurstyPool.put" title="google.cloud.spanner.pool.BurstyPool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a>
+<li>Discards the returned session, rather than blocking, when <a class="reference internal" href="#google.cloud.spanner_v1.pool.BurstyPool.put" title="google.cloud.spanner_v1.pool.BurstyPool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a>
 is called on a full pool.</li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
@@ -448,14 +446,14 @@ is called on a full pool.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.pool.BurstyPool.bind">
-<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#BurstyPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.BurstyPool.bind" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.BurstyPool.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#BurstyPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.BurstyPool.bind" title="Permalink to this definition">#</a></dt>
 <dd><p>Associate the pool with a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner_v1.database.Database" title="google.cloud.spanner_v1.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -463,20 +461,20 @@ when needed.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.BurstyPool.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#BurstyPool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.BurstyPool.clear" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.BurstyPool.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#BurstyPool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.BurstyPool.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete all sessions in the pool.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.BurstyPool.get">
-<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#BurstyPool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.BurstyPool.get" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.BurstyPool.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#BurstyPool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.BurstyPool.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Check a session out from the pool.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">an existing session from the pool, or a newly-created
 session.</td>
@@ -486,8 +484,8 @@ session.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.BurstyPool.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#BurstyPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.BurstyPool.put" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.BurstyPool.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#BurstyPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.BurstyPool.put" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a session to the pool.</p>
 <p>Never blocks:  if the pool is full, the returned session is
 discarded.</p>
@@ -495,7 +493,7 @@ discarded.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 </tbody>
 </table>
@@ -504,19 +502,19 @@ discarded.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.pool.FixedSizePool">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.pool.</code><code class="descname">FixedSizePool</code><span class="sig-paren">(</span><em>size=10</em>, <em>default_timeout=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#FixedSizePool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.FixedSizePool" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.pool.AbstractSessionPool</span></code></a></p>
+<dt id="google.cloud.spanner_v1.pool.FixedSizePool">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.pool.</code><code class="descname">FixedSizePool</code><span class="sig-paren">(</span><em>size=10</em>, <em>default_timeout=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#FixedSizePool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.FixedSizePool" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner_v1.pool.AbstractSessionPool" title="google.cloud.spanner_v1.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.pool.AbstractSessionPool</span></code></a></p>
 <p>Concrete session pool implementation:</p>
 <ul class="simple">
 <li>Pre-allocates / creates a fixed number of sessions.</li>
 <li>“Pings” existing sessions via <code class="xref py py-meth docutils literal"><span class="pre">session.exists()</span></code> before returning
 them, and replaces expired sessions.</li>
-<li>Blocks, with a timeout, when <a class="reference internal" href="#google.cloud.spanner.pool.FixedSizePool.get" title="google.cloud.spanner.pool.FixedSizePool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called on an empty pool.
+<li>Blocks, with a timeout, when <a class="reference internal" href="#google.cloud.spanner_v1.pool.FixedSizePool.get" title="google.cloud.spanner_v1.pool.FixedSizePool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called on an empty pool.
 Raises after timing out.</li>
-<li>Raises when <a class="reference internal" href="#google.cloud.spanner.pool.FixedSizePool.put" title="google.cloud.spanner.pool.FixedSizePool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> is called on a full pool.  That error is
+<li>Raises when <a class="reference internal" href="#google.cloud.spanner_v1.pool.FixedSizePool.put" title="google.cloud.spanner_v1.pool.FixedSizePool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> is called on a full pool.  That error is
 never expected in normal practice, as users should be calling
-<a class="reference internal" href="#google.cloud.spanner.pool.FixedSizePool.get" title="google.cloud.spanner.pool.FixedSizePool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> followed by <a class="reference internal" href="#google.cloud.spanner.pool.FixedSizePool.put" title="google.cloud.spanner.pool.FixedSizePool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> whenever in need of a session.</li>
+<a class="reference internal" href="#google.cloud.spanner_v1.pool.FixedSizePool.get" title="google.cloud.spanner_v1.pool.FixedSizePool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> followed by <a class="reference internal" href="#google.cloud.spanner_v1.pool.FixedSizePool.put" title="google.cloud.spanner_v1.pool.FixedSizePool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> whenever in need of a session.</li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -532,14 +530,14 @@ a returned session.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.pool.FixedSizePool.bind">
-<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#FixedSizePool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.FixedSizePool.bind" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.FixedSizePool.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#FixedSizePool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.FixedSizePool.bind" title="Permalink to this definition">#</a></dt>
 <dd><p>Associate the pool with a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner_v1.database.Database" title="google.cloud.spanner_v1.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -547,14 +545,14 @@ when needed.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.FixedSizePool.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#FixedSizePool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.FixedSizePool.clear" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.FixedSizePool.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#FixedSizePool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.FixedSizePool.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete all sessions in the pool.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.FixedSizePool.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#FixedSizePool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.FixedSizePool.get" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.FixedSizePool.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#FixedSizePool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.FixedSizePool.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Check a session out from the pool.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -562,7 +560,7 @@ when needed.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – seconds to block waiting for an available session</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">an existing session from the pool, or a newly-created
 session.</td>
@@ -574,15 +572,15 @@ session.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.FixedSizePool.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#FixedSizePool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.FixedSizePool.put" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.FixedSizePool.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#FixedSizePool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.FixedSizePool.put" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a session to the pool.</p>
 <p>Never blocks:  if the pool is full, raises.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">six.moves.queue.Full</span></code> if the queue is full.</td>
 </tr>
@@ -593,22 +591,22 @@ session.</td>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.pool.PingingPool">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.pool.</code><code class="descname">PingingPool</code><span class="sig-paren">(</span><em>size=10</em>, <em>default_timeout=10</em>, <em>ping_interval=3000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#PingingPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.PingingPool" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.pool.AbstractSessionPool</span></code></a></p>
+<dt id="google.cloud.spanner_v1.pool.PingingPool">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.pool.</code><code class="descname">PingingPool</code><span class="sig-paren">(</span><em>size=10</em>, <em>default_timeout=10</em>, <em>ping_interval=3000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#PingingPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.PingingPool" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner_v1.pool.AbstractSessionPool" title="google.cloud.spanner_v1.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.pool.AbstractSessionPool</span></code></a></p>
 <p>Concrete session pool implementation:</p>
 <ul class="simple">
 <li>Pre-allocates / creates a fixed number of sessions.</li>
 <li>Sessions are used in “round-robin” order (LRU first).</li>
 <li>“Pings” existing sessions in the background after a specified interval
 via an API call (<code class="docutils literal"><span class="pre">session.exists()</span></code>).</li>
-<li>Blocks, with a timeout, when <a class="reference internal" href="#google.cloud.spanner.pool.PingingPool.get" title="google.cloud.spanner.pool.PingingPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called on an empty pool.
+<li>Blocks, with a timeout, when <a class="reference internal" href="#google.cloud.spanner_v1.pool.PingingPool.get" title="google.cloud.spanner_v1.pool.PingingPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> is called on an empty pool.
 Raises after timing out.</li>
-<li>Raises when <a class="reference internal" href="#google.cloud.spanner.pool.PingingPool.put" title="google.cloud.spanner.pool.PingingPool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> is called on a full pool.  That error is
+<li>Raises when <a class="reference internal" href="#google.cloud.spanner_v1.pool.PingingPool.put" title="google.cloud.spanner_v1.pool.PingingPool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> is called on a full pool.  That error is
 never expected in normal practice, as users should be calling
-<a class="reference internal" href="#google.cloud.spanner.pool.PingingPool.get" title="google.cloud.spanner.pool.PingingPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> followed by <a class="reference internal" href="#google.cloud.spanner.pool.PingingPool.put" title="google.cloud.spanner.pool.PingingPool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> whenever in need of a session.</li>
+<a class="reference internal" href="#google.cloud.spanner_v1.pool.PingingPool.get" title="google.cloud.spanner_v1.pool.PingingPool.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a> followed by <a class="reference internal" href="#google.cloud.spanner_v1.pool.PingingPool.put" title="google.cloud.spanner_v1.pool.PingingPool.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> whenever in need of a session.</li>
 </ul>
-<p>The application is responsible for calling <a class="reference internal" href="#google.cloud.spanner.pool.PingingPool.ping" title="google.cloud.spanner.pool.PingingPool.ping"><code class="xref py py-meth docutils literal"><span class="pre">ping()</span></code></a> at appropriate
+<p>The application is responsible for calling <a class="reference internal" href="#google.cloud.spanner_v1.pool.PingingPool.ping" title="google.cloud.spanner_v1.pool.PingingPool.ping"><code class="xref py py-meth docutils literal"><span class="pre">ping()</span></code></a> at appropriate
 times, e.g. from a background thread.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -625,14 +623,14 @@ a returned session.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.pool.PingingPool.bind">
-<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#PingingPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.PingingPool.bind" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.PingingPool.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#PingingPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.PingingPool.bind" title="Permalink to this definition">#</a></dt>
 <dd><p>Associate the pool with a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner_v1.database.Database" title="google.cloud.spanner_v1.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -640,14 +638,14 @@ when needed.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.PingingPool.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#PingingPool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.PingingPool.clear" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.PingingPool.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#PingingPool.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.PingingPool.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete all sessions in the pool.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.PingingPool.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#PingingPool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.PingingPool.get" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.PingingPool.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#PingingPool.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.PingingPool.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Check a session out from the pool.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -655,7 +653,7 @@ when needed.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – seconds to block waiting for an available session</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">an existing session from the pool, or a newly-created
 session.</td>
@@ -667,23 +665,23 @@ session.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.PingingPool.ping">
-<code class="descname">ping</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#PingingPool.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.PingingPool.ping" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.PingingPool.ping">
+<code class="descname">ping</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#PingingPool.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.PingingPool.ping" title="Permalink to this definition">#</a></dt>
 <dd><p>Refresh maybe-expired sessions in the pool.</p>
 <p>This method is designed to be called from a background thread,
 or during the “idle” phase of an event loop.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.PingingPool.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#PingingPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.PingingPool.put" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.PingingPool.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#PingingPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.PingingPool.put" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a session to the pool.</p>
 <p>Never blocks:  if the pool is full, raises.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">six.moves.queue.Full</span></code> if the queue is full.</td>
 </tr>
@@ -694,8 +692,8 @@ or during the “idle” phase of an event loop.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.pool.SessionCheckout">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.pool.</code><code class="descname">SessionCheckout</code><span class="sig-paren">(</span><em>pool</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#SessionCheckout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.SessionCheckout" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.SessionCheckout">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.pool.</code><code class="descname">SessionCheckout</code><span class="sig-paren">(</span><em>pool</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#SessionCheckout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.SessionCheckout" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Context manager: hold session checked out from a pool.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -714,17 +712,17 @@ or during the “idle” phase of an event loop.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.pool.TransactionPingingPool">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.pool.</code><code class="descname">TransactionPingingPool</code><span class="sig-paren">(</span><em>size=10</em>, <em>default_timeout=10</em>, <em>ping_interval=3000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#TransactionPingingPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.TransactionPingingPool" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner.pool.PingingPool" title="google.cloud.spanner.pool.PingingPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.pool.PingingPool</span></code></a></p>
+<dt id="google.cloud.spanner_v1.pool.TransactionPingingPool">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.pool.</code><code class="descname">TransactionPingingPool</code><span class="sig-paren">(</span><em>size=10</em>, <em>default_timeout=10</em>, <em>ping_interval=3000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#TransactionPingingPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.TransactionPingingPool" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#google.cloud.spanner_v1.pool.PingingPool" title="google.cloud.spanner_v1.pool.PingingPool"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.pool.PingingPool</span></code></a></p>
 <p>Concrete session pool implementation:</p>
-<p>In addition to the features of <a class="reference internal" href="#google.cloud.spanner.pool.PingingPool" title="google.cloud.spanner.pool.PingingPool"><code class="xref py py-class docutils literal"><span class="pre">PingingPool</span></code></a>, this class
+<p>In addition to the features of <a class="reference internal" href="#google.cloud.spanner_v1.pool.PingingPool" title="google.cloud.spanner_v1.pool.PingingPool"><code class="xref py py-class docutils literal"><span class="pre">PingingPool</span></code></a>, this class
 creates and begins a transaction for each of its sessions at startup.</p>
 <p>When a session is returned to the pool, if its transaction has been
 committed or rolled back, the pool creates a new transaction for the
 session and pushes the transaction onto a separate queue of “transactions
 to begin.”  The application is responsible for flushing this queue
-as appropriate via the pool’s <a class="reference internal" href="#google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions" title="google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions"><code class="xref py py-meth docutils literal"><span class="pre">begin_pending_transactions()</span></code></a> method.</p>
+as appropriate via the pool’s <a class="reference internal" href="#google.cloud.spanner_v1.pool.TransactionPingingPool.begin_pending_transactions" title="google.cloud.spanner_v1.pool.TransactionPingingPool.begin_pending_transactions"><code class="xref py py-meth docutils literal"><span class="pre">begin_pending_transactions()</span></code></a> method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -740,20 +738,20 @@ a returned session.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions">
-<code class="descname">begin_pending_transactions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#TransactionPingingPool.begin_pending_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.TransactionPingingPool.begin_pending_transactions">
+<code class="descname">begin_pending_transactions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#TransactionPingingPool.begin_pending_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.TransactionPingingPool.begin_pending_transactions" title="Permalink to this definition">#</a></dt>
 <dd><p>Begin all transactions for sessions added to the pool.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.TransactionPingingPool.bind">
-<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#TransactionPingingPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.TransactionPingingPool.bind" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.TransactionPingingPool.bind">
+<code class="descname">bind</code><span class="sig-paren">(</span><em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#TransactionPingingPool.bind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.TransactionPingingPool.bind" title="Permalink to this definition">#</a></dt>
 <dd><p>Associate the pool with a database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database</strong> (<a class="reference internal" href="database-api.html#google.cloud.spanner_v1.database.Database" title="google.cloud.spanner_v1.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>) – database used by the pool:  used to create sessions
 when needed.</td>
 </tr>
 </tbody>
@@ -761,15 +759,15 @@ when needed.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.pool.TransactionPingingPool.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/pool.html#TransactionPingingPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.pool.TransactionPingingPool.put" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.pool.TransactionPingingPool.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/pool.html#TransactionPingingPool.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.pool.TransactionPingingPool.put" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a session to the pool.</p>
 <p>Never blocks:  if the pool is full, raises.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session being returned.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">six.moves.queue.Full</span></code> if the queue is full.</td>
 </tr>
@@ -805,18 +803,6 @@ when needed.</td>
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -829,24 +815,15 @@ when needed.</td>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -864,8 +841,10 @@ when needed.</td>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
+  <li><a href="api-reference.html">API Reference</a><ul>
       <li>Previous: <a href="database-api.html" title="previous chapter">Database API</a></li>
       <li>Next: <a href="keyset-api.html" title="next chapter">Keyset API</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -888,7 +867,7 @@ when needed.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

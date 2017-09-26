@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.pool &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.pool &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.pool</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.pool</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -67,15 +67,15 @@
 <span class="n">_NOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span>  <span class="c1"># unit tests may replace</span>
 
 
-<div class="viewcode-block" id="AbstractSessionPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.AbstractSessionPool">[docs]</a><span class="k">class</span> <span class="nc">AbstractSessionPool</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractSessionPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool">[docs]</a><span class="k">class</span> <span class="nc">AbstractSessionPool</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Specifies required API for concrete session pool implementations.&quot;&quot;&quot;</span>
 
     <span class="n">_database</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="AbstractSessionPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.AbstractSessionPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractSessionPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Associate the pool with a database.</span>
 
-<span class="sd">        :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">        :type database: :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">        :param database: database used by the pool:  used to create sessions</span>
 <span class="sd">                         when needed.</span>
 
@@ -86,7 +86,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="AbstractSessionPool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.AbstractSessionPool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractSessionPool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check a session out from the pool.</span>
 
 <span class="sd">        Concrete implementations of this method are allowed to raise an</span>
@@ -97,10 +97,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="AbstractSessionPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.AbstractSessionPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractSessionPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a session to the pool.</span>
 
-<span class="sd">        :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :param session: the session being returned.</span>
 
 <span class="sd">        Concrete implementations of this method are allowed to raise an</span>
@@ -111,7 +111,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="AbstractSessionPool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.AbstractSessionPool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractSessionPool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete all sessions in the pool.</span>
 
 <span class="sd">        Concrete implementations of this method are allowed to raise an</span>
@@ -122,21 +122,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="AbstractSessionPool.session"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.AbstractSessionPool.session">[docs]</a>    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="AbstractSessionPool.session"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.AbstractSessionPool.session">[docs]</a>    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check out a session from the pool.</span>
 
 <span class="sd">        :type kwargs: dict</span>
 <span class="sd">        :param kwargs: (optional) keyword arguments, passed through to</span>
 <span class="sd">                       the returned checkout.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.session.SessionCheckout`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.session.SessionCheckout`</span>
 <span class="sd">        :returns: a checkout instance, to be used as a context manager for</span>
 <span class="sd">                  accessing the session and returning it to the pool.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">SessionCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="FixedSizePool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.FixedSizePool">[docs]</a><span class="k">class</span> <span class="nc">FixedSizePool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
+<div class="viewcode-block" id="FixedSizePool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.FixedSizePool">[docs]</a><span class="k">class</span> <span class="nc">FixedSizePool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Concrete session pool implementation:</span>
 
 <span class="sd">    - Pre-allocates / creates a fixed number of sessions.</span>
@@ -166,10 +166,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">default_timeout</span> <span class="o">=</span> <span class="n">default_timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
-<div class="viewcode-block" id="FixedSizePool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.FixedSizePool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+<div class="viewcode-block" id="FixedSizePool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.FixedSizePool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Associate the pool with a database.</span>
 
-<span class="sd">        :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">        :type database: :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">        :param database: database used by the pool:  used to create sessions</span>
 <span class="sd">                         when needed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -180,13 +180,13 @@
             <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FixedSizePool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.FixedSizePool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="FixedSizePool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.FixedSizePool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=arguments-differ</span>
         <span class="sd">&quot;&quot;&quot;Check a session out from the pool.</span>
 
 <span class="sd">        :type timeout: int</span>
 <span class="sd">        :param timeout: seconds to block waiting for an available session</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :returns: an existing session from the pool, or a newly-created</span>
 <span class="sd">                  session.</span>
 <span class="sd">        :raises: :exc:`six.moves.queue.Empty` if the queue is empty.</span>
@@ -202,19 +202,19 @@
 
         <span class="k">return</span> <span class="n">session</span></div>
 
-<div class="viewcode-block" id="FixedSizePool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.FixedSizePool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<div class="viewcode-block" id="FixedSizePool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.FixedSizePool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a session to the pool.</span>
 
 <span class="sd">        Never blocks:  if the pool is full, raises.</span>
 
-<span class="sd">        :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :param session: the session being returned.</span>
 
 <span class="sd">        :raises: :exc:`six.moves.queue.Full` if the queue is full.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FixedSizePool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.FixedSizePool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FixedSizePool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.FixedSizePool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete all sessions in the pool.&quot;&quot;&quot;</span>
 
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -226,7 +226,7 @@
                 <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="BurstyPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.BurstyPool">[docs]</a><span class="k">class</span> <span class="nc">BurstyPool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
+<div class="viewcode-block" id="BurstyPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.BurstyPool">[docs]</a><span class="k">class</span> <span class="nc">BurstyPool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Concrete session pool implementation:</span>
 
 <span class="sd">    - &quot;Pings&quot; existing sessions via :meth:`session.exists` before returning</span>
@@ -247,19 +247,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">target_size</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BurstyPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.BurstyPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+<div class="viewcode-block" id="BurstyPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.BurstyPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Associate the pool with a database.</span>
 
-<span class="sd">        :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">        :type database: :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">        :param database: database used by the pool:  used to create sessions</span>
 <span class="sd">                         when needed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span></div>
 
-<div class="viewcode-block" id="BurstyPool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.BurstyPool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BurstyPool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.BurstyPool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check a session out from the pool.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :returns: an existing session from the pool, or a newly-created</span>
 <span class="sd">                  session.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -274,13 +274,13 @@
                 <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">session</span></div>
 
-<div class="viewcode-block" id="BurstyPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.BurstyPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<div class="viewcode-block" id="BurstyPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.BurstyPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a session to the pool.</span>
 
 <span class="sd">        Never blocks:  if the pool is full, the returned session is</span>
 <span class="sd">        discarded.</span>
 
-<span class="sd">        :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :param session: the session being returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -291,7 +291,7 @@
             <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
                 <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="BurstyPool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.BurstyPool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BurstyPool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.BurstyPool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete all sessions in the pool.&quot;&quot;&quot;</span>
 
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -303,7 +303,7 @@
                 <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="PingingPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.PingingPool">[docs]</a><span class="k">class</span> <span class="nc">PingingPool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
+<div class="viewcode-block" id="PingingPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.PingingPool">[docs]</a><span class="k">class</span> <span class="nc">PingingPool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Concrete session pool implementation:</span>
 
 <span class="sd">    - Pre-allocates / creates a fixed number of sessions.</span>
@@ -340,10 +340,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">ping_interval</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">PriorityQueue</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PingingPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.PingingPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+<div class="viewcode-block" id="PingingPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.PingingPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Associate the pool with a database.</span>
 
-<span class="sd">        :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">        :type database: :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">        :param database: database used by the pool:  used to create sessions</span>
 <span class="sd">                         when needed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -354,13 +354,13 @@
             <span class="n">session</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PingingPool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.PingingPool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=arguments-differ</span>
+<div class="viewcode-block" id="PingingPool.get"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.PingingPool.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># pylint: disable=arguments-differ</span>
         <span class="sd">&quot;&quot;&quot;Check a session out from the pool.</span>
 
 <span class="sd">        :type timeout: int</span>
 <span class="sd">        :param timeout: seconds to block waiting for an available session</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :returns: an existing session from the pool, or a newly-created</span>
 <span class="sd">                  session.</span>
 <span class="sd">        :raises: :exc:`six.moves.queue.Empty` if the queue is empty.</span>
@@ -377,19 +377,19 @@
 
         <span class="k">return</span> <span class="n">session</span></div>
 
-<div class="viewcode-block" id="PingingPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.PingingPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<div class="viewcode-block" id="PingingPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.PingingPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a session to the pool.</span>
 
 <span class="sd">        Never blocks:  if the pool is full, raises.</span>
 
-<span class="sd">        :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :param session: the session being returned.</span>
 
 <span class="sd">        :raises: :exc:`six.moves.queue.Full` if the queue is full.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sessions</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">((</span><span class="n">_NOW</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delta</span><span class="p">,</span> <span class="n">session</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="PingingPool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.PingingPool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PingingPool.clear"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.PingingPool.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete all sessions in the pool.&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
@@ -399,7 +399,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PingingPool.ping"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.PingingPool.ping">[docs]</a>    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PingingPool.ping"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.PingingPool.ping">[docs]</a>    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Refresh maybe-expired sessions in the pool.</span>
 
 <span class="sd">        This method is designed to be called from a background thread,</span>
@@ -421,7 +421,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="TransactionPingingPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.TransactionPingingPool">[docs]</a><span class="k">class</span> <span class="nc">TransactionPingingPool</span><span class="p">(</span><span class="n">PingingPool</span><span class="p">):</span>
+<div class="viewcode-block" id="TransactionPingingPool"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.TransactionPingingPool">[docs]</a><span class="k">class</span> <span class="nc">TransactionPingingPool</span><span class="p">(</span><span class="n">PingingPool</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Concrete session pool implementation:</span>
 
 <span class="sd">    In addition to the features of :class:`PingingPool`, this class</span>
@@ -452,22 +452,22 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">begin_pending_transactions</span><span class="p">()</span>
 
-<div class="viewcode-block" id="TransactionPingingPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.TransactionPingingPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
+<div class="viewcode-block" id="TransactionPingingPool.bind"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.TransactionPingingPool.bind">[docs]</a>    <span class="k">def</span> <span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Associate the pool with a database.</span>
 
-<span class="sd">        :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">        :type database: :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">        :param database: database used by the pool:  used to create sessions</span>
 <span class="sd">                         when needed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TransactionPingingPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">begin_pending_transactions</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="TransactionPingingPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.TransactionPingingPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+<div class="viewcode-block" id="TransactionPingingPool.put"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.TransactionPingingPool.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a session to the pool.</span>
 
 <span class="sd">        Never blocks:  if the pool is full, raises.</span>
 
-<span class="sd">        :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :param session: the session being returned.</span>
 
 <span class="sd">        :raises: :exc:`six.moves.queue.Full` if the queue is full.</span>
@@ -482,7 +482,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">TransactionPingingPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TransactionPingingPool.begin_pending_transactions"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.TransactionPingingPool.begin_pending_transactions">[docs]</a>    <span class="k">def</span> <span class="nf">begin_pending_transactions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TransactionPingingPool.begin_pending_transactions"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.TransactionPingingPool.begin_pending_transactions">[docs]</a>    <span class="k">def</span> <span class="nf">begin_pending_transactions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin all transactions for sessions added to the pool.&quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending_sessions</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
             <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending_sessions</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -490,11 +490,11 @@
             <span class="nb">super</span><span class="p">(</span><span class="n">TransactionPingingPool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">session</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="SessionCheckout"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.pool.SessionCheckout">[docs]</a><span class="k">class</span> <span class="nc">SessionCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SessionCheckout"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.SessionCheckout">[docs]</a><span class="k">class</span> <span class="nc">SessionCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Context manager: hold session checked out from a pool.</span>
 
 <span class="sd">    :type pool: concrete subclass of</span>
-<span class="sd">        :class:`~google.cloud.spanner.session.AbstractSessionPool`</span>
+<span class="sd">        :class:`~google.cloud.spanner_v1.session.AbstractSessionPool`</span>
 <span class="sd">    :param pool: Pool from which to check out a session.</span>
 
 <span class="sd">    :type kwargs: dict</span>
@@ -535,18 +535,6 @@
 
 
 
-
-
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
 
 
 <h3>Navigation</h3>
@@ -598,7 +586,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

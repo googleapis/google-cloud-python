@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Instance Admin API &#8212; google-cloud 0.27.1 documentation</title>
+    <title>Instance Admin &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -24,8 +24,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Database Admin API" href="database-usage.html" />
-    <link rel="prev" title="Client" href="client-usage.html" />
+    <link rel="next" title="Database Admin" href="database-usage.html" />
+    <link rel="prev" title="Spanner" href="usage.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,19 +41,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="instance-admin-api">
-<h1>Instance Admin API<a class="headerlink" href="#instance-admin-api" title="Permalink to this headline">#</a></h1>
-<p>After creating a <a class="reference internal" href="client-api.html#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>, you can
+  <div class="section" id="instance-admin">
+<h1>Instance Admin<a class="headerlink" href="#instance-admin" title="Permalink to this headline">#</a></h1>
+<p>After creating a <code class="xref py py-class docutils literal"><span class="pre">Client</span></code>, you can
 interact with individual instances for a project.</p>
 <div class="section" id="instance-configurations">
 <h2>Instance Configurations<a class="headerlink" href="#instance-configurations" title="Permalink to this headline">#</a></h2>
 <p>Each instance within a project maps to a named “instance configuration”,
 specifying the location and other parameters for a set of instances.  These
 configurations are defined by the server, and cannot be changed.</p>
-<p>To list of all instance configurations available to your project, use the
-<a class="reference internal" href="client-api.html#google.cloud.spanner.client.Client.list_instance_configs" title="google.cloud.spanner.client.Client.list_instance_configs"><code class="xref py py-meth docutils literal"><span class="pre">list_instance_configs()</span></code></a>
+<p>To iterate over all instance configurations available to your project, use the
+<code class="xref py py-meth docutils literal"><span class="pre">list_instance_configs()</span></code>
 method of the client:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">configs</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">():</span>
+    <span class="c1"># `config` is an instance of `InstanceConfig`</span>
 </pre></div>
 </div>
 <p>To fetch a single instance configuration, use the
@@ -62,19 +63,24 @@ method of the client:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance_configuration</span><span class="p">(</span><span class="s1">&#39;config-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Each of these methods provide
+<a class="reference internal" href="gapic/v1/admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.InstanceConfig" title="google.cloud.spanner_admin_instance_v1.types.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a> objects.</p>
 </div>
 <div class="section" id="list-instances">
 <h2>List Instances<a class="headerlink" href="#list-instances" title="Permalink to this headline">#</a></h2>
-<p>If you want a comprehensive list of all existing instances, use the
-<a class="reference internal" href="client-api.html#google.cloud.spanner.client.Client.list_instances" title="google.cloud.spanner.client.Client.list_instances"><code class="xref py py-meth docutils literal"><span class="pre">list_instances()</span></code></a> method of
+<p>If you want a comprehensive list of all existing instances, iterate over the
+<code class="xref py py-meth docutils literal"><span class="pre">list_instances()</span></code> method of
 the client:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instances</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">():</span>
+    <span class="c1"># `instance` is an instance of `Instance`</span>
 </pre></div>
 </div>
+<p>This iterator yields <a class="reference internal" href="gapic/v1/admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>
+objects.</p>
 </div>
 <div class="section" id="instance-factory">
 <h2>Instance Factory<a class="headerlink" href="#instance-factory" title="Permalink to this headline">#</a></h2>
-<p>To create a <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> object:</p>
+<p>To create a <code class="xref py py-class docutils literal"><span class="pre">Instance</span></code> object:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">configs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span>
                            <span class="n">configuration_name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -86,7 +92,7 @@ the client:</p>
 <li><code class="docutils literal"><span class="pre">configuration_name</span></code> is the name of the instance configuration to which the
 instance will be bound.  It must be one of the names configured for your
 project, discoverable via
-<a class="reference internal" href="client-api.html#google.cloud.spanner.client.Client.list_instance_configs" title="google.cloud.spanner.client.Client.list_instance_configs"><code class="xref py py-meth docutils literal"><span class="pre">google.cloud.spanner.client.Client.list_instance_configs()</span></code></a>.</li>
+<code class="xref py py-meth docutils literal"><span class="pre">list_instance_configs()</span></code>.</li>
 <li><code class="docutils literal"><span class="pre">node_count</span></code> is a postitive integral count of the number of nodes used
 by the instance.  More nodes allows for higher performance, but at a higher
 billing cost.</li>
@@ -103,7 +109,7 @@ an instance that has already been created:</p>
 <div class="section" id="create-a-new-instance">
 <h2>Create a new Instance<a class="headerlink" href="#create-a-new-instance" title="Permalink to this headline">#</a></h2>
 <p>After creating the instance object, use its
-<a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance.create" title="google.cloud.spanner.instance.Instance.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method to
+<code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> method to
 trigger its creation on the server:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;My very own instance&#39;</span>
 <span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
@@ -113,14 +119,14 @@ trigger its creation on the server:</p>
 <p class="first admonition-title">Note</p>
 <p class="last">Creating an instance triggers a “long-running operation” and
 returns an <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.instance.Operation</span></code>
-object.  See <a class="reference internal" href="#check-on-current-instance-operation"><span class="std std-ref">Check on Current Instance Operation</span></a> for polling
+object.  See <a class="reference internal" href="#check-on-current-instance-operation"><span class="std std-ref">Resolve Current Instance Operation</span></a> for polling
 to find out if the operation is completed.</p>
 </div>
 </div>
 <div class="section" id="refresh-metadata-for-an-existing-instance">
 <h2>Refresh metadata for an existing Instance<a class="headerlink" href="#refresh-metadata-for-an-existing-instance" title="Permalink to this headline">#</a></h2>
 <p>After creating the instance object, reload its server-side configuration
-using its <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance.reload" title="google.cloud.spanner.instance.Instance.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a> method:</p>
+using its <code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code> method:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -130,7 +136,7 @@ for the existing <code class="docutils literal"><span class="pre">instance</span
 <div class="section" id="update-an-existing-instance">
 <h2>Update an existing Instance<a class="headerlink" href="#update-an-existing-instance" title="Permalink to this headline">#</a></h2>
 <p>After creating the instance object, you can update its metadata via
-its <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance.update" title="google.cloud.spanner.instance.Instance.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> method:</p>
+its <code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> method:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="s1">&#39;New display_name&#39;</span>
 <span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 </pre></div>
@@ -139,48 +145,38 @@ its <a class="reference internal" href="instance-api.html#google.cloud.spanner.i
 <p class="first admonition-title">Note</p>
 <p class="last">Update an instance triggers a “long-running operation” and
 returns a <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.instance.Operation</span></code>
-object.  See <a class="reference internal" href="#check-on-current-instance-operation"><span class="std std-ref">Check on Current Instance Operation</span></a> for polling
+object.  See <a class="reference internal" href="#check-on-current-instance-operation"><span class="std std-ref">Resolve Current Instance Operation</span></a> for polling
 to find out if the operation is completed.</p>
 </div>
 </div>
 <div class="section" id="delete-an-existing-instance">
 <h2>Delete an existing Instance<a class="headerlink" href="#delete-an-existing-instance" title="Permalink to this headline">#</a></h2>
 <p>Delete an instance using its
-<a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance.delete" title="google.cloud.spanner.instance.Instance.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> method:</p>
+<code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code> method:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="check-on-current-instance-operation">
-<span id="id1"></span><h2>Check on Current Instance Operation<a class="headerlink" href="#check-on-current-instance-operation" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance.create" title="google.cloud.spanner.instance.Instance.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> and
-<a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance.update" title="google.cloud.spanner.instance.Instance.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> methods of instance
+<div class="section" id="resolve-current-instance-operation">
+<span id="check-on-current-instance-operation"></span><h2>Resolve Current Instance Operation<a class="headerlink" href="#resolve-current-instance-operation" title="Permalink to this headline">#</a></h2>
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> and
+<code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> methods of instance
 object trigger long-running operations on the server, and return instances
 of the <code class="xref py py-class docutils literal"><span class="pre">Operation</span></code> class.</p>
-<p>You can check if a long-running operation has finished
-by using its <code class="xref py py-meth docutils literal"><span class="pre">finished()</span></code>
-method:</p>
+<p>If you want to block on the completion of those operations, use the
+<code class="docutils literal"><span class="pre">result</span></code> method on the returned objects:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>
-<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Once an <code class="xref py py-class docutils literal"><span class="pre">Operation</span></code> object
-has returned <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> from its
-<code class="xref py py-meth docutils literal"><span class="pre">finished()</span></code> method, the
-object should not be re-used. Subsequent calls to
-<code class="xref py py-meth docutils literal"><span class="pre">finished()</span></code>
-will result in an :exc`ValueError` being raised.</p>
-</div>
+<p>This method will raise an exception if the operation fails.</p>
 </div>
 <div class="section" id="next-step">
 <h2>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h2>
 <p>Now we go down the hierarchy from
-<a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> to a
-<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>.</p>
-<p>Next, learn about the <a class="reference internal" href="database-usage.html"><span class="doc">Database Admin API</span></a>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">Instance</span></code> to a
+<code class="xref py py-class docutils literal"><span class="pre">Database</span></code>.</p>
+<p>Next, learn about the <a class="reference internal" href="database-usage.html"><span class="doc">Database Admin</span></a>.</p>
 </div>
 </div>
 
@@ -208,18 +204,6 @@ will result in an :exc`ValueError` being raised.</p>
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -232,24 +216,15 @@ will result in an :exc`ValueError` being raised.</p>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -267,8 +242,8 @@ will result in an :exc`ValueError` being raised.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
-      <li>Previous: <a href="client-usage.html" title="previous chapter">Client</a></li>
-      <li>Next: <a href="database-usage.html" title="next chapter">Database Admin API</a></li>
+      <li>Previous: <a href="usage.html" title="previous chapter">Spanner</a></li>
+      <li>Next: <a href="database-usage.html" title="next chapter">Database Admin</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -291,7 +266,7 @@ will result in an :exc`ValueError` being raised.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

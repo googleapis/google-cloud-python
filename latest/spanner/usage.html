@@ -24,7 +24,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Client" href="client-usage.html" />
+    <link rel="next" title="Instance Admin" href="instance-usage.html" />
     <link rel="prev" title="Variables" href="../runtimeconfig/variable.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -43,19 +43,77 @@
             
   <div class="section" id="spanner">
 <h1>Spanner<a class="headerlink" href="#spanner" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://cloud.google.com/spanner/">Cloud Spanner</a> is the world’s first fully managed relational database service
+to offer both strong consistency and horizontal scalability for
+mission-critical online transaction processing (OLTP) applications. With Cloud
+Spanner you enjoy all the traditional benefits of a relational database; but
+unlike any other relational database service, Cloud Spanner scales horizontally
+to hundreds or thousands of servers to handle the biggest transactional
+workloads.</p>
 <div class="toctree-wrapper compound">
 </div>
-<p>API requests are sent to the <a class="reference external" href="https://cloud.google.com/spanner/docs/">Cloud Spanner</a> API via RPC over
-HTTP/2.  In order to support this, we’ll rely on <a class="reference external" href="http://www.grpc.io/">gRPC</a>.</p>
-<p>Get started by learning about the <a class="reference internal" href="client-api.html#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
-on the <a class="reference internal" href="client-usage.html"><span class="doc">Client</span></a> page.</p>
-<p>In the hierarchy of API concepts</p>
-<ul class="simple">
-<li>a <a class="reference internal" href="client-api.html#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> owns an
-<a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
-<li>an <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> owns a
-<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a></li>
+<div class="section" id="spanner-client">
+<h2>Spanner Client<a class="headerlink" href="#spanner-client" title="Permalink to this headline">#</a></h2>
+<div class="section" id="instantiating-a-client">
+<span id="id1"></span><h3>Instantiating a Client<a class="headerlink" href="#instantiating-a-client" title="Permalink to this headline">#</a></h3>
+<p>To use the API, the <code class="xref py py-class docutils literal"><span class="pre">Client</span></code>
+class defines a high-level interface which handles authorization
+and creating other objects:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="long-lived-defaults">
+<h3>Long-lived Defaults<a class="headerlink" href="#long-lived-defaults" title="Permalink to this headline">#</a></h3>
+<p>When creating a <code class="xref py py-class docutils literal"><span class="pre">Client</span></code>, the
+<code class="docutils literal"><span class="pre">user_agent</span></code> and <code class="docutils literal"><span class="pre">timeout_seconds</span></code> arguments have sensible
+defaults
+(<code class="xref py py-data docutils literal"><span class="pre">DEFAULT_USER_AGENT</span></code> and
+<code class="xref py py-data docutils literal"><span class="pre">DEFAULT_TIMEOUT_SECONDS</span></code>).
+However, you may over-ride them and these will be used throughout all API
+requests made with the <code class="docutils literal"><span class="pre">client</span></code> you create.</p>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">google.cloud-python</span></code>,
+see <a class="reference internal" href="../core/auth.html"><span class="doc">Authentication</span></a>.</p>
+</li>
+<li><p class="first">In addition to any authentication configuration, you can also set the
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GCLOUD_PROJECT</span></code> environment variable for the Google Cloud Console
+project you’d like to interact with. If your code is running in Google App
+Engine or Google Compute Engine the project will be detected automatically.
+(Setting this environment variable is not required, you may instead pass the
+<code class="docutils literal"><span class="pre">project</span></code> explicitly when constructing a
+<a class="reference internal" href="../storage/client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>).</p>
+</li>
+<li><p class="first">After configuring your environment, create a
+<a class="reference internal" href="../storage/client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly</p>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
 </ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Be sure to use the <strong>Project ID</strong>, not the <strong>Project Number</strong>.</p>
+</div>
+</div>
+<div class="section" id="next-step">
+<h3>Next Step<a class="headerlink" href="#next-step" title="Permalink to this headline">#</a></h3>
+<p>After a <code class="xref py py-class docutils literal"><span class="pre">Client</span></code>, the next
+highest-level object is an <code class="xref py py-class docutils literal"><span class="pre">Instance</span></code>.
+You’ll need one before you can interact with databases.</p>
+<p>Next, learn about the <a class="reference internal" href="instance-usage.html"><span class="doc">Instance Admin</span></a>.</p>
+</div>
+</div>
 </div>
 
 
@@ -82,18 +140,6 @@ on the <a class="reference internal" href="client-usage.html"><span class="doc">
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -106,24 +152,15 @@ on the <a class="reference internal" href="client-usage.html"><span class="doc">
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Spanner</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -141,7 +178,7 @@ on the <a class="reference internal" href="client-usage.html"><span class="doc">
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../runtimeconfig/variable.html" title="previous chapter">Variables</a></li>
-      <li>Next: <a href="client-usage.html" title="next chapter">Client</a></li>
+      <li>Next: <a href="instance-usage.html" title="next chapter">Instance Admin</a></li>
   </ul></li>
 </ul>
 </div>
@@ -163,7 +200,7 @@ on the <a class="reference internal" href="client-usage.html"><span class="doc">
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

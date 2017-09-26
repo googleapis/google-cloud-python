@@ -24,7 +24,7 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Speech" href="../speech/index.html" />
+    <link rel="next" title="Spanner Client API" href="gapic/v1/api.html" />
     <link rel="prev" title="Transaction API" href="transaction-api.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -41,12 +41,12 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.spanner.streamed">
-<span id="streamedresultset-api"></span><h1>StreamedResultSet API<a class="headerlink" href="#module-google.cloud.spanner.streamed" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.spanner_v1.streamed">
+<span id="streamedresultset-api"></span><h1>StreamedResultSet API<a class="headerlink" href="#module-google.cloud.spanner_v1.streamed" title="Permalink to this headline">#</a></h1>
 <p>Wrapper for streaming results.</p>
 <dl class="class">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.streamed.</code><code class="descname">StreamedResultSet</code><span class="sig-paren">(</span><em>response_iterator</em>, <em>source=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#StreamedResultSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.streamed.</code><code class="descname">StreamedResultSet</code><span class="sig-paren">(</span><em>response_iterator</em>, <em>source=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Process a sequence of partial result sets into a single set of row data.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -55,30 +55,30 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>response_iterator</strong> – Iterator yielding
-<code class="xref py py-class docutils literal"><span class="pre">google.cloud.proto.spanner.v1.result_set_pb2.PartialResultSet</span></code>
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet</span></code>
 instances.</li>
-<li><strong>source</strong> (<a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a>) – Snapshot from which the result set was fetched.</li>
+<li><strong>source</strong> (<a class="reference internal" href="snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot" title="google.cloud.spanner_v1.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a>) – Snapshot from which the result set was fetched.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.consume_all">
-<code class="descname">consume_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#StreamedResultSet.consume_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.consume_all" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.consume_all">
+<code class="descname">consume_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.consume_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_all" title="Permalink to this definition">#</a></dt>
 <dd><p>Consume the streamed responses until there are no more.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.consume_next">
-<code class="descname">consume_next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#StreamedResultSet.consume_next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.consume_next" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.consume_next">
+<code class="descname">consume_next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.consume_next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_next" title="Permalink to this definition">#</a></dt>
 <dd><p>Consume the next partial result set from the stream.</p>
 <p>Parse the result set into new/existing rows in <code class="xref py py-attr docutils literal"><span class="pre">_rows</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.fields">
-<code class="descname">fields</code><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.fields" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.fields" title="Permalink to this definition">#</a></dt>
 <dd><p>Field descriptors for result set columns.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -93,8 +93,8 @@ instances.</li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.metadata">
-<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.metadata" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Result set metadata</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -109,8 +109,8 @@ instances.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.one">
-<code class="descname">one</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#StreamedResultSet.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.one" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.one">
+<code class="descname">one</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.one" title="Permalink to this definition">#</a></dt>
 <dd><p>Return exactly one result, or raise an exception.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -128,8 +128,8 @@ in whole or in part.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.one_or_none">
-<code class="descname">one_or_none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#StreamedResultSet.one_or_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.one_or_none" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.one_or_none">
+<code class="descname">one_or_none</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.one_or_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.one_or_none" title="Permalink to this definition">#</a></dt>
 <dd><p>Return exactly one result, or None if there are no results.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -145,24 +145,8 @@ in whole or in part.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.resume_token">
-<code class="descname">resume_token</code><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.resume_token" title="Permalink to this definition">#</a></dt>
-<dd><p>Token for resuming interrupted read / query.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)">bytes</a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">token from last chunk of results.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.rows">
-<code class="descname">rows</code><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.rows" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.rows">
+<code class="descname">rows</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Fully-processed rows.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -177,8 +161,8 @@ in whole or in part.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.streamed.StreamedResultSet.stats">
-<code class="descname">stats</code><a class="headerlink" href="#google.cloud.spanner.streamed.StreamedResultSet.stats" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.stats">
+<code class="descname">stats</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.stats" title="Permalink to this definition">#</a></dt>
 <dd><p>Result set statistics</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -195,8 +179,8 @@ in whole or in part.</td>
 </dd></dl>
 
 <dl class="exception">
-<dt id="google.cloud.spanner.streamed.Unmergeable">
-<em class="property">exception </em><code class="descclassname">google.cloud.spanner.streamed.</code><code class="descname">Unmergeable</code><span class="sig-paren">(</span><em>lhs</em>, <em>rhs</em>, <em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/streamed.html#Unmergeable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.streamed.Unmergeable" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.streamed.Unmergeable">
+<em class="property">exception </em><code class="descclassname">google.cloud.spanner_v1.streamed.</code><code class="descname">Unmergeable</code><span class="sig-paren">(</span><em>lhs</em>, <em>rhs</em>, <em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#Unmergeable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.Unmergeable" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a></p>
 <p>Unable to merge two values.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -206,7 +190,7 @@ in whole or in part.</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>lhs</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.protobuf.struct_pb2.Value</span></code>) – pending value to be merged</li>
 <li><strong>rhs</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.protobuf.struct_pb2.Value</span></code>) – remaining value to be merged</li>
-<li><strong>type</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.proto.spanner.v1.type_pb2.Type</span></code>) – field type of values being merged</li>
+<li><strong>type</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.proto.type_pb2.Type</span></code>) – field type of values being merged</li>
 </ul>
 </td>
 </tr>
@@ -240,18 +224,6 @@ in whole or in part.</td>
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -264,24 +236,15 @@ in whole or in part.</td>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">StreamedResultSet API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -299,8 +262,10 @@ in whole or in part.</td>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
+  <li><a href="api-reference.html">API Reference</a><ul>
       <li>Previous: <a href="transaction-api.html" title="previous chapter">Transaction API</a></li>
-      <li>Next: <a href="../speech/index.html" title="next chapter">Speech</a></li>
+      <li>Next: <a href="gapic/v1/api.html" title="next chapter">Spanner Client API</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -323,7 +288,7 @@ in whole or in part.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
