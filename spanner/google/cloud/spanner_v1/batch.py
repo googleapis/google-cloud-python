@@ -19,9 +19,9 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 
 # pylint: disable=ungrouped-imports
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud.spanner._helpers import _SessionWrapper
-from google.cloud.spanner._helpers import _make_list_value_pbs
-from google.cloud.spanner._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _SessionWrapper
+from google.cloud.spanner_v1._helpers import _make_list_value_pbs
+from google.cloud.spanner_v1._helpers import _options_with_prefix
 # pylint: enable=ungrouped-imports
 
 

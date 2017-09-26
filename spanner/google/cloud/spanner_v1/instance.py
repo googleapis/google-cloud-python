@@ -28,9 +28,9 @@ from grpc import StatusCode
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.cloud.spanner._helpers import _options_with_prefix
-from google.cloud.spanner.database import Database
-from google.cloud.spanner.pool import BurstyPool
+from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1.database import Database
+from google.cloud.spanner_v1.pool import BurstyPool
 # pylint: enable=ungrouped-imports
 
 

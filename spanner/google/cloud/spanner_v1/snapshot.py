@@ -23,10 +23,10 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 from google.api.core.exceptions import ServiceUnavailable
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
-from google.cloud.spanner._helpers import _make_value_pb
-from google.cloud.spanner._helpers import _options_with_prefix
-from google.cloud.spanner._helpers import _SessionWrapper
-from google.cloud.spanner.streamed import StreamedResultSet
+from google.cloud.spanner_v1._helpers import _make_value_pb
+from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _SessionWrapper
+from google.cloud.spanner_v1.streamed import StreamedResultSet
 
 
 def _restart_on_unavailable(restart):

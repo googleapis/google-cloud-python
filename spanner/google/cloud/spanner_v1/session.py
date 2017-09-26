@@ -25,10 +25,10 @@ from grpc import StatusCode
 # pylint: disable=ungrouped-imports
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import GrpcRendezvous
-from google.cloud.spanner._helpers import _options_with_prefix
-from google.cloud.spanner.batch import Batch
-from google.cloud.spanner.snapshot import Snapshot
-from google.cloud.spanner.transaction import Transaction
+from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1.batch import Batch
+from google.cloud.spanner_v1.snapshot import Snapshot
+from google.cloud.spanner_v1.transaction import Transaction
 # pylint: enable=ungrouped-imports
 
 

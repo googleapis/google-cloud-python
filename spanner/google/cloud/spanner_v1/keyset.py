@@ -17,8 +17,8 @@
 from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange as KeyRangePB
 from google.cloud.spanner_v1.proto.keys_pb2 import KeySet as KeySetPB
 
-from google.cloud.spanner._helpers import _make_list_value_pb
-from google.cloud.spanner._helpers import _make_list_value_pbs
+from google.cloud.spanner_v1._helpers import _make_list_value_pb
+from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 
 
 class KeyRange(object):

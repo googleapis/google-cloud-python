@@ -18,9 +18,9 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud.spanner._helpers import _options_with_prefix
-from google.cloud.spanner.snapshot import _SnapshotBase
-from google.cloud.spanner.batch import _BatchBase
+from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1.snapshot import _SnapshotBase
+from google.cloud.spanner_v1.batch import _BatchBase
 
 
 class Transaction(_SnapshotBase, _BatchBase):
