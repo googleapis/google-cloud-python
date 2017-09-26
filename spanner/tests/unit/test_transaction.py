@@ -38,7 +38,7 @@ class TestTransaction(unittest.TestCase):
     TRANSACTION_ID = b'DEADBEEF'
 
     def _getTargetClass(self):
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         return Transaction
 
@@ -280,7 +280,7 @@ class TestTransaction(unittest.TestCase):
     def test_commit_ok(self):
         import datetime
         from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 

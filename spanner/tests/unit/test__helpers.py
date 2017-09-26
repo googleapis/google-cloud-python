@@ -19,7 +19,7 @@ import unittest
 class TestTimestampWithNanoseconds(unittest.TestCase):
 
     def _get_target_class(self):
-        from google.cloud.spanner._helpers import TimestampWithNanoseconds
+        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 
         return TimestampWithNanoseconds
 
@@ -114,7 +114,7 @@ class TestTimestampWithNanoseconds(unittest.TestCase):
 class Test_make_value_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from google.cloud.spanner._helpers import _make_value_pb
+        from google.cloud.spanner_v1._helpers import _make_value_pb
 
         return _make_value_pb(*args, **kw)
 
@@ -211,7 +211,7 @@ class Test_make_value_pb(unittest.TestCase):
     def test_w_timestamp_w_nanos(self):
         from google.protobuf.struct_pb2 import Value
         from google.cloud._helpers import UTC
-        from google.cloud.spanner._helpers import TimestampWithNanoseconds
+        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 
         when = TimestampWithNanoseconds(
             2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=UTC)
@@ -237,7 +237,7 @@ class Test_make_value_pb(unittest.TestCase):
 class Test_make_list_value_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from google.cloud.spanner._helpers import _make_list_value_pb
+        from google.cloud.spanner_v1._helpers import _make_list_value_pb
 
         return _make_list_value_pb(*args, **kw)
 
@@ -272,7 +272,7 @@ class Test_make_list_value_pb(unittest.TestCase):
 class Test_make_list_value_pbs(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from google.cloud.spanner._helpers import _make_list_value_pbs
+        from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 
         return _make_list_value_pbs(*args, **kw)
 
@@ -307,7 +307,7 @@ class Test_make_list_value_pbs(unittest.TestCase):
 class Test_parse_value_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from google.cloud.spanner._helpers import _parse_value_pb
+        from google.cloud.spanner_v1._helpers import _parse_value_pb
 
         return _parse_value_pb(*args, **kw)
 
@@ -385,7 +385,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.type_pb2 import Type, TIMESTAMP
         from google.cloud._helpers import UTC, _datetime_to_rfc3339
-        from google.cloud.spanner._helpers import TimestampWithNanoseconds
+        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 
         VALUE = TimestampWithNanoseconds(
             2016, 12, 20, 21, 13, 47, microsecond=123456, tzinfo=UTC)
@@ -400,7 +400,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.type_pb2 import Type, TIMESTAMP
         from google.cloud._helpers import UTC, _datetime_to_rfc3339
-        from google.cloud.spanner._helpers import TimestampWithNanoseconds
+        from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 
         VALUE = TimestampWithNanoseconds(
             2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=UTC)
@@ -437,7 +437,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import (
             STRUCT, STRING, INT64)
-        from google.cloud.spanner._helpers import _make_list_value_pb
+        from google.cloud.spanner_v1._helpers import _make_list_value_pb
 
         VALUES = [u'phred', 32]
         struct_type_pb = StructType(fields=[
@@ -465,7 +465,7 @@ class Test_parse_value_pb(unittest.TestCase):
 class Test_parse_list_value_pbs(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from google.cloud.spanner._helpers import _parse_list_value_pbs
+        from google.cloud.spanner_v1._helpers import _parse_list_value_pbs
 
         return _parse_list_value_pbs(*args, **kw)
 
@@ -483,7 +483,7 @@ class Test_parse_list_value_pbs(unittest.TestCase):
     def test_non_empty(self):
         from google.cloud.spanner_v1.proto.type_pb2 import Type, StructType
         from google.cloud.spanner_v1.proto.type_pb2 import STRING, INT64
-        from google.cloud.spanner._helpers import _make_list_value_pbs
+        from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 
         VALUES = [
             [u'phred', 32],
@@ -502,7 +502,7 @@ class Test_parse_list_value_pbs(unittest.TestCase):
 class Test_SessionWrapper(unittest.TestCase):
 
     def _getTargetClass(self):
-        from google.cloud.spanner._helpers import _SessionWrapper
+        from google.cloud.spanner_v1._helpers import _SessionWrapper
 
         return _SessionWrapper
 
@@ -518,7 +518,7 @@ class Test_SessionWrapper(unittest.TestCase):
 class Test_options_with_prefix(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
-        from google.cloud.spanner._helpers import _options_with_prefix
+        from google.cloud.spanner_v1._helpers import _options_with_prefix
 
         return _options_with_prefix(*args, **kw)
 
