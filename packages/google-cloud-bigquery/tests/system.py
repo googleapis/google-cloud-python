@@ -648,36 +648,25 @@ class TestBigQuery(unittest.TestCase):
         self.assertIn('"Bharney Rhubble"', got)
 
     def test_copy_table(self):
-        dataset = self.temp_dataset(_make_dataset_id('copy_table'))
-        schema = (
-            bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
-            bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
-        )
-        source_ref = dataset.table('source_table')
-        source_arg = Table(source_ref, schema=schema, client=Config.CLIENT)
-        source_table = retry_403(Config.CLIENT.create_table)(source_arg)
-        self.to_delete.insert(0, source_table)
-        rows = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
-        errors = source_table.insert_data(rows)
-        self.assertEqual(len(errors), 0)
-
-        destination_ref = dataset.table('destination_table')
+        # If we create a new table to copy from, the test won't work
+        # because the new rows will be stored in the streaming buffer,
+        # and copy jobs don't read the streaming buffer.
+        # We could wait for the streaming buffer to empty, but that could
+        # take minutes. Instead we copy a small public table.
+        source_dataset = DatasetReference('bigquery-public-data', 'samples')
+        source_ref = source_dataset.table('shakespeare')
+        dest_dataset = self.temp_dataset(_make_dataset_id('copy_table'))
+        dest_ref = dest_dataset.table('destination_table')
         job_config = bigquery.CopyJobConfig()
         job = Config.CLIENT.copy_table(
-            source_ref, destination_ref, job_config=job_config)
+            source_ref, dest_ref, job_config=job_config)
         job.result()
 
-        destination_table = Config.CLIENT.get_table(destination_ref)
-        self.to_delete.insert(0, destination_table)
-        got_rows = self._fetch_single_page(destination_table)
-        by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(got_rows, key=by_age),
-                         sorted(rows, key=by_age))
+        dest_table = Config.CLIENT.get_table(dest_ref)
+        self.to_delete.insert(0, dest_table)
+        # Just check that we got some rows.
+        got_rows = self._fetch_single_page(dest_table)
+        self.assertTrue(len(got_rows) > 0)
 
     def test_job_cancel(self):
         DATASET_ID = _make_dataset_id('job_cancel')
