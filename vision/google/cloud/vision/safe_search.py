@@ -40,7 +40,7 @@ class SafeSearchAnnotation(object):
                  violence_likelihood):
         self._adult_likelihood = adult_likelihood
         self._spoof_likelihood = spoof_likelihood
-        self._medical_likeliehood = medical_likelihood
+        self._medical_likelihood = medical_likelihood
         self._violence_likelihood = violence_likelihood
 
     @classmethod
@@ -104,7 +104,7 @@ class SafeSearchAnnotation(object):
         :rtype: :class:`~google.cloud.vision.likelihood.Likelihood`
         :returns: The ``Likelihood`` that the image is medical in origin.
         """
-        return self._medical_likeliehood
+        return self._medical_likelihood
 
     @property
     def violence(self):
