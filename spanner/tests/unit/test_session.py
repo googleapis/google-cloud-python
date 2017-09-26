@@ -29,7 +29,7 @@ class TestSession(unittest.TestCase):
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
 
     def _getTargetClass(self):
-        from google.cloud.spanner.session import Session
+        from google.cloud.spanner_v1.session import Session
 
         return Session
 
@@ -214,7 +214,7 @@ class TestSession(unittest.TestCase):
             session.snapshot()
 
     def test_snapshot_created(self):
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -228,7 +228,7 @@ class TestSession(unittest.TestCase):
         self.assertFalse(snapshot._multi_use)
 
     def test_snapshot_created_w_multi_use(self):
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -242,7 +242,7 @@ class TestSession(unittest.TestCase):
         self.assertTrue(snapshot._multi_use)
 
     def test_read_not_created(self):
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -255,9 +255,9 @@ class TestSession(unittest.TestCase):
             session.read(TABLE_NAME, COLUMNS, KEYSET)
 
     def test_read(self):
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -308,7 +308,7 @@ class TestSession(unittest.TestCase):
             session.execute_sql(SQL)
 
     def test_execute_sql_defaults(self):
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         SQL = 'SELECT first_name, age FROM citizens'
@@ -353,7 +353,7 @@ class TestSession(unittest.TestCase):
             session.batch()
 
     def test_batch_created(self):
-        from google.cloud.spanner.batch import Batch
+        from google.cloud.spanner_v1.batch import Batch
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -372,7 +372,7 @@ class TestSession(unittest.TestCase):
             session.transaction()
 
     def test_transaction_created(self):
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -397,7 +397,7 @@ class TestSession(unittest.TestCase):
 
     def test_retry_transaction_w_commit_error_txn_already_begun(self):
         from google.gax.errors import GaxError
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -434,7 +434,7 @@ class TestSession(unittest.TestCase):
     def test_run_in_transaction_callback_raises_abort(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -481,7 +481,7 @@ class TestSession(unittest.TestCase):
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -528,7 +528,7 @@ class TestSession(unittest.TestCase):
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -575,8 +575,8 @@ class TestSession(unittest.TestCase):
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1.transaction import Transaction
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         TABLE_NAME = 'citizens'
@@ -636,8 +636,8 @@ class TestSession(unittest.TestCase):
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1.transaction import Transaction
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         TABLE_NAME = 'citizens'
@@ -702,8 +702,8 @@ class TestSession(unittest.TestCase):
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1.transaction import Transaction
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         TABLE_NAME = 'citizens'
@@ -754,14 +754,14 @@ class TestSession(unittest.TestCase):
         self.assertEqual(kw, {'some_arg': 'def'})
 
     def test_run_in_transaction_w_timeout(self):
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
         from google.gax.errors import GaxError
         from google.gax.grpc import exc_to_code
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from grpc import StatusCode
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
