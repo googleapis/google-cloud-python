@@ -29,6 +29,7 @@ _PY_VERSION = platform.python_version()
 _GRPC_VERSION = pkg_resources.get_distribution('grpcio').version
 _API_CORE_VERSION = pkg_resources.get_distribution('google-cloud-core').version
 METRICS_METADATA_KEY = 'x-goog-api-client'
+USE_DEFAULT_METADATA = object()
 
 
 def _is_not_none_or_false(value):
@@ -87,10 +88,7 @@ def _determine_timeout(default_timeout, specified_timeout, retry):
     Returns:
         Optional[Timeout]: The timeout to apply to the method or ``None``.
     """
-    if specified_timeout is False:
-        return None
-
-    if specified_timeout is None:
+    if specified_timeout is default_timeout:
         # If timeout is the default and the default timeout is exponential and
         # a non-default retry is specified, make sure the timeout's deadline
         # matches the retry's. This handles the case where the user leaves
@@ -116,13 +114,13 @@ class _GapicCallable(object):
             False, should accept a timeout argument. If metadata is not
             False, it should accept a metadata argument.
         retry (google.api.core.retry.Retry): The default retry for the
-            callable. If falsy, this callable will not retry.
+            callable. If ``None``, this callable will not retry by default
         timeout (google.api.core.timeout.Timeout): The default timeout
-            for the callable. If falsy, this callable will not specify
-            a timeout argument to the low-level RPC method.
-        metadata (Sequence[Tuple[str, str]]): gRPC call metadata that's
-            passed to the low-level RPC method. If ``False``, this callable
-            will not specify a metadata argument to the method.
+            for the callable. If ``None``, this callable will not specify
+            a timeout argument to the low-level RPC method by default.
+        metadata (Optional[Sequence[Tuple[str, str]]]): gRPC call metadata
+            that's passed to the low-level RPC method. If falsy, no metadata
+            will be passed to the low-level RPC method.
     """
 
     def __init__(self, target, retry, timeout, metadata):
@@ -133,32 +131,32 @@ class _GapicCallable(object):
 
     def __call__(self, *args, **kwargs):
         """Invoke the low-level RPC with retry, timeout, and metadata."""
-        # Note: Due to Python 2 lacking keyword-only arguments we kwargs to
+        # Note: Due to Python 2 lacking keyword-only arguments we use kwargs to
         # to extract the retry and timeout params.
         timeout_ = _determine_timeout(
             self._timeout,
-            kwargs.pop('timeout', None),
-            # Use the invocation-specified retry only for this, as we only
+            kwargs.pop('timeout', self._timeout),
+            # Use only the invocation-specified retry only for this, as we only
             # want to adjust the timeout deadline if the *user* specified
             # a different retry.
             kwargs.get('retry', None))
 
-        retry = kwargs.pop('retry', None)
-        if retry is None:
-            retry = self._retry
+        retry = kwargs.pop('retry', self._retry)
 
         # Apply all applicable decorators.
         wrapped_func = _apply_decorators(self._target, [retry, timeout_])
 
         # Set the metadata for the call using the metadata calculated by
         # _prepare_metadata.
-        if self._metadata is not False:
+        if self._metadata:
             kwargs['metadata'] = self._metadata
 
         return wrapped_func(*args, **kwargs)
 
 
-def wrap_method(func, default_retry=None, default_timeout=None, metadata=None):
+def wrap_method(
+        func, default_retry=None, default_timeout=None,
+        metadata=USE_DEFAULT_METADATA):
     """Wrap an RPC method with common behavior.
 
     This applies common error wrapping, retry, and timeout behavior a function.
@@ -186,7 +184,7 @@ def wrap_method(func, default_retry=None, default_timeout=None, metadata=None):
 
         # Execute get_topic without doing any retying but with the default
         # timeout:
-        response = wrapped_get_topic(retry=False)
+        response = wrapped_get_topic(retry=None)
 
         # Execute get_topic but only retry on 5xx errors:
         my_retry = retry.Retry(retry.if_exception_type(
@@ -222,14 +220,15 @@ def wrap_method(func, default_retry=None, default_timeout=None, metadata=None):
             optional ``timeout`` argument. If ``metadata`` is not ``False``, it
             should accept a ``metadata`` argument.
         default_retry (Optional[google.api.core.Retry]): The default retry
-            strategy. If falsy, the method will not retry by default.
+            strategy. If ``None``, the method will not retry by default.
         default_timeout (Optional[google.api.core.Timeout]): The default
-            timeout strategy. If an int or float is specified, the timeout will
-            always be set to that value.
-        metadata (Union(Mapping[str, str], False)): A dict of metadata keys and
+            timeout strategy. Can also be specified as an int or float. If
+            ``None``, the method will not have timeout specified by default.
+        metadata (Optional(Mapping[str, str])): A dict of metadata keys and
             values. This will be augmented with common ``x-google-api-client``
-            metadata. If ``False``, metadata will not be passed to the function
-            at all.
+            metadata. If ``None``, metadata will not be passed to the function
+            at all, if ``USE_DEFAULT_METADATA`` (the default) then only the
+            common metadata will be provided.
 
     Returns:
         Callable: A new callable that takes optional ``retry`` and ``timeout``
@@ -238,7 +237,10 @@ def wrap_method(func, default_retry=None, default_timeout=None, metadata=None):
     """
     func = grpc_helpers.wrap_errors(func)
 
-    if metadata is not False:
+    if metadata is USE_DEFAULT_METADATA:
+        metadata = {}
+
+    if metadata is not None:
         metadata = _prepare_metadata(metadata)
 
     return _GapicCallable(func, default_retry, default_timeout, metadata)

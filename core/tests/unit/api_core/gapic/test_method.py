@@ -24,7 +24,7 @@ def test_wrap_method_basic():
     method = mock.Mock(spec=['__call__'], return_value=42)
 
     wrapped_method = google.api.core.gapic_v1.method.wrap_method(
-        method, metadata=False)
+        method, metadata=None)
 
     result = wrapped_method(1, 2, meep='moop')
 
