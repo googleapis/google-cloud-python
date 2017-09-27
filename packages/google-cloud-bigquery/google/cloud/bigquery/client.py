@@ -30,6 +30,7 @@ from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob
+from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.query import QueryResults
 
 
@@ -612,29 +613,46 @@ class Client(ClientWithProject):
                         udf_resources=udf_resources,
                         query_parameters=query_parameters)
 
-    def run_sync_query(self, query, udf_resources=(), query_parameters=()):
-        """Run a SQL query synchronously.
+    def query_rows(self, query, job_config=None, job_id=None, timeout=None):
+        """Start a query job and wait for the results.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
 
         :type query: str
         :param query: SQL query to be executed
 
-        :type udf_resources: tuple
-        :param udf_resources: An iterable of
-                            :class:`google.cloud.bigquery._helpers.UDFResource`
-                            (empty by default)
+        :type job_id: str
+        :param job_id: (Optional) ID to use for the query job.
 
-        :type query_parameters: tuple
-        :param query_parameters:
-            An iterable of
-            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
-            (empty by default)
+        :type timeout: int
+        :param timeout:
+            (Optional) How long to wait for job to complete before raising a
+            :class:`TimeoutError`.
 
-        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
-        :returns: a new ``QueryResults`` instance
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :returns:
+            Iterator of row data :class:`tuple`s. During each page, the
+            iterator will have the ``total_rows`` attribute set, which counts
+            the total number of rows **in the result set** (this is distinct
+            from the total number of rows in the current page:
+            ``iterator.page.num_items``).
+
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or  :class:`TimeoutError` if the job did not complete in the
+            given timeout.
         """
-        return QueryResults(query, client=self,
-                            udf_resources=udf_resources,
-                            query_parameters=query_parameters)
+        job_id = _make_job_id(job_id)
+
+        # TODO(swast): move standard SQL default to QueryJobConfig class.
+        if job_config is None:
+            job_config = QueryJobConfig()
+        if job_config.use_legacy_sql is None:
+            job_config.use_legacy_sql = False
+
+        job = QueryJob(job_id, query, client=self, job_config=job_config)
+        job.begin()
+        return job.result(timeout=timeout)
 
 
 # pylint: disable=unused-argument
