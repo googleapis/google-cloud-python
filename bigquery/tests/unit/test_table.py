@@ -550,8 +550,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
+
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
+        RESOURCE['view'] = {'query': 'select fullname, age from person_ages'}
+        RESOURCE['type'] = 'VIEW'
+        RESOURCE['location'] = 'EU'
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE, client)
         self.assertIs(table._client, client)
