@@ -1443,8 +1443,8 @@ class QueryJob(_AsyncJob):
                 'projectId': self.default_dataset.project,
                 'datasetId': self.default_dataset.dataset_id,
             }
-        if self.destination is not None:
-            table_res = self._destination_table_resource()
+        table_res = self._destination_table_resource()
+        if table_res is not None:
             configuration['destinationTable'] = table_res
         if self.priority is not None:
             configuration['priority'] = self.priority
@@ -1537,19 +1537,13 @@ class QueryJob(_AsyncJob):
 
         dest_remote = configuration.get('destinationTable')
 
-        if dest_remote is None:
-            if self.destination is not None:
-                del self.destination
-        else:
+        if dest_remote is not None:
             dataset = DatasetReference(
                 dest_remote['projectId'], dest_remote['datasetId'])
             self.destination = dataset.table(dest_remote['tableId'])
 
         def_ds = configuration.get('defaultDataset')
-        if def_ds is None:
-            if self.default_dataset is not None:
-                del self.default_dataset
-        else:
+        if def_ds is not None:
             self.default_dataset = DatasetReference(
                 def_ds['projectId'], def_ds['datasetId'])
         udf_resources = []
