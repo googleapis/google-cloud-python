@@ -25,6 +25,7 @@ from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
@@ -332,6 +333,22 @@ class Client(ClientWithProject):
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
         self._connection.api_request(method='DELETE', path=dataset.path)
+
+    def delete_table(self, table):
+        """Delete a table
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
+
+        :type table: One of:
+                     :class:`~google.cloud.bigquery.table.Table`
+                     :class:`~google.cloud.bigquery.table.TableReference`
+
+        :param table: the table to delete, or a reference to it.
+        """
+        if not isinstance(table, (Table, TableReference)):
+            raise TypeError('table must be a Table or a TableReference')
+        self._connection.api_request(method='DELETE', path=table.path)
 
     def _get_query_results(self, job_id, project=None, timeout_ms=None):
         """Get the query results object for a query job.
