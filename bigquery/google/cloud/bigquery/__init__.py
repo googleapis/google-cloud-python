@@ -34,6 +34,7 @@ from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.job import CopyJobConfig
 from google.cloud.bigquery.job import ExtractJobConfig
+from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 
@@ -45,6 +46,7 @@ __all__ = [
     'Dataset',
     'CopyJobConfig',
     'ExtractJobConfig',
+    'QueryJobConfig',
     'ScalarQueryParameter',
     'SchemaField',
     'StructQueryParameter',
