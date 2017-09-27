@@ -625,9 +625,7 @@ class Client(ClientWithProject):
             failed or  :class:`TimeoutError` if the job did not complete in the
             given timeout.
         """
-        # TODO(swast): use job_config parameter
-        if job_id is None:
-            job_id = str(uuid.uuid4())
+        job_id = _make_job_id(job_id)
 
         # TODO(swast): move standard SQL default to QueryJobConfig class.
         if job_config is None:

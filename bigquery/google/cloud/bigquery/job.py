@@ -1227,7 +1227,6 @@ class QueryJobConfig(object):
 
     def __init__(self):
         self._properties = {}
-        # TODO(swast): Default to standard SQL syntax.
 
     def to_api_repr(self):
         """Build an API representation of the copy job config.
