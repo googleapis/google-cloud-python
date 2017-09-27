@@ -18,6 +18,7 @@ from six.moves import http_client
 import unittest
 
 from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
+from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
 
 
@@ -84,12 +85,14 @@ class Test__error_result_to_exception(unittest.TestCase):
 
 class _Base(object):
     from google.cloud.bigquery.dataset import DatasetReference
+    from google.cloud.bigquery.table import TableReference
 
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
     DS_ID = 'datset_id'
     DS_REF = DatasetReference(PROJECT, DS_ID)
     TABLE_ID = 'table_id'
+    TABLE_REF = TableReference(DS_REF, TABLE_ID)
     JOB_NAME = 'job_name'
 
     def _make_one(self, *args, **kw):
@@ -231,50 +234,53 @@ class TestLoadJob(unittest.TestCase, _Base):
         return resource
 
     def _verifyBooleanConfigProperties(self, job, config):
+        jconfig = job.configuration
         if 'allowJaggedRows' in config:
-            self.assertEqual(job.allow_jagged_rows,
+            self.assertEqual(jconfig.allow_jagged_rows,
                              config['allowJaggedRows'])
         else:
-            self.assertIsNone(job.allow_jagged_rows)
+            self.assertIsNone(jconfig.allow_jagged_rows)
         if 'allowQuotedNewlines' in config:
-            self.assertEqual(job.allow_quoted_newlines,
+            self.assertEqual(jconfig.allow_quoted_newlines,
                              config['allowQuotedNewlines'])
         else:
-            self.assertIsNone(job.allow_quoted_newlines)
+            self.assertIsNone(jconfig.allow_quoted_newlines)
         if 'autodetect' in config:
             self.assertEqual(
-                job.autodetect, config['autodetect'])
+                jconfig.autodetect, config['autodetect'])
         else:
-            self.assertIsNone(job.autodetect)
+            self.assertIsNone(jconfig.autodetect)
         if 'ignoreUnknownValues' in config:
-            self.assertEqual(job.ignore_unknown_values,
+            self.assertEqual(jconfig.ignore_unknown_values,
                              config['ignoreUnknownValues'])
         else:
-            self.assertIsNone(job.ignore_unknown_values)
+            self.assertIsNone(jconfig.ignore_unknown_values)
 
     def _verifyEnumConfigProperties(self, job, config):
+        jconfig = job.configuration
         if 'createDisposition' in config:
-            self.assertEqual(job.create_disposition,
+            self.assertEqual(jconfig.create_disposition,
                              config['createDisposition'])
         else:
-            self.assertIsNone(job.create_disposition)
+            self.assertIsNone(jconfig.create_disposition)
         if 'encoding' in config:
-            self.assertEqual(job.encoding,
+            self.assertEqual(jconfig.encoding,
                              config['encoding'])
         else:
-            self.assertIsNone(job.encoding)
+            self.assertIsNone(jconfig.encoding)
         if 'sourceFormat' in config:
-            self.assertEqual(job.source_format,
+            self.assertEqual(jconfig.source_format,
                              config['sourceFormat'])
         else:
-            self.assertIsNone(job.source_format)
+            self.assertIsNone(jconfig.source_format)
         if 'writeDisposition' in config:
-            self.assertEqual(job.write_disposition,
+            self.assertEqual(jconfig.write_disposition,
                              config['writeDisposition'])
         else:
-            self.assertIsNone(job.write_disposition)
+            self.assertIsNone(jconfig.write_disposition)
 
     def _verifyResourceProperties(self, job, resource):
+        jconfig = job.configuration
         self._verifyReadonlyResourceProperties(job, resource)
 
         config = resource.get('configuration', {}).get('load')
@@ -290,43 +296,43 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(job.destination.table_id, table_ref['tableId'])
 
         if 'fieldDelimiter' in config:
-            self.assertEqual(job.field_delimiter,
+            self.assertEqual(jconfig.field_delimiter,
                              config['fieldDelimiter'])
         else:
-            self.assertIsNone(job.field_delimiter)
+            self.assertIsNone(jconfig.field_delimiter)
         if 'maxBadRecords' in config:
-            self.assertEqual(job.max_bad_records,
+            self.assertEqual(jconfig.max_bad_records,
                              config['maxBadRecords'])
         else:
-            self.assertIsNone(job.max_bad_records)
+            self.assertIsNone(jconfig.max_bad_records)
         if 'nullMarker' in config:
-            self.assertEqual(job.null_marker,
+            self.assertEqual(jconfig.null_marker,
                              config['nullMarker'])
         else:
-            self.assertIsNone(job.null_marker)
+            self.assertIsNone(jconfig.null_marker)
         if 'quote' in config:
-            self.assertEqual(job.quote_character,
+            self.assertEqual(jconfig.quote_character,
                              config['quote'])
         else:
-            self.assertIsNone(job.quote_character)
+            self.assertIsNone(jconfig.quote_character)
         if 'skipLeadingRows' in config:
-            self.assertEqual(str(job.skip_leading_rows),
+            self.assertEqual(str(jconfig.skip_leading_rows),
                              config['skipLeadingRows'])
         else:
-            self.assertIsNone(job.skip_leading_rows)
+            self.assertIsNone(jconfig.skip_leading_rows)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
-        self.assertIs(job.destination, table)
+        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
+                             [self.SOURCE1], client)
+        self.assertIs(job.destination, self.TABLE_REF)
         self.assertEqual(list(job.source_uris), [self.SOURCE1])
         self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
-        self.assertEqual(job.schema, [])
+        self.assertEqual(job.configuration.schema, [])
 
         self._verifyInitialReadonlyProperties(job)
 
@@ -337,30 +343,32 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.output_rows)
 
         # set/read from resource['configuration']['load']
-        self.assertIsNone(job.allow_jagged_rows)
-        self.assertIsNone(job.allow_quoted_newlines)
-        self.assertIsNone(job.autodetect)
-        self.assertIsNone(job.create_disposition)
-        self.assertIsNone(job.encoding)
-        self.assertIsNone(job.field_delimiter)
-        self.assertIsNone(job.ignore_unknown_values)
-        self.assertIsNone(job.max_bad_records)
-        self.assertIsNone(job.null_marker)
-        self.assertIsNone(job.quote_character)
-        self.assertIsNone(job.skip_leading_rows)
-        self.assertIsNone(job.source_format)
-        self.assertIsNone(job.write_disposition)
+        jconfig = job.configuration
+        self.assertIsNone(jconfig.allow_jagged_rows)
+        self.assertIsNone(jconfig.allow_quoted_newlines)
+        self.assertIsNone(jconfig.autodetect)
+        self.assertIsNone(jconfig.create_disposition)
+        self.assertIsNone(jconfig.encoding)
+        self.assertIsNone(jconfig.field_delimiter)
+        self.assertIsNone(jconfig.ignore_unknown_values)
+        self.assertIsNone(jconfig.max_bad_records)
+        self.assertIsNone(jconfig.null_marker)
+        self.assertIsNone(jconfig.quote_character)
+        self.assertIsNone(jconfig.skip_leading_rows)
+        self.assertIsNone(jconfig.source_format)
+        self.assertIsNone(jconfig.write_disposition)
 
-    def test_ctor_w_schema(self):
+    def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
 
         client = _Client(self.PROJECT)
-        table = _Table()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client,
-                             schema=[full_name, age])
-        self.assertEqual(job.schema, [full_name, age])
+        config = LoadJobConfig()
+        config.schema = [full_name, age]
+        job = self._make_one(self.JOB_NAME, self.TABLE_REF, [self.SOURCE1],
+                             client, config)
+        self.assertEqual(job.configuration.schema, [full_name, age])
 
     def test_done(self):
         client = _Client(self.PROJECT)
@@ -377,15 +385,15 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         self.assertIs(result, job)
 
-    def test_result_invokes_begins(self):
+    def test_result_invokes_begin(self):
         begun_resource = self._makeResource()
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
         connection = _Connection(begun_resource, done_resource)
         client = _Client(self.PROJECT, connection=connection)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
 
+        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
+                             [self.SOURCE1], client)
         job.result()
 
         self.assertEqual(len(connection._requested), 2)
@@ -394,67 +402,52 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(reload_request['method'], 'GET')
 
     def test_schema_setter_non_list(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        config = LoadJobConfig()
         with self.assertRaises(TypeError):
-            job.schema = object()
+            config.schema = object()
 
     def test_schema_setter_invalid_field(self):
         from google.cloud.bigquery.schema import SchemaField
 
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        config = LoadJobConfig()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         with self.assertRaises(ValueError):
-            job.schema = [full_name, object()]
+            config.schema = [full_name, object()]
 
     def test_schema_setter(self):
         from google.cloud.bigquery.schema import SchemaField
 
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        config = LoadJobConfig()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        job.schema = [full_name, age]
-        self.assertEqual(job.schema, [full_name, age])
+        config.schema = [full_name, age]
+        self.assertEqual(config.schema, [full_name, age])
 
     def test_schema_setter_w_autodetect(self):
         from google.cloud.bigquery.schema import SchemaField
 
-        client = _Client(self.PROJECT)
-        table = _Table()
-        full_name = SchemaField('full_name', 'STRING')
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.autodetect = False
-        job.schema = [full_name]
-        self.assertEqual(job.schema, [full_name])
+        config = LoadJobConfig()
+        schema = [SchemaField('full_name', 'STRING')]
+        config.autodetect = False
+        config.schema = schema
+        self.assertEqual(config.schema, schema)
 
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.autodetect = True
+        config.schema = []
+        config.autodetect = True
         with self.assertRaises(ValueError):
-            job.schema = [full_name]
+            config.schema = schema
 
     def test_autodetect_setter_w_schema(self):
         from google.cloud.bigquery.schema import SchemaField
 
-        client = _Client(self.PROJECT)
-        table = _Table()
-        full_name = SchemaField('full_name', 'STRING')
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        config = LoadJobConfig()
 
-        job.autodetect = True
-        job.schema = []
-        self.assertEqual(job.schema, [])
-
-        job.autodetect = False
-        job.schema = [full_name]
-        self.assertEqual(job.autodetect, False)
+        config.autodetect = False
+        config.schema = [SchemaField('full_name', 'STRING')]
+        self.assertEqual(config.autodetect, False)
 
         with self.assertRaises(ValueError):
-            job.autodetect = True
+            config.autodetect = True
 
     def test_props_set_by_server(self):
         import datetime
@@ -578,8 +571,8 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_begin_w_already_running(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
+                             [self.SOURCE1], client)
         job._properties['status'] = {'state': 'RUNNING'}
 
         with self.assertRaises(ValueError):
@@ -595,8 +588,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, self.TABLE_REF, [self.SOURCE1],
+                             client)
 
         job.begin()
 
@@ -634,9 +627,10 @@ class TestLoadJob(unittest.TestCase, _Base):
         del resource['user_email']
         conn = _Connection(resource)
         client = _Client(project=self.PROJECT, connection=conn)
-        table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.autodetect = True
+        config = LoadJobConfig()
+        config.autodetect = True
+        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
+                             [self.SOURCE1], client, config)
         job.begin()
 
         sent = {
@@ -698,24 +692,24 @@ class TestLoadJob(unittest.TestCase, _Base):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        table = _Table()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1,
-                             schema=[full_name, age])
-
-        job.allow_jagged_rows = True
-        job.allow_quoted_newlines = True
-        job.create_disposition = 'CREATE_NEVER'
-        job.encoding = 'ISO-8559-1'
-        job.field_delimiter = '|'
-        job.ignore_unknown_values = True
-        job.max_bad_records = 100
-        job.null_marker = r'\N'
-        job.quote_character = "'"
-        job.skip_leading_rows = 1
-        job.source_format = 'CSV'
-        job.write_disposition = 'WRITE_TRUNCATE'
+        config = LoadJobConfig()
+        config.schema = [full_name, age]
+        job = self._make_one(self.JOB_NAME, self.TABLE_REF, [self.SOURCE1],
+                             client1, config)
+        config.allow_jagged_rows = True
+        config.allow_quoted_newlines = True
+        config.create_disposition = 'CREATE_NEVER'
+        config.encoding = 'ISO-8559-1'
+        config.field_delimiter = '|'
+        config.ignore_unknown_values = True
+        config.max_bad_records = 100
+        config.null_marker = r'\N'
+        config.quote_character = "'"
+        config.skip_leading_rows = 1
+        config.source_format = 'CSV'
+        config.write_disposition = 'WRITE_TRUNCATE'
 
         job.begin(client=client2)
 
@@ -733,6 +727,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                 'load': LOAD_CONFIGURATION,
             },
         }
+        self.maxDiff = None
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
 

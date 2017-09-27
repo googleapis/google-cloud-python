@@ -1122,12 +1122,47 @@ class TestClient(unittest.TestCase):
         DATASET = 'dataset_name'
         DESTINATION = 'destination_table'
         SOURCE_URI = 'http://example.com/source.csv'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [SOURCE_URI],
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': DESTINATION,
+                    },
+                },
+            },
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        dataset = client.dataset(DATASET)
-        destination = dataset.table(DESTINATION)
-        job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
+        conn = client._connection = _Connection(RESOURCE)
+        destination = client.dataset(DATASET).table(DESTINATION)
+
+        job = client.load_table_from_storage(destination, SOURCE_URI,
+                                             job_id=JOB)
+
+        # Check that load_table_from_storage actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/%s/jobs' % PROJECT)
+
+        self.assertIsInstance(job, LoadJob)
+        self.assertIs(job._client, client)
+        self.assertEqual(job.job_id, JOB)
+        self.assertEqual(list(job.source_uris), [SOURCE_URI])
+        self.assertIs(job.destination, destination)
+
+        conn = client._connection = _Connection(RESOURCE)
+
+        job = client.load_table_from_storage(destination, [SOURCE_URI],
+                                             job_id=JOB)
         self.assertIsInstance(job, LoadJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)
