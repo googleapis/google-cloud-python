@@ -794,6 +794,34 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.delete_dataset(client.dataset(DS_ID).table("foo"))
 
+    def test_delete_table(self):
+        from google.cloud.bigquery.table import Table
+
+        project = 'PROJECT'
+        dataset_id = 'dataset_id'
+        table_id = 'table-id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=project, credentials=creds, _http=http)
+        conn = client._connection = _Connection({}, {})
+        table_ref = client.dataset(dataset_id).table(table_id)
+
+        for arg in (table_ref, Table(table_ref)):
+            client.delete_table(arg)
+            req = conn._requested[0]
+            self.assertEqual(req['method'], 'DELETE')
+            self.assertEqual(req['path'], '/%s' % path)
+
+    def test_delete_table_w_wrong_type(self):
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        with self.assertRaises(TypeError):
+            client.delete_table(client.dataset(dataset_id))
+
     def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _make_credentials()

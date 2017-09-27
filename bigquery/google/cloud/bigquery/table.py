@@ -768,20 +768,6 @@ class Table(object):
             method='PUT', path=self.path, data=self._build_resource())
         self._set_properties(api_response)
 
-    def delete(self, client=None):
-        """API call:  delete the table via a DELETE request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        client._connection.api_request(method='DELETE', path=self.path)
-
     def fetch_data(self, max_results=None, page_token=None, client=None):
         """API call:  fetch the table data via a GET request
 
