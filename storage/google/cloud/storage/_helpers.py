@@ -170,9 +170,12 @@ class _PropertyMixin(object):
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
+        query_params = {'projection': 'full'}
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
         api_response = client._connection.api_request(
             method='PUT', path=self.path, data=self._properties,
-            query_params={'projection': 'full'}, _target_object=self)
+            query_params=query_params, _target_object=self)
         self._set_properties(api_response)
 
 
