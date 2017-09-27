@@ -615,15 +615,13 @@ class TestTable(unittest.TestCase):
             def code(self):
                 return StatusCode.DEADLINE_EXCEEDED
 
-        def _wait_then_raise():
-            time.sleep(0.1)
-            raise MockTimeoutError()
+        class MockTimeoutIterator(object):
+            def next(self):
+                return self.__next__()
+            def __next__(self):
+                raise MockTimeoutError()
 
-        # Patch the stub used by the API method.  The stub should create a new
-        # slow_iterator every time its queried.
-        def make_slow_iterator():
-            return (_wait_then_raise() for i in range(10))
-        client._data_stub = stub = _CustomFakeStub(make_slow_iterator)
+        client._data_stub = stub = _CustomFakeStub(MockTimeoutIterator())
 
         # Set to timeout before RPC completes
         test_backoff_settings = BackoffSettings(
@@ -647,6 +645,98 @@ class TestTable(unittest.TestCase):
                 limit=limit, backoff_settings=test_backoff_settings)
             with self.assertRaises(RetryError):
                 result.consume_next()
+
+    def test_read_rows_mid_row_timeout_retry(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _CustomFakeStub
+        from google.cloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.gax import BackoffSettings
+        from google.gax.errors import RetryError
+        from grpc import StatusCode, RpcError
+        import time
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create an iterator that throws an idempotent exception
+        class MockTimeoutError(RpcError):
+            def code(self):
+                return StatusCode.DEADLINE_EXCEEDED
+
+        first_chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+        )
+        first_response = _ReadRowsResponsePB(chunks = [first_chunk])
+
+        second_chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        second_response = _ReadRowsResponsePB(chunks = [second_chunk])
+
+        class MidRowTimeoutIterator(object):
+            def __init__(self):
+                self.invocation_count = 0
+            def next(self):
+                return self.__next__()
+            def __next__(self):
+                self.invocation_count += 1
+                if (self.invocation_count == 1):
+                    return first_response
+                elif (self.invocation_count == 2):
+                    raise MockTimeoutError()
+                elif (self.invocation_count == 3):
+                    return first_response
+                elif (self.invocation_count == 4):
+                    return second_response
+                else:
+                    raise StopIteration
+
+        client._data_stub = stub = _CustomFakeStub(MidRowTimeoutIterator())
+
+        # Set to timeout before RPC completes
+        test_backoff_settings = BackoffSettings(
+            initial_retry_delay_millis=10,
+            retry_delay_multiplier=1,
+            max_retry_delay_millis=30000,
+            initial_rpc_timeout_millis=1000,
+            rpc_timeout_multiplier=1.0,
+            max_rpc_timeout_millis=25 * 60 * 1000,
+            total_timeout_millis=1000
+        )
+
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Verify that a RetryError is thrown on read.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit, backoff_settings=test_backoff_settings)
+            result.consume_all()
+
+            cells = result.rows[self.ROW_KEY].cells[self.FAMILY_NAME][self.QUALIFIER]
+            self.assertEquals(len(cells), 2)
 
     def test_read_rows_non_idempotent_error_throws(self):
         from google.cloud._testing import _Monkey
@@ -676,21 +766,19 @@ class TestTable(unittest.TestCase):
             def code(self):
                 return StatusCode.RESOURCE_EXHAUSTED
 
-        def _raise():
-            raise MockNonIdempotentError()
+        class MockNonIdempotentIterator(object):
+            def next(self):
+                return self.__next__()
+            def __next__(self):
+                raise MockNonIdempotentError()
 
-        # Patch the stub used by the API method.  The stub should create a new
-        # slow_iterator every time its queried.
-        def make_raising_iterator():
-            return (_raise() for i in range(10))
-        client._data_stub = stub = _CustomFakeStub(make_raising_iterator)
+        client._data_stub = stub = _CustomFakeStub(MockNonIdempotentIterator())
 
         start_key = b'start-key'
         end_key = b'end-key'
         filter_obj = object()
         limit = 22
         with _Monkey(MUT, _create_row_request=mock_create_row_request):
-            # Verify that a RetryError is thrown on read.
             result = table.read_rows(
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
                 limit=limit)

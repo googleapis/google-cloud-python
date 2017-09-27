@@ -56,6 +56,7 @@ class ReadRowsIterator(object):
         self.total_timeout = \
             (retry_options.backoff_settings.total_timeout_millis /
              _MILLIS_PER_SECOND)
+        self._responses_for_row = 0
         self.set_stream()
 
     def set_start_key(self, start_key):
@@ -76,9 +77,22 @@ class ReadRowsIterator(object):
                                      end_inclusive=self.end_inclusive)
         self.stream = self.client._data_stub.ReadRows(req_pb)
 
+    @property
+    def responses_for_row(self):
+        """ Property that gives the number of calls made so far for the current
+        row.  If 1, then either this row is being read for the first time,
+        or the most recent response requied a retry, causing the row to be
+        read again
+
+        :rtype: int
+        :returns: Int that gives the number of calls make so far for the
+        current row.
+        """
+        return self._responses_for_row
+
     def next(self, *args, **kwargs):
         """
-        Read and return the next row from the stream.
+        Read and return the next chunk from the stream.
         Retry on idempotent failure.
         """
         delay = self.retry_options.backoff_settings.initial_retry_delay_millis
@@ -91,8 +105,9 @@ class ReadRowsIterator(object):
         now = time.time()
         deadline = now + self.total_timeout
         while deadline is None or now < deadline:
+            self._responses_for_row += 1
             try:
-                return six.next(self.stream)
+                return(six.next(self.stream))
             except StopIteration as stop:
                 raise stop
             except RpcError as error:  # pylint: disable=broad-except
@@ -113,6 +128,7 @@ class ReadRowsIterator(object):
                 timeout = min(
                     timeout * self.timeout_mult, self.max_timeout,
                     deadline - now)
+                self._responses_for_row = 0
                 self.set_stream()
 
         six.reraise(errors.RetryError, exc, sys.exc_info()[2])

@@ -27,9 +27,10 @@ class _FakeStub(object):
         return _MethodMock(name, self)
 
 class _CustomFakeStub(object):
-    """Acts as a gRPC stub.  Generates a result using an injected callable."""
-    def __init__(self, result_callable):
-        self.result_callable = result_callable
+    """Acts as a gRPC stub.  Generates a result from a given iterator
+    """
+    def __init__(self, result):
+        self.result = result
         self.method_calls = []
 
     def __getattr__(self, name):
@@ -66,4 +67,4 @@ class _CustomMethodMock(object):
     def __call__(self, *args, **kwargs):
         """Sync method meant to mock a gRPC stub request."""
         self._stub.method_calls.append((self._name, args, kwargs))
-        return self._stub.result_callable()
+        return self._stub.result
