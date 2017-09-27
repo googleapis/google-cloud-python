@@ -303,7 +303,7 @@ class PartialRowsData(object):
 
             if chunk.commit_row:
                 self._save_current_row()
-                row = cell = None                
+                row = cell = None
                 continue
 
             if chunk.value_size == 0:

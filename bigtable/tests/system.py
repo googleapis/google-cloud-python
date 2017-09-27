@@ -291,7 +291,6 @@ class TestTableAdminAPI(unittest.TestCase):
         SERVER_ZIP = SERVER_NAME + ".tar.gz"
 
         def download_server():
-            # Download server
             MOCK_SERVER_URLS = {
                 'Linux': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_linux.tar.gz',
                 'Darwin': 'https://storage.googleapis.com/cloud-bigtable-test/retries/retry_server_mac.tar.gz',
@@ -306,18 +305,18 @@ class TestTableAdminAPI(unittest.TestCase):
             mock_server_file = open(SERVER_ZIP, 'wb')
             mock_server_file.write(mock_server_download)
 
-            # Unzip server
+            # Extract server binary from archive
             subprocess.call(['tar', 'zxvf', SERVER_ZIP, '-C', '.'])
             os.remove(SERVER_ZIP)
 
         def process_scan(table, range, ids):
-            range_chunks = range.split(",")
-            range_open = range_chunks[0].lstrip("[")
-            range_close = range_chunks[1].rstrip(")")
+            range_chunks = range.split(',')
+            range_open = range_chunks[0].lstrip('[]')
+            range_close = range_chunks[1].rstrip(')')
             rows = table.read_rows(range_open, range_close)
             rows.consume_all()
 
-        should_download = os.environ.get("DOWNLOAD_BIGTABLE_SERVER")
+        should_download = os.environ.get('DOWNLOAD_BIGTABLE_TEST_SERVER')
         if should_download is None or should_download == '1':
             if not os.path.isfile(SERVER_NAME):
                 download_server()
