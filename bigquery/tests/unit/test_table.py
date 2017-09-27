@@ -945,41 +945,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
 
-    def test_delete_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
-
-        table.delete()
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % PATH)
-
-    def test_delete_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
-        client2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client1)
-
-        table.delete(client=client2)
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % PATH)
-
     def test_fetch_data_wo_schema(self):
         from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
 
