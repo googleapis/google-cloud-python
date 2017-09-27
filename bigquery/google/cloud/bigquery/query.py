@@ -455,6 +455,7 @@ class QueryResults(object):
             next_token='pageToken',
             extra_params=params)
         iterator.query_result = self
+        iterator.job = self.job
         return iterator
 
 
