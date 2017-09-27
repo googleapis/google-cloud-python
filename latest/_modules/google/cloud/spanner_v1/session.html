@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.session &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.session &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.session</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.session</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -67,10 +67,10 @@
 <span class="c1"># pylint: disable=ungrouped-imports</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">GrpcRendezvous</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.batch</span> <span class="k">import</span> <span class="n">Batch</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.snapshot</span> <span class="k">import</span> <span class="n">Snapshot</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.transaction</span> <span class="k">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.batch</span> <span class="k">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.snapshot</span> <span class="k">import</span> <span class="n">Snapshot</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.transaction</span> <span class="k">import</span> <span class="n">Transaction</span>
 <span class="c1"># pylint: enable=ungrouped-imports</span>
 
 
@@ -78,7 +78,7 @@
 <span class="sd">&quot;&quot;&quot;Default timeout used by :meth:`Session.run_in_transaction`.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session">[docs]</a><span class="nd">@total_ordering</span>
+<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session">[docs]</a><span class="nd">@total_ordering</span>
 <span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Representation of a Cloud Spanner Session.</span>
 
@@ -88,7 +88,7 @@
 <span class="sd">    * Use :meth:`exists` to check for the existence of the session</span>
 <span class="sd">    * :meth:`drop` the session</span>
 
-<span class="sd">    :type database: :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">    :type database: :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">    :param database: The database to which the session is bound.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -127,7 +127,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No session ID set by back-end&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/sessions/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span>
 
-<div class="viewcode-block" id="Session.create"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.create"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create this session, bound to its database.</span>
 
 <span class="sd">        See</span>
@@ -142,7 +142,7 @@
         <span class="n">session_pb</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">create_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="o">=</span> <span class="n">session_pb</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Session.exists"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.exists"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test for the existence of this session.</span>
 
 <span class="sd">        See</span>
@@ -166,7 +166,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this session.</span>
 
 <span class="sd">        See</span>
@@ -188,7 +188,7 @@
                 <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">raise</span></div>
 
-<div class="viewcode-block" id="Session.snapshot"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.snapshot"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a snapshot to perform a set of reads with shared staleness.</span>
 
 <span class="sd">        See</span>
@@ -196,9 +196,9 @@
 
 <span class="sd">        :type kw: dict</span>
 <span class="sd">        :param kw: Passed through to</span>
-<span class="sd">                   :class:`~google.cloud.spanner.snapshot.Snapshot` ctor.</span>
+<span class="sd">                   :class:`~google.cloud.spanner_v1.snapshot.Snapshot` ctor.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.snapshot.Snapshot`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`</span>
 <span class="sd">        :returns: a snapshot bound to this session</span>
 <span class="sd">        :raises ValueError: if the session has not yet been created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -207,8 +207,7 @@
 
         <span class="k">return</span> <span class="n">Snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Session.read"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-             <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.read"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``StreamingRead`` API request for rows in a table.</span>
 
 <span class="sd">        :type table: str</span>
@@ -217,7 +216,7 @@
 <span class="sd">        :type columns: list of str</span>
 <span class="sd">        :param columns: names of columns to be retrieved</span>
 
-<span class="sd">        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`</span>
+<span class="sd">        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`</span>
 <span class="sd">        :param keyset: keys / ranges identifying rows to be retrieved</span>
 
 <span class="sd">        :type index: str</span>
@@ -227,17 +226,12 @@
 <span class="sd">        :type limit: int</span>
 <span class="sd">        :param limit: (Optional) maxiumn number of rows to return</span>
 
-<span class="sd">        :type resume_token: bytes</span>
-<span class="sd">        :param resume_token: token for resuming previously-interrupted read</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`</span>
 <span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-            <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">resume_token</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Session.execute_sql"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.execute_sql">[docs]</a>    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.execute_sql"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.execute_sql">[docs]</a>    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform an ``ExecuteStreamingSql`` API request.</span>
 
 <span class="sd">        :type sql: str</span>
@@ -258,19 +252,16 @@
 <span class="sd">        :param query_mode: Mode governing return of results / query plan. See</span>
 <span class="sd">            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</span>
 
-<span class="sd">        :type resume_token: bytes</span>
-<span class="sd">        :param resume_token: token for resuming previously-interrupted query</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`</span>
 <span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span>
-            <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">param_types</span><span class="p">,</span> <span class="n">query_mode</span><span class="p">,</span> <span class="n">resume_token</span><span class="p">)</span></div>
+            <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">param_types</span><span class="p">,</span> <span class="n">query_mode</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Session.batch"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.batch"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a batch for this session.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.batch.Batch`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.batch.Batch`</span>
 <span class="sd">        :returns: a batch bound to this session</span>
 <span class="sd">        :raises ValueError: if the session has not yet been created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -279,10 +270,10 @@
 
         <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Session.transaction"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.transaction"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a transaction to perform a set of reads with shared staleness.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.transaction.Transaction`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.transaction.Transaction`</span>
 <span class="sd">        :returns: a transaction bound to this session</span>
 <span class="sd">        :raises ValueError: if the session has not yet been created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -296,7 +287,7 @@
         <span class="n">txn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">txn</span></div>
 
-<div class="viewcode-block" id="Session.run_in_transaction"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner.session.Session.run_in_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">run_in_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<div class="viewcode-block" id="Session.run_in_transaction"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.run_in_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">run_in_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a unit of work in a transaction, retrying on abort.</span>
 
 <span class="sd">        :type func: callable</span>
@@ -426,18 +417,6 @@
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
@@ -487,7 +466,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.database &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.database &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.database</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.database</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -62,20 +62,20 @@
 <span class="kn">import</span> <span class="nn">google.auth.credentials</span>
 <span class="kn">from</span> <span class="nn">google.gax.errors</span> <span class="k">import</span> <span class="n">GaxError</span>
 <span class="kn">from</span> <span class="nn">google.gax.grpc</span> <span class="k">import</span> <span class="n">exc_to_code</span>
-<span class="kn">from</span> <span class="nn">google.cloud.gapic.spanner.v1.spanner_client</span> <span class="k">import</span> <span class="n">SpannerClient</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.gapic.spanner_client</span> <span class="k">import</span> <span class="n">SpannerClient</span>
 <span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">StatusCode</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="c1"># pylint: disable=ungrouped-imports</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="k">import</span> <span class="n">__version__</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.batch</span> <span class="k">import</span> <span class="n">Batch</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.session</span> <span class="k">import</span> <span class="n">Session</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.pool</span> <span class="k">import</span> <span class="n">BurstyPool</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.snapshot</span> <span class="k">import</span> <span class="n">Snapshot</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.pool</span> <span class="k">import</span> <span class="n">SessionCheckout</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1</span> <span class="k">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.batch</span> <span class="k">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.pool</span> <span class="k">import</span> <span class="n">BurstyPool</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.pool</span> <span class="k">import</span> <span class="n">SessionCheckout</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.session</span> <span class="k">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.snapshot</span> <span class="k">import</span> <span class="n">Snapshot</span>
 <span class="c1"># pylint: enable=ungrouped-imports</span>
 
 
@@ -89,7 +89,7 @@
     <span class="p">)</span>
 
 
-<div class="viewcode-block" id="Database"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database">[docs]</a><span class="k">class</span> <span class="nc">Database</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Database"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database">[docs]</a><span class="k">class</span> <span class="nc">Database</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Representation of a Cloud Spanner Database.</span>
 
 <span class="sd">    We can use a :class:`Database` to:</span>
@@ -102,7 +102,7 @@
 <span class="sd">    :type database_id: str</span>
 <span class="sd">    :param database_id: The ID of the database.</span>
 
-<span class="sd">    :type instance: :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">    :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`</span>
 <span class="sd">    :param instance: The instance that owns the database.</span>
 
 <span class="sd">    :type ddl_statements: list of string</span>
@@ -110,10 +110,10 @@
 <span class="sd">                           CREATE DATABASE statement.</span>
 
 <span class="sd">    :type pool: concrete subclass of</span>
-<span class="sd">                :class:`~google.cloud.spanner.pool.AbstractSessionPool`.</span>
+<span class="sd">                :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`.</span>
 <span class="sd">    :param pool: (Optional) session pool to be used by database.  If not</span>
 <span class="sd">                 passed, the database will construct an instance of</span>
-<span class="sd">                 :class:`~google.cloud.spanner.pool.BurstyPool`.</span>
+<span class="sd">                 :class:`~google.cloud.spanner_v1.pool.BurstyPool`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_spanner_api</span> <span class="o">=</span> <span class="kc">None</span>
@@ -130,7 +130,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="n">pool</span>
         <span class="n">pool</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Database.from_pb"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Database.from_pb"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">database_pb</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates an instance of this class from a protobuf.</span>
 
@@ -138,11 +138,11 @@
 <span class="sd">            :class:`google.spanner.v2.spanner_instance_admin_pb2.Instance`</span>
 <span class="sd">        :param database_pb: A instance protobuf object.</span>
 
-<span class="sd">        :type instance: :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">        :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`</span>
 <span class="sd">        :param instance: The instance that owns the database.</span>
 
 <span class="sd">        :type pool: concrete subclass of</span>
-<span class="sd">                    :class:`~google.cloud.spanner.pool.AbstractSessionPool`.</span>
+<span class="sd">                    :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`.</span>
 <span class="sd">        :param pool: (Optional) session pool to be used by database.</span>
 
 <span class="sd">        :rtype: :class:`Database`</span>
@@ -221,7 +221,7 @@
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
-<div class="viewcode-block" id="Database.create"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.create"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create this database within its instance</span>
 
 <span class="sd">        Inclues any configured schema assigned to :attr:`ddl_statements`.</span>
@@ -260,7 +260,7 @@
 
         <span class="k">return</span> <span class="n">future</span></div>
 
-<div class="viewcode-block" id="Database.exists"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.exists"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Test whether this database exists.</span>
 
 <span class="sd">        See</span>
@@ -282,7 +282,7 @@
             <span class="k">raise</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Database.reload"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.reload"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload this database.</span>
 
 <span class="sd">        Refresh any configured schema into :attr:`ddl_statements`.</span>
@@ -305,7 +305,7 @@
             <span class="k">raise</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ddl_statements</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">statements</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.update_ddl"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.update_ddl">[docs]</a>    <span class="k">def</span> <span class="nf">update_ddl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.update_ddl"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.update_ddl">[docs]</a>    <span class="k">def</span> <span class="nf">update_ddl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update DDL for this database.</span>
 
 <span class="sd">        Apply any configured schema from :attr:`ddl_statements`.</span>
@@ -333,7 +333,7 @@
 
         <span class="k">return</span> <span class="n">future</span></div>
 
-<div class="viewcode-block" id="Database.drop"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.drop"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.drop">[docs]</a>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Drop this database.</span>
 
 <span class="sd">        See</span>
@@ -349,15 +349,15 @@
                 <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">raise</span></div>
 
-<div class="viewcode-block" id="Database.session"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.session">[docs]</a>    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.session"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.session">[docs]</a>    <span class="k">def</span> <span class="nf">session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a session for this database.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">        :returns: a session bound to this database.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Session</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.snapshot"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an object which wraps a snapshot.</span>
 
 <span class="sd">        The wrapper *must* be used as a context manager, with the snapshot</span>
@@ -369,25 +369,25 @@
 <span class="sd">        :type kw: dict</span>
 <span class="sd">        :param kw:</span>
 <span class="sd">            Passed through to</span>
-<span class="sd">            :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.</span>
+<span class="sd">            :class:`~google.cloud.spanner_v1.snapshot.Snapshot` constructor.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.database.SnapshotCheckout`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.database.SnapshotCheckout`</span>
 <span class="sd">        :returns: new wrapper</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">SnapshotCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.batch"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.batch"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an object which wraps a batch.</span>
 
 <span class="sd">        The wrapper *must* be used as a context manager, with the batch</span>
 <span class="sd">        as the value returned by the wrapper.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.database.BatchCheckout`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.database.BatchCheckout`</span>
 <span class="sd">        :returns: new wrapper</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">BatchCheckout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Database.run_in_transaction"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.Database.run_in_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">run_in_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+<div class="viewcode-block" id="Database.run_in_transaction"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.run_in_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">run_in_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a unit of work in a transaction, retrying on abort.</span>
 
 <span class="sd">        :type func: callable</span>
@@ -422,7 +422,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_local</span><span class="o">.</span><span class="n">transaction_running</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 
 
-<div class="viewcode-block" id="BatchCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.BatchCheckout">[docs]</a><span class="k">class</span> <span class="nc">BatchCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="BatchCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.BatchCheckout">[docs]</a><span class="k">class</span> <span class="nc">BatchCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Context manager for using a batch from a database.</span>
 
 <span class="sd">    Inside the context manager, checks out a session from the database,</span>
@@ -453,7 +453,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="SnapshotCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner.database.SnapshotCheckout">[docs]</a><span class="k">class</span> <span class="nc">SnapshotCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SnapshotCheckout"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.SnapshotCheckout">[docs]</a><span class="k">class</span> <span class="nc">SnapshotCheckout</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Context manager for using a snapshot from a database.</span>
 
 <span class="sd">    Inside the context manager, checks out a session from the database,</span>
@@ -468,7 +468,7 @@
 <span class="sd">    :type kw: dict</span>
 <span class="sd">    :param kw:</span>
 <span class="sd">        Passed through to</span>
-<span class="sd">        :class:`~google.cloud.spanner.snapshot.Snapshot` constructor.</span>
+<span class="sd">        :class:`~google.cloud.spanner_v1.snapshot.Snapshot` constructor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
@@ -532,18 +532,6 @@
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
@@ -593,7 +581,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

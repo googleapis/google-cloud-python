@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.keyset &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.keyset &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.keyset</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.keyset</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -56,14 +56,14 @@
 
 <span class="sd">&quot;&quot;&quot;Wrap representation of Spanner keys / ranges.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1.keys_pb2</span> <span class="k">import</span> <span class="n">KeyRange</span> <span class="k">as</span> <span class="n">KeyRangePB</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1.keys_pb2</span> <span class="k">import</span> <span class="n">KeySet</span> <span class="k">as</span> <span class="n">KeySetPB</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.keys_pb2</span> <span class="k">import</span> <span class="n">KeyRange</span> <span class="k">as</span> <span class="n">KeyRangePB</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.keys_pb2</span> <span class="k">import</span> <span class="n">KeySet</span> <span class="k">as</span> <span class="n">KeySetPB</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_make_list_value_pb</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_make_list_value_pbs</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_make_list_value_pb</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_make_list_value_pbs</span>
 
 
-<div class="viewcode-block" id="KeyRange"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner.keyset.KeyRange">[docs]</a><span class="k">class</span> <span class="nc">KeyRange</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="KeyRange"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner_v1.KeyRange">[docs]</a><span class="k">class</span> <span class="nc">KeyRange</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Identify range of table rows via start / end points.</span>
 
 <span class="sd">    :type start_open: list of scalars</span>
@@ -94,10 +94,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">end_open</span> <span class="o">=</span> <span class="n">end_open</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end_closed</span> <span class="o">=</span> <span class="n">end_closed</span>
 
-<div class="viewcode-block" id="KeyRange.to_pb"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner.keyset.KeyRange.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="KeyRange.to_pb"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner_v1.KeyRange.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a KeyRange protobuf.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.proto.spanner.v1.keys_pb2.KeyRange`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.proto.keys_pb2.KeyRange`</span>
 <span class="sd">        :returns: protobuf corresponding to this instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -117,7 +117,7 @@
         <span class="k">return</span> <span class="n">KeyRangePB</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="KeySet"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner.keyset.KeySet">[docs]</a><span class="k">class</span> <span class="nc">KeySet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="KeySet"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner_v1.KeySet">[docs]</a><span class="k">class</span> <span class="nc">KeySet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Identify table rows via keys / ranges.</span>
 
 <span class="sd">    :type keys: list of list of scalars</span>
@@ -136,10 +136,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ranges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ranges</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">all_</span> <span class="o">=</span> <span class="n">all_</span>
 
-<div class="viewcode-block" id="KeySet.to_pb"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner.keyset.KeySet.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="KeySet.to_pb"><a class="viewcode-back" href="../../../../spanner/keyset-api.html#google.cloud.spanner_v1.KeySet.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a KeySet protobuf.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.proto.spanner.v1.keys_pb2.KeySet`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.proto.keys_pb2.KeySet`</span>
 <span class="sd">        :returns: protobuf corresponding to this instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_</span><span class="p">:</span>
@@ -176,18 +176,6 @@
 
 
 
-
-
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
 
 
 <h3>Navigation</h3>
@@ -239,7 +227,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

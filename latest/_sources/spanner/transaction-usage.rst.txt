@@ -5,6 +5,9 @@ A :class:`~google.cloud.spanner.transaction.Transaction` represents a
 transaction:  when the transaction commits, it will send any accumulated
 mutations to the server.
 
+To understand more about how transactions work, visit :ref:`spanner-txn`.
+To learn more about how to use them in the Python client, continue reading.
+
 
 Begin a Transaction
 -------------------

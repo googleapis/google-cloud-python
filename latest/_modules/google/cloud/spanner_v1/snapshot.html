@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.snapshot &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.snapshot &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.snapshot</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.snapshot</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -56,16 +56,49 @@
 
 <span class="sd">&quot;&quot;&quot;Model a set of read-only queries to a database as a snapshot.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.protobuf.struct_pb2</span> <span class="k">import</span> <span class="n">Struct</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionOptions</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.spanner.v1.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionSelector</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 
+<span class="kn">from</span> <span class="nn">google.protobuf.struct_pb2</span> <span class="k">import</span> <span class="n">Struct</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionOptions</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.proto.transaction_pb2</span> <span class="k">import</span> <span class="n">TransactionSelector</span>
+
+<span class="kn">from</span> <span class="nn">google.api.core.exceptions</span> <span class="k">import</span> <span class="n">ServiceUnavailable</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_pb_timestamp</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_timedelta_to_duration_pb</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_make_value_pb</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_SessionWrapper</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.streamed</span> <span class="k">import</span> <span class="n">StreamedResultSet</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_make_value_pb</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_SessionWrapper</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.streamed</span> <span class="k">import</span> <span class="n">StreamedResultSet</span>
+
+
+<span class="k">def</span> <span class="nf">_restart_on_unavailable</span><span class="p">(</span><span class="n">restart</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Restart iteration after :exc:`.ServiceUnavailable`.</span>
+
+<span class="sd">    :type restart: callable</span>
+<span class="sd">    :param restart: curried function returning iterator</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">resume_token</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">item_buffer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="n">restart</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+                <span class="n">item_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">resume_token</span><span class="p">:</span>
+                    <span class="n">resume_token</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">resume_token</span>
+                    <span class="k">break</span>
+        <span class="k">except</span> <span class="n">ServiceUnavailable</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">item_buffer</span><span class="p">[:]</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">restart</span><span class="p">(</span><span class="n">resume_token</span><span class="o">=</span><span class="n">resume_token</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item_buffer</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_buffer</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">item</span>
+
+        <span class="k">del</span> <span class="n">item_buffer</span><span class="p">[:]</span>
 
 
 <span class="k">class</span> <span class="nc">_SnapshotBase</span><span class="p">(</span><span class="n">_SessionWrapper</span><span class="p">):</span>
@@ -73,7 +106,7 @@
 
 <span class="sd">    Allows reuse of API request methods with different transaction selector.</span>
 
-<span class="sd">    :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">    :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">    :param session: the session used to perform the commit</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_multi_use</span> <span class="o">=</span> <span class="kc">False</span>
@@ -91,8 +124,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-             <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform a ``StreamingRead`` API request for rows in a table.</span>
 
 <span class="sd">        :type table: str</span>
@@ -101,7 +133,7 @@
 <span class="sd">        :type columns: list of str</span>
 <span class="sd">        :param columns: names of columns to be retrieved</span>
 
-<span class="sd">        :type keyset: :class:`~google.cloud.spanner.keyset.KeySet`</span>
+<span class="sd">        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`</span>
 <span class="sd">        :param keyset: keys / ranges identifying rows to be retrieved</span>
 
 <span class="sd">        :type index: str</span>
@@ -111,10 +143,7 @@
 <span class="sd">        :type limit: int</span>
 <span class="sd">        :param limit: (Optional) maxiumn number of rows to return</span>
 
-<span class="sd">        :type resume_token: bytes</span>
-<span class="sd">        :param resume_token: token for resuming previously-interrupted read</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`</span>
 <span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
 <span class="sd">        :raises ValueError:</span>
 <span class="sd">            for reuse of single-use snapshots, or if a transaction ID is</span>
@@ -131,10 +160,13 @@
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_txn_selector</span><span class="p">()</span>
 
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">streaming_read</span><span class="p">(</span>
+        <span class="n">restart</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">streaming_read</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
             <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
-            <span class="n">resume_token</span><span class="o">=</span><span class="n">resume_token</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">_restart_on_unavailable</span><span class="p">(</span><span class="n">restart</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_request_count</span> <span class="o">+=</span> <span class="mi">1</span>
 
@@ -143,8 +175,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">resume_token</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">execute_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">query_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform an ``ExecuteStreamingSql`` API request for rows in a table.</span>
 
 <span class="sd">        :type sql: str</span>
@@ -160,14 +191,11 @@
 <span class="sd">            required if parameters are passed.</span>
 
 <span class="sd">        :type query_mode:</span>
-<span class="sd">            :class:`google.cloud.proto.spanner.v1.ExecuteSqlRequest.QueryMode`</span>
+<span class="sd">            :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryMode`</span>
 <span class="sd">        :param query_mode: Mode governing return of results / query plan. See</span>
 <span class="sd">            https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode1</span>
 
-<span class="sd">        :type resume_token: bytes</span>
-<span class="sd">        :param resume_token: token for resuming previously-interrupted query</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.streamed.StreamedResultSet`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`</span>
 <span class="sd">        :returns: a result set instance which can be used to consume rows.</span>
 <span class="sd">        :raises ValueError:</span>
 <span class="sd">            for reuse of single-use snapshots, or if a transaction ID is</span>
@@ -192,10 +220,14 @@
         <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_txn_selector</span><span class="p">()</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">execute_streaming_sql</span><span class="p">(</span>
+
+        <span class="n">restart</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">execute_streaming_sql</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span>
             <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params_pb</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="n">param_types</span><span class="p">,</span>
-            <span class="n">query_mode</span><span class="o">=</span><span class="n">query_mode</span><span class="p">,</span> <span class="n">resume_token</span><span class="o">=</span><span class="n">resume_token</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">query_mode</span><span class="o">=</span><span class="n">query_mode</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">_restart_on_unavailable</span><span class="p">(</span><span class="n">restart</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_read_request_count</span> <span class="o">+=</span> <span class="mi">1</span>
 
@@ -205,7 +237,7 @@
             <span class="k">return</span> <span class="n">StreamedResultSet</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Snapshot"><a class="viewcode-back" href="../../../../spanner/snapshot-api.html#google.cloud.spanner.snapshot.Snapshot">[docs]</a><span class="k">class</span> <span class="nc">Snapshot</span><span class="p">(</span><span class="n">_SnapshotBase</span><span class="p">):</span>
+<div class="viewcode-block" id="Snapshot"><a class="viewcode-back" href="../../../../spanner/snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot">[docs]</a><span class="k">class</span> <span class="nc">Snapshot</span><span class="p">(</span><span class="n">_SnapshotBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Allow a set of reads / SQL statements with shared staleness.</span>
 
 <span class="sd">    See</span>
@@ -214,7 +246,7 @@
 <span class="sd">    If no options are passed, reads will use the ``strong`` model, reading</span>
 <span class="sd">    at a timestamp where all previously committed transactions are visible.</span>
 
-<span class="sd">    :type session: :class:`~google.cloud.spanner.session.Session`</span>
+<span class="sd">    :type session: :class:`~google.cloud.spanner_v1.session.Session`</span>
 <span class="sd">    :param session: the session used to perform the commit.</span>
 
 <span class="sd">    :type read_timestamp: :class:`datetime.datetime`</span>
@@ -291,7 +323,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">TransactionSelector</span><span class="p">(</span><span class="n">single_use</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Snapshot.begin"><a class="viewcode-back" href="../../../../spanner/snapshot-api.html#google.cloud.spanner.snapshot.Snapshot.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Snapshot.begin"><a class="viewcode-back" href="../../../../spanner/snapshot-api.html#google.cloud.spanner_v1.snapshot.Snapshot.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin a read-only transaction on the database.</span>
 
 <span class="sd">        :rtype: bytes</span>
@@ -339,18 +371,6 @@
 
 
 
-
-
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
 
 
 <h3>Navigation</h3>
@@ -402,7 +422,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

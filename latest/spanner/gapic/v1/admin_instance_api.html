@@ -1,0 +1,907 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Spanner Admin Instance Client API &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Spanner Admin Instance Client Types" href="admin_instance_types.html" />
+    <link rel="prev" title="Spanner Admin Database Client Types" href="admin_database_types.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.spanner_admin_instance_v1">
+<span id="spanner-admin-instance-client-api"></span><h1>Spanner Admin Instance Client API<a class="headerlink" href="#module-google.cloud.spanner_admin_instance_v1" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_instance_v1.</code><code class="descname">InstanceAdminClient</code><span class="sig-paren">(</span><em>channel=None</em>, <em>credentials=None</em>, <em>ssl_credentials=None</em>, <em>scopes=None</em>, <em>client_config=None</em>, <em>lib_name=None</em>, <em>lib_version=''</em>, <em>metrics_headers=()</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1.html#InstanceAdminClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Cloud Spanner Instance Admin API</p>
+<p>The Cloud Spanner Instance Admin API can be used to create, delete,
+modify and list instances. Instances are dedicated Cloud Spanner serving
+and storage resources to be used by Cloud Spanner databases.</p>
+<p>Each instance has a “configuration”, which dictates where the
+serving resources for the Cloud Spanner instance are located (e.g.,
+US-central, Europe). Configurations are created by Google based on
+resource availability.</p>
+<p>Cloud Spanner billing is based on the instances that exist and their
+sizes. After an instance exists, there are no additional
+per-database or per-operation charges for use of the instance
+(though there may be additional network bandwidth charges).
+Instances offer isolation: problems with databases in one instance
+will not affect other instances. However, within an instance
+databases can affect each other. For example, if one database in an
+instance receives a lot of requests and consumes most of the
+instance resources, fewer resources are available for other
+databases in that instance, and their performance may suffer.</p>
+<p>Constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.6.0)"><em>Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
+which to make calls.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.1.0)"><em>Credentials</em></a>) – The authorization
+credentials to attach to requests. These credentials identify this
+application to the service.</li>
+<li><strong>ssl_credentials</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.ChannelCredentials" title="(in grpcio v1.6.0)"><em>ChannelCredentials</em></a>) – A
+<code class="docutils literal"><span class="pre">ChannelCredentials</span></code> instance for use with an SSL-enabled
+channel.</li>
+<li><strong>scopes</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – A list of OAuth2 scopes to attach to requests.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary for call options for each method. See
+<code class="xref py py-func docutils literal"><span class="pre">google.gax.construct_settings()</span></code> for the structure of
+this data. Falls back to the default config if not specified
+or the specified config is missing data points.</li>
+<li><strong>lib_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The API library software used for calling
+the service. (Unless you are writing an API client itself,
+leave this as default.)</li>
+<li><strong>lib_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The API library software version used
+for calling the service. (Unless you are writing an API client
+itself, leave this as default.)</li>
+<li><strong>metrics_headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of values for tracking
+client library metrics. Ultimately serializes to a string
+(e.g. ‘foo/1.2.3 bar/3.14.1’). This argument should be
+considered private.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.create_instance">
+<code class="descname">create_instance</code><span class="sig-paren">(</span><em>parent</em>, <em>instance_id</em>, <em>instance</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.create_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.create_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates an instance and begins preparing it to begin serving. The
+returned <code class="docutils literal"><span class="pre">long-running</span> <span class="pre">operation</span></code>
+can be used to track the progress of preparing the new
+instance. The instance name is assigned by the caller. If the
+named instance already exists, <code class="docutils literal"><span class="pre">CreateInstance</span></code> returns
+<code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code>.</p>
+<p>Immediately upon completion of this request:</p>
+<ul class="simple">
+<li>The instance is readable via the API, with all requested attributes
+but no allocated resources. Its state is <cite>CREATING</cite>.</li>
+</ul>
+<p>Until completion of the returned operation:</p>
+<ul class="simple">
+<li>Cancelling the operation renders the instance immediately unreadable
+via the API.</li>
+<li>The instance can be deleted.</li>
+<li>All other attempts to modify the instance are rejected.</li>
+</ul>
+<p>Upon completion of the returned operation:</p>
+<ul class="simple">
+<li>Billing for all successfully-allocated resources begins (some types
+may have lower than the requested levels).</li>
+<li>Databases can be created in the instance.</li>
+<li>The instance’s allocated resource levels are readable via the API.</li>
+<li>The instance’s state becomes <code class="docutils literal"><span class="pre">READY</span></code>.</li>
+</ul>
+<p>The returned <code class="docutils literal"><span class="pre">long-running</span> <span class="pre">operation</span></code> will
+have a name of the format <code class="docutils literal"><span class="pre">&lt;instance_name&gt;/operations/&lt;operation_id&gt;</span></code> and
+can be used to track creation of the instance.  The
+<code class="docutils literal"><span class="pre">metadata</span></code> field type is
+<code class="docutils literal"><span class="pre">CreateInstanceMetadata</span></code>.
+The <code class="docutils literal"><span class="pre">response</span></code> field type is
+<code class="docutils literal"><span class="pre">Instance</span></code>, if successful.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">instance_id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">instance</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_instance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the project in which to create the instance. Values
+are of the form <code class="docutils literal"><span class="pre">projects/&lt;project&gt;</span></code>.</li>
+<li><strong>instance_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The ID of the instance to create.  Valid identifiers are of the
+form <code class="docutils literal"><span class="pre">[a-z][-a-z0-9]*[a-z0-9]</span></code> and must be between 6 and 30 characters in
+length.</li>
+<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><em>Instance</em></a><em>]</em>) – Required. The instance to create.  The name may be omitted, but if
+specified must be <code class="docutils literal"><span class="pre">&lt;parent&gt;/instances/&lt;instance_id&gt;</span></code>.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.delete_instance">
+<code class="descname">delete_instance</code><span class="sig-paren">(</span><em>name</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.delete_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.delete_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes an instance.</p>
+<p>Immediately upon completion of the request:</p>
+<ul class="simple">
+<li>Billing ceases for all of the instance’s reserved resources.</li>
+</ul>
+<p>Soon afterward:</p>
+<ul class="simple">
+<li>The instance and <em>all of its databases</em> immediately and
+irrevocably disappear from the API. All data in the databases
+is permanently deleted.</li>
+</ul>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">delete_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the instance to be deleted. Values are of the form
+<code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code></li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.enums">
+<code class="descname">enums</code><em class="property"> = &lt;module 'google.cloud.spanner_admin_instance_v1.gapic.enums' from '/home/dhermes/google_contracting/new-docs/.nox/docs/lib/python3.6/site-packages/google/cloud/spanner_admin_instance_v1/gapic/enums.py'&gt;</em><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.enums" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_iam_policy">
+<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the access control policy for an instance resource. Returns an empty
+policy if an instance exists but does not have a policy set.</p>
+<p>Authorization requires <code class="docutils literal"><span class="pre">spanner.instances.getIamPolicy</span></code> on
+<code class="docutils literal"><span class="pre">resource</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being requested.
+<code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance">
+<code class="descname">get_instance</code><span class="sig-paren">(</span><em>name</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.get_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets information about a particular instance.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the requested instance. Values are of the form
+<code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance_config">
+<code class="descname">get_instance_config</code><span class="sig-paren">(</span><em>name</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.get_instance_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets information about a particular instance configuration.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_config_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE_CONFIG]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_instance_config</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the requested instance configuration. Values are of
+the form <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;</span></code>.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.InstanceConfig" title="google.cloud.spanner_admin_instance_v1.types.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.instance_config_path">
+<code class="descname">instance_config_path</code><span class="sig-paren">(</span><em>project</em>, <em>instance_config</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.instance_config_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.instance_config_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a fully-qualified instance_config resource name string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.instance_path">
+<code class="descname">instance_path</code><span class="sig-paren">(</span><em>project</em>, <em>instance</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.instance_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.instance_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a fully-qualified instance resource name string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instance_configs">
+<code class="descname">list_instance_configs</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.list_instance_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instance_configs" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists the supported instance configurations for a given project.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">CallOptions</span><span class="p">,</span> <span class="n">INITIAL_PAGE</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the project for which a list of supported instance
+configurations is requested. Values are of the form
+<code class="docutils literal"><span class="pre">projects/&lt;project&gt;</span></code>.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.InstanceConfig" title="google.cloud.spanner_admin_instance_v1.types.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instances">
+<code class="descname">list_instances</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>filter_=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instances" title="Permalink to this definition">#</a></dt>
+<dd><p>Lists all instances in the given project.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">CallOptions</span><span class="p">,</span> <span class="n">INITIAL_PAGE</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Iterate over all results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># process element</span>
+<span class="gp">... </span>    <span class="k">pass</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or iterate over results one page at a time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">CallOptions</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">INITIAL_PAGE</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># process element</span>
+<span class="gp">... </span>        <span class="k">pass</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the project for which a list of instances is
+requested. Values are of the form <code class="docutils literal"><span class="pre">projects/&lt;project&gt;</span></code>.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The maximum number of resources contained in the
+underlying API response. If page streaming is performed per-
+resource, this parameter does not affect the return value. If page
+streaming is performed per-page, this determines the maximum number
+of resources in a page.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – <p>An expression for filtering the results of the request. Filter rules are
+case insensitive. The fields eligible for filtering are:</p>
+<blockquote>
+<div><ul>
+<li>name</li>
+<li>display_name</li>
+<li>labels.key where key is the name of a label</li>
+</ul>
+</div></blockquote>
+<p>Some examples of using filters are:</p>
+<blockquote>
+<div><ul>
+<li>name:* –&gt; The instance has a name.</li>
+<li>name:Howl –&gt; The instance’s name contains the string “howl”.</li>
+<li>name:HOWL –&gt; Equivalent to above.</li>
+<li>NAME:howl –&gt; Equivalent to above.</li>
+<li>labels.env:* –&gt; The instance has the label “env”.</li>
+<li>labels.env:dev –&gt; The instance has the label “env” and the value of
+the label contains the string “dev”.</li>
+<li>name:howl labels.env:dev –&gt; The instance’s name contains “howl” and
+it has the label “env” with its value containing “dev”.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
+is an iterable of <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> instances.
+This object can also be configured to iterate over the pages
+of the response through the <cite>options</cite> parameter.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_instance_config_from_instance_config_name">
+<code class="descname">match_instance_config_from_instance_config_name</code><span class="sig-paren">(</span><em>instance_config_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.match_instance_config_from_instance_config_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_instance_config_from_instance_config_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Parses the instance_config from a instance_config resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance_config_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a instance_config
+resource.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the instance_config.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_instance_from_instance_name">
+<code class="descname">match_instance_from_instance_name</code><span class="sig-paren">(</span><em>instance_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.match_instance_from_instance_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_instance_from_instance_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Parses the instance from a instance resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a instance
+resource.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the instance.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_instance_config_name">
+<code class="descname">match_project_from_instance_config_name</code><span class="sig-paren">(</span><em>instance_config_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.match_project_from_instance_config_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_instance_config_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Parses the project from a instance_config resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance_config_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a instance_config
+resource.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the project.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_instance_name">
+<code class="descname">match_project_from_instance_name</code><span class="sig-paren">(</span><em>instance_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.match_project_from_instance_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_instance_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Parses the project from a instance resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a instance
+resource.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the project.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_project_name">
+<code class="descname">match_project_from_project_name</code><span class="sig-paren">(</span><em>project_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.match_project_from_project_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_project_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Parses the project from a project resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a project
+resource.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the project.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.project_path">
+<code class="descname">project_path</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.project_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.project_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a fully-qualified project resource name string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.set_iam_policy">
+<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>policy</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.set_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets the access control policy on an instance resource. Replaces any
+existing policy.</p>
+<p>Authorization requires <code class="docutils literal"><span class="pre">spanner.instances.setIamPolicy</span></code> on
+<code class="docutils literal"><span class="pre">resource</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being specified.
+<code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>policy</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><em>Policy</em></a><em>]</em>) – REQUIRED: The complete policy to be applied to the <code class="docutils literal"><span class="pre">resource</span></code>. The size of
+the policy is limited to a few 10s of KB. An empty policy is a
+valid policy but certain Cloud Platform services (such as Projects)
+might reject them.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a></li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.test_iam_permissions">
+<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns permissions that the caller has on the specified instance resource.</p>
+<p>Attempting this RPC on a non-existent Cloud Spanner instance resource will
+result in a NOT_FOUND error if the user has <code class="docutils literal"><span class="pre">spanner.instances.list</span></code>
+permission on the containing Google Cloud Project. Otherwise returns an
+empty set of permissions.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance_path</span><span class="p">(</span><span class="s1">&#39;[PROJECT]&#39;</span><span class="p">,</span> <span class="s1">&#39;[INSTANCE]&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permissions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy detail is being requested.
+<code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
+resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
+<li><strong>permissions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – The set of permissions to check for the <code class="docutils literal"><span class="pre">resource</span></code>. Permissions with
+wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
+information see
+<a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsResponse" title="google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsResponse"><code class="xref py py-class docutils literal"><span class="pre">TestIamPermissionsResponse</span></code></a> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.spanner_admin_instance_v1.InstanceAdminClient.update_instance">
+<code class="descname">update_instance</code><span class="sig-paren">(</span><em>instance</em>, <em>field_mask</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_instance_v1/gapic/instance_admin_client.html#InstanceAdminClient.update_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.update_instance" title="Permalink to this definition">#</a></dt>
+<dd><p>Updates an instance, and begins allocating or releasing resources
+as requested. The returned [long-running
+operation][google.longrunning.Operation] can be used to track the
+progress of updating the instance. If the named instance does not
+exist, returns <code class="docutils literal"><span class="pre">NOT_FOUND</span></code>.</p>
+<p>Immediately upon completion of this request:</p>
+<ul class="simple">
+<li>For resource types for which a decrease in the instance’s allocation
+has been requested, billing is based on the newly-requested level.</li>
+</ul>
+<p>Until completion of the returned operation:</p>
+<ul class="simple">
+<li>Cancelling the operation sets its metadata’s
+[cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time], and begins
+restoring resources to their pre-request values. The operation
+is guaranteed to succeed at undoing all resource changes,
+after which point it terminates with a <cite>CANCELLED</cite> status.</li>
+<li>All other attempts to modify the instance are rejected.</li>
+<li>Reading the instance via the API continues to give the pre-request
+resource levels.</li>
+</ul>
+<p>Upon completion of the returned operation:</p>
+<ul class="simple">
+<li>Billing begins for all successfully-allocated resources (some types
+may have lower than the requested levels).</li>
+<li>All newly-reserved resources are available for serving the instance’s
+tables.</li>
+<li>The instance’s new resource levels are readable via the API.</li>
+</ul>
+<p>The returned <code class="docutils literal"><span class="pre">long-running</span> <span class="pre">operation</span></code> will
+have a name of the format <code class="docutils literal"><span class="pre">&lt;instance_name&gt;/operations/&lt;operation_id&gt;</span></code> and
+can be used to track the instance modification.  The
+<code class="docutils literal"><span class="pre">metadata</span></code> field type is
+<code class="docutils literal"><span class="pre">UpdateInstanceMetadata</span></code>.
+The <code class="docutils literal"><span class="pre">response</span></code> field type is
+<code class="docutils literal"><span class="pre">Instance</span></code>, if successful.</p>
+<p>Authorization requires <code class="docutils literal"><span class="pre">spanner.instances.update</span></code> permission on
+resource <code class="docutils literal"><span class="pre">name</span></code>.</p>
+<p class="rubric">Example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_instance_v1</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_instance_v1</span><span class="o">.</span><span class="n">InstanceAdminClient</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">instance</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field_mask</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_instance</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">field_mask</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">operation_future</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># Handle result.</span>
+<span class="gp">... </span>    <span class="n">result</span> <span class="o">=</span> <span class="n">operation_future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Handle metadata.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><em>Instance</em></a><em>]</em>) – Required. The instance to update, which must always include the instance
+name.  Otherwise, only fields mentioned in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask] need be included.
+If a dict is provided, it must be of the same form as the protobuf
+message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
+<li><strong>field_mask</strong> (<em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>, </em><em>FieldMask</em><em>]</em>) – Required. A mask specifying which fields in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.instance] should be updated.
+The field mask must always be specified; this prevents any future fields in
+[][google.spanner.admin.instance.v1.Instance] from being erased accidentally by clients that do not know
+about them.
+If a dict is provided, it must be of the same form as the protobuf
+message <code class="xref py py-class docutils literal"><span class="pre">FieldMask</span></code></li>
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+settings for this call, e.g, timeout, retries etc.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <code class="xref py py-class docutils literal"><span class="pre">_OperationFuture</span></code> instance.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../usage.html">Spanner</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../database-usage.html">Database Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../batch-usage.html">Batching Modifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#spanner-client">Spanner Client</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../usage.html">Spanner</a><ul>
+  <li><a href="../../api-reference.html">API Reference</a><ul>
+      <li>Previous: <a href="admin_database_types.html" title="previous chapter">Spanner Admin Database Client Types</a></li>
+      <li>Next: <a href="admin_instance_types.html" title="next chapter">Spanner Admin Instance Client Types</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/spanner/gapic/v1/admin_instance_api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

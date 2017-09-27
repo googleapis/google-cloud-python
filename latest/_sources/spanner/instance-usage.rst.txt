@@ -1,5 +1,5 @@
-Instance Admin API
-==================
+Instance Admin
+==============
 
 After creating a :class:`~google.cloud.spanner.client.Client`, you can
 interact with individual instances for a project.
@@ -11,13 +11,14 @@ Each instance within a project maps to a named "instance configuration",
 specifying the location and other parameters for a set of instances.  These
 configurations are defined by the server, and cannot be changed.
 
-To list of all instance configurations available to your project, use the
+To iterate over all instance configurations available to your project, use the
 :meth:`~google.cloud.spanner.client.Client.list_instance_configs`
 method of the client:
 
 .. code:: python
 
-    configs, token = client.list_instance_configs()
+    for config in client.list_instance_configs():
+        # `config` is an instance of `InstanceConfig`
 
 
 To fetch a single instance configuration, use the
@@ -28,17 +29,24 @@ method of the client:
 
     config = client.get_instance_configuration('config-name')
 
+Each of these methods provide
+:class:`~.spanner_admin_instance_v1.types.InstanceConfig` objects.
+
 
 List Instances
 --------------
 
-If you want a comprehensive list of all existing instances, use the
+If you want a comprehensive list of all existing instances, iterate over the
 :meth:`~google.cloud.spanner.client.Client.list_instances` method of
 the client:
 
 .. code:: python
 
-    instances, token = client.list_instances()
+    for instance in client.list_instances():
+        # `instance` is an instance of `Instance`
+
+This iterator yields :class:`~.spanner_admin_instance_v1.types.Instance`
+objects.
 
 
 Instance Factory
@@ -57,7 +65,7 @@ To create a :class:`~google.cloud.spanner.instance.Instance` object:
 - ``configuration_name`` is the name of the instance configuration to which the
   instance will be bound.  It must be one of the names configured for your
   project, discoverable via
-  :meth:`google.cloud.spanner.client.Client.list_instance_configs`.
+  :meth:`~google.cloud.spanner.client.Client.list_instance_configs`.
 
 - ``node_count`` is a postitive integral count of the number of nodes used
   by the instance.  More nodes allows for higher performance, but at a higher
@@ -141,32 +149,24 @@ Delete an instance using its
 
 .. _check-on-current-instance-operation:
 
-Check on Current Instance Operation
------------------------------------
+Resolve Current Instance Operation
+----------------------------------
 
 The :meth:`~google.cloud.spanner.instance.Instance.create` and
 :meth:`~google.cloud.spanner.instance.Instance.update` methods of instance
 object trigger long-running operations on the server, and return instances
 of the :class:`~google.cloud.spanner.instance.Operation` class.
 
-You can check if a long-running operation has finished
-by using its :meth:`~google.cloud.spanner.instance.Operation.finished`
-method:
+If you want to block on the completion of those operations, use the
+``result`` method on the returned objects:
 
 .. code:: python
 
     >>> operation = instance.create()
-    >>> operation.finished()
-    True
+    >>> result = operation.result()
 
-.. note::
+This method will raise an exception if the operation fails.
 
-    Once an :class:`~google.cloud.spanner.instance.Operation` object
-    has returned :data:`True` from its
-    :meth:`~google.cloud.spanner.instance.Operation.finished` method, the
-    object should not be re-used. Subsequent calls to
-    :meth:`~google.cloud.spanner.instance.Operation.finished`
-    will result in an :exc`ValueError` being raised.
 
 Next Step
 ---------

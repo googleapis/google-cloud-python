@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner.client &#8212; google-cloud 0.27.1 documentation</title>
+    <title>google.cloud.spanner_v1.client &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -39,7 +39,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for google.cloud.spanner.client</h1><div class="highlight"><pre>
+  <h1>Source code for google.cloud.spanner_v1.client</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -60,32 +60,32 @@
 
 <span class="sd">In the hierarchy of API concepts</span>
 
-<span class="sd">* a :class:`~google.cloud.spanner.client.Client` owns an</span>
-<span class="sd">  :class:`~google.cloud.spanner.instance.Instance`</span>
-<span class="sd">* a :class:`~google.cloud.spanner.instance.Instance` owns a</span>
-<span class="sd">  :class:`~google.cloud.spanner.database.Database`</span>
+<span class="sd">* a :class:`~google.cloud.spanner_v1.client.Client` owns an</span>
+<span class="sd">  :class:`~google.cloud.spanner_v1.instance.Instance`</span>
+<span class="sd">* a :class:`~google.cloud.spanner_v1.instance.Instance` owns a</span>
+<span class="sd">  :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">INITIAL_PAGE</span>
 <span class="c1"># pylint: disable=line-too-long</span>
-<span class="kn">from</span> <span class="nn">google.cloud.gapic.spanner_admin_database.v1.database_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_database_v1.gapic.database_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
     <span class="n">DatabaseAdminClient</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">google.cloud.gapic.spanner_admin_instance.v1.instance_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
     <span class="n">InstanceAdminClient</span><span class="p">)</span>
 <span class="c1"># pylint: enable=line-too-long</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="k">import</span> <span class="n">__version__</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.instance</span> <span class="k">import</span> <span class="n">DEFAULT_NODE_COUNT</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner.instance</span> <span class="k">import</span> <span class="n">Instance</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1</span> <span class="k">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.instance</span> <span class="k">import</span> <span class="n">DEFAULT_NODE_COUNT</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.instance</span> <span class="k">import</span> <span class="n">Instance</span>
 
 <span class="n">SPANNER_ADMIN_SCOPE</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/spanner.admin&#39;</span>
 
 
-<div class="viewcode-block" id="InstanceConfig"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.InstanceConfig">[docs]</a><span class="k">class</span> <span class="nc">InstanceConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceConfig"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner_v1.client.InstanceConfig">[docs]</a><span class="k">class</span> <span class="nc">InstanceConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Named configurations for Spanner instances.</span>
 
 <span class="sd">    :type name: str</span>
@@ -98,7 +98,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span>
 
-<div class="viewcode-block" id="InstanceConfig.from_pb"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.InstanceConfig.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="InstanceConfig.from_pb"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner_v1.client.InstanceConfig.from_pb">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct an instance from the equvalent protobuf.</span>
 
@@ -112,7 +112,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">config_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">config_pb</span><span class="o">.</span><span class="n">display_name</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client for interacting with Cloud Spanner API.</span>
 
 <span class="sd">    .. note::</span>
@@ -206,7 +206,7 @@
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span>
 
-<div class="viewcode-block" id="Client.copy"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.Client.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.copy"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a copy of this client.</span>
 
 <span class="sd">        Copies the local data stored as simple types but does not copy the</span>
@@ -221,7 +221,7 @@
             <span class="n">user_agent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_agent</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_instance_configs"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.Client.list_instance_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_instance_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_instance_configs"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.list_instance_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_instance_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List available instance configurations for the client&#39;s project.</span>
 
 <span class="sd">        .. _RPC docs: https://cloud.google.com/spanner/docs/reference/rpc/\</span>
@@ -239,7 +239,7 @@
 <span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
 <span class="sd">            Iterator of</span>
-<span class="sd">            :class:`~google.cloud.spanner.instance.InstanceConfig`</span>
+<span class="sd">            :class:`~google.cloud.spanner_v1.instance.InstanceConfig`</span>
 <span class="sd">            resources within the client&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -252,7 +252,7 @@
         <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">_GAXIterator</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance_config</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span>
                  <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">node_count</span><span class="o">=</span><span class="n">DEFAULT_NODE_COUNT</span><span class="p">):</span>
@@ -278,13 +278,13 @@
 <span class="sd">        :param node_count: (Optional) The number of nodes in the instance&#39;s</span>
 <span class="sd">                            cluster; used to set up the instance&#39;s cluster.</span>
 
-<span class="sd">        :rtype: :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`</span>
 <span class="sd">        :returns: an instance owned by this client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Instance</span><span class="p">(</span>
             <span class="n">instance_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">configuration_name</span><span class="p">,</span> <span class="n">node_count</span><span class="p">,</span> <span class="n">display_name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_instances"><a class="viewcode-back" href="../../../../spanner/client-api.html#google.cloud.spanner.client.Client.list_instances">[docs]</a>    <span class="k">def</span> <span class="nf">list_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_instances"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.list_instances">[docs]</a>    <span class="k">def</span> <span class="nf">list_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List instances for the client&#39;s project.</span>
 
 <span class="sd">        See</span>
@@ -302,7 +302,7 @@
 
 <span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
-<span class="sd">            Iterator of :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">            Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`</span>
 <span class="sd">            resources within the client&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -327,7 +327,7 @@
 <span class="sd">        :class:`~google.spanner.admin.instance.v1.InstanceConfig`</span>
 <span class="sd">    :param config_pb: An instance config returned from the API.</span>
 
-<span class="sd">    :rtype: :class:`~google.cloud.spanner.instance.InstanceConfig`</span>
+<span class="sd">    :rtype: :class:`~google.cloud.spanner_v1.instance.InstanceConfig`</span>
 <span class="sd">    :returns: The next instance config in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">InstanceConfig</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">config_pb</span><span class="p">)</span>
@@ -342,7 +342,7 @@
 <span class="sd">    :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`</span>
 <span class="sd">    :param instance_pb: An instance returned from the API.</span>
 
-<span class="sd">    :rtype: :class:`~google.cloud.spanner.instance.Instance`</span>
+<span class="sd">    :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`</span>
 <span class="sd">    :returns: The next instance in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">Instance</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
@@ -369,18 +369,6 @@
 
 
 
-
-
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
 
 
 <h3>Navigation</h3>
@@ -432,7 +420,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

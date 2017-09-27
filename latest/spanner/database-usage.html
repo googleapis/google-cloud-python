@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Database Admin API &#8212; google-cloud 0.27.1 documentation</title>
+    <title>Database Admin &#8212; google-cloud 0.27.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Batching Modifications" href="batch-usage.html" />
-    <link rel="prev" title="Instance Admin API" href="instance-usage.html" />
+    <link rel="prev" title="Instance Admin" href="instance-usage.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,21 +41,24 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="database-admin-api">
-<h1>Database Admin API<a class="headerlink" href="#database-admin-api" title="Permalink to this headline">#</a></h1>
-<p>After creating a <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>, you can
+  <div class="section" id="database-admin">
+<h1>Database Admin<a class="headerlink" href="#database-admin" title="Permalink to this headline">#</a></h1>
+<p>After creating a <code class="xref py py-class docutils literal"><span class="pre">Instance</span></code>, you can
 interact with individual databases for that instance.</p>
 <div class="section" id="list-databases">
 <h2>List Databases<a class="headerlink" href="#list-databases" title="Permalink to this headline">#</a></h2>
-<p>To list of all existing databases for an instance, use its
-<a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance.list_databases" title="google.cloud.spanner.instance.Instance.list_databases"><code class="xref py py-meth docutils literal"><span class="pre">list_databases()</span></code></a> method:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">databases</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">list_databases</span><span class="p">()</span>
+<p>To iterate over all existing databases for an instance, use its
+<code class="xref py py-meth docutils literal"><span class="pre">list_databases()</span></code> method:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">database</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">list_databases</span><span class="p">():</span>
+    <span class="c1"># `database` is a `Database` object.</span>
 </pre></div>
 </div>
+<p>This method yields <a class="reference internal" href="gapic/v1/admin_database_types.html#google.cloud.spanner_admin_database_v1.types.Database" title="google.cloud.spanner_admin_database_v1.types.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>
+objects.</p>
 </div>
 <div class="section" id="database-factory">
 <h2>Database Factory<a class="headerlink" href="#database-factory" title="Permalink to this headline">#</a></h2>
-<p>To create a <a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a> object:</p>
+<p>To create a <code class="xref py py-class docutils literal"><span class="pre">Database</span></code> object:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">ddl_statements</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -71,7 +74,7 @@ a database that has already been created:</p>
 <div class="section" id="create-a-new-database">
 <h2>Create a new Database<a class="headerlink" href="#create-a-new-database" title="Permalink to this headline">#</a></h2>
 <p>After creating the database object, use its
-<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.create" title="google.cloud.spanner.database.Database.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method to
+<code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> method to
 trigger its creation on the server:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">operation</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 </pre></div>
@@ -79,15 +82,15 @@ trigger its creation on the server:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Creating an instance triggers a “long-running operation” and
-returns an <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.database.Operation</span></code>
-object.  See <a class="reference internal" href="#check-on-current-database-operation"><span class="std std-ref">Check on Current Database Operation</span></a> for polling
-to find out if the operation is completed.</p>
+returns an <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Future</span></code></a>-like object. Use
+the <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future.result" title="(in Python v3.6)"><code class="xref py py-meth docutils literal"><span class="pre">result()</span></code></a> method to wait for
+and inspect the result.</p>
 </div>
 </div>
 <div class="section" id="update-an-existing-database">
 <h2>Update an existing Database<a class="headerlink" href="#update-an-existing-database" title="Permalink to this headline">#</a></h2>
 <p>After creating the database object, you can apply additional DDL statements
-via its <a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.update_ddl" title="google.cloud.spanner.database.Database.update_ddl"><code class="xref py py-meth docutils literal"><span class="pre">update_ddl()</span></code></a> method:</p>
+via its <code class="xref py py-meth docutils literal"><span class="pre">update_ddl()</span></code> method:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">update_ddl</span><span class="p">(</span><span class="n">ddl_statements</span><span class="p">,</span> <span class="n">operation_id</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -107,33 +110,20 @@ to find out if the operation is completed.</p>
 <div class="section" id="drop-a-database">
 <h2>Drop a Database<a class="headerlink" href="#drop-a-database" title="Permalink to this headline">#</a></h2>
 <p>Drop a databse using its
-<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.drop" title="google.cloud.spanner.database.Database.drop"><code class="xref py py-meth docutils literal"><span class="pre">drop()</span></code></a> method:</p>
+<code class="xref py py-meth docutils literal"><span class="pre">drop()</span></code> method:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="check-on-current-database-operation">
 <span id="id1"></span><h2>Check on Current Database Operation<a class="headerlink" href="#check-on-current-database-operation" title="Permalink to this headline">#</a></h2>
-<p>The <a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.create" title="google.cloud.spanner.database.Database.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> and
+<p>The <code class="xref py py-meth docutils literal"><span class="pre">create()</span></code> and
 <code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> methods of instance
 object trigger long-running operations on the server, and return instances
-of the <code class="xref py py-class docutils literal"><span class="pre">Operation</span></code> class.</p>
-<p>You can check if a long-running operation has finished
-by using its <code class="xref py py-meth docutils literal"><span class="pre">finished()</span></code>
-method:</p>
+conforming to the <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Future</span></code></a> class.</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span><span class="o">.</span><span class="n">finished</span><span class="p">()</span>
-<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">operation</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Once an <code class="xref py py-class docutils literal"><span class="pre">Operation</span></code> object
-has returned <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> from its
-<code class="xref py py-meth docutils literal"><span class="pre">finished()</span></code> method, the
-object should not be re-used. Subsequent calls to
-<code class="xref py py-meth docutils literal"><span class="pre">finished()</span></code>
-will result in an :exc`ValueError` being raised.</p>
 </div>
 </div>
 </div>
@@ -142,17 +132,17 @@ will result in an :exc`ValueError` being raised.</p>
 <div class="section" id="use-a-snapshot-to-read-query-the-database">
 <h2>Use a Snapshot to Read / Query the Database<a class="headerlink" href="#use-a-snapshot-to-read-query-the-database" title="Permalink to this headline">#</a></h2>
 <p>A snapshot represents a read-only point-in-time view of the database.</p>
-<p>Calling <a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.snapshot" title="google.cloud.spanner.database.Database.snapshot"><code class="xref py py-meth docutils literal"><span class="pre">snapshot()</span></code></a> with
+<p>Calling <code class="xref py py-meth docutils literal"><span class="pre">snapshot()</span></code> with
 no arguments creates a snapshot with strong concurrency:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
     <span class="n">do_something_with</span><span class="p">(</span><span class="n">snapshot</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>See <a class="reference internal" href="snapshot-api.html#google.cloud.spanner.snapshot.Snapshot" title="google.cloud.spanner.snapshot.Snapshot"><code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code></a> for the other options
+<p>See <code class="xref py py-class docutils literal"><span class="pre">Snapshot</span></code> for the other options
 which can be passed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.snapshot" title="google.cloud.spanner.database.Database.snapshot"><code class="xref py py-meth docutils literal"><span class="pre">snapshot()</span></code></a> returns an
+<p class="last"><code class="xref py py-meth docutils literal"><span class="pre">snapshot()</span></code> returns an
 object intended to be used as a Python context manager (i.e., as the
 target of a <code class="docutils literal"><span class="pre">with</span></code> statement).  Use the instance, and any result
 sets returned by its <code class="docutils literal"><span class="pre">read</span></code> or <code class="docutils literal"><span class="pre">execute_sql</span></code> methods, only inside
@@ -171,7 +161,7 @@ on the rows of tables in the database.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.batch" title="google.cloud.spanner.database.Database.batch"><code class="xref py py-meth docutils literal"><span class="pre">batch()</span></code></a> returns an
+<p class="last"><code class="xref py py-meth docutils literal"><span class="pre">batch()</span></code> returns an
 object intended to be used as a Python context manager (i.e., as the
 target of a <code class="docutils literal"><span class="pre">with</span></code> statement).  It applies any changes made inside
 the block of its <code class="docutils literal"><span class="pre">with</span></code> statement when exiting the block, unless an
@@ -203,13 +193,13 @@ transaction as a required argument:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.run_in_transaction" title="google.cloud.spanner.database.Database.run_in_transaction"><code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code></a>
+<p class="last"><code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code>
 commits the transaction automatically if the “unit of work” function
 returns without raising an exception.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database.run_in_transaction" title="google.cloud.spanner.database.Database.run_in_transaction"><code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code></a>
+<p class="last"><code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code>
 retries the “unit of work” function if the read / query operatoins
 or the commit are aborted due to concurrent updates</p>
 </div>
@@ -218,24 +208,27 @@ or the commit are aborted due to concurrent updates</p>
 <div class="section" id="configuring-a-session-pool-for-a-database">
 <h2>Configuring a session pool for a database<a class="headerlink" href="#configuring-a-session-pool-for-a-database" title="Permalink to this headline">#</a></h2>
 <p>Under the covers, the <code class="docutils literal"><span class="pre">snapshot</span></code>, <code class="docutils literal"><span class="pre">batch</span></code>, and <code class="docutils literal"><span class="pre">run_in_transaction</span></code>
-methods use a pool of <a class="reference internal" href="session-api.html#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a> objects
+methods use a pool of <code class="xref py py-class docutils literal"><span class="pre">Session</span></code> objects
 to manage their communication with the back-end.  You can configure
 one of the pools manually to control the number of sessions, timeouts, etc.,
-and then passing it to the <a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a>
+and then passing it to the <code class="xref py py-class docutils literal"><span class="pre">Database</span></code>
 constructor:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="kn">import</span> <span class="n">Client</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner</span> <span class="kn">import</span> <span class="n">FixedSizePool</span>
-<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">spanner</span>
+
+<span class="c1"># Instantiate the Spanner client, and get the appropriate instance.</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">INSTANCE_NAME</span><span class="p">)</span>
-<span class="n">pool</span> <span class="o">=</span> <span class="n">FixedSizePool</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">database</span> <span class="o">=</span> <span class="n">instanc</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
+
+<span class="c1"># Create a database with a pool of a fixed size.</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">spanner</span><span class="o">.</span><span class="n">FixedSizePool</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">default_timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">database</span><span class="p">(</span><span class="n">DATABASE_NAME</span><span class="p">,</span> <span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note that creating a database with a pool may presume that its database
 already exists, as it may need to pre-create sessions (rather than creating
 them on demand, as the default implementation does).</p>
 <p>You can supply your own pool implementation, which must satisfy the
-contract laid out in <a class="reference internal" href="session-api.html#google.cloud.spanner.pool.AbstractSessionPool" title="google.cloud.spanner.pool.AbstractSessionPool"><code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code></a>:</p>
+contract laid out in <code class="xref py py-class docutils literal"><span class="pre">AbstractSessionPool</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.cloud.pool</span> <span class="kn">import</span> <span class="n">AbstractSessionPool</span>
 
 <span class="k">class</span> <span class="nc">MyCustomPool</span><span class="p">(</span><span class="n">AbstractSessionPool</span><span class="p">):</span>
@@ -283,18 +276,6 @@ session pools.</p>
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -307,24 +288,15 @@ session pools.</p>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -342,7 +314,7 @@ session pools.</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
-      <li>Previous: <a href="instance-usage.html" title="previous chapter">Instance Admin API</a></li>
+      <li>Previous: <a href="instance-usage.html" title="previous chapter">Instance Admin</a></li>
       <li>Next: <a href="batch-usage.html" title="next chapter">Batching Modifications</a></li>
   </ul></li>
   </ul></li>
@@ -366,7 +338,7 @@ session pools.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

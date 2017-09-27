@@ -41,13 +41,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.spanner.snapshot">
-<span id="snapshot-api"></span><h1>Snapshot API<a class="headerlink" href="#module-google.cloud.spanner.snapshot" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.spanner_v1.snapshot">
+<span id="snapshot-api"></span><h1>Snapshot API<a class="headerlink" href="#module-google.cloud.spanner_v1.snapshot" title="Permalink to this headline">#</a></h1>
 <p>Model a set of read-only queries to a database as a snapshot.</p>
 <dl class="class">
-<dt id="google.cloud.spanner.snapshot.Snapshot">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.snapshot.</code><code class="descname">Snapshot</code><span class="sig-paren">(</span><em>session</em>, <em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em>, <em>multi_use=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/snapshot.html#Snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.snapshot.Snapshot" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.snapshot._SnapshotBase</span></code></p>
+<dt id="google.cloud.spanner_v1.snapshot.Snapshot">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.snapshot.</code><code class="descname">Snapshot</code><span class="sig-paren">(</span><em>session</em>, <em>read_timestamp=None</em>, <em>min_read_timestamp=None</em>, <em>max_staleness=None</em>, <em>exact_staleness=None</em>, <em>multi_use=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/snapshot.html#Snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.snapshot.Snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.snapshot._SnapshotBase</span></code></p>
 <p>Allow a set of reads / SQL statements with shared staleness.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly">https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly</a></p>
@@ -58,7 +58,7 @@ at a timestamp where all previously committed transactions are visible.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>session</strong> (<a class="reference internal" href="session-api.html#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session used to perform the commit.</li>
+<li><strong>session</strong> (<a class="reference internal" href="session-api.html#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session used to perform the commit.</li>
 <li><strong>read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at the given timestamp.</li>
 <li><strong>min_read_timestamp</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Execute all reads at a
 timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</li>
@@ -77,8 +77,8 @@ isolation / consistency. Incompatible with
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.snapshot.Snapshot.begin">
-<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/snapshot.html#Snapshot.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.snapshot.Snapshot.begin" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.snapshot.Snapshot.begin">
+<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/snapshot.html#Snapshot.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.snapshot.Snapshot.begin" title="Permalink to this definition">#</a></dt>
 <dd><p>Begin a read-only transaction on the database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -122,18 +122,6 @@ isolation / consistency. Incompatible with
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -146,24 +134,15 @@ isolation / consistency. Incompatible with
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -181,8 +160,10 @@ isolation / consistency. Incompatible with
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
+  <li><a href="api-reference.html">API Reference</a><ul>
       <li>Previous: <a href="keyset-api.html" title="previous chapter">Keyset API</a></li>
       <li>Next: <a href="batch-api.html" title="next chapter">Batch API</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -205,7 +186,7 @@ isolation / consistency. Incompatible with
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

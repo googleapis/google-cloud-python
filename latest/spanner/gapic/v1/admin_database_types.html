@@ -1,0 +1,641 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Spanner Admin Database Client Types &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Spanner Admin Instance Client API" href="admin_instance_api.html" />
+    <link rel="prev" title="Spanner Admin Database Client API" href="admin_database_api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.spanner_admin_database_v1.types">
+<span id="spanner-admin-database-client-types"></span><h1>Spanner Admin Database Client Types<a class="headerlink" href="#module-google.cloud.spanner_admin_database_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.AuditData">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">AuditData</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.AuditData" title="Permalink to this definition">#</a></dt>
+<dd><p>Audit log information specific to Cloud IAM. This message is serialized
+as an <code class="docutils literal"><span class="pre">Any</span></code> type in the <code class="docutils literal"><span class="pre">ServiceData</span></code> message of an <code class="docutils literal"><span class="pre">AuditLog</span></code>
+message.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.AuditData.policy_delta">
+<code class="descname">policy_delta</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.AuditData.policy_delta" title="Permalink to this definition">#</a></dt>
+<dd><p>Policy delta between the original policy and the newly set
+policy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.Binding">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Binding" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates <code class="docutils literal"><span class="pre">members</span></code> with a <code class="docutils literal"><span class="pre">role</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.Binding.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal"><span class="pre">members</span></code>. For example,
+<code class="docutils literal"><span class="pre">roles/viewer</span></code>, <code class="docutils literal"><span class="pre">roles/editor</span></code>, or <code class="docutils literal"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.Binding.members">
+<code class="descname">members</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the identities requesting access for a Cloud
+Platform resource. <code class="docutils literal"><span class="pre">members</span></code> can have the following values:
+-  <code class="docutils literal"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
+who is on    the internet; with or without a Google account.
+-  <code class="docutils literal"><span class="pre">allAuthenticatedUsers</span></code>: A special identifier that
+represents    anyone who is authenticated with a Google
+account or a service    account.  -  <code class="docutils literal"><span class="pre">user:{emailid}</span></code>: An
+email address that represents a specific    Google account.
+For example, <code class="docutils literal"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal"><span class="pre">joe&#64;example.com</span></code>.  -
+<code class="docutils literal"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
+a    service account. For example,    <code class="docutils literal"><span class="pre">my-other-</span>
+<span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal"><span class="pre">group:{emailid}</span></code>: An
+email address that represents a Google group.    For example,
+<code class="docutils literal"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal"><span class="pre">domain:{domain}</span></code>: A Google Apps
+domain name that represents all    the users of that domain.
+For example, <code class="docutils literal"><span class="pre">google.com</span></code> or    <code class="docutils literal"><span class="pre">example.com</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.BindingDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>One delta entry for Binding. Each individual change (only one member in
+each entry) to a binding will be a separate entry.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.BindingDelta.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The action that was performed on a Binding. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.BindingDelta.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal"><span class="pre">members</span></code>. For example,
+<code class="docutils literal"><span class="pre">roles/viewer</span></code>, <code class="docutils literal"><span class="pre">roles/editor</span></code>, or <code class="docutils literal"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.BindingDelta.member">
+<code class="descname">member</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<dd><p>A single identity requesting access for a Cloud Platform
+resource. Follows the same format of Binding.members. Required</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.CreateDatabaseMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">CreateDatabaseMetadata</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.CreateDatabaseMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata type for the operation returned by
+[CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.CreateDatabaseMetadata.database">
+<code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.CreateDatabaseMetadata.database" title="Permalink to this definition">#</a></dt>
+<dd><p>The database being created.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">CreateDatabaseRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the instance that will serve the new
+database. Values are of the form
+<code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest.create_statement">
+<code class="descname">create_statement</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest.create_statement" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. A <code class="docutils literal"><span class="pre">CREATE</span> <span class="pre">DATABASE</span></code> statement, which specifies the
+ID of the new database. The database ID must conform to the
+regular expression <code class="docutils literal"><span class="pre">[a-z][a-z0-9_\-]*[a-z0-9]</span></code> and be
+between 2 and 30 characters in length.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest.extra_statements">
+<code class="descname">extra_statements</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest.extra_statements" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional list of DDL statements to run inside the newly
+created database. Statements can create tables, indexes, etc.
+These statements execute atomically with the creation of the
+database: if there is an error in any statement, the database
+is not created.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.Database">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">Database</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Database" title="Permalink to this definition">#</a></dt>
+<dd><p>A Cloud Spanner database.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.Database.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Database.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the database. Values are of the form <code class="docutils literal"><span class="pre">p</span>
+<span class="pre">rojects/&lt;project&gt;/instances/&lt;instance&gt;/databases/&lt;database&gt;</span></code>,
+where <code class="docutils literal"><span class="pre">&lt;database&gt;</span></code> is as specified in the <code class="docutils literal"><span class="pre">CREATE</span>
+<span class="pre">DATABASE</span></code> statement. This name can be passed to other API
+methods to identify the database.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.Database.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Database.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The current database state.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">DropDatabaseRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest.database">
+<code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest.database" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The database to be dropped.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">GetDatabaseDdlRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlRequest.database">
+<code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlRequest.database" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The database whose schema we wish to get.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">GetDatabaseDdlResponse</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The response for
+[GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse.statements">
+<code class="descname">statements</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse.statements" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of formatted DDL statements defining the schema of the
+database specified in the request.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetDatabaseRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">GetDatabaseRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetDatabaseRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetDatabaseRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetDatabaseRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The name of the requested database. Values are of
+the form <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;/databases/&lt;</span>
+<span class="pre">database&gt;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal"><span class="pre">GetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.GetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+requested. <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">ListDatabasesRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for
+[ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The instance whose databases should be listed.
+Values are of the form
+<code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of databases to be returned in the response. If 0 or
+less, defaults to the server’s maximum allowed page size.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If non-empty, <code class="docutils literal"><span class="pre">page_token</span></code> should contain a [next_page_tok
+en][google.spanner.admin.database.v1.ListDatabasesResponse.nex
+t_page_token] from a previous [ListDatabasesResponse][google
+.spanner.admin.database.v1.ListDatabasesResponse].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">ListDatabasesResponse</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The response for
+[ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse.databases">
+<code class="descname">databases</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse.databases" title="Permalink to this definition">#</a></dt>
+<dd><p>Databases that matched the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">next_page_token</span></code> can be sent in a subsequent [ListDatabases
+][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases
+] call to fetch more of the matching databases.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
+specify access control policies for Cloud Platform resources.</p>
+<p>A <code class="docutils literal"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal"><span class="pre">bindings</span></code>. A <code class="docutils literal"><span class="pre">Binding</span></code> binds a
+list of <code class="docutils literal"><span class="pre">members</span></code> to a <code class="docutils literal"><span class="pre">role</span></code>, where the members can be user
+accounts, Google groups, Google domains, and service accounts. A
+<code class="docutils literal"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/owner&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/viewer&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user:sean@example.com&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
+guide</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.Policy.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of the <code class="docutils literal"><span class="pre">Policy</span></code>. The default version is 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.Policy.bindings">
+<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates a list of <code class="docutils literal"><span class="pre">members</span></code> to a <code class="docutils literal"><span class="pre">role</span></code>. Multiple
+<code class="docutils literal"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal"><span class="pre">role</span></code>.
+<code class="docutils literal"><span class="pre">bindings</span></code> with no members will result in an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.Policy.etag">
+<code class="descname">etag</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
+to help prevent simultaneous updates of a policy from
+overwriting each other. It is strongly suggested that systems
+make use of the <code class="docutils literal"><span class="pre">etag</span></code> in the read-modify-write cycle to
+perform policy updates in order to avoid race conditions: An
+<code class="docutils literal"><span class="pre">etag</span></code> is returned in the response to <code class="docutils literal"><span class="pre">getIamPolicy</span></code>, and
+systems are expected to put that etag in the request to
+<code class="docutils literal"><span class="pre">setIamPolicy</span></code> to ensure that their change will be applied
+to the same version of the policy.  If no <code class="docutils literal"><span class="pre">etag</span></code> is provided
+in the call to <code class="docutils literal"><span class="pre">setIamPolicy</span></code>, then the existing policy is
+overwritten blindly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.PolicyDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>The difference delta between two policies.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.PolicyDelta.binding_deltas">
+<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>The delta for Bindings between two policies.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.SetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal"><span class="pre">SetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.SetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+specified. <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.SetIamPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The complete policy to be applied to the
+<code class="docutils literal"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
+of KB. An empty policy is a valid policy but certain Cloud
+Platform services (such as Projects) might reject them.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.TestIamPermissionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.TestIamPermissionsRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy detail is being
+requested. <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.TestIamPermissionsRequest.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of permissions to check for the <code class="docutils literal"><span class="pre">resource</span></code>.
+Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
+not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.TestIamPermissionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for <code class="docutils literal"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.TestIamPermissionsResponse.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>A subset of <code class="docutils literal"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
+caller is allowed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">UpdateDatabaseDdlMetadata</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Metadata type for the operation returned by
+[UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata.database">
+<code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata.database" title="Permalink to this definition">#</a></dt>
+<dd><p>The database being modified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata.statements">
+<code class="descname">statements</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata.statements" title="Permalink to this definition">#</a></dt>
+<dd><p>For an update this list contains all the statements. For an
+individual statement, this list contains only that statement.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata.commit_timestamps">
+<code class="descname">commit_timestamps</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlMetadata.commit_timestamps" title="Permalink to this definition">#</a></dt>
+<dd><p>Reports the commit timestamps of all statements that have
+succeeded so far, where <code class="docutils literal"><span class="pre">commit_timestamps[i]</span></code> is the commit
+timestamp for the statement <code class="docutils literal"><span class="pre">statements[i]</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.types.</code><code class="descname">UpdateDatabaseDdlRequest</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Enqueues the given DDL statements to be applied, in order but not
+necessarily all at once, to the database schema at some point (or
+points) in the future. The server checks that the statements are
+executable (syntactically valid, name tables that exist, etc.) before
+enqueueing them, but they may still fail upon later execution (e.g., if
+a statement from another batch of statements is applied first and it
+conflicts in some way, or if there is some data-related problem like a
+<code class="docutils literal"><span class="pre">NULL</span></code> value in a column to which <code class="docutils literal"><span class="pre">NOT</span> <span class="pre">NULL</span></code> would be added). If a
+statement fails, all subsequent statements in the batch are
+automatically cancelled.</p>
+<p>Each batch of statements is assigned a name which can be used with the
+[Operations][google.longrunning.Operations] API to monitor progress. See
+the
+[operation_id][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id]
+field for more details.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest.database">
+<code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest.database" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The database to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest.statements">
+<code class="descname">statements</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest.statements" title="Permalink to this definition">#</a></dt>
+<dd><p>DDL statements to be applied to the database.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest.operation_id">
+<code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest.operation_id" title="Permalink to this definition">#</a></dt>
+<dd><p>If empty, the new update request is assigned an automatically-
+generated operation ID. Otherwise, <code class="docutils literal"><span class="pre">operation_id</span></code> is used to
+construct the name of the resulting
+[Operation][google.longrunning.Operation].  Specifying an
+explicit operation ID simplifies determining whether the
+statements were executed in the event that the [UpdateDatabase
+Ddl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateData
+baseDdl] call is replayed, or the return value is otherwise
+lost: the [database][google.spanner.admin.database.v1.UpdateDa
+tabaseDdlRequest.database] and <code class="docutils literal"><span class="pre">operation_id</span></code> fields can be
+combined to form the [name][google.longrunning.Operation.name]
+of the resulting
+[longrunning.Operation][google.longrunning.Operation]:
+<code class="docutils literal"><span class="pre">&lt;database&gt;/operations/&lt;operation_id&gt;</span></code>.  <code class="docutils literal"><span class="pre">operation_id</span></code>
+should be unique within the database, and must be a valid
+identifier: <code class="docutils literal"><span class="pre">[a-z][a-z0-9_]*</span></code>. Note that automatically-
+generated operation IDs always begin with an underscore. If
+the named operation already exists, [UpdateDatabaseDdl][google
+.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl]
+returns <code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../usage.html">Spanner</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../database-usage.html">Database Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../batch-usage.html">Batching Modifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../transaction-usage.html">Read-write Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#spanner-client">Spanner Client</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../usage.html">Spanner</a><ul>
+  <li><a href="../../api-reference.html">API Reference</a><ul>
+      <li>Previous: <a href="admin_database_api.html" title="previous chapter">Spanner Admin Database Client API</a></li>
+      <li>Next: <a href="admin_instance_api.html" title="next chapter">Spanner Admin Instance Client API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/spanner/gapic/v1/admin_database_types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Instance API" href="instance-api.html" />
-    <link rel="prev" title="Advanced Session Pool Topics" href="advanced-session-pool-topics.html" />
+    <link rel="prev" title="API Reference" href="api-reference.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,20 +41,20 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.spanner.client">
-<span id="spanner-client"></span><h1>Spanner Client<a class="headerlink" href="#module-google.cloud.spanner.client" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.spanner_v1.client">
+<span id="spanner-client"></span><h1>Spanner Client<a class="headerlink" href="#module-google.cloud.spanner_v1.client" title="Permalink to this headline">#</a></h1>
 <p>Parent client for calling the Cloud Spanner API.</p>
 <p>This is the base from which all interactions with the API occur.</p>
 <p>In the hierarchy of API concepts</p>
 <ul class="simple">
-<li>a <a class="reference internal" href="#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> owns an
-<a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
-<li>a <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> owns a
-<a class="reference internal" href="database-api.html#google.cloud.spanner.database.Database" title="google.cloud.spanner.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a></li>
+<li>a <a class="reference internal" href="#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> owns an
+<a class="reference internal" href="instance-api.html#google.cloud.spanner_v1.instance.Instance" title="google.cloud.spanner_v1.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
+<li>a <a class="reference internal" href="instance-api.html#google.cloud.spanner_v1.instance.Instance" title="google.cloud.spanner_v1.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> owns a
+<a class="reference internal" href="database-api.html#google.cloud.spanner_v1.database.Database" title="google.cloud.spanner_v1.database.Database"><code class="xref py py-class docutils literal"><span class="pre">Database</span></code></a></li>
 </ul>
 <dl class="class">
-<dt id="google.cloud.spanner.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>user_agent='gcloud-python/0.27.1'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>user_agent='gcloud-python/0.27.1'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../core/modules.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Client for interacting with Cloud Spanner API.</p>
 <div class="admonition note">
@@ -86,14 +86,14 @@ and <code class="docutils literal"><span class="pre">admin</span></code> are <a 
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="google.cloud.spanner.client.Client.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/spanner.admin',)</em><a class="headerlink" href="#google.cloud.spanner.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/spanner.admin',)</em><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for Google Cloud Spanner.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.client.Client.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/client.html#Client.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client.copy" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/client.html#Client.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.copy" title="Permalink to this definition">#</a></dt>
 <dd><p>Make a copy of this client.</p>
 <p>Copies the local data stored as simple types but does not copy the
 current state of any open connections with the Cloud Bigtable API.</p>
@@ -101,7 +101,7 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.client.Client" title="google.cloud.spanner.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner_v1.client.Client" title="google.cloud.spanner_v1.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A copy of the current client.</td>
 </tr>
@@ -110,8 +110,8 @@ current state of any open connections with the Cloud Bigtable API.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.client.Client.credentials">
-<code class="descname">credentials</code><a class="headerlink" href="#google.cloud.spanner.client.Client.credentials" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.credentials">
+<code class="descname">credentials</code><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.credentials" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for client’s credentials.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -126,14 +126,14 @@ current state of any open connections with the Cloud Bigtable API.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.client.Client.database_admin_api">
-<code class="descname">database_admin_api</code><a class="headerlink" href="#google.cloud.spanner.client.Client.database_admin_api" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.database_admin_api">
+<code class="descname">database_admin_api</code><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.database_admin_api" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper for session-related API calls.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.client.Client.instance">
-<code class="descname">instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>configuration_name=None</em>, <em>display_name=None</em>, <em>node_count=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client.instance" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.instance">
+<code class="descname">instance</code><span class="sig-paren">(</span><em>instance_id</em>, <em>configuration_name=None</em>, <em>display_name=None</em>, <em>node_count=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/client.html#Client.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.instance" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to create a instance associated with this client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -154,7 +154,7 @@ cluster; used to set up the instance’s cluster.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="instance-api.html#google.cloud.spanner_v1.instance.Instance" title="google.cloud.spanner_v1.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">an instance owned by this client.</p>
@@ -165,14 +165,14 @@ cluster; used to set up the instance’s cluster.</li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.client.Client.instance_admin_api">
-<code class="descname">instance_admin_api</code><a class="headerlink" href="#google.cloud.spanner.client.Client.instance_admin_api" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.instance_admin_api">
+<code class="descname">instance_admin_api</code><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.instance_admin_api" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper for session-related API calls.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.client.Client.list_instance_configs">
-<code class="descname">list_instance_configs</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/client.html#Client.list_instance_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client.list_instance_configs" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.list_instance_configs">
+<code class="descname">list_instance_configs</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/client.html#Client.list_instance_configs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.list_instance_configs" title="Permalink to this definition">#</a></dt>
 <dd><p>List available instance configurations for the client’s project.</p>
 <p>See <a class="reference external" href="https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.admin.instance.v1#google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs">RPC docs</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -198,8 +198,8 @@ resources within the client’s project.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.client.Client.list_instances">
-<code class="descname">list_instances</code><span class="sig-paren">(</span><em>filter_=''</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/client.html#Client.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.Client.list_instances" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.list_instances">
+<code class="descname">list_instances</code><span class="sig-paren">(</span><em>filter_=''</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/client.html#Client.list_instances"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.list_instances" title="Permalink to this definition">#</a></dt>
 <dd><p>List instances for the client’s project.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstances">https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.InstanceAdmin.ListInstances</a></p>
@@ -218,7 +218,7 @@ the <code class="docutils literal"><span class="pre">ListInstancesRequest</span>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="instance-api.html#google.cloud.spanner.instance.Instance" title="google.cloud.spanner.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="instance-api.html#google.cloud.spanner_v1.instance.Instance" title="google.cloud.spanner_v1.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>
 resources within the client’s project.</p>
 </td>
 </tr>
@@ -227,8 +227,8 @@ resources within the client’s project.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.client.Client.project_name">
-<code class="descname">project_name</code><a class="headerlink" href="#google.cloud.spanner.client.Client.project_name" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.Client.project_name">
+<code class="descname">project_name</code><a class="headerlink" href="#google.cloud.spanner_v1.client.Client.project_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Project name to be used with Spanner APIs.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -254,8 +254,8 @@ API RPC service.</td>
 </dd></dl>
 
 <dl class="class">
-<dt id="google.cloud.spanner.client.InstanceConfig">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.client.</code><code class="descname">InstanceConfig</code><span class="sig-paren">(</span><em>name</em>, <em>display_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/client.html#InstanceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.InstanceConfig" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.InstanceConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.client.</code><code class="descname">InstanceConfig</code><span class="sig-paren">(</span><em>name</em>, <em>display_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/client.html#InstanceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.client.InstanceConfig" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Named configurations for Spanner instances.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -271,8 +271,8 @@ API RPC service.</td>
 </tbody>
 </table>
 <dl class="classmethod">
-<dt id="google.cloud.spanner.client.InstanceConfig.from_pb">
-<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>config_pb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/client.html#InstanceConfig.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.client.InstanceConfig.from_pb" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.client.InstanceConfig.from_pb">
+<em class="property">classmethod </em><code class="descname">from_pb</code><span class="sig-paren">(</span><em>config_pb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/client.html#InstanceConfig.from_pb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.client.InstanceConfig.from_pb" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct an instance from the equvalent protobuf.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -280,7 +280,7 @@ API RPC service.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code>) – the protobuf to parse</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner.client.InstanceConfig" title="google.cloud.spanner.client.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.spanner_v1.client.InstanceConfig" title="google.cloud.spanner_v1.client.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">an instance of this class</td>
 </tr>
@@ -316,18 +316,6 @@ API RPC service.</td>
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -340,24 +328,15 @@ API RPC service.</td>
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -375,8 +354,10 @@ API RPC service.</td>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
-      <li>Previous: <a href="advanced-session-pool-topics.html" title="previous chapter">Advanced Session Pool Topics</a></li>
+  <li><a href="api-reference.html">API Reference</a><ul>
+      <li>Previous: <a href="api-reference.html" title="previous chapter">API Reference</a></li>
       <li>Next: <a href="instance-api.html" title="next chapter">Instance API</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -399,7 +380,7 @@ API RPC service.</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

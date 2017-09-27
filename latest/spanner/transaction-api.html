@@ -41,27 +41,27 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.spanner.transaction">
-<span id="transaction-api"></span><h1>Transaction API<a class="headerlink" href="#module-google.cloud.spanner.transaction" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.spanner_v1.transaction">
+<span id="transaction-api"></span><h1>Transaction API<a class="headerlink" href="#module-google.cloud.spanner_v1.transaction" title="Permalink to this headline">#</a></h1>
 <p>Spanner read-write transaction support.</p>
 <dl class="class">
-<dt id="google.cloud.spanner.transaction.Transaction">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.transaction.Transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.snapshot._SnapshotBase</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.batch._BatchBase</span></code></p>
+<dt id="google.cloud.spanner_v1.transaction.Transaction">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.snapshot._SnapshotBase</span></code>, <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.batch._BatchBase</span></code></p>
 <p>Implement read-write transaction semantics for a session.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="session-api.html#google.cloud.spanner.session.Session" title="google.cloud.spanner.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session used to perform the commit</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="session-api.html#google.cloud.spanner_v1.session.Session" title="google.cloud.spanner_v1.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – the session used to perform the commit</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if session has an existing transaction</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="google.cloud.spanner.transaction.Transaction.begin">
-<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/transaction.html#Transaction.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.transaction.Transaction.begin" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.transaction.Transaction.begin">
+<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.begin" title="Permalink to this definition">#</a></dt>
 <dd><p>Begin a transaction on the database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -78,8 +78,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.transaction.Transaction.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/transaction.html#Transaction.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.transaction.Transaction.commit" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.transaction.Transaction.commit">
+<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commit mutations to the database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -96,14 +96,14 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.transaction.Transaction.committed">
-<code class="descname">committed</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.spanner.transaction.Transaction.committed" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.transaction.Transaction.committed">
+<code class="descname">committed</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.committed" title="Permalink to this definition">#</a></dt>
 <dd><p>Timestamp at which the transaction was successfully committed.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner.transaction.Transaction.rollback">
-<code class="descname">rollback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/transaction.html#Transaction.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.transaction.Transaction.rollback" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.transaction.Transaction.rollback">
+<code class="descname">rollback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/transaction.html#Transaction.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.transaction.Transaction.rollback" title="Permalink to this definition">#</a></dt>
 <dd><p>Roll back a transaction on the database.</p>
 </dd></dl>
 
@@ -135,18 +135,6 @@
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -159,24 +147,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="batch-api.html">Batch API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -194,8 +173,10 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
+  <li><a href="api-reference.html">API Reference</a><ul>
       <li>Previous: <a href="batch-api.html" title="previous chapter">Batch API</a></li>
       <li>Next: <a href="streamed-api.html" title="next chapter">StreamedResultSet API</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -218,7 +199,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

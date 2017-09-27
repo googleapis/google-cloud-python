@@ -41,17 +41,17 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-google.cloud.spanner.batch">
-<span id="batch-api"></span><h1>Batch API<a class="headerlink" href="#module-google.cloud.spanner.batch" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-google.cloud.spanner_v1.batch">
+<span id="batch-api"></span><h1>Batch API<a class="headerlink" href="#module-google.cloud.spanner_v1.batch" title="Permalink to this headline">#</a></h1>
 <p>Context manager for Cloud Spanner batched writes.</p>
 <dl class="class">
-<dt id="google.cloud.spanner.batch.Batch">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner.batch.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.batch.Batch" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner.batch._BatchBase</span></code></p>
-<p>Accumulate mutations for transmission during <a class="reference internal" href="#google.cloud.spanner.batch.Batch.commit" title="google.cloud.spanner.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
+<dt id="google.cloud.spanner_v1.batch.Batch">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.batch.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.batch.Batch" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.spanner_v1.batch._BatchBase</span></code></p>
+<p>Accumulate mutations for transmission during <a class="reference internal" href="#google.cloud.spanner_v1.batch.Batch.commit" title="google.cloud.spanner_v1.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <dl class="method">
-<dt id="google.cloud.spanner.batch.Batch.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner/batch.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner.batch.Batch.commit" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.batch.Batch.commit">
+<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/batch.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.batch.Batch.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commit mutations to the database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -66,8 +66,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="google.cloud.spanner.batch.Batch.committed">
-<code class="descname">committed</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.spanner.batch.Batch.committed" title="Permalink to this definition">#</a></dt>
+<dt id="google.cloud.spanner_v1.batch.Batch.committed">
+<code class="descname">committed</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.spanner_v1.batch.Batch.committed" title="Permalink to this definition">#</a></dt>
 <dd><p>Timestamp at which the batch was successfully committed.</p>
 </dd></dl>
 
@@ -99,18 +99,6 @@
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
@@ -123,24 +111,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="usage.html">Spanner</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="client-usage.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instance-usage.html">Instance Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database-usage.html">Database Admin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="database-usage.html#non-admin-database-usage">Non-Admin Database Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="batch-usage.html">Batching Modifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="snapshot-usage.html">Read-only Transactions via Snapshots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transaction-usage.html">Read-write Transactions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="advanced-session-pool-topics.html">Advanced Session Pool Topics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="client-api.html">Spanner Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="instance-api.html">Instance API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="database-api.html">Database API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html">Session API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="session-api.html#module-google.cloud.spanner.pool">Session Pools API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyset-api.html">Keyset API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="snapshot-api.html">Snapshot API</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Batch API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transaction-api.html">Transaction API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streamed-api.html">StreamedResultSet API</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#spanner-client">Spanner Client</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
@@ -158,8 +137,10 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="usage.html">Spanner</a><ul>
+  <li><a href="api-reference.html">API Reference</a><ul>
       <li>Previous: <a href="snapshot-api.html" title="previous chapter">Snapshot API</a></li>
       <li>Next: <a href="transaction-api.html" title="next chapter">Transaction API</a></li>
+  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -182,7 +163,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

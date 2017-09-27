@@ -58,6 +58,7 @@
 
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">UTC</span>
@@ -510,6 +511,31 @@
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="n">resource</span>
 
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this :class:`ScalarQueryParameter`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ScalarQueryParameter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ScalarQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
+
 
 <span class="k">class</span> <span class="nc">ArrayQueryParameter</span><span class="p">(</span><span class="n">AbstractQueryParameter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Named / positional query parameters for array values.</span>
@@ -549,15 +575,24 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
+    <span class="k">def</span> <span class="nf">_from_api_repr_struct</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">converted</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># We need to flatten the array to use the StructQueryParameter</span>
+        <span class="c1"># parse code.</span>
+        <span class="n">resource_template</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="c1"># The arrayType includes all the types of the fields of the STRUCT</span>
+            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">array_value</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;arrayValues&#39;</span><span class="p">]:</span>
+            <span class="n">struct_resource</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource_template</span><span class="p">)</span>
+            <span class="n">struct_resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array_value</span>
+            <span class="n">struct_value</span> <span class="o">=</span> <span class="n">StructQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
+            <span class="n">converted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">struct_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
 
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource: JSON mapping of parameter</span>
-
-<span class="sd">        :rtype: :class:`ArrayQueryParameter`</span>
-<span class="sd">        :returns: instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_from_api_repr_scalar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
         <span class="n">array_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
         <span class="n">values</span> <span class="o">=</span> <span class="p">[</span>
@@ -568,6 +603,21 @@
             <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">array_type</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: JSON mapping of parameter</span>
+
+<span class="sd">        :rtype: :class:`ArrayQueryParameter`</span>
+<span class="sd">        :returns: instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">array_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_struct</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_scalar</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
 
@@ -575,7 +625,7 @@
 <span class="sd">        :returns: JSON mapping</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;RECORD&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;RECORD&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
             <span class="n">reprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
             <span class="n">a_type</span> <span class="o">=</span> <span class="n">reprs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;parameterType&#39;</span><span class="p">]</span>
             <span class="n">a_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">repr_</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">repr_</span> <span class="ow">in</span> <span class="n">reprs</span><span class="p">]</span>
@@ -597,6 +647,31 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="n">resource</span>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this :class:`ArrayQueryParameter`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ArrayQueryParameter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ArrayQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
 
 
 <span class="k">class</span> <span class="nc">StructQueryParameter</span><span class="p">(</span><span class="n">AbstractQueryParameter</span><span class="p">):</span>
@@ -648,14 +723,32 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
         <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">type_resources</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">types</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">struct_types</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;structTypes&#39;</span><span class="p">]:</span>
             <span class="n">types</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+            <span class="n">type_resources</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
         <span class="n">struct_values</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;structValues&#39;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">struct_values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">type_</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
-            <span class="n">converted</span> <span class="o">=</span> <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">converted</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
+                <span class="n">struct_resource</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">type_resources</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                    <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">StructQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">:</span>
+                <span class="n">struct_resource</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">type_resources</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                    <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">ArrayQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="n">instance</span><span class="o">.</span><span class="n">struct_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">converted</span>
         <span class="k">return</span> <span class="n">instance</span>
 
@@ -692,6 +785,31 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="n">resource</span>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this :class:`ArrayQueryParameter`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">StructQueryParameter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;StructQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
 
 
 <span class="k">class</span> <span class="nc">QueryParametersProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -797,18 +915,6 @@
 
 
 
-    
-
-<p>
-<a href="https://travis-ci.org/GoogleCloudPlatform/google-cloud-python">
-    <img
-        alt="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-        src="https://secure.travis-ci.org/GoogleCloudPlatform/google-cloud-python.svg?branch=master"
-    />
-</a>
-</p>
-
-
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
@@ -858,7 +964,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
