@@ -670,6 +670,11 @@ class TestClient(unittest.TestCase):
             table, ['schema', 'description', 'friendly_name'])
 
         sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
@@ -691,6 +696,164 @@ class TestClient(unittest.TestCase):
         client.update_table(table, [])
         req = conn._requested[1]
         self.assertEqual(req['headers']['If-Match'], 'etag')
+
+    def test_update_table_only_use_legacy_sql(self):
+        from google.cloud.bigquery.table import Table
+
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'view': {'useLegacySql': True}
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, client=client)
+        table.view_use_legacy_sql = True
+
+        updated_table = client.update_table(table, ['view_use_legacy_sql'])
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'view': {'useLegacySql': True}
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(
+            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+
+    def test_update_table_w_query(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
+        from google.cloud.bigquery.table import Table, SchemaField
+
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        query = 'select fullname, age from person_ages'
+        location = 'EU'
+        exp_time = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+        schema_resource = {'fields': [
+            {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+            {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]}
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': schema_resource,
+            'view': {'query': query, 'useLegacySql': True},
+            'location': location,
+            'expirationTime': _millis(exp_time)
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, schema=schema, client=client)
+        table.location = location
+        table.expires = exp_time
+        table.view_query = query
+        table.view_use_legacy_sql = True
+        updated_properties = ['schema', 'view_query', 'location',
+                              'expires', 'view_use_legacy_sql']
+
+        updated_table = client.update_table(table, updated_properties)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'view': {'query': query, 'useLegacySql': True},
+            'location': location,
+            'expirationTime': _millis(exp_time),
+            'schema': schema_resource,
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(updated_table.schema, table.schema)
+        self.assertEqual(updated_table.view_query, table.view_query)
+        self.assertEqual(updated_table.location, table.location)
+        self.assertEqual(updated_table.expires, table.expires)
+        self.assertEqual(
+            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+
+    def test_update_table_w_schema_None(self):
+        # Simulate deleting schema:  not sure if back-end will actually
+        # allow this operation, but the spec says it is optional.
+        from google.cloud.bigquery.table import Table, SchemaField
+
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id},
+            'schema': {'fields': []}
+        }
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, schema=schema, client=client)
+        table.schema = None
+
+        updated_table = client.update_table(table, ['schema'])
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': {'fields': []}
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(req['path'], '/%s' % path)
+        self.assertEqual(updated_table.schema, table.schema)
 
     def test_list_dataset_tables_empty(self):
         PROJECT = 'PROJECT'

@@ -298,13 +298,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: a ``Table`` instance
         """
-        resource = table._build_resource()
-        partial = {}
-        for p in properties:
-            # snake case to camel case
-            words = p.split('_')
-            api_field = words[0] + ''.join(map(str.capitalize, words[1:]))
-            partial[api_field] = resource.get(api_field)
+        partial = table._build_resource(properties)
         if table.etag is not None:
             headers = {'If-Match': table.etag}
         else:
