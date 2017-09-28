@@ -33,6 +33,9 @@ _GRPC_VERSION = pkg_resources.get_distribution('grpcio').version
 _API_CORE_VERSION = pkg_resources.get_distribution('google-cloud-core').version
 METRICS_METADATA_KEY = 'x-goog-api-client'
 USE_DEFAULT_METADATA = object()
+DEFAULT = object()
+"""Sentinel value indicating that a retry or timeout argument was unspecified,
+so the default should be used."""
 
 
 def _is_not_none_or_false(value):
@@ -82,18 +85,23 @@ def _determine_timeout(default_timeout, specified_timeout, retry):
         default_timeout (Optional[Timeout]): The default timeout specified
             at method creation time.
         specified_timeout (Optional[Timeout]): The timeout specified at
-            invocation time.
+            invocation time. If :attr:`DEFAULT`, this will be set to
+            the ``default_timeout``.
         retry (Optional[Retry]): The retry specified at invocation time.
 
     Returns:
         Optional[Timeout]: The timeout to apply to the method or ``None``.
     """
+    if specified_timeout is DEFAULT:
+        specified_timeout = default_timeout
+
     if specified_timeout is default_timeout:
         # If timeout is the default and the default timeout is exponential and
         # a non-default retry is specified, make sure the timeout's deadline
         # matches the retry's. This handles the case where the user leaves
         # the timeout default but specifies a lower deadline via the retry.
-        if retry and isinstance(default_timeout, timeout.ExponentialTimeout):
+        if (retry and retry is not DEFAULT
+                and isinstance(default_timeout, timeout.ExponentialTimeout)):
             return default_timeout.with_deadline(retry._deadline)
         else:
             return default_timeout
@@ -140,6 +148,9 @@ class _GapicCallable(object):
             kwargs.get('retry', None))
 
         retry = kwargs.pop('retry', self._retry)
+
+        if retry is DEFAULT:
+            retry = self._retry
 
         # Apply all applicable decorators.
         wrapped_func = _apply_decorators(self._target, [retry, timeout_])
