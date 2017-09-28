@@ -97,6 +97,26 @@ def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
 
 
 @mock.patch('time.sleep')
+def test_wrap_method_with_default_retry_and_timeout_using_sentinel(
+        unusued_sleep):
+    method = mock.Mock(spec=['__call__'], side_effect=[
+        exceptions.InternalServerError(None),
+        42])
+    default_retry = retry.Retry()
+    default_timeout = timeout.ConstantTimeout(60)
+    wrapped_method = google.api.core.gapic_v1.method.wrap_method(
+        method, default_retry, default_timeout)
+
+    result = wrapped_method(
+        retry=google.api.core.gapic_v1.method.DEFAULT,
+        timeout=google.api.core.gapic_v1.method.DEFAULT)
+
+    assert result == 42
+    assert method.call_count == 2
+    method.assert_called_with(timeout=60, metadata=mock.ANY)
+
+
+@mock.patch('time.sleep')
 def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
     method = mock.Mock(spec=['__call__'], side_effect=[
         exceptions.NotFound(None),
