@@ -81,9 +81,10 @@ def test_wrap_method_with_merged_metadata():
 
 @mock.patch('time.sleep')
 def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
-    method = mock.Mock(spec=['__call__'], side_effect=[
-        exceptions.InternalServerError(None),
-        42])
+    method = mock.Mock(
+        spec=['__call__'],
+        side_effect=[exceptions.InternalServerError(None), 42]
+    )
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api.core.gapic_v1.method.wrap_method(
@@ -99,9 +100,10 @@ def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
 @mock.patch('time.sleep')
 def test_wrap_method_with_default_retry_and_timeout_using_sentinel(
         unusued_sleep):
-    method = mock.Mock(spec=['__call__'], side_effect=[
-        exceptions.InternalServerError(None),
-        42])
+    method = mock.Mock(
+        spec=['__call__'],
+        side_effect=[exceptions.InternalServerError(None), 42]
+    )
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api.core.gapic_v1.method.wrap_method(
@@ -118,9 +120,10 @@ def test_wrap_method_with_default_retry_and_timeout_using_sentinel(
 
 @mock.patch('time.sleep')
 def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
-    method = mock.Mock(spec=['__call__'], side_effect=[
-        exceptions.NotFound(None),
-        42])
+    method = mock.Mock(
+        spec=['__call__'],
+        side_effect=[exceptions.NotFound(None), 42]
+    )
     default_retry = retry.Retry()
     default_timeout = timeout.ConstantTimeout(60)
     wrapped_method = google.api.core.gapic_v1.method.wrap_method(
@@ -137,8 +140,10 @@ def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
 
 @mock.patch('time.sleep')
 def test_wrap_method_with_overriding_retry_deadline(unusued_sleep):
-    method = mock.Mock(spec=['__call__'], side_effect=([
-        exceptions.InternalServerError(None)] * 3) + [42])
+    method = mock.Mock(
+        spec=['__call__'],
+        side_effect=([exceptions.InternalServerError(None)] * 3) + [42]
+    )
     default_retry = retry.Retry()
     default_timeout = timeout.ExponentialTimeout(deadline=60)
     wrapped_method = google.api.core.gapic_v1.method.wrap_method(

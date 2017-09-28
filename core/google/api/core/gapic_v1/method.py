@@ -34,6 +34,8 @@ _API_CORE_VERSION = pkg_resources.get_distribution('google-cloud-core').version
 METRICS_METADATA_KEY = 'x-goog-api-client'
 USE_DEFAULT_METADATA = object()
 DEFAULT = object()
+"""Sentinel value indicating that a retry or timeout argument was unspecified,
+so the default should be used."""
 
 
 def _is_not_none_or_false(value):
@@ -83,7 +85,8 @@ def _determine_timeout(default_timeout, specified_timeout, retry):
         default_timeout (Optional[Timeout]): The default timeout specified
             at method creation time.
         specified_timeout (Optional[Timeout]): The timeout specified at
-            invocation time.
+            invocation time. If :attr:`DEFAULT`, this will be set to
+            the ``default_timeout``.
         retry (Optional[Retry]): The retry specified at invocation time.
 
     Returns:
