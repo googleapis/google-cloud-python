@@ -16,6 +16,7 @@
 import mock
 
 from google.api.core import operation
+from google.api.core import operations_v1
 from google.longrunning import operations_pb2
 from google.protobuf import struct_pb2
 from google.rpc import code_pb2
@@ -199,6 +200,21 @@ def test_from_grpc():
 
     future = operation.from_grpc(
         operation_proto, operations_stub, struct_pb2.Struct,
+        metadata_type=struct_pb2.Struct)
+
+    assert future._result_type == struct_pb2.Struct
+    assert future._metadata_type == struct_pb2.Struct
+    assert future.operation.name == TEST_OPERATION_NAME
+    assert future.done
+
+
+def test_from_gapic():
+    operation_proto = make_operation_proto(done=True)
+    operations_client = mock.create_autospec(
+        operations_v1.OperationsClient, instance=True)
+
+    future = operation.from_gapic(
+        operation_proto, operations_client, struct_pb2.Struct,
         metadata_type=struct_pb2.Struct)
 
     assert future._result_type == struct_pb2.Struct
