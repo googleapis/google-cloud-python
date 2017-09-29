@@ -140,6 +140,22 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertIsNone(bucket.user_project)
+
+    def test_bucket_w_user_project(self):
+        from google.cloud.storage.bucket import Bucket
+
+        PROJECT = 'PROJECT'
+        USER_PROJECT = 'USER_PROJECT'
+        CREDENTIALS = _make_credentials()
+        BUCKET_NAME = 'BUCKET_NAME'
+
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        bucket = client.bucket(BUCKET_NAME, user_project=USER_PROJECT)
+        self.assertIsInstance(bucket, Bucket)
+        self.assertIs(bucket.client, client)
+        self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertEqual(bucket.user_project, USER_PROJECT)
 
     def test_batch(self):
         from google.cloud.storage.batch import Batch

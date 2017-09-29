@@ -28,6 +28,9 @@ from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
 
 
+USER_PROJECT = os.environ.get('GOOGLE_CLOUD_TESTS_USER_PROJECT')
+
+
 def _bad_copy(bad_request):
     """Predicate: pass only exceptions for a failed copyTo."""
     err_msg = bad_request.message
@@ -83,10 +86,11 @@ class TestStorageBuckets(unittest.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with Config.CLIENT.batch():
-            for bucket_name in self.case_buckets_to_delete:
-                bucket = Config.CLIENT.bucket(bucket_name)
-                retry_429(bucket.delete)()
+        if self.case_buckets_to_delete:
+            with Config.CLIENT.batch():
+                for bucket_name in self.case_buckets_to_delete:
+                    bucket = Config.CLIENT.bucket(bucket_name)
+                    retry_429(bucket.delete)()
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket' + unique_resource_id('-')
@@ -95,14 +99,6 @@ class TestStorageBuckets(unittest.TestCase):
         created = Config.CLIENT.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
-
-    def test_create_bucket_with_requester_pays(self):
-        new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
-        created = Config.CLIENT.create_bucket(
-            new_bucket_name, requester_pays=True)
-        self.case_buckets_to_delete.append(new_bucket_name)
-        self.assertEqual(created.name, new_bucket_name)
-        self.assertTrue(created.requester_pays)
 
     def test_list_buckets(self):
         buckets_to_create = [
@@ -141,6 +137,47 @@ class TestStorageBuckets(unittest.TestCase):
         bucket.labels = {}
         bucket.update()
         self.assertEqual(bucket.labels, {})
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_crud_bucket_with_requester_pays(self):
+        new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(created.name, new_bucket_name)
+        self.assertTrue(created.requester_pays)
+
+        with_up = Config.CLIENT.bucket(
+            new_bucket_name, user_project=USER_PROJECT)
+
+        # Bucket will be deleted in-line below.
+        self.case_buckets_to_delete.remove(new_bucket_name)
+
+        try:
+            # Exercise 'buckets.get' w/ userProject.
+            self.assertTrue(with_up.exists())
+            with_up.reload()
+            self.assertTrue(with_up.requester_pays)
+
+            # Exercise 'buckets.patch' w/ userProject.
+            with_up.configure_website(
+                main_page_suffix='index.html', not_found_page='404.html')
+            with_up.patch()
+            self.assertEqual(
+                with_up._properties['website'], {
+                    'mainPageSuffix': 'index.html',
+                    'notFoundPage': '404.html',
+                })
+
+            # Exercise 'buckets.update' w/ userProject.
+            new_labels = {'another-label': 'another-value'}
+            with_up.labels = new_labels
+            with_up.update()
+            self.assertEqual(with_up.labels, new_labels)
+
+        finally:
+            # Exercise 'buckets.delete' w/ userProject.
+            with_up.delete()
 
 
 class TestStorageFiles(unittest.TestCase):
