@@ -1029,6 +1029,21 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    def test__populate_view_use_legacy_sql_resource_w_existing_view(self):
+        query = 'select * from foo'
+        resource = {'view': {'query': query}}
+        client = mock.Mock(spec=[u'_credentials', '_http'])
+        client._http = mock.sentinel.http
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table = self._make_one(dataset.table(self.TABLE_NAME), client=client)
+        table.view_use_legacy_sql = True
+
+        table._populate_view_use_legacy_sql_resource(resource)
+
+        self.assertEqual(
+            resource['view']['useLegacySql'], table.view_use_legacy_sql)
+        self.assertEqual(resource['view']['query'], query)
+
     def test__get_transport(self):
         client = mock.Mock(spec=[u'_credentials', '_http'])
         client._http = mock.sentinel.http

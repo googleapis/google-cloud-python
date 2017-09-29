@@ -825,7 +825,7 @@ class TestClient(unittest.TestCase):
                 'projectId': project,
                 'datasetId': dataset_id,
                 'tableId': table_id},
-            'schema': {'fields': []}
+            'schema': []
         }
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
@@ -849,11 +849,67 @@ class TestClient(unittest.TestCase):
                 'datasetId': dataset_id,
                 'tableId': table_id
             },
-            'schema': {'fields': []}
+            'schema': None
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(req['path'], '/%s' % path)
         self.assertEqual(updated_table.schema, table.schema)
+
+    def test_update_table_delete_property(self):
+        from google.cloud.bigquery.table import Table
+
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        description = 'description'
+        title = 'title'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        resource1 = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'description': description,
+            'friendlyName': title,
+        }
+        resource2 = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'description': None,
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource1, resource2)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, client=client)
+        table.description = description
+        table.friendly_name = title
+        table2 = client.update_table(table, ['description', 'friendly_name'])
+        self.assertEqual(table2.description, table.description)
+        table2.description = None
+
+        table3 = client.update_table(table2, ['description'])
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[1]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'description': None,
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertIsNone(table3.description)
 
     def test_list_dataset_tables_empty(self):
         PROJECT = 'PROJECT'

@@ -616,7 +616,31 @@ class Table(object):
             cleaned['expirationTime'] = float(cleaned['expirationTime'])
         self._properties.update(cleaned)
 
-    def _build_resource(self, fields=[]):
+    def _populate_expires_resource(self, resource):
+        value = _millis_from_datetime(self.expires)
+        resource['expirationTime'] = value
+
+    def _populate_partitioning_type_resource(self, resource):
+        resource['timePartitioning'] = self._properties['timePartitioning']
+
+    def _populate_view_use_legacy_sql_resource(self, resource):
+        if 'view' not in resource:
+            resource['view'] = {}
+        resource['view']['useLegacySql'] = self.view_use_legacy_sql
+
+    def _populate_view_query_resource(self, resource):
+        if 'view' not in resource:
+            resource['view'] = {}
+        resource['view']['query'] = self.view_query
+
+    def _populate_schema_resource(self, resource):
+        if len(self._schema) == 0:
+            resource['schema'] = None
+        else:
+            resource['schema'] = {
+                'fields': _build_schema_resource(self._schema)}
+
+    def _build_resource(self, filter_fields=[]):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'tableReference': {
@@ -624,46 +648,30 @@ class Table(object):
                 'datasetId': self._dataset_id,
                 'tableId': self.table_id},
         }
-        if (
-                self.description is not None and fields == [] or
-                'description' in fields):
-            resource['description'] = self.description
-
-        if self.expires is not None and fields == [] or 'expires' in fields:
-            value = _millis_from_datetime(self.expires)
-            resource['expirationTime'] = value
-
-        if (
-                self.friendly_name is not None and fields == []
-                or 'friendly_name' in fields):
-            resource['friendlyName'] = self.friendly_name
-
-        if self.location is not None and fields == [] or 'location' in fields:
-            resource['location'] = self.location
-
-        if (
-                self.partitioning_type is not None and fields == []
-                or 'partitioning_type' in fields):
-            resource['timePartitioning'] = self._properties['timePartitioning']
-
-        if (
-                self.view_query is not None and fields == []
-                or 'view_query' in fields):
-            view = resource['view'] = {}
-            view['query'] = self.view_query
-
-        if (
-                self.view_use_legacy_sql is not None and fields == []
-                or 'view_use_legacy_sql' in fields):
-            if 'view' not in resource:
-                resource['view'] = {}
-            resource['view']['useLegacySql'] = self.view_use_legacy_sql
-
-        if self._schema and fields == [] or 'schema' in fields:
-            resource['schema'] = {
-                'fields': _build_schema_resource(self._schema)
-            }
-
+        custom_resource_fields = {
+            'expires': self._populate_expires_resource,
+            'partitioning_type': self._populate_partitioning_type_resource,
+            'view_query': self._populate_view_query_resource,
+            'view_use_legacy_sql': self._populate_view_use_legacy_sql_resource,
+            'schema': self._populate_schema_resource
+        }
+        all_fields = [
+            'description', 'friendly_name', 'expires', 'location',
+            'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema'
+        ]
+        for f in all_fields:
+            if filter_fields and f not in filter_fields:
+                continue
+            if getattr(self, f) in (None, []) and f not in filter_fields:
+                continue
+            if f in custom_resource_fields:
+                custom_resource_fields[f](resource)
+            else:
+                # snake case to camel case
+                words = f.split('_')
+                api_field = words[0] + ''.join(
+                    map(str.capitalize, words[1:]))
+                resource[api_field] = getattr(self, f)
         return resource
 
     def exists(self, client=None):
