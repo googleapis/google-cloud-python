@@ -506,6 +506,15 @@ class TestStorageListFiles(TestStorageFiles):
         self.assertEqual(sorted(blob.name for blob in all_blobs),
                          sorted(self.FILENAMES))
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    @RetryErrors(unittest.TestCase.failureException)
+    def test_list_files_with_user_project(self):
+        with_user_project = Config.CLIENT.bucket(
+            self.bucket.name, user_project=USER_PROJECT)
+        all_blobs = list(with_user_project.list_blobs())
+        self.assertEqual(sorted(blob.name for blob in all_blobs),
+                         sorted(self.FILENAMES))
+
     @RetryErrors(unittest.TestCase.failureException)
     def test_paginate_files(self):
         truncation_size = 1
