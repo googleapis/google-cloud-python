@@ -634,11 +634,7 @@ class Table(object):
         resource['view']['query'] = self.view_query
 
     def _populate_schema_resource(self, resource):
-        if len(self._schema) == 0:
-            resource['schema'] = None
-        else:
-            resource['schema'] = {
-                'fields': _build_schema_resource(self._schema)}
+        resource['schema'] = {'fields': _build_schema_resource(self._schema)}
 
     def _build_resource(self, filter_fields=[]):
         """Generate a resource for ``create`` or ``update``."""

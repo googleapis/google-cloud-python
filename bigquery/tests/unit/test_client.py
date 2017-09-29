@@ -812,36 +812,40 @@ class TestClient(unittest.TestCase):
     def test_update_table_w_schema_None(self):
         # Simulate deleting schema:  not sure if back-end will actually
         # allow this operation, but the spec says it is optional.
-        from google.cloud.bigquery.table import Table, SchemaField
-
         project = 'PROJECT'
         dataset_id = 'DATASET_ID'
         table_id = 'table_id'
         path = 'projects/%s/datasets/%s/tables/%s' % (
             project, dataset_id, table_id)
-        resource = {
+        resource1 = {
             'id': '%s:%s:%s' % (project, dataset_id, table_id),
             'tableReference': {
                 'projectId': project,
                 'datasetId': dataset_id,
                 'tableId': table_id},
-            'schema': []
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]}
         }
-        schema = [
-            SchemaField('full_name', 'STRING', mode='REQUIRED'),
-            SchemaField('age', 'INTEGER', mode='REQUIRED')
-        ]
+        resource2 = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id},
+            'schema': {'fields': []},
+        }
         creds = _make_credentials()
         client = self._make_one(project=project, credentials=creds)
-        conn = client._connection = _Connection(resource)
+        conn = client._connection = _Connection(resource1, resource2)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, schema=schema, client=client)
+        table = client.get_table(table_ref)
         table.schema = None
 
         updated_table = client.update_table(table, ['schema'])
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[1]
         self.assertEqual(req['method'], 'PATCH')
         sent = {
             'tableReference': {
@@ -849,7 +853,7 @@ class TestClient(unittest.TestCase):
                 'datasetId': dataset_id,
                 'tableId': table_id
             },
-            'schema': None
+            'schema': {'fields': []}
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(req['path'], '/%s' % path)
