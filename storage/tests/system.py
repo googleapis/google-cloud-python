@@ -298,6 +298,45 @@ class TestStorageWriteFiles(TestStorageFiles):
             md5_hash = md5_hash.encode('utf-8')
         self.assertEqual(md5_hash, file_data['hash'])
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_crud_blob_w_user_project(self):
+        with_user_project = Config.CLIENT.bucket(
+            self.bucket.name, user_project=USER_PROJECT)
+        blob = with_user_project.blob('SmallFile')
+
+        file_data = self.FILES['simple']
+        with open(file_data['path'], mode='rb') as to_read:
+            file_contents = to_read.read()
+
+        # Exercise 'objects.insert' w/ userProject.
+        blob.upload_from_filename(file_data['path'])
+
+        try:
+            # Exercise 'objects.get' (metadata) w/ userProject.
+            self.assertTrue(blob.exists())
+            blob.reload()
+
+            # Exercise 'objects.get' (media) w/ userProject.
+            downloaded = blob.download_as_string()
+            self.assertEqual(downloaded, file_contents)
+
+            # Exercise 'objects.patch' w/ userProject.
+            blob.content_language = 'en'
+            blob.patch()
+            self.assertEqual(blob.content_language, 'en')
+
+            # Exercise 'objects.update' w/ userProject.
+            metadata = {
+                'foo': 'Foo',
+                'bar': 'Bar',
+            }
+            blob.metadata = metadata
+            blob.update()
+            self.assertEqual(blob.metadata, metadata)
+        finally:
+            # Exercise 'objects.delete' (metadata) w/ userProject.
+            blob.delete()
+
     def test_write_metadata(self):
         filename = self.FILES['logo']['path']
         blob_name = os.path.basename(filename)
