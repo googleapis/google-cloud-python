@@ -145,7 +145,7 @@ class TestStorageBuckets(unittest.TestCase):
         self.assertEqual(created.name, new_bucket_name)
         self.assertTrue(created.requester_pays)
 
-        with_up = Config.CLIENT.bucket(
+        with_user_project = Config.CLIENT.bucket(
             new_bucket_name, user_project=USER_PROJECT)
 
         # Bucket will be deleted in-line below.
@@ -153,29 +153,67 @@ class TestStorageBuckets(unittest.TestCase):
 
         try:
             # Exercise 'buckets.get' w/ userProject.
-            self.assertTrue(with_up.exists())
-            with_up.reload()
-            self.assertTrue(with_up.requester_pays)
+            self.assertTrue(with_user_project.exists())
+            with_user_project.reload()
+            self.assertTrue(with_user_project.requester_pays)
 
             # Exercise 'buckets.patch' w/ userProject.
-            with_up.configure_website(
+            with_user_project.configure_website(
                 main_page_suffix='index.html', not_found_page='404.html')
-            with_up.patch()
+            with_user_project.patch()
             self.assertEqual(
-                with_up._properties['website'], {
+                with_user_project._properties['website'], {
                     'mainPageSuffix': 'index.html',
                     'notFoundPage': '404.html',
                 })
 
             # Exercise 'buckets.update' w/ userProject.
             new_labels = {'another-label': 'another-value'}
-            with_up.labels = new_labels
-            with_up.update()
-            self.assertEqual(with_up.labels, new_labels)
+            with_user_project.labels = new_labels
+            with_user_project.update()
+            self.assertEqual(with_user_project.labels, new_labels)
 
         finally:
             # Exercise 'buckets.delete' w/ userProject.
-            with_up.delete()
+            with_user_project.delete()
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_bucket_acls_iam_with_user_project(self):
+        new_bucket_name = 'acl-w-user-project' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        with_user_project = Config.CLIENT.bucket(
+            new_bucket_name, user_project=USER_PROJECT)
+
+        # Exercise bucket ACL w/ userProject
+        acl = with_user_project.acl
+        acl.reload()
+        acl.all().grant_read()
+        acl.save()
+        self.assertIn('READER', acl.all().get_roles())
+        del acl.entities['allUsers']
+        acl.save()
+        self.assertFalse(acl.has_entity('allUsers'))
+
+        # Exercise default object ACL w/ userProject
+        doa = with_user_project.default_object_acl
+        doa.reload()
+        doa.all().grant_read()
+        doa.save()
+        self.assertIn('READER', doa.all().get_roles())
+
+        # Exercise IAM w/ userProject
+        test_permissions = ['storage.buckets.get']
+        self.assertEqual(
+            with_user_project.test_iam_permissions(test_permissions),
+            test_permissions)
+
+        policy = with_user_project.get_iam_policy()
+        viewers = policy.setdefault('roles/storage.objectViewer', set())
+        viewers.add(policy.all_users())
+        with_user_project.set_iam_policy(policy)
 
 
 class TestStorageFiles(unittest.TestCase):
