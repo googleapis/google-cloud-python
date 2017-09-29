@@ -650,6 +650,32 @@ class TestStorageCompose(TestStorageFiles):
         composed = original.download_as_string()
         self.assertEqual(composed, BEFORE + TO_APPEND)
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_compose_with_user_project(self):
+        new_bucket_name = 'compose-user-project' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        try:
+            SOURCE_1 = b'AAA\n'
+            source_1 = created.blob('source-1')
+            source_1.upload_from_string(SOURCE_1)
+
+            SOURCE_2 = b'BBB\n'
+            source_2 = created.blob('source-2')
+            source_2.upload_from_string(SOURCE_2)
+
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            destination = with_user_project.blob('destination')
+            destination.content_type = 'text/plain'
+            destination.compose([source_1, source_2])
+
+            composed = destination.download_as_string()
+            self.assertEqual(composed, SOURCE_1 + SOURCE_2)
+        finally:
+            retry_429(created.delete)(force=True)
+
 
 class TestStorageRewrite(TestStorageFiles):
 
