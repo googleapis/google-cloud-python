@@ -387,6 +387,27 @@ class TestStorageWriteFiles(TestStorageFiles):
             # Exercise 'objects.delete' (metadata) w/ userProject.
             blob.delete()
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_blob_acl_w_user_project(self):
+        with_user_project = Config.CLIENT.bucket(
+            self.bucket.name, user_project=USER_PROJECT)
+        blob = with_user_project.blob('SmallFile')
+
+        file_data = self.FILES['simple']
+
+        blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(blob)
+
+        # Exercise bucket ACL w/ userProject
+        acl = blob.acl
+        acl.reload()
+        acl.all().grant_read()
+        acl.save()
+        self.assertIn('READER', acl.all().get_roles())
+        del acl.entities['allUsers']
+        acl.save()
+        self.assertFalse(acl.has_entity('allUsers'))
+
     def test_write_metadata(self):
         filename = self.FILES['logo']['path']
         blob_name = os.path.basename(filename)
