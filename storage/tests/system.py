@@ -215,6 +215,34 @@ class TestStorageBuckets(unittest.TestCase):
         viewers.add(policy.all_users())
         with_user_project.set_iam_policy(policy)
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_copy_existing_file_with_user_project(self):
+        new_bucket_name = 'copy-w-requester-pays' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(created.name, new_bucket_name)
+        self.assertTrue(created.requester_pays)
+
+        to_delete = []
+        blob = storage.Blob('simple', bucket=created)
+        blob.upload_from_string(b'DEADBEEF')
+        to_delete.append(blob)
+        try:
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            new_blob = retry_bad_copy(with_user_project.copy_blob)(
+                blob, with_user_project, 'simple-copy')
+            to_delete.append(new_blob)
+
+            base_contents = blob.download_as_string()
+            copied_contents = new_blob.download_as_string()
+            self.assertEqual(base_contents, copied_contents)
+        finally:
+            for blob in to_delete:
+                retry_429(blob.delete)()
+
 
 class TestStorageFiles(unittest.TestCase):
 
