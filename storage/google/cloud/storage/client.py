@@ -121,7 +121,7 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.top
 
-    def bucket(self, bucket_name):
+    def bucket(self, bucket_name, user_project=None):
         """Factory constructor for bucket object.
 
         .. note::
@@ -131,10 +131,14 @@ class Client(ClientWithProject):
         :type bucket_name: str
         :param bucket_name: The name of the bucket to be instantiated.
 
+        :type user_project: str
+        :param user_project: (Optional) the project ID to be billed for API
+                             requests made via this instance.
+
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket object created.
         """
-        return Bucket(client=self, name=bucket_name)
+        return Bucket(client=self, name=bucket_name, user_project=user_project)
 
     def batch(self):
         """Factory constructor for batch object.
