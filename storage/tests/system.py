@@ -243,6 +243,28 @@ class TestStorageBuckets(unittest.TestCase):
             for blob in to_delete:
                 retry_429(blob.delete)()
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_bucket_get_blob_with_user_project(self):
+        new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
+        data = b'DEADBEEF'
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(created.name, new_bucket_name)
+        self.assertTrue(created.requester_pays)
+
+        with_user_project = Config.CLIENT.bucket(
+            new_bucket_name, user_project=USER_PROJECT)
+
+        self.assertIsNone(with_user_project.get_blob('nonesuch'))
+        to_add = created.blob('blob-name')
+        to_add.upload_from_string(data)
+        try:
+            found = with_user_project.get_blob('blob-name')
+            self.assertEqual(found.download_as_string(), data)
+        finally:
+            to_add.delete()
+
 
 class TestStorageFiles(unittest.TestCase):
 
