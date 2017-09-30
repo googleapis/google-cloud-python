@@ -1327,36 +1327,84 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
-    def test_run_async_query_defaults(self):
+    def test_query_defaults(self):
         from google.cloud.bigquery.job import QueryJob
 
         PROJECT = 'PROJECT'
-        JOB = 'job_name'
         QUERY = 'select count(*) from persons'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'some-random-id',
+            },
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                    'useLegacySql': False,
+                },
+            },
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        job = client.run_async_query(JOB, QUERY)
+        conn = client._connection = _Connection(RESOURCE)
+
+        job = client.query(QUERY)
+
         self.assertIsInstance(job, QueryJob)
+        self.assertIsInstance(job.job_id, six.string_types)
         self.assertIs(job._client, client)
-        self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.query, QUERY)
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(job.query_parameters, [])
 
-    def test_run_async_w_udf_resources(self):
+        # Check that query actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        sent = req['data']
+        self.assertIsInstance(
+            sent['jobReference']['jobId'], six.string_types)
+        sent_config = sent['configuration']['query']
+        self.assertEqual(sent_config['query'], QUERY)
+        self.assertFalse(sent_config['useLegacySql'])
+
+    def test_query_w_udf_resources(self):
         from google.cloud.bigquery._helpers import UDFResource
         from google.cloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import QueryJobConfig
 
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                    'useLegacySql': True,
+                    'userDefinedFunctionResources': [
+                        {'resourceUri': RESOURCE_URI},
+                    ],
+                },
+            },
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(RESOURCE)
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        job = client.run_async_query(JOB, QUERY, udf_resources=udf_resources)
+        config = QueryJobConfig()
+        config.udf_resources = udf_resources
+        config.use_legacy_sql = True
+
+        job = client.query(QUERY, job_config=config, job_id=JOB)
+
         self.assertIsInstance(job, QueryJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)
@@ -1364,25 +1412,82 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.udf_resources, udf_resources)
         self.assertEqual(job.query_parameters, [])
 
-    def test_run_async_w_query_parameters(self):
+        # Check that query actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        sent = req['data']
+        self.assertIsInstance(
+            sent['jobReference']['jobId'], six.string_types)
+        sent_config = sent['configuration']['query']
+        self.assertEqual(sent_config['query'], QUERY)
+        self.assertTrue(sent_config['useLegacySql'])
+        self.assertEqual(
+            sent_config['userDefinedFunctionResources'][0],
+            {'resourceUri': RESOURCE_URI})
+
+    def test_query_w_query_parameters(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery.job import QueryJob
+        from google.cloud.bigquery.job import QueryJobConfig
 
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                    'useLegacySql': False,
+                    'queryParameters': [
+                        {
+                            'name': 'foo',
+                            'parameterType': {'type': 'INT64'},
+                            'parameterValue': {'value': '123'}
+                        },
+                    ],
+                },
+            },
+        }
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(RESOURCE)
         query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
-        job = client.run_async_query(JOB, QUERY,
-                                     query_parameters=query_parameters)
+        config = QueryJobConfig()
+        config.query_parameters = query_parameters
+
+        job = client.query(QUERY, job_config=config, job_id=JOB)
+
         self.assertIsInstance(job, QueryJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)
         self.assertEqual(job.query, QUERY)
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(job.query_parameters, query_parameters)
+
+        # Check that query actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        sent = req['data']
+        self.assertEqual(sent['jobReference']['jobId'], JOB)
+        sent_config = sent['configuration']['query']
+        self.assertEqual(sent_config['query'], QUERY)
+        self.assertFalse(sent_config['useLegacySql'])
+        self.assertEqual(
+            sent_config['queryParameters'][0],
+            {
+                'name': 'foo',
+                'parameterType': {'type': 'INT64'},
+                'parameterValue': {'value': '123'}
+            })
 
     def test_query_rows_defaults(self):
         from google.api.core.page_iterator import HTTPIterator

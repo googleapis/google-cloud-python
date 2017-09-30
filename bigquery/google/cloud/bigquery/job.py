@@ -29,17 +29,15 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import AbstractQueryParameter
 from google.cloud.bigquery._helpers import ArrayQueryParameter
-from google.cloud.bigquery._helpers import QueryParametersProperty
 from google.cloud.bigquery._helpers import ScalarQueryParameter
 from google.cloud.bigquery._helpers import StructQueryParameter
 from google.cloud.bigquery._helpers import UDFResource
-from google.cloud.bigquery._helpers import UDFResourcesProperty
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
-from google.cloud.bigquery._helpers import _EnumProperty
+from google.cloud.bigquery._helpers import _ListApiResourceProperty
 from google.cloud.bigquery._helpers import _query_param_from_api_repr
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
-from google.cloud.bigquery._helpers import _TypedProperty
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
@@ -129,7 +127,7 @@ class Encoding(_EnumApiResourceProperty):
     ISO_8559_1 = 'ISO-8559-1'
 
 
-class QueryPriority(_EnumProperty):
+class QueryPriority(_EnumApiResourceProperty):
     """Pseudo-enum for ``QueryJob.priority`` property."""
     INTERACTIVE = 'INTERACTIVE'
     BATCH = 'BATCH'
@@ -1181,12 +1179,44 @@ class ExtractJob(_AsyncJob):
         return job
 
 
+def _from_api_repr_query_parameters(resource):
+    return [
+        _query_param_from_api_repr(mapping)
+        for mapping in resource
+    ]
+
+
+def _to_api_repr_query_parameters(value):
+    return [
+        query_parameter.to_api_repr()
+        for query_parameter in value
+    ]
+
+
+def _from_api_repr_udf_resources(resource):
+    udf_resources = []
+    for udf_mapping in resource:
+        for udf_type, udf_value in udf_mapping.items():
+            udf_resources.append(UDFResource(udf_type, udf_value))
+    return udf_resources
+
+
+def _to_api_repr_udf_resources(value):
+    return [
+        {udf_resource.udf_type: udf_resource.value}
+        for udf_resource in value
+    ]
+
+
 class QueryJobConfig(object):
     """Configuration options for query jobs.
 
     All properties in this class are optional. Values which are ``None`` ->
     server defaults.
     """
+
+    _QUERY_PARAMETERS_KEY = 'queryParameters'
+    _UDF_RESOURCES_KEY = 'userDefinedFunctionResources'
 
     def __init__(self):
         self._properties = {}
@@ -1197,7 +1227,24 @@ class QueryJobConfig(object):
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        return copy.deepcopy(self._properties)
+        resource = copy.deepcopy(self._properties)
+
+        # Query parameters have an addition property associated with them
+        # to indicate if the query is using named or positional parameters.
+        query_parameters = resource.get(self._QUERY_PARAMETERS_KEY)
+        if query_parameters:
+            if query_parameters[0].name is None:
+                resource['parameterMode'] = 'POSITIONAL'
+            else:
+                resource['parameterMode'] = 'NAMED'
+
+        for prop, convert in self._NESTED_PROPERTIES.items():
+            _, to_resource = convert
+            nested_resource = resource.get(prop)
+            if nested_resource is not None:
+                resource[prop] = to_resource(nested_resource)
+
+        return resource
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -1213,13 +1260,37 @@ class QueryJobConfig(object):
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
+
+        for prop, convert in cls._NESTED_PROPERTIES.items():
+            from_resource, _ = convert
+            nested_resource = resource.get(prop)
+            if nested_resource is not None:
+                config._properties[prop] = from_resource(nested_resource)
+
         return config
 
-    use_legacy_sql = _TypedApiResourceProperty(
-        'use_legacy_sql', 'useLegacySql', bool)
+    allow_large_results = _TypedApiResourceProperty(
+        'allow_large_results', 'allowLargeResults', bool)
     """See
-    https://cloud.google.com/bigquery/docs/\
-    reference/v2/jobs#configuration.query.useLegacySql
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
+    """
+
+    create_disposition = CreateDisposition(
+        'create_disposition', 'createDisposition')
+    """See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
+    """
+
+    default_dataset = _TypedApiResourceProperty(
+        'default_dataset', 'defaultDataset', DatasetReference)
+    """See
+    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
+    """
+
+    destination = _TypedApiResourceProperty(
+        'destination', 'destinationTable', TableReference)
+    """See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
     """
 
     dry_run = _TypedApiResourceProperty('dry_run', 'dryRun', bool)
@@ -1227,17 +1298,82 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun
     """
 
-    _allow_large_results = None
-    _create_disposition = None
-    _default_dataset = None
-    _destination = None
-    _flatten_results = None
-    _priority = None
-    _use_query_cache = None
-    _use_legacy_sql = None
-    _write_disposition = None
+    flatten_results = _TypedApiResourceProperty(
+        'flatten_results', 'flattenResults', bool)
+    """See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults
+    """
+
+    maximum_billing_tier = _TypedApiResourceProperty(
+        'maximum_billing_tier', 'maximumBillingTier', int)
+    """See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
+    """
+
+    maximum_bytes_billed = _TypedApiResourceProperty(
+        'maximum_bytes_billed', 'maximumBytesBilled', int)
+    """See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
+    """
+
+    priority = QueryPriority('priority', 'priority')
+    """See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
+    """
+
+    query_parameters = _ListApiResourceProperty(
+        'query_parameters', _QUERY_PARAMETERS_KEY, AbstractQueryParameter)
+    """
+    An list of
+    :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
+    (empty by default)
+
+    See:
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
+    """
+
+    udf_resources = _ListApiResourceProperty(
+        'udf_resources', _UDF_RESOURCES_KEY, UDFResource)
+    """
+    A list of :class:`google.cloud.bigquery._helpers.UDFResource` (empty
+    by default)
+
+    See:
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources
+    """
+
+    use_legacy_sql = _TypedApiResourceProperty(
+        'use_legacy_sql', 'useLegacySql', bool)
+    """See
+    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.useLegacySql
+    """
+
+    use_query_cache = _TypedApiResourceProperty(
+        'use_query_cache', 'useQueryCache', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
+    """
+
+    write_disposition = WriteDisposition(
+        'write_disposition', 'writeDisposition')
+    """See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
+    """
+
     _maximum_billing_tier = None
     _maximum_bytes_billed = None
+
+    _NESTED_PROPERTIES = {
+        'defaultDataset': (
+            DatasetReference.from_api_repr, DatasetReference.to_api_repr),
+        'destinationTable': (
+            TableReference.from_api_repr, TableReference.to_api_repr),
+        'maximumBytesBilled': (int, str),
+        _QUERY_PARAMETERS_KEY: (
+            _from_api_repr_query_parameters, _to_api_repr_query_parameters),
+        _UDF_RESOURCES_KEY: (
+            _from_api_repr_udf_resources, _to_api_repr_udf_resources),
+    }
 
 
 class QueryJob(_AsyncJob):
@@ -1253,53 +1389,52 @@ class QueryJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-    :type udf_resources: tuple
-    :param udf_resources: An iterable of
-                        :class:`google.cloud.bigquery._helpers.UDFResource`
-                        (empty by default)
-
-    :type query_parameters: tuple
-    :param query_parameters:
-        An iterable of
-        :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
-        (empty by default)
-
     :type job_config: :class:`~google.cloud.bigquery.job.QueryJobConfig`
     :param job_config:
         (Optional) Extra configuration options for the query job.
     """
     _JOB_TYPE = 'query'
     _UDF_KEY = 'userDefinedFunctionResources'
-    _QUERY_PARAMETERS_KEY = 'queryParameters'
 
-    def __init__(self, job_id, query, client,
-                 udf_resources=(), query_parameters=(), job_config=None):
+    def __init__(self, job_id, query, client, job_config=None):
         super(QueryJob, self).__init__(job_id, client)
 
         if job_config is None:
             job_config = QueryJobConfig()
+        if job_config.use_legacy_sql is None:
+            job_config.use_legacy_sql = False
 
         self.query = query
-        self.udf_resources = udf_resources
-        self.query_parameters = query_parameters
         self._configuration = job_config
         self._query_results = None
 
     @property
-    def use_legacy_sql(self):
+    def allow_large_results(self):
         """See
-        :class:`~google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql`.
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.allow_large_results`.
         """
-        return self._configuration.use_legacy_sql
+        return self._configuration.allow_large_results
 
-    @use_legacy_sql.setter
-    def use_legacy_sql(self, value):
+    @property
+    def create_disposition(self):
         """See
-        :class:`~google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql`.
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.create_disposition`.
         """
-        # TODO(swast): remove this method and only allow setting use_legacy_sql
-        #              on QueryJobConfig objects.
-        self._configuration.use_legacy_sql = value
+        return self._configuration.create_disposition
+
+    @property
+    def default_dataset(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.default_dataset`.
+        """
+        return self._configuration.default_dataset
+
+    @property
+    def destination(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.destination`.
+        """
+        return self._configuration.destination
 
     @property
     def dry_run(self):
@@ -1308,130 +1443,68 @@ class QueryJob(_AsyncJob):
         """
         return self._configuration.dry_run
 
-    @dry_run.setter
-    def dry_run(self, value):
+    @property
+    def flatten_results(self):
         """See
-        :class:`~google.cloud.bigquery.job.QueryJobConfig.dry_run`.
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.flatten_results`.
         """
-        # TODO(swast): remove this method and only allow setting dry_run
-        #              on QueryJobConfig objects.
-        self._configuration.dry_run = value
+        return self._configuration.flatten_results
 
-    allow_large_results = _TypedProperty('allow_large_results', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
-    """
-
-    create_disposition = CreateDisposition('create_disposition',
-                                           'createDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
-    """
-
-    default_dataset = _TypedProperty('default_dataset', DatasetReference)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.defaultDataset
-    """
-
-    destination = _TypedProperty('destination', TableReference)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
-    """
-
-    flatten_results = _TypedProperty('flatten_results', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.flattenResults
-    """
-
-    priority = QueryPriority('priority')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
-    """
-
-    query_parameters = QueryParametersProperty()
-
-    udf_resources = UDFResourcesProperty()
-
-    use_query_cache = _TypedProperty('use_query_cache', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.useQueryCache
-    """
-
-    write_disposition = WriteDisposition(
-        'write_disposition', 'writeDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
-    """
-
-    maximum_billing_tier = _TypedProperty('maximum_billing_tier', int)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
-    """
-
-    maximum_bytes_billed = _TypedProperty('maximum_bytes_billed', int)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
-    """
-
-    def _destination_table_resource(self):
-        """Create a JSON resource for the destination table.
-
-        Helper for :meth:`_populate_config_resource` and
-        :meth:`_scrub_local_properties`
+    @property
+    def priority(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.priority`.
         """
-        if self.destination is not None:
-            return {
-                'projectId': self.destination.project,
-                'datasetId': self.destination.dataset_id,
-                'tableId': self.destination.table_id,
-            }
+        return self._configuration.priority
 
-    def _populate_config_resource_booleans(self, configuration):
-        """Helper for _populate_config_resource."""
-        if self.allow_large_results is not None:
-            configuration['allowLargeResults'] = self.allow_large_results
-        if self.flatten_results is not None:
-            configuration['flattenResults'] = self.flatten_results
-        if self.use_query_cache is not None:
-            configuration['useQueryCache'] = self.use_query_cache
+    @property
+    def query_parameters(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.query_parameters`.
+        """
+        return self._configuration.query_parameters
 
-    def _populate_config_resource(self, configuration):
-        """Helper for _build_resource: copy config properties to resource"""
-        self._populate_config_resource_booleans(configuration)
+    @property
+    def udf_resources(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.udf_resources`.
+        """
+        return self._configuration.udf_resources
 
-        if self.create_disposition is not None:
-            configuration['createDisposition'] = self.create_disposition
-        if self.default_dataset is not None:
-            configuration['defaultDataset'] = {
-                'projectId': self.default_dataset.project,
-                'datasetId': self.default_dataset.dataset_id,
-            }
-        table_res = self._destination_table_resource()
-        if table_res is not None:
-            configuration['destinationTable'] = table_res
-        if self.priority is not None:
-            configuration['priority'] = self.priority
-        if self.write_disposition is not None:
-            configuration['writeDisposition'] = self.write_disposition
-        if self.maximum_billing_tier is not None:
-            configuration['maximumBillingTier'] = self.maximum_billing_tier
-        if self.maximum_bytes_billed is not None:
-            configuration['maximumBytesBilled'] = str(
-                self.maximum_bytes_billed)
-        if len(self._udf_resources) > 0:
-            configuration[self._UDF_KEY] = [
-                {udf_resource.udf_type: udf_resource.value}
-                for udf_resource in self._udf_resources
-            ]
-        if len(self._query_parameters) > 0:
-            configuration[self._QUERY_PARAMETERS_KEY] = [
-                query_parameter.to_api_repr()
-                for query_parameter in self._query_parameters
-            ]
-            if self._query_parameters[0].name is None:
-                configuration['parameterMode'] = 'POSITIONAL'
-            else:
-                configuration['parameterMode'] = 'NAMED'
+    @property
+    def use_legacy_sql(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql`.
+        """
+        return self._configuration.use_legacy_sql
+
+    @property
+    def use_query_cache(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.use_query_cache`.
+        """
+        return self._configuration.use_query_cache
+
+    @property
+    def write_disposition(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.write_disposition`.
+        """
+        return self._configuration.write_disposition
+
+    @property
+    def maximum_billing_tier(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier`.
+        """
+        return self._configuration.maximum_billing_tier
+
+    @property
+    def maximum_bytes_billed(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed`.
+        """
+        return self._configuration.maximum_bytes_billed
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
@@ -1455,7 +1528,6 @@ class QueryJob(_AsyncJob):
             resource['configuration']['dryRun'] = dry_run
 
         configuration['query'] = self.query
-        self._populate_config_resource(configuration)
 
         return resource
 
@@ -1483,42 +1555,6 @@ class QueryJob(_AsyncJob):
         dry_run = self.dry_run
         self._configuration = QueryJobConfig.from_api_repr(configuration)
         self._configuration.dry_run = dry_run
-
-        self.allow_large_results = _bool_or_none(
-            configuration.get('allowLargeResults'))
-        self.flatten_results = _bool_or_none(
-            configuration.get('flattenResults'))
-        self.use_query_cache = _bool_or_none(
-            configuration.get('useQueryCache'))
-
-        self.create_disposition = configuration.get('createDisposition')
-        self.priority = configuration.get('priority')
-        self.write_disposition = configuration.get('writeDisposition')
-        self.maximum_billing_tier = configuration.get('maximumBillingTier')
-        self.maximum_bytes_billed = _int_or_none(
-            configuration.get('maximumBytesBilled'))
-
-        dest_remote = configuration.get('destinationTable')
-
-        if dest_remote is not None:
-            dataset = DatasetReference(
-                dest_remote['projectId'], dest_remote['datasetId'])
-            self.destination = dataset.table(dest_remote['tableId'])
-
-        def_ds = configuration.get('defaultDataset')
-        if def_ds is not None:
-            self.default_dataset = DatasetReference(
-                def_ds['projectId'], def_ds['datasetId'])
-        udf_resources = []
-        for udf_mapping in configuration.get(self._UDF_KEY, ()):
-            key_val, = udf_mapping.items()
-            udf_resources.append(UDFResource(key_val[0], key_val[1]))
-        self._udf_resources = udf_resources
-
-        self._query_parameters = [
-            _query_param_from_api_repr(mapping)
-            for mapping in configuration.get(self._QUERY_PARAMETERS_KEY, ())
-        ]
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -1708,6 +1744,7 @@ class QueryJob(_AsyncJob):
         """
         if not self._query_results:
             self._query_results = self._client._get_query_results(self.job_id)
+            self._query_results._job = self
         return self._query_results
 
     def done(self):
@@ -1720,6 +1757,7 @@ class QueryJob(_AsyncJob):
         # change once complete.
         if self.state != _DONE_STATE:
             self._query_results = self._client._get_query_results(self.job_id)
+            self._query_results._job = self
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
