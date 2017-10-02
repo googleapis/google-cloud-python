@@ -51,7 +51,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'googleapis-common-protos >= 1.3.4',
+    'googleapis-common-protos[grpc] >= 1.5.3, < 2.0dev',
     'protobuf >= 3.0.0',
     'google-auth >= 0.4.0, < 2.0.0dev',
     'requests >= 2.18.0, < 3.0.0dev',
