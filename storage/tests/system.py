@@ -439,7 +439,7 @@ class TestStorageSignURLs(TestStorageFiles):
 
     def test_create_signed_read_url(self):
         blob = self.bucket.blob('LogoToSign.jpg')
-        expiration = int(time.time() + 5)
+        expiration = int(time.time() + 10)
         signed_url = blob.generate_signed_url(expiration, method='GET',
                                               client=Config.CLIENT)
 
