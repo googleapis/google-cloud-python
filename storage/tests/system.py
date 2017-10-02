@@ -82,11 +82,15 @@ class TestStorageBuckets(unittest.TestCase):
     def setUp(self):
         self.case_buckets_to_delete = []
 
-    def tearDown(self):
+    def _delete_buckets(self):
         with Config.CLIENT.batch():
             for bucket_name in self.case_buckets_to_delete:
                 bucket = Config.CLIENT.bucket(bucket_name)
-                retry_429(bucket.delete)()
+                if bucket.exists():
+                    bucket.delete()
+
+    def tearDown(self):
+        retry_429(self._delete_buckets)()
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket' + unique_resource_id('-')
