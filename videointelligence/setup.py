@@ -38,7 +38,6 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=(
-        'googleapis-common-protos >= 1.5.3, < 2.0dev',
         'google-gax >= 0.15.14, < 0.16dev',
         'six >= 1.10.0',
     ),
