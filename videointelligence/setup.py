@@ -39,6 +39,7 @@ setup(
     packages=find_packages(exclude=('tests*',)),
     install_requires=(
         'google-gax >= 0.15.14, < 0.16dev',
+        'grpcio >= 1.2.0, < 1.6dev',
         'six >= 1.10.0',
     ),
     url='https://github.com/GoogleCloudPlatform/google-cloud-python',
