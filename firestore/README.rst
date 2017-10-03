@@ -5,8 +5,6 @@ Python Client for Google Cloud Firestore
 
 .. _Cloud Firestore: https://cloud.google.com/firestore/docs/
 
-|pypi| |versions|
-
 -  `Documentation`_
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/firestore/client.html
