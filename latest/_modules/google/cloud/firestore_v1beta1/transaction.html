@@ -1,0 +1,550 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.firestore_v1beta1.transaction &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.firestore_v1beta1.transaction</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Helpers for applying Google Cloud Firestore changes in a transaction.&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">google.gax.errors</span>
+<span class="kn">import</span> <span class="nn">google.gax.grpc</span>
+<span class="kn">import</span> <span class="nn">grpc</span>
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">batch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">types</span>
+
+
+<span class="n">MAX_ATTEMPTS</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="sd">&quot;&quot;&quot;int: Default number of transaction attempts (with retries).&quot;&quot;&quot;</span>
+<span class="n">_CANT_BEGIN</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;The transaction has already begun. Current transaction ID: </span><span class="si">{!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+<span class="n">_MISSING_ID_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;The transaction has no transaction ID, so it cannot be </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span>
+<span class="n">_CANT_ROLLBACK</span> <span class="o">=</span> <span class="n">_MISSING_ID_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;rolled back&#39;</span><span class="p">)</span>
+<span class="n">_CANT_COMMIT</span> <span class="o">=</span> <span class="n">_MISSING_ID_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;committed&#39;</span><span class="p">)</span>
+<span class="n">_WRITE_READ_ONLY</span> <span class="o">=</span> <span class="s1">&#39;Cannot perform write operation in read-only transaction.&#39;</span>
+<span class="n">_INITIAL_SLEEP</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="sd">&quot;&quot;&quot;float: Initial &quot;max&quot; for sleep interval. To be used in :func:`_sleep`.&quot;&quot;&quot;</span>
+<span class="n">_MAX_SLEEP</span> <span class="o">=</span> <span class="mf">30.0</span>
+<span class="sd">&quot;&quot;&quot;float: Eventual &quot;max&quot; sleep time. To be used in :func:`_sleep`.&quot;&quot;&quot;</span>
+<span class="n">_MULTIPLIER</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="sd">&quot;&quot;&quot;float: Multiplier for exponential backoff. To be used in :func:`_sleep`.&quot;&quot;&quot;</span>
+<span class="n">_EXCEED_ATTEMPTS_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;Failed to commit transaction in </span><span class="si">{:d}</span><span class="s1"> attempts.&#39;</span>
+<span class="n">_CANT_RETRY_READ_ONLY</span> <span class="o">=</span> <span class="s1">&#39;Only read-write transactions can be retried.&#39;</span>
+
+
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../../firestore/transaction.html#google.cloud.firestore_v1beta1.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">WriteBatch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Accumulate read-and-write operations to be sent in a transaction.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (~.firestore_v1beta1.client.Client): The client that</span>
+<span class="sd">            created this transaction.</span>
+<span class="sd">        max_attempts (Optional[int]): The maximum number of attempts for</span>
+<span class="sd">            the transaction (i.e. allowing retries). Defaults to</span>
+<span class="sd">            :attr:`~.firestore_v1beta1.transaction.MAX_ATTEMPTS`.</span>
+<span class="sd">        read_only (Optional[bool]): Flag indicating if the transaction</span>
+<span class="sd">            should be read-only or should allow writes. Defaults to</span>
+<span class="sd">            :data:`False`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="n">MAX_ATTEMPTS</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_attempts</span> <span class="o">=</span> <span class="n">max_attempts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span> <span class="o">=</span> <span class="n">read_only</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_add_write_pbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pbs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add `Write`` protobufs to this transaction.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            write_pbs (List[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">                write_pb2.Write]): A list of write protobufs to be added.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If this transaction is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_WRITE_READ_ONLY</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_add_write_pbs</span><span class="p">(</span><span class="n">write_pbs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_options_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert the current object to protobuf.</span>
+
+<span class="sd">        The ``retry_id`` value is used when retrying a transaction that</span>
+<span class="sd">        failed (e.g. due to contention). It is intended to be the &quot;first&quot;</span>
+<span class="sd">        transaction that failed (i.e. if multiple retries are needed).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            retry_id (Union[bytes, NoneType]): Transaction ID of a transaction</span>
+<span class="sd">                to be retried.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[google.cloud.firestore_v1beta1.types.TransactionOptions]:</span>
+<span class="sd">            The protobuf ``TransactionOptions`` if ``read_only==True`` or if</span>
+<span class="sd">            there is a transaction ID to be retried, else :data:`None`.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``retry_id`` is not :data:`None` but the</span>
+<span class="sd">                transaction is read-only.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">retry_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_CANT_RETRY_READ_ONLY</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="p">(</span>
+                <span class="n">read_write</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadWrite</span><span class="p">(</span>
+                    <span class="n">retry_transaction</span><span class="o">=</span><span class="n">retry_id</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="p">(</span>
+                <span class="n">read_only</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadOnly</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">in_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine if this transaction has already begun.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Indicates if the transaction has started.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the current transaction ID.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[bytes]: The transaction ID (or :data:`None` if the</span>
+<span class="sd">            current transaction is not in progress).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+
+    <span class="k">def</span> <span class="nf">_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Begin the transaction.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            retry_id (Optional[bytes]): Transaction ID of a transaction to be</span>
+<span class="sd">                retried.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the current transaction has already begun.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_progress</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_CANT_BEGIN</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">transaction_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span>
+            <span class="n">options_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_options_protobuf</span><span class="p">(</span><span class="n">retry_id</span><span class="p">),</span>
+            <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_call_options</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">transaction_response</span><span class="o">.</span><span class="n">transaction</span>
+
+    <span class="k">def</span> <span class="nf">_clean_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clean up the instance after :meth:`_rollback`` or :meth:`_commit``.</span>
+
+<span class="sd">        This intended to occur on success or failure of the associated RPCs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_pbs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Roll back the transaction.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If no transaction is in progress.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_progress</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_CANT_ROLLBACK</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># NOTE: The response is just ``google.protobuf.Empty``.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span>
+                <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_call_options</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clean_up</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transactionally commit the changes accumulated.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">                write_pb2.WriteResult, ...]: The write results corresponding</span>
+<span class="sd">            to the changes committed, returned in the same order as the</span>
+<span class="sd">            changes were applied to this transaction. A write result contains</span>
+<span class="sd">            an ``update_time`` field.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If no transaction is in progress.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_progress</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_CANT_COMMIT</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">remap_gax_error_on_commit</span><span class="p">():</span>
+            <span class="n">commit_response</span> <span class="o">=</span> <span class="n">_commit_with_retry</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clean_up</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">commit_response</span><span class="o">.</span><span class="n">write_results</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">_Transactional</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Provide a callable object to use as a transactional decorater.</span>
+
+<span class="sd">    This is surfaced via</span>
+<span class="sd">    :func:`~.firestore_v1beta1.transaction.transactional`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_wrap (Callable[~.firestore_v1beta1.transaction.Transaction, \</span>
+<span class="sd">            Any]): A callable that should be run (and retried) in a</span>
+<span class="sd">            transaction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_wrap</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_wrap</span> <span class="o">=</span> <span class="n">to_wrap</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Optional[bytes]: The current transaction ID.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retry_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Optional[bytes]: The ID of the first attempted transaction.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Unset the transaction IDs.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retry_id</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_pre_commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Begin transaction and call the wrapped callable.</span>
+
+<span class="sd">        If the callable raises an exception, the transaction will be rolled</span>
+<span class="sd">        back. If not, the transaction will be &quot;ready&quot; for ``Commit`` (i.e.</span>
+<span class="sd">        it will have staged writes).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transaction (~.firestore_v1beta1.transaction.Transaction): A</span>
+<span class="sd">                transaction to execute the callable within.</span>
+<span class="sd">            args (Tuple[Any, ...]): The extra positional arguments to pass</span>
+<span class="sd">                along to the wrapped callable.</span>
+<span class="sd">            kwargs (Dict[str, Any]): The extra keyword arguments to pass</span>
+<span class="sd">                along to the wrapped callable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: result of the wrapped callable.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: Any failure caused by ``to_wrap``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Force the ``transaction`` to be not &quot;in progress&quot;.</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">_clean_up</span><span class="p">()</span>
+        <span class="n">transaction</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retry_id</span><span class="p">)</span>
+
+        <span class="c1"># Update the stored transaction IDs.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">_id</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">retry_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">retry_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_id</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_wrap</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c1"># NOTE: If ``rollback`` fails this will lose the information</span>
+            <span class="c1">#       from the original failure.</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="n">_rollback</span><span class="p">()</span>
+            <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">_maybe_commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Try to commit the transaction.</span>
+
+<span class="sd">        If the transaction is read-write and the ``Commit`` fails with the</span>
+<span class="sd">        ``ABORTED`` status code, it will be retried. Any other failure will</span>
+<span class="sd">        not be caught.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transaction (~.firestore_v1beta1.transaction.Transaction): The</span>
+<span class="sd">                transaction to be ``Commit``-ed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Indicating if the commit succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">transaction</span><span class="o">.</span><span class="n">_commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transaction</span><span class="o">.</span><span class="n">_read_only</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="n">status_code</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span>
+            <span class="c1"># If a read-write transaction returns ABORTED, retry.</span>
+            <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Execute the wrapped callable within a transaction.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transaction (~.firestore_v1beta1.transaction.Transaction): A</span>
+<span class="sd">                transaction to execute the callable within.</span>
+<span class="sd">            args (Tuple[Any, ...]): The extra positional arguments to pass</span>
+<span class="sd">                along to the wrapped callable.</span>
+<span class="sd">            kwargs (Dict[str, Any]): The extra keyword arguments to pass</span>
+<span class="sd">                along to the wrapped callable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: The result of the wrapped callable.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the transaction does not succeed in</span>
+<span class="sd">                ``max_attempts``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">xrange</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">_max_attempts</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pre_commit</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">succeeded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_commit</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">succeeded</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">result</span>
+
+            <span class="c1"># Subsequent requests will use the failed transaction ID as part of</span>
+            <span class="c1"># the ``BeginTransactionRequest`` when restarting this transaction</span>
+            <span class="c1"># (via ``options.retry_transaction``). This preserves the &quot;spot in</span>
+            <span class="c1"># line&quot; of the transaction, so exponential backoff is not required</span>
+            <span class="c1"># in this case.</span>
+
+        <span class="n">transaction</span><span class="o">.</span><span class="n">_rollback</span><span class="p">()</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_EXCEED_ATTEMPTS_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">transaction</span><span class="o">.</span><span class="n">_max_attempts</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="transactional"><a class="viewcode-back" href="../../../../firestore/transaction.html#google.cloud.firestore_v1beta1.transaction.transactional">[docs]</a><span class="k">def</span> <span class="nf">transactional</span><span class="p">(</span><span class="n">to_wrap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorate a callable so that it runs in a transaction.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        to_wrap (Callable[~.firestore_v1beta1.transaction.Transaction, \</span>
+<span class="sd">            Any]): A callable that should be run (and retried) in a</span>
+<span class="sd">            transaction.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[~.firestore_v1beta1.transaction.Transaction, Any]: the</span>
+<span class="sd">        wrapped callable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_Transactional</span><span class="p">(</span><span class="n">to_wrap</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_commit_with_retry</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">write_pbs</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call ``Commit`` on the GAPIC client with retry / sleep.</span>
+
+<span class="sd">    This function is **distinct** from</span>
+<span class="sd">    :func:`~.firestore_v1beta1._helpers.remap_gax_error_on_commit` in</span>
+<span class="sd">    that it does not seek to re-wrap exceptions, it just seeks to retry.</span>
+
+<span class="sd">    Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level</span>
+<span class="sd">    retry is handled by the underlying GAPICd client, but in this case it</span>
+<span class="sd">    doesn&#39;t because ``Commit`` is not always idempotent. But here we know it</span>
+<span class="sd">    is &quot;idempotent&quot;-like because it has a transaction ID. We also need to do</span>
+<span class="sd">    our own retry to special-case the ``INVALID_ARGUMENT`` error.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (~.firestore_v1beta1.client.Client): A client with</span>
+<span class="sd">            GAPIC client and configuration details.</span>
+<span class="sd">        write_pbs (List[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            write_pb2.Write, ...]): A ``Write`` protobuf instance to</span>
+<span class="sd">            be committed.</span>
+<span class="sd">        transaction_id (bytes): ID of an existing transaction that</span>
+<span class="sd">            this commit will run in.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        google.cloud.firestore_v1beta1.types.CommitResponse:</span>
+<span class="sd">        The protobuf response from ``Commit``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ~google.gax.errors.GaxError: If a non-retryable exception</span>
+<span class="sd">            is encountered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">current_sleep</span> <span class="o">=</span> <span class="n">_INITIAL_SLEEP</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
+                <span class="n">client</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">write_pbs</span><span class="p">,</span>
+                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">,</span>
+                <span class="n">options</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_call_options</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">status_code</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">status_code</span> <span class="o">==</span> <span class="n">grpc</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="p">:</span>
+                <span class="k">pass</span>  <span class="c1"># Retry</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+        <span class="n">current_sleep</span> <span class="o">=</span> <span class="n">_sleep</span><span class="p">(</span><span class="n">current_sleep</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_sleep</span><span class="p">(</span><span class="n">current_sleep</span><span class="p">,</span> <span class="n">max_sleep</span><span class="o">=</span><span class="n">_MAX_SLEEP</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="n">_MULTIPLIER</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sleep and produce a new sleep time.</span>
+
+<span class="sd">    .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\</span>
+<span class="sd">                                        2015/03/backoff.html</span>
+
+<span class="sd">    Select a duration between zero and ``current_sleep``. It might seem</span>
+<span class="sd">    counterintuitive to have so much jitter, but</span>
+<span class="sd">    `Exponential Backoff And Jitter`_ argues that &quot;full jitter&quot; is</span>
+<span class="sd">    the best strategy.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        current_sleep (float): The current &quot;max&quot; for sleep interval.</span>
+<span class="sd">        max_sleep (Optional[float]): Eventual &quot;max&quot; sleep time</span>
+<span class="sd">        multiplier (Optional[float]): Multiplier for exponential backoff.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Newly doubled ``current_sleep`` or ``max_sleep`` (whichever</span>
+<span class="sd">        is smaller)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">actual_sleep</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">current_sleep</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">actual_sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">multiplier</span> <span class="o">*</span> <span class="n">current_sleep</span><span class="p">,</span> <span class="n">max_sleep</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
