@@ -7,6 +7,7 @@
   bigtable/usage
   datastore/usage
   dns/usage
+  firestore/index
   language/usage
   pubsub/index
   resource-manager/api
