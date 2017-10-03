@@ -1,0 +1,780 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.firestore_v1beta1.client &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.firestore_v1beta1.client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Client for interacting with the Google Cloud Firestore API.</span>
+
+<span class="sd">This is the base from which all interactions with the API occur.</span>
+
+<span class="sd">In the hierarchy of API concepts</span>
+
+<span class="sd">* a :class:`~.firestore_v1beta1.client.Client` owns a</span>
+<span class="sd">  :class:`~.firestore_v1beta1.collection.CollectionReference`</span>
+<span class="sd">* a :class:`~.firestore_v1beta1.client.Client` owns a</span>
+<span class="sd">  :class:`~.firestore_v1beta1.document.DocumentReference`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">make_secure_channel</span>
+<span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
+<span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">__version__</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.batch</span> <span class="k">import</span> <span class="n">WriteBatch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.collection</span> <span class="k">import</span> <span class="n">CollectionReference</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.document</span> <span class="k">import</span> <span class="n">DocumentReference</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.document</span> <span class="k">import</span> <span class="n">DocumentSnapshot</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.gapic</span> <span class="k">import</span> <span class="n">firestore_client</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.transaction</span> <span class="k">import</span> <span class="n">Transaction</span>
+
+
+<span class="n">DEFAULT_DATABASE</span> <span class="o">=</span> <span class="s1">&#39;(default)&#39;</span>
+<span class="sd">&quot;&quot;&quot;str: The default database used in a :class:`~.firestore.client.Client`.&quot;&quot;&quot;</span>
+<span class="n">_BAD_OPTION_ERR</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;Exactly one of ``create_if_missing``, ``last_update_time`` &#39;</span>
+    <span class="s1">&#39;and ``exists`` must be provided.&#39;</span><span class="p">)</span>
+<span class="n">_BAD_DOC_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;Document </span><span class="si">{!r}</span><span class="s1"> appeared in response but was not present among references&#39;</span><span class="p">)</span>
+<span class="n">_ACTIVE_TXN</span> <span class="o">=</span> <span class="s1">&#39;There is already an active transaction.&#39;</span>
+<span class="n">_INACTIVE_TXN</span> <span class="o">=</span> <span class="s1">&#39;There is no active transaction.&#39;</span>
+
+
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Client for interacting with Google Cloud Firestore API.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Since the Cloud Firestore API requires the gRPC transport, no</span>
+<span class="sd">        ``_http`` argument is accepted by this class.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        project (Optional[str]): The project which the client acts on behalf</span>
+<span class="sd">            of. If not passed, falls back to the default inferred</span>
+<span class="sd">            from the environment.</span>
+<span class="sd">        credentials (Optional[~google.auth.credentials.Credentials]): The</span>
+<span class="sd">            OAuth2 Credentials to use for this client. If not passed, falls</span>
+<span class="sd">            back to the default inferred from the environment.</span>
+<span class="sd">        database (Optional[str]): The database name that the client targets.</span>
+<span class="sd">            For now, :attr:`DEFAULT_DATABASE` (the default value) is the</span>
+<span class="sd">            only valid database.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/datastore&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating with the Firestore service.&quot;&quot;&quot;</span>
+
+    <span class="n">_firestore_api_internal</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_database_string_internal</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_call_options_internal</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">database</span><span class="o">=</span><span class="n">DEFAULT_DATABASE</span><span class="p">):</span>
+        <span class="c1"># NOTE: This API has no use for the _http argument, but sending it</span>
+        <span class="c1">#       will have no impact since the _http() @property only lazily</span>
+        <span class="c1">#       creates a working HTTP object.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">database</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_firestore_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Lazy-loading getter GAPIC Firestore API.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.gapic.firestore.v1beta1.firestore_client.FirestoreClient: The</span>
+<span class="sd">            GAPIC client with the credentials of the current client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api_internal</span> <span class="o">=</span> <span class="n">_make_firestore_api</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api_internal</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_database_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The database string corresponding to this client&#39;s project.</span>
+
+<span class="sd">        This value is lazy-loaded and cached.</span>
+
+<span class="sd">        Will be of the form</span>
+
+<span class="sd">            ``projects/{project_id}/databases/{database_id}``</span>
+
+<span class="sd">        but ``database_id == &#39;(default)&#39;`` for the time being.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The fully-qualified database string for the current</span>
+<span class="sd">            project. (The default database is also in this string.)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_string_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># NOTE: database_root_path() is a classmethod, so we don&#39;t use</span>
+            <span class="c1">#       self._firestore_api (it isn&#39;t necessary).</span>
+            <span class="n">db_str</span> <span class="o">=</span> <span class="n">firestore_client</span><span class="o">.</span><span class="n">FirestoreClient</span><span class="o">.</span><span class="n">database_root_path</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_string_internal</span> <span class="o">=</span> <span class="n">db_str</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_string_internal</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_call_options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The call options for this client&#39;s associated database.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~google.gax.CallOptions: GAPIC call options with a resource prefix</span>
+<span class="sd">            for the database associated with this client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_options_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_call_options_internal</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">options_with_prefix</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_options_internal</span>
+
+<div class="viewcode-block" id="Client.collection"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.collection">[docs]</a>    <span class="k">def</span> <span class="nf">collection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">collection_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a reference to a collection.</span>
+
+<span class="sd">        For a top-level collection:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; client.collection(&#39;top&#39;)</span>
+
+<span class="sd">        For a sub-collection:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; client.collection(&#39;mydocs/doc/subcol&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; # is the same as</span>
+<span class="sd">            &gt;&gt;&gt; client.collection(&#39;mydocs&#39;, &#39;doc&#39;, &#39;subcol&#39;)</span>
+
+<span class="sd">        Sub-collections can be nested deeper in a similar fashion.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            collection_path (Tuple[str, ...]): Can either be</span>
+
+<span class="sd">                * A single ``/``-delimited path to a collection</span>
+<span class="sd">                * A tuple of collection path segments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.collection.CollectionReference: A reference</span>
+<span class="sd">            to a collection in the Firestore database.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">collection_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">collection_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">DOCUMENT_PATH_DELIMITER</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">collection_path</span>
+
+        <span class="k">return</span> <span class="n">CollectionReference</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.document"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.document">[docs]</a>    <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">document_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a reference to a document in a collection.</span>
+
+<span class="sd">        For a top-level document:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; client.document(&#39;collek/shun&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; # is the same as</span>
+<span class="sd">            &gt;&gt;&gt; client.document(&#39;collek&#39;, &#39;shun&#39;)</span>
+
+<span class="sd">        For a document in a sub-collection:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; client.document(&#39;mydocs/doc/subcol/child&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; # is the same as</span>
+<span class="sd">            &gt;&gt;&gt; client.document(&#39;mydocs&#39;, &#39;doc&#39;, &#39;subcol&#39;, &#39;child&#39;)</span>
+
+<span class="sd">        Documents in sub-collections can be nested deeper in a similar fashion.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            document_path (Tuple[str, ...]): Can either be</span>
+
+<span class="sd">                * A single ``/``-delimited path to a document</span>
+<span class="sd">                * A tuple of document path segments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.document.DocumentReference: A reference</span>
+<span class="sd">            to a document in a collection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">document_path</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">document_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">_helpers</span><span class="o">.</span><span class="n">DOCUMENT_PATH_DELIMITER</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">document_path</span>
+
+        <span class="k">return</span> <span class="n">DocumentReference</span><span class="p">(</span><span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.field_path"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.field_path">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">field_path</span><span class="p">(</span><span class="o">*</span><span class="n">field_names</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a **field path** from a list of nested field names.</span>
+
+<span class="sd">        A **field path** is a ``.``-delimited concatenation of the field</span>
+<span class="sd">        names. It is used to represent a nested field. For example,</span>
+<span class="sd">        in the data</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">           data = {</span>
+<span class="sd">              &#39;aa&#39;: {</span>
+<span class="sd">                  &#39;bb&#39;: {</span>
+<span class="sd">                      &#39;cc&#39;: 10,</span>
+<span class="sd">                  },</span>
+<span class="sd">              },</span>
+<span class="sd">           }</span>
+
+<span class="sd">        the field path ``&#39;aa.bb.cc&#39;`` represents the data stored in</span>
+<span class="sd">        ``data[&#39;aa&#39;][&#39;bb&#39;][&#39;cc&#39;]``.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            field_names (Tuple[str, ...]): The list of field names.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The ``.``-delimited field path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_field_path</span><span class="p">(</span><span class="n">field_names</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.write_option"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.write_option">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">write_option</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a write option for write operations.</span>
+
+<span class="sd">        Write operations include :meth:`~.DocumentReference.set`,</span>
+<span class="sd">        :meth:`~.DocumentReference.update` and</span>
+<span class="sd">        :meth:`~.DocumentReference.delete`.</span>
+
+<span class="sd">        Exactly one of three keyword arguments must be provided:</span>
+
+<span class="sd">        * ``create_if_missing`` (:class:`bool`): Indicates if the document</span>
+<span class="sd">          should be created if it doesn&#39;t already exist.</span>
+<span class="sd">        * ``last_update_time`` (:class:`google.protobuf.timestamp_pb2.\</span>
+<span class="sd">           Timestamp`): A timestamp. When set, the target document must exist</span>
+<span class="sd">           and have been last updated at that time. Protobuf ``update_time``</span>
+<span class="sd">           timestamps are typically returned from methods that perform write</span>
+<span class="sd">           operations as part of a &quot;write result&quot; protobuf or directly.</span>
+<span class="sd">        * ``exists`` (:class:`bool`): Indicates if the document being modified</span>
+<span class="sd">          should already exist.</span>
+
+<span class="sd">        Providing no argument would make the option have no effect (so</span>
+<span class="sd">        it is not allowed). Providing multiple would be an apparent</span>
+<span class="sd">        contradiction, since ``last_update_time`` assumes that the</span>
+<span class="sd">        document **was** updated (it can&#39;t have been updated if it</span>
+<span class="sd">        doesn&#39;t exist) and both ``create_if_missing`` and ``exists`` indicate</span>
+<span class="sd">        that it is unknown if the document exists or not (but in different</span>
+<span class="sd">        ways).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kwargs (Dict[str, Any]): The keyword arguments described above.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If anything other than exactly one argument is</span>
+<span class="sd">                provided by the caller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">_BAD_OPTION_ERR</span><span class="p">)</span>
+
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;create_if_missing&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CreateIfMissingOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;last_update_time&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">LastUpdateOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;exists&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ExistsOption</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">extra</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{!r}</span><span class="s1"> was provided&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">_BAD_OPTION_ERR</span><span class="p">,</span> <span class="n">extra</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.get_all"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.get_all">[docs]</a>    <span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">references</span><span class="p">,</span> <span class="n">field_paths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve a batch of documents.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           Documents returned by this method are not guaranteed to be</span>
+<span class="sd">           returned in the same order that they are given in ``references``.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           If multiple ``references`` refer to the same document, the server</span>
+<span class="sd">           will only return one result.</span>
+
+<span class="sd">        See :meth:`~.firestore_v1beta1.client.Client.field_path` for</span>
+<span class="sd">        more information on **field paths**.</span>
+
+<span class="sd">        If a ``transaction`` is used and it already has write operations</span>
+<span class="sd">        added, this method cannot be used (i.e. read-after-write is not</span>
+<span class="sd">        allowed).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            references (List[.DocumentReference, ...]): Iterable of document</span>
+<span class="sd">                references to be retrieved.</span>
+<span class="sd">            field_paths (Optional[Iterable[str, ...]]): An iterable of field</span>
+<span class="sd">                paths (``.``-delimited list of field names) to use as a</span>
+<span class="sd">                projection of document fields in the returned results. If</span>
+<span class="sd">                no value is provided, all fields will be returned.</span>
+<span class="sd">            transaction (Optional[~.firestore_v1beta1.transaction.\</span>
+<span class="sd">                Transaction]): An existing transaction that these</span>
+<span class="sd">                ``references`` will be retrieved in.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            .DocumentSnapshot: The next document snapshot that fulfills the</span>
+<span class="sd">            query, or :data:`None` if the document does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">document_paths</span><span class="p">,</span> <span class="n">reference_map</span> <span class="o">=</span> <span class="n">_reference_info</span><span class="p">(</span><span class="n">references</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">_get_doc_mask</span><span class="p">(</span><span class="n">field_paths</span><span class="p">)</span>
+        <span class="n">response_iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">batch_get_documents</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_database_string</span><span class="p">,</span> <span class="n">document_paths</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span>
+            <span class="n">transaction</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">get_transaction_id</span><span class="p">(</span><span class="n">transaction</span><span class="p">),</span>
+            <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_options</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">get_doc_response</span> <span class="ow">in</span> <span class="n">response_iterator</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">_parse_batch_get</span><span class="p">(</span><span class="n">get_doc_response</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a batch instance from this client.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.batch.WriteBatch: A &quot;write&quot; batch to be</span>
+<span class="sd">            used for accumulating document changes and sending the changes</span>
+<span class="sd">            all at once.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">WriteBatch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.transaction"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.Client.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a transaction that uses this client.</span>
+
+<span class="sd">        See :class:`~.firestore_v1beta1.transaction.Transaction` for</span>
+<span class="sd">        more information on transactions and the constructor arguments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            kwargs (Dict[str, Any]): The keyword arguments (other than</span>
+<span class="sd">                ``client``) to pass along to the</span>
+<span class="sd">                :class:`~.firestore_v1beta1.transaction.Transaction`</span>
+<span class="sd">                constructor.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.transaction.Transaction: A transaction</span>
+<span class="sd">            attached to this client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="WriteOption"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.WriteOption">[docs]</a><span class="k">class</span> <span class="nc">WriteOption</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Option used to assert a condition on a write operation.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WriteOption.modify_write"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.WriteOption.modify_write">[docs]</a>    <span class="k">def</span> <span class="nf">modify_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pb</span><span class="p">,</span> <span class="n">no_create_msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify a ``Write`` protobuf based on the state of this write option.</span>
+
+<span class="sd">        This is a virtual method intended to be implemented by subclasses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            write_pb (google.cloud.firestore_v1beta1.types.Write): A</span>
+<span class="sd">                ``Write`` protobuf instance to be modified with a precondition</span>
+<span class="sd">                determined by the state of this option.</span>
+<span class="sd">            no_create_msg (Optional[str]): A message to use to indicate that</span>
+<span class="sd">                a create operation is not allowed.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: Always, this method is virtual.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+
+
+<div class="viewcode-block" id="LastUpdateOption"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.LastUpdateOption">[docs]</a><span class="k">class</span> <span class="nc">LastUpdateOption</span><span class="p">(</span><span class="n">WriteOption</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Option used to assert a &quot;last update&quot; condition on a write operation.</span>
+
+<span class="sd">    This will typically be created by</span>
+<span class="sd">    :meth:`~.firestore_v1beta1.client.Client.write_option`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        last_update_time (google.protobuf.timestamp_pb2.Timestamp): A</span>
+<span class="sd">            timestamp. When set, the target document must exist and have</span>
+<span class="sd">            been last updated at that time. Protobuf ``update_time`` timestamps</span>
+<span class="sd">            are typically returned from methods that perform write operations</span>
+<span class="sd">            as part of a &quot;write result&quot; protobuf or directly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_update_time</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_update_time</span> <span class="o">=</span> <span class="n">last_update_time</span>
+
+<div class="viewcode-block" id="LastUpdateOption.modify_write"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.LastUpdateOption.modify_write">[docs]</a>    <span class="k">def</span> <span class="nf">modify_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pb</span><span class="p">,</span> <span class="o">**</span><span class="n">unused_kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify a ``Write`` protobuf based on the state of this write option.</span>
+
+<span class="sd">        The ``last_update_time`` is added to ``write_pb`` as an &quot;update time&quot;</span>
+<span class="sd">        precondition. When set, the target document must exist and have been</span>
+<span class="sd">        last updated at that time.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            write_pb (google.cloud.firestore_v1beta1.types.Write): A</span>
+<span class="sd">                ``Write`` protobuf instance to be modified with a precondition</span>
+<span class="sd">                determined by the state of this option.</span>
+<span class="sd">            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by</span>
+<span class="sd">                other subclasses that are unused here.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_doc</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">Precondition</span><span class="p">(</span>
+            <span class="n">update_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_update_time</span><span class="p">)</span>
+        <span class="n">write_pb</span><span class="o">.</span><span class="n">current_document</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">current_doc</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CreateIfMissingOption"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.CreateIfMissingOption">[docs]</a><span class="k">class</span> <span class="nc">CreateIfMissingOption</span><span class="p">(</span><span class="n">WriteOption</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Option used to assert &quot;create if missing&quot; on a write operation.</span>
+
+<span class="sd">    This will typically be created by</span>
+<span class="sd">    :meth:`~.firestore_v1beta1.client.Client.write_option`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        create_if_missing (bool): Indicates if the document should be created</span>
+<span class="sd">            if it doesn&#39;t already exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_if_missing</span> <span class="o">=</span> <span class="n">create_if_missing</span>
+
+<div class="viewcode-block" id="CreateIfMissingOption.modify_write"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.CreateIfMissingOption.modify_write">[docs]</a>    <span class="k">def</span> <span class="nf">modify_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pb</span><span class="p">,</span> <span class="n">no_create_msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify a ``Write`` protobuf based on the state of this write option.</span>
+
+<span class="sd">        If:</span>
+
+<span class="sd">        * ``create_if_missing=False``, adds a precondition that requires</span>
+<span class="sd">          existence</span>
+<span class="sd">        * ``create_if_missing=True``, does not add any precondition</span>
+<span class="sd">        * ``no_create_msg`` is passed, raises an exception. For example, in a</span>
+<span class="sd">          :meth:`~.DocumentReference.delete`, no &quot;create&quot; can occur, so it</span>
+<span class="sd">          wouldn&#39;t make sense to &quot;create if missing&quot;.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            write_pb (google.cloud.firestore_v1beta1.types.Write): A</span>
+<span class="sd">                ``Write`` protobuf instance to be modified with a precondition</span>
+<span class="sd">                determined by the state of this option.</span>
+<span class="sd">            no_create_msg (Optional[str]): A message to use to indicate that</span>
+<span class="sd">                a create operation is not allowed.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``no_create_msg`` is passed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">no_create_msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">no_create_msg</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_if_missing</span><span class="p">:</span>
+            <span class="n">current_doc</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">Precondition</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">write_pb</span><span class="o">.</span><span class="n">current_document</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">current_doc</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ExistsOption"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.ExistsOption">[docs]</a><span class="k">class</span> <span class="nc">ExistsOption</span><span class="p">(</span><span class="n">WriteOption</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Option used to assert existence on a write operation.</span>
+
+<span class="sd">    This will typically be created by</span>
+<span class="sd">    :meth:`~.firestore_v1beta1.client.Client.write_option`.</span>
+
+<span class="sd">    This option is closely related to</span>
+<span class="sd">    :meth:`~.firestore_v1beta1.client.CreateIfMissingOption`,</span>
+<span class="sd">    but a &quot;create if missing&quot;. In fact,</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">       &gt;&gt;&gt; ExistsOption(exists=True)</span>
+
+<span class="sd">    is (mostly) equivalent to</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">       &gt;&gt;&gt; CreateIfMissingOption(create_if_missing=False)</span>
+
+<span class="sd">    The only difference being that &quot;create if missing&quot; cannot be used</span>
+<span class="sd">    on some operations (e.g. :meth:`~.DocumentReference.delete`)</span>
+<span class="sd">    while &quot;exists&quot; can.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        exists (bool): Indicates if the document being modified</span>
+<span class="sd">            should already exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exists</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span> <span class="o">=</span> <span class="n">exists</span>
+
+<div class="viewcode-block" id="ExistsOption.modify_write"><a class="viewcode-back" href="../../../../firestore/client.html#google.cloud.firestore_v1beta1.client.ExistsOption.modify_write">[docs]</a>    <span class="k">def</span> <span class="nf">modify_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write_pb</span><span class="p">,</span> <span class="o">**</span><span class="n">unused_kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify a ``Write`` protobuf based on the state of this write option.</span>
+
+<span class="sd">        If:</span>
+
+<span class="sd">        * ``exists=True``, adds a precondition that requires existence</span>
+<span class="sd">        * ``exists=False``, adds a precondition that requires non-existence</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            write_pb (google.cloud.firestore_v1beta1.types.Write): A</span>
+<span class="sd">                ``Write`` protobuf instance to be modified with a precondition</span>
+<span class="sd">                determined by the state of this option.</span>
+<span class="sd">            unused_kwargs (Dict[str, Any]): Keyword arguments accepted by</span>
+<span class="sd">                other subclasses that are unused here.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_doc</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">Precondition</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">)</span>
+        <span class="n">write_pb</span><span class="o">.</span><span class="n">current_document</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">current_doc</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_make_firestore_api</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an instance of the GAPIC Firestore client.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (~.firestore_v1beta1.client.Client): The client that holds</span>
+<span class="sd">            configuration details.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ~.gapic.firestore.v1beta1.firestore_client.FirestoreClient: A</span>
+<span class="sd">        Firestore GAPIC client instance with the proper credentials.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="n">firestore_client</span><span class="o">.</span><span class="n">FirestoreClient</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span>
+    <span class="n">channel</span> <span class="o">=</span> <span class="n">make_secure_channel</span><span class="p">(</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">_credentials</span><span class="p">,</span> <span class="n">DEFAULT_USER_AGENT</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firestore_client</span><span class="o">.</span><span class="n">FirestoreClient</span><span class="p">(</span>
+        <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span> <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span> <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_reference_info</span><span class="p">(</span><span class="n">references</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get information about document references.</span>
+
+<span class="sd">    Helper for :meth:`~.firestore_v1beta1.client.Client.get_all`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        references (List[.DocumentReference, ...]): Iterable of document</span>
+<span class="sd">            references.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple[List[str, ...], Dict[str, .DocumentReference]]: A two-tuple of</span>
+
+<span class="sd">        * fully-qualified documents paths for each reference in ``references``</span>
+<span class="sd">        * a mapping from the paths to the original reference. (If multiple</span>
+<span class="sd">          ``references`` contains multiple references to the same document,</span>
+<span class="sd">          that key will be overwritten in the result.)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">document_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">reference_map</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">reference</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+        <span class="n">doc_path</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">_document_path</span>
+        <span class="n">document_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc_path</span><span class="p">)</span>
+        <span class="n">reference_map</span><span class="p">[</span><span class="n">doc_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">reference</span>
+
+    <span class="k">return</span> <span class="n">document_paths</span><span class="p">,</span> <span class="n">reference_map</span>
+
+
+<span class="k">def</span> <span class="nf">_get_reference</span><span class="p">(</span><span class="n">document_path</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get a document reference from a dictionary.</span>
+
+<span class="sd">    This just wraps a simple dictionary look-up with a helpful error that is</span>
+<span class="sd">    specific to :meth:`~.firestore.client.Client.get_all`, the</span>
+<span class="sd">    **public** caller of this function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        document_path (str): A fully-qualified document path.</span>
+<span class="sd">        reference_map (Dict[str, .DocumentReference]): A mapping (produced</span>
+<span class="sd">            by :func:`_reference_info`) of fully-qualified document paths to</span>
+<span class="sd">            document references.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        .DocumentReference: The matching reference.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If ``document_path`` has not been encountered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">reference_map</span><span class="p">[</span><span class="n">document_path</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_BAD_DOC_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">document_path</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_batch_get</span><span class="p">(</span><span class="n">get_doc_response</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse a `BatchGetDocumentsResponse` protobuf.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        get_doc_response (~google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            firestore_pb2.BatchGetDocumentsResponse): A single response (from</span>
+<span class="sd">            a stream) containing the &quot;get&quot; response for a document.</span>
+<span class="sd">        reference_map (Dict[str, .DocumentReference]): A mapping (produced</span>
+<span class="sd">            by :func:`_reference_info`) of fully-qualified document paths to</span>
+<span class="sd">            document references.</span>
+<span class="sd">        client (~.firestore_v1beta1.client.Client): A client that has</span>
+<span class="sd">            a document factory.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[.DocumentSnapshot]: The retrieved snapshot. If the</span>
+<span class="sd">        snapshot is :data:`None`, that means the document is ``missing``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the response has a ``result`` field (a oneof) other</span>
+<span class="sd">            than ``found`` or ``missing``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result_type</span> <span class="o">=</span> <span class="n">get_doc_response</span><span class="o">.</span><span class="n">WhichOneof</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s1">&#39;found&#39;</span><span class="p">:</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">_get_reference</span><span class="p">(</span>
+            <span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">reference_map</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">decode_dict</span><span class="p">(</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="n">DocumentSnapshot</span><span class="p">(</span>
+            <span class="n">reference</span><span class="p">,</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">read_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">read_time</span><span class="p">,</span>
+            <span class="n">create_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">create_time</span><span class="p">,</span>
+            <span class="n">update_time</span><span class="o">=</span><span class="n">get_doc_response</span><span class="o">.</span><span class="n">found</span><span class="o">.</span><span class="n">update_time</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">snapshot</span>
+    <span class="k">elif</span> <span class="n">result_type</span> <span class="o">==</span> <span class="s1">&#39;missing&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;`BatchGetDocumentsResponse.result` (a oneof) had a field other &#39;</span>
+            <span class="s1">&#39;than `found` or `missing` set, or was unset&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_doc_mask</span><span class="p">(</span><span class="n">field_paths</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get a document mask if field paths are provided.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        field_paths (Optional[Iterable[str, ...]]): An iterable of field</span>
+<span class="sd">            paths (``.``-delimited list of field names) to use as a</span>
+<span class="sd">            projection of document fields in the returned results.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[google.cloud.firestore_v1beta1.types.DocumentMask]: A mask</span>
+<span class="sd">            to project documents to a restricted set of field paths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">field_paths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">types</span><span class="o">.</span><span class="n">DocumentMask</span><span class="p">(</span><span class="n">field_paths</span><span class="o">=</span><span class="n">field_paths</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

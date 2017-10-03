@@ -1,0 +1,686 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Documents &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Queries" href="query.html" />
+    <link rel="prev" title="Collections" href="collection.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.firestore_v1beta1.document">
+<span id="documents"></span><h1>Documents<a class="headerlink" href="#module-google.cloud.firestore_v1beta1.document" title="Permalink to this headline">#</a></h1>
+<p>Classes for representing documents for the Google Cloud Firestore API.</p>
+<dl class="class">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference">
+<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.document.</code><code class="descname">DocumentReference</code><span class="sig-paren">(</span><em>*path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A reference to a document in a Firestore database.</p>
+<p>The document may already exist or can be created by this class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>Tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>..</em><em>]</em>) – The components in the document path.
+This is a series of strings representing each collection and
+sub-collection ID, as well as the document IDs for any documents
+that contain a sub-collection (as well as the base document).</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – The keyword arguments for the constructor. The only
+supported keyword is <code class="docutils literal"><span class="pre">client</span></code> and it must be a
+<a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client" title="google.cloud.firestore_v1beta1.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>. It represents
+the client that created this document reference.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – if<ul>
+<li>the <code class="docutils literal"><span class="pre">path</span></code> is empty</li>
+<li>there are an even number of elements</li>
+<li>a collection ID in <code class="docutils literal"><span class="pre">path</span></code> is not a string</li>
+<li>a document ID in <code class="docutils literal"><span class="pre">path</span></code> is not a string</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">TypeError</span></code></a> – If a keyword other than <code class="docutils literal"><span class="pre">client</span></code> is used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.collection">
+<code class="descname">collection</code><span class="sig-paren">(</span><em>collection_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference.collection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.collection" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a sub-collection underneath the current document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>collection_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The sub-collection identifier (sometimes
+referred to as the “kind”).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The
+child collection.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">CollectionReference</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>document_data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Create the current document in the Firestore database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>document_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Property names and values to use for
+creating a document.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The
+write result corresponding to the committed document. A write
+result contains an <code class="docutils literal"><span class="pre">update_time</span></code> field.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="types.html#google.cloud.firestore_v1beta1.types.WriteResult" title="google.cloud.firestore_v1beta1.types.WriteResult">google.cloud.firestore_v1beta1.types.WriteResult</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal"><span class="pre">Conflict</span></code> – If the document already exists.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete the current document in the Firestore database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>option</strong> (<em>Optional</em><em>[</em><em>WriteOption</em><em>]</em>) – A
+write option to make assertions / preconditions on the server
+state of the document before applying changes. Note that
+<code class="docutils literal"><span class="pre">create_if_missing</span></code> can’t be used here since it does not
+apply (i.e. a “delete” cannot “create”).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The time that the delete
+request was received by the server. If the document did not exist
+when the delete was sent (i.e. nothing was deleted), this method
+will still succeed and will still return the time that the
+request was received by the server.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">google.protobuf.timestamp_pb2.Timestamp</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the <code class="docutils literal"><span class="pre">create_if_missing</span></code> write option is used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>field_paths=None</em>, <em>transaction=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve a snapshot of the current document.</p>
+<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal"><span class="pre">field_path()</span></code></a> for
+more information on <strong>field paths</strong>.</p>
+<p>If a <code class="docutils literal"><span class="pre">transaction</span></code> is used and it already has write operations
+added, this method cannot be used (i.e. read-after-write is not
+allowed).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>field_paths</strong> (<em>Optional</em><em>[</em><em>Iterable</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>..</em><em>]</em><em>]</em>) – An iterable of field
+paths (<code class="docutils literal"><span class="pre">.</span></code>-delimited list of field names) to use as a
+projection of document fields in the returned results. If
+no value is provided, all fields will be returned.</li>
+<li><strong>transaction</strong> (<em>Optional</em><em>[</em><em>                Transaction</em><em>]</em>) – An existing transaction that this reference
+will be retrieved in.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A snapshot of
+the current document.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">DocumentSnapshot</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">NotFound</span></code> – If the document does not exist.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.id" title="Permalink to this definition">#</a></dt>
+<dd><p>The document identifier (within its collection).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The last component of the path.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Collection that owns the current document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The
+parent collection.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">CollectionReference</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.set">
+<code class="descname">set</code><span class="sig-paren">(</span><em>document_data</em>, <em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.set" title="Permalink to this definition">#</a></dt>
+<dd><p>Replace the current document in the Firestore database.</p>
+<p>A write <code class="docutils literal"><span class="pre">option</span></code> can be specified to indicate preconditions of
+the “set” operation. If no <code class="docutils literal"><span class="pre">option</span></code> is specified and this document
+doesn’t exist yet, this method will create it.</p>
+<p>Overwrites all content for the document with the fields in
+<code class="docutils literal"><span class="pre">document_data</span></code>. This method performs almost the same functionality
+as <a class="reference internal" href="#google.cloud.firestore_v1beta1.document.DocumentReference.create" title="google.cloud.firestore_v1beta1.document.DocumentReference.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>. The only difference is that this method doesn’t
+make any requirements on the existence of the document (unless
+<code class="docutils literal"><span class="pre">option</span></code> is used), whereas as <a class="reference internal" href="#google.cloud.firestore_v1beta1.document.DocumentReference.create" title="google.cloud.firestore_v1beta1.document.DocumentReference.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> will fail if the
+document already exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>document_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Property names and values to use for
+replacing a document.</li>
+<li><strong>option</strong> (<em>Optional</em><em>[</em><em>WriteOption</em><em>]</em>) – A
+write option to make assertions / preconditions on the server
+state of the document before applying changes.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The
+write result corresponding to the committed document. A write
+result contains an <code class="docutils literal"><span class="pre">update_time</span></code> field.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="types.html#google.cloud.firestore_v1beta1.types.WriteResult" title="google.cloud.firestore_v1beta1.types.WriteResult">google.cloud.firestore_v1beta1.types.WriteResult</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentReference.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>field_updates</em>, <em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentReference.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentReference.update" title="Permalink to this definition">#</a></dt>
+<dd><p>Update an existing document in the Firestore database.</p>
+<p>By default, this method verifies that the document exists on the
+server before making updates. A write <code class="docutils literal"><span class="pre">option</span></code> can be specified to
+override these preconditions.</p>
+<p>Each key in <code class="docutils literal"><span class="pre">field_updates</span></code> can either be a field name or a
+<strong>field path</strong> (For more information on <strong>field paths</strong>, see
+<a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal"><span class="pre">field_path()</span></code></a>.) To
+illustrate this, consider a document with</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &#39;foo&#39;: {</span>
+<span class="go">        &#39;bar&#39;: &#39;baz&#39;,</span>
+<span class="go">    },</span>
+<span class="go">    &#39;other&#39;: True,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>stored on the server. If the field name is used in the update:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field_updates</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;foo&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="s1">&#39;quux&#39;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">field_updates</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>then all of <code class="docutils literal"><span class="pre">foo</span></code> will be overwritten on the server and the new
+value will be</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &#39;foo&#39;: {</span>
+<span class="go">        &#39;quux&#39;: 800,</span>
+<span class="go">    },</span>
+<span class="go">    &#39;other&#39;: True,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>On the other hand, if a <code class="docutils literal"><span class="pre">.</span></code>-delimited <strong>field path</strong> is used in the
+update:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field_updates</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;foo.quux&#39;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">field_updates</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>then only <code class="docutils literal"><span class="pre">foo.quux</span></code> will be updated on the server and the
+field <code class="docutils literal"><span class="pre">foo.bar</span></code> will remain intact:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &#39;foo&#39;: {</span>
+<span class="go">        &#39;bar&#39;: &#39;baz&#39;,</span>
+<span class="go">        &#39;quux&#39;: 800,</span>
+<span class="go">    },</span>
+<span class="go">    &#39;other&#39;: True,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">A <strong>field path</strong> can only be used as a top-level key in
+<code class="docutils literal"><span class="pre">field_updates</span></code>.</p>
+</div>
+<p>To delete / remove a field from an existing document, use the
+<code class="xref py py-attr docutils literal"><span class="pre">DELETE_FIELD</span></code> sentinel. So
+with the example above, sending</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field_updates</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;other&#39;</span><span class="p">:</span> <span class="n">firestore</span><span class="o">.</span><span class="n">DELETE_FIELD</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">field_updates</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>would update the value on the server to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &#39;foo&#39;: {</span>
+<span class="go">        &#39;bar&#39;: &#39;baz&#39;,</span>
+<span class="go">    },</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>To set a field to the current time on the server when the
+update is received, use the
+<code class="xref py py-attr docutils literal"><span class="pre">SERVER_TIMESTAMP</span></code> sentinel.
+Sending</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">field_updates</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;foo.now&#39;</span><span class="p">:</span> <span class="n">firestore</span><span class="o">.</span><span class="n">SERVER_TIMESTAMP</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">field_updates</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>would update the value on the server to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &#39;foo&#39;: {</span>
+<span class="go">        &#39;bar&#39;: &#39;baz&#39;,</span>
+<span class="go">        &#39;now&#39;: datetime.datetime(2012, ...),</span>
+<span class="go">    },</span>
+<span class="go">    &#39;other&#39;: True,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>field_updates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Field names or paths to update and values
+to update with.</li>
+<li><strong>option</strong> (<em>Optional</em><em>[</em><em>WriteOption</em><em>]</em>) – A
+write option to make assertions / preconditions on the server
+state of the document before applying changes.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The
+write result corresponding to the updated document. A write
+result contains an <code class="docutils literal"><span class="pre">update_time</span></code> field.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="types.html#google.cloud.firestore_v1beta1.types.WriteResult" title="google.cloud.firestore_v1beta1.types.WriteResult">google.cloud.firestore_v1beta1.types.WriteResult</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">NotFound</span></code> – If the document does not exist.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot">
+<em class="property">class </em><code class="descclassname">google.cloud.firestore_v1beta1.document.</code><code class="descname">DocumentSnapshot</code><span class="sig-paren">(</span><em>reference</em>, <em>data</em>, <em>exists</em>, <em>read_time</em>, <em>create_time</em>, <em>update_time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentSnapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A snapshot of document data in a Firestore database.</p>
+<p>This represents data retrieved at a specific time and may not contain
+all fields stored for the document (i.e. a hand-picked selection of
+fields may have been retrieved).</p>
+<p>Instances of this class are not intended to be constructed by hand,
+rather they’ll be returned as responses to various methods, such as
+<a class="reference internal" href="#google.cloud.firestore_v1beta1.document.DocumentReference.get" title="google.cloud.firestore_v1beta1.document.DocumentReference.get"><code class="xref py py-meth docutils literal"><span class="pre">get()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reference</strong> (<em>DocumentReference</em>) – A
+document reference corresponding to the document that contains
+the data in this snapshot.</li>
+<li><strong>data</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>Any</em><em>]</em>) – The data retrieved in the snapshot.</li>
+<li><strong>exists</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Indicates if the document existed at the time the
+snapshot was retrieved.</li>
+<li><strong>read_time</strong> (<em>google.protobuf.timestamp_pb2.Timestamp</em>) – The time that
+this snapshot was read from the server.</li>
+<li><strong>create_time</strong> (<em>google.protobuf.timestamp_pb2.Timestamp</em>) – The time that
+this document was created.</li>
+<li><strong>update_time</strong> (<em>google.protobuf.timestamp_pb2.Timestamp</em>) – The time that
+this document was last updated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.create_time">
+<code class="descname">create_time</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p><em>google.protobuf.timestamp_pb2.Timestamp</em> – Document’s creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.exists">
+<code class="descname">exists</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.exists" title="Permalink to this definition">#</a></dt>
+<dd><p>Existence flag.</p>
+<p>Indicates if the document existed at the time this snapshot
+was retrieved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The existence flag.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>field_path</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentSnapshot.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a value from the snapshot data.</p>
+<p>If the data is nested, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="go">{</span>
+<span class="go">    &#39;top1&#39;: {</span>
+<span class="go">        &#39;middle2&#39;: {</span>
+<span class="go">            &#39;bottom3&#39;: 20,</span>
+<span class="go">            &#39;bottom4&#39;: 22,</span>
+<span class="go">        },</span>
+<span class="go">        &#39;middle5&#39;: True,</span>
+<span class="go">    },</span>
+<span class="go">    &#39;top6&#39;: b&#39;  foo&#39;,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>a <strong>field path</strong> can be used to access the nested data. For
+example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;top1&#39;</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &#39;middle2&#39;: {</span>
+<span class="go">        &#39;bottom3&#39;: 20,</span>
+<span class="go">        &#39;bottom4&#39;: 22,</span>
+<span class="go">    },</span>
+<span class="go">    &#39;middle5&#39;: True,</span>
+<span class="go">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;top1.middle2&#39;</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &#39;bottom3&#39;: 20,</span>
+<span class="go">    &#39;bottom4&#39;: 22,</span>
+<span class="go">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshot</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;top1.middle2.bottom3&#39;</span><span class="p">)</span>
+<span class="go">20</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="client.html#google.cloud.firestore_v1beta1.client.Client.field_path" title="google.cloud.firestore_v1beta1.client.Client.field_path"><code class="xref py py-meth docutils literal"><span class="pre">field_path()</span></code></a> for
+more information on <strong>field paths</strong>.</p>
+<p>A copy is returned since the data may contain mutable values,
+but the data stored in the snapshot must remain immutable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A field path (<code class="docutils literal"><span class="pre">.</span></code>-delimited list of
+field names).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(A copy of) the value stored for the <code class="docutils literal"><span class="pre">field_path</span></code>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Any</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">KeyError</span></code></a> – If the <code class="docutils literal"><span class="pre">field_path</span></code> does not match nested data
+in the snapshot.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.id" title="Permalink to this definition">#</a></dt>
+<dd><p>The document identifier (within its collection).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The last component of the path of the document.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.read_time">
+<code class="descname">read_time</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.read_time" title="Permalink to this definition">#</a></dt>
+<dd><p><em>google.protobuf.timestamp_pb2.Timestamp</em> – Time snapshot was read.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.reference">
+<code class="descname">reference</code><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.reference" title="Permalink to this definition">#</a></dt>
+<dd><p>Document reference corresponding to document that owns this data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A document
+reference corresponding to this document.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">DocumentReference</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/firestore_v1beta1/document.html#DocumentSnapshot.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.to_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve the data contained in this snapshot.</p>
+<p>A copy is returned since the data may contain mutable values,
+but the data stored in the snapshot must remain immutable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The data in the snapshot.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Dict[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, Any]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.firestore_v1beta1.document.DocumentSnapshot.update_time">
+<code class="descname">update_time</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.firestore_v1beta1.document.DocumentSnapshot.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p><em>google.protobuf.timestamp_pb2.Timestamp</em> – Document’s last update.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Firestore</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collection.html">Collections</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html">Batches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transaction.html">Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="types.html">Firestore Protobuf Types</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Firestore</a><ul>
+      <li>Previous: <a href="collection.html" title="previous chapter">Collections</a></li>
+      <li>Next: <a href="query.html" title="next chapter">Queries</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/firestore/document.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

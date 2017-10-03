@@ -1,0 +1,911 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.firestore_v1beta1.query &#8212; google-cloud 0.27.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.27.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.firestore_v1beta1.query</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Classes for representing queries for the Google Cloud Firestore API.</span>
+
+<span class="sd">A :class:`~.firestore_v1beta1.query.Query` can be created directly from</span>
+<span class="sd">a :class:`~.firestore_v1beta1.collection.Collection` and that can be</span>
+<span class="sd">a more common way to create a query than direct usage of the constructor.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">wrappers_pb2</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1</span> <span class="k">import</span> <span class="n">document</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
+<span class="kn">from</span> <span class="nn">google.cloud.firestore_v1beta1.proto</span> <span class="k">import</span> <span class="n">query_pb2</span>
+
+
+<span class="n">_EQ_OP</span> <span class="o">=</span> <span class="s1">&#39;==&#39;</span>
+<span class="n">_COMPARISON_OPERATORS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;&lt;&#39;</span><span class="p">:</span> <span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">LESS_THAN</span><span class="p">,</span>
+    <span class="s1">&#39;&lt;=&#39;</span><span class="p">:</span> <span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">LESS_THAN_OR_EQUAL</span><span class="p">,</span>
+    <span class="n">_EQ_OP</span><span class="p">:</span> <span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
+    <span class="s1">&#39;&gt;=&#39;</span><span class="p">:</span> <span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">GREATER_THAN_OR_EQUAL</span><span class="p">,</span>
+    <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span> <span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">GREATER_THAN</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">_BAD_OP_STRING</span> <span class="o">=</span> <span class="s1">&#39;Operator string </span><span class="si">{!r}</span><span class="s1"> is invalid. Valid choices are: </span><span class="si">{}</span><span class="s1">.&#39;</span>
+<span class="n">_BAD_OP_NAN_NULL</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;Only an equality filter (&quot;==&quot;) can be used with None or NaN values&#39;</span><span class="p">)</span>
+<span class="n">_BAD_DIR_STRING</span> <span class="o">=</span> <span class="s1">&#39;Invalid direction </span><span class="si">{!r}</span><span class="s1">. Must be one of </span><span class="si">{!r}</span><span class="s1"> or </span><span class="si">{!r}</span><span class="s1">.&#39;</span>
+<span class="n">_MISSING_ORDER_BY</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;The &quot;order by&quot; field path </span><span class="si">{!r}</span><span class="s1"> is not present in the cursor data </span><span class="si">{!r}</span><span class="s1">. &#39;</span>
+    <span class="s1">&#39;All fields sent to ``order_by()`` must be present in the fields &#39;</span>
+    <span class="s1">&#39;if passed to one of ``start_at()`` / ``start_after()`` / &#39;</span>
+    <span class="s1">&#39;``end_before()`` / ``end_at()`` to define a cursor.&#39;</span><span class="p">)</span>
+<span class="n">_NO_ORDERS_FOR_CURSOR</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;Attempting to create a cursor with no fields to order on. &#39;</span>
+    <span class="s1">&#39;When defining a cursor with one of ``start_at()`` / ``start_after()`` / &#39;</span>
+    <span class="s1">&#39;``end_before()`` / ``end_at()``, all fields in the cursor must &#39;</span>
+    <span class="s1">&#39;come from fields set in ``order_by()``.&#39;</span><span class="p">)</span>
+<span class="n">_EMPTY_DOC_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;Unexpected server response. All responses other than the first must &#39;</span>
+    <span class="s1">&#39;contain a document. The response at index </span><span class="si">{}</span><span class="s1"> was</span><span class="se">\n</span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Query"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query">[docs]</a><span class="k">class</span> <span class="nc">Query</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a query to the Firestore API.</span>
+
+<span class="sd">    Instances of this class are considered immutable: all methods that</span>
+<span class="sd">    would modify an instance instead return a new instance.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        parent (~.firestore_v1beta1.collection.Collection): The collection</span>
+<span class="sd">            that this query applies to.</span>
+<span class="sd">        projection (Optional[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            query_pb2.StructuredQuery.Projection]): A projection of document</span>
+<span class="sd">            fields to limit the query results to.</span>
+<span class="sd">        field_filters (Optional[Tuple[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            query_pb2.StructuredQuery.FieldFilter, ...]]): The filters to be</span>
+<span class="sd">            applied in the query.</span>
+<span class="sd">        orders (Optional[Tuple[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            query_pb2.StructuredQuery.Order, ...]]): The &quot;order by&quot; entries</span>
+<span class="sd">            to use in the query.</span>
+<span class="sd">        limit (Optional[int]): The maximum number of documents the</span>
+<span class="sd">            query is allowed to return.</span>
+<span class="sd">        offset (Optional[int]): The number of results to skip.</span>
+<span class="sd">        start_at (Optional[Tuple[dict, bool]]): Two-tuple of</span>
+
+<span class="sd">            * a mapping of fields. Any field that is present in this mapping</span>
+<span class="sd">              must also be present in ``orders``</span>
+<span class="sd">            * an ``after`` flag</span>
+
+<span class="sd">            The fields and the flag combine to form a cursor used as</span>
+<span class="sd">            a starting point in a query result set. If the ``after``</span>
+<span class="sd">            flag is :data:`True`, the results will start just after any</span>
+<span class="sd">            documents which have fields matching the cursor, otherwise</span>
+<span class="sd">            any matching documents will be included in the result set.</span>
+<span class="sd">            When the query is formed, the document values</span>
+<span class="sd">            will be used in the order given by ``orders``.</span>
+<span class="sd">        end_at (Optional[Tuple[dict, bool]]): Two-tuple of</span>
+
+<span class="sd">            * a mapping of fields. Any field that is present in this mapping</span>
+<span class="sd">              must also be present in ``orders``</span>
+<span class="sd">            * a ``before`` flag</span>
+
+<span class="sd">            The fields and the flag combine to form a cursor used as</span>
+<span class="sd">            an ending point in a query result set. If the ``before``</span>
+<span class="sd">            flag is :data:`True`, the results will end just before any</span>
+<span class="sd">            documents which have fields matching the cursor, otherwise</span>
+<span class="sd">            any matching documents will be included in the result set.</span>
+<span class="sd">            When the query is formed, the document values</span>
+<span class="sd">            will be used in the order given by ``orders``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ASCENDING</span> <span class="o">=</span> <span class="s1">&#39;ASCENDING&#39;</span>
+    <span class="sd">&quot;&quot;&quot;str: Sort query results in ascending order on a field.&quot;&quot;&quot;</span>
+    <span class="n">DESCENDING</span> <span class="o">=</span> <span class="s1">&#39;DESCENDING&#39;</span>
+    <span class="sd">&quot;&quot;&quot;str: Sort query results in descending order on a field.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field_filters</span><span class="o">=</span><span class="p">(),</span> <span class="n">orders</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_at</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_at</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span> <span class="o">=</span> <span class="n">projection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span> <span class="o">=</span> <span class="n">field_filters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span> <span class="o">=</span> <span class="n">orders</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span> <span class="o">=</span> <span class="n">start_at</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span> <span class="o">=</span> <span class="n">end_at</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The client of the parent collection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.client.Client: The client that owns</span>
+<span class="sd">            this query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_client</span>
+
+<div class="viewcode-block" id="Query.select"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_paths</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project documents matching query to a limited set of fields.</span>
+
+<span class="sd">        See :meth:`~.firestore_v1beta1.client.Client.field_path` for</span>
+<span class="sd">        more information on **field paths**.</span>
+
+<span class="sd">        If the current query already has a projection set (i.e. has already</span>
+<span class="sd">        called :meth:`~.firestore_v1beta1.query.Query.select`), this</span>
+<span class="sd">        will overwrite it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            field_paths (Iterable[str, ...]): An iterable of field paths</span>
+<span class="sd">                (``.``-delimited list of field names) to use as a projection</span>
+<span class="sd">                of document fields in the query results.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A &quot;projected&quot; query. Acts as</span>
+<span class="sd">            a copy of the current query, modified with the newly added</span>
+<span class="sd">            projection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_projection</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Projection</span><span class="p">(</span>
+            <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+                <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span><span class="n">field_path</span><span class="o">=</span><span class="n">field_path</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">field_path</span> <span class="ow">in</span> <span class="n">field_paths</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="n">new_projection</span><span class="p">,</span>
+            <span class="n">field_filters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span><span class="p">,</span>
+            <span class="n">orders</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">,</span>
+            <span class="n">start_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span>
+            <span class="n">end_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.where"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.where">[docs]</a>    <span class="k">def</span> <span class="nf">where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="n">op_string</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter the query on a field.</span>
+
+<span class="sd">        See :meth:`~.firestore_v1beta1.client.Client.field_path` for</span>
+<span class="sd">        more information on **field paths**.</span>
+
+<span class="sd">        Returns a new :class:`~.firestore_v1beta1.query.Query` that</span>
+<span class="sd">        filters on a specific field path, according to an operation (e.g.</span>
+<span class="sd">        ``==`` or &quot;equals&quot;) and a particular value to be paired with that</span>
+<span class="sd">        operation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            field_path (str): A field path (``.``-delimited list of</span>
+<span class="sd">                field names) for the field to filter on.</span>
+<span class="sd">            op_string (str): A comparison operation in the form of a string.</span>
+<span class="sd">                Acceptable values are ``&lt;``, ``&lt;=``, ``==``, ``&gt;=``</span>
+<span class="sd">                and ``&gt;``.</span>
+<span class="sd">            value (Any): The value to compare the field against in the filter.</span>
+<span class="sd">                If ``value`` is :data:`None` or a NaN, then ``==`` is the only</span>
+<span class="sd">                allowed operation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A filtered query. Acts as a</span>
+<span class="sd">            copy of the current query, modified with the newly added filter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``value`` is a NaN or :data:`None` and</span>
+<span class="sd">                ``op_string`` is not ``==``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">op_string</span> <span class="o">!=</span> <span class="n">_EQ_OP</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_BAD_OP_NAN_NULL</span><span class="p">)</span>
+            <span class="n">filter_pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">UnaryFilter</span><span class="p">(</span>
+                <span class="n">field</span><span class="o">=</span><span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
+                    <span class="n">field_path</span><span class="o">=</span><span class="n">field_path</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">op</span><span class="o">=</span><span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">UnaryFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">IS_NULL</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">_isnan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">op_string</span> <span class="o">!=</span> <span class="n">_EQ_OP</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_BAD_OP_NAN_NULL</span><span class="p">)</span>
+            <span class="n">filter_pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">UnaryFilter</span><span class="p">(</span>
+                <span class="n">field</span><span class="o">=</span><span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
+                    <span class="n">field_path</span><span class="o">=</span><span class="n">field_path</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">op</span><span class="o">=</span><span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">UnaryFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">IS_NAN</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filter_pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="p">(</span>
+                <span class="n">field</span><span class="o">=</span><span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
+                    <span class="n">field_path</span><span class="o">=</span><span class="n">field_path</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">op</span><span class="o">=</span><span class="n">_enum_from_op_string</span><span class="p">(</span><span class="n">op_string</span><span class="p">),</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">encode_value</span><span class="p">(</span><span class="n">value</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="n">new_filters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span> <span class="o">+</span> <span class="p">(</span><span class="n">filter_pb</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
+            <span class="n">field_filters</span><span class="o">=</span><span class="n">new_filters</span><span class="p">,</span>
+            <span class="n">orders</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">,</span>
+            <span class="n">start_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span>
+            <span class="n">end_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.order_by"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.order_by">[docs]</a>    <span class="k">def</span> <span class="nf">order_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_path</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">ASCENDING</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Modify the query to add an order clause on a specific field.</span>
+
+<span class="sd">        See :meth:`~.firestore_v1beta1.client.Client.field_path` for</span>
+<span class="sd">        more information on **field paths**.</span>
+
+<span class="sd">        Successive :meth:`~.firestore_v1beta1.query.Query.order_by` calls</span>
+<span class="sd">        will further refine the ordering of results returned by the query</span>
+<span class="sd">        (i.e. the new &quot;order by&quot; fields will be added to existing ones).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            field_path (str): A field path (``.``-delimited list of</span>
+<span class="sd">                field names) on which to order the query results.</span>
+<span class="sd">            direction (Optional[str]): The direction to order by. Must be one</span>
+<span class="sd">                of :attr:`ASCENDING` or :attr:`DESCENDING`, defaults to</span>
+<span class="sd">                :attr:`ASCENDING`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: An ordered query. Acts as a</span>
+<span class="sd">            copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;order by&quot; constraint.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``direction`` is not one of :attr:`ASCENDING` or</span>
+<span class="sd">                :attr:`DESCENDING`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">order_pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Order</span><span class="p">(</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldReference</span><span class="p">(</span>
+                <span class="n">field_path</span><span class="o">=</span><span class="n">field_path</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">direction</span><span class="o">=</span><span class="n">_enum_from_direction</span><span class="p">(</span><span class="n">direction</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">new_orders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span> <span class="o">+</span> <span class="p">(</span><span class="n">order_pb</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
+            <span class="n">field_filters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span><span class="p">,</span>
+            <span class="n">orders</span><span class="o">=</span><span class="n">new_orders</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">,</span>
+            <span class="n">start_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span>
+            <span class="n">end_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.limit"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Limit a query to return a fixed number of results.</span>
+
+<span class="sd">        If the current query already has a limit set, this will overwrite it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count (int): Maximum number of documents to return that match</span>
+<span class="sd">                the query.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A limited query. Acts as a</span>
+<span class="sd">            copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;limit&quot; filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
+            <span class="n">field_filters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span><span class="p">,</span>
+            <span class="n">orders</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="n">count</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">,</span>
+            <span class="n">start_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span>
+            <span class="n">end_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.offset"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_to_skip</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Skip to an offset in a query.</span>
+
+<span class="sd">        If the current query already has specified an offset, this will</span>
+<span class="sd">        overwrite it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_to_skip (int): The number of results to skip at the beginning</span>
+<span class="sd">                of query results. (Must be non-negative.)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: An offset query. Acts as a</span>
+<span class="sd">            copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;offset&quot; field.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
+            <span class="n">field_filters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span><span class="p">,</span>
+            <span class="n">orders</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="n">num_to_skip</span><span class="p">,</span>
+            <span class="n">start_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span>
+            <span class="n">end_at</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_cursor_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set values to be used for a ``start_at`` or ``end_at`` cursor.</span>
+
+<span class="sd">        The values will later be used in a query protobuf.</span>
+
+<span class="sd">        When the query is sent to the server, the ``document_fields`` will</span>
+<span class="sd">        be used in the order given by fields set by</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.order_by`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
+<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
+<span class="sd">                or a dictionary of fields representing a query results</span>
+<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
+<span class="sd">                position in a query result set.</span>
+<span class="sd">            before (bool): Flag indicating if the document in</span>
+<span class="sd">                ``document_fields`` should (:data:`False`) or</span>
+<span class="sd">                shouldn&#39;t (:data:`True`) be included in the result set.</span>
+<span class="sd">            start (Optional[bool]): determines if the cursor is a ``start_at``</span>
+<span class="sd">                cursor (:data:`True`) or an ``end_at`` cursor (:data:`False`).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
+<span class="sd">            a copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;start at&quot; cursor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># NOTE: We copy so that the caller can&#39;t modify after calling.</span>
+            <span class="n">document_fields</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">document_fields</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># NOTE: This **assumes** a DocumentSnapshot.</span>
+            <span class="n">document_fields</span> <span class="o">=</span> <span class="n">document_fields</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+        <span class="n">cursor_pair</span> <span class="o">=</span> <span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span>
+        <span class="n">query_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
+            <span class="s1">&#39;field_filters&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span><span class="p">,</span>
+            <span class="s1">&#39;orders&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">,</span>
+            <span class="s1">&#39;limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">,</span>
+            <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">start</span><span class="p">:</span>
+            <span class="n">query_kwargs</span><span class="p">[</span><span class="s1">&#39;start_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cursor_pair</span>
+            <span class="n">query_kwargs</span><span class="p">[</span><span class="s1">&#39;end_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query_kwargs</span><span class="p">[</span><span class="s1">&#39;start_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span>
+            <span class="n">query_kwargs</span><span class="p">[</span><span class="s1">&#39;end_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cursor_pair</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span> <span class="o">**</span><span class="n">query_kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Query.start_at"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.start_at">[docs]</a>    <span class="k">def</span> <span class="nf">start_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start query results at a particular document value.</span>
+
+<span class="sd">        The result set will **include** the document specified by</span>
+<span class="sd">        ``document_fields``.</span>
+
+<span class="sd">        If the current query already has specified a start cursor -- either</span>
+<span class="sd">        via this method or</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.start_after` -- this will</span>
+<span class="sd">        overwrite it.</span>
+
+<span class="sd">        When the query is sent to the server, the ``document_fields`` will</span>
+<span class="sd">        be used in the order given by fields set by</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.order_by`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
+<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
+<span class="sd">                or a dictionary of fields representing a query results</span>
+<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
+<span class="sd">                position in a query result set.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
+<span class="sd">            a copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;start at&quot; cursor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor_helper</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.start_after"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.start_after">[docs]</a>    <span class="k">def</span> <span class="nf">start_after</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start query results after a particular document value.</span>
+
+<span class="sd">        The result set will **exclude** the document specified by</span>
+<span class="sd">        ``document_fields``.</span>
+
+<span class="sd">        If the current query already has specified a start cursor -- either</span>
+<span class="sd">        via this method or</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.start_at` -- this will</span>
+<span class="sd">        overwrite it.</span>
+
+<span class="sd">        When the query is sent to the server, the ``document_fields`` will</span>
+<span class="sd">        be used in the order given by fields set by</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.order_by`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
+<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
+<span class="sd">                or a dictionary of fields representing a query results</span>
+<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
+<span class="sd">                position in a query result set.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
+<span class="sd">            a copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;start after&quot; cursor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor_helper</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.end_before"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.end_before">[docs]</a>    <span class="k">def</span> <span class="nf">end_before</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;End query results before a particular document value.</span>
+
+<span class="sd">        The result set will **exclude** the document specified by</span>
+<span class="sd">        ``document_fields``.</span>
+
+<span class="sd">        If the current query already has specified an end cursor -- either</span>
+<span class="sd">        via this method or</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.end_at` -- this will</span>
+<span class="sd">        overwrite it.</span>
+
+<span class="sd">        When the query is sent to the server, the ``document_fields`` will</span>
+<span class="sd">        be used in the order given by fields set by</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.order_by`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
+<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
+<span class="sd">                or a dictionary of fields representing a query results</span>
+<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
+<span class="sd">                position in a query result set.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
+<span class="sd">            a copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;end before&quot; cursor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor_helper</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.end_at"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.end_at">[docs]</a>    <span class="k">def</span> <span class="nf">end_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document_fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;End query results at a particular document value.</span>
+
+<span class="sd">        The result set will **include** the document specified by</span>
+<span class="sd">        ``document_fields``.</span>
+
+<span class="sd">        If the current query already has specified an end cursor -- either</span>
+<span class="sd">        via this method or</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.end_before` -- this will</span>
+<span class="sd">        overwrite it.</span>
+
+<span class="sd">        When the query is sent to the server, the ``document_fields`` will</span>
+<span class="sd">        be used in the order given by fields set by</span>
+<span class="sd">        :meth:`~.firestore_v1beta1.query.Query.order_by`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            document_fields (Union[~.firestore_v1beta1.\</span>
+<span class="sd">                document.DocumentSnapshot, dict]): Either a document snapshot</span>
+<span class="sd">                or a dictionary of fields representing a query results</span>
+<span class="sd">                cursor. A cursor is a collection of values that represent a</span>
+<span class="sd">                position in a query result set.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~.firestore_v1beta1.query.Query: A query with cursor. Acts as</span>
+<span class="sd">            a copy of the current query, modified with the newly added</span>
+<span class="sd">            &quot;end at&quot; cursor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor_helper</span><span class="p">(</span><span class="n">document_fields</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_filters_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert all the filters into a single generic Filter protobuf.</span>
+
+<span class="sd">        This may be a lone field filter or unary filter, may be a composite</span>
+<span class="sd">        filter or may be :data:`None`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.firestore_v1beta1.types.\</span>
+<span class="sd">            StructuredQuery.Filter: A &quot;generic&quot; filter representing the</span>
+<span class="sd">            current query&#39;s filters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_filters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_filters</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">num_filters</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_filter_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">composite_filter</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">CompositeFilter</span><span class="p">(</span>
+                <span class="n">op</span><span class="o">=</span><span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">CompositeFilter</span><span class="o">.</span><span class="n">Operator</span><span class="o">.</span><span class="n">AND</span><span class="p">,</span>
+                <span class="n">filters</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">_filter_pb</span><span class="p">(</span><span class="n">filter_</span><span class="p">)</span> <span class="k">for</span> <span class="n">filter_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_filters</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span>
+                <span class="n">composite_filter</span><span class="o">=</span><span class="n">composite_filter</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert the current query into the equivalent protobuf.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.firestore_v1beta1.types.StructuredQuery: The</span>
+<span class="sd">            query protobuf.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;select&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">,</span>
+            <span class="s1">&#39;from&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">CollectionSelector</span><span class="p">(</span>
+                    <span class="n">collection_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filters_pb</span><span class="p">(),</span>
+            <span class="s1">&#39;order_by&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">,</span>
+            <span class="s1">&#39;start_at&#39;</span><span class="p">:</span> <span class="n">_cursor_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">),</span>
+            <span class="s1">&#39;end_at&#39;</span><span class="p">:</span> <span class="n">_cursor_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_at</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orders</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_kwargs</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">query_kwargs</span><span class="p">[</span><span class="s1">&#39;limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wrappers_pb2</span><span class="o">.</span><span class="n">Int32Value</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_limit</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="p">(</span><span class="o">**</span><span class="n">query_kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Query.get"><a class="viewcode-back" href="../../../../firestore/query.html#google.cloud.firestore_v1beta1.query.Query.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read the documents in the collection that match this query.</span>
+
+<span class="sd">        This sends a ``RunQuery`` RPC and then consumes each document</span>
+<span class="sd">        returned in the stream of ``RunQueryResponse`` messages.</span>
+
+<span class="sd">        If a ``transaction`` is used and it already has write operations</span>
+<span class="sd">        added, this method cannot be used (i.e. read-after-write is not</span>
+<span class="sd">        allowed).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            transaction (Optional[~.firestore_v1beta1.transaction.\</span>
+<span class="sd">                Transaction]): An existing transaction that this query will</span>
+<span class="sd">                run in.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            ~.firestore_v1beta1.document.DocumentSnapshot: The next</span>
+<span class="sd">            document that fulfills the query.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the first response in the stream is empty, but</span>
+<span class="sd">                then more responses follow.</span>
+<span class="sd">            ValueError: If a response other than the first does not contain</span>
+<span class="sd">                a document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parent_path</span><span class="p">,</span> <span class="n">expected_prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_parent_info</span><span class="p">()</span>
+        <span class="n">response_iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_firestore_api</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
+            <span class="n">parent_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_protobuf</span><span class="p">(),</span>
+            <span class="n">transaction</span><span class="o">=</span><span class="n">_helpers</span><span class="o">.</span><span class="n">get_transaction_id</span><span class="p">(</span><span class="n">transaction</span><span class="p">),</span>
+            <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_call_options</span><span class="p">)</span>
+
+        <span class="n">empty_stream</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">response_pb</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">response_iterator</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">empty_stream</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;First response in stream was empty&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Received second response&#39;</span><span class="p">,</span> <span class="n">response_pb</span><span class="p">)</span>
+
+            <span class="n">snapshot</span><span class="p">,</span> <span class="n">skipped_results</span> <span class="o">=</span> <span class="n">_query_response_to_snapshot</span><span class="p">(</span>
+                <span class="n">response_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span> <span class="n">expected_prefix</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">snapshot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">_EMPTY_DOC_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">response_pb</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="n">empty_stream</span> <span class="o">=</span> <span class="n">skipped_results</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">snapshot</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_enum_from_op_string</span><span class="p">(</span><span class="n">op_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a string representation of a binary operator to an enum.</span>
+
+<span class="sd">    These enums come from the protobuf message definition</span>
+<span class="sd">    ``StructuredQuery.FieldFilter.Operator``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        op_string (str): A comparison operation in the form of a string.</span>
+<span class="sd">            Acceptable values are ``&lt;``, ``&lt;=``, ``==``, ``&gt;=``</span>
+<span class="sd">            and ``&gt;``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The enum corresponding to ``op_string``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If ``op_string`` is not a valid operator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_COMPARISON_OPERATORS</span><span class="p">[</span><span class="n">op_string</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">choices</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_COMPARISON_OPERATORS</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_BAD_OP_STRING</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">op_string</span><span class="p">,</span> <span class="n">choices</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_isnan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if a value is NaN.</span>
+
+<span class="sd">    This differs from ``math.isnan`` in that **any** input type is</span>
+<span class="sd">    allowed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (Any): A value to check for NaN-ness.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Indicates if the value is the NaN float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_enum_from_direction</span><span class="p">(</span><span class="n">direction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a string representation of a direction to an enum.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        direction (str): A direction to order by. Must be one of</span>
+<span class="sd">            :attr:`~.firestore.Query.ASCENDING` or</span>
+<span class="sd">            :attr:`~.firestore.Query.DESCENDING`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: The enum corresponding to ``direction``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If ``direction`` is not a valid direction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">Query</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">ASCENDING</span>
+    <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">Query</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">enums</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">DESCENDING</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_BAD_DIR_STRING</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">direction</span><span class="p">,</span> <span class="n">Query</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">,</span> <span class="n">Query</span><span class="o">.</span><span class="n">DESCENDING</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_filter_pb</span><span class="p">(</span><span class="n">field_or_unary</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a specific protobuf filter to the generic filter type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        field_or_unary (Union[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            query_pb2.StructuredQuery.FieldFilter, google.cloud.proto.\</span>
+<span class="sd">            firestore.v1beta1.query_pb2.StructuredQuery.FieldFilter]): A</span>
+<span class="sd">            field or unary filter to convert to a generic filter.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        google.cloud.firestore_v1beta1.types.\</span>
+<span class="sd">        StructuredQuery.Filter: A &quot;generic&quot; filter.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If ``field_or_unary`` is not a field or unary filter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_or_unary</span><span class="p">,</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">FieldFilter</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">field_filter</span><span class="o">=</span><span class="n">field_or_unary</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_or_unary</span><span class="p">,</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">UnaryFilter</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">StructuredQuery</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">unary_filter</span><span class="o">=</span><span class="n">field_or_unary</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Unexpected filter type&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">field_or_unary</span><span class="p">),</span> <span class="n">field_or_unary</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_cursor_pb</span><span class="p">(</span><span class="n">cursor_pair</span><span class="p">,</span> <span class="n">orders</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a cursor pair to a protobuf.</span>
+
+<span class="sd">    If ``cursor_pair`` is :data:`None`, just returns :data:`None`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cursor_pair (Optional[Tuple[dict, bool]]): Two-tuple of</span>
+
+<span class="sd">            * a mapping of fields. Any field that is present in this mapping</span>
+<span class="sd">              must also be present in ``orders``</span>
+<span class="sd">            * a ``before`` flag</span>
+
+<span class="sd">        orders (Tuple[google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            query_pb2.StructuredQuery.Order, ...]]): The &quot;order by&quot; entries</span>
+<span class="sd">            to use for a query. (We use this rather than a list of field path</span>
+<span class="sd">            strings just because it is how a query stores calls</span>
+<span class="sd">            to ``order_by``.)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[google.cloud.firestore_v1beta1.types.Cursor]: A</span>
+<span class="sd">        protobuf cursor corresponding to the values.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If ``cursor_pair`` is not :data:`None`, but there are</span>
+<span class="sd">            no ``orders``.</span>
+<span class="sd">        ValueError: If one of the field paths in ``orders`` is not contained</span>
+<span class="sd">            in the ``data`` (i.e. the first component of ``cursor_pair``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">cursor_pair</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">orders</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_NO_ORDERS_FOR_CURSOR</span><span class="p">)</span>
+
+    <span class="n">data</span><span class="p">,</span> <span class="n">before</span> <span class="o">=</span> <span class="n">cursor_pair</span>
+    <span class="n">value_pbs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+        <span class="n">field_path</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">field</span><span class="o">.</span><span class="n">field_path</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_nested_value</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_MISSING_ORDER_BY</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">value_pb</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">encode_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">value_pbs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value_pb</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">Cursor</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">value_pbs</span><span class="p">,</span> <span class="n">before</span><span class="o">=</span><span class="n">before</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_query_response_to_snapshot</span><span class="p">(</span><span class="n">response_pb</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">expected_prefix</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse a query response protobuf to a document snapshot.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        response_pb (google.cloud.proto.firestore.v1beta1.\</span>
+<span class="sd">            firestore_pb2.RunQueryResponse): A</span>
+<span class="sd">        collection (~.firestore_v1beta1.collection.CollectionReference): A</span>
+<span class="sd">            reference to the collection that initiated the query.</span>
+<span class="sd">        expected_prefix (str): The expected prefix for fully-qualified</span>
+<span class="sd">            document names returned in the query results. This can be computed</span>
+<span class="sd">            directly from ``collection`` via :meth:`_parent_info`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple[Optional[~.firestore.document.DocumentSnapshot], int]: A</span>
+<span class="sd">        snapshot of the data returned in the query and the number of skipped</span>
+<span class="sd">        results. If ``response_pb.document`` is not set, the snapshot will be</span>
+<span class="sd">        :data:`None`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;document&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">skipped_results</span>
+
+    <span class="n">document_id</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">get_doc_id</span><span class="p">(</span>
+        <span class="n">response_pb</span><span class="o">.</span><span class="n">document</span><span class="p">,</span> <span class="n">expected_prefix</span><span class="p">)</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">document_id</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">decode_dict</span><span class="p">(</span>
+        <span class="n">response_pb</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="n">collection</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+    <span class="n">snapshot</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">DocumentSnapshot</span><span class="p">(</span>
+        <span class="n">reference</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">,</span>
+        <span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">read_time</span><span class="o">=</span><span class="n">response_pb</span><span class="o">.</span><span class="n">read_time</span><span class="p">,</span>
+        <span class="n">create_time</span><span class="o">=</span><span class="n">response_pb</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">create_time</span><span class="p">,</span>
+        <span class="n">update_time</span><span class="o">=</span><span class="n">response_pb</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">update_time</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">snapshot</span><span class="p">,</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">skipped_results</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
