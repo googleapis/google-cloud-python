@@ -92,7 +92,7 @@ class CollectionReference(object):
         Args:
             document_id (Optional[str]): The document identifier
                 within the current collection. If not provided, will default
-                to a random 20 character string composed of digits,
+                to a random 21 character string composed of digits,
                 uppercase and lowercase and letters.
 
         Returns:
@@ -138,7 +138,7 @@ class CollectionReference(object):
             document_id (Optional[str]): The document identifier within the
                 current collection. If not provided, an ID will be
                 automatically assigned by the server (the assigned ID will be
-                a random 20 character string composed of digits,
+                a random 21 character string composed of digits,
                 uppercase and lowercase letters).
 
         Returns:
@@ -375,8 +375,8 @@ def _auto_id():
     """Generate a "random" automatically generated ID.
 
     Returns:
-        str: A 20 character string composed of digits, uppercase and
+        str: A 21 character string composed of digits, uppercase and
         lowercase and letters.
     """
     return ''.join(
-        random.choice(_AUTO_ID_CHARS) for _ in six.moves.xrange(20))
+        random.choice(_AUTO_ID_CHARS) for _ in six.moves.xrange(21))
