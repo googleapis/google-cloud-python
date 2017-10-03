@@ -543,7 +543,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
 class LoadJobConfig(object):
     """Configuration options for load jobs.
 
-    All properties in this calss are optional. Values which are ``None`` ->
+    All properties in this class are optional. Values which are ``None`` ->
     server defaults.
     """
 
@@ -651,7 +651,8 @@ class LoadJobConfig(object):
         config = copy.deepcopy(self._properties)
         if len(self.schema) > 0:
             config['schema'] = {'fields': _build_schema_resource(self.schema)}
-        # TODO(jba): add a comment explaining why skipLeadingRows is a string.
+        # skipLeadingRows is a string because it's defined as an int64, which
+        # can't be represented as a JSON number.
         slr = config.get('skipLeadingRows')
         if slr is not None:
             config['skipLeadingRows'] = str(slr)
@@ -685,14 +686,14 @@ class LoadJob(_AsyncJob):
     :type job_id: str
     :param job_id: the job's ID
 
-    :type destination: :class:`google.cloud.bigquery.table.TableReference`
-    :param destination: reference to table into which data is to be loaded.
-
     :type source_uris: sequence of string
     :param source_uris:
         URIs of one or more data files to be loaded.  See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris
         for supported URI formats.
+
+    :type destination: :class:`google.cloud.bigquery.table.TableReference`
+    :param destination: reference to table into which data is to be loaded.
 
     :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
@@ -701,15 +702,15 @@ class LoadJob(_AsyncJob):
 
     _JOB_TYPE = 'load'
 
-    def __init__(self, job_id, destination, source_uris, client,
+    def __init__(self, job_id, source_uris, destination, client,
                  job_config=None):
         super(LoadJob, self).__init__(job_id, client)
 
         if job_config is None:
             job_config = LoadJobConfig()
 
-        self.destination = destination
         self.source_uris = source_uris
+        self.destination = destination
         self._configuration = job_config
 
     @property
@@ -812,7 +813,7 @@ class LoadJob(_AsyncJob):
         # TODO(jba): sourceUris should not be absent if there are no LoadJobs
         # for file uploads.
         source_uris = config_resource.get('sourceUris')
-        job = cls(job_id, destination, source_uris, client, config)
+        job = cls(job_id, source_uris, destination, client, config)
         job._set_properties(resource)
         return job
 

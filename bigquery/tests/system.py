@@ -469,7 +469,7 @@ class TestBigQuery(unittest.TestCase):
         config.source_format = 'CSV'
         config.write_disposition = 'WRITE_EMPTY'
         job = Config.CLIENT.load_table_from_storage(
-            dataset.table(TABLE_NAME), GS_URL, job_config=config)
+            GS_URL, dataset.table(TABLE_NAME), job_config=config)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
@@ -524,7 +524,7 @@ class TestBigQuery(unittest.TestCase):
 
         config = bigquery.LoadJobConfig()
         config.autodetect = True
-        job = Config.CLIENT.load_table_from_storage(table_ref, gs_url,
+        job = Config.CLIENT.load_table_from_storage(gs_url, table_ref,
                                                     job_config=config)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
@@ -571,7 +571,7 @@ class TestBigQuery(unittest.TestCase):
         table_ref = dataset.table(table.table_id)
         config = bigquery.LoadJobConfig()
         config.autodetect = True
-        job = Config.CLIENT.load_table_from_storage(table_ref, gs_url,
+        job = Config.CLIENT.load_table_from_storage(gs_url, table_ref,
                                                     job_config=config)
         # TODO(jba): do we need this retry now that we have job.result()?
         # Allow for 90 seconds of "warm up" before rows visible.  See

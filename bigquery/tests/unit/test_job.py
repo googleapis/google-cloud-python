@@ -323,8 +323,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
-                             [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], self.TABLE_REF,
+                             client)
         self.assertIs(job.destination, self.TABLE_REF)
         self.assertEqual(list(job.source_uris), [self.SOURCE1])
         self.assertIs(job._client, client)
@@ -366,7 +366,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         config = LoadJobConfig()
         config.schema = [full_name, age]
-        job = self._make_one(self.JOB_NAME, self.TABLE_REF, [self.SOURCE1],
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], self.TABLE_REF,
                              client, config)
         self.assertEqual(job.configuration.schema, [full_name, age])
 
@@ -392,8 +392,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         connection = _Connection(begun_resource, done_resource)
         client = _Client(self.PROJECT, connection=connection)
 
-        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
-                             [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], self.TABLE_REF,
+                             client)
         job.result()
 
         self.assertEqual(len(connection._requested), 2)
@@ -468,7 +468,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         client = _Client(self.PROJECT)
         table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], table, client)
         job._properties['etag'] = 'ETAG'
         job._properties['id'] = JOB_ID
         job._properties['selfLink'] = URL
@@ -571,8 +571,8 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_begin_w_already_running(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
-                             [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], self.TABLE_REF,
+                             client)
         job._properties['status'] = {'state': 'RUNNING'}
 
         with self.assertRaises(ValueError):
@@ -588,7 +588,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._make_one(self.JOB_NAME, self.TABLE_REF, [self.SOURCE1],
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], self.TABLE_REF,
                              client)
 
         job.begin()
@@ -629,8 +629,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         config = LoadJobConfig()
         config.autodetect = True
-        job = self._make_one(self.JOB_NAME, self.TABLE_REF,
-                             [self.SOURCE1], client, config)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], self.TABLE_REF,
+                             client, config)
         job.begin()
 
         sent = {
@@ -696,7 +696,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         config = LoadJobConfig()
         config.schema = [full_name, age]
-        job = self._make_one(self.JOB_NAME, self.TABLE_REF, [self.SOURCE1],
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], self.TABLE_REF,
                              client1, config)
         config.allow_jagged_rows = True
         config.allow_quoted_newlines = True
@@ -736,7 +736,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], table, client)
 
         self.assertFalse(job.exists())
 
@@ -753,7 +753,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn2 = _Connection({})
         client2 = _Client(project=self.PROJECT, connection=conn2)
         table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], table, client1)
 
         self.assertTrue(job.exists(client=client2))
 
@@ -770,7 +770,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], table, client)
 
         job.reload()
 
@@ -788,7 +788,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], table, client1)
 
         job.reload(client=client2)
 
@@ -806,7 +806,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=conn)
         table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], table, client)
 
         job.cancel()
 
@@ -825,7 +825,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         conn2 = _Connection(RESPONSE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         table = _Table()
-        job = self._make_one(self.JOB_NAME, table, [self.SOURCE1], client1)
+        job = self._make_one(self.JOB_NAME, [self.SOURCE1], table, client1)
 
         job.cancel(client=client2)
 

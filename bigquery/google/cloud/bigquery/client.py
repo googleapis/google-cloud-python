@@ -17,8 +17,9 @@
 from __future__ import absolute_import
 
 import collections
-import six
 import uuid
+
+import six
 
 from google.api.core import page_iterator
 from google.cloud.client import ClientWithProject
@@ -491,21 +492,21 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params)
 
-    def load_table_from_storage(self, destination, source_uris,
+    def load_table_from_storage(self, source_uris, destination,
                                 job_id=None, job_config=None):
-        """Construct a job for loading data into a table from CloudStorage.
+        """Starts a job for loading data into a table from CloudStorage.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load
-
-        :type destination: :class:`google.cloud.bigquery.table.TableReference`
-        :param destination: Table into which data is to be loaded.
 
         :type source_uris: One of:
                            str
                            sequence of string
         :param source_uris: URIs of data files to be loaded; in format
                             ``gs://<bucket_name>/<object_name_or_glob>``.
+
+        :type destination: :class:`google.cloud.bigquery.table.TableReference`
+        :param destination: Table into which data is to be loaded.
 
         :type job_id: str
         :param job_id: Name of the job.
@@ -519,7 +520,7 @@ class Client(ClientWithProject):
         job_id = _make_job_id(job_id)
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
-        job = LoadJob(job_id, destination, source_uris, self, job_config)
+        job = LoadJob(job_id, source_uris, destination, self, job_config)
         job.begin()
         return job
 

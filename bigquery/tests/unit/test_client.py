@@ -1144,7 +1144,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _Connection(RESOURCE)
         destination = client.dataset(DATASET).table(DESTINATION)
 
-        job = client.load_table_from_storage(destination, SOURCE_URI,
+        job = client.load_table_from_storage(SOURCE_URI, destination,
                                              job_id=JOB)
 
         # Check that load_table_from_storage actually starts the job.
@@ -1161,7 +1161,7 @@ class TestClient(unittest.TestCase):
 
         conn = client._connection = _Connection(RESOURCE)
 
-        job = client.load_table_from_storage(destination, [SOURCE_URI],
+        job = client.load_table_from_storage([SOURCE_URI], destination,
                                              job_id=JOB)
         self.assertIsInstance(job, LoadJob)
         self.assertIs(job._client, client)
