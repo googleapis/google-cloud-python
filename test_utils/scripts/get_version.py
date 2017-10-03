@@ -18,4 +18,4 @@ from __future__ import print_function
 from pkg_resources import get_distribution
 
 
-print(get_distribution('google-cloud').version)
+print(get_distribution('google-cloud-core').version)
