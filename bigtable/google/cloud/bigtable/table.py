@@ -409,11 +409,16 @@ class _RetryableMutateRowsWorker(object):
         return i
 
     def _do_mutate_retryable_rows(self):
-        curr_rows = []
+        retryable_rows = []
         for i, status in enumerate(self.responses_statuses):
             if self._is_retryable(status):
-                curr_rows.append(self.rows[i])
-        mutate_rows_request = _mutate_rows_request(self.table_name, curr_rows)
+                retryable_rows.append(self.rows[i])
+
+        if not retryable_rows:
+            # All mutations are either successful or non-retryable now.
+            return self.responses_statuses
+
+        mutate_rows_request = _mutate_rows_request(self.table_name, retryable_rows)
         responses = self.client._data_stub.MutateRows(mutate_rows_request)
 
         has_retryable_responses = False
