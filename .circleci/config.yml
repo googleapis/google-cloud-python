@@ -17,6 +17,16 @@ jobs:
               echo "No credentials. System tests will not run."
             fi
       - run:
+          name: Decrypt Firestore credentials
+          command: |
+            if [ -n "$FIRESTORE_APPLICATION_CREDENTIALS" ]; then
+              openssl aes-256-cbc -d -a -k "$FIRESTORE_CREDENTIALS_PASSPHRASE" \
+                  -in /var/code/gcp/firestore/tests/credentials.json.enc \
+                  -out "$FIRESTORE_APPLICATION_CREDENTIALS"
+            else
+              echo "No Firestore credentials. Firestore system tests will not run."
+            fi
+      - run:
           name: Add GitHub public key to known hosts
           command: |
             mkdir -p ~/.ssh/
@@ -65,6 +75,12 @@ jobs:
           command: |
             if [[ -n $(grep error_reporting ~/target_packages) ]]; then
               nox -f error_reporting/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.firestore
+          command: |
+            if [[ -n $(grep firestore ~/target_packages) ]]; then
+              nox -f firestore/nox.py
             fi
       - run:
           name: Run tests - google.cloud.language
