@@ -37,8 +37,8 @@ ALL_PACKAGES = (
     'speech/',
     'trace/',
     'translate/',
-    'vision/',
     'videointelligence/',
+    'vision/',
 )
 
 
