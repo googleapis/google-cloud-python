@@ -2,10 +2,12 @@ setuptools >= 36.4.0
 sphinx >= 1.6.3
 
 core/
+storage/
 bigquery/
 bigtable/
 datastore/
 dns/
+firestore/
 language/
 logging/
 error_reporting/
@@ -15,7 +17,6 @@ resource_manager/
 runtimeconfig/
 spanner/
 speech/
-storage/
 trace/
 translate/
 videointelligence/
