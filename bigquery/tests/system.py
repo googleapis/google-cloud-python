@@ -463,14 +463,13 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
+        config = bigquery.LoadJobConfig()
+        config.create_disposition = 'CREATE_NEVER'
+        config.skip_leading_rows = 1
+        config.source_format = 'CSV'
+        config.write_disposition = 'WRITE_EMPTY'
         job = Config.CLIENT.load_table_from_storage(
-            'bq_load_storage_test_' + local_id, table, GS_URL)
-        job.create_disposition = 'CREATE_NEVER'
-        job.skip_leading_rows = 1
-        job.source_format = 'CSV'
-        job.write_disposition = 'WRITE_EMPTY'
-
-        job.begin()
+            GS_URL, dataset.table(TABLE_NAME), job_config=config)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
@@ -523,11 +522,10 @@ class TestBigQuery(unittest.TestCase):
         dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
         table_ref = dataset.table(table_name)
 
-        job = Config.CLIENT.load_table_from_storage(
-            'bq_load_storage_test_' + local_id, table_ref, gs_url)
-        job.autodetect = True
-
-        job.begin()
+        config = bigquery.LoadJobConfig()
+        config.autodetect = True
+        job = Config.CLIENT.load_table_from_storage(gs_url, table_ref,
+                                                    job_config=config)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
@@ -551,7 +549,6 @@ class TestBigQuery(unittest.TestCase):
             self, storage_client, rows, bucket_name, blob_name, table):
         from google.cloud._testing import _NamedTemporaryFile
 
-        local_id = unique_resource_id()
         gs_url = 'gs://{}/{}'.format(bucket_name, blob_name)
 
         # In the **very** rare case the bucket name is reserved, this
@@ -572,10 +569,11 @@ class TestBigQuery(unittest.TestCase):
 
         dataset = self.temp_dataset(table.dataset_id)
         table_ref = dataset.table(table.table_id)
-        job = Config.CLIENT.load_table_from_storage(
-            'bq_extract_storage_test_' + local_id, table_ref, gs_url)
-        job.autodetect = True
-        job.begin()
+        config = bigquery.LoadJobConfig()
+        config.autodetect = True
+        job = Config.CLIENT.load_table_from_storage(gs_url, table_ref,
+                                                    job_config=config)
+        # TODO(jba): do we need this retry now that we have job.result()?
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
@@ -608,7 +606,7 @@ class TestBigQuery(unittest.TestCase):
         destination_uri = 'gs://{}/person_ages_out.csv'.format(bucket_name)
 
         job = Config.CLIENT.extract_table(table_ref, destination_uri)
-        job.result()
+        job.result(timeout=100)
 
         self.to_delete.insert(0, destination)
         got = destination.download_as_string().decode('utf-8')
