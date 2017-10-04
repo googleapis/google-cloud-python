@@ -383,7 +383,6 @@ class _RetryableMutateRowsWorker(object):
     RETRY_CODES = (
         StatusCode.DEADLINE_EXCEEDED.value[0],
         StatusCode.ABORTED.value[0],
-        StatusCode.INTERNAL.value[0],
         StatusCode.UNAVAILABLE.value[0],
     )
 
@@ -421,18 +420,19 @@ class _RetryableMutateRowsWorker(object):
         mutate_rows_request = _mutate_rows_request(self.table_name, retryable_rows)
         responses = self.client._data_stub.MutateRows(mutate_rows_request)
 
-        has_retryable_responses = False
+        num_retryable_responses = 0
         for response in responses:
             index = 0
             for entry in response.entries:
                 index = self._next_retryable_row_index(index)
                 self.responses_statuses[index] = entry.status
-                has_retryable_responses = self._is_retryable(entry.status)
+                if self._is_retryable(entry.status):
+                    num_retryable_responses += 1
                 if entry.status.code == 0:
                     self.rows[index].clear()
                 index += 1
 
-        if has_retryable_responses:
+        if num_retryable_responses:
             raise _MutateRowsRetryableError()
         return self.responses_statuses
 
