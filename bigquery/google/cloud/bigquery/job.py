@@ -686,11 +686,11 @@ class LoadJob(_AsyncJob):
     :type job_id: str
     :param job_id: the job's ID
 
-    :type source_uris: sequence of string
+    :type source_uris: sequence of string or ``NoneType``
     :param source_uris:
         URIs of one or more data files to be loaded.  See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris
-        for supported URI formats.
+        for supported URI formats. Pass None for jobs that load from a file.
 
     :type destination: :class:`google.cloud.bigquery.table.TableReference`
     :param destination: reference to table into which data is to be loaded.
@@ -858,7 +858,8 @@ class LoadJob(_AsyncJob):
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
         configuration = self._configuration.to_api_repr()
-        configuration['sourceUris'] = self.source_uris
+        if self.source_uris is not None:
+            configuration['sourceUris'] = self.source_uris
         configuration['destinationTable'] = self.destination.to_api_repr()
 
         return {
@@ -900,8 +901,7 @@ class LoadJob(_AsyncJob):
         ds_ref = DatasetReference(dest_config['projectId'],
                                   dest_config['datasetId'],)
         destination = TableReference(ds_ref, dest_config['tableId'])
-        # TODO(jba): sourceUris should not be absent if there are no LoadJobs
-        # for file uploads.
+        # sourceUris will be absent if this is a file upload.
         source_uris = config_resource.get('sourceUris')
         job = cls(job_id, source_uris, destination, client, config)
         job._set_properties(resource)

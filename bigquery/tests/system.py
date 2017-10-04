@@ -373,7 +373,8 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+        table_ref = dataset.table(TABLE_NAME)
+        table_arg = Table(table_ref, schema=[full_name, age],
                           client=Config.CLIENT)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
@@ -385,13 +386,14 @@ class TestBigQuery(unittest.TestCase):
                 writer.writerows(ROWS)
 
             with open(temp.name, 'rb') as csv_read:
-                job = table.upload_from_file(
-                    csv_read,
-                    source_format='CSV',
-                    skip_leading_rows=1,
-                    create_disposition='CREATE_NEVER',
-                    write_disposition='WRITE_EMPTY',
-                )
+                config = bigquery.LoadJobConfig()
+                config.source_format = 'CSV'
+                config.skip_leading_rows = 1
+                config.create_disposition = 'CREATE_NEVER'
+                config.write_disposition = 'WRITE_EMPTY'
+                config.schema = table.schema
+                job = Config.CLIENT.load_table_from_file(
+                    csv_read, table_ref, job_config=config)
 
         # Retry until done.
         job.result(timeout=JOB_TIMEOUT)
@@ -415,16 +417,16 @@ class TestBigQuery(unittest.TestCase):
             ("red", 650)]
 
         dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
-        table = Table(dataset.table(TABLE_NAME), client=Config.CLIENT)
+        table_ref = dataset.table(TABLE_NAME)
+        table = Table(table_ref, client=Config.CLIENT)
         self.to_delete.insert(0, table)
 
         with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as avrof:
-            job = table.upload_from_file(
-                avrof,
-                source_format='AVRO',
-                write_disposition='WRITE_TRUNCATE'
-            )
-
+            config = bigquery.LoadJobConfig()
+            config.source_format = 'AVRO'
+            config.write_disposition = 'WRITE_TRUNCATE'
+            job = Config.CLIENT.load_table_from_file(
+                avrof, table_ref, job_config=config)
         # Retry until done.
         job.result(timeout=JOB_TIMEOUT)
 
@@ -891,8 +893,8 @@ class TestBigQuery(unittest.TestCase):
         dataset = self.temp_dataset(dataset_id)
         greeting = bigquery.SchemaField(
             'greeting', 'STRING', mode='NULLABLE')
-        table_arg = Table(dataset.table(table_id), schema=[greeting],
-                          client=Config.CLIENT)
+        table_ref = dataset.table(table_id)
+        table_arg = Table(table_ref, schema=[greeting], client=Config.CLIENT)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -903,13 +905,13 @@ class TestBigQuery(unittest.TestCase):
                 writer.writerows(rows)
 
             with open(temp.name, 'rb') as csv_read:
-                job = table.upload_from_file(
-                    csv_read,
-                    source_format='CSV',
-                    skip_leading_rows=1,
-                    create_disposition='CREATE_NEVER',
-                    write_disposition='WRITE_EMPTY',
-                )
+                config = bigquery.LoadJobConfig()
+                config.source_format = 'CSV'
+                config.skip_leading_rows = 1
+                config.create_disposition = 'CREATE_NEVER'
+                config.write_disposition = 'WRITE_EMPTY'
+                job = Config.CLIENT.load_table_from_file(
+                    csv_read, table_ref, job_config=config)
 
         # Retry until done.
         job.result(timeout=JOB_TIMEOUT)
