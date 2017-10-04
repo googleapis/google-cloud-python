@@ -24,10 +24,8 @@ import google.api.core.future.polling
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
@@ -106,20 +104,6 @@ def _error_result_to_exception(error_result):
         status_code, error_result.get('message', ''), errors=[error_result])
 
 
-class AutoDetectSchema(_TypedProperty):
-    """Typed Property for ``autodetect`` properties.
-
-    :raises ValueError: on ``set`` operation if ``instance.schema``
-                        is already defined.
-    """
-    def __set__(self, instance, value):
-        self._validate(value)
-        if instance.schema:
-            raise ValueError('A schema should not be already defined '
-                             'when using schema auto-detection')
-        setattr(instance._configuration, self._backing_name, value)
-
-
 class Compression(_EnumApiResourceProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
@@ -139,7 +123,7 @@ class DestinationFormat(_EnumApiResourceProperty):
     AVRO = 'AVRO'
 
 
-class Encoding(_EnumProperty):
+class Encoding(_EnumApiResourceProperty):
     """Pseudo-enum for ``encoding`` properties."""
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
@@ -151,7 +135,7 @@ class QueryPriority(_EnumProperty):
     BATCH = 'BATCH'
 
 
-class SourceFormat(_EnumProperty):
+class SourceFormat(_EnumApiResourceProperty):
     """Pseudo-enum for ``source_format`` properties."""
     CSV = 'CSV'
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
@@ -164,6 +148,20 @@ class WriteDisposition(_EnumApiResourceProperty):
     WRITE_APPEND = 'WRITE_APPEND'
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
     WRITE_EMPTY = 'WRITE_EMPTY'
+
+
+class AutoDetectSchema(_TypedApiResourceProperty):
+    """Property for ``autodetect`` properties.
+
+    :raises ValueError: on ``set`` operation if ``instance.schema``
+                        is already defined.
+    """
+    def __set__(self, instance, value):
+        self._validate(value)
+        if instance.schema:
+            raise ValueError('A schema should not be already defined '
+                             'when using schema auto-detection')
+        instance._properties[self.resource_name] = value
 
 
 class _AsyncJob(google.api.core.future.polling.PollingFuture):
@@ -542,35 +540,151 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
                 and self.error_result.get('reason') == _STOPPED_REASON)
 
 
-class _LoadConfiguration(object):
-    """User-settable configuration options for load jobs.
+class LoadJobConfig(object):
+    """Configuration options for load jobs.
 
-    Values which are ``None`` -> server defaults.
+    All properties in this class are optional. Values which are ``None`` ->
+    server defaults.
     """
-    _allow_jagged_rows = None
-    _allow_quoted_newlines = None
-    _autodetect = None
-    _create_disposition = None
-    _encoding = None
-    _field_delimiter = None
-    _ignore_unknown_values = None
-    _max_bad_records = None
-    _null_marker = None
-    _quote_character = None
-    _skip_leading_rows = None
-    _source_format = None
-    _write_disposition = None
+
+    def __init__(self):
+        self._properties = {}
+        self._schema = ()
+
+    allow_jagged_rows = _TypedApiResourceProperty(
+        'allow_jagged_rows', 'allowJaggedRows', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows
+    """
+
+    allow_quoted_newlines = _TypedApiResourceProperty(
+        'allow_quoted_newlines', 'allowQuotedNewlines', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
+    """
+
+    autodetect = AutoDetectSchema('autodetect', 'autodetect', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
+    """
+
+    create_disposition = CreateDisposition('create_disposition',
+                                           'createDisposition')
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
+    """
+
+    encoding = Encoding('encoding', 'encoding')
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding
+    """
+
+    field_delimiter = _TypedApiResourceProperty(
+        'field_delimiter', 'fieldDelimiter', six.string_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter
+    """
+
+    ignore_unknown_values = _TypedApiResourceProperty(
+        'ignore_unknown_values', 'ignoreUnknownValues', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues
+    """
+
+    max_bad_records = _TypedApiResourceProperty(
+        'max_bad_records', 'maxBadRecords', six.integer_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
+    """
+
+    null_marker = _TypedApiResourceProperty(
+        'null_marker', 'nullMarker', six.string_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker
+    """
+
+    quote_character = _TypedApiResourceProperty(
+        'quote_character', 'quote', six.string_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
+    """
+
+    skip_leading_rows = _TypedApiResourceProperty(
+        'skip_leading_rows', 'skipLeadingRows', six.integer_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
+    """
+
+    source_format = SourceFormat('source_format', 'sourceFormat')
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat
+    """
+
+    write_disposition = WriteDisposition('write_disposition',
+                                         'writeDisposition')
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
+    """
+
+    @property
+    def schema(self):
+        """See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.schema
+        """
+        return list(self._schema)
+
+    @schema.setter
+    def schema(self, value):
+        if not all(isinstance(field, SchemaField) for field in value):
+            raise ValueError('Schema items must be fields')
+        if self.autodetect:
+            raise ValueError(
+                'Schema can not be set if `autodetect` property is True')
+        self._schema = tuple(value)
+
+    def to_api_repr(self):
+        """Build an API representation of the load job config.
+
+        :rtype: dict
+        :returns: A dictionary in the format used by the BigQuery API.
+        """
+        config = copy.deepcopy(self._properties)
+        if len(self.schema) > 0:
+            config['schema'] = {'fields': _build_schema_resource(self.schema)}
+        # skipLeadingRows is a string because it's defined as an int64, which
+        # can't be represented as a JSON number.
+        slr = config.get('skipLeadingRows')
+        if slr is not None:
+            config['skipLeadingRows'] = str(slr)
+        return config
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct a job configuration given its API representation
+
+        :type resource: dict
+        :param resource:
+            An extract job configuration in the same representation as is
+            returned from the API.
+
+        :rtype: :class:`google.cloud.bigquery.job.ExtractJobConfig`
+        :returns: Configuration parsed from ``resource``.
+        """
+        schema = resource.pop('schema', {'fields': ()})
+        slr = resource.pop('skipLeadingRows', None)
+        config = cls()
+        config._properties = copy.deepcopy(resource)
+        config.schema = _parse_schema_resource(schema)
+        config.skip_leading_rows = _int_or_none(slr)
 
 
 class LoadJob(_AsyncJob):
-    """Asynchronous job for loading data into a table from remote URI.
+    """Asynchronous job for loading data into a table.
+
+    Can load from Google Cloud Storage URIs or from a file.
 
     :type job_id: str
-    :param job_id:
-        The job's ID, belonging to the project associated with the client.
-
-    :type destination: :class:`google.cloud.bigquery.table.Table`
-    :param destination: Table into which data is to be loaded.
+    :param job_id: the job's ID
 
     :type source_uris: sequence of string
     :param source_uris:
@@ -578,56 +692,34 @@ class LoadJob(_AsyncJob):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris
         for supported URI formats.
 
+    :type destination: :class:`google.cloud.bigquery.table.TableReference`
+    :param destination: reference to table into which data is to be loaded.
+
     :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
-
-    :type schema: list of :class:`google.cloud.bigquery.table.SchemaField`
-    :param schema: The job's schema
     """
 
-    _schema = None
     _JOB_TYPE = 'load'
 
-    def __init__(self, name, destination, source_uris, client, schema=()):
-        super(LoadJob, self).__init__(name, client)
-        self.destination = destination
+    def __init__(self, job_id, source_uris, destination, client,
+                 job_config=None):
+        super(LoadJob, self).__init__(job_id, client)
+
+        if job_config is None:
+            job_config = LoadJobConfig()
+
         self.source_uris = source_uris
-        self._configuration = _LoadConfiguration()
-        # Let the @property do validation. This must occur after all other
-        # attributes have been set.
-        self.schema = schema
+        self.destination = destination
+        self._configuration = job_config
 
     @property
-    def schema(self):
-        """Table's schema.
+    def configuration(self):
+        """Configuration for this job.
 
-        :rtype: list of :class:`SchemaField`
-        :returns: fields describing the schema
+        :rtype: :class:`~google.cloud.bigquery.job.LoadJobConfig`
         """
-        return list(self._schema)
-
-    @schema.setter
-    def schema(self, value):
-        """Update table's schema
-
-        :type value: list of :class:`SchemaField`
-        :param value: fields describing the schema
-
-        :raises TypeError: If ``value`is not a sequence.
-        :raises ValueError: If any item in the sequence is not
-                            a ``SchemaField``.
-        """
-        if not value:
-            self._schema = ()
-        else:
-            if not all(isinstance(field, SchemaField) for field in value):
-                raise ValueError('Schema items must be fields')
-            if self.autodetect:
-                raise ValueError(
-                    'Schema can not be set if `autodetect` property is True')
-
-            self._schema = tuple(value)
+        return self._configuration
 
     @property
     def input_file_bytes(self):
@@ -673,155 +765,25 @@ class LoadJob(_AsyncJob):
         if statistics is not None:
             return int(statistics['load']['outputRows'])
 
-    allow_jagged_rows = _TypedProperty('allow_jagged_rows', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowJaggedRows
-    """
-
-    allow_quoted_newlines = _TypedProperty('allow_quoted_newlines', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.allowQuotedNewlines
-    """
-
-    autodetect = AutoDetectSchema('autodetect', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.autodetect
-    """
-
-    create_disposition = CreateDisposition('create_disposition',
-                                           'createDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.createDisposition
-    """
-
-    encoding = Encoding('encoding')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.encoding
-    """
-
-    field_delimiter = _TypedProperty('field_delimiter', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.fieldDelimiter
-    """
-
-    ignore_unknown_values = _TypedProperty('ignore_unknown_values', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.ignoreUnknownValues
-    """
-
-    max_bad_records = _TypedProperty('max_bad_records', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.maxBadRecords
-    """
-
-    null_marker = _TypedProperty('null_marker', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.nullMarker
-    """
-
-    quote_character = _TypedProperty('quote_character', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.quote
-    """
-
-    skip_leading_rows = _TypedProperty('skip_leading_rows', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.skipLeadingRows
-    """
-
-    source_format = SourceFormat('source_format')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceFormat
-    """
-
-    write_disposition = WriteDisposition('write_disposition',
-                                         'writeDisposition')
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.writeDisposition
-    """
-
-    def _populate_config_resource(self, configuration):
-        """Helper for _build_resource: copy config properties to resource"""
-        if self.allow_jagged_rows is not None:
-            configuration['allowJaggedRows'] = self.allow_jagged_rows
-        if self.allow_quoted_newlines is not None:
-            configuration['allowQuotedNewlines'] = self.allow_quoted_newlines
-        if self.autodetect is not None:
-            configuration['autodetect'] = self.autodetect
-        if self.create_disposition is not None:
-            configuration['createDisposition'] = self.create_disposition
-        if self.encoding is not None:
-            configuration['encoding'] = self.encoding
-        if self.field_delimiter is not None:
-            configuration['fieldDelimiter'] = self.field_delimiter
-        if self.ignore_unknown_values is not None:
-            configuration['ignoreUnknownValues'] = self.ignore_unknown_values
-        if self.max_bad_records is not None:
-            configuration['maxBadRecords'] = self.max_bad_records
-        if self.null_marker is not None:
-            configuration['nullMarker'] = self.null_marker
-        if self.quote_character is not None:
-            configuration['quote'] = self.quote_character
-        if self.skip_leading_rows is not None:
-            configuration['skipLeadingRows'] = str(self.skip_leading_rows)
-        if self.source_format is not None:
-            configuration['sourceFormat'] = self.source_format
-        if self.write_disposition is not None:
-            configuration['writeDisposition'] = self.write_disposition
-
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
-        resource = {
+        configuration = self._configuration.to_api_repr()
+        configuration['sourceUris'] = self.source_uris
+        configuration['destinationTable'] = self.destination.to_api_repr()
+
+        return {
             'jobReference': {
                 'projectId': self.project,
                 'jobId': self.job_id,
             },
             'configuration': {
-                self._JOB_TYPE: {
-                    'sourceUris': self.source_uris,
-                    'destinationTable': {
-                        'projectId': self.destination.project,
-                        'datasetId': self.destination.dataset_id,
-                        'tableId': self.destination.table_id,
-                    },
-                },
+                self._JOB_TYPE: configuration,
             },
         }
-        configuration = resource['configuration'][self._JOB_TYPE]
-        self._populate_config_resource(configuration)
-
-        if len(self.schema) > 0:
-            configuration['schema'] = {
-                'fields': _build_schema_resource(self.schema)}
-
-        return resource
-
-    def _scrub_local_properties(self, cleaned):
-        """Helper:  handle subclass properties in cleaned."""
-        schema = cleaned.pop('schema', {'fields': ()})
-        self.schema = _parse_schema_resource(schema)
 
     def _copy_configuration_properties(self, configuration):
         """Helper:  assign subclass configuration properties in cleaned."""
-        self.allow_jagged_rows = _bool_or_none(
-            configuration.get('allowJaggedRows'))
-        self.allow_quoted_newlines = _bool_or_none(
-            configuration.get('allowQuotedNewlines'))
-        self.autodetect = _bool_or_none(
-            configuration.get('autodetect'))
-        self.create_disposition = configuration.get('createDisposition')
-        self.encoding = configuration.get('encoding')
-        self.field_delimiter = configuration.get('fieldDelimiter')
-        self.ignore_unknown_values = _bool_or_none(
-            configuration.get('ignoreUnknownValues'))
-        self.max_bad_records = _int_or_none(
-            configuration.get('maxBadRecords'))
-        self.null_marker = configuration.get('nullMarker')
-        self.quote_character = configuration.get('quote')
-        self.skip_leading_rows = _int_or_none(
-            configuration.get('skipLeadingRows'))
-        self.source_format = configuration.get('sourceFormat')
-        self.write_disposition = configuration.get('writeDisposition')
+        self._configuration._properties = copy.deepcopy(configuration)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -842,15 +804,16 @@ class LoadJob(_AsyncJob):
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: Job parsed from ``resource``.
         """
-        job_id, config = cls._get_resource_config(resource)
-        dest_config = config['destinationTable']
+        job_id, config_resource = cls._get_resource_config(resource)
+        config = LoadJobConfig.from_api_repr(config_resource)
+        dest_config = config_resource['destinationTable']
         ds_ref = DatasetReference(dest_config['projectId'],
                                   dest_config['datasetId'],)
-        dataset = Dataset(ds_ref)
-        table_ref = TableReference(dataset, dest_config['tableId'])
-        destination = Table(table_ref, client=client)
-        source_urls = config.get('sourceUris', ())
-        job = cls(job_id, destination, source_urls, client=client)
+        destination = TableReference(ds_ref, dest_config['tableId'])
+        # TODO(jba): sourceUris should not be absent if there are no LoadJobs
+        # for file uploads.
+        source_uris = config_resource.get('sourceUris')
+        job = cls(job_id, source_uris, destination, client, config)
         job._set_properties(resource)
         return job
 
