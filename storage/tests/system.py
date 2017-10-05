@@ -771,11 +771,65 @@ class TestStorageRewrite(TestStorageFiles):
         # Not adding 'dest' to 'self.case_blobs_to_delete':  it is the
         # same object as 'source'.
 
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(rewritten, len(source_data))
         self.assertEqual(total, len(source_data))
 
         self.assertEqual(dest.download_as_string(), source_data)
+
+    def test_rewrite_add_key_with_user_project(self):
+        file_data = self.FILES['simple']
+        new_bucket_name = 'rewrite-key-up' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        try:
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            source = with_user_project.blob('source')
+            source.upload_from_filename(file_data['path'])
+            source_data = source.download_as_string()
+
+            KEY = os.urandom(32)
+            dest = with_user_project.blob('dest', encryption_key=KEY)
+            token, rewritten, total = dest.rewrite(source)
+
+            self.assertEqual(token, None)
+            self.assertEqual(rewritten, len(source_data))
+            self.assertEqual(total, len(source_data))
+
+            self.assertEqual(source.download_as_string(),
+                             dest.download_as_string())
+        finally:
+            retry_429(created.delete)(force=True)
+
+    def test_rewrite_rotate_with_user_project(self):
+        BLOB_NAME = 'rotating-keys'
+        file_data = self.FILES['simple']
+        new_bucket_name = 'rewrite-rotate-up' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        try:
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            SOURCE_KEY = os.urandom(32)
+            source = with_user_project.blob(
+                BLOB_NAME, encryption_key=SOURCE_KEY)
+            source.upload_from_filename(file_data['path'])
+            source_data = source.download_as_string()
+
+            DEST_KEY = os.urandom(32)
+            dest = with_user_project.blob(BLOB_NAME, encryption_key=DEST_KEY)
+            token, rewritten, total = dest.rewrite(source)
+
+            self.assertEqual(token, None)
+            self.assertEqual(rewritten, len(source_data))
+            self.assertEqual(total, len(source_data))
+
+            self.assertEqual(dest.download_as_string(), source_data)
+        finally:
+            retry_429(created.delete)(force=True)
 
 
 class TestStorageNotificationCRUD(unittest.TestCase):
