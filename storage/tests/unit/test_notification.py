@@ -74,6 +74,8 @@ class TestBucketNotification(unittest.TestCase):
          return bucket
 
     def test_ctor_defaults(self):
+        from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
         client = self._make_client()
         bucket = self._make_bucket(client)
 
@@ -86,7 +88,7 @@ class TestBucketNotification(unittest.TestCase):
         self.assertIsNone(notification.custom_attributes)
         self.assertIsNone(notification.event_types)
         self.assertIsNone(notification.blob_name_prefix)
-        self.assertIsNone(notification.payload_format)
+        self.assertEqual(notification.payload_format, NONE_PAYLOAD_FORMAT)
 
     def test_ctor_explicit(self):
         client = self._make_client()
@@ -132,6 +134,8 @@ class TestBucketNotification(unittest.TestCase):
             klass.from_api_repr(resource, bucket=bucket)
 
     def test_from_api_repr_minimal(self):
+        from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
         klass = self._get_target_class()
         client = self._make_client()
         bucket = self._make_bucket(client)
@@ -140,6 +144,7 @@ class TestBucketNotification(unittest.TestCase):
             'id': self.NOTIFICATION_ID,
             'etag': self.ETAG,
             'selfLink': self.SELF_LINK,
+            'payload_format': NONE_PAYLOAD_FORMAT,
         }
 
         notification = klass.from_api_repr(resource, bucket=bucket)
@@ -150,7 +155,7 @@ class TestBucketNotification(unittest.TestCase):
         self.assertIsNone(notification.custom_attributes)
         self.assertIsNone(notification.event_types)
         self.assertIsNone(notification.blob_name_prefix)
-        self.assertIsNone(notification.payload_format)
+        self.assertEqual(notification.payload_format, NONE_PAYLOAD_FORMAT)
         self.assertEqual(notification.etag, self.ETAG)
         self.assertEqual(notification.self_link, self.SELF_LINK)
 
@@ -162,7 +167,7 @@ class TestBucketNotification(unittest.TestCase):
             'topic': self.TOPIC_ALT_REF,
             'custom_attributes': self.CUSTOM_ATTRIBUTES,
             'event_types': self.event_types(),
-            'blob_name_prefix': self.BLOB_NAME_PREFIX,
+            'object_name_prefix': self.BLOB_NAME_PREFIX,
             'payload_format': self.payload_format(),
             'id': self.NOTIFICATION_ID,
             'etag': self.ETAG,
@@ -231,6 +236,8 @@ class TestBucketNotification(unittest.TestCase):
             notification.create()
 
     def test_create_w_defaults(self):
+        from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
         client = self._make_client()
         bucket = self._make_bucket(client)
         notification = self._make_one(
@@ -241,6 +248,7 @@ class TestBucketNotification(unittest.TestCase):
             'id': self.NOTIFICATION_ID,
             'etag': self.ETAG,
             'selfLink': self.SELF_LINK,
+            'payload_format': NONE_PAYLOAD_FORMAT,
         }
 
         notification.create()
@@ -251,10 +259,11 @@ class TestBucketNotification(unittest.TestCase):
         self.assertIsNone(notification.custom_attributes)
         self.assertIsNone(notification.event_types)
         self.assertIsNone(notification.blob_name_prefix)
-        self.assertIsNone(notification.payload_format)
+        self.assertEqual(notification.payload_format, NONE_PAYLOAD_FORMAT)
 
         data = {
             'topic': self.TOPIC_REF,
+            'payload_format': NONE_PAYLOAD_FORMAT,
         }
         api_request.assert_called_once_with(
             method='POST',
@@ -279,7 +288,7 @@ class TestBucketNotification(unittest.TestCase):
             'topic': self.TOPIC_ALT_REF,
             'custom_attributes': self.CUSTOM_ATTRIBUTES,
             'event_types': self.event_types(),
-            'blob_name_prefix': self.BLOB_NAME_PREFIX,
+            'object_name_prefix': self.BLOB_NAME_PREFIX,
             'payload_format': self.payload_format(),
             'id': self.NOTIFICATION_ID,
             'etag': self.ETAG,
@@ -302,7 +311,7 @@ class TestBucketNotification(unittest.TestCase):
             'topic': self.TOPIC_ALT_REF,
             'custom_attributes': self.CUSTOM_ATTRIBUTES,
             'event_types': self.event_types(),
-            'blob_name_prefix': self.BLOB_NAME_PREFIX,
+            'object_name_prefix': self.BLOB_NAME_PREFIX,
             'payload_format': self.payload_format(),
         }
         api_request.assert_called_once_with(
@@ -386,6 +395,8 @@ class TestBucketNotification(unittest.TestCase):
         )
 
     def test_reload_hit(self):
+        from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
         client = self._make_client()
         bucket = self._make_bucket(client)
         alt_client = self._make_client()
@@ -397,6 +408,7 @@ class TestBucketNotification(unittest.TestCase):
             'id': self.NOTIFICATION_ID,
             'etag': self.ETAG,
             'selfLink': self.SELF_LINK,
+            'payload_format': NONE_PAYLOAD_FORMAT,
         }
 
         notification.reload(client=client)
@@ -406,7 +418,7 @@ class TestBucketNotification(unittest.TestCase):
         self.assertIsNone(notification.custom_attributes)
         self.assertIsNone(notification.event_types)
         self.assertIsNone(notification.blob_name_prefix)
-        self.assertIsNone(notification.payload_format)
+        self.assertEqual(notification.payload_format, NONE_PAYLOAD_FORMAT)
 
         api_request.assert_called_once_with(
             method='GET',

@@ -550,3 +550,103 @@ class TestStorageRewrite(TestStorageFiles):
         self.assertEqual(total, len(source_data))
 
         self.assertEqual(dest.download_as_string(), source_data)
+
+
+class TestStorageNotificationCRUD(unittest.TestCase):
+
+    topic = None
+    TOPIC_NAME = 'notification' + unique_resource_id('-')
+    CUSTOM_ATTRIBUTES = {
+        'attr1': 'value1',
+        'attr2': 'value2',
+    }
+    BLOB_NAME_PREFIX = 'blob-name-prefix/'
+
+    @property
+    def topic_path(self):
+        return 'projects/{}/topics/{}'.format(
+            Config.CLIENT.project, self.TOPIC_NAME)
+
+    def _intialize_topic(self):
+        try:
+            from google.cloud.pubsub_v1 import PublisherClient
+        except ImportError:
+            raise unittest.SkipTest("Cannot import pubsub")
+        self.publisher_client = PublisherClient()
+        retry_429(self.publisher_client.create_topic)(self.topic_path)
+        policy = self.publisher_client.get_iam_policy(self.topic_path)
+        binding = policy.bindings.add()
+        binding.role = 'roles/pubsub.publisher'
+        binding.members.append(
+            'serviceAccount:{}'
+            '@gs-project-accounts.iam.gserviceaccount.com'.format(
+                Config.CLIENT.project))
+        self.publisher_client.set_iam_policy(self.topic_path, policy)
+
+
+    def setUp(self):
+        self.case_buckets_to_delete = []
+        self._intialize_topic()
+
+    def tearDown(self):
+        retry_429(self.publisher_client.delete_topic)(self.topic_path)
+        with Config.CLIENT.batch():
+            for bucket_name in self.case_buckets_to_delete:
+                bucket = Config.CLIENT.bucket(bucket_name)
+                retry_429(bucket.delete)()
+
+    @staticmethod
+    def event_types():
+        from google.cloud.storage.notification import (
+            OBJECT_FINALIZE_EVENT_TYPE,
+            OBJECT_DELETE_EVENT_TYPE)
+
+        return [OBJECT_FINALIZE_EVENT_TYPE, OBJECT_DELETE_EVENT_TYPE]
+
+    @staticmethod
+    def payload_format():
+        from google.cloud.storage.notification import (
+            JSON_API_V1_PAYLOAD_FORMAT)
+
+        return JSON_API_V1_PAYLOAD_FORMAT
+
+    def test_notification_minimal(self):
+        new_bucket_name = 'notification-minimal' + unique_resource_id('-')
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(list(bucket.list_notifications()), [])
+        notification = bucket.notification(self.TOPIC_NAME)
+        retry_429(notification.create)()
+        try:
+            self.assertTrue(notification.exists())
+            self.assertIsNotNone(notification.notification_id)
+            notifications = list(bucket.list_notifications())
+            self.assertEqual(len(notifications), 1)
+            self.assertEqual(notifications[0].topic_name, self.TOPIC_NAME)
+        finally:
+            notification.delete()
+
+    def test_notification_explicit(self):
+        new_bucket_name = 'notification-explicit' + unique_resource_id('-')
+        bucket = retry_429(Config.CLIENT.create_bucket)(new_bucket_name)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        notification = bucket.notification(
+            self.TOPIC_NAME,
+            custom_attributes=self.CUSTOM_ATTRIBUTES,
+            event_types=self.event_types(),
+            blob_name_prefix=self.BLOB_NAME_PREFIX,
+            payload_format=self.payload_format(),
+        )
+        retry_429(notification.create)()
+        try:
+            self.assertTrue(notification.exists())
+            self.assertIsNotNone(notification.notification_id)
+            self.assertEqual(
+                notification.custom_attributes, self.CUSTOM_ATTRIBUTES)
+            self.assertEqual(notification.event_types, self.event_types())
+            self.assertEqual(
+                notification.blob_name_prefix, self.BLOB_NAME_PREFIX)
+            self.assertEqual(
+                notification.payload_format, self.payload_format())
+        finally:
+            notification.delete()
