@@ -16,8 +16,8 @@
 
 
 import random
-import six
 import time
+import six
 
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
@@ -325,7 +325,8 @@ class Table(object):
         now = time.time()
         deadline = now + total_timeout_millis / _MILLIS_PER_SECOND
 
-        retryable_mutate_rows = _RetryableMutateRowsWorker(self._instance._client, self.name, rows)
+        retryable_mutate_rows = _RetryableMutateRowsWorker(
+            self._instance._client, self.name, rows)
         while now < deadline:
             try:
                 return retryable_mutate_rows()
@@ -380,6 +381,7 @@ class _MutateRowsRetryableError(Exception):
 
 
 class _RetryableMutateRowsWorker(object):
+    # pylint: disable=unsubscriptable-object
     RETRY_CODES = (
         StatusCode.DEADLINE_EXCEEDED.value[0],
         StatusCode.ABORTED.value[0],
@@ -390,13 +392,15 @@ class _RetryableMutateRowsWorker(object):
         self.client = client
         self.table_name = table_name
         self.rows = rows
-        self.responses_statuses = [None for _ in six.moves.xrange(len(self.rows))]
+        self.responses_statuses = [
+            None for _ in six.moves.xrange(len(self.rows))]
 
     def __call__(self):
         return self._do_mutate_retryable_rows()
 
-    def _is_retryable(self, status):
-        return status is None or status.code in _RetryableMutateRowsWorker.RETRY_CODES
+    def _is_retryable(self, status):  # pylint: disable=no-self-use
+        return (status is None or
+                status.code in _RetryableMutateRowsWorker.RETRY_CODES)
 
     def _next_retryable_row_index(self, begin_index):
         i = begin_index
@@ -404,7 +408,7 @@ class _RetryableMutateRowsWorker(object):
             status = self.responses_statuses[i]
             if self._is_retryable(status):
                 return i
-            i =+ 1
+            i += 1
         return i
 
     def _do_mutate_retryable_rows(self):
@@ -417,8 +421,10 @@ class _RetryableMutateRowsWorker(object):
             # All mutations are either successful or non-retryable now.
             return self.responses_statuses
 
-        mutate_rows_request = _mutate_rows_request(self.table_name, retryable_rows)
-        responses = self.client._data_stub.MutateRows(mutate_rows_request)
+        mutate_rows_request = _mutate_rows_request(
+            self.table_name, retryable_rows)
+        responses = self.client._data_stub.MutateRows(
+            mutate_rows_request)
 
         num_retryable_responses = 0
         for response in responses:
