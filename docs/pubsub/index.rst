@@ -63,7 +63,7 @@ messages to it
     ...     project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
     ...     topic='MY_TOPIC_NAME',  # Set this to something appropriate.
     ... )
-    >>> publisher.create_topic()
+    >>> publisher.create_topic(topic)  # raises conflict if topic exists
     >>> publisher.publish(topic, b'My first message!', spam='eggs')
 
 To learn more, consult the :doc:`publishing documentation <publisher/index>`.
