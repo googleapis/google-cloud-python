@@ -492,7 +492,10 @@ class Blob(_PropertyMixin):
         except resumable_media.DataCorruption as exc:
             # Delete the corrupt downloaded file.
             os.unlink(file_obj.name)
-            raise
+            raise exceptions.from_http_status(
+                exc.response.status_code, exc.message +
+                     ".  Deleted corrupt downloaded file %s" % file_obj.name)
+
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
