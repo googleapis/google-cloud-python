@@ -142,7 +142,7 @@ def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
 def test_wrap_method_with_overriding_retry_deadline(unusued_sleep):
     method = mock.Mock(
         spec=['__call__'],
-        side_effect=([exceptions.InternalServerError(None)] * 3) + [42]
+        side_effect=([exceptions.InternalServerError(None)] * 4) + [42]
     )
     default_retry = retry.Retry()
     default_timeout = timeout.ExponentialTimeout(deadline=60)
@@ -156,7 +156,8 @@ def test_wrap_method_with_overriding_retry_deadline(unusued_sleep):
 
     assert result == 42
     timeout_args = [call[1]['timeout'] for call in method.call_args_list]
-    assert timeout_args == [5, 10, 20, 29]
+    # Timeout should never exceed 30s.
+    assert max(timeout_args) <= 30
 
 
 def test_wrap_method_with_overriding_timeout_as_a_number():
