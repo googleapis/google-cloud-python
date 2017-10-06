@@ -295,7 +295,7 @@ class TestBigQuery(unittest.TestCase):
 
     @staticmethod
     def _fetch_single_page(table):
-        iterator = table.fetch_data()
+        iterator = Config.CLIENT.list_rows(table)
         page = six.next(iterator.pages)
         return list(page)
 
