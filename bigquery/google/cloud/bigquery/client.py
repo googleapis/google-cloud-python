@@ -211,8 +211,12 @@ class Client(ClientWithProject):
         """
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
+        resource = table._build_resource(Table.all_fields)
+        doomed = [field for field in resource if resource[field] is None]
+        for field in doomed:
+            del resource[field]
         api_response = self._connection.api_request(
-            method='POST', path=path, data=table._build_resource())
+            method='POST', path=path, data=resource)
         return Table.from_api_repr(api_response, self)
 
     def get_dataset(self, dataset_ref):

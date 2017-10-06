@@ -527,7 +527,8 @@ class TestClient(unittest.TestCase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
-            'view': {'query': query},
+            # TODO(alixh) default to Standard SQL
+            'view': {'query': query, 'useLegacySql': None},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, table_id)
@@ -853,7 +854,7 @@ class TestClient(unittest.TestCase):
                 'datasetId': dataset_id,
                 'tableId': table_id
             },
-            'schema': {'fields': []}
+            'schema': None
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(req['path'], '/%s' % path)

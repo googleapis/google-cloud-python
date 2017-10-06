@@ -175,6 +175,11 @@ class Table(object):
 
     _schema = None
 
+    all_fields = [
+        'description', 'friendly_name', 'expires', 'location',
+        'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema'
+    ]
+
     def __init__(self, table_ref, schema=(), client=None):
         self._project = table_ref.project
         self._table_id = table_ref.table_id
@@ -617,11 +622,10 @@ class Table(object):
         self._properties.update(cleaned)
 
     def _populate_expires_resource(self, resource):
-        value = _millis_from_datetime(self.expires)
-        resource['expirationTime'] = value
+        resource['expirationTime'] = _millis_from_datetime(self.expires)
 
     def _populate_partitioning_type_resource(self, resource):
-        resource['timePartitioning'] = self._properties['timePartitioning']
+        resource['timePartitioning'] = self._properties.get('timePartitioning')
 
     def _populate_view_use_legacy_sql_resource(self, resource):
         if 'view' not in resource:
@@ -629,14 +633,30 @@ class Table(object):
         resource['view']['useLegacySql'] = self.view_use_legacy_sql
 
     def _populate_view_query_resource(self, resource):
+        if self.view_query is None:
+            resource['view'] = None
+            return
         if 'view' not in resource:
             resource['view'] = {}
         resource['view']['query'] = self.view_query
 
     def _populate_schema_resource(self, resource):
-        resource['schema'] = {'fields': _build_schema_resource(self._schema)}
+        if not self._schema:
+            resource['schema'] = None
+        else:
+            resource['schema'] = {
+                'fields': _build_schema_resource(self._schema),
+            }
 
-    def _build_resource(self, filter_fields=[]):
+    custom_resource_fields = {
+        'expires': _populate_expires_resource,
+        'partitioning_type': _populate_partitioning_type_resource,
+        'view_query': _populate_view_query_resource,
+        'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
+        'schema': _populate_schema_resource
+    }
+
+    def _build_resource(self, filter_fields):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'tableReference': {
@@ -644,25 +664,11 @@ class Table(object):
                 'datasetId': self._dataset_id,
                 'tableId': self.table_id},
         }
-        custom_resource_fields = {
-            'expires': self._populate_expires_resource,
-            'partitioning_type': self._populate_partitioning_type_resource,
-            'view_query': self._populate_view_query_resource,
-            'view_use_legacy_sql': self._populate_view_use_legacy_sql_resource,
-            'schema': self._populate_schema_resource
-        }
-        all_fields = [
-            'description', 'friendly_name', 'expires', 'location',
-            'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema'
-        ]
-        for f in all_fields:
-            if filter_fields and f not in filter_fields:
-                continue
-            if getattr(self, f) in (None, []) and f not in filter_fields:
-                continue
-            if f in custom_resource_fields:
-                custom_resource_fields[f](resource)
+        for f in filter_fields:
+            if f in self.custom_resource_fields:
+                self.custom_resource_fields[f](self, resource)
             else:
+                # TODO(alixh) refactor to use in both Table and Dataset
                 # snake case to camel case
                 words = f.split('_')
                 api_field = words[0] + ''.join(
