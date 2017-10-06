@@ -488,6 +488,66 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(result, expected_result)
 
+    def test_retryable_mutate_rows_no_retry(self):
+        from google.rpc.status_pb2 import Status
+
+        instance = mock.MagicMock()
+        table = self._make_one(self.TABLE_ID, instance)
+
+        response = [Status(code=0), Status(code=1)]
+
+        mock_worker = mock.Mock(side_effect=[response])
+        with mock.patch(
+                'google.cloud.bigtable.table._RetryableMutateRowsWorker',
+                new=mock.MagicMock(return_value=mock_worker)):
+            statuses = table.mutate_rows([mock.MagicMock(), mock.MagicMock()])
+        result = [status.code for status in statuses]
+        expected_result = [0, 1]
+
+        self.assertEqual(result, expected_result)
+
+    def test_retryable_mutate_rows_retry(self):
+        from google.cloud.bigtable.table import _MutateRowsRetryableError
+        from google.rpc.status_pb2 import Status
+
+        instance = mock.MagicMock()
+        table = self._make_one(self.TABLE_ID, instance)
+
+        response = [Status(code=0), Status(code=1)]
+
+        mock_worker = mock.Mock(side_effect=[_MutateRowsRetryableError, response])
+        with mock.patch(
+                'google.cloud.bigtable.table._RetryableMutateRowsWorker',
+                new=mock.MagicMock(return_value=mock_worker)):
+            statuses = table.mutate_rows([mock.MagicMock(), mock.MagicMock()])
+        result = [status.code for status in statuses]
+        expected_result = [0, 1]
+
+        self.assertEqual(result, expected_result)
+
+    def test_retryable_mutate_rows_retry_timeout(self):
+        from google.cloud.bigtable.table import _MutateRowsRetryableError
+        from google.rpc.status_pb2 import Status
+
+        instance = mock.MagicMock()
+        table = self._make_one(self.TABLE_ID, instance)
+
+        response = [Status(code=0), Status(code=1)]
+
+        mock_worker = mock.Mock(
+                side_effect=[_MutateRowsRetryableError, _MutateRowsRetryableError],
+                responses_statuses=response)
+        # total_timeout_millis = 5 * 60 * 1000
+        mock_time = mock.Mock(side_effect=[0, 2000, 5 * 60 * 1000])
+        with mock.patch(
+                'google.cloud.bigtable.table._RetryableMutateRowsWorker',
+                new=mock.MagicMock(return_value=mock_worker)), mock.patch(
+                    'time.time', new=mock_time):
+            statuses = table.mutate_rows([mock.MagicMock(), mock.MagicMock()])
+        result = [status.code for status in statuses]
+        expected_result = [0, 1]
+
+        self.assertEqual(result, expected_result)
 
     def test_read_rows(self):
         from google.cloud._testing import _Monkey
@@ -742,6 +802,11 @@ def _ColumnFamilyPB(*args, **kw):
         table_pb2 as table_v2_pb2)
 
     return table_v2_pb2.ColumnFamily(*args, **kw)
+
+
+def _MockRetryableMutateRowsWorker():
+    from google.cloud.bigtable.table import _RetryableMutateRowsWorker
+    return mock.create_autospec(_RetryableMutateRowsWorker)
 
 
 class _Client(object):
