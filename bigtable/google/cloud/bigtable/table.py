@@ -409,7 +409,7 @@ class _RetryableMutateRowsWorker(object):
             if self._is_retryable(status):
                 return i
             i += 1
-        return i
+        return -1
 
     def _do_mutate_retryable_rows(self):
         retryable_rows = []
