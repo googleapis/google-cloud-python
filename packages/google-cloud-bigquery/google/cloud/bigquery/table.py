@@ -25,13 +25,10 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
-from google.api.core import page_iterator
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
@@ -767,61 +764,6 @@ class Table(object):
         api_response = client._connection.api_request(
             method='PUT', path=self.path, data=self._build_resource())
         self._set_properties(api_response)
-
-    def fetch_data(self, max_results=None, page_token=None, client=None):
-        """API call:  fetch the table data via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
-
-        .. note::
-
-           This method assumes that its instance's ``schema`` attribute is
-           up-to-date with the schema as defined on the back-end:  if the
-           two schemas are not identical, the values returned may be
-           incomplete.  To ensure that the local copy of the schema is
-           up-to-date, call ``client.get_table``.
-
-        :type max_results: int
-        :param max_results: (Optional) Maximum number of rows to return.
-
-        :type page_token: str
-        :param page_token: (Optional) Token representing a cursor into the
-                           table's rows.
-
-        :type client: :class:`~google.cloud.bigquery.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls
-                       back to the ``client`` stored on the current dataset.
-
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
-        :returns: Iterator of row data :class:`tuple`s. During each page, the
-                  iterator will have the ``total_rows`` attribute set,
-                  which counts the total number of rows **in the table**
-                  (this is distinct from the total number of rows in the
-                  current page: ``iterator.page.num_items``).
-        """
-        if len(self._schema) == 0:
-            raise ValueError(_TABLE_HAS_NO_SCHEMA)
-
-        params = {}
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        client = self._require_client(client)
-        path = '%s/data' % (self.path,)
-        iterator = page_iterator.HTTPIterator(
-            client=client,
-            api_request=client._connection.api_request,
-            path=path,
-            item_to_value=_item_to_row,
-            items_key='rows',
-            page_token=page_token,
-            page_start=_rows_page_start,
-            next_token='pageToken',
-            extra_params=params)
-        iterator.schema = self._schema
-        return iterator
 
     def row_from_mapping(self, mapping):
         """Convert a mapping to a row tuple using the schema.
