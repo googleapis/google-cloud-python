@@ -150,7 +150,8 @@ class Flow(object):
             google_auth_oauthlib.helpers.session_from_client_config(
                 client_config, scopes, **kwargs))
 
-        return cls(session, client_type, client_config)
+        redirect_uri = kwargs.get('redirect_uri', None)
+        return cls(session, client_type, client_config, redirect_uri)
 
     @classmethod
     def from_client_secrets_file(cls, client_secrets_file, scopes, **kwargs):
