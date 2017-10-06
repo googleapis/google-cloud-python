@@ -1481,7 +1481,7 @@ class TestClient(unittest.TestCase):
             RESOURCE, RESULTS_RESOURCE, RESULTS_RESOURCE)
 
         rows_iter = client.query_rows(QUERY, job_id=JOB)
-        rows = [row for row in rows_iter]
+        rows = list(rows_iter)
 
         self.assertEqual(rows, [])
         self.assertIs(rows_iter.client, client)
