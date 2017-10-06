@@ -2054,7 +2054,13 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         client = _Client(self.PROJECT)
         job = self._make_one(self.JOB_NAME, self.QUERY, client)
-        query_results = QueryResults(None, client)
+        resource = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+        }
+        query_results = QueryResults(client, resource)
         job._query_results = query_results
 
         results = job.query_results()
@@ -2080,14 +2086,15 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_result_invokes_begins(self):
         begun_resource = self._makeResource()
-        incomplete_resource = {'jobComplete': False}
-        query_resource = {
-            'jobComplete': True,
+        incomplete_resource = {
+            'jobComplete': False,
             'jobReference': {
                 'projectId': self.PROJECT,
                 'jobId': self.JOB_NAME,
             },
         }
+        query_resource = copy.deepcopy(incomplete_resource)
+        query_resource['jobComplete'] = True
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
         connection = _Connection(
