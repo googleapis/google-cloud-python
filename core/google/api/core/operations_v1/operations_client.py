@@ -58,11 +58,8 @@ class OperationsClient(object):
         # Create all wrapped methods using the interface configuration.
         # The interface config contains all of the default settings for retry
         # and timeout for each RPC method.
-        interface_config = (
-            client_config
-            ['interfaces']
-            ['google.longrunning.Operations']
-        )
+        interfaces = client_config['interfaces']
+        interface_config = interfaces['google.longrunning.Operations']
         method_configs = gapic_v1.config.parse_method_configs(interface_config)
 
         self._get_operation = gapic_v1.method.wrap_method(
