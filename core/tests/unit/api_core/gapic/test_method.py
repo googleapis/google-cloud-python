@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
+
 import mock
 
 from google.api.core import exceptions
@@ -19,6 +21,14 @@ from google.api.core import retry
 from google.api.core import timeout
 import google.api.core.gapic_v1.method
 import google.api.core.page_iterator
+
+
+def _utcnow_monotonic():
+    curr_value = datetime.datetime.min
+    delta = datetime.timedelta(seconds=0.5)
+    while True:
+        yield curr_value
+        curr_value += delta
 
 
 def test_wrap_method_basic():
@@ -139,7 +149,11 @@ def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
 
 
 @mock.patch('time.sleep')
-def test_wrap_method_with_overriding_retry_deadline(unusued_sleep):
+@mock.patch(
+    'google.api.core.helpers.datetime_helpers.utcnow',
+    side_effect=_utcnow_monotonic(),
+    autospec=True)
+def test_wrap_method_with_overriding_retry_deadline(utcnow, unused_sleep):
     method = mock.Mock(
         spec=['__call__'],
         side_effect=([exceptions.InternalServerError(None)] * 4) + [42]
@@ -156,8 +170,12 @@ def test_wrap_method_with_overriding_retry_deadline(unusued_sleep):
 
     assert result == 42
     timeout_args = [call[1]['timeout'] for call in method.call_args_list]
-    # Timeout should never exceed 30s.
-    assert max(timeout_args) <= 30
+    assert timeout_args == [5.0, 10.0, 20.0, 26.0, 25.0]
+    assert utcnow.call_count == (
+        1 +  # First to set the deadline.
+        5 +  # One for each min(timeout, maximum, (DEADLINE - NOW).seconds)
+        5
+    )
 
 
 def test_wrap_method_with_overriding_timeout_as_a_number():
