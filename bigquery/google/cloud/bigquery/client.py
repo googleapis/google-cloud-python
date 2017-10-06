@@ -26,7 +26,7 @@ from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
@@ -34,6 +34,8 @@ from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.query import QueryResults
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
 
 
 class Project(object):
@@ -346,7 +348,6 @@ class Client(ClientWithProject):
         :type table: One of:
                      :class:`~google.cloud.bigquery.table.Table`
                      :class:`~google.cloud.bigquery.table.TableReference`
-
         :param table: the table to delete, or a reference to it.
         """
         if not isinstance(table, (Table, TableReference)):
@@ -666,6 +667,80 @@ class Client(ClientWithProject):
         job = QueryJob(job_id, query, client=self, job_config=job_config)
         job.begin()
         return job.result(timeout=timeout)
+
+    def list_rows(self, table, selected_fields=None, max_results=None,
+                  page_token=None, start_index=None):
+        """List the rows of the table.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list
+
+        .. note::
+
+           This method assumes that the provided schema is up-to-date with the
+           schema as defined on the back-end: if the two schemas are not
+           identical, the values returned may be incomplete. To ensure that the
+           local copy of the schema is up-to-date, call ``client.get_table``.
+
+        :type table: One of:
+                     :class:`~google.cloud.bigquery.table.Table`
+                     :class:`~google.cloud.bigquery.table.TableReference`
+        :param table: the table to list, or a reference to it.
+
+        :type selected_fields: list of :class:`SchemaField`
+        :param selected_fields:
+            The fields to return. Required if ``table`` is a
+            :class:`~google.cloud.bigquery.table.TableReference`.
+
+        :type max_results: int
+        :param max_results: maximum number of rows to return.
+
+        :type page_token: str
+        :param page_token: (Optional) Token representing a cursor into the
+                           table's rows.
+
+        :type start_index: int
+        :param page_token: (Optional) The zero-based index of the starting
+                           row to read.
+
+        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :returns: Iterator of row data :class:`tuple`s. During each page, the
+                  iterator will have the ``total_rows`` attribute set,
+                  which counts the total number of rows **in the table**
+                  (this is distinct from the total number of rows in the
+                  current page: ``iterator.page.num_items``).
+
+        """
+        if selected_fields is not None:
+            schema = selected_fields
+        elif isinstance(table, TableReference):
+            raise ValueError('need selected_fields with TableReference')
+        elif isinstance(table, Table):
+            if len(table._schema) == 0:
+                raise ValueError(_TABLE_HAS_NO_SCHEMA)
+            schema = table.schema
+        else:
+            raise TypeError('table should be Table or TableReference')
+
+        params = {}
+        if selected_fields is not None:
+            params['selectedFields'] = [f.name for f in selected_fields]
+        if start_index is not None:
+            params['startIndex'] = start_index
+
+        iterator = page_iterator.HTTPIterator(
+            client=self,
+            api_request=self._connection.api_request,
+            path='%s/data' % (table.path,),
+            item_to_value=_item_to_row,
+            items_key='rows',
+            page_token=page_token,
+            next_token='pageToken',
+            max_results=max_results,
+            page_start=_rows_page_start,
+            extra_params=params)
+        iterator.schema = schema
+        return iterator
 
 
 # pylint: disable=unused-argument
