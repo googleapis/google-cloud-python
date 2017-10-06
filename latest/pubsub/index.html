@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub &#8212; google-cloud 9fddaf0 documentation</title>
+    <title>Pub/Sub &#8212; google-cloud 3a95612 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9fddaf0',
+        VERSION:     '3a95612',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -93,7 +93,7 @@ messages to it</p>
 <span class="gp">... </span>    <span class="n">project_id</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;GOOGLE_CLOUD_PROJECT&#39;</span><span class="p">),</span>
 <span class="gp">... </span>    <span class="n">topic</span><span class="o">=</span><span class="s1">&#39;MY_TOPIC_NAME&#39;</span><span class="p">,</span>  <span class="c1"># Set this to something appropriate.</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">publisher</span><span class="o">.</span><span class="n">create_topic</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">publisher</span><span class="o">.</span><span class="n">create_topic</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>  <span class="c1"># raises conflict if topic exists</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">publisher</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;My first message!&#39;</span><span class="p">,</span> <span class="n">spam</span><span class="o">=</span><span class="s1">&#39;eggs&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
