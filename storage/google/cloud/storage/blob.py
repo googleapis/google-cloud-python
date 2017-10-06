@@ -489,6 +489,10 @@ class Blob(_PropertyMixin):
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
+        except resumable_media.DataCorruption as exc:
+            # Delete the corrupt downloaded file.
+            os.unlink(file_obj.name)
+            raise
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
