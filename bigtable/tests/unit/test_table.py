@@ -451,43 +451,6 @@ class TestTable(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._read_row_helper(chunks, None)
 
-    def test_mutate_rows(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
-        from google.cloud.bigtable.row import DirectRow
-        from google.rpc.status_pb2 import Status
-        from tests.unit._testing import _FakeStub
-
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
-        table = self._make_one(self.TABLE_ID, instance)
-
-        row_1 = DirectRow(row_key=b'row_key', table=table)
-        row_1.set_cell('cf', b'col', b'value1')
-        row_2 = DirectRow(row_key=b'row_key_2', table=table)
-        row_2.set_cell('cf', b'col', b'value2')
-
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=1),
-                ),
-            ],
-        )
-
-        # Patch the stub used by the API method.
-        client._data_stub = _FakeStub([response])
-        statuses = table.mutate_rows([row_1, row_2])
-        result = [status.code for status in statuses]
-        expected_result = [0, 1]
-
-        self.assertEqual(result, expected_result)
-
     def test_retryable_mutate_rows_no_retry(self):
         from google.rpc.status_pb2 import Status
 
@@ -677,13 +640,13 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(worker._next_retryable_row_index(4), 4)
         self.assertEqual(worker._next_retryable_row_index(5), -1)
 
-    def test_do_mutate_retryable_rows_empty_rows(self):
+    def test_callable_empty_rows(self):
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._make_table(self.TABLE_ID, instance)
 
         worker = self._make_worker(table._instance._client, table.name, [])
-        statuses = worker._do_mutate_retryable_rows()
+        statuses = worker()
 
         self.assertEqual(len(statuses), 0)
 
