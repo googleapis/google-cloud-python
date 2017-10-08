@@ -26,6 +26,19 @@ ONE_ROW_CONTENTS = [
 ]
 
 
+ONE_ROW_CONTENTS_DML = [
+    588,
+    datetime.datetime(2013, 10, 10, 11, 27, 16, tzinfo=timezone('UTC')),
+    'test',
+    40.76727216,
+    False,
+    datetime.date(2013, 10, 10),
+    datetime.datetime(2013, 10, 10, 11, 27, 16),
+    datetime.time(11, 27, 16),
+    'test_bytes'
+]
+
+
 @pytest.fixture(scope='session')
 def engine():
     engine = create_engine('bigquery://', echo=True)
@@ -40,6 +53,11 @@ def table(engine):
 @pytest.fixture(scope='session')
 def table_one_row(engine):
     return Table('test_pybigquery.sample_one_row', MetaData(bind=engine), autoload=True)
+
+
+@pytest.fixture(scope='session')
+def table_dml(engine):
+    return Table('test_pybigquery.sample_dml', MetaData(bind=engine), autoload=True)
 
 
 @pytest.fixture(scope='session')
@@ -171,3 +189,22 @@ def test_querying_wildcard_tables(engine):
     table = Table('bigquery-public-data.noaa_gsod.gsod*', MetaData(bind=engine), autoload=True)
     rows = table.select().limit(1).execute().first()
     assert len(rows) > 0
+
+
+def test_dml(engine, session, table_dml):
+    # test insert
+    engine.execute(table_dml.insert(ONE_ROW_CONTENTS_DML))
+    result = table_dml.select().execute().fetchall()
+    assert len(result) == 1
+
+    # test update
+    session.query(table_dml)\
+        .filter(table_dml.c.string == 'test')\
+        .update({'string': 'updated_row'}, synchronize_session=False)
+    updated_result = table_dml.select().execute().fetchone()
+    assert updated_result['string'] == 'updated_row'
+
+    # test delete
+    session.query(table_dml).filter(table_dml.c.string == 'updated_row').delete(synchronize_session=False)
+    result = table_dml.select().execute().fetchall()
+    assert len(result) == 0
