@@ -90,6 +90,7 @@ class BigQueryDialect(DefaultDialect):
     description_encoding = None
     supports_native_boolean = True
     supports_simple_order_by_label = True
+    postfetch_lastrowid = False
 
     def __init__(self, arraysize=5000, *args, **kwargs):
         super(BigQueryDialect, self).__init__(*args, **kwargs)
