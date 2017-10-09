@@ -175,6 +175,11 @@ class Table(object):
 
     _schema = None
 
+    all_fields = [
+        'description', 'friendly_name', 'expires', 'location',
+        'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema'
+    ]
+
     def __init__(self, table_ref, schema=(), client=None):
         self._project = table_ref.project
         self._table_id = table_ref.table_id
@@ -240,9 +245,12 @@ class Table(object):
         :raises: TypeError if 'value' is not a sequence, or ValueError if
                  any item in the sequence is not a SchemaField
         """
-        if not all(isinstance(field, SchemaField) for field in value):
+        if value is None:
+            self._schema = ()
+        elif not all(isinstance(field, SchemaField) for field in value):
             raise ValueError('Schema items must be fields')
-        self._schema = tuple(value)
+        else:
+            self._schema = tuple(value)
 
     @property
     def created(self):
@@ -613,7 +621,42 @@ class Table(object):
             cleaned['expirationTime'] = float(cleaned['expirationTime'])
         self._properties.update(cleaned)
 
-    def _build_resource(self):
+    def _populate_expires_resource(self, resource):
+        resource['expirationTime'] = _millis_from_datetime(self.expires)
+
+    def _populate_partitioning_type_resource(self, resource):
+        resource['timePartitioning'] = self._properties.get('timePartitioning')
+
+    def _populate_view_use_legacy_sql_resource(self, resource):
+        if 'view' not in resource:
+            resource['view'] = {}
+        resource['view']['useLegacySql'] = self.view_use_legacy_sql
+
+    def _populate_view_query_resource(self, resource):
+        if self.view_query is None:
+            resource['view'] = None
+            return
+        if 'view' not in resource:
+            resource['view'] = {}
+        resource['view']['query'] = self.view_query
+
+    def _populate_schema_resource(self, resource):
+        if not self._schema:
+            resource['schema'] = None
+        else:
+            resource['schema'] = {
+                'fields': _build_schema_resource(self._schema),
+            }
+
+    custom_resource_fields = {
+        'expires': _populate_expires_resource,
+        'partitioning_type': _populate_partitioning_type_resource,
+        'view_query': _populate_view_query_resource,
+        'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
+        'schema': _populate_schema_resource
+    }
+
+    def _build_resource(self, filter_fields):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'tableReference': {
@@ -621,33 +664,16 @@ class Table(object):
                 'datasetId': self._dataset_id,
                 'tableId': self.table_id},
         }
-        if self.description is not None:
-            resource['description'] = self.description
-
-        if self.expires is not None:
-            value = _millis_from_datetime(self.expires)
-            resource['expirationTime'] = value
-
-        if self.friendly_name is not None:
-            resource['friendlyName'] = self.friendly_name
-
-        if self.location is not None:
-            resource['location'] = self.location
-
-        if self.partitioning_type is not None:
-            resource['timePartitioning'] = self._properties['timePartitioning']
-
-        if self.view_query is not None:
-            view = resource['view'] = {}
-            view['query'] = self.view_query
-            if self.view_use_legacy_sql is not None:
-                view['useLegacySql'] = self.view_use_legacy_sql
-
-        if self._schema:
-            resource['schema'] = {
-                'fields': _build_schema_resource(self._schema)
-            }
-
+        for f in filter_fields:
+            if f in self.custom_resource_fields:
+                self.custom_resource_fields[f](self, resource)
+            else:
+                # TODO(alixh) refactor to use in both Table and Dataset
+                # snake case to camel case
+                words = f.split('_')
+                api_field = words[0] + ''.join(
+                    map(str.capitalize, words[1:]))
+                resource[api_field] = getattr(self, f)
         return resource
 
     def exists(self, client=None):
@@ -673,97 +699,6 @@ class Table(object):
             return False
         else:
             return True
-
-    def patch(self,
-              client=None,
-              friendly_name=_MARKER,
-              description=_MARKER,
-              location=_MARKER,
-              expires=_MARKER,
-              view_query=_MARKER,
-              schema=_MARKER):
-        """API call:  update individual table properties via a PATCH request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/patch
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :type friendly_name: str
-        :param friendly_name: (Optional) a descriptive name for this table.
-
-        :type description: str
-        :param description: (Optional) a description of this table.
-
-        :type location: str
-        :param location:
-            (Optional) the geographic location where the table resides.
-
-        :type expires: :class:`datetime.datetime`
-        :param expires: (Optional) point in time at which the table expires.
-
-        :type view_query: str
-        :param view_query: SQL query defining the table as a view
-
-        :type schema: list of :class:`SchemaField`
-        :param schema: fields describing the schema
-
-        :raises: ValueError for invalid value types.
-        """
-        client = self._require_client(client)
-
-        partial = {}
-
-        if expires is not _MARKER:
-            if (not isinstance(expires, datetime.datetime) and
-                    expires is not None):
-                raise ValueError("Pass a datetime, or None")
-            partial['expirationTime'] = _millis_from_datetime(expires)
-
-        if description is not _MARKER:
-            partial['description'] = description
-
-        if friendly_name is not _MARKER:
-            partial['friendlyName'] = friendly_name
-
-        if location is not _MARKER:
-            partial['location'] = location
-
-        if view_query is not _MARKER:
-            if view_query is None:
-                partial['view'] = None
-            else:
-                partial['view'] = {'query': view_query}
-
-        if schema is not _MARKER:
-            if schema is None:
-                partial['schema'] = None
-            else:
-                partial['schema'] = {
-                    'fields': _build_schema_resource(schema)}
-
-        api_response = client._connection.api_request(
-            method='PATCH', path=self.path, data=partial)
-        self._set_properties(api_response)
-
-    def update(self, client=None):
-        """API call:  update table properties via a PUT request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        api_response = client._connection.api_request(
-            method='PUT', path=self.path, data=self._build_resource())
-        self._set_properties(api_response)
 
     def row_from_mapping(self, mapping):
         """Convert a mapping to a row tuple using the schema.

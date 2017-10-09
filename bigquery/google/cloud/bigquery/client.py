@@ -211,8 +211,12 @@ class Client(ClientWithProject):
         """
         path = '/projects/%s/datasets/%s/tables' % (
             table.project, table.dataset_id)
+        resource = table._build_resource(Table.all_fields)
+        doomed = [field for field in resource if resource[field] is None]
+        for field in doomed:
+            del resource[field]
         api_response = self._connection.api_request(
-            method='POST', path=path, data=table._build_resource())
+            method='POST', path=path, data=resource)
         return Table.from_api_repr(api_response, self)
 
     def get_dataset(self, dataset_ref):
@@ -284,6 +288,28 @@ class Client(ClientWithProject):
         api_response = self._connection.api_request(
             method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response)
+
+    def update_table(self, table, properties):
+        """API call:  update table properties via a PUT request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
+
+        :type table:
+            :class:`google.cloud.bigquery.table.Table`
+        :param table_ref: the table to update.
+
+        :rtype: :class:`google.cloud.bigquery.table.Table`
+        :returns: a ``Table`` instance
+        """
+        partial = table._build_resource(properties)
+        if table.etag is not None:
+            headers = {'If-Match': table.etag}
+        else:
+            headers = None
+        api_response = self._connection.api_request(
+            method='PATCH', path=table.path, data=partial, headers=headers)
+        return Table.from_api_repr(api_response, client=self)
 
     def list_dataset_tables(self, dataset, max_results=None, page_token=None):
         """List tables in the dataset.
