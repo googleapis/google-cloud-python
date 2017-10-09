@@ -32,7 +32,6 @@ from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob
-from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.query import QueryResults
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
@@ -622,36 +621,30 @@ class Client(ClientWithProject):
         job.begin()
         return job
 
-    def run_async_query(self, job_id, query,
-                        udf_resources=(), query_parameters=()):
-        """Construct a job for running a SQL query asynchronously.
+    def query(self, query, job_config=None, job_id=None):
+        """Start a job that runs a SQL query.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
 
-        :type job_id: str
-        :param job_id: Name of the job.
-
         :type query: str
-        :param query: SQL query to be executed
+        :param query:
+            SQL query to be executed. Defaults to the standard SQL dialect.
+            Use the ``job_config`` parameter to change dialects.
 
-        :type udf_resources: tuple
-        :param udf_resources: An iterable of
-                            :class:`google.cloud.bigquery._helpers.UDFResource`
-                            (empty by default)
+        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`
+        :param job_config: (Optional) Extra configuration options for the job.
 
-        :type query_parameters: tuple
-        :param query_parameters:
-            An iterable of
-            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
-            (empty by default)
+        :type job_id: str
+        :param job_id: (Optional) ID to use for the query job.
 
         :rtype: :class:`google.cloud.bigquery.job.QueryJob`
         :returns: a new ``QueryJob`` instance
         """
-        return QueryJob(job_id, query, client=self,
-                        udf_resources=udf_resources,
-                        query_parameters=query_parameters)
+        job_id = _make_job_id(job_id)
+        job = QueryJob(job_id, query, client=self, job_config=job_config)
+        job.begin()
+        return job
 
     def query_rows(self, query, job_config=None, job_id=None, timeout=None):
         """Start a query job and wait for the results.
@@ -660,7 +653,12 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
 
         :type query: str
-        :param query: SQL query to be executed
+        :param query:
+            SQL query to be executed. Defaults to the standard SQL dialect.
+            Use the ``job_config`` parameter to change dialects.
+
+        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`
+        :param job_config: (Optional) Extra configuration options for the job.
 
         :type job_id: str
         :param job_id: (Optional) ID to use for the query job.
@@ -682,16 +680,7 @@ class Client(ClientWithProject):
             failed or  :class:`TimeoutError` if the job did not complete in the
             given timeout.
         """
-        job_id = _make_job_id(job_id)
-
-        # TODO(swast): move standard SQL default to QueryJobConfig class.
-        if job_config is None:
-            job_config = QueryJobConfig()
-        if job_config.use_legacy_sql is None:
-            job_config.use_legacy_sql = False
-
-        job = QueryJob(job_id, query, client=self, job_config=job_config)
-        job.begin()
+        job = self.query(query, job_config=job_config, job_id=job_id)
         return job.result(timeout=timeout)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
