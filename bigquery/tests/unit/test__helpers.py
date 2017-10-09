@@ -881,93 +881,6 @@ class Test_EnumProperty(unittest.TestCase):
         self.assertIsNone(wrapper._configuration._attr)
 
 
-class Test_UDFResourcesProperty(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import UDFResourcesProperty
-
-        return UDFResourcesProperty
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
-
-    def _descriptor_and_klass(self):
-        descriptor = self._make_one()
-
-        class _Test(object):
-            _udf_resources = ()
-            udf_resources = descriptor
-
-        return descriptor, _Test
-
-    def test_class_getter(self):
-        descriptor, klass = self._descriptor_and_klass()
-        self.assertIs(klass.udf_resources, descriptor)
-
-    def test_instance_getter_empty(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        self.assertEqual(instance.udf_resources, [])
-
-    def test_resource_equality(self):
-        from google.cloud.bigquery._helpers import UDFResource
-
-        resource1a = UDFResource('resourceUri', 'gs://bucket/file.js')
-        resource1b = UDFResource('resourceUri', 'gs://bucket/file.js')
-        resource2 = UDFResource('resourceUri', 'gs://bucket/other.js')
-
-        self.assertEqual(resource1a, resource1b)
-        self.assertNotEqual(resource1a, resource2)
-        self.assertNotEqual(resource1a, object())
-        self.assertEqual(resource1a, mock.ANY)
-
-    def test_instance_getter_w_non_empty_list(self):
-        from google.cloud.bigquery._helpers import UDFResource
-
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._udf_resources = tuple(udf_resources)
-
-        self.assertEqual(instance.udf_resources, udf_resources)
-
-    def test_instance_setter_w_empty_list(self):
-        from google.cloud.bigquery._helpers import UDFResource
-
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-        instance._udf_resources = udf_resources
-
-        instance.udf_resources = []
-
-        self.assertEqual(instance.udf_resources, [])
-
-    def test_instance_setter_w_valid_udf(self):
-        from google.cloud.bigquery._helpers import UDFResource
-
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        instance.udf_resources = udf_resources
-
-        self.assertEqual(instance.udf_resources, udf_resources)
-
-    def test_instance_setter_w_bad_udfs(self):
-        _, klass = self._descriptor_and_klass()
-        instance = klass()
-
-        with self.assertRaises(ValueError):
-            instance.udf_resources = ["foo"]
-
-        self.assertEqual(instance.udf_resources, [])
-
-
 class Test_AbstractQueryParameter(unittest.TestCase):
 
     @staticmethod
@@ -2009,22 +1922,54 @@ class Test__query_param_from_api_repr(unittest.TestCase):
         self.assertEqual(parameter.struct_values, {'foo': 'Foo', 'bar': 123})
 
 
-class Test_QueryParametersProperty(unittest.TestCase):
+class Test_UDFResource(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery._helpers import QueryParametersProperty
+        from google.cloud.bigquery._helpers import UDFResource
 
-        return QueryParametersProperty
+        return UDFResource
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        udf = self._make_one('resourceUri', 'gs://some_bucket/some_file')
+        self.assertEqual(udf.udf_type, 'resourceUri')
+        self.assertEqual(udf.value, 'gs://some_bucket/some_file')
+
+    def test___eq__(self):
+        udf = self._make_one('resourceUri', 'gs://some_bucket/some_file')
+        self.assertEqual(udf, udf)
+        self.assertNotEqual(udf, object())
+        wrong_val = self._make_one(
+            'resourceUri', 'gs://some_bucket/other_file')
+        self.assertNotEqual(udf, wrong_val)
+        wrong_type = self._make_one('inlineCode', udf.value)
+        self.assertNotEqual(udf, wrong_type)
+
+
+class Test_ListApiResourceProperty(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery._helpers import _ListApiResourceProperty
+
+        return _ListApiResourceProperty
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
     def _descriptor_and_klass(self):
-        descriptor = self._make_one()
+        from google.cloud.bigquery._helpers import AbstractQueryParameter
+
+        descriptor = self._make_one(
+            'query_parameters', 'queryParameters', AbstractQueryParameter)
 
         class _Test(object):
-            _query_parameters = ()
+            def __init__(self):
+                self._properties = {}
+
             query_parameters = descriptor
 
         return descriptor, _Test
@@ -2044,7 +1989,7 @@ class Test_QueryParametersProperty(unittest.TestCase):
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         _, klass = self._descriptor_and_klass()
         instance = klass()
-        instance._query_parameters = tuple(query_parameters)
+        instance._properties['queryParameters'] = query_parameters
 
         self.assertEqual(instance.query_parameters, query_parameters)
 
@@ -2059,6 +2004,17 @@ class Test_QueryParametersProperty(unittest.TestCase):
         instance.query_parameters = []
 
         self.assertEqual(instance.query_parameters, [])
+
+    def test_instance_setter_w_none(self):
+        from google.cloud.bigquery._helpers import ScalarQueryParameter
+
+        query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._query_parameters = query_parameters
+
+        with self.assertRaises(ValueError):
+            instance.query_parameters = None
 
     def test_instance_setter_w_valid_udf(self):
         from google.cloud.bigquery._helpers import ScalarQueryParameter
