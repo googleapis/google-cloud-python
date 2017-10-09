@@ -106,7 +106,6 @@ class TestClient(unittest.TestCase):
         self.assertTrue(query_results.complete)
 
     def test_list_projects_defaults(self):
-        import six
         from google.cloud.bigquery.client import Project
 
         PROJECT_1 = 'PROJECT_ONE'
@@ -151,8 +150,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_projects_explicit_response_missing_projects_key(self):
-        import six
-
         PROJECT = 'PROJECT'
         PATH = 'projects'
         TOKEN = 'TOKEN'
@@ -177,7 +174,6 @@ class TestClient(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_datasets_defaults(self):
-        import six
         from google.cloud.bigquery.dataset import Dataset
 
         PROJECT = 'PROJECT'
@@ -222,8 +218,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_datasets_explicit_response_missing_datasets_key(self):
-        import six
-
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/datasets' % PROJECT
         TOKEN = 'TOKEN'
@@ -533,7 +527,8 @@ class TestClient(unittest.TestCase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
-            'view': {'query': query},
+            # TODO(alixh) default to Standard SQL
+            'view': {'query': query, 'useLegacySql': None},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, table_id)
@@ -635,9 +630,293 @@ class TestClient(unittest.TestCase):
         req = conn._requested[1]
         self.assertEqual(req['headers']['If-Match'], 'etag')
 
-    def test_list_dataset_tables_empty(self):
-        import six
+    def test_update_table(self):
+        from google.cloud.bigquery.table import Table, SchemaField
 
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        description = 'description'
+        title = 'title'
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
+            },
+            'etag': 'etag',
+            'description': description,
+            'friendlyName': title,
+        }
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource, resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, schema=schema, client=client)
+        table.description = description
+        table.friendly_name = title
+
+        updated_table = client.update_table(
+            table, ['schema', 'description', 'friendly_name'])
+
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+            'description': description,
+            'friendlyName': title,
+        }
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(req['path'], '/' + path)
+        self.assertIsNone(req['headers'])
+        self.assertEqual(updated_table.description, table.description)
+        self.assertEqual(updated_table.friendly_name, table.friendly_name)
+        self.assertEqual(updated_table.schema, table.schema)
+
+        # ETag becomes If-Match header.
+        table._properties['etag'] = 'etag'
+        client.update_table(table, [])
+        req = conn._requested[1]
+        self.assertEqual(req['headers']['If-Match'], 'etag')
+
+    def test_update_table_only_use_legacy_sql(self):
+        from google.cloud.bigquery.table import Table
+
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'view': {'useLegacySql': True}
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, client=client)
+        table.view_use_legacy_sql = True
+
+        updated_table = client.update_table(table, ['view_use_legacy_sql'])
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'view': {'useLegacySql': True}
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(
+            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+
+    def test_update_table_w_query(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
+        from google.cloud.bigquery.table import Table, SchemaField
+
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        query = 'select fullname, age from person_ages'
+        location = 'EU'
+        exp_time = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+        schema_resource = {'fields': [
+            {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+            {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]}
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        resource = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': schema_resource,
+            'view': {'query': query, 'useLegacySql': True},
+            'location': location,
+            'expirationTime': _millis(exp_time)
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, schema=schema, client=client)
+        table.location = location
+        table.expires = exp_time
+        table.view_query = query
+        table.view_use_legacy_sql = True
+        updated_properties = ['schema', 'view_query', 'location',
+                              'expires', 'view_use_legacy_sql']
+
+        updated_table = client.update_table(table, updated_properties)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'view': {'query': query, 'useLegacySql': True},
+            'location': location,
+            'expirationTime': _millis(exp_time),
+            'schema': schema_resource,
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(updated_table.schema, table.schema)
+        self.assertEqual(updated_table.view_query, table.view_query)
+        self.assertEqual(updated_table.location, table.location)
+        self.assertEqual(updated_table.expires, table.expires)
+        self.assertEqual(
+            updated_table.view_use_legacy_sql, table.view_use_legacy_sql)
+
+    def test_update_table_w_schema_None(self):
+        # Simulate deleting schema:  not sure if back-end will actually
+        # allow this operation, but the spec says it is optional.
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        resource1 = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id},
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]}
+        }
+        resource2 = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id},
+            'schema': {'fields': []},
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource1, resource2)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = client.get_table(table_ref)
+        table.schema = None
+
+        updated_table = client.update_table(table, ['schema'])
+
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[1]
+        self.assertEqual(req['method'], 'PATCH')
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'schema': None
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(req['path'], '/%s' % path)
+        self.assertEqual(updated_table.schema, table.schema)
+
+    def test_update_table_delete_property(self):
+        from google.cloud.bigquery.table import Table
+
+        project = 'PROJECT'
+        dataset_id = 'DATASET_ID'
+        table_id = 'table_id'
+        description = 'description'
+        title = 'title'
+        path = 'projects/%s/datasets/%s/tables/%s' % (
+            project, dataset_id, table_id)
+        resource1 = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'description': description,
+            'friendlyName': title,
+        }
+        resource2 = {
+            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'description': None,
+        }
+        creds = _make_credentials()
+        client = self._make_one(project=project, credentials=creds)
+        conn = client._connection = _Connection(resource1, resource2)
+        table_ref = client.dataset(dataset_id).table(table_id)
+        table = Table(table_ref, client=client)
+        table.description = description
+        table.friendly_name = title
+        table2 = client.update_table(table, ['description', 'friendly_name'])
+        self.assertEqual(table2.description, table.description)
+        table2.description = None
+
+        table3 = client.update_table(table2, ['description'])
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[1]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id
+            },
+            'description': None,
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertIsNone(table3.description)
+
+    def test_list_dataset_tables_empty(self):
         PROJECT = 'PROJECT'
         DS_ID = 'DATASET_ID'
         creds = _make_credentials()
@@ -660,7 +939,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_dataset_tables_defaults(self):
-        import six
         from google.cloud.bigquery.table import Table
 
         PROJECT = 'PROJECT'
@@ -711,7 +989,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_dataset_tables_explicit(self):
-        import six
         from google.cloud.bigquery.table import Table
 
         PROJECT = 'PROJECT'
@@ -895,7 +1172,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_defaults(self):
-        import six
         from google.cloud.bigquery.job import LoadJob
         from google.cloud.bigquery.job import CopyJob
         from google.cloud.bigquery.job import ExtractJob
@@ -1027,7 +1303,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_load_job_wo_sourceUris(self):
-        import six
         from google.cloud.bigquery.job import LoadJob
 
         PROJECT = 'PROJECT'
@@ -1084,8 +1359,6 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_explicit_missing(self):
-        import six
-
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/jobs' % PROJECT
         DATA = {}
@@ -1650,6 +1923,261 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['data']['jobReference']['jobId'], JOB)
         self.assertEqual(configuration['query']['useLegacySql'], True)
         self.assertEqual(configuration['dryRun'], True)
+
+    def test_list_rows(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table, SchemaField
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            PROJECT, DS_ID, TABLE_ID)
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=UTC)
+        WHEN_1 = WHEN + datetime.timedelta(seconds=1)
+        WHEN_2 = WHEN + datetime.timedelta(seconds=2)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+
+        def _bigquery_timestamp_float_repr(ts_float):
+            # Preserve microsecond precision for E+09 timestamps
+            return '%0.15E' % (ts_float,)
+
+        DATA = {
+            'totalRows': str(ROWS),
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': '32'},
+                    {'v': _bigquery_timestamp_float_repr(WHEN_TS)},
+                ]},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': '33'},
+                    {'v': _bigquery_timestamp_float_repr(WHEN_TS + 1)},
+                ]},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': '29'},
+                    {'v': _bigquery_timestamp_float_repr(WHEN_TS + 2)},
+                ]},
+                {'f': [
+                    {'v': 'Bhettye Rhubble'},
+                    {'v': None},
+                    {'v': None},
+                ]},
+            ]
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(DATA, DATA)
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='NULLABLE')
+        joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
+        table = Table(table_ref, schema=[full_name, age, joined])
+
+        iterator = client.list_rows(table)
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
+
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[0], ('Phred Phlyntstone', 32, WHEN))
+        self.assertEqual(rows[1], ('Bharney Rhubble', 33, WHEN_1))
+        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, WHEN_2))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', None, None))
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {})
+
+    def test_list_rows_query_params(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table, SchemaField
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        table = Table(table_ref,
+                      schema=[SchemaField('age', 'INTEGER', mode='NULLABLE')])
+        tests = [
+            ({}, {}),
+            ({'start_index': 1}, {'startIndex': 1}),
+            ({'max_results': 2}, {'maxResults': 2}),
+            ({'start_index': 1, 'max_results': 2},
+             {'startIndex': 1, 'maxResults': 2}),
+        ]
+        conn = client._connection = _Connection(*len(tests)*[{}])
+        for i, test in enumerate(tests):
+            iterator = client.list_rows(table, **test[0])
+            six.next(iterator.pages)
+            req = conn._requested[i]
+            self.assertEqual(req['query_params'], test[1],
+                             'for kwargs %s' % test[0])
+
+    def test_list_rows_repeated_fields(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import SchemaField
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            PROJECT, DS_ID, TABLE_ID)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': [{'v': 'red'}, {'v': 'green'}]},
+                    {'v': [{
+                        'v': {
+                            'f': [
+                                {'v': [{'v': '1'}, {'v': '2'}]},
+                                {'v': [{'v': '3.1415'}, {'v': '1.414'}]},
+                            ]}
+                    }]},
+                ]},
+            ]
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(DATA)
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        color = SchemaField('color', 'STRING', mode='REPEATED')
+        index = SchemaField('index', 'INTEGER', 'REPEATED')
+        score = SchemaField('score', 'FLOAT', 'REPEATED')
+        struct = SchemaField('struct', 'RECORD', mode='REPEATED',
+                             fields=[index, score])
+
+        iterator = client.list_rows(table_ref, selected_fields=[color, struct])
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0][0], ['red', 'green'])
+        self.assertEqual(rows[0][1], [{'index': [1, 2],
+                                       'score': [3.1415, 1.414]}])
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_rows_w_record_schema(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table, SchemaField
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            PROJECT, DS_ID, TABLE_ID)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': {'f': [{'v': '800'}, {'v': '555-1212'}, {'v': 1}]}},
+                ]},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': {'f': [{'v': '877'}, {'v': '768-5309'}, {'v': 2}]}},
+                ]},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': None},
+                ]},
+            ]
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(DATA)
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
+        local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
+        rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
+                            fields=[area_code, local_number, rank])
+        table = Table(table_ref, schema=[full_name, phone])
+
+        iterator = client.list_rows(table)
+        page = six.next(iterator.pages)
+        rows = list(page)
+        total_rows = iterator.total_rows
+        page_token = iterator.next_page_token
+
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(rows[0][0], 'Phred Phlyntstone')
+        self.assertEqual(rows[0][1], {'area_code': '800',
+                                      'local_number': '555-1212',
+                                      'rank': 1})
+        self.assertEqual(rows[1][0], 'Bharney Rhubble')
+        self.assertEqual(rows[1][1], {'area_code': '877',
+                                      'local_number': '768-5309',
+                                      'rank': 2})
+        self.assertEqual(rows[2][0], 'Wylma Phlyntstone')
+        self.assertIsNone(rows[2][1])
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_rows_errors(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+
+        # table ref with no selected fields
+        with self.assertRaises(ValueError):
+            client.list_rows(table_ref)
+
+        # table with no schema
+        with self.assertRaises(ValueError):
+            client.list_rows(Table(table_ref))
+
+        # neither Table nor tableReference
+        with self.assertRaises(TypeError):
+            client.list_rows(1)
 
 
 class _Connection(object):

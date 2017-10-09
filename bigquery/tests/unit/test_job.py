@@ -234,53 +234,50 @@ class TestLoadJob(unittest.TestCase, _Base):
         return resource
 
     def _verifyBooleanConfigProperties(self, job, config):
-        jconfig = job.configuration
         if 'allowJaggedRows' in config:
-            self.assertEqual(jconfig.allow_jagged_rows,
+            self.assertEqual(job.allow_jagged_rows,
                              config['allowJaggedRows'])
         else:
-            self.assertIsNone(jconfig.allow_jagged_rows)
+            self.assertIsNone(job.allow_jagged_rows)
         if 'allowQuotedNewlines' in config:
-            self.assertEqual(jconfig.allow_quoted_newlines,
+            self.assertEqual(job.allow_quoted_newlines,
                              config['allowQuotedNewlines'])
         else:
-            self.assertIsNone(jconfig.allow_quoted_newlines)
+            self.assertIsNone(job.allow_quoted_newlines)
         if 'autodetect' in config:
             self.assertEqual(
-                jconfig.autodetect, config['autodetect'])
+                job.autodetect, config['autodetect'])
         else:
-            self.assertIsNone(jconfig.autodetect)
+            self.assertIsNone(job.autodetect)
         if 'ignoreUnknownValues' in config:
-            self.assertEqual(jconfig.ignore_unknown_values,
+            self.assertEqual(job.ignore_unknown_values,
                              config['ignoreUnknownValues'])
         else:
-            self.assertIsNone(jconfig.ignore_unknown_values)
+            self.assertIsNone(job.ignore_unknown_values)
 
     def _verifyEnumConfigProperties(self, job, config):
-        jconfig = job.configuration
         if 'createDisposition' in config:
-            self.assertEqual(jconfig.create_disposition,
+            self.assertEqual(job.create_disposition,
                              config['createDisposition'])
         else:
-            self.assertIsNone(jconfig.create_disposition)
+            self.assertIsNone(job.create_disposition)
         if 'encoding' in config:
-            self.assertEqual(jconfig.encoding,
+            self.assertEqual(job.encoding,
                              config['encoding'])
         else:
-            self.assertIsNone(jconfig.encoding)
+            self.assertIsNone(job.encoding)
         if 'sourceFormat' in config:
-            self.assertEqual(jconfig.source_format,
+            self.assertEqual(job.source_format,
                              config['sourceFormat'])
         else:
-            self.assertIsNone(jconfig.source_format)
+            self.assertIsNone(job.source_format)
         if 'writeDisposition' in config:
-            self.assertEqual(jconfig.write_disposition,
+            self.assertEqual(job.write_disposition,
                              config['writeDisposition'])
         else:
-            self.assertIsNone(jconfig.write_disposition)
+            self.assertIsNone(job.write_disposition)
 
     def _verifyResourceProperties(self, job, resource):
-        jconfig = job.configuration
         self._verifyReadonlyResourceProperties(job, resource)
 
         config = resource.get('configuration', {}).get('load')
@@ -296,30 +293,30 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(job.destination.table_id, table_ref['tableId'])
 
         if 'fieldDelimiter' in config:
-            self.assertEqual(jconfig.field_delimiter,
+            self.assertEqual(job.field_delimiter,
                              config['fieldDelimiter'])
         else:
-            self.assertIsNone(jconfig.field_delimiter)
+            self.assertIsNone(job.field_delimiter)
         if 'maxBadRecords' in config:
-            self.assertEqual(jconfig.max_bad_records,
+            self.assertEqual(job.max_bad_records,
                              config['maxBadRecords'])
         else:
-            self.assertIsNone(jconfig.max_bad_records)
+            self.assertIsNone(job.max_bad_records)
         if 'nullMarker' in config:
-            self.assertEqual(jconfig.null_marker,
+            self.assertEqual(job.null_marker,
                              config['nullMarker'])
         else:
-            self.assertIsNone(jconfig.null_marker)
+            self.assertIsNone(job.null_marker)
         if 'quote' in config:
-            self.assertEqual(jconfig.quote_character,
+            self.assertEqual(job.quote_character,
                              config['quote'])
         else:
-            self.assertIsNone(jconfig.quote_character)
+            self.assertIsNone(job.quote_character)
         if 'skipLeadingRows' in config:
-            self.assertEqual(str(jconfig.skip_leading_rows),
+            self.assertEqual(str(job.skip_leading_rows),
                              config['skipLeadingRows'])
         else:
-            self.assertIsNone(jconfig.skip_leading_rows)
+            self.assertIsNone(job.skip_leading_rows)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -332,7 +329,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID))
-        self.assertEqual(job.configuration.schema, [])
+        self.assertEqual(job.schema, [])
 
         self._verifyInitialReadonlyProperties(job)
 
@@ -343,20 +340,19 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIsNone(job.output_rows)
 
         # set/read from resource['configuration']['load']
-        jconfig = job.configuration
-        self.assertIsNone(jconfig.allow_jagged_rows)
-        self.assertIsNone(jconfig.allow_quoted_newlines)
-        self.assertIsNone(jconfig.autodetect)
-        self.assertIsNone(jconfig.create_disposition)
-        self.assertIsNone(jconfig.encoding)
-        self.assertIsNone(jconfig.field_delimiter)
-        self.assertIsNone(jconfig.ignore_unknown_values)
-        self.assertIsNone(jconfig.max_bad_records)
-        self.assertIsNone(jconfig.null_marker)
-        self.assertIsNone(jconfig.quote_character)
-        self.assertIsNone(jconfig.skip_leading_rows)
-        self.assertIsNone(jconfig.source_format)
-        self.assertIsNone(jconfig.write_disposition)
+        self.assertIsNone(job.allow_jagged_rows)
+        self.assertIsNone(job.allow_quoted_newlines)
+        self.assertIsNone(job.autodetect)
+        self.assertIsNone(job.create_disposition)
+        self.assertIsNone(job.encoding)
+        self.assertIsNone(job.field_delimiter)
+        self.assertIsNone(job.ignore_unknown_values)
+        self.assertIsNone(job.max_bad_records)
+        self.assertIsNone(job.null_marker)
+        self.assertIsNone(job.quote_character)
+        self.assertIsNone(job.skip_leading_rows)
+        self.assertIsNone(job.source_format)
+        self.assertIsNone(job.write_disposition)
 
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -368,7 +364,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.schema = [full_name, age]
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client, config)
-        self.assertEqual(job.configuration.schema, [full_name, age])
+        self.assertEqual(job.schema, [full_name, age])
 
     def test_done(self):
         client = _Client(self.PROJECT)
