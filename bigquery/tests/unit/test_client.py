@@ -1917,6 +1917,246 @@ class TestClient(unittest.TestCase):
                 'parameterValue': {'value': '123'}
             })
 
+    def test_create_rows_wo_schema(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        table = Table(table_ref)
+        ROWS = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+
+        with self.assertRaises(ValueError) as exc:
+            client.create_rows(table, ROWS)
+
+        self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
+
+    def test_create_rows_w_schema(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _microseconds_from_datetime
+        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=UTC)
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            PROJECT, DS_ID, TABLE_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection({})
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED'),
+            SchemaField('joined', 'TIMESTAMP', mode='NULLABLE'),
+        ]
+        table = Table(table_ref, schema=schema)
+        ROWS = [
+            ('Phred Phlyntstone', 32, _datetime_to_rfc3339(WHEN)),
+            ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
+            ('Wylma Phlyntstone', 29, WHEN + datetime.timedelta(seconds=2)),
+            ('Bhettye Rhubble', 27, None),
+        ]
+
+        def _row_data(row):
+            joined = row[2]
+            if isinstance(row[2], datetime.datetime):
+                joined = _microseconds_from_datetime(joined) * 1e-6
+            return {'full_name': row[0],
+                    'age': str(row[1]),
+                    'joined': joined}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = client.create_rows(table, ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_create_rows_w_skip_invalid_and_ignore_unknown(self):
+        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            PROJECT, DS_ID, TABLE_ID)
+        RESPONSE = {
+            'insertErrors': [
+                {'index': 1,
+                 'errors': [
+                     {'reason': 'REASON',
+                      'location': 'LOCATION',
+                      'debugInfo': 'INFO',
+                      'message': 'MESSAGE'}
+                 ]},
+            ]}
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(RESPONSE)
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED'),
+            SchemaField('voter', 'BOOLEAN', mode='NULLABLE'),
+        ]
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        table = Table(table_ref, schema=schema)
+        ROWS = [
+            ('Phred Phlyntstone', 32, True),
+            ('Bharney Rhubble', 33, False),
+            ('Wylma Phlyntstone', 29, True),
+            ('Bhettye Rhubble', 27, True),
+        ]
+
+        def _row_data(row):
+            return {
+                'full_name': row[0],
+                'age': str(row[1]),
+                'voter': row[2] and 'true' or 'false',
+            }
+
+        SENT = {
+            'skipInvalidRows': True,
+            'ignoreUnknownValues': True,
+            'templateSuffix': '20160303',
+            'rows': [{'insertId': index, 'json': _row_data(row)}
+                     for index, row in enumerate(ROWS)],
+        }
+
+        errors = client.create_rows(
+            table,
+            ROWS,
+            row_ids=[index for index, _ in enumerate(ROWS)],
+            skip_invalid_rows=True,
+            ignore_unknown_values=True,
+            template_suffix='20160303',
+        )
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]['index'], 1)
+        self.assertEqual(len(errors[0]['errors']), 1)
+        self.assertEqual(errors[0]['errors'][0],
+                         RESPONSE['insertErrors'][0]['errors'][0])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_create_rows_w_repeated_fields(self):
+        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            PROJECT, DS_ID, TABLE_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection({})
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        full_name = SchemaField('color', 'STRING', mode='REPEATED')
+        index = SchemaField('index', 'INTEGER', 'REPEATED')
+        score = SchemaField('score', 'FLOAT', 'REPEATED')
+        struct = SchemaField('struct', 'RECORD', mode='REPEATED',
+                             fields=[index, score])
+        table = Table(table_ref, schema=[full_name, struct])
+        ROWS = [
+            (['red', 'green'], [{'index': [1, 2], 'score': [3.1415, 1.414]}]),
+        ]
+
+        def _row_data(row):
+            return {'color': row[0],
+                    'struct': row[1]}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = client.create_rows(table, ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_create_rows_w_record_schema(self):
+        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            PROJECT, DS_ID, TABLE_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection({})
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
+        local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
+        rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
+                            fields=[area_code, local_number, rank])
+        table = Table(table_ref, schema=[full_name, phone])
+        ROWS = [
+            ('Phred Phlyntstone', {'area_code': '800',
+                                   'local_number': '555-1212',
+                                   'rank': 1}),
+            ('Bharney Rhubble', {'area_code': '877',
+                                 'local_number': '768-5309',
+                                 'rank': 2}),
+            ('Wylma Phlyntstone', None),
+        ]
+
+        def _row_data(row):
+            return {'full_name': row[0],
+                    'phone': row[1]}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = client.create_rows(table, ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
     def test_query_rows_defaults(self):
         from google.api.core.page_iterator import HTTPIterator
         from google.cloud.bigquery._helpers import Row
