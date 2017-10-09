@@ -1996,6 +1996,71 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    def test_create_rows_w_list_of_dictionaries(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_rfc3339
+        from google.cloud._helpers import _microseconds_from_datetime
+        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=UTC)
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            PROJECT, DS_ID, TABLE_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection({})
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED'),
+            SchemaField('joined', 'TIMESTAMP', mode='NULLABLE'),
+        ]
+        table = Table(table_ref, schema=schema)
+        ROWS = [
+            {
+                'full_name': 'Phred Phlyntstone', 'age': 32,
+                'joined': _datetime_to_rfc3339(WHEN)
+            },
+            {
+                'full_name': 'Bharney Rhubble', 'age': 33,
+                'joined': WHEN + datetime.timedelta(seconds=1)
+            },
+            {
+                'full_name': 'Wylma Phlyntstone', 'age': 29,
+                'joined': WHEN + datetime.timedelta(seconds=2)
+            },
+            {
+                'full_name': 'Bhettye Rhubble', 'age': 27, 'joined': None
+            },
+        ]
+
+        def _row_data(row):
+            joined = row['joined']
+            if isinstance(joined, datetime.datetime):
+                row['joined'] = _microseconds_from_datetime(joined) * 1e-6
+            row['age'] = str(row['age'])
+            return row
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = client.create_rows(table, ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
     def test_create_rows_w_skip_invalid_and_ignore_unknown(self):
         from google.cloud.bigquery.table import Table, SchemaField
         from google.cloud.bigquery.dataset import DatasetReference

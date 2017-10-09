@@ -843,10 +843,15 @@ class Client(ClientWithProject):
         :type table: :class:`~google.cloud.bigquery.client.Table`
         :param client: the destination table for the row data.
 
-        :type rows: list of tuples
-        :param rows: Row data to be inserted. Each tuple should contain data
-                     for each schema field on the current table and in the
-                     same order as the schema fields.
+        :type rows: One of:
+                    list of tuples
+                    list of dictionaries
+        :param rows: Row data to be inserted. If a list of tuples is given,
+                     each tuple should contain data for each schema field on
+                     the current table and in the same order as the schema
+                     fields.  If a list of dictionaries is given, the keys must
+                     include all required fields in the schema.  Keys which do
+                     not correspond to a field in the schema are ignored.
 
         :type row_ids: list of string
         :param row_ids: (Optional)  Unique ids, one per row being inserted.
@@ -887,6 +892,8 @@ class Client(ClientWithProject):
         data = {'rows': rows_info}
 
         for index, row in enumerate(rows):
+            if isinstance(row, dict):
+                row = table.row_from_mapping(row)
             row_info = {}
 
             for field, value in zip(table._schema, row):
