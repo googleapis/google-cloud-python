@@ -714,12 +714,102 @@ class LoadJob(_AsyncJob):
         self._configuration = job_config
 
     @property
-    def configuration(self):
-        """Configuration for this job.
-
-        :rtype: :class:`~google.cloud.bigquery.job.LoadJobConfig`
+    def allow_jagged_rows(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.allow_jagged_rows`.
         """
-        return self._configuration
+        return self._configuration.allow_jagged_rows
+
+    @property
+    def allow_quoted_newlines(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.allow_quoted_newlines`.
+        """
+        return self._configuration.allow_quoted_newlines
+
+    @property
+    def autodetect(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.autodetect`.
+        """
+        return self._configuration.autodetect
+
+    @property
+    def create_disposition(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.create_disposition`.
+        """
+        return self._configuration.create_disposition
+
+    @property
+    def encoding(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.encoding`.
+        """
+        return self._configuration.encoding
+
+    @property
+    def field_delimiter(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.field_delimiter`.
+        """
+        return self._configuration.field_delimiter
+
+    @property
+    def ignore_unknown_values(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.ignore_unknown_values`.
+        """
+        return self._configuration.ignore_unknown_values
+
+    @property
+    def max_bad_records(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.max_bad_records`.
+        """
+        return self._configuration.max_bad_records
+
+    @property
+    def null_marker(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.null_marker`.
+        """
+        return self._configuration.null_marker
+
+    @property
+    def quote_character(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.quote_character`.
+        """
+        return self._configuration.quote_character
+
+    @property
+    def skip_leading_rows(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.skip_leading_rows`.
+        """
+        return self._configuration.skip_leading_rows
+
+    @property
+    def source_format(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.source_format`.
+        """
+        return self._configuration.source_format
+
+    @property
+    def write_disposition(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.write_disposition`.
+        """
+        return self._configuration.write_disposition
+
+    @property
+    def schema(self):
+        """See
+        :class:`~google.cloud.bigquery.job.LoadJobConfig.schema`.
+        """
+        return self._configuration.schema
 
     @property
     def input_file_bytes(self):
