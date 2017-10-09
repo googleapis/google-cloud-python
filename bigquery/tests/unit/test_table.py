@@ -708,43 +708,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
                                client=client)
         self.assertEqual(table.list_partitions(), [20160804, 20160805])
 
-    def test_exists_miss_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
-
-        self.assertFalse(table.exists())
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
-
-    def test_exists_hit_w_alternate_client(self):
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
-        client2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client1)
-
-        self.assertTrue(table.exists(client=client2))
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['query_params'], {'fields': 'id'})
-
     def test_row_from_mapping_wo_schema(self):
         from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
         MAPPING = {'full_name': 'Phred Phlyntstone', 'age': 32}
@@ -1239,13 +1202,6 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from google.cloud.exceptions import NotFound
-
         self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except IndexError:
-            raise NotFound('miss')
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
