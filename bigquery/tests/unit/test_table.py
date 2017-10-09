@@ -550,8 +550,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
+        import datetime
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _millis
+
         client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
+        RESOURCE['view'] = {'query': 'select fullname, age from person_ages'}
+        RESOURCE['type'] = 'VIEW'
+        RESOURCE['location'] = 'EU'
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
+        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         klass = self._get_target_class()
         table = klass.from_api_repr(RESOURCE, client)
         self.assertIs(table._client, client)
@@ -740,210 +749,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
-
-    def test_patch_w_invalid_expiration(self):
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
-
-        with self.assertRaises(ValueError):
-            table.patch(expires='BOGUS')
-
-    def test_patch_w_bound_client(self):
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        DESCRIPTION = 'DESCRIPTION'
-        TITLE = 'TITLE'
-        RESOURCE = self._makeResource()
-        RESOURCE['description'] = DESCRIPTION
-        RESOURCE['friendlyName'] = TITLE
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
-
-        table.patch(description=DESCRIPTION,
-                    friendly_name=TITLE,
-                    view_query=None)
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'PATCH')
-        SENT = {
-            'description': DESCRIPTION,
-            'friendlyName': TITLE,
-            'view': None,
-        }
-        self.assertEqual(req['data'], SENT)
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(table, RESOURCE)
-
-    def test_patch_w_alternate_client(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _millis
-        from google.cloud.bigquery.table import SchemaField
-
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        QUERY = 'select fullname, age from person_ages'
-        LOCATION = 'EU'
-        RESOURCE = self._makeResource()
-        RESOURCE['view'] = {'query': QUERY}
-        RESOURCE['type'] = 'VIEW'
-        RESOURCE['location'] = LOCATION
-        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
-                                          tzinfo=UTC)
-        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client1)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='NULLABLE')
-
-        table.patch(client=client2, view_query=QUERY, location=LOCATION,
-                    expires=self.EXP_TIME, schema=[full_name, age])
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'PATCH')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        SENT = {
-            'view': {'query': QUERY},
-            'location': LOCATION,
-            'expirationTime': _millis(self.EXP_TIME),
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE'}]},
-        }
-        self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(table, RESOURCE)
-
-    def test_patch_w_schema_None(self):
-        # Simulate deleting schema:  not sure if back-end will actually
-        # allow this operation, but the spec says it is optional.
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        DESCRIPTION = 'DESCRIPTION'
-        TITLE = 'TITLE'
-        RESOURCE = self._makeResource()
-        RESOURCE['description'] = DESCRIPTION
-        RESOURCE['friendlyName'] = TITLE
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
-
-        table.patch(schema=None)
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'PATCH')
-        SENT = {'schema': None}
-        self.assertEqual(req['data'], SENT)
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(table, RESOURCE)
-
-    def test_update_w_bound_client(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        DESCRIPTION = 'DESCRIPTION'
-        TITLE = 'TITLE'
-        RESOURCE = self._makeResource()
-        RESOURCE['description'] = DESCRIPTION
-        RESOURCE['friendlyName'] = TITLE
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
-        table.description = DESCRIPTION
-        table.friendly_name = TITLE
-
-        table.update()
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        SENT = {
-            'tableReference':
-                {'projectId': self.PROJECT,
-                 'datasetId': self.DS_ID,
-                 'tableId': self.TABLE_NAME},
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
-            'description': DESCRIPTION,
-            'friendlyName': TITLE,
-        }
-        self.assertEqual(req['data'], SENT)
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self._verifyResourceProperties(table, RESOURCE)
-
-    def test_update_w_alternate_client(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _millis
-
-        PATH = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        DEF_TABLE_EXP = 12345
-        LOCATION = 'EU'
-        QUERY = 'select fullname, age from person_ages'
-        RESOURCE = self._makeResource()
-        RESOURCE['defaultTableExpirationMs'] = 12345
-        RESOURCE['location'] = LOCATION
-        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
-                                          tzinfo=UTC)
-        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
-        RESOURCE['view'] = {'query': QUERY, 'useLegacySql': True}
-        RESOURCE['type'] = 'VIEW'
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client1)
-        table.default_table_expiration_ms = DEF_TABLE_EXP
-        table.location = LOCATION
-        table.expires = self.EXP_TIME
-        table.view_query = QUERY
-        table.view_use_legacy_sql = True
-
-        table.update(client=client2)
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        SENT = {
-            'tableReference':
-                {'projectId': self.PROJECT,
-                 'datasetId': self.DS_ID,
-                 'tableId': self.TABLE_NAME},
-            'expirationTime': _millis(self.EXP_TIME),
-            'location': 'EU',
-            'view': {'query': QUERY, 'useLegacySql': True},
-        }
-        self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(table, RESOURCE)
 
     def test_row_from_mapping_wo_schema(self):
         from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
@@ -1223,6 +1028,21 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
+
+    def test__populate_view_use_legacy_sql_resource_w_existing_view(self):
+        query = 'select * from foo'
+        resource = {'view': {'query': query}}
+        client = mock.Mock(spec=[u'_credentials', '_http'])
+        client._http = mock.sentinel.http
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table = self._make_one(dataset.table(self.TABLE_NAME), client=client)
+        table.view_use_legacy_sql = True
+
+        table._populate_view_use_legacy_sql_resource(resource)
+
+        self.assertEqual(
+            resource['view']['useLegacySql'], table.view_use_legacy_sql)
+        self.assertEqual(resource['view']['query'], query)
 
     def test__get_transport(self):
         client = mock.Mock(spec=[u'_credentials', '_http'])
