@@ -31,7 +31,7 @@ class TestCursor(unittest.TestCase):
             self, rows=None, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import client
         mock_client = mock.create_autospec(client.Client)
-        mock_client.run_async_query.return_value = self._mock_job(
+        mock_client.query.return_value = self._mock_job(
             rows=rows, schema=schema,
             num_dml_affected_rows=num_dml_affected_rows)
         return mock_client
@@ -177,7 +177,9 @@ class TestCursor(unittest.TestCase):
         connection = connect(client)
         cursor = connection.cursor()
         cursor.execute('SELECT 1;', job_id='foo')
-        self.assertEqual(client.run_async_query.mock_calls[0][1][0], 'foo')
+        args, kwargs = client.query.call_args
+        self.assertEqual(args[0], 'SELECT 1;')
+        self.assertEqual(kwargs['job_id'], 'foo')
 
     def test_execute_w_dml(self):
         from google.cloud.bigquery.dbapi import connect
@@ -239,7 +241,7 @@ class TestCursor(unittest.TestCase):
         job = mock.create_autospec(job.QueryJob)
         job.result.side_effect = google.cloud.exceptions.GoogleCloudError('')
         client = mock.create_autospec(client.Client)
-        client.run_async_query.return_value = job
+        client.query.return_value = job
         connection = connect(client)
         cursor = connection.cursor()
 

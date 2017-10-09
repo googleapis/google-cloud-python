@@ -15,10 +15,10 @@
 """Cursor for the Google BigQuery DB-API."""
 
 import collections
-import uuid
 
 import six
 
+from google.cloud.bigquery import job
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 import google.cloud.exceptions
@@ -135,8 +135,6 @@ class Cursor(object):
         self._query_data = None
         self._query_results = None
         client = self.connection._client
-        if job_id is None:
-            job_id = str(uuid.uuid4())
 
         # The DB-API uses the pyformat formatting, since the way BigQuery does
         # query parameters was not one of the standard options. Convert both
@@ -146,11 +144,11 @@ class Cursor(object):
             operation, parameters=parameters)
         query_parameters = _helpers.to_query_parameters(parameters)
 
-        query_job = client.run_async_query(
-            job_id,
-            formatted_operation,
-            query_parameters=query_parameters)
-        query_job.use_legacy_sql = False
+        config = job.QueryJobConfig()
+        config.query_parameters = query_parameters
+        config.use_legacy_sql = False
+        query_job = client.query(
+            formatted_operation, job_config=config, job_id=job_id)
 
         # Wait for the query to finish.
         try:

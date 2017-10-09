@@ -20,7 +20,6 @@ import operator
 import os
 import time
 import unittest
-import uuid
 
 import six
 
@@ -689,7 +688,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_job_cancel(self):
         DATASET_ID = _make_dataset_id('job_cancel')
-        JOB_NAME = 'fetch_' + DATASET_ID
+        JOB_ID = 'fetch_' + DATASET_ID
         TABLE_NAME = 'test_table'
         QUERY = 'SELECT * FROM %s.%s' % (DATASET_ID, TABLE_NAME)
 
@@ -703,8 +702,7 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        job = Config.CLIENT.run_async_query(JOB_NAME, QUERY)
-        job.begin()
+        job = Config.CLIENT.query(QUERY, job_id=JOB_ID)
         job.cancel()
 
         retry = RetryInstanceState(_job_done, max_tries=8)
@@ -924,11 +922,9 @@ class TestBigQuery(unittest.TestCase):
             WHERE greeting = 'Hello World'
             """
 
-        query_job = Config.CLIENT.run_async_query(
-            'test_query_w_dml_{}'.format(unique_resource_id()),
-            query_template.format(dataset_name, table_name))
-        query_job.use_legacy_sql = False
-        query_job.begin()
+        query_job = Config.CLIENT.query(
+            query_template.format(dataset_name, table_name),
+            job_id='test_query_w_dml_{}'.format(unique_resource_id()))
         query_job.result()
 
         self.assertEqual(query_job.num_dml_affected_rows, 1)
@@ -952,6 +948,7 @@ class TestBigQuery(unittest.TestCase):
         from google.cloud.bigquery._helpers import ArrayQueryParameter
         from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery._helpers import StructQueryParameter
+        from google.cloud.bigquery.job import QueryJobConfig
         question = 'What is the answer to life, the universe, and everything?'
         question_param = ScalarQueryParameter(
             name='question', type_='STRING', value=question)
@@ -1109,13 +1106,14 @@ class TestBigQuery(unittest.TestCase):
             },
         ]
         for example in examples:
-            query_job = Config.CLIENT.run_async_query(
-                'test_query_w_query_params{}'.format(unique_resource_id()),
+            jconfig = QueryJobConfig()
+            jconfig.query_parameters = example['query_parameters']
+            query_job = Config.CLIENT.query(
                 example['sql'],
-                query_parameters=example['query_parameters'])
-            query_job.use_legacy_sql = False
-            query_job.begin()
-            rows = [row for row in query_job.result()]
+                job_config=jconfig,
+                job_id='test_query_w_query_params{}'.format(
+                    unique_resource_id()))
+            rows = list(query_job.result())
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]), 1)
             self.assertEqual(rows[0][0], example['expected'])
@@ -1249,11 +1247,8 @@ class TestBigQuery(unittest.TestCase):
         rows = list(iterator)
         self.assertEqual(len(rows), LIMIT)
 
-    def test_async_query_future(self):
-        query_job = Config.CLIENT.run_async_query(
-            str(uuid.uuid4()), 'SELECT 1')
-        query_job.use_legacy_sql = False
-
+    def test_query_future(self):
+        query_job = Config.CLIENT.query('SELECT 1')
         iterator = query_job.result(timeout=JOB_TIMEOUT)
         rows = list(iterator)
         self.assertEqual(rows, [(1,)])
