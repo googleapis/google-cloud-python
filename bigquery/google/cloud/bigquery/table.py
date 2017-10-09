@@ -20,7 +20,6 @@ import datetime
 
 import six
 
-from google.cloud import exceptions
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.bigquery.schema import SchemaField
@@ -659,30 +658,6 @@ class Table(object):
                     map(str.capitalize, words[1:]))
                 resource[api_field] = getattr(self, f)
         return resource
-
-    def exists(self, client=None):
-        """API call:  test for the existence of the table via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: bool
-        :returns: Boolean indicating existence of the table.
-        """
-        client = self._require_client(client)
-
-        try:
-            client._connection.api_request(method='GET', path=self.path,
-                                           query_params={'fields': 'id'})
-        except exceptions.NotFound:
-            return False
-        else:
-            return True
 
     def row_from_mapping(self, mapping):
         """Convert a mapping to a row tuple using the schema.

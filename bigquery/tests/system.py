@@ -192,12 +192,12 @@ class TestBigQuery(unittest.TestCase):
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         table_arg = Table(dataset.table(table_id), schema=[full_name, age],
                           client=Config.CLIENT)
-        self.assertFalse(table_arg.exists())
+        self.assertFalse(_table_exists(table_arg))
 
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        self.assertTrue(table.exists())
+        self.assertTrue(_table_exists(table))
         self.assertEqual(table.table_id, table_id)
 
     def test_get_table_w_public_dataset(self):
@@ -259,10 +259,10 @@ class TestBigQuery(unittest.TestCase):
         ]
         table_arg = Table(dataset.table(TABLE_NAME), schema=schema,
                           client=Config.CLIENT)
-        self.assertFalse(table_arg.exists())
+        self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
-        self.assertTrue(table.exists())
+        self.assertTrue(_table_exists(table))
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.description)
         table.friendly_name = 'Friendly'
@@ -294,10 +294,10 @@ class TestBigQuery(unittest.TestCase):
         ]
         table_arg = Table(dataset.table(TABLE_NAME), schema=schema,
                           client=Config.CLIENT)
-        self.assertFalse(table_arg.exists())
+        self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
-        self.assertTrue(table.exists())
+        self.assertTrue(_table_exists(table))
         voter = bigquery.SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
         schema = table.schema
         schema.append(voter)
@@ -337,10 +337,10 @@ class TestBigQuery(unittest.TestCase):
         now = bigquery.SchemaField('now', 'TIMESTAMP')
         table_arg = Table(dataset.table(TABLE_NAME),
                           schema=[full_name, age, now], client=Config.CLIENT)
-        self.assertFalse(table_arg.exists())
+        self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
-        self.assertTrue(table.exists())
+        self.assertTrue(_table_exists(table))
 
         errors = table.insert_data(ROWS, ROW_IDS)
         self.assertEqual(len(errors), 0)
@@ -1299,7 +1299,7 @@ class TestBigQuery(unittest.TestCase):
                           client=Config.CLIENT)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
-        self.assertTrue(table.exists())
+        self.assertTrue(_table_exists(table))
         self.assertEqual(table.table_id, table_name)
 
         to_insert = []
@@ -1365,6 +1365,15 @@ def _job_done(instance):
 def _dataset_exists(ds):
     try:
         Config.CLIENT.get_dataset(DatasetReference(ds.project, ds.dataset_id))
+        return True
+    except NotFound:
+        return False
+
+
+def _table_exists(t):
+    try:
+        tr = DatasetReference(t.project, t.dataset_id).table(t.table_id)
+        Config.CLIENT.get_table(tr)
         return True
     except NotFound:
         return False
