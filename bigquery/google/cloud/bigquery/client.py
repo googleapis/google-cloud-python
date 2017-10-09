@@ -924,7 +924,8 @@ class Client(ClientWithProject):
 
         params = {}
         if selected_fields is not None:
-            params['selectedFields'] = [f.name for f in selected_fields]
+            params['selectedFields'] = ','.join(
+                [f.name for f in selected_fields])
         if start_index is not None:
             params['startIndex'] = start_index
 
