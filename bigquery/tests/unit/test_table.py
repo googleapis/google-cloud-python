@@ -694,20 +694,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.partitioning_type)
         self.assertIsNone(table.partition_expiration)
 
-    def test_list_partitions(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
-        client._query_results = [(20160804, None), (20160805, None)]
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
-        self.assertEqual(table.list_partitions(), [20160804, 20160805])
-
     def test_row_from_mapping_wo_schema(self):
         from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
         MAPPING = {'full_name': 'Phred Phlyntstone', 'age': 32}
@@ -1171,25 +1157,9 @@ class Test__get_upload_metadata(unittest.TestCase):
 
 class _Client(object):
 
-    _query_results = ()
-
     def __init__(self, project='project', connection=None):
         self.project = project
         self._connection = connection
-
-    def run_sync_query(self, query):
-        return _Query(query, self)
-
-
-class _Query(object):
-
-    def __init__(self, query, client):
-        self.query = query
-        self.rows = []
-        self.client = client
-
-    def run(self):
-        self.rows = self.client._query_results
 
 
 class _Connection(object):
