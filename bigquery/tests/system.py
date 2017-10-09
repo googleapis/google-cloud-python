@@ -312,8 +312,9 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(found.mode, expected.mode)
 
     @staticmethod
-    def _fetch_single_page(table):
-        iterator = Config.CLIENT.list_rows(table)
+    def _fetch_single_page(table, selected_fields=None):
+        iterator = Config.CLIENT.list_rows(
+            table, selected_fields=selected_fields)
         page = six.next(iterator.pages)
         return list(page)
 
@@ -1235,6 +1236,23 @@ class TestBigQuery(unittest.TestCase):
         table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
         table = Config.CLIENT.get_table(table_ref)
         self._fetch_single_page(table)
+
+    def test_dump_table_w_public_data_selected_fields(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_ID = 'samples'
+        TABLE_NAME = 'natality'
+        selected_fields = [
+            bigquery.SchemaField('year', 'INTEGER', mode='NULLABLE'),
+            bigquery.SchemaField('month', 'INTEGER', mode='NULLABLE'),
+            bigquery.SchemaField('day', 'INTEGER', mode='NULLABLE'),
+        ]
+        table_ref = DatasetReference(PUBLIC, DATASET_ID).table(TABLE_NAME)
+
+        rows = self._fetch_single_page(
+            table_ref, selected_fields=selected_fields)
+
+        self.assertGreater(len(rows), 0)
+        self.assertEqual(len(rows[0]), 3)
 
     def test_large_query_w_public_data(self):
         PUBLIC = 'bigquery-public-data'
