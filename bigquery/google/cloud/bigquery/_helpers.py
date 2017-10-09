@@ -365,6 +365,44 @@ class _TypedApiResourceProperty(_ApiResourceProperty):
             raise ValueError('Required type: %s' % (self.property_type,))
 
 
+class _ListApiResourceProperty(_ApiResourceProperty):
+    """Property implementation:  validates based on value type.
+
+    :type name: str
+    :param name:  name of the property
+
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
+
+    :type property_type: type or sequence of types
+    :param property_type: type to be validated
+    """
+    def __init__(self, name, resource_name, property_type):
+        super(_ListApiResourceProperty, self).__init__(
+            name, resource_name)
+        self.property_type = property_type
+
+    def __get__(self, instance, owner):
+        """Descriptor protocol:  accessor"""
+        if instance is None:
+            return self
+        return instance._properties.get(self.resource_name, [])
+
+    def _validate(self, value):
+        """Ensure that 'value' is of the appropriate type.
+
+        :raises: ValueError on a type mismatch.
+        """
+        if value is None:
+            raise ValueError((
+                'Required type: list of {}. '
+                'To unset, use del or set to empty list').format(
+                    self.property_type,))
+        if not all(isinstance(item, self.property_type) for item in value):
+            raise ValueError(
+                'Required type: list of %s' % (self.property_type,))
+
+
 class _EnumApiResourceProperty(_ApiResourceProperty):
     """Pseudo-enumeration class.
 
@@ -467,22 +505,6 @@ class UDFResource(object):
 
     def __ne__(self, other):
         return not self == other
-
-
-class UDFResourcesProperty(object):
-    """Custom property type, holding :class:`UDFResource` instances."""
-
-    def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor"""
-        if instance is None:
-            return self
-        return list(instance._udf_resources)
-
-    def __set__(self, instance, value):
-        """Descriptor protocol:  mutator"""
-        if not all(isinstance(u, UDFResource) for u in value):
-            raise ValueError("udf items must be UDFResource")
-        instance._udf_resources = tuple(value)
 
 
 class AbstractQueryParameter(object):
@@ -896,45 +918,6 @@ def _query_param_from_api_repr(resource):
     else:
         klass = ScalarQueryParameter
     return klass.from_api_repr(resource)
-
-
-class QueryParametersProperty(object):
-    """Custom property type, holding query parameter instances."""
-
-    def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor
-
-        :type instance: :class:`QueryParametersProperty`
-        :param instance: instance owning the property (None if accessed via
-                         the class).
-
-        :type owner: type
-        :param owner: the class owning the property.
-
-        :rtype: list of instances of classes derived from
-                :class:`AbstractQueryParameter`.
-        :returns: the descriptor, if accessed via the class, or the instance's
-                  query parameters.
-        """
-        if instance is None:
-            return self
-        return list(instance._query_parameters)
-
-    def __set__(self, instance, value):
-        """Descriptor protocol:  mutator
-
-        :type instance: :class:`QueryParametersProperty`
-        :param instance: instance owning the property (None if accessed via
-                         the class).
-
-        :type value: list of instances of classes derived from
-                     :class:`AbstractQueryParameter`.
-        :param value: new query parameters for the instance.
-        """
-        if not all(isinstance(u, AbstractQueryParameter) for u in value):
-            raise ValueError(
-                "query parameters must be derived from AbstractQueryParameter")
-        instance._query_parameters = tuple(value)
 
 
 def _item_to_row(iterator, resource):
