@@ -250,14 +250,15 @@ class TestBigQuery(unittest.TestCase):
                        table.dataset_id == DATASET_ID)]
         self.assertEqual(len(created), len(tables_to_create))
 
-    def test_patch_table(self):
-        dataset = self.temp_dataset(_make_dataset_id('patch_table'))
+    def test_update_table(self):
+        dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
         TABLE_NAME = 'test_table'
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+        schema = [
+            bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        table_arg = Table(dataset.table(TABLE_NAME), schema=schema,
                           client=Config.CLIENT)
         self.assertFalse(table_arg.exists())
         table = retry_403(Config.CLIENT.create_table)(table_arg)
@@ -265,18 +266,34 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(table.exists())
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.description)
-        table.patch(friendly_name='Friendly', description='Description')
-        self.assertEqual(table.friendly_name, 'Friendly')
-        self.assertEqual(table.description, 'Description')
+        table.friendly_name = 'Friendly'
+        table.description = 'Description'
 
-    def test_update_table(self):
+        table2 = Config.CLIENT.update_table(
+            table, ['friendly_name', 'description'])
+
+        self.assertEqual(table2.friendly_name, 'Friendly')
+        self.assertEqual(table2.description, 'Description')
+
+        table2.description = None
+        table3 = Config.CLIENT.update_table(table2, ['description'])
+        self.assertIsNone(table3.description)
+
+        # If we try to update using table2 again, it will fail because the
+        # previous update changed the ETag.
+        table2.description = 'no good'
+        with self.assertRaises(PreconditionFailed):
+            Config.CLIENT.update_table(table2, ['description'])
+
+    def test_update_table_schema(self):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
         TABLE_NAME = 'test_table'
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
+        schema = [
+            bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        table_arg = Table(dataset.table(TABLE_NAME), schema=schema,
                           client=Config.CLIENT)
         self.assertFalse(table_arg.exists())
         table = retry_403(Config.CLIENT.create_table)(table_arg)
@@ -286,9 +303,11 @@ class TestBigQuery(unittest.TestCase):
         schema = table.schema
         schema.append(voter)
         table.schema = schema
-        table.update()
-        self.assertEqual(len(table.schema), len(schema))
-        for found, expected in zip(table.schema, schema):
+
+        updated_table = Config.CLIENT.update_table(table, ['schema'])
+
+        self.assertEqual(len(updated_table.schema), len(schema))
+        for found, expected in zip(updated_table.schema, schema):
             self.assertEqual(found.name, expected.name)
             self.assertEqual(found.field_type, expected.field_type)
             self.assertEqual(found.mode, expected.mode)
