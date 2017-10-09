@@ -13,10 +13,17 @@
 # limitations under the License.
 
 import copy
+import email
+import io
+import json
 import unittest
 
 import mock
 import six
+from six.moves import http_client
+import pytest
+
+from google.cloud.bigquery.dataset import DatasetReference
 
 
 def _make_credentials():
@@ -1442,6 +1449,154 @@ class TestClient(unittest.TestCase):
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
         self.assertIs(job.destination, destination)
 
+    @staticmethod
+    def _mock_requests_response(status_code, headers, content=b''):
+        return mock.Mock(
+            content=content, headers=headers, status_code=status_code,
+            spec=['content', 'headers', 'status_code'])
+
+    def _mock_transport(self, status_code, headers, content=b''):
+        fake_transport = mock.Mock(spec=['request'])
+        fake_response = self._mock_requests_response(
+            status_code, headers, content=content)
+        fake_transport.request.return_value = fake_response
+        return fake_transport
+
+    def _initiate_resumable_upload_helper(self, num_retries=None):
+        from google.resumable_media.requests import ResumableUpload
+        from google.cloud.bigquery.client import _DEFAULT_CHUNKSIZE
+        from google.cloud.bigquery.client import _GENERIC_CONTENT_TYPE
+        from google.cloud.bigquery.client import _get_upload_headers
+        from google.cloud.bigquery.job import LoadJob, LoadJobConfig
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        TABLE_ID = 'TABLE_ID'
+
+        # Create mocks to be checked for doing transport.
+        resumable_url = 'http://test.invalid?upload_id=hey-you'
+        response_headers = {'location': resumable_url}
+        fake_transport = self._mock_transport(
+            http_client.OK, response_headers)
+        client = self._make_one(project=PROJECT, _http=fake_transport)
+        conn = client._connection = _Connection()
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+
+        # Create some mock arguments and call the method under test.
+        data = b'goodbye gudbi gootbee'
+        stream = io.BytesIO(data)
+        config = LoadJobConfig()
+        config.source_format = 'CSV'
+        job = LoadJob(None, None, table_ref, client, job_config=config)
+        metadata = job._build_resource()
+        upload, transport = client._initiate_resumable_upload(
+            stream, metadata, num_retries)
+
+        # Check the returned values.
+        self.assertIsInstance(upload, ResumableUpload)
+        upload_url = (
+            'https://www.googleapis.com/upload/bigquery/v2/projects/' +
+            PROJECT +
+            '/jobs?uploadType=resumable')
+        self.assertEqual(upload.upload_url, upload_url)
+        expected_headers = _get_upload_headers(conn.USER_AGENT)
+        self.assertEqual(upload._headers, expected_headers)
+        self.assertFalse(upload.finished)
+        self.assertEqual(upload._chunk_size, _DEFAULT_CHUNKSIZE)
+        self.assertIs(upload._stream, stream)
+        self.assertIsNone(upload._total_bytes)
+        self.assertEqual(upload._content_type, _GENERIC_CONTENT_TYPE)
+        self.assertEqual(upload.resumable_url, resumable_url)
+
+        retry_strategy = upload._retry_strategy
+        self.assertEqual(retry_strategy.max_sleep, 64.0)
+        if num_retries is None:
+            self.assertEqual(retry_strategy.max_cumulative_retry, 600.0)
+            self.assertIsNone(retry_strategy.max_retries)
+        else:
+            self.assertIsNone(retry_strategy.max_cumulative_retry)
+            self.assertEqual(retry_strategy.max_retries, num_retries)
+        self.assertIs(transport, fake_transport)
+        # Make sure we never read from the stream.
+        self.assertEqual(stream.tell(), 0)
+
+        # Check the mocks.
+        request_headers = expected_headers.copy()
+        request_headers['x-upload-content-type'] = _GENERIC_CONTENT_TYPE
+        fake_transport.request.assert_called_once_with(
+            'POST',
+            upload_url,
+            data=json.dumps(metadata).encode('utf-8'),
+            headers=request_headers,
+        )
+
+    def test__initiate_resumable_upload(self):
+        self._initiate_resumable_upload_helper()
+
+    def test__initiate_resumable_upload_with_retry(self):
+        self._initiate_resumable_upload_helper(num_retries=11)
+
+    def _do_multipart_upload_success_helper(
+            self, get_boundary, num_retries=None):
+        from google.cloud.bigquery.client import _get_upload_headers
+        from google.cloud.bigquery.job import LoadJob, LoadJobConfig
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DATASET_ID'
+        TABLE_ID = 'TABLE_ID'
+
+        fake_transport = self._mock_transport(http_client.OK, {})
+        client = self._make_one(project=PROJECT, _http=fake_transport)
+        conn = client._connection = _Connection()
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+
+        # Create some mock arguments.
+        data = b'Bzzzz-zap \x00\x01\xf4'
+        stream = io.BytesIO(data)
+        config = LoadJobConfig()
+        config.source_format = 'CSV'
+        job = LoadJob(None, None, table_ref, client, job_config=config)
+        metadata = job._build_resource()
+        size = len(data)
+        response = client._do_multipart_upload(
+            stream, metadata, size, num_retries)
+
+        # Check the mocks and the returned value.
+        self.assertIs(response, fake_transport.request.return_value)
+        self.assertEqual(stream.tell(), size)
+        get_boundary.assert_called_once_with()
+
+        upload_url = (
+            'https://www.googleapis.com/upload/bigquery/v2/projects/' +
+            PROJECT +
+            '/jobs?uploadType=multipart')
+        payload = (
+            b'--==0==\r\n' +
+            b'content-type: application/json; charset=UTF-8\r\n\r\n' +
+            json.dumps(metadata).encode('utf-8') + b'\r\n' +
+            b'--==0==\r\n' +
+            b'content-type: */*\r\n\r\n' +
+            data + b'\r\n' +
+            b'--==0==--')
+        headers = _get_upload_headers(conn.USER_AGENT)
+        headers['content-type'] = b'multipart/related; boundary="==0=="'
+        fake_transport.request.assert_called_once_with(
+            'POST',
+            upload_url,
+            data=payload,
+            headers=headers,
+        )
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload(self, get_boundary):
+        self._do_multipart_upload_success_helper(get_boundary)
+
+    @mock.patch(u'google.resumable_media._upload.get_boundary',
+                return_value=b'==0==')
+    def test__do_multipart_upload_with_retry(self, get_boundary):
+        self._do_multipart_upload_success_helper(get_boundary, num_retries=8)
+
     def test_copy_table(self):
         from google.cloud.bigquery.job import CopyJob
 
@@ -2180,7 +2335,327 @@ class TestClient(unittest.TestCase):
             client.list_rows(1)
 
 
+class TestClientUpload(object):
+    # NOTE: This is a "partner" to `TestClient` meant to test some of the
+    #       "load_table_from_file" portions of `Client`. It also uses
+    #       `pytest`-style tests rather than `unittest`-style.
+
+    TABLE_REF = DatasetReference(
+        'project_id', 'test_dataset').table('test_table')
+
+    @staticmethod
+    def _make_client(transport=None):
+        from google.cloud.bigquery import _http
+        from google.cloud.bigquery import client
+
+        cl = client.Client(project='project_id',
+                           credentials=_make_credentials(),
+                           _http=transport)
+        cl._connection = mock.create_autospec(_http.Connection, instance=True)
+        return cl
+
+    @staticmethod
+    def _make_response(status_code, content='', headers={}):
+        """Make a mock HTTP response."""
+        import requests
+        response = requests.Response()
+        response.request = requests.Request(
+            'POST', 'http://example.com').prepare()
+        response._content = content.encode('utf-8')
+        response.headers.update(headers)
+        response.status_code = status_code
+        return response
+
+    @classmethod
+    def _make_do_upload_patch(cls, client, method,
+                              resource={}, side_effect=None):
+        """Patches the low-level upload helpers."""
+        if side_effect is None:
+            side_effect = [cls._make_response(
+                http_client.OK,
+                json.dumps(resource),
+                {'Content-Type': 'application/json'})]
+        return mock.patch.object(
+            client, method, side_effect=side_effect, autospec=True)
+
+    EXPECTED_CONFIGURATION = {
+        'jobReference': {'projectId': 'project_id', 'jobId': 'job_id'},
+        'configuration': {
+            'load': {
+                'sourceFormat': 'CSV',
+                'destinationTable': {
+                    'projectId': 'project_id',
+                    'datasetId': 'test_dataset',
+                    'tableId': 'test_table'
+                }
+            }
+        }
+    }
+
+    @staticmethod
+    def _make_file_obj():
+        return io.BytesIO(b'hello, is it me you\'re looking for?')
+
+    @staticmethod
+    def _make_config():
+        from google.cloud.bigquery.job import LoadJobConfig
+
+        config = LoadJobConfig()
+        config.source_format = 'CSV'
+        return config
+
+    # High-level tests
+
+    def test_load_table_from_file_resumable(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload', self.EXPECTED_CONFIGURATION)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(file_obj, self.TABLE_REF,
+                                        job_id='job_id',
+                                        job_config=self._make_config())
+
+        do_upload.assert_called_once_with(
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            _DEFAULT_NUM_RETRIES)
+
+    def test_load_table_from_file_resumable_metadata(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+
+        config = self._make_config()
+        config.allow_jagged_rows = False
+        config.allow_quoted_newlines = False
+        config.create_disposition = 'CREATE_IF_NEEDED'
+        config.encoding = 'utf8'
+        config.field_delimiter = ','
+        config.ignore_unknown_values = False
+        config.max_bad_records = 0
+        config.quote_character = '"'
+        config.skip_leading_rows = 1
+        config.write_disposition = 'WRITE_APPEND'
+        config.null_marker = r'\N'
+
+        expected_config = {
+            'jobReference': {'projectId': 'project_id', 'jobId': 'job_id'},
+            'configuration': {
+                'load': {
+                    'destinationTable': {
+                        'projectId': self.TABLE_REF.project,
+                        'datasetId': self.TABLE_REF.dataset_id,
+                        'tableId': self.TABLE_REF.table_id,
+                    },
+                    'sourceFormat': config.source_format,
+                    'allowJaggedRows': config.allow_jagged_rows,
+                    'allowQuotedNewlines': config.allow_quoted_newlines,
+                    'createDisposition': config.create_disposition,
+                    'encoding': config.encoding,
+                    'fieldDelimiter': config.field_delimiter,
+                    'ignoreUnknownValues': config.ignore_unknown_values,
+                    'maxBadRecords': config.max_bad_records,
+                    'quote': config.quote_character,
+                    'skipLeadingRows': str(config.skip_leading_rows),
+                    'writeDisposition': config.write_disposition,
+                    'nullMarker': config.null_marker,
+                },
+            },
+        }
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload', expected_config)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, job_id='job_id', job_config=config)
+
+        do_upload.assert_called_once_with(
+            file_obj,
+            expected_config,
+            _DEFAULT_NUM_RETRIES)
+
+    def test_load_table_from_file_multipart(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+        file_obj_size = 10
+        config = self._make_config()
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_multipart_upload', self.EXPECTED_CONFIGURATION)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, job_id='job_id', job_config=config,
+                size=file_obj_size)
+
+        do_upload.assert_called_once_with(
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            file_obj_size,
+            _DEFAULT_NUM_RETRIES)
+
+    def test_load_table_from_file_with_retries(self):
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+        num_retries = 20
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload', self.EXPECTED_CONFIGURATION)
+        with do_upload_patch as do_upload:
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, num_retries=num_retries,
+                job_id='job_id', job_config=self._make_config())
+
+        do_upload.assert_called_once_with(
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            num_retries)
+
+    def test_load_table_from_file_with_rewind(self):
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+        file_obj.seek(2)
+
+        with self._make_do_upload_patch(
+                client, '_do_resumable_upload', self.EXPECTED_CONFIGURATION):
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, rewind=True)
+
+        assert file_obj.tell() == 0
+
+    def test_load_table_from_file_failure(self):
+        from google.resumable_media import InvalidResponse
+        from google.cloud import exceptions
+
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+
+        response = self._make_response(
+            content='Someone is already in this spot.',
+            status_code=http_client.CONFLICT)
+
+        do_upload_patch = self._make_do_upload_patch(
+            client, '_do_resumable_upload',
+            side_effect=InvalidResponse(response))
+
+        with do_upload_patch, pytest.raises(exceptions.Conflict) as exc_info:
+            client.load_table_from_file(
+                file_obj, self.TABLE_REF, rewind=True)
+
+        assert response.text in exc_info.value.message
+        assert exc_info.value.errors == []
+
+    def test_load_table_from_file_bad_mode(self):
+        client = self._make_client()
+        file_obj = mock.Mock(spec=['mode'])
+        file_obj.mode = 'x'
+
+        with pytest.raises(ValueError):
+            client.load_table_from_file(file_obj, self.TABLE_REF)
+
+    # Low-level tests
+
+    @classmethod
+    def _make_resumable_upload_responses(cls, size):
+        """Make a series of responses for a successful resumable upload."""
+        from google import resumable_media
+
+        resumable_url = 'http://test.invalid?upload_id=and-then-there-was-1'
+        initial_response = cls._make_response(
+            http_client.OK, '', {'location': resumable_url})
+        data_response = cls._make_response(
+            resumable_media.PERMANENT_REDIRECT,
+            '', {'range': 'bytes=0-{:d}'.format(size - 1)})
+        final_response = cls._make_response(
+            http_client.OK,
+            json.dumps({'size': size}),
+            {'Content-Type': 'application/json'})
+        return [initial_response, data_response, final_response]
+
+    @staticmethod
+    def _make_transport(responses=None):
+        import google.auth.transport.requests
+
+        transport = mock.create_autospec(
+            google.auth.transport.requests.AuthorizedSession, instance=True)
+        transport.request.side_effect = responses
+        return transport
+
+    def test__do_resumable_upload(self):
+        file_obj = self._make_file_obj()
+        file_obj_len = len(file_obj.getvalue())
+        transport = self._make_transport(
+            self._make_resumable_upload_responses(file_obj_len))
+        client = self._make_client(transport)
+
+        result = client._do_resumable_upload(
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            None)
+
+        content = result.content.decode('utf-8')
+        assert json.loads(content) == {'size': file_obj_len}
+
+        # Verify that configuration data was passed in with the initial
+        # request.
+        transport.request.assert_any_call(
+            'POST',
+            mock.ANY,
+            data=json.dumps(self.EXPECTED_CONFIGURATION).encode('utf-8'),
+            headers=mock.ANY)
+
+    def test__do_multipart_upload(self):
+        transport = self._make_transport([self._make_response(http_client.OK)])
+        client = self._make_client(transport)
+        file_obj = self._make_file_obj()
+        file_obj_len = len(file_obj.getvalue())
+
+        client._do_multipart_upload(
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            file_obj_len,
+            None)
+
+        # Verify that configuration data was passed in with the initial
+        # request.
+        request_args = transport.request.mock_calls[0][2]
+        request_data = request_args['data'].decode('utf-8')
+        request_headers = request_args['headers']
+
+        request_content = email.message_from_string(
+            'Content-Type: {}\r\n{}'.format(
+                request_headers['content-type'].decode('utf-8'),
+                request_data))
+
+        # There should be two payloads: the configuration and the binary daya.
+        configuration_data = request_content.get_payload(0).get_payload()
+        binary_data = request_content.get_payload(1).get_payload()
+
+        assert json.loads(configuration_data) == self.EXPECTED_CONFIGURATION
+        assert binary_data.encode('utf-8') == file_obj.getvalue()
+
+    def test__do_multipart_upload_wrong_size(self):
+        client = self._make_client()
+        file_obj = self._make_file_obj()
+        file_obj_len = len(file_obj.getvalue())
+
+        with pytest.raises(ValueError):
+            client._do_multipart_upload(
+                file_obj,
+                {},
+                file_obj_len+1,
+                None)
+
+
 class _Connection(object):
+
+    USER_AGENT = 'testing 1.2.3'
 
     def __init__(self, *responses):
         self._responses = responses
