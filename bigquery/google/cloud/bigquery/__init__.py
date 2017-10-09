@@ -29,15 +29,18 @@ __version__ = get_distribution('google-cloud-bigquery').version
 from google.cloud.bigquery._helpers import ArrayQueryParameter
 from google.cloud.bigquery._helpers import ScalarQueryParameter
 from google.cloud.bigquery._helpers import StructQueryParameter
+from google.cloud.bigquery._helpers import UDFResource
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.job import CopyJobConfig
 from google.cloud.bigquery.job import ExtractJobConfig
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableReference
 
 __all__ = [
     '__version__',
@@ -45,6 +48,7 @@ __all__ = [
     'ArrayQueryParameter',
     'Client',
     'Dataset',
+    'DatasetReference',
     'CopyJobConfig',
     'ExtractJobConfig',
     'QueryJobConfig',
@@ -53,4 +57,6 @@ __all__ = [
     'SchemaField',
     'StructQueryParameter',
     'Table',
+    'TableReference',
+    'UDFResource',
 ]
