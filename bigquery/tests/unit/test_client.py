@@ -2334,6 +2334,49 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.list_rows(1)
 
+    def test_list_partitions(self):
+        PROJECT = 'PROJECT'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'JOB_ID',
+            },
+            'configuration': {
+                'query': {
+                    'query': 'q',
+                },
+            },
+            'status': {
+                'state': 'DONE',
+            },
+        }
+        RESULTS_RESOURCE = {
+            'jobReference': RESOURCE['jobReference'],
+            'jobComplete': True,
+            'schema': {
+                'fields': [
+                    {'name': 'partition_id', 'type': 'INTEGER',
+                     'mode': 'REQUIRED'},
+                ]
+            },
+            'totalRows': '2',
+            'pageToken': 'next-page',
+        }
+        FIRST_PAGE = copy.deepcopy(RESULTS_RESOURCE)
+        FIRST_PAGE['rows'] = [
+            {'f': [{'v': 20160804}]},
+            {'f': [{'v': 20160805}]},
+        ]
+        del FIRST_PAGE['pageToken']
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client._connection = _Connection(
+            RESOURCE, RESULTS_RESOURCE, FIRST_PAGE)
+        table_ref = DatasetReference(PROJECT, 'DS_ID').table('TABLE_ID')
+        self.assertEqual(client.list_partitions(table_ref),
+                         [20160804, 20160805])
+
 
 class TestClientUpload(object):
     # NOTE: This is a "partner" to `TestClient` meant to test some of the
