@@ -432,7 +432,7 @@ class Client(ClientWithProject):
         resource = self._connection.api_request(
             method='GET', path=path, query_params=extra_params)
 
-        return QueryResults.from_api_repr(resource, self)
+        return QueryResults.from_api_repr(resource)
 
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
@@ -925,7 +925,8 @@ class Client(ClientWithProject):
         params = {}
         if selected_fields is not None:
             params['selectedFields'] = ','.join(
-                [f.name for f in selected_fields])
+                field.name for field in selected_fields)
+
         if start_index is not None:
             params['startIndex'] = start_index
 

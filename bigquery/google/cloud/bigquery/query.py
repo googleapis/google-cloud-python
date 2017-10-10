@@ -16,11 +16,8 @@
 
 import copy
 
-from google.api.core import page_iterator
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.table import _parse_schema_resource
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
 
 
 class QueryResults(object):
@@ -28,45 +25,24 @@ class QueryResults(object):
 
     See:
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs/getQueryResults
-
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
     """
 
-    def __init__(self, client, properties):
-        self._client = client
+    def __init__(self, properties):
         self._properties = {}
-        self._job = None
         self._set_properties(properties)
 
     @classmethod
-    def from_api_repr(cls, api_response, client):
-        return cls(client, api_response)
+    def from_api_repr(cls, api_response):
+        return cls(api_response)
 
     @property
     def project(self):
-        """Project bound to the job.
+        """Project bound to the query job.
 
         :rtype: str
-        :returns: the project (derived from the client).
+        :returns: the project that the query job is associated with.
         """
         return self._properties.get('jobReference', {}).get('projectId')
-
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`google.cloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
 
     @property
     def cache_hit(self):
@@ -212,109 +188,3 @@ class QueryResults(object):
 
         self._properties.clear()
         self._properties.update(copy.deepcopy(api_response))
-
-    def job(self):
-        """Job instance used to run the query.
-
-        :rtype: :class:`google.cloud.bigquery.job.QueryJob`, or ``NoneType``
-        :returns: Job instance used to run the query (None until
-                  ``jobReference`` property is set by the server).
-        """
-        if self._job is None:
-            job_ref = self._properties['jobReference']
-            self._job = self._client.get_job(
-                job_ref['jobId'], project=job_ref['projectId'])
-
-        return self._job
-
-    def fetch_data(self, max_results=None, page_token=None, start_index=None,
-                   timeout_ms=None, client=None):
-        """API call:  fetch a page of query result data via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/getQueryResults
-
-        :type max_results: int
-        :param max_results: (Optional) maximum number of rows to return.
-
-        :type page_token: str
-        :param page_token:
-            (Optional) token representing a cursor into the table's rows.
-
-        :type start_index: int
-        :param start_index: (Optional) zero-based index of starting row
-
-        :type timeout_ms: int
-        :param timeout_ms:
-            (Optional) How long to wait for the query to complete, in
-            milliseconds, before the request times out and returns. Note that
-            this is only a timeout for the request, not the query. If the query
-            takes longer to run than the timeout value, the call returns
-            without any results and with the 'jobComplete' flag set to false.
-            You can call GetQueryResults() to wait for the query to complete
-            and read the results. The default value is 10000 milliseconds (10
-            seconds).
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
-        :returns: Iterator of row data :class:`tuple`s. During each page, the
-                  iterator will have the ``total_rows`` attribute set,
-                  which counts the total number of rows **in the result
-                  set** (this is distinct from the total number of rows in
-                  the current page: ``iterator.page.num_items``).
-        :raises: ValueError if the query has not yet been executed.
-        """
-        client = self._require_client(client)
-        params = {}
-
-        if start_index is not None:
-            params['startIndex'] = start_index
-
-        if timeout_ms is not None:
-            params['timeoutMs'] = timeout_ms
-
-        if max_results is not None:
-            params['maxResults'] = max_results
-
-        path = '/projects/%s/queries/%s' % (self.project, self.job_id)
-        iterator = page_iterator.HTTPIterator(
-            client=client,
-            api_request=client._connection.api_request,
-            path=path,
-            item_to_value=_item_to_row,
-            items_key='rows',
-            page_token=page_token,
-            page_start=_rows_page_start_query,
-            next_token='pageToken',
-            extra_params=params)
-        iterator.query_result = self
-        iterator.project = self.project
-        iterator.job_id = self.job_id
-        return iterator
-
-
-def _rows_page_start_query(iterator, page, response):
-    """Update query response when :class:`~google.cloud.iterator.Page` starts.
-
-    .. note::
-
-        This assumes that the ``query_response`` attribute has been
-        added to the iterator after being created, which
-        should be done by the caller.
-
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type page: :class:`~google.cloud.iterator.Page`
-    :param page: The page that was just created.
-
-    :type response: dict
-    :param response: The JSON API response for a page of rows in a table.
-    """
-    iterator.query_result._set_properties(response)
-    iterator.schema = iterator.query_result.schema
-    _rows_page_start(iterator, page, response)
