@@ -16,8 +16,8 @@
 
 import copy
 
-from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.table import _parse_schema_resource
+from google.cloud.bigquery._helpers import _rows_from_json
 
 
 class QueryResults(object):
@@ -156,7 +156,7 @@ class QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#rows
 
-        :rtype: list of tuples of row values, or ``NoneType``
+        :rtype: list of :class:`~google.cloud.bigquery.Row`
         :returns: fields describing the schema (None until set by the server).
         """
         return _rows_from_json(self._properties.get('rows', ()), self.schema)
