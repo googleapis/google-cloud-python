@@ -30,37 +30,45 @@ class TestCursor(unittest.TestCase):
     def _mock_client(
             self, rows=None, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import client
+
+        if rows is None:
+            total_rows = 0
+        else:
+            total_rows = len(rows)
+
         mock_client = mock.create_autospec(client.Client)
         mock_client.query.return_value = self._mock_job(
-            rows=rows, schema=schema,
+            total_rows=total_rows,
+            schema=schema,
             num_dml_affected_rows=num_dml_affected_rows)
+        mock_client.list_rows.return_value = rows
         return mock_client
 
     def _mock_job(
-            self, rows=None, schema=None, num_dml_affected_rows=None):
+            self, total_rows=0, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import job
         mock_job = mock.create_autospec(job.QueryJob)
         mock_job.error_result = None
         mock_job.state = 'DONE'
         mock_job.result.return_value = mock_job
+
+        if num_dml_affected_rows is None:
+            mock_job.statement_type = None  # API sends back None for SELECT
+        else:
+            mock_job.statement_type = 'UPDATE'
+
         mock_job.query_results.return_value = self._mock_results(
-            rows=rows, schema=schema,
+            total_rows=total_rows, schema=schema,
             num_dml_affected_rows=num_dml_affected_rows)
         return mock_job
 
     def _mock_results(
-            self, rows=None, schema=None, num_dml_affected_rows=None):
+            self, total_rows=0, schema=None, num_dml_affected_rows=None):
         from google.cloud.bigquery import query
         mock_results = mock.create_autospec(query.QueryResults)
         mock_results.schema = schema
         mock_results.num_dml_affected_rows = num_dml_affected_rows
-
-        if rows is None:
-            mock_results.total_rows = 0
-        else:
-            mock_results.total_rows = len(rows)
-
-        mock_results.fetch_data.return_value = rows
+        mock_results.total_rows = total_rows
         return mock_results
 
     def test_ctor(self):
@@ -187,8 +195,10 @@ class TestCursor(unittest.TestCase):
             self._mock_client(rows=[], num_dml_affected_rows=12))
         cursor = connection.cursor()
         cursor.execute('DELETE FROM UserSessions WHERE user_id = \'test\';')
+        rows = cursor.fetchall()
         self.assertIsNone(cursor.description)
         self.assertEqual(cursor.rowcount, 12)
+        self.assertEqual(rows, [])
 
     def test_execute_w_query(self):
         from google.cloud.bigquery.schema import SchemaField

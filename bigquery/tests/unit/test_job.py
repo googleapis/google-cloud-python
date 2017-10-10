@@ -21,6 +21,26 @@ from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.dataset import DatasetReference
 
+import mock
+
+
+def _make_credentials():
+    import google.auth.credentials
+
+    return mock.Mock(spec=google.auth.credentials.Credentials)
+
+
+def _make_client(project='test-project', connection=None):
+    from google.cloud.bigquery.client import Client
+
+    if connection is None:
+        connection = _Connection()
+
+    client = Client(
+        project=project, credentials=_make_credentials(), _http=object())
+    client._connection = connection
+    return client
+
 
 class Test__bool_or_none(unittest.TestCase):
 
@@ -142,6 +162,13 @@ class _Base(object):
 
         if ended:
             resource['statistics']['endTime'] = (self.WHEN_TS + 1000) * 1000
+
+        if self.JOB_TYPE == 'query':
+            resource['configuration']['query']['destinationTable'] = {
+                'projectId': self.PROJECT,
+                'datasetId': '_temp_dataset',
+                'tableId': '_temp_table',
+            }
 
         return resource
 
@@ -319,7 +346,7 @@ class TestLoadJob(unittest.TestCase, _Base):
             self.assertIsNone(job.skip_leading_rows)
 
     def test_ctor(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client)
         self.assertIs(job.destination, self.TABLE_REF)
@@ -357,7 +384,7 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_ctor_w_config(self):
         from google.cloud.bigquery.schema import SchemaField
 
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         config = LoadJobConfig()
@@ -367,13 +394,13 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertEqual(job.schema, [full_name, age])
 
     def test_done(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         resource = self._makeResource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
         self.assertTrue(job.done())
 
     def test_result(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         resource = self._makeResource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
 
@@ -386,7 +413,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
         connection = _Connection(begun_resource, done_resource)
-        client = _Client(self.PROJECT, connection=connection)
+        client = _make_client(self.PROJECT)
+        client._connection = connection
 
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client)
@@ -462,7 +490,7 @@ class TestLoadJob(unittest.TestCase, _Base):
                         'message': 'MESSAGE',
                         'reason': 'REASON'}
 
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         table = _Table()
         job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
         job._properties['etag'] = 'ETAG'
@@ -509,7 +537,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {}
         klass = self._get_target_class()
         with self.assertRaises(KeyError):
@@ -517,7 +545,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_config(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': '%s:%s' % (self.PROJECT, self.JOB_ID),
             'jobReference': {
@@ -531,7 +559,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_bare(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': self.FULL_JOB_ID,
             'jobReference': {
@@ -555,7 +583,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = self._makeResource()
         load_config = RESOURCE['configuration']['load']
         load_config['createDisposition'] = 'CREATE_IF_NEEDED'
@@ -566,7 +594,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_begin_w_already_running(self):
         conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client)
         job._properties['status'] = {'state': 'RUNNING'}
@@ -583,7 +611,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client)
 
@@ -622,7 +650,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         del resource['selfLink']
         del resource['user_email']
         conn = _Connection(resource)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         config = LoadJobConfig()
         config.autodetect = True
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
@@ -685,9 +713,9 @@ class TestLoadJob(unittest.TestCase, _Base):
         }
         RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         config = LoadJobConfig()
@@ -730,7 +758,7 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         table = _Table()
         job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
 
@@ -745,9 +773,9 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         table = _Table()
         job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
 
@@ -764,7 +792,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         table = _Table()
         job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
 
@@ -780,9 +808,9 @@ class TestLoadJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         table = _Table()
         job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
 
@@ -800,7 +828,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource(ended=True)
         RESPONSE = {'job': RESOURCE}
         conn = _Connection(RESPONSE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         table = _Table()
         job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client)
 
@@ -817,9 +845,9 @@ class TestLoadJob(unittest.TestCase, _Base):
         RESOURCE = self._makeResource(ended=True)
         RESPONSE = {'job': RESOURCE}
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESPONSE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         table = _Table()
         job = self._make_one(self.JOB_ID, [self.SOURCE1], table, client1)
 
@@ -893,7 +921,7 @@ class TestCopyJob(unittest.TestCase, _Base):
             self.assertIsNone(job.write_disposition)
 
     def test_ctor(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         job = self._make_one(self.JOB_ID, [source], destination, client)
@@ -913,7 +941,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {}
         klass = self._get_target_class()
         with self.assertRaises(KeyError):
@@ -921,7 +949,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_config(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'jobReference': {
@@ -935,7 +963,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_bare(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': self.JOB_ID,
             'jobReference': {
@@ -964,7 +992,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_w_sourcetable(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': self.JOB_ID,
             'jobReference': {
@@ -993,7 +1021,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_wo_sources(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': self.JOB_ID,
             'jobReference': {
@@ -1015,7 +1043,7 @@ class TestCopyJob(unittest.TestCase, _Base):
             klass.from_api_repr(RESOURCE, client=client)
 
     def test_from_api_repr_w_properties(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = self._makeResource()
         copy_config = RESOURCE['configuration']['copy']
         copy_config['createDisposition'] = 'CREATE_IF_NEEDED'
@@ -1033,7 +1061,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         job = self._make_one(self.JOB_ID, [source], destination, client)
@@ -1086,9 +1114,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         }
         RESOURCE['configuration']['copy'] = COPY_CONFIGURATION
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         config = CopyJobConfig()
@@ -1118,7 +1146,7 @@ class TestCopyJob(unittest.TestCase, _Base):
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
 
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
@@ -1135,9 +1163,9 @@ class TestCopyJob(unittest.TestCase, _Base):
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         job = self._make_one(self.JOB_ID, [source], destination, client1)
@@ -1155,7 +1183,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         job = self._make_one(self.JOB_ID, [source], destination, client)
@@ -1172,9 +1200,9 @@ class TestCopyJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         job = self._make_one(self.JOB_ID, [source], destination, client1)
@@ -1249,7 +1277,7 @@ class TestExtractJob(unittest.TestCase, _Base):
             self.assertIsNone(job.print_header)
 
     def test_ctor(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
                              client)
@@ -1271,7 +1299,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_destination_uri_file_counts(self):
         file_counts = 23
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
                              client)
@@ -1288,7 +1316,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {}
         klass = self._get_target_class()
         with self.assertRaises(KeyError):
@@ -1296,7 +1324,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_config(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'jobReference': {
@@ -1310,7 +1338,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_bare(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': self.JOB_ID,
             'jobReference': {
@@ -1334,7 +1362,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = self._makeResource()
         extract_config = RESOURCE['configuration']['extract']
         extract_config['compression'] = 'GZIP'
@@ -1352,7 +1380,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
@@ -1400,9 +1428,9 @@ class TestExtractJob(unittest.TestCase, _Base):
         }
         RESOURCE['configuration']['extract'] = EXTRACT_CONFIGURATION
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
         job_config = ExtractJobConfig()
@@ -1435,7 +1463,7 @@ class TestExtractJob(unittest.TestCase, _Base):
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
                              client)
@@ -1451,9 +1479,9 @@ class TestExtractJob(unittest.TestCase, _Base):
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         source = _Table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
                              client1)
@@ -1471,7 +1499,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
@@ -1489,9 +1517,9 @@ class TestExtractJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         RESOURCE = self._makeResource()
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
         source = source_dataset.table(self.SOURCE_TABLE)
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
@@ -1701,7 +1729,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertIsNone(job.write_disposition)
 
     def test_ctor_defaults(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertEqual(job.query, self.QUERY)
         self.assertIs(job._client, client)
@@ -1733,7 +1761,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         config = QueryJobConfig()
         config.udf_resources = udf_resources
         job = self._make_one(
@@ -1745,7 +1773,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import QueryJobConfig
 
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         config = QueryJobConfig()
         config.query_parameters = query_parameters
         job = self._make_one(
@@ -1754,7 +1782,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {}
         klass = self._get_target_class()
         with self.assertRaises(KeyError):
@@ -1762,7 +1790,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_missing_config(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'jobReference': {
@@ -1776,7 +1804,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_bare(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = {
             'id': self.JOB_ID,
             'jobReference': {
@@ -1793,7 +1821,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         RESOURCE = self._makeResource()
         query_config = RESOURCE['configuration']['query']
         query_config['createDisposition'] = 'CREATE_IF_NEEDED'
@@ -1809,7 +1837,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_cancelled(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         job._properties['status'] = {
             'state': 'DONE',
@@ -1821,7 +1849,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertTrue(job.cancelled())
 
     def test_done(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         resource = self._makeResource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
         self.assertTrue(job.done())
@@ -1849,7 +1877,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'substeps': ['SUBSTEP1', 'SUBSTEP2'],
             }],
         }]
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertEqual(job.query_plan, [])
 
@@ -1890,7 +1918,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_total_bytes_processed(self):
         total_bytes = 1234
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertIsNone(job.total_bytes_processed)
 
@@ -1905,7 +1933,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_total_bytes_billed(self):
         total_bytes = 1234
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertIsNone(job.total_bytes_billed)
 
@@ -1920,7 +1948,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_billing_tier(self):
         billing_tier = 1
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertIsNone(job.billing_tier)
 
@@ -1934,7 +1962,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(job.billing_tier, billing_tier)
 
     def test_cache_hit(self):
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertIsNone(job.cache_hit)
 
@@ -1949,7 +1977,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_num_dml_affected_rows(self):
         num_rows = 1234
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertIsNone(job.num_dml_affected_rows)
 
@@ -1964,7 +1992,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_statement_type(self):
         statement_type = 'SELECT'
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertIsNone(job.statement_type)
 
@@ -1995,7 +2023,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             'datasetId': 'other-dataset',
             'tableId': 'other-table',
         }]
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertEqual(job.referenced_tables, [])
 
@@ -2070,7 +2098,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 }
             },
         }]
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         self.assertEqual(job.undeclared_query_paramters, [])
 
@@ -2110,7 +2138,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
         }
         connection = _Connection(query_resource)
-        client = _Client(self.PROJECT, connection=connection)
+        client = _make_client(self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         results = job.query_results()
         self.assertIsInstance(results, QueryResults)
@@ -2118,7 +2146,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_query_results_w_cached_value(self):
         from google.cloud.bigquery.query import QueryResults
 
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         resource = {
             'jobReference': {
@@ -2126,7 +2154,7 @@ class TestQueryJob(unittest.TestCase, _Base):
                 'jobId': self.JOB_ID,
             },
         }
-        query_results = QueryResults(client, resource)
+        query_results = QueryResults(resource)
         job._query_results = query_results
 
         results = job.query_results()
@@ -2142,7 +2170,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
         }
         connection = _Connection(query_resource, query_resource)
-        client = _Client(self.PROJECT, connection=connection)
+        client = _make_client(self.PROJECT, connection=connection)
         resource = self._makeResource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
 
@@ -2166,7 +2194,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         connection = _Connection(
             begun_resource, incomplete_resource, query_resource, done_resource,
             query_resource)
-        client = _Client(self.PROJECT, connection=connection)
+        client = _make_client(project=self.PROJECT, connection=connection)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
         job.result()
@@ -2180,7 +2208,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_result_error(self):
         from google.cloud import exceptions
 
-        client = _Client(self.PROJECT)
+        client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         error_result = {
             'debugInfo': 'DEBUG',
@@ -2214,7 +2242,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['selfLink']
         del RESOURCE['user_email']
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
 
         config = QueryJobConfig()
         config.default_dataset = DatasetReference(self.PROJECT, DS_ID)
@@ -2280,9 +2308,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
         RESOURCE['configuration']['dryRun'] = True
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
         table_ref = dataset_ref.table(TABLE)
 
@@ -2340,7 +2368,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             {'inlineCode': INLINE_UDF_CODE},
         ]
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         udf_resources = [
             UDFResource("resourceUri", RESOURCE_URI),
             UDFResource("inlineCode", INLINE_UDF_CODE),
@@ -2403,7 +2431,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
         ]
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         jconfig = QueryJobConfig()
         jconfig.query_parameters = query_parameters
         job = self._make_one(
@@ -2458,7 +2486,7 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
         ]
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         jconfig = QueryJobConfig()
         jconfig.query_parameters = query_parameters
         job = self._make_one(
@@ -2500,7 +2528,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         del RESOURCE['user_email']
         RESOURCE['configuration']['dryRun'] = True
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         config = QueryJobConfig()
         config.dry_run = True
         job = self._make_one(
@@ -2531,7 +2559,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_exists_miss_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
         self.assertFalse(job.exists())
@@ -2545,9 +2573,9 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_exists_hit_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_ID, self.QUERY, client1)
 
         self.assertTrue(job.exists(client=client2))
@@ -2568,7 +2596,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         DEST_TABLE = 'dest_table'
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _make_client(project=self.PROJECT, connection=conn)
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
         table_ref = dataset_ref.table(DEST_TABLE)
         config = QueryJobConfig()
@@ -2577,7 +2605,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         job.reload()
 
-        self.assertIsNone(job.destination)
+        self.assertNotEqual(job.destination, table_ref)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -2597,9 +2625,9 @@ class TestQueryJob(unittest.TestCase, _Base):
             'tableId': DEST_TABLE,
         }
         conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _make_client(project=self.PROJECT, connection=conn2)
         job = self._make_one(self.JOB_ID, self.QUERY, client1)
 
         job.reload(client=client2)
@@ -2789,19 +2817,6 @@ class TestQueryPlanEntry(unittest.TestCase, _Base):
         self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
         self.assertEqual(entry.status, self.STATUS)
         self.assertEqual(entry.steps, steps)
-
-
-class _Client(object):
-
-    def __init__(self, project='project', connection=None):
-        self.project = project
-        self._connection = connection
-
-    def _get_query_results(self, job_id):
-        from google.cloud.bigquery.query import QueryResults
-
-        resource = self._connection.api_request(method='GET')
-        return QueryResults.from_api_repr(resource, self)
 
 
 class _Table(object):
