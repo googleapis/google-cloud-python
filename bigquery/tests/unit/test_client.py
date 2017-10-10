@@ -1919,6 +1919,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_rows_defaults(self):
         from google.api.core.page_iterator import HTTPIterator
+        from google.cloud.bigquery._helpers import Row
 
         JOB = 'job-id'
         PROJECT = 'PROJECT'
@@ -1972,7 +1973,7 @@ class TestClient(unittest.TestCase):
         rows_iter = client.query_rows(QUERY)
         rows = list(rows_iter)
 
-        self.assertEqual(rows, [(1,), (2,), (3,)])
+        self.assertEqual(rows, [Row((i,), {'field0': 0}) for i in (1, 2, 3)])
         self.assertIs(rows_iter.client, client)
         self.assertIsInstance(rows_iter, HTTPIterator)
         self.assertEqual(len(conn._requested), 4)
@@ -2099,6 +2100,7 @@ class TestClient(unittest.TestCase):
         from google.cloud._helpers import UTC
         from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery._helpers import Row
 
         PROJECT = 'PROJECT'
         DS_ID = 'DS_ID'
@@ -2159,11 +2161,12 @@ class TestClient(unittest.TestCase):
         total_rows = iterator.total_rows
         page_token = iterator.next_page_token
 
+        f2i = {'full_name': 0, 'age': 1, 'joined': 2}
         self.assertEqual(len(rows), 4)
-        self.assertEqual(rows[0], ('Phred Phlyntstone', 32, WHEN))
-        self.assertEqual(rows[1], ('Bharney Rhubble', 33, WHEN_1))
-        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, WHEN_2))
-        self.assertEqual(rows[3], ('Bhettye Rhubble', None, None))
+        self.assertEqual(rows[0], Row(('Phred Phlyntstone', 32, WHEN), f2i))
+        self.assertEqual(rows[1], Row(('Bharney Rhubble', 33, WHEN_1), f2i))
+        self.assertEqual(rows[2], Row(('Wylma Phlyntstone', 29, WHEN_2), f2i))
+        self.assertEqual(rows[3], Row(('Bhettye Rhubble', None, None), f2i))
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, TOKEN)
 
@@ -2359,6 +2362,11 @@ class TestClient(unittest.TestCase):
             'configuration': {
                 'query': {
                     'query': 'q',
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': 'DS_ID',
+                        'tableId': 'TABLE_ID',
+                    },
                 },
             },
             'status': {

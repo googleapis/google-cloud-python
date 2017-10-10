@@ -41,6 +41,7 @@ from google.cloud.bigquery.job import QueryJob, QueryJobConfig
 from google.cloud.bigquery.query import QueryResults
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
+from google.cloud.bigquery._helpers import _field_to_index_mapping
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -942,6 +943,7 @@ class Client(ClientWithProject):
             page_start=_rows_page_start,
             extra_params=params)
         iterator.schema = schema
+        iterator._field_to_index = _field_to_index_mapping(schema)
         return iterator
 
     def list_partitions(self, table):

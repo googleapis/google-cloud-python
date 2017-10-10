@@ -353,9 +353,9 @@ class TestBigQuery(unittest.TestCase):
         # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
-
+        row_tuples = [r.values() for r in rows]
         by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(rows, key=by_age),
+        self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
     def test_load_table_from_local_file_then_dump_table(self):
@@ -401,8 +401,9 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(job.output_rows, len(ROWS))
 
         rows = self._fetch_single_page(table)
+        row_tuples = [r.values() for r in rows]
         by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(rows, key=by_age),
+        self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
     def test_load_table_from_local_avro_file_then_dump_table(self):
@@ -434,8 +435,9 @@ class TestBigQuery(unittest.TestCase):
 
         table = Config.CLIENT.get_table(table)
         rows = self._fetch_single_page(table)
+        row_tuples = [r.values() for r in rows]
         by_wavelength = operator.itemgetter(1)
-        self.assertEqual(sorted(rows, key=by_wavelength),
+        self.assertEqual(sorted(row_tuples, key=by_wavelength),
                          sorted(ROWS, key=by_wavelength))
 
     def test_load_table_from_storage_then_dump_table(self):
@@ -499,8 +501,9 @@ class TestBigQuery(unittest.TestCase):
         retry(job.reload)()
 
         rows = self._fetch_single_page(table)
+        row_tuples = [r.values() for r in rows]
         by_age = operator.itemgetter(1)
-        self.assertEqual(sorted(rows, key=by_age),
+        self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
     def test_load_table_from_storage_w_autodetect_schema(self):
@@ -562,9 +565,10 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(table.schema, [field_name, field_age])
 
         actual_rows = self._fetch_single_page(table)
+        actual_row_tuples = [r.values() for r in actual_rows]
         by_age = operator.itemgetter(1)
         self.assertEqual(
-            sorted(actual_rows, key=by_age), sorted(rows, key=by_age))
+            sorted(actual_row_tuples, key=by_age), sorted(rows, key=by_age))
 
     def _load_table_for_extract_table(
             self, storage_client, rows, bucket_name, blob_name, table):
@@ -884,7 +888,8 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(Config.CURSOR.rowcount, 3, "expected 3 rows")
             Config.CURSOR.arraysize = arraysize
             rows = Config.CURSOR.fetchall()
-            self.assertEqual(rows, [(1, 2), (3, 4), (5, 6)])
+            row_tuples = [r.values() for r in rows]
+            self.assertEqual(row_tuples, [(1, 2), (3, 4), (5, 6)])
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
@@ -1270,8 +1275,8 @@ class TestBigQuery(unittest.TestCase):
     def test_query_future(self):
         query_job = Config.CLIENT.query('SELECT 1')
         iterator = query_job.result(timeout=JOB_TIMEOUT)
-        rows = list(iterator)
-        self.assertEqual(rows, [(1,)])
+        row_tuples = [r.values() for r in iterator]
+        self.assertEqual(row_tuples, [(1,)])
 
     def test_insert_nested_nested(self):
         # See #2951
@@ -1305,8 +1310,8 @@ class TestBigQuery(unittest.TestCase):
 
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
-
-        self.assertEqual(rows, to_insert)
+        row_tuples = [r.values() for r in rows]
+        self.assertEqual(row_tuples, to_insert)
 
     def test_create_table_insert_fetch_nested_schema(self):
         table_name = 'test_table'
@@ -1334,9 +1339,11 @@ class TestBigQuery(unittest.TestCase):
 
         retry = RetryResult(_has_rows, max_tries=8)
         fetched = retry(self._fetch_single_page)(table)
+        fetched_tuples = [f.values() for f in fetched]
+
         self.assertEqual(len(fetched), len(to_insert))
 
-        for found, expected in zip(sorted(fetched), sorted(to_insert)):
+        for found, expected in zip(sorted(fetched_tuples), sorted(to_insert)):
             self.assertEqual(found[0], expected[0])            # Name
             self.assertEqual(found[1], int(expected[1]))       # Age
             self.assertEqual(found[2], expected[2])            # Weight
