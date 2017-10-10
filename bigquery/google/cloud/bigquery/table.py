@@ -526,23 +526,6 @@ class Table(object):
             self._properties['view'] = {}
         self._properties['view']['useLegacySql'] = value
 
-    def list_partitions(self, client=None):
-        """List the partitions in a table.
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: list
-        :returns: a list of time partitions
-        """
-        query = self._require_client(client).run_sync_query(
-            'SELECT partition_id from [%s.%s$__PARTITIONS_SUMMARY__]' %
-            (self.dataset_id, self.table_id))
-        query.run()
-        return [row[0] for row in query.rows]
-
     @classmethod
     def from_api_repr(cls, resource, client):
         """Factory:  construct a table given its API representation
