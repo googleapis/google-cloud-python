@@ -37,7 +37,7 @@ from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
-from google.cloud.bigquery.job import QueryJob
+from google.cloud.bigquery.job import QueryJob, QueryJobConfig
 from google.cloud.bigquery.query import QueryResults
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
@@ -942,6 +942,25 @@ class Client(ClientWithProject):
             extra_params=params)
         iterator.schema = schema
         return iterator
+
+    def list_partitions(self, table):
+        """List the partitions in a table.
+
+        :type table: One of:
+                     :class:`~google.cloud.bigquery.table.Table`
+                     :class:`~google.cloud.bigquery.table.TableReference`
+        :param table: the table to list, or a reference to it.
+
+        :rtype: list
+        :returns: a list of time partitions
+        """
+        config = QueryJobConfig()
+        config.use_legacy_sql = True  # required for '$' syntax
+        rows = self.query_rows(
+            'SELECT partition_id from [%s:%s.%s$__PARTITIONS_SUMMARY__]' %
+            (table.project, table.dataset_id, table.table_id),
+            job_config=config)
+        return [row[0] for row in rows]
 
 
 # pylint: disable=unused-argument
