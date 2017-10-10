@@ -377,12 +377,12 @@ class Test_record_from_json(unittest.TestCase):
         self.assertEqual(coerced, expected)
 
 
-class Test_row_from_json(unittest.TestCase):
+class Test_row_tuple_from_json(unittest.TestCase):
 
     def _call_fut(self, row, schema):
-        from google.cloud.bigquery._helpers import _row_from_json
+        from google.cloud.bigquery._helpers import _row_tuple_from_json
 
-        return _row_from_json(row, schema)
+        return _row_tuple_from_json(row, schema)
 
     def test_w_single_scalar_column(self):
         # SELECT 1 AS col
@@ -468,15 +468,36 @@ class Test_row_from_json(unittest.TestCase):
                 {u'first': [5, 6], u'second': 7},
             ],))
 
+    def test_row(self):
+        from google.cloud.bigquery._helpers import Row
+
+        VALUES = (1, 2, 3)
+        r = Row(VALUES, {'a': 0, 'b': 1, 'c': 2})
+        self.assertEqual(r.a, 1)
+        self.assertEqual(r[1], 2)
+        self.assertEqual(r['c'], 3)
+        self.assertEqual(len(r), 3)
+        self.assertEqual(r.values(), VALUES)
+        self.assertEqual(repr(r),
+                         "Row((1, 2, 3), {'a': 0, 'b': 1, 'c': 2})")
+        self.assertFalse(r != r)
+        self.assertFalse(r == 3)
+        with self.assertRaises(AttributeError):
+            r.z
+        with self.assertRaises(KeyError):
+            r['z']
+
 
 class Test_rows_from_json(unittest.TestCase):
 
-    def _call_fut(self, value, field):
+    def _call_fut(self, rows, schema):
         from google.cloud.bigquery._helpers import _rows_from_json
 
-        return _rows_from_json(value, field)
+        return _rows_from_json(rows, schema)
 
     def test_w_record_subfield(self):
+        from google.cloud.bigquery._helpers import Row
+
         full_name = _Field('REQUIRED', 'full_name', 'STRING')
         area_code = _Field('REQUIRED', 'area_code', 'STRING')
         local_number = _Field('REQUIRED', 'local_number', 'STRING')
@@ -512,15 +533,18 @@ class Test_rows_from_json(unittest.TestCase):
             'local_number': '768-5309',
             'rank': 2,
         }
+        f2i = {'full_name': 0, 'phone': 1, 'color': 2}
         expected = [
-            ('Phred Phlyntstone', phred_phone, ['orange', 'black']),
-            ('Bharney Rhubble', bharney_phone, ['brown']),
-            ('Wylma Phlyntstone', None, []),
+            Row(('Phred Phlyntstone', phred_phone, ['orange', 'black']), f2i),
+            Row(('Bharney Rhubble', bharney_phone, ['brown']), f2i),
+            Row(('Wylma Phlyntstone', None, []), f2i),
         ]
         coerced = self._call_fut(rows, schema)
         self.assertEqual(coerced, expected)
 
     def test_w_int64_float64_bool(self):
+        from google.cloud.bigquery._helpers import Row
+
         # "Standard" SQL dialect uses 'INT64', 'FLOAT64', 'BOOL'.
         candidate = _Field('REQUIRED', 'candidate', 'STRING')
         votes = _Field('REQUIRED', 'votes', 'INT64')
@@ -547,10 +571,11 @@ class Test_rows_from_json(unittest.TestCase):
                 {'v': 'false'},
             ]},
         ]
+        f2i = {'candidate': 0, 'votes': 1, 'percentage': 2, 'incumbent': 3}
         expected = [
-            ('Phred Phlyntstone', 8, 0.25, True),
-            ('Bharney Rhubble', 4, 0.125, False),
-            ('Wylma Phlyntstone', 20, 0.625, False),
+            Row(('Phred Phlyntstone', 8, 0.25, True), f2i),
+            Row(('Bharney Rhubble', 4, 0.125, False), f2i),
+            Row(('Wylma Phlyntstone', 20, 0.625, False), f2i),
         ]
         coerced = self._call_fut(rows, schema)
         self.assertEqual(coerced, expected)
