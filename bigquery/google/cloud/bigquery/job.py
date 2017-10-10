@@ -1834,7 +1834,6 @@ class QueryJob(_AsyncJob):
         """
         if not self._query_results:
             self._query_results = self._client._get_query_results(self.job_id)
-            self._query_results._job = self
         return self._query_results
 
     def done(self):
@@ -1847,7 +1846,6 @@ class QueryJob(_AsyncJob):
         # change once complete.
         if self.state != _DONE_STATE:
             self._query_results = self._client._get_query_results(self.job_id)
-            self._query_results._job = self
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
@@ -1879,7 +1877,9 @@ class QueryJob(_AsyncJob):
         """
         super(QueryJob, self).result(timeout=timeout)
         # Return an iterator instead of returning the job.
-        return self.query_results().fetch_data()
+        schema = self.query_results().schema
+        dest_table = self.destination
+        return self._client.list_rows(dest_table, selected_fields=schema)
 
 
 class QueryPlanEntryStep(object):

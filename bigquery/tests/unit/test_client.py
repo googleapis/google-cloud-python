@@ -1931,6 +1931,11 @@ class TestClient(unittest.TestCase):
             'configuration': {
                 'query': {
                     'query': QUERY,
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': '_temp_dataset',
+                        'tableId': '_temp_table',
+                    },
                 },
             },
             'status': {
@@ -1991,6 +1996,11 @@ class TestClient(unittest.TestCase):
             'configuration': {
                 'query': {
                     'query': QUERY,
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': '_temp_dataset',
+                        'tableId': '_temp_table',
+                    },
                 },
             },
             'status': {
@@ -2041,6 +2051,11 @@ class TestClient(unittest.TestCase):
                 'query': {
                     'query': QUERY,
                     'useLegacySql': True,
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': '_temp_dataset',
+                        'tableId': '_temp_table',
+                    },
                 },
                 'dryRun': True,
             },
