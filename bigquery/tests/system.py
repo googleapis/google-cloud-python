@@ -1314,6 +1314,41 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in rows]
         self.assertEqual(row_tuples, to_insert)
 
+    def test_create_rows_nested_nested_dictionary(self):
+        # See #2951
+        SF = bigquery.SchemaField
+        schema = [
+            SF('string_col', 'STRING', mode='NULLABLE'),
+            SF('record_col', 'RECORD', mode='NULLABLE', fields=[
+                SF('nested_string', 'STRING', mode='NULLABLE'),
+                SF('nested_repeated', 'INTEGER', mode='REPEATED'),
+                SF('nested_record', 'RECORD', mode='NULLABLE', fields=[
+                    SF('nested_nested_string', 'STRING', mode='NULLABLE'),
+                ]),
+            ]),
+        ]
+        record = {
+            'nested_string': 'another string value',
+            'nested_repeated': [0, 1, 2],
+            'nested_record': {'nested_nested_string': 'some deep insight'},
+        }
+        to_insert = [
+            {'string_col': 'Some value', 'record_col': record}
+        ]
+        table_id = 'test_table'
+        dataset = self.temp_dataset(_make_dataset_id('issue_2951'))
+        table_arg = Table(dataset.table(table_id), schema=schema,
+                          client=Config.CLIENT)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+
+        Config.CLIENT.create_rows(table, to_insert)
+
+        retry = RetryResult(_has_rows, max_tries=8)
+        rows = retry(self._fetch_single_page)(table)
+        expected_rows = [('Some value', record)]
+        self.assertEqual(rows, expected_rows)
+
     def test_create_table_rows_fetch_nested_schema(self):
         table_name = 'test_table'
         dataset = self.temp_dataset(
