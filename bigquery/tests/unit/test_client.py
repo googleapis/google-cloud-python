@@ -2061,6 +2061,50 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    def test_create_rows_w_list_of_Rows(self):
+        from google.cloud.bigquery._helpers import Row
+        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            PROJECT, DS_ID, TABLE_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection({})
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED'),
+        ]
+        table = Table(table_ref, schema=schema)
+        f2i = {'full_name': 0, 'age': 1}
+        ROWS = [
+            Row(('Phred Phlyntstone', 32), f2i),
+            Row(('Bharney Rhubble', 33), f2i),
+            Row(('Wylma Phlyntstone', 29), f2i),
+            Row(('Bhettye Rhubble', 27), f2i),
+        ]
+
+        def _row_data(row):
+            return {'full_name': row[0], 'age': str(row[1])}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = client.create_rows(table, ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
     def test_create_rows_w_skip_invalid_and_ignore_unknown(self):
         from google.cloud.bigquery.table import Table, SchemaField
         from google.cloud.bigquery.dataset import DatasetReference

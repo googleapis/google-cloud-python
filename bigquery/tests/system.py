@@ -1346,8 +1346,9 @@ class TestBigQuery(unittest.TestCase):
 
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
+        row_tuples = [r.values() for r in rows]
         expected_rows = [('Some value', record)]
-        self.assertEqual(rows, expected_rows)
+        self.assertEqual(row_tuples, expected_rows)
 
     def test_create_table_rows_fetch_nested_schema(self):
         table_name = 'test_table'
