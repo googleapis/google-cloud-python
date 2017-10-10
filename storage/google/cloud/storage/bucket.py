@@ -35,6 +35,8 @@ from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.blob import _get_encryption_headers
+from google.cloud.storage.notification import BucketNotification
+from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
 
 def _blobs_page_start(iterator, page, response):
@@ -74,6 +76,26 @@ def _item_to_blob(iterator, item):
     blob = Blob(name, bucket=iterator.bucket)
     blob._set_properties(item)
     return blob
+
+
+def _item_to_notification(iterator, item):
+    """Convert a JSON blob to the native object.
+
+    .. note::
+
+        This assumes that the ``bucket`` attribute has been
+        added to the iterator after being created.
+
+    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type item: dict
+    :param item: An item to be converted to a blob.
+
+    :rtype: :class:`.BucketNotification`
+    :returns: The next notification being iterated.
+    """
+    return BucketNotification.from_api_repr(item, bucket=iterator.bucket)
 
 
 class Bucket(_PropertyMixin):
@@ -158,6 +180,27 @@ class Bucket(_PropertyMixin):
         """
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
                     encryption_key=encryption_key)
+
+    def notification(self, topic_name,
+                     topic_project=None,
+                     custom_attributes=None,
+                     event_types=None,
+                     blob_name_prefix=None,
+                     payload_format=NONE_PAYLOAD_FORMAT):
+        """Factory:  create a notification resource for the bucket.
+
+        See: :class:`.BucketNotification` for parameters.
+
+        :rtype: :class:`.BucketNotification`
+        """
+        return BucketNotification(
+            self, topic_name,
+            topic_project=topic_project,
+            custom_attributes=custom_attributes,
+            event_types=event_types,
+            blob_name_prefix=blob_name_prefix,
+            payload_format=payload_format,
+        )
 
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
@@ -380,6 +423,30 @@ class Bucket(_PropertyMixin):
             page_start=_blobs_page_start)
         iterator.bucket = self
         iterator.prefixes = set()
+        return iterator
+
+    def list_notifications(self, client=None):
+        """List Pub / Sub notifications for this bucket.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/list
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: list of :class:`.BucketNotification`
+        :returns: notification instances
+        """
+        client = self._require_client(client)
+        path = self.path + '/notificationConfigs'
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_notification)
+        iterator.bucket = self
         return iterator
 
     def delete(self, force=False, client=None):
