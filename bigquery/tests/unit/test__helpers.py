@@ -749,43 +749,6 @@ class Test_time_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(when), '12:13:41')
 
 
-class Test_ConfigurationProperty(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import _ConfigurationProperty
-
-        return _ConfigurationProperty
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
-
-    def test_it(self):
-
-        class Configuration(object):
-            _attr = None
-
-        class Wrapper(object):
-            attr = self._make_one('attr')
-
-            def __init__(self):
-                self._configuration = Configuration()
-
-        self.assertEqual(Wrapper.attr.name, 'attr')
-
-        wrapper = Wrapper()
-        self.assertIsNone(wrapper.attr)
-
-        value = object()
-        wrapper.attr = value
-        self.assertIs(wrapper.attr, value)
-        self.assertIs(wrapper._configuration._attr, value)
-
-        del wrapper.attr
-        self.assertIsNone(wrapper.attr)
-        self.assertIsNone(wrapper._configuration._attr)
-
-
 class Test_TypedApiResourceProperty(unittest.TestCase):
 
     @staticmethod
@@ -827,81 +790,6 @@ class Test_TypedApiResourceProperty(unittest.TestCase):
         self.assertIsNone(wrapper.attr)
         with self.assertRaises(KeyError):
             wrapper._properties['back']
-
-
-class Test_TypedProperty(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import _TypedProperty
-
-        return _TypedProperty
-
-    def _make_one(self, *args, **kw):
-        return self._get_target_class()(*args, **kw)
-
-    def test_it(self):
-
-        class Configuration(object):
-            _attr = None
-
-        class Wrapper(object):
-            attr = self._make_one('attr', int)
-
-            def __init__(self):
-                self._configuration = Configuration()
-
-        wrapper = Wrapper()
-        with self.assertRaises(ValueError):
-            wrapper.attr = 'BOGUS'
-
-        wrapper.attr = 42
-        self.assertEqual(wrapper.attr, 42)
-        self.assertEqual(wrapper._configuration._attr, 42)
-
-        wrapper.attr = None
-        self.assertIsNone(wrapper.attr)
-        self.assertIsNone(wrapper._configuration._attr)
-
-        wrapper.attr = 23
-        self.assertEqual(wrapper.attr, 23)
-        self.assertEqual(wrapper._configuration._attr, 23)
-
-        del wrapper.attr
-        self.assertIsNone(wrapper.attr)
-        self.assertIsNone(wrapper._configuration._attr)
-
-
-class Test_EnumProperty(unittest.TestCase):
-
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.bigquery._helpers import _EnumProperty
-
-        return _EnumProperty
-
-    def test_it(self):
-
-        class Sub(self._get_target_class()):
-            pass
-
-        class Configuration(object):
-            _attr = None
-
-        class Wrapper(object):
-            attr = Sub('attr')
-
-            def __init__(self):
-                self._configuration = Configuration()
-
-        wrapper = Wrapper()
-        wrapper.attr = 'FOO'
-        self.assertEqual(wrapper.attr, 'FOO')
-        self.assertEqual(wrapper._configuration._attr, 'FOO')
-
-        del wrapper.attr
-        self.assertIsNone(wrapper.attr)
-        self.assertIsNone(wrapper._configuration._attr)
 
 
 class Test_ListApiResourceProperty(unittest.TestCase):
