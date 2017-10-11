@@ -623,23 +623,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = [Status(code=code) for code in codes]
         return response
 
-    def test_next_retryable_row_index_empty_rows(self):
-        worker = self._make_worker(mock.MagicMock(), mock.MagicMock(), [])
-        worker.responses_statuses = self._make_responses_statuses([])
-        self.assertEqual(worker._next_retryable_row_index(0), -1)
-        self.assertEqual(worker._next_retryable_row_index(1), -1)
-
-    def test_next_retryable_row_index(self):
-        worker = self._make_worker(mock.MagicMock(), mock.MagicMock(), [])
-        worker.responses_statuses = self._make_responses_statuses(
-                [4, 10, 14, 0, 4, 1])
-        self.assertEqual(worker._next_retryable_row_index(0), 0)
-        self.assertEqual(worker._next_retryable_row_index(1), 1)
-        self.assertEqual(worker._next_retryable_row_index(2), 2)
-        self.assertEqual(worker._next_retryable_row_index(3), 4)
-        self.assertEqual(worker._next_retryable_row_index(4), 4)
-        self.assertEqual(worker._next_retryable_row_index(5), -1)
-
     def test_callable_empty_rows(self):
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -736,7 +719,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
                     status=Status(code=4),
                 ),
                 MutateRowsResponse.Entry(
-                    index=1,
+                    index=2,
                     status=Status(code=1),
                 ),
             ],
@@ -793,7 +776,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
                     status=Status(code=1),
                 ),
                 MutateRowsResponse.Entry(
-                    index=0,
+                    index=1,
                     status=Status(code=0),
                 ),
             ],
