@@ -162,14 +162,13 @@ class Table(object):
         'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema'
     ]
 
-    def __init__(self, table_ref, schema=(), client=None):
+    def __init__(self, table_ref, schema=()):
         self._project = table_ref.project
         self._table_id = table_ref.table_id
         self._dataset_id = table_ref.dataset_id
         self._properties = {}
         # Let the @property do validation.
         self.schema = schema
-        self._client = client
 
     @property
     def project(self):
@@ -526,7 +525,7 @@ class Table(object):
         self._properties['view']['useLegacySql'] = value
 
     @classmethod
-    def from_api_repr(cls, resource, client):
+    def from_api_repr(cls, resource):
         """Factory:  construct a table given its API representation
 
         :type resource: dict
@@ -549,7 +548,7 @@ class Table(object):
         dataset_id = resource['tableReference']['datasetId']
         dataset_ref = dataset.DatasetReference(project_id, dataset_id)
 
-        table = cls(dataset_ref.table(table_id), client=client)
+        table = cls(dataset_ref.table(table_id))
         table._set_properties(resource)
         return table
 
