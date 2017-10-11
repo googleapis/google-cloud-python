@@ -22,6 +22,7 @@ import six
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
+from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -705,11 +706,7 @@ class Table(object):
             if f in self.custom_resource_fields:
                 self.custom_resource_fields[f](self, resource)
             else:
-                # TODO(alixh) refactor to use in both Table and Dataset
-                # snake case to camel case
-                words = f.split('_')
-                api_field = words[0] + ''.join(
-                    map(str.capitalize, words[1:]))
+                api_field = _snake_to_camel_case(f)
                 resource[api_field] = getattr(self, f)
         return resource
 
