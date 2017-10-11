@@ -239,7 +239,7 @@ class Client(ClientWithProject):
             del resource[field]
         api_response = self._connection.api_request(
             method='POST', path=path, data=resource)
-        return Table.from_api_repr(api_response, self)
+        return Table.from_api_repr(api_response)
 
     def get_dataset(self, dataset_ref):
         """Fetch the dataset referenced by ``dataset_ref``
@@ -267,7 +267,7 @@ class Client(ClientWithProject):
         """
         api_response = self._connection.api_request(
             method='GET', path=table_ref.path)
-        return Table.from_api_repr(api_response, self)
+        return Table.from_api_repr(api_response)
 
     def update_dataset(self, dataset, fields):
         """Change some fields of a dataset.
@@ -331,7 +331,7 @@ class Client(ClientWithProject):
             headers = None
         api_response = self._connection.api_request(
             method='PATCH', path=table.path, data=partial, headers=headers)
-        return Table.from_api_repr(api_response, client=self)
+        return Table.from_api_repr(api_response)
 
     def list_dataset_tables(self, dataset, max_results=None, page_token=None):
         """List tables in the dataset.
@@ -1140,7 +1140,7 @@ def _item_to_table(iterator, resource):
     :rtype: :class:`~google.cloud.bigquery.table.Table`
     :returns: The next table in the page.
     """
-    return Table.from_api_repr(resource, iterator.client)
+    return Table.from_api_repr(resource)
 
 
 def _make_job_id(job_id):

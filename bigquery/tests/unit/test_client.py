@@ -421,7 +421,7 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = _Connection(resource)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, client=client)
+        table = Table(table_ref)
         table.partitioning_type = 'DAY'
 
         got = client.create_table(table)
@@ -462,7 +462,7 @@ class TestClient(unittest.TestCase):
         }
         conn = client._connection = _Connection(resource)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, client=client)
+        table = Table(table_ref)
         table.partitioning_type = 'DAY'
         table.partition_expiration = 100
 
@@ -515,7 +515,7 @@ class TestClient(unittest.TestCase):
         ]
         conn = client._connection = _Connection(resource)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, schema=schema, client=client)
+        table = Table(table_ref, schema=schema)
         table.view_query = query
 
         got = client.create_table(table)
@@ -670,7 +670,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=project, credentials=creds)
         conn = client._connection = _Connection(resource, resource)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, schema=schema, client=client)
+        table = Table(table_ref, schema=schema)
         table.description = description
         table.friendly_name = title
 
@@ -726,7 +726,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=project, credentials=creds)
         conn = client._connection = _Connection(resource)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, client=client)
+        table = Table(table_ref)
         table.view_use_legacy_sql = True
 
         updated_table = client.update_table(table, ['view_use_legacy_sql'])
@@ -784,7 +784,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=project, credentials=creds)
         conn = client._connection = _Connection(resource)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, schema=schema, client=client)
+        table = Table(table_ref, schema=schema)
         table.location = location
         table.expires = exp_time
         table.view_query = query
@@ -900,7 +900,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=project, credentials=creds)
         conn = client._connection = _Connection(resource1, resource2)
         table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, client=client)
+        table = Table(table_ref)
         table.description = description
         table.friendly_name = title
         table2 = client.update_table(table, ['description', 'friendly_name'])
