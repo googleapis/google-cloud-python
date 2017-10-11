@@ -1756,8 +1756,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.maximum_bytes_billed)
 
     def test_ctor_w_udf_resources(self):
-        from google.cloud.bigquery._helpers import UDFResource
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import UDFResource
 
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
@@ -1769,8 +1769,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(job.udf_resources, udf_resources)
 
     def test_ctor_w_query_parameters(self):
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import ScalarQueryParameter
 
         query_parameters = [ScalarQueryParameter("foo", 'INT64', 123)]
         client = _make_client(project=self.PROJECT)
@@ -2053,9 +2053,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(remote.project, 'other-project-123')
 
     def test_undeclared_query_paramters(self):
-        from google.cloud.bigquery._helpers import ArrayQueryParameter
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
-        from google.cloud.bigquery._helpers import StructQueryParameter
+        from google.cloud.bigquery.query import ArrayQueryParameter
+        from google.cloud.bigquery.query import ScalarQueryParameter
+        from google.cloud.bigquery.query import StructQueryParameter
 
         undeclared = [{
             'name': 'my_scalar',
@@ -2351,8 +2351,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['data'], SENT)
 
     def test_begin_w_udf(self):
-        from google.cloud.bigquery._helpers import UDFResource
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import UDFResource
 
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         INLINE_UDF_CODE = 'var someCode = "here";'
@@ -2406,8 +2406,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['data'], SENT)
 
     def test_begin_w_named_query_parameter(self):
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import ScalarQueryParameter
 
         query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -2462,8 +2462,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['data'], SENT)
 
     def test_begin_w_positional_query_parameter(self):
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import ScalarQueryParameter
 
         query_parameters = [ScalarQueryParameter.positional('INT64', 123)]
         PATH = '/projects/%s/jobs' % (self.PROJECT,)

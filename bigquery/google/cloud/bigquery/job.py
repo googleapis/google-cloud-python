@@ -25,18 +25,18 @@ from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.query import _AbstractQueryParameter
+from google.cloud.bigquery.query import _query_param_from_api_repr
+from google.cloud.bigquery.query import ArrayQueryParameter
+from google.cloud.bigquery.query import ScalarQueryParameter
+from google.cloud.bigquery.query import StructQueryParameter
+from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
-from google.cloud.bigquery._helpers import AbstractQueryParameter
-from google.cloud.bigquery._helpers import ArrayQueryParameter
-from google.cloud.bigquery._helpers import ScalarQueryParameter
-from google.cloud.bigquery._helpers import StructQueryParameter
-from google.cloud.bigquery._helpers import UDFResource
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
 from google.cloud.bigquery._helpers import _ListApiResourceProperty
-from google.cloud.bigquery._helpers import _query_param_from_api_repr
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
 
 _DONE_STATE = 'DONE'
@@ -1412,10 +1412,12 @@ class QueryJobConfig(object):
     """
 
     query_parameters = _ListApiResourceProperty(
-        'query_parameters', _QUERY_PARAMETERS_KEY, AbstractQueryParameter)
+        'query_parameters', _QUERY_PARAMETERS_KEY, _AbstractQueryParameter)
     """
-    An list of
-    :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`
+    A list of
+    :class:`google.cloud.bigquery.query.ArrayQueryParameter`,
+    :class:`google.cloud.bigquery.query.ScalarQueryParameter`, or
+    :class:`google.cloud.bigquery.query.StructQueryParameter`
     (empty by default)
 
     See:
@@ -1425,7 +1427,7 @@ class QueryJobConfig(object):
     udf_resources = _ListApiResourceProperty(
         'udf_resources', _UDF_RESOURCES_KEY, UDFResource)
     """
-    A list of :class:`google.cloud.bigquery._helpers.UDFResource` (empty
+    A list of :class:`google.cloud.bigquery.query.UDFResource` (empty
     by default)
 
     See:
@@ -1805,7 +1807,9 @@ class QueryJob(_AsyncJob):
 
         :rtype:
             list of
-            :class:`~google.cloud.bigquery._helpers.AbstractQueryParameter`
+            :class:`~google.cloud.bigquery.query.ArrayQueryParameter`,
+            :class:`~google.cloud.bigquery.query.ScalarQueryParameter`, or
+            :class:`~google.cloud.bigquery.query.StructQueryParameter`
         :returns: undeclared parameters, or an empty list if the query has
                   not yet completed.
         """
