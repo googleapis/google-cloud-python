@@ -69,7 +69,7 @@ def to_query_parameters_list(parameters):
     :type parameters: Sequence[Any]
     :param parameters: Sequence of query parameter values.
 
-    :rtype: List[google.cloud.bigquery._helpers.AbstractQueryParameter]
+    :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of query parameters.
     """
     return [scalar_to_query_parameter(value) for value in parameters]
@@ -81,7 +81,7 @@ def to_query_parameters_dict(parameters):
     :type parameters: Mapping[str, Any]
     :param parameters: Dictionary of query parameter values.
 
-    :rtype: List[google.cloud.bigquery._helpers.AbstractQueryParameter]
+    :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of named query parameters.
     """
     return [
@@ -96,7 +96,7 @@ def to_query_parameters(parameters):
     :type parameters: Mapping[str, Any] or Sequence[Any]
     :param parameters: A dictionary or sequence of query parameter values.
 
-    :rtype: List[google.cloud.bigquery._helpers.AbstractQueryParameter]
+    :rtype: List[google.cloud.bigquery.query._AbstractQueryParameter]
     :returns: A list of query parameters.
     """
     if parameters is None:
