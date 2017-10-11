@@ -32,6 +32,10 @@ class Client(ClientWithProject):
                         client. If not passed, falls back to the default
                         inferred from the environment.
     """
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',
+             'https://www.googleapis.com/auth/trace.append',)
+    """The scopes required for authenticating as a Trace consumer."""
+
     _trace_api = None
 
     def __init__(self, project=None, credentials=None):
