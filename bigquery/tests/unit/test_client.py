@@ -1799,9 +1799,9 @@ class TestClient(unittest.TestCase):
         self.assertFalse(sent_config['useLegacySql'])
 
     def test_query_w_udf_resources(self):
-        from google.cloud.bigquery._helpers import UDFResource
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import UDFResource
 
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         PROJECT = 'PROJECT'
@@ -1856,9 +1856,9 @@ class TestClient(unittest.TestCase):
             {'resourceUri': RESOURCE_URI})
 
     def test_query_w_query_parameters(self):
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
         from google.cloud.bigquery.job import QueryJob
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import ScalarQueryParameter
 
         PROJECT = 'PROJECT'
         JOB = 'job_name'
