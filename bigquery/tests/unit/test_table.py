@@ -694,21 +694,33 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.partitioning_type)
         self.assertIsNone(table.partition_expiration)
 
-    def test_row_from_mapping_wo_schema(self):
-        from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
+
+class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
+
+    PROJECT = 'prahj-ekt'
+    DS_ID = 'dataset-name'
+    TABLE_NAME = 'table-name'
+
+    def _call_fut(self, mapping, schema):
+        from google.cloud.bigquery.table import _row_from_mapping
+
+        return _row_from_mapping(mapping, schema)
+
+    def test__row_from_mapping_wo_schema(self):
+        from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
         MAPPING = {'full_name': 'Phred Phlyntstone', 'age': 32}
         client = _Client(project=self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = Table(table_ref, client=client)
 
         with self.assertRaises(ValueError) as exc:
-            table.row_from_mapping(MAPPING)
+            self._call_fut(MAPPING, table.schema)
 
         self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
 
-    def test_row_from_mapping_w_invalid_schema(self):
-        from google.cloud.bigquery.table import SchemaField
+    def test__row_from_mapping_w_invalid_schema(self):
+        from google.cloud.bigquery.table import Table, SchemaField
         MAPPING = {
             'full_name': 'Phred Phlyntstone',
             'age': 32,
@@ -722,17 +734,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
         bogus = SchemaField('joined', 'STRING', mode='BOGUS')
-        table = self._make_one(table_ref,
-                               schema=[full_name, age, colors, bogus],
-                               client=client)
+        table = Table(table_ref,
+                      schema=[full_name, age, colors, bogus],
+                      client=client)
 
         with self.assertRaises(ValueError) as exc:
-            table.row_from_mapping(MAPPING)
+            self._call_fut(MAPPING, table.schema)
 
         self.assertIn('Unknown field mode: BOGUS', str(exc.exception))
 
-    def test_row_from_mapping_w_schema(self):
-        from google.cloud.bigquery.table import SchemaField
+    def test__row_from_mapping_w_schema(self):
+        from google.cloud.bigquery.table import Table, SchemaField
         MAPPING = {
             'full_name': 'Phred Phlyntstone',
             'age': 32,
@@ -746,12 +758,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
         joined = SchemaField('joined', 'STRING', mode='NULLABLE')
-        table = self._make_one(table_ref,
-                               schema=[full_name, age, colors, joined],
-                               client=client)
+        table = Table(table_ref,
+                      schema=[full_name, age, colors, joined],
+                      client=client)
 
         self.assertEqual(
-            table.row_from_mapping(MAPPING),
+            self._call_fut(MAPPING, table.schema),
             ('Phred Phlyntstone', 32, ['red', 'green'], None))
 
 

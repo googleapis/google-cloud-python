@@ -2219,7 +2219,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
 
     def test_create_rows_w_record_schema(self):
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.table import SchemaField
         from google.cloud.bigquery.dataset import DatasetReference
 
         PROJECT = 'PROJECT'
@@ -2238,7 +2238,6 @@ class TestClient(unittest.TestCase):
         rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
         phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
-        table = Table(table_ref, schema=[full_name, phone])
         ROWS = [
             ('Phred Phlyntstone', {'area_code': '800',
                                    'local_number': '555-1212',
@@ -2257,7 +2256,8 @@ class TestClient(unittest.TestCase):
             'rows': [{'json': _row_data(row)} for row in ROWS],
         }
 
-        errors = client.create_rows(table, ROWS)
+        errors = client.create_rows(table_ref, ROWS,
+                                    selected_fields=[full_name, phone])
 
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(conn._requested), 1)
@@ -2265,6 +2265,36 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
+
+    def test_create_rows_errors(self):
+        from google.cloud.bigquery.dataset import DatasetReference
+        from google.cloud.bigquery.table import Table
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        ROWS = [
+            ('Phred Phlyntstone', 32, True),
+            ('Bharney Rhubble', 33, False),
+            ('Wylma Phlyntstone', 29, True),
+            ('Bhettye Rhubble', 27, True),
+        ]
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+
+        # table ref with no selected fields
+        with self.assertRaises(ValueError):
+            client.create_rows(table_ref, ROWS)
+
+        # table with no schema
+        with self.assertRaises(ValueError):
+            client.create_rows(Table(table_ref), ROWS)
+
+        # neither Table nor tableReference
+        with self.assertRaises(TypeError):
+            client.create_rows(1, ROWS)
 
     def test_query_rows_defaults(self):
         from google.api.core.page_iterator import HTTPIterator

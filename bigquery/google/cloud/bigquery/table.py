@@ -626,34 +626,37 @@ class Table(object):
                 resource[api_field] = getattr(self, f)
         return resource
 
-    def row_from_mapping(self, mapping):
-        """Convert a mapping to a row tuple using the schema.
 
-        :type mapping: dict
-        :param mapping: Mapping of row data: must contain keys for all
-               required fields in the schema.  Keys which do not correspond
-               to a field in the schema are ignored.
+def _row_from_mapping(mapping, schema):
+    """Convert a mapping to a row tuple using the schema.
 
-        :rtype: tuple
-        :returns: Tuple whose elements are ordered according to the table's
-                  schema.
-        :raises: ValueError if table's schema is not set
-        """
-        if len(self._schema) == 0:
-            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+    :type mapping: dict
+    :param mapping: Mapping of row data: must contain keys for all
+           required fields in the schema.  Keys which do not correspond
+           to a field in the schema are ignored.
 
-        row = []
-        for field in self.schema:
-            if field.mode == 'REQUIRED':
-                row.append(mapping[field.name])
-            elif field.mode == 'REPEATED':
-                row.append(mapping.get(field.name, ()))
-            elif field.mode == 'NULLABLE':
-                row.append(mapping.get(field.name))
-            else:
-                raise ValueError(
-                    "Unknown field mode: {}".format(field.mode))
-        return tuple(row)
+    :type schema: list of :class:`SchemaField`
+    :param schema: The schema of the table destination for the rows
+
+    :rtype: tuple
+    :returns: Tuple whose elements are ordered according to the schema.
+    :raises: ValueError if schema is empty
+    """
+    if len(schema) == 0:
+        raise ValueError(_TABLE_HAS_NO_SCHEMA)
+
+    row = []
+    for field in schema:
+        if field.mode == 'REQUIRED':
+            row.append(mapping[field.name])
+        elif field.mode == 'REPEATED':
+            row.append(mapping.get(field.name, ()))
+        elif field.mode == 'NULLABLE':
+            row.append(mapping.get(field.name))
+        else:
+            raise ValueError(
+                "Unknown field mode: {}".format(field.mode))
+    return tuple(row)
 
 
 def _parse_schema_resource(info):

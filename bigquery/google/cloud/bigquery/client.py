@@ -34,6 +34,7 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import _row_from_mapping
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
@@ -833,15 +834,19 @@ class Client(ClientWithProject):
         job.begin()
         return job
 
-    def create_rows(self, table, rows, row_ids=None, skip_invalid_rows=None,
-                    ignore_unknown_values=None, template_suffix=None):
+    def create_rows(self, table, rows, row_ids=None, selected_fields=None,
+                    skip_invalid_rows=None, ignore_unknown_values=None,
+                    template_suffix=None):
         """API call:  insert table data via a POST request
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
-        :type table: :class:`~google.cloud.bigquery.client.Table`
-        :param client: the destination table for the row data.
+        :type table: One of:
+                     :class:`~google.cloud.bigquery.table.Table`
+                     :class:`~google.cloud.bigquery.table.TableReference`
+        :param table: the destination table for the row data, or a reference
+                      to it.
 
         :type rows: One of:
                     list of tuples
@@ -856,6 +861,11 @@ class Client(ClientWithProject):
         :type row_ids: list of string
         :param row_ids: (Optional)  Unique ids, one per row being inserted.
                         If not passed, no de-duplication occurs.
+
+        :type selected_fields: list of :class:`SchemaField`
+        :param selected_fields:
+            The fields to return. Required if ``table`` is a
+            :class:`~google.cloud.bigquery.table.TableReference`.
 
         :type skip_invalid_rows: bool
         :param skip_invalid_rows: (Optional)  Insert all valid rows of a
@@ -885,18 +895,26 @@ class Client(ClientWithProject):
                   row.
         :raises: ValueError if table's schema is not set
         """
-        if len(table._schema) == 0:
-            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+        if selected_fields is not None:
+            schema = selected_fields
+        elif isinstance(table, TableReference):
+            raise ValueError('need selected_fields with TableReference')
+        elif isinstance(table, Table):
+            if len(table._schema) == 0:
+                raise ValueError(_TABLE_HAS_NO_SCHEMA)
+            schema = table.schema
+        else:
+            raise TypeError('table should be Table or TableReference')
 
         rows_info = []
         data = {'rows': rows_info}
 
         for index, row in enumerate(rows):
             if isinstance(row, dict):
-                row = table.row_from_mapping(row)
+                row = _row_from_mapping(row, schema)
             row_info = {}
 
-            for field, value in zip(table._schema, row):
+            for field, value in zip(schema, row):
                 converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
                 if converter is not None:  # STRING doesn't need converting
                     value = converter(value)
