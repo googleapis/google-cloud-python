@@ -190,8 +190,7 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(table_id), schema=[full_name, age],
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(table_id), schema=[full_name, age])
         self.assertFalse(_table_exists(table_arg))
 
         table = retry_403(Config.CLIENT.create_table)(table_arg)
@@ -234,9 +233,7 @@ class TestBigQuery(unittest.TestCase):
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         for table_name in tables_to_create:
-            table = Table(dataset.table(table_name),
-                          schema=[full_name, age],
-                          client=Config.CLIENT)
+            table = Table(dataset.table(table_name), schema=[full_name, age])
             created_table = retry_403(Config.CLIENT.create_table)(table)
             self.to_delete.insert(0, created_table)
 
@@ -257,8 +254,7 @@ class TestBigQuery(unittest.TestCase):
             bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
             bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         ]
-        table_arg = Table(dataset.table(TABLE_NAME), schema=schema,
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(TABLE_NAME), schema=schema)
         self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
@@ -292,8 +288,7 @@ class TestBigQuery(unittest.TestCase):
             bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
             bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         ]
-        table_arg = Table(dataset.table(TABLE_NAME), schema=schema,
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(TABLE_NAME), schema=schema)
         self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
@@ -337,8 +332,7 @@ class TestBigQuery(unittest.TestCase):
             bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
             bigquery.SchemaField('now', 'TIMESTAMP'),
         ]
-        table_arg = Table(dataset.table(TABLE_ID), schema=schema,
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(TABLE_ID), schema=schema)
         self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
@@ -375,8 +369,7 @@ class TestBigQuery(unittest.TestCase):
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         table_ref = dataset.table(TABLE_NAME)
-        table_arg = Table(table_ref, schema=[full_name, age],
-                          client=Config.CLIENT)
+        table_arg = Table(table_ref, schema=[full_name, age])
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -420,7 +413,7 @@ class TestBigQuery(unittest.TestCase):
 
         dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
         table_ref = dataset.table(TABLE_NAME)
-        table = Table(table_ref, client=Config.CLIENT)
+        table = Table(table_ref)
         self.to_delete.insert(0, table)
 
         with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as avrof:
@@ -482,8 +475,7 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age])
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -616,7 +608,7 @@ class TestBigQuery(unittest.TestCase):
         dataset_id = _make_dataset_id('load_gcs_then_extract')
         table_id = 'test_table'
         table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, client=Config.CLIENT)
+        table = Table(table_ref)
         self.to_delete.insert(0, table)
         rows = [
             ('Phred Phlyntstone', 32),
@@ -648,7 +640,7 @@ class TestBigQuery(unittest.TestCase):
         dataset_id = _make_dataset_id('load_gcs_then_extract')
         table_id = 'test_table'
         table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, client=Config.CLIENT)
+        table = Table(table_ref)
         self.to_delete.insert(0, table)
         rows = [
             ('Phred Phlyntstone', 32),
@@ -705,8 +697,7 @@ class TestBigQuery(unittest.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age],
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age])
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -899,7 +890,7 @@ class TestBigQuery(unittest.TestCase):
         greeting = bigquery.SchemaField(
             'greeting', 'STRING', mode='NULLABLE')
         table_ref = dataset.table(table_id)
-        table_arg = Table(table_ref, schema=[greeting], client=Config.CLIENT)
+        table_arg = Table(table_ref, schema=[greeting])
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -1302,8 +1293,7 @@ class TestBigQuery(unittest.TestCase):
         ]
         table_id = 'test_table'
         dataset = self.temp_dataset(_make_dataset_id('issue_2951'))
-        table_arg = Table(dataset.table(table_id), schema=schema,
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(table_id), schema=schema)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -1337,8 +1327,7 @@ class TestBigQuery(unittest.TestCase):
         ]
         table_id = 'test_table'
         dataset = self.temp_dataset(_make_dataset_id('issue_2951'))
-        table_arg = Table(dataset.table(table_id), schema=schema,
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(table_id), schema=schema)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -1355,8 +1344,7 @@ class TestBigQuery(unittest.TestCase):
         dataset = self.temp_dataset(
             _make_dataset_id('create_table_nested_schema'))
         schema = _load_json_schema()
-        table_arg = Table(dataset.table(table_name), schema=schema,
-                          client=Config.CLIENT)
+        table_arg = Table(dataset.table(table_name), schema=schema)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
         self.assertTrue(_table_exists(table))
