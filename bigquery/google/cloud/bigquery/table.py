@@ -23,7 +23,6 @@ import six
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
@@ -554,21 +553,6 @@ class Table(object):
         table._set_properties(resource)
         return table
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`google.cloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
-
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
@@ -642,131 +626,37 @@ class Table(object):
                 resource[api_field] = getattr(self, f)
         return resource
 
-    def row_from_mapping(self, mapping):
-        """Convert a mapping to a row tuple using the schema.
 
-        :type mapping: dict
-        :param mapping: Mapping of row data: must contain keys for all
-               required fields in the schema.  Keys which do not correspond
-               to a field in the schema are ignored.
+def _row_from_mapping(mapping, schema):
+    """Convert a mapping to a row tuple using the schema.
 
-        :rtype: tuple
-        :returns: Tuple whose elements are ordered according to the table's
-                  schema.
-        :raises: ValueError if table's schema is not set
-        """
-        if len(self._schema) == 0:
-            raise ValueError(_TABLE_HAS_NO_SCHEMA)
+    :type mapping: dict
+    :param mapping: Mapping of row data: must contain keys for all
+           required fields in the schema.  Keys which do not correspond
+           to a field in the schema are ignored.
 
-        row = []
-        for field in self.schema:
-            if field.mode == 'REQUIRED':
-                row.append(mapping[field.name])
-            elif field.mode == 'REPEATED':
-                row.append(mapping.get(field.name, ()))
-            elif field.mode == 'NULLABLE':
-                row.append(mapping.get(field.name))
-            else:
-                raise ValueError(
-                    "Unknown field mode: {}".format(field.mode))
-        return tuple(row)
+    :type schema: list of :class:`SchemaField`
+    :param schema: The schema of the table destination for the rows
 
-    def insert_data(self,
-                    rows,
-                    row_ids=None,
-                    skip_invalid_rows=None,
-                    ignore_unknown_values=None,
-                    template_suffix=None,
-                    client=None):
-        """API call:  insert table data via a POST request
+    :rtype: tuple
+    :returns: Tuple whose elements are ordered according to the schema.
+    :raises: ValueError if schema is empty
+    """
+    if len(schema) == 0:
+        raise ValueError(_TABLE_HAS_NO_SCHEMA)
 
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
-
-        :type rows: list of tuples
-        :param rows: Row data to be inserted. Each tuple should contain data
-                     for each schema field on the current table and in the
-                     same order as the schema fields.
-
-        :type row_ids: list of string
-        :param row_ids: Unique ids, one per row being inserted.  If not
-                        passed, no de-duplication occurs.
-
-        :type skip_invalid_rows: bool
-        :param skip_invalid_rows: (Optional)  Insert all valid rows of a
-                                  request, even if invalid rows exist.
-                                  The default value is False, which causes
-                                  the entire request to fail if any invalid
-                                  rows exist.
-
-        :type ignore_unknown_values: bool
-        :param ignore_unknown_values: (Optional) Accept rows that contain
-                                      values that do not match the schema.
-                                      The unknown values are ignored. Default
-                                      is False, which treats unknown values as
-                                      errors.
-
-        :type template_suffix: str
-        :param template_suffix:
-            (Optional) treat ``name`` as a template table and provide a suffix.
-            BigQuery will create the table ``<name> + <template_suffix>`` based
-            on the schema of the template table. See
-            https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: list of mappings
-        :returns: One mapping per row with insert errors:  the "index" key
-                  identifies the row, and the "errors" key contains a list
-                  of the mappings describing one or more problems with the
-                  row.
-        :raises: ValueError if table's schema is not set
-        """
-        if len(self._schema) == 0:
-            raise ValueError(_TABLE_HAS_NO_SCHEMA)
-
-        client = self._require_client(client)
-        rows_info = []
-        data = {'rows': rows_info}
-
-        for index, row in enumerate(rows):
-            row_info = {}
-
-            for field, value in zip(self._schema, row):
-                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-                if converter is not None:  # STRING doesn't need converting
-                    value = converter(value)
-                row_info[field.name] = value
-
-            info = {'json': row_info}
-            if row_ids is not None:
-                info['insertId'] = row_ids[index]
-
-            rows_info.append(info)
-
-        if skip_invalid_rows is not None:
-            data['skipInvalidRows'] = skip_invalid_rows
-
-        if ignore_unknown_values is not None:
-            data['ignoreUnknownValues'] = ignore_unknown_values
-
-        if template_suffix is not None:
-            data['templateSuffix'] = template_suffix
-
-        response = client._connection.api_request(
-            method='POST',
-            path='%s/insertAll' % self.path,
-            data=data)
-        errors = []
-
-        for error in response.get('insertErrors', ()):
-            errors.append({'index': int(error['index']),
-                           'errors': error['errors']})
-
-        return errors
+    row = []
+    for field in schema:
+        if field.mode == 'REQUIRED':
+            row.append(mapping[field.name])
+        elif field.mode == 'REPEATED':
+            row.append(mapping.get(field.name, ()))
+        elif field.mode == 'NULLABLE':
+            row.append(mapping.get(field.name))
+        else:
+            raise ValueError(
+                "Unknown field mode: {}".format(field.mode))
+    return tuple(row)
 
 
 def _parse_schema_resource(info):
