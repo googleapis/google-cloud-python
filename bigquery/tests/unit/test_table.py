@@ -694,21 +694,33 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.partitioning_type)
         self.assertIsNone(table.partition_expiration)
 
-    def test_row_from_mapping_wo_schema(self):
-        from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
+
+class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
+
+    PROJECT = 'prahj-ekt'
+    DS_ID = 'dataset-name'
+    TABLE_NAME = 'table-name'
+
+    def _call_fut(self, mapping, schema):
+        from google.cloud.bigquery.table import _row_from_mapping
+
+        return _row_from_mapping(mapping, schema)
+
+    def test__row_from_mapping_wo_schema(self):
+        from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
         MAPPING = {'full_name': 'Phred Phlyntstone', 'age': 32}
         client = _Client(project=self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = Table(table_ref, client=client)
 
         with self.assertRaises(ValueError) as exc:
-            table.row_from_mapping(MAPPING)
+            self._call_fut(MAPPING, table.schema)
 
         self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
 
-    def test_row_from_mapping_w_invalid_schema(self):
-        from google.cloud.bigquery.table import SchemaField
+    def test__row_from_mapping_w_invalid_schema(self):
+        from google.cloud.bigquery.table import Table, SchemaField
         MAPPING = {
             'full_name': 'Phred Phlyntstone',
             'age': 32,
@@ -722,17 +734,17 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
         bogus = SchemaField('joined', 'STRING', mode='BOGUS')
-        table = self._make_one(table_ref,
-                               schema=[full_name, age, colors, bogus],
-                               client=client)
+        table = Table(table_ref,
+                      schema=[full_name, age, colors, bogus],
+                      client=client)
 
         with self.assertRaises(ValueError) as exc:
-            table.row_from_mapping(MAPPING)
+            self._call_fut(MAPPING, table.schema)
 
         self.assertIn('Unknown field mode: BOGUS', str(exc.exception))
 
-    def test_row_from_mapping_w_schema(self):
-        from google.cloud.bigquery.table import SchemaField
+    def test__row_from_mapping_w_schema(self):
+        from google.cloud.bigquery.table import Table, SchemaField
         MAPPING = {
             'full_name': 'Phred Phlyntstone',
             'age': 32,
@@ -746,232 +758,13 @@ class TestTable(unittest.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
         joined = SchemaField('joined', 'STRING', mode='NULLABLE')
-        table = self._make_one(table_ref,
-                               schema=[full_name, age, colors, joined],
-                               client=client)
+        table = Table(table_ref,
+                      schema=[full_name, age, colors, joined],
+                      client=client)
 
         self.assertEqual(
-            table.row_from_mapping(MAPPING),
+            self._call_fut(MAPPING, table.schema),
             ('Phred Phlyntstone', 32, ['red', 'green'], None))
-
-    def test_insert_data_wo_schema(self):
-        from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
-
-        client = _Client(project=self.PROJECT)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
-        ROWS = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
-
-        with self.assertRaises(ValueError) as exc:
-            table.insert_data(ROWS)
-
-        self.assertEqual(exc.exception.args, (_TABLE_HAS_NO_SCHEMA,))
-
-    def test_insert_data_w_bound_client(self):
-        import datetime
-        from google.cloud._helpers import UTC
-        from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import _microseconds_from_datetime
-        from google.cloud.bigquery.table import SchemaField
-
-        WHEN_TS = 1437767599.006
-        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
-            tzinfo=UTC)
-        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
-        table = self._make_one(table_ref, schema=[full_name, age, joined],
-                               client=client)
-        ROWS = [
-            ('Phred Phlyntstone', 32, _datetime_to_rfc3339(WHEN)),
-            ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
-            ('Wylma Phlyntstone', 29, WHEN + datetime.timedelta(seconds=2)),
-            ('Bhettye Rhubble', 27, None),
-        ]
-
-        def _row_data(row):
-            joined = row[2]
-            if isinstance(row[2], datetime.datetime):
-                joined = _microseconds_from_datetime(joined) * 1e-6
-            return {'full_name': row[0],
-                    'age': str(row[1]),
-                    'joined': joined}
-
-        SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
-        }
-
-        errors = table.insert_data(ROWS)
-
-        self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['data'], SENT)
-
-    def test_insert_data_w_alternate_client(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        RESPONSE = {
-            'insertErrors': [
-                {'index': 1,
-                 'errors': [
-                     {'reason': 'REASON',
-                      'location': 'LOCATION',
-                      'debugInfo': 'INFO',
-                      'message': 'MESSAGE'}
-                 ]},
-            ]}
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESPONSE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
-        table = self._make_one(table_ref, schema=[full_name, age, voter],
-                               client=client1)
-        ROWS = [
-            ('Phred Phlyntstone', 32, True),
-            ('Bharney Rhubble', 33, False),
-            ('Wylma Phlyntstone', 29, True),
-            ('Bhettye Rhubble', 27, True),
-        ]
-
-        def _row_data(row):
-            return {
-                'full_name': row[0],
-                'age': str(row[1]),
-                'voter': row[2] and 'true' or 'false',
-            }
-
-        SENT = {
-            'skipInvalidRows': True,
-            'ignoreUnknownValues': True,
-            'templateSuffix': '20160303',
-            'rows': [{'insertId': index, 'json': _row_data(row)}
-                     for index, row in enumerate(ROWS)],
-        }
-
-        errors = table.insert_data(
-            client=client2,
-            rows=ROWS,
-            row_ids=[index for index, _ in enumerate(ROWS)],
-            skip_invalid_rows=True,
-            ignore_unknown_values=True,
-            template_suffix='20160303',
-        )
-
-        self.assertEqual(len(errors), 1)
-        self.assertEqual(errors[0]['index'], 1)
-        self.assertEqual(len(errors[0]['errors']), 1)
-        self.assertEqual(errors[0]['errors'][0],
-                         RESPONSE['insertErrors'][0]['errors'][0])
-
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['data'], SENT)
-
-    def test_insert_data_w_repeated_fields(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('color', 'STRING', mode='REPEATED')
-        index = SchemaField('index', 'INTEGER', 'REPEATED')
-        score = SchemaField('score', 'FLOAT', 'REPEATED')
-        struct = SchemaField('struct', 'RECORD', mode='REPEATED',
-                             fields=[index, score])
-        table = self._make_one(table_ref, schema=[full_name, struct],
-                               client=client)
-        ROWS = [
-            (['red', 'green'], [{'index': [1, 2], 'score': [3.1415, 1.414]}]),
-        ]
-
-        def _row_data(row):
-            return {'color': row[0],
-                    'struct': row[1]}
-
-        SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
-        }
-
-        errors = table.insert_data(ROWS)
-
-        self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['data'], SENT)
-
-    def test_insert_data_w_record_schema(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = DatasetReference(self.PROJECT, self.DS_ID)
-        table_ref = dataset.table(self.TABLE_NAME)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
-        local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
-        rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
-        phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
-                            fields=[area_code, local_number, rank])
-        table = self._make_one(table_ref, schema=[full_name, phone],
-                               client=client)
-        ROWS = [
-            ('Phred Phlyntstone', {'area_code': '800',
-                                   'local_number': '555-1212',
-                                   'rank': 1}),
-            ('Bharney Rhubble', {'area_code': '877',
-                                 'local_number': '768-5309',
-                                 'rank': 2}),
-            ('Wylma Phlyntstone', None),
-        ]
-
-        def _row_data(row):
-            return {'full_name': row[0],
-                    'phone': row[1]}
-
-        SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
-        }
-
-        errors = table.insert_data(ROWS)
-
-        self.assertEqual(len(errors), 0)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['data'], SENT)
 
 
 class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
@@ -1102,8 +895,3 @@ class _Connection(object):
     def __init__(self, *responses):
         self._responses = responses[:]
         self._requested = []
-
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response

@@ -34,6 +34,7 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import _row_from_mapping
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
@@ -42,6 +43,7 @@ from google.cloud.bigquery.query import QueryResults
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _field_to_index_mapping
+from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -831,6 +833,119 @@ class Client(ClientWithProject):
         job = QueryJob(job_id, query, client=self, job_config=job_config)
         job.begin()
         return job
+
+    def create_rows(self, table, rows, row_ids=None, selected_fields=None,
+                    skip_invalid_rows=None, ignore_unknown_values=None,
+                    template_suffix=None):
+        """API call:  insert table data via a POST request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
+
+        :type table: One of:
+                     :class:`~google.cloud.bigquery.table.Table`
+                     :class:`~google.cloud.bigquery.table.TableReference`
+        :param table: the destination table for the row data, or a reference
+                      to it.
+
+        :type rows: One of:
+                    list of tuples
+                    list of dictionaries
+        :param rows: Row data to be inserted. If a list of tuples is given,
+                     each tuple should contain data for each schema field on
+                     the current table and in the same order as the schema
+                     fields.  If a list of dictionaries is given, the keys must
+                     include all required fields in the schema.  Keys which do
+                     not correspond to a field in the schema are ignored.
+
+        :type row_ids: list of string
+        :param row_ids: (Optional)  Unique ids, one per row being inserted.
+                        If not passed, no de-duplication occurs.
+
+        :type selected_fields: list of :class:`SchemaField`
+        :param selected_fields:
+            The fields to return. Required if ``table`` is a
+            :class:`~google.cloud.bigquery.table.TableReference`.
+
+        :type skip_invalid_rows: bool
+        :param skip_invalid_rows: (Optional)  Insert all valid rows of a
+                                  request, even if invalid rows exist.
+                                  The default value is False, which causes
+                                  the entire request to fail if any invalid
+                                  rows exist.
+
+        :type ignore_unknown_values: bool
+        :param ignore_unknown_values: (Optional) Accept rows that contain
+                                      values that do not match the schema.
+                                      The unknown values are ignored. Default
+                                      is False, which treats unknown values as
+                                      errors.
+
+        :type template_suffix: str
+        :param template_suffix:
+            (Optional) treat ``name`` as a template table and provide a suffix.
+            BigQuery will create the table ``<name> + <template_suffix>`` based
+            on the schema of the template table. See
+            https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
+
+        :rtype: list of mappings
+        :returns: One mapping per row with insert errors:  the "index" key
+                  identifies the row, and the "errors" key contains a list
+                  of the mappings describing one or more problems with the
+                  row.
+        :raises: ValueError if table's schema is not set
+        """
+        if selected_fields is not None:
+            schema = selected_fields
+        elif isinstance(table, TableReference):
+            raise ValueError('need selected_fields with TableReference')
+        elif isinstance(table, Table):
+            if len(table._schema) == 0:
+                raise ValueError(_TABLE_HAS_NO_SCHEMA)
+            schema = table.schema
+        else:
+            raise TypeError('table should be Table or TableReference')
+
+        rows_info = []
+        data = {'rows': rows_info}
+
+        for index, row in enumerate(rows):
+            if isinstance(row, dict):
+                row = _row_from_mapping(row, schema)
+            row_info = {}
+
+            for field, value in zip(schema, row):
+                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
+                if converter is not None:  # STRING doesn't need converting
+                    value = converter(value)
+                row_info[field.name] = value
+
+            info = {'json': row_info}
+            if row_ids is not None:
+                info['insertId'] = row_ids[index]
+
+            rows_info.append(info)
+
+        if skip_invalid_rows is not None:
+            data['skipInvalidRows'] = skip_invalid_rows
+
+        if ignore_unknown_values is not None:
+            data['ignoreUnknownValues'] = ignore_unknown_values
+
+        if template_suffix is not None:
+            data['templateSuffix'] = template_suffix
+
+        response = self._connection.api_request(
+            method='POST',
+            path='%s/insertAll' % table.path,
+            data=data)
+        errors = []
+
+        for error in response.get('insertErrors', ()):
+            errors.append({'index': int(error['index']),
+                           'errors': error['errors']})
+
+        return errors
 
     def query_rows(self, query, job_config=None, job_id=None, timeout=None):
         """Start a query job and wait for the results.
