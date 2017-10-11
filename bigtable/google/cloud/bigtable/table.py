@@ -402,20 +402,13 @@ class _RetryableMutateRowsWorker(object):
         return (status is None or
                 status.code in _RetryableMutateRowsWorker.RETRY_CODES)
 
-    def _next_retryable_row_index(self, begin_index):
-        i = begin_index
-        while i < len(self.responses_statuses):
-            status = self.responses_statuses[i]
-            if self._is_retryable(status):
-                return i
-            i += 1
-        return -1
-
     def _do_mutate_retryable_rows(self):
         retryable_rows = []
+        index_into_all_rows = []
         for i, status in enumerate(self.responses_statuses):
             if self._is_retryable(status):
                 retryable_rows.append(self.rows[i])
+                index_into_all_rows.append(i)
 
         if not retryable_rows:
             # All mutations are either successful or non-retryable now.
@@ -428,15 +421,13 @@ class _RetryableMutateRowsWorker(object):
 
         num_retryable_responses = 0
         for response in responses:
-            index = 0
             for entry in response.entries:
-                index = self._next_retryable_row_index(index)
+                index = index_into_all_rows[entry.index]
                 self.responses_statuses[index] = entry.status
                 if self._is_retryable(entry.status):
                     num_retryable_responses += 1
                 if entry.status.code == 0:
                     self.rows[index].clear()
-                index += 1
 
         if num_retryable_responses:
             raise _MutateRowsRetryableError()
