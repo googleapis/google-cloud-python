@@ -953,10 +953,10 @@ class TestBigQuery(unittest.TestCase):
         self.assertIsNone(Config.CURSOR.fetchone())
 
     def test_query_w_query_params(self):
-        from google.cloud.bigquery._helpers import ArrayQueryParameter
-        from google.cloud.bigquery._helpers import ScalarQueryParameter
-        from google.cloud.bigquery._helpers import StructQueryParameter
         from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.query import ArrayQueryParameter
+        from google.cloud.bigquery.query import ScalarQueryParameter
+        from google.cloud.bigquery.query import StructQueryParameter
         question = 'What is the answer to life, the universe, and everything?'
         question_param = ScalarQueryParameter(
             name='question', type_='STRING', value=question)
