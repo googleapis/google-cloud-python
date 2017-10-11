@@ -254,10 +254,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertEqual(table.schema, [])
 
     def test_ctor(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
 
         self.assertEqual(table.table_id, self.TABLE_NAME)
         self.assertEqual(table.project, self.PROJECT)
@@ -287,21 +286,18 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
 
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
 
         self.assertEqual(table.schema, [full_name, age])
 
     def test_num_bytes_getter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
 
         # Check with no value set.
         self.assertIsNone(table.num_bytes)
@@ -321,10 +317,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
             getattr(table, 'num_bytes')
 
     def test_num_rows_getter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
 
         # Check with no value set.
         self.assertIsNone(table.num_rows)
@@ -344,20 +339,18 @@ class TestTable(unittest.TestCase, _SchemaBase):
             getattr(table, 'num_rows')
 
     def test_schema_setter_non_list(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         with self.assertRaises(TypeError):
             table.schema = object()
 
     def test_schema_setter_invalid_field(self):
         from google.cloud.bigquery.table import SchemaField
 
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         with self.assertRaises(ValueError):
             table.schema = [full_name, object()]
@@ -365,10 +358,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_schema_setter(self):
         from google.cloud.bigquery.table import SchemaField
 
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table.schema = [full_name, age]
@@ -385,10 +377,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
         URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_NAME)
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table._properties['creationTime'] = _millis(CREATED)
         table._properties['etag'] = 'ETAG'
         table._properties['lastModifiedTime'] = _millis(MODIFIED)
@@ -408,26 +399,23 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.table_type, 'TABLE')
 
     def test_description_setter_bad_value(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         with self.assertRaises(ValueError):
             table.description = 12345
 
     def test_description_setter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table.description = 'DESCRIPTION'
         self.assertEqual(table.description, 'DESCRIPTION')
 
     def test_expires_setter_bad_value(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         with self.assertRaises(ValueError):
             table.expires = object()
 
@@ -436,83 +424,73 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud._helpers import UTC
 
         WHEN = datetime.datetime(2015, 7, 28, 16, 39, tzinfo=UTC)
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table.expires = WHEN
         self.assertEqual(table.expires, WHEN)
 
     def test_friendly_name_setter_bad_value(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         with self.assertRaises(ValueError):
             table.friendly_name = 12345
 
     def test_friendly_name_setter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table.friendly_name = 'FRIENDLY'
         self.assertEqual(table.friendly_name, 'FRIENDLY')
 
     def test_location_setter_bad_value(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         with self.assertRaises(ValueError):
             table.location = 12345
 
     def test_location_setter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table.location = 'LOCATION'
         self.assertEqual(table.location, 'LOCATION')
 
     def test_view_query_setter_bad_value(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         with self.assertRaises(ValueError):
             table.view_query = 12345
 
     def test_view_query_setter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table.view_query = 'select * from foo'
         self.assertEqual(table.view_query, 'select * from foo')
 
     def test_view_query_deleter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table.view_query = 'select * from foo'
         del table.view_query
         self.assertIsNone(table.view_query)
 
     def test_view_use_legacy_sql_setter_bad_value(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         with self.assertRaises(ValueError):
             table.view_use_legacy_sql = 12345
 
     def test_view_use_legacy_sql_setter(self):
-        client = _Client(self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = self._make_one(table_ref, client=client)
+        table = self._make_one(table_ref)
         table.view_use_legacy_sql = False
         table.view_query = 'select * from foo'
         self.assertEqual(table.view_use_legacy_sql, False)
@@ -520,15 +498,13 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
         RESOURCE = {}
         klass = self._get_target_class()
         with self.assertRaises(KeyError):
-            klass.from_api_repr(RESOURCE, client)
+            klass.from_api_repr(RESOURCE)
 
     def test_from_api_repr_bare(self):
         self._setUpConstants()
-        client = _Client(self.PROJECT)
         RESOURCE = {
             'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
             'tableReference': {
@@ -539,9 +515,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
             'type': 'TABLE',
         }
         klass = self._get_target_class()
-        table = klass.from_api_repr(RESOURCE, client)
+        table = klass.from_api_repr(RESOURCE)
         self.assertEqual(table.table_id, self.TABLE_NAME)
-        self.assertIs(table._client, client)
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
@@ -549,7 +524,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _millis
 
-        client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
         RESOURCE['view'] = {'query': 'select fullname, age from person_ages'}
         RESOURCE['type'] = 'VIEW'
@@ -557,52 +531,39 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         klass = self._get_target_class()
-        table = klass.from_api_repr(RESOURCE, client)
-        self.assertIs(table._client, client)
+        table = klass.from_api_repr(RESOURCE)
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_partition_type_setter_bad_type(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = 123
 
     def test_partition_type_setter_unknown_value(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = "HASH"
 
     def test_partition_type_setter_w_known_value(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         self.assertIsNone(table.partitioning_type)
         table.partitioning_type = 'DAY'
         self.assertEqual(table.partitioning_type, 'DAY')
@@ -610,15 +571,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_partition_type_setter_w_none(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         table._properties['timePartitioning'] = {'type': 'DAY'}
         table.partitioning_type = None
         self.assertIsNone(table.partitioning_type)
@@ -627,30 +584,22 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_partition_experation_bad_type(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partition_expiration = "NEVER"
 
     def test_partition_expiration_w_integer(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = 100
         self.assertEqual(table.partitioning_type, "DAY")
@@ -659,15 +608,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_partition_expiration_w_none(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table._properties['timePartitioning'] = {
             'type': 'DAY',
@@ -680,15 +625,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
     def test_partition_expiration_w_none_no_partition_set(self):
         from google.cloud.bigquery.table import SchemaField
 
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._make_one(table_ref, schema=[full_name, age],
-                               client=client)
+        table = self._make_one(table_ref, schema=[full_name, age])
         self.assertIsNone(table.partition_expiration)
         table.partition_expiration = None
         self.assertIsNone(table.partitioning_type)
@@ -709,10 +650,9 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
     def test__row_from_mapping_wo_schema(self):
         from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
         MAPPING = {'full_name': 'Phred Phlyntstone', 'age': 32}
-        client = _Client(project=self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
-        table = Table(table_ref, client=client)
+        table = Table(table_ref)
 
         with self.assertRaises(ValueError) as exc:
             self._call_fut(MAPPING, table.schema)
@@ -727,16 +667,13 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
             'colors': ['red', 'green'],
             'bogus': 'WHATEVER',
         }
-        client = _Client(project=self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
         bogus = SchemaField('joined', 'STRING', mode='BOGUS')
-        table = Table(table_ref,
-                      schema=[full_name, age, colors, bogus],
-                      client=client)
+        table = Table(table_ref, schema=[full_name, age, colors, bogus])
 
         with self.assertRaises(ValueError) as exc:
             self._call_fut(MAPPING, table.schema)
@@ -751,16 +688,13 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
             'colors': ['red', 'green'],
             'extra': 'IGNORED',
         }
-        client = _Client(project=self.PROJECT)
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         colors = SchemaField('colors', 'DATETIME', mode='REPEATED')
         joined = SchemaField('joined', 'STRING', mode='NULLABLE')
-        table = Table(table_ref,
-                      schema=[full_name, age, colors, joined],
-                      client=client)
+        table = Table(table_ref, schema=[full_name, age, colors, joined])
 
         self.assertEqual(
             self._call_fut(MAPPING, table.schema),
@@ -878,20 +812,3 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                                      {'name': 'number',
                                       'type': 'STRING',
                                       'mode': 'REQUIRED'}]})
-
-
-class _Client(object):
-
-    def __init__(self, project='project', connection=None):
-        self.project = project
-        self._connection = connection
-
-
-class _Connection(object):
-
-    API_BASE_URL = 'http://example.com'
-    USER_AGENT = 'testing 1.2.3'
-
-    def __init__(self, *responses):
-        self._responses = responses[:]
-        self._requested = []
