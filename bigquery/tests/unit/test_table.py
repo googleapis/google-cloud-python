@@ -883,8 +883,3 @@ class _Connection(object):
     def __init__(self, *responses):
         self._responses = responses[:]
         self._requested = []
-
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
