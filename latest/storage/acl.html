@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ACL &#8212; google-cloud 318b04f documentation</title>
+    <title>ACL &#8212; google-cloud c0bbf6d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '318b04f',
+        VERSION:     'c0bbf6d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -107,7 +107,7 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({'publicRead', 'private', 'projectPrivate', 'publicReadWrite', 'authenticatedRead', 'bucketOwnerRead', 'bucketOwnerFullControl'})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({'bucketOwnerRead', 'authenticatedRead', 'publicReadWrite', 'projectPrivate', 'bucketOwnerFullControl', 'publicRead', 'private'})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control/lists#predefined-acl">https://cloud.google.com/storage/docs/access-control/lists#predefined-acl</a></p>
 </dd></dl>
@@ -449,6 +449,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dd><p>Compute the path for PATCH API requests for this ACL.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="google.cloud.storage.acl.BucketACL.user_project">
+<code class="descname">user_project</code><a class="headerlink" href="#google.cloud.storage.acl.BucketACL.user_project" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the user project charged for API requests for this ACL.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -487,6 +493,12 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.acl.ObjectACL.save_path">
 <code class="descname">save_path</code><a class="headerlink" href="#google.cloud.storage.acl.ObjectACL.save_path" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute the path for PATCH API requests for this ACL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.storage.acl.ObjectACL.user_project">
+<code class="descname">user_project</code><a class="headerlink" href="#google.cloud.storage.acl.ObjectACL.user_project" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the user project charged for API requests for this ACL.</p>
 </dd></dl>
 
 </dd></dl>

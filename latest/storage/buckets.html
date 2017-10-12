@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 318b04f documentation</title>
+    <title>Buckets &#8212; google-cloud c0bbf6d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '318b04f',
+        VERSION:     'c0bbf6d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,7 +46,7 @@
 <p>Create / interact with Google Cloud Storage buckets.</p>
 <dl class="class">
 <dt id="google.cloud.storage.bucket.Bucket">
-<em class="property">class </em><code class="descclassname">google.cloud.storage.bucket.</code><code class="descname">Bucket</code><span class="sig-paren">(</span><em>client</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.storage.bucket.</code><code class="descname">Bucket</code><span class="sig-paren">(</span><em>client</em>, <em>name=None</em>, <em>user_project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage._helpers._PropertyMixin</span></code></p>
 <p>A class representing a Bucket on Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -58,6 +58,8 @@
 for the bucket (which requires a project).</li>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the bucket. Bucket names must start and end with a
 number or letter.</li>
+<li><strong>user_project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) the project ID to be billed for API
+requests made via this instance.</li>
 </ul>
 </td>
 </tr>
@@ -930,6 +932,31 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.storage.bucket.Bucket.requester_pays">
+<code class="descname">requester_pays</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.requester_pays" title="Permalink to this definition">#</a></dt>
+<dd><p>Does the requester pay for API requests for this bucket?</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">No public docs exist yet for the “requester pays” feature.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Setter:</th><td class="field-body">Update whether requester pays for this bucket.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Getter:</th><td class="field-body">Query whether requester pays for this bucket.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if requester pays for API requests for the bucket,
+else False.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.storage.bucket.Bucket.self_link">
 <code class="descname">self_link</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.self_link" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve the URI for the bucket.</p>
@@ -1058,6 +1085,21 @@ request.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.storage.bucket.Bucket.user_project">
+<code class="descname">user_project</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.user_project" title="Permalink to this definition">#</a></dt>
+<dd><p>Project ID to be billed for API requests made via this bucket.</p>
+<p>If unset, API requests are billed to the bucket owner.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
 </tr>
 </tbody>
 </table>

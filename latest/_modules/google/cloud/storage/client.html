@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud 318b04f documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud c0bbf6d documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '318b04f',
+        VERSION:     'c0bbf6d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -163,7 +163,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_stack</span><span class="o">.</span><span class="n">top</span>
 
-<div class="viewcode-block" id="Client.bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.bucket">[docs]</a>    <span class="k">def</span> <span class="nf">bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.bucket">[docs]</a>    <span class="k">def</span> <span class="nf">bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">user_project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory constructor for bucket object.</span>
 
 <span class="sd">        .. note::</span>
@@ -173,10 +173,14 @@
 <span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: The name of the bucket to be instantiated.</span>
 
+<span class="sd">        :type user_project: str</span>
+<span class="sd">        :param user_project: (Optional) the project ID to be billed for API</span>
+<span class="sd">                             requests made via this instance.</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The bucket object created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">user_project</span><span class="o">=</span><span class="n">user_project</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory constructor for batch object.</span>
@@ -236,7 +240,7 @@
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Client.create_bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.create_bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">requester_pays</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new bucket.</span>
 
 <span class="sd">        For example:</span>
@@ -253,10 +257,17 @@
 <span class="sd">        :type bucket_name: str</span>
 <span class="sd">        :param bucket_name: The bucket name to create.</span>
 
+<span class="sd">        :type requester_pays: bool</span>
+<span class="sd">        :param requester_pays:</span>
+<span class="sd">            (Optional) Whether requester pays for API requests for this</span>
+<span class="sd">            bucket and its blobs.</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">requester_pays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bucket</span><span class="o">.</span><span class="n">requester_pays</span> <span class="o">=</span> <span class="n">requester_pays</span>
         <span class="n">bucket</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bucket</span></div>
 
