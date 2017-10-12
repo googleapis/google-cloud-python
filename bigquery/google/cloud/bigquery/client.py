@@ -860,7 +860,7 @@ class Client(ClientWithProject):
 
         :type row_ids: list of string
         :param row_ids: (Optional)  Unique ids, one per row being inserted.
-                        If not passed, no de-duplication occurs.
+                        If omitted, unique IDs are created.
 
         :type selected_fields: list of :class:`SchemaField`
         :param selected_fields:
@@ -923,7 +923,8 @@ class Client(ClientWithProject):
             info = {'json': row_info}
             if row_ids is not None:
                 info['insertId'] = row_ids[index]
-
+            else:
+                info['insertId'] = str(uuid.uuid4())
             rows_info.append(info)
 
         if skip_invalid_rows is not None:
@@ -935,6 +936,7 @@ class Client(ClientWithProject):
         if template_suffix is not None:
             data['templateSuffix'] = template_suffix
 
+        # TODO(jba): use self._call_api here after #4148 is merged.
         response = self._connection.api_request(
             method='POST',
             path='%s/insertAll' % table.path,
