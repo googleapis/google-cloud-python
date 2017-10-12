@@ -1703,6 +1703,57 @@ class TestClient(unittest.TestCase):
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
+    def test_extract_table_w_destination_uris(self):
+        from google.cloud.bigquery.job import ExtractJob
+
+        JOB = 'job_id'
+        SOURCE = 'source_table'
+        DESTINATION1 = 'gs://bucket_name/object_one'
+        DESTINATION2 = 'gs://bucket_name/object_two'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
+                        'tableId': SOURCE,
+                    },
+                    'destinationUris': [
+                        DESTINATION1,
+                        DESTINATION2,
+                    ],
+                },
+            },
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        conn = client._connection = _Connection(RESOURCE)
+        dataset = client.dataset(self.DS_ID)
+        source = dataset.table(SOURCE)
+
+        job = client.extract_table(
+            source, [DESTINATION1, DESTINATION2], job_id=JOB)
+
+        # Check that extract_table actually starts the job.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+
+        # Check the job resource.
+        self.assertIsInstance(job, ExtractJob)
+        self.assertIs(job._client, client)
+        self.assertEqual(job.job_id, JOB)
+        self.assertEqual(job.source, source)
+        self.assertEqual(
+            list(job.destination_uris), [DESTINATION1, DESTINATION2])
+
     def test_query_defaults(self):
         from google.cloud.bigquery.job import QueryJob
 

@@ -832,7 +832,9 @@ class Client(ClientWithProject):
         job.begin(retry=retry)
         return job
 
-    def extract_table(self, source, *destination_uris, **kwargs):
+    def extract_table(
+            self, source, destination_uris, job_config=None, job_id=None,
+            retry=DEFAULT_RETRY):
         """Start a job to extract a table into Cloud Storage files.
 
         See
@@ -841,7 +843,9 @@ class Client(ClientWithProject):
         :type source: :class:`google.cloud.bigquery.table.TableReference`
         :param source: table to be extracted.
 
-        :type destination_uris: sequence of string
+        :type destination_uris: One of:
+                                str or
+                                sequence of str
         :param destination_uris:
             URIs of Cloud Storage file(s) into which table data is to be
             extracted; in format ``gs://<bucket_name>/<object_name_or_glob>``.
@@ -849,25 +853,25 @@ class Client(ClientWithProject):
         :type kwargs: dict
         :param kwargs: Additional keyword arguments.
 
-        :Keyword Arguments:
-            * *job_config*
-              (:class:`google.cloud.bigquery.job.ExtractJobConfig`) --
-              (Optional) Extra configuration options for the extract job.
-            * *job_id* (``str``) --
-              Additional content
-              (Optional) The ID of the job.
-            * *retry* (:class:`google.api.core.retry.Retry`)
-              (Optional) How to retry the RPC.
+        :type job_id: str
+        :param job_id: (Optional) The ID of the job.
+
+        :type job_config: :class:`google.cloud.bigquery.job.ExtractJobConfig`
+        :param job_config: (Optional) Extra configuration options for the job.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
-        job_config = kwargs.get('job_config')
-        job_id = _make_job_id(kwargs.get('job_id'))
-        retry = kwargs.get('retry', DEFAULT_RETRY)
+        job_id = _make_job_id(job_id)
+
+        if isinstance(destination_uris, six.string_types):
+            destination_uris = [destination_uris]
 
         job = ExtractJob(
-            job_id, source, list(destination_uris), client=self,
+            job_id, source, destination_uris, client=self,
             job_config=job_config)
         job.begin(retry=retry)
         return job
