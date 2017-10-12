@@ -34,8 +34,8 @@ Using the API
 
 Querying massive datasets can be time consuming and expensive without the
 right hardware and infrastructure. Google `BigQuery`_ (`BigQuery API docs`_)
-solves this problem by enabling super-fast, SQL-like queries against
-append-only tables, using the processing power of Google's infrastructure.
+solves this problem by enabling super-fast, SQL queries against
+append-mostly tables, using the processing power of Google's infrastructure.
 
 .. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
 .. _BigQuery API docs: https://cloud.google.com/bigquery/docs/reference/v2/
@@ -48,39 +48,49 @@ Load data from CSV
     import csv
 
     from google.cloud import bigquery
+    from google.cloud.bigquery import Dataset
+    from google.cloud.bigquery import LoadJobConfig
     from google.cloud.bigquery import SchemaField
 
     client = bigquery.Client()
 
-    dataset = client.dataset('dataset_name')
-    dataset.create()  # API request
+    dataset_ref = client.dataset('dataset_name')
+    dataset = Dataset(dataset_ref)
+    dataset.description = 'my dataset'
+    dataset = client.create_dataset(dataset)  # API request
 
     SCHEMA = [
         SchemaField('full_name', 'STRING', mode='required'),
         SchemaField('age', 'INTEGER', mode='required'),
     ]
-    table = dataset.table('table_name', SCHEMA)
-    table.create()
+    table = dataset_ref.table('table_name')
 
-    with open('csv_file', 'rb') as readable:
-        table.upload_from_file(
-            readable, source_format='CSV', skip_leading_rows=1)
+    load_config = LoadJobConfig()
+    load_config.skip_leading_rows = 1
+    load_config.schema = SCHEMA
 
-Perform a synchronous query
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Contents of csv_file.csv:
+    #     Name,Age
+    #     Tim,99
+    with open('csv_file.csv', 'rb') as readable:
+        client.load_table_from_file(
+            readable, table, job_config=load_config)  # API request
+
+Perform a query
+~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    # Perform a synchronous query.
+    # Perform a query.
     QUERY = (
-        'SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] '
-        'WHERE state = "TX"')
-    query = client.run_sync_query('%s LIMIT 100' % QUERY)
-    query.timeout_ms = TIMEOUT_MS
-    query.run()
+        'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
+        'WHERE state = "TX" '
+        'LIMIT 100')
+    query_job = client.query(QUERY)  # API request
+    rows = query_job.result()  # Waits for query to finish
 
     for row in query.rows:
-        print(row)
+        print(row.name)
 
 
 See the ``google-cloud-python`` API `BigQuery documentation`_ to learn how
