@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 3123de6 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 318b04f documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '3123de6',
+        VERSION:     '318b04f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -77,6 +77,8 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage.acl</span> <span class="k">import</span> <span class="n">DefaultObjectACL</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">Blob</span>
 <span class="kn">from</span> <span class="nn">google.cloud.storage.blob</span> <span class="k">import</span> <span class="n">_get_encryption_headers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage.notification</span> <span class="k">import</span> <span class="n">BucketNotification</span>
+<span class="kn">from</span> <span class="nn">google.cloud.storage.notification</span> <span class="k">import</span> <span class="n">NONE_PAYLOAD_FORMAT</span>
 
 
 <span class="k">def</span> <span class="nf">_blobs_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
@@ -116,6 +118,26 @@
     <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
     <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">blob</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_notification</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON blob to the native object.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This assumes that the ``bucket`` attribute has been</span>
+<span class="sd">        added to the iterator after being created.</span>
+
+<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
+
+<span class="sd">    :type item: dict</span>
+<span class="sd">    :param item: An item to be converted to a blob.</span>
+
+<span class="sd">    :rtype: :class:`.BucketNotification`</span>
+<span class="sd">    :returns: The next notification being iterated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">BucketNotification</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -200,6 +222,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
                     <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Bucket.notification"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.notification">[docs]</a>    <span class="k">def</span> <span class="nf">notification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">,</span>
+                     <span class="n">topic_project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">custom_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">event_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">blob_name_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">payload_format</span><span class="o">=</span><span class="n">NONE_PAYLOAD_FORMAT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  create a notification resource for the bucket.</span>
+
+<span class="sd">        See: :class:`.BucketNotification` for parameters.</span>
+
+<span class="sd">        :rtype: :class:`.BucketNotification`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BucketNotification</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">,</span>
+            <span class="n">topic_project</span><span class="o">=</span><span class="n">topic_project</span><span class="p">,</span>
+            <span class="n">custom_attributes</span><span class="o">=</span><span class="n">custom_attributes</span><span class="p">,</span>
+            <span class="n">event_types</span><span class="o">=</span><span class="n">event_types</span><span class="p">,</span>
+            <span class="n">blob_name_prefix</span><span class="o">=</span><span class="n">blob_name_prefix</span><span class="p">,</span>
+            <span class="n">payload_format</span><span class="o">=</span><span class="n">payload_format</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
@@ -422,6 +465,30 @@
             <span class="n">page_start</span><span class="o">=</span><span class="n">_blobs_page_start</span><span class="p">)</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">iterator</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="Bucket.list_notifications"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.list_notifications">[docs]</a>    <span class="k">def</span> <span class="nf">list_notifications</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List Pub / Sub notifications for this bucket.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/notifications/list</span>
+
+<span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
+<span class="sd">                      ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
+
+<span class="sd">        :rtype: list of :class:`.BucketNotification`</span>
+<span class="sd">        :returns: notification instances</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/notificationConfigs&#39;</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_notification</span><span class="p">)</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">iterator</span></div>
 
 <div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

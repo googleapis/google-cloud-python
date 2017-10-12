@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 3123de6 documentation</title>
+    <title>Buckets &#8212; google-cloud 318b04f documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '3123de6',
+        VERSION:     '318b04f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -703,6 +703,28 @@ in this bucket matching the arguments.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.list_notifications">
+<code class="descname">list_notifications</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.list_notifications"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.list_notifications" title="Permalink to this definition">#</a></dt>
+<dd><p>List Pub / Sub notifications for this bucket.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/notifications/list">https://cloud.google.com/storage/docs/json_api/v1/notifications/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="xref py py-class docutils literal"><span class="pre">BucketNotification</span></code></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">notification instances</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.storage.bucket.Bucket.location">
 <code class="descname">location</code><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.location" title="Permalink to this definition">#</a></dt>
@@ -759,6 +781,21 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The metageneration of the bucket or <code class="docutils literal"><span class="pre">None</span></code> if the property
 is not set locally.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.storage.bucket.Bucket.notification">
+<code class="descname">notification</code><span class="sig-paren">(</span><em>topic_name</em>, <em>topic_project=None</em>, <em>custom_attributes=None</em>, <em>event_types=None</em>, <em>blob_name_prefix=None</em>, <em>payload_format='NONE'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.notification"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.notification" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  create a notification resource for the bucket.</p>
+<p>See: <code class="xref py py-class docutils literal"><span class="pre">BucketNotification</span></code> for parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">BucketNotification</span></code></td>
 </tr>
 </tbody>
 </table>
