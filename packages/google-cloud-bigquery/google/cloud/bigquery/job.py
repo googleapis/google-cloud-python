@@ -38,6 +38,7 @@ from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
 from google.cloud.bigquery._helpers import _ListApiResourceProperty
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
+from google.cloud.bigquery._helpers import DEFAULT_RETRY
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
@@ -383,7 +384,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         config = resource['configuration'][cls._JOB_TYPE]
         return job_id, config
 
-    def begin(self, client=None):
+    def begin(self, client=None, retry=DEFAULT_RETRY):
         """API call:  begin the job via a POST request
 
         See
@@ -394,6 +395,9 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :raises: :exc:`ValueError` if the job has already begin.
         """
         if self.state is not None:
@@ -402,11 +406,14 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         client = self._require_client(client)
         path = '/projects/%s/jobs' % (self.project,)
 
-        api_response = client._connection.api_request(
+        # jobs.insert is idempotent because we ensure that every new
+        # job has an ID.
+        api_response = client._call_api(
+            retry,
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
 
-    def exists(self, client=None):
+    def exists(self, client=None, retry=DEFAULT_RETRY):
         """API call:  test for the existence of the job via a GET request
 
         See
@@ -417,20 +424,24 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: bool
         :returns: Boolean indicating existence of the job.
         """
         client = self._require_client(client)
 
         try:
-            client._connection.api_request(method='GET', path=self.path,
-                                           query_params={'fields': 'id'})
+            client._call_api(retry,
+                             method='GET', path=self.path,
+                             query_params={'fields': 'id'})
         except NotFound:
             return False
         else:
             return True
 
-    def reload(self, client=None):
+    def reload(self, client=None, retry=DEFAULT_RETRY):
         """API call:  refresh job properties via a GET request.
 
         See
@@ -440,11 +451,13 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
         """
         client = self._require_client(client)
 
-        api_response = client._connection.api_request(
-            method='GET', path=self.path)
+        api_response = client._call_api(retry, method='GET', path=self.path)
         self._set_properties(api_response)
 
     def cancel(self, client=None):
@@ -494,8 +507,11 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
             else:
                 self.set_result(self)
 
-    def done(self):
+    def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: bool
         :returns: True if the job is complete, False otherwise.
@@ -503,7 +519,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
         if self.state != _DONE_STATE:
-            self.reload()
+            self.reload(retry=retry)
         return self.state == _DONE_STATE
 
     def result(self, timeout=None):
@@ -522,6 +538,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         """
         if self.state is None:
             self.begin()
+        # TODO: modify PollingFuture so it can pass a retry argument to done().
         return super(_AsyncJob, self).result(timeout=timeout)
 
     def cancelled(self):
@@ -1830,17 +1847,21 @@ class QueryJob(_AsyncJob):
 
         return parameters
 
-    def query_results(self):
+    def query_results(self, retry=DEFAULT_RETRY):
         """Construct a QueryResults instance, bound to this job.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
         :returns: results instance
         """
         if not self._query_results:
-            self._query_results = self._client._get_query_results(self.job_id)
+            self._query_results = self._client._get_query_results(
+                self.job_id, retry)
         return self._query_results
 
-    def done(self):
+    def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 
         :rtype: bool
@@ -1849,23 +1870,27 @@ class QueryJob(_AsyncJob):
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
         if self.state != _DONE_STATE:
-            self._query_results = self._client._get_query_results(self.job_id)
+            self._query_results = self._client._get_query_results(
+                self.job_id, retry)
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
             # correctly populated.
             if self._query_results.complete:
-                self.reload()
+                self.reload(retry=retry)
 
         return self.state == _DONE_STATE
 
-    def result(self, timeout=None):
+    def result(self, timeout=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
         :type timeout: int
         :param timeout:
             How long to wait for job to complete before raising a
             :class:`TimeoutError`.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the call that retrieves rows.
 
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
@@ -1883,7 +1908,8 @@ class QueryJob(_AsyncJob):
         # Return an iterator instead of returning the job.
         schema = self.query_results().schema
         dest_table = self.destination
-        return self._client.list_rows(dest_table, selected_fields=schema)
+        return self._client.list_rows(dest_table, selected_fields=schema,
+                                      retry=retry)
 
 
 class QueryPlanEntryStep(object):

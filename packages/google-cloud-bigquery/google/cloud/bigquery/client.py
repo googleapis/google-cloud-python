@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import collections
+import functools
 import os
 import uuid
 
@@ -27,6 +28,7 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.api.core import page_iterator
+
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 from google.cloud.bigquery._http import Connection
@@ -44,6 +46,7 @@ from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import DEFAULT_RETRY
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -117,7 +120,8 @@ class Client(ClientWithProject):
             project=project, credentials=credentials, _http=_http)
         self._connection = Connection(self)
 
-    def list_projects(self, max_results=None, page_token=None):
+    def list_projects(self, max_results=None, page_token=None,
+                      retry=DEFAULT_RETRY):
         """List projects for the project associated with this client.
 
         See
@@ -132,13 +136,16 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            projects.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.client.Project`
                   accessible to the current client.
         """
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=self._connection.api_request,
+            api_request=functools.partial(self._call_api, retry),
             path='/projects',
             item_to_value=_item_to_project,
             items_key='projects',
@@ -146,7 +153,7 @@ class Client(ClientWithProject):
             max_results=max_results)
 
     def list_datasets(self, include_all=False, max_results=None,
-                      page_token=None):
+                      page_token=None, retry=DEFAULT_RETRY):
         """List datasets for the project associated with this client.
 
         See
@@ -164,6 +171,9 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            datasets.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.
                   accessible to the current client.
@@ -174,7 +184,7 @@ class Client(ClientWithProject):
         path = '/projects/%s/datasets' % (self.project,)
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=self._connection.api_request,
+            api_request=functools.partial(self._call_api, retry),
             path=path,
             item_to_value=_item_to_dataset,
             items_key='datasets',
@@ -241,35 +251,47 @@ class Client(ClientWithProject):
             method='POST', path=path, data=resource)
         return Table.from_api_repr(api_response)
 
-    def get_dataset(self, dataset_ref):
+    def _call_api(self, retry, **kwargs):
+        call = functools.partial(self._connection.api_request, **kwargs)
+        if retry:
+            call = retry(call)
+        return call()
+
+    def get_dataset(self, dataset_ref, retry=DEFAULT_RETRY):
         """Fetch the dataset referenced by ``dataset_ref``
 
         :type dataset_ref:
             :class:`google.cloud.bigquery.dataset.DatasetReference`
         :param dataset_ref: the dataset to use.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: a ``Dataset`` instance
         """
-        api_response = self._connection.api_request(
-            method='GET', path=dataset_ref.path)
+        api_response = self._call_api(retry,
+                                      method='GET',
+                                      path=dataset_ref.path)
         return Dataset.from_api_repr(api_response)
 
-    def get_table(self, table_ref):
+    def get_table(self, table_ref, retry=DEFAULT_RETRY):
         """Fetch the table referenced by ``table_ref``
 
         :type table_ref:
             :class:`google.cloud.bigquery.table.TableReference`
         :param table_ref: the table to use.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: a ``Table`` instance
         """
-        api_response = self._connection.api_request(
-            method='GET', path=table_ref.path)
+        api_response = self._call_api(retry, method='GET', path=table_ref.path)
         return Table.from_api_repr(api_response)
 
-    def update_dataset(self, dataset, fields):
+    def update_dataset(self, dataset, fields, retry=DEFAULT_RETRY):
         """Change some fields of a dataset.
 
         Use ``fields`` to specify which fields to update. At least one field
@@ -290,6 +312,9 @@ class Client(ClientWithProject):
         :param fields: the fields of ``dataset`` to change, spelled as the
                        Dataset properties (e.g. "friendly_name").
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
         :returns: the modified ``Dataset`` instance
         """
@@ -307,11 +332,11 @@ class Client(ClientWithProject):
             headers = {'If-Match': dataset.etag}
         else:
             headers = None
-        api_response = self._connection.api_request(
-            method='PATCH', path=path, data=partial, headers=headers)
+        api_response = self._call_api(
+            retry, method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response)
 
-    def update_table(self, table, properties):
+    def update_table(self, table, properties, retry=DEFAULT_RETRY):
         """API call:  update table properties via a PUT request
 
         See
@@ -321,6 +346,9 @@ class Client(ClientWithProject):
             :class:`google.cloud.bigquery.table.Table`
         :param table_ref: the table to update.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: a ``Table`` instance
         """
@@ -329,11 +357,13 @@ class Client(ClientWithProject):
             headers = {'If-Match': table.etag}
         else:
             headers = None
-        api_response = self._connection.api_request(
+        api_response = self._call_api(
+            retry,
             method='PATCH', path=table.path, data=partial, headers=headers)
         return Table.from_api_repr(api_response)
 
-    def list_dataset_tables(self, dataset, max_results=None, page_token=None):
+    def list_dataset_tables(self, dataset, max_results=None, page_token=None,
+                            retry=DEFAULT_RETRY):
         """List tables in the dataset.
 
         See
@@ -353,6 +383,9 @@ class Client(ClientWithProject):
                            datasets. If not passed, the API will return the
                            first page of datasets.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
                   contained within the current dataset.
@@ -362,7 +395,7 @@ class Client(ClientWithProject):
         path = '%s/tables' % dataset.path
         result = page_iterator.HTTPIterator(
             client=self,
-            api_request=self._connection.api_request,
+            api_request=functools.partial(self._call_api, retry),
             path=path,
             item_to_value=_item_to_table,
             items_key='tables',
@@ -371,7 +404,7 @@ class Client(ClientWithProject):
         result.dataset = dataset
         return result
 
-    def delete_dataset(self, dataset):
+    def delete_dataset(self, dataset, retry=DEFAULT_RETRY):
         """Delete a dataset.
 
         See
@@ -381,13 +414,16 @@ class Client(ClientWithProject):
                        :class:`~google.cloud.bigquery.dataset.Dataset`
                        :class:`~google.cloud.bigquery.dataset.DatasetReference`
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :param dataset: the dataset to delete, or a reference to it.
         """
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
-        self._connection.api_request(method='DELETE', path=dataset.path)
+        self._call_api(retry, method='DELETE', path=dataset.path)
 
-    def delete_table(self, table):
+    def delete_table(self, table, retry=DEFAULT_RETRY):
         """Delete a table
 
         See
@@ -397,16 +433,22 @@ class Client(ClientWithProject):
                      :class:`~google.cloud.bigquery.table.Table`
                      :class:`~google.cloud.bigquery.table.TableReference`
         :param table: the table to delete, or a reference to it.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
         """
         if not isinstance(table, (Table, TableReference)):
             raise TypeError('table must be a Table or a TableReference')
-        self._connection.api_request(method='DELETE', path=table.path)
+        self._call_api(retry, method='DELETE', path=table.path)
 
-    def _get_query_results(self, job_id, project=None, timeout_ms=None):
+    def _get_query_results(self, job_id, retry, project=None, timeout_ms=None):
         """Get the query results object for a query job.
 
         :type job_id: str
         :param job_id: Name of the query job.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :type project: str
         :param project:
@@ -432,9 +474,11 @@ class Client(ClientWithProject):
 
         path = '/projects/{}/queries/{}'.format(project, job_id)
 
-        resource = self._connection.api_request(
-            method='GET', path=path, query_params=extra_params)
-
+        # This call is typically made in a polling loop that checks whether the
+        # job is complete (from QueryJob.done(), called ultimately from
+        # QueryJob.result()). So we don't need to poll here.
+        resource = self._call_api(
+            retry, method='GET', path=path, query_params=extra_params)
         return QueryResults.from_api_repr(resource)
 
     def job_from_resource(self, resource):
@@ -462,7 +506,7 @@ class Client(ClientWithProject):
             return QueryJob.from_api_repr(resource, self)
         raise ValueError('Cannot parse job resource')
 
-    def get_job(self, job_id, project=None):
+    def get_job(self, job_id, project=None, retry=DEFAULT_RETRY):
         """Fetch a job for the project associated with this client.
 
         See
@@ -475,6 +519,9 @@ class Client(ClientWithProject):
         :param project:
             project ID owning the job (defaults to the client's project)
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`~google.cloud.bigquery.job._AsyncJob`
         :returns:
             Concrete job instance, based on the resource returned by the API.
@@ -486,13 +533,13 @@ class Client(ClientWithProject):
 
         path = '/projects/{}/jobs/{}'.format(project, job_id)
 
-        resource = self._connection.api_request(
-            method='GET', path=path, query_params=extra_params)
+        resource = self._call_api(
+            retry, method='GET', path=path, query_params=extra_params)
 
         return self.job_from_resource(resource)
 
     def list_jobs(self, max_results=None, page_token=None, all_users=None,
-                  state_filter=None):
+                  state_filter=None, retry=DEFAULT_RETRY):
         """List jobs for the project associated with this client.
 
         See
@@ -519,6 +566,9 @@ class Client(ClientWithProject):
                              * ``"pending"``
                              * ``"running"``
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterable of job instances.
         """
@@ -533,7 +583,7 @@ class Client(ClientWithProject):
         path = '/projects/%s/jobs' % (self.project,)
         return page_iterator.HTTPIterator(
             client=self,
-            api_request=self._connection.api_request,
+            api_request=functools.partial(self._call_api, retry),
             path=path,
             item_to_value=_item_to_job,
             items_key='jobs',
@@ -542,7 +592,8 @@ class Client(ClientWithProject):
             extra_params=extra_params)
 
     def load_table_from_storage(self, source_uris, destination,
-                                job_id=None, job_config=None):
+                                job_id=None, job_config=None,
+                                retry=DEFAULT_RETRY):
         """Starts a job for loading data into a table from CloudStorage.
 
         See
@@ -563,6 +614,9 @@ class Client(ClientWithProject):
         :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: a new ``LoadJob`` instance
         """
@@ -570,7 +624,7 @@ class Client(ClientWithProject):
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
         job = LoadJob(job_id, source_uris, destination, self, job_config)
-        job.begin()
+        job.begin(retry=retry)
         return job
 
     def load_table_from_file(self, file_obj, destination,
@@ -683,6 +737,8 @@ class Client(ClientWithProject):
         transport = self._http
         headers = _get_upload_headers(self._connection.USER_AGENT)
         upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
+        # TODO: modify ResumableUpload to take a retry.Retry object
+        # that it can use for the initial RPC.
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
 
         if num_retries is not None:
@@ -738,7 +794,8 @@ class Client(ClientWithProject):
 
         return response
 
-    def copy_table(self, sources, destination, job_id=None, job_config=None):
+    def copy_table(self, sources, destination, job_id=None, job_config=None,
+                   retry=DEFAULT_RETRY):
         """Start a job for copying one or more tables into another table.
 
         See
@@ -760,6 +817,9 @@ class Client(ClientWithProject):
         :type job_config: :class:`google.cloud.bigquery.job.CopyJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`google.cloud.bigquery.job.CopyJob`
         :returns: a new ``CopyJob`` instance
         """
@@ -769,7 +829,7 @@ class Client(ClientWithProject):
             sources = [sources]
         job = CopyJob(job_id, sources, destination, client=self,
                       job_config=job_config)
-        job.begin()
+        job.begin(retry=retry)
         return job
 
     def extract_table(self, source, *destination_uris, **kwargs):
@@ -796,20 +856,23 @@ class Client(ClientWithProject):
             * *job_id* (``str``) --
               Additional content
               (Optional) The ID of the job.
+            * *retry* (:class:`google.api.core.retry.Retry`)
+              (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
         job_config = kwargs.get('job_config')
         job_id = _make_job_id(kwargs.get('job_id'))
+        retry = kwargs.get('retry', DEFAULT_RETRY)
 
         job = ExtractJob(
             job_id, source, list(destination_uris), client=self,
             job_config=job_config)
-        job.begin()
+        job.begin(retry=retry)
         return job
 
-    def query(self, query, job_config=None, job_id=None):
+    def query(self, query, job_config=None, job_id=None, retry=DEFAULT_RETRY):
         """Start a job that runs a SQL query.
 
         See
@@ -826,12 +889,15 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) ID to use for the query job.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`google.cloud.bigquery.job.QueryJob`
         :returns: a new ``QueryJob`` instance
         """
         job_id = _make_job_id(job_id)
         job = QueryJob(job_id, query, client=self, job_config=job_config)
-        job.begin()
+        job.begin(retry=retry)
         return job
 
     def create_rows(self, table, rows, row_ids=None, selected_fields=None,
@@ -949,7 +1015,8 @@ class Client(ClientWithProject):
 
         return errors
 
-    def query_rows(self, query, job_config=None, job_id=None, timeout=None):
+    def query_rows(self, query, job_config=None, job_id=None, timeout=None,
+                   retry=DEFAULT_RETRY):
         """Start a query job and wait for the results.
 
         See
@@ -983,11 +1050,12 @@ class Client(ClientWithProject):
             failed or  :class:`TimeoutError` if the job did not complete in the
             given timeout.
         """
-        job = self.query(query, job_config=job_config, job_id=job_id)
+        job = self.query(
+            query, job_config=job_config, job_id=job_id, retry=retry)
         return job.result(timeout=timeout)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
-                  page_token=None, start_index=None):
+                  page_token=None, start_index=None, retry=DEFAULT_RETRY):
         """List the rows of the table.
 
         See
@@ -1021,6 +1089,9 @@ class Client(ClientWithProject):
         :param page_token: (Optional) The zero-based index of the starting
                            row to read.
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
@@ -1050,7 +1121,7 @@ class Client(ClientWithProject):
 
         iterator = page_iterator.HTTPIterator(
             client=self,
-            api_request=self._connection.api_request,
+            api_request=functools.partial(self._call_api, retry),
             path='%s/data' % (table.path,),
             item_to_value=_item_to_row,
             items_key='rows',
@@ -1063,13 +1134,16 @@ class Client(ClientWithProject):
         iterator._field_to_index = _field_to_index_mapping(schema)
         return iterator
 
-    def list_partitions(self, table):
+    def list_partitions(self, table, retry=DEFAULT_RETRY):
         """List the partitions in a table.
 
         :type table: One of:
                      :class:`~google.cloud.bigquery.table.Table`
                      :class:`~google.cloud.bigquery.table.TableReference`
         :param table: the table to list, or a reference to it.
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
 
         :rtype: list
         :returns: a list of time partitions
@@ -1079,7 +1153,8 @@ class Client(ClientWithProject):
         rows = self.query_rows(
             'SELECT partition_id from [%s:%s.%s$__PARTITIONS_SUMMARY__]' %
             (table.project, table.dataset_id, table.table_id),
-            job_config=config)
+            job_config=config,
+            retry=retry)
         return [row[0] for row in rows]
 
 
