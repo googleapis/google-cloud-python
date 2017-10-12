@@ -39,7 +39,7 @@ from grpc import StatusCode
 # https://cloud.google.com/bigtable/docs/reference/data/rpc/google.bigtable.v2#google.bigtable.v2.MutateRowRequest
 _MAX_BULK_MUTATIONS = 100000
 
-_MILLIS_PER_SECOND = 1000
+_MILLIS_PER_SECOND = 1000.0
 
 
 class TableMismatchError(ValueError):
