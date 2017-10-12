@@ -131,7 +131,7 @@ returns a :class:`~.language_v1.types.AnalyzeEntitiesResponse`.
      >>> document = language.types.Document(
      ...     content='Michelangelo Caravaggio, Italian painter, is '
      ...             'known for "The Calling of Saint Matthew".',
-     ...     type=language.enums.Type.PLAIN_TEXT,
+     ...     type=language.enums.Document.Type.PLAIN_TEXT,
      ... )
      >>> response = client.analyze_entities(
      ...     document=document,
