@@ -524,6 +524,12 @@ class Table(object):
             self._properties['view'] = {}
         self._properties['view']['useLegacySql'] = value
 
+    @property
+    def streaming_buffer(self):
+        sb = self._properties.get('streamingBuffer')
+        if sb is not None:
+            return StreamingBuffer(sb)
+
     @classmethod
     def from_api_repr(cls, resource):
         """Factory:  construct a table given its API representation
@@ -656,6 +662,23 @@ def _row_from_mapping(mapping, schema):
             raise ValueError(
                 "Unknown field mode: {}".format(field.mode))
     return tuple(row)
+
+
+class StreamingBuffer(object):
+    """Information about a table's streaming buffer.
+
+    See https://cloud.google.com/bigquery/streaming-data-into-bigquery.
+
+    :type resource: dict
+    :param resource: streaming buffer representation returned from the API
+    """
+
+    def __init__(self, resource):
+        self.estimated_bytes = int(resource['estimatedBytes'])
+        self.estimated_rows = int(resource['estimatedRows'])
+        # time is in milliseconds since the epoch.
+        self.oldest_entry_time = _datetime_from_microseconds(
+            1000.0 * int(resource['oldestEntryTime']))
 
 
 def _parse_schema_resource(info):
