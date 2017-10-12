@@ -67,10 +67,11 @@ class TestBucketNotification(unittest.TestCase):
 
         return mock.Mock(project=project, spec=Client)
 
-    def _make_bucket(self, client, name=BUCKET_NAME):
-         bucket = mock.Mock(spec=['client', 'name'])
+    def _make_bucket(self, client, name=BUCKET_NAME, user_project=None):
+         bucket = mock.Mock(spec=['client', 'name', 'user_project'])
          bucket.client= client
          bucket.name = name
+         bucket.user_project = user_project
          return bucket
 
     def test_ctor_defaults(self):
@@ -268,13 +269,15 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='POST',
             path=self.CREATE_PATH,
+            query_params={},
             data=data,
         )
 
     def test_create_w_explicit_client(self):
+        USER_PROJECT = 'user-project-123'
         client = self._make_client()
         alt_client = self._make_client()
-        bucket = self._make_bucket(client)
+        bucket = self._make_bucket(client, user_project=USER_PROJECT)
         notification = self._make_one(
             bucket, self.TOPIC_NAME,
             topic_project=self.TOPIC_ALT_PROJECT,
@@ -317,6 +320,7 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='POST',
             path=self.CREATE_PATH,
+            query_params={'userProject': USER_PROJECT},
             data=data,
         )
 
@@ -344,11 +348,13 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='GET',
             path=self.NOTIFICATION_PATH,
+            query_params={},
         )
 
     def test_exists_hit(self):
+        USER_PROJECT = 'user-project-123'
         client = self._make_client()
-        bucket = self._make_bucket(client)
+        bucket = self._make_bucket(client, user_project=USER_PROJECT)
         alt_client = self._make_client()
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties['id'] = self.NOTIFICATION_ID
@@ -365,6 +371,7 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='GET',
             path=self.NOTIFICATION_PATH,
+            query_params={'userProject': USER_PROJECT},
         )
 
     def test_reload_wo_notification_id(self):
@@ -392,13 +399,15 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='GET',
             path=self.NOTIFICATION_PATH,
+            query_params={},
         )
 
     def test_reload_hit(self):
         from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
+        USER_PROJECT = 'user-project-123'
         client = self._make_client()
-        bucket = self._make_bucket(client)
+        bucket = self._make_bucket(client, user_project=USER_PROJECT)
         alt_client = self._make_client()
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties['id'] = self.NOTIFICATION_ID
@@ -423,6 +432,7 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='GET',
             path=self.NOTIFICATION_PATH,
+            query_params={'userProject': USER_PROJECT},
         )
 
     def test_delete_wo_notification_id(self):
@@ -450,11 +460,13 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='DELETE',
             path=self.NOTIFICATION_PATH,
+            query_params={},
         )
 
     def test_delete_hit(self):
+        USER_PROJECT = 'user-project-123'
         client = self._make_client()
-        bucket = self._make_bucket(client)
+        bucket = self._make_bucket(client, user_project=USER_PROJECT)
         alt_client = self._make_client()
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties['id'] = self.NOTIFICATION_ID
@@ -466,4 +478,5 @@ class TestBucketNotification(unittest.TestCase):
         api_request.assert_called_once_with(
             method='DELETE',
             path=self.NOTIFICATION_PATH,
+            query_params={'userProject': USER_PROJECT},
         )
