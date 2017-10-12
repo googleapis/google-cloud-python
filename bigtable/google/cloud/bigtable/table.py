@@ -377,7 +377,10 @@ class Table(object):
 
 class _MutateRowsRetryableError(Exception):
     """A retryable error in Mutate Rows response."""
-    pass
+
+    def __init__(self, retryable_responses):
+        super(_MutateRowsRetryableError, self).__init__()
+        self.retryable_responses = retryable_responses
 
 
 class _RetryableMutateRowsWorker(object):
@@ -419,18 +422,19 @@ class _RetryableMutateRowsWorker(object):
         responses = self.client._data_stub.MutateRows(
             mutate_rows_request)
 
-        num_retryable_responses = 0
+        retryable_responses = []
         for response in responses:
             for entry in response.entries:
                 index = index_into_all_rows[entry.index]
                 self.responses_statuses[index] = entry.status
                 if self._is_retryable(entry.status):
-                    num_retryable_responses += 1
+                    entry.index = index  # Override with index into all rows
+                    retryable_responses.append(entry)
                 if entry.status.code == 0:
                     self.rows[index].clear()
 
-        if num_retryable_responses:
-            raise _MutateRowsRetryableError()
+        if retryable_responses:
+            raise _MutateRowsRetryableError(retryable_responses)
         return self.responses_statuses
 
 
