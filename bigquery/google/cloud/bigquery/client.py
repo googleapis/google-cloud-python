@@ -902,7 +902,7 @@ class Client(ClientWithProject):
 
     def create_rows(self, table, rows, row_ids=None, selected_fields=None,
                     skip_invalid_rows=None, ignore_unknown_values=None,
-                    template_suffix=None):
+                    template_suffix=None, retry=DEFAULT_RETRY):
         """API call:  insert table data via a POST request
 
         See
@@ -954,6 +954,9 @@ class Client(ClientWithProject):
             on the schema of the template table. See
             https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
         :rtype: list of mappings
         :returns: One mapping per row with insert errors:  the "index" key
                   identifies the row, and the "errors" key contains a list
@@ -1002,8 +1005,9 @@ class Client(ClientWithProject):
         if template_suffix is not None:
             data['templateSuffix'] = template_suffix
 
-        # TODO(jba): use self._call_api here after #4148 is merged.
-        response = self._connection.api_request(
+        # We can always retry, because every row has an insert ID.
+        response = self._call_api(
+            retry,
             method='POST',
             path='%s/insertAll' % table.path,
             data=data)
