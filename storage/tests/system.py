@@ -777,6 +777,7 @@ class TestStorageRewrite(TestStorageFiles):
 
         self.assertEqual(dest.download_as_string(), source_data)
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_rewrite_add_key_with_user_project(self):
         file_data = self.FILES['simple']
         new_bucket_name = 'rewrite-key-up' + unique_resource_id('-')
@@ -803,6 +804,7 @@ class TestStorageRewrite(TestStorageFiles):
         finally:
             retry_429(created.delete)(force=True)
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
     def test_rewrite_rotate_with_user_project(self):
         BLOB_NAME = 'rotating-keys'
         file_data = self.FILES['simple']
