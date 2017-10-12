@@ -478,7 +478,7 @@ class TestTable(unittest.TestCase):
 
         response = [Status(code=0), Status(code=1)]
 
-        mock_worker = mock.Mock(side_effect=[_MutateRowsRetryableError([]), response])
+        mock_worker = mock.Mock(side_effect=[_MutateRowsRetryableError, response])
         with mock.patch(
                 'google.cloud.bigtable.table._RetryableMutateRowsWorker',
                 new=mock.MagicMock(return_value=mock_worker)):
@@ -498,7 +498,7 @@ class TestTable(unittest.TestCase):
         response = [Status(code=0), Status(code=4)]
 
         mock_worker = mock.Mock(
-                side_effect=[_MutateRowsRetryableError([]), _MutateRowsRetryableError([])],
+                side_effect=[_MutateRowsRetryableError, _MutateRowsRetryableError],
                 responses_statuses=response)
         # total_timeout_millis = 5 * 60 * 1000
         mock_time = mock.Mock(side_effect=[0, 2000, 5 * 60 * 1000])

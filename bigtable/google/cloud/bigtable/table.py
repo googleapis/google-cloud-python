@@ -378,9 +378,9 @@ class Table(object):
 class _MutateRowsRetryableError(Exception):
     """A retryable error in Mutate Rows response."""
 
-    def __init__(self, retryable_responses):
+    def __init__(self, retryable_responses=None):
         super(_MutateRowsRetryableError, self).__init__()
-        self.retryable_responses = retryable_responses
+        self.retryable_responses = retryable_responses or []
 
 
 class _RetryableMutateRowsWorker(object):
