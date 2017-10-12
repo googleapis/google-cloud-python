@@ -68,7 +68,7 @@ class TestClient(unittest.TestCase):
 
         with self.assertRaises(NotFound):
             client._get_query_results(
-                'nothere', project='other-project', timeout_ms=500)
+                'nothere', None, project='other-project', timeout_ms=500)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -110,7 +110,7 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         client._connection = _Connection(data)
-        query_results = client._get_query_results(job_id)
+        query_results = client._get_query_results(job_id, None)
 
         self.assertEqual(query_results.total_rows, 10)
         self.assertTrue(query_results.complete)
@@ -274,6 +274,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dataset.project, self.PROJECT)
 
     def test_get_dataset(self):
+        from google.cloud.exceptions import ServerError
+
         path = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         http = object()
@@ -295,6 +297,39 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % path)
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+
+        # Test retry.
+
+        # Not a cloud API exception (missing 'errors' field).
+        client._connection = _Connection(Exception(''), resource)
+        with self.assertRaises(Exception):
+            client.get_dataset(dataset_ref)
+
+        # Zero-length errors field.
+        client._connection = _Connection(ServerError(''), resource)
+        with self.assertRaises(ServerError):
+            client.get_dataset(dataset_ref)
+
+        # Non-retryable reason.
+        client._connection = _Connection(
+            ServerError('', errors=[{'reason': 'serious'}]),
+            resource)
+        with self.assertRaises(ServerError):
+            client.get_dataset(dataset_ref)
+
+        # Retryable reason, but retry is disabled.
+        client._connection = _Connection(
+            ServerError('', errors=[{'reason': 'backendError'}]),
+            resource)
+        with self.assertRaises(ServerError):
+            client.get_dataset(dataset_ref, retry=None)
+
+        # Retryable reason, default retry: success.
+        client._connection = _Connection(
+            ServerError('', errors=[{'reason': 'backendError'}]),
+            resource)
+        dataset = client.get_dataset(dataset_ref)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
     def test_create_dataset_minimal(self):
@@ -2994,4 +3029,6 @@ class _Connection(object):
             raise NotFound('miss')
 
         response, self._responses = self._responses[0], self._responses[1:]
+        if isinstance(response, Exception):
+            raise response
         return response
