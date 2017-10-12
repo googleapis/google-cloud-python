@@ -28,6 +28,9 @@ from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
 
 
+USER_PROJECT = os.environ.get('GOOGLE_CLOUD_TESTS_USER_PROJECT')
+
+
 def _bad_copy(bad_request):
     """Predicate: pass only exceptions for a failed copyTo."""
     err_msg = bad_request.message
@@ -133,6 +136,135 @@ class TestStorageBuckets(unittest.TestCase):
         bucket.update()
         self.assertEqual(bucket.labels, {})
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_crud_bucket_with_requester_pays(self):
+        new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(created.name, new_bucket_name)
+        self.assertTrue(created.requester_pays)
+
+        with_user_project = Config.CLIENT.bucket(
+            new_bucket_name, user_project=USER_PROJECT)
+
+        # Bucket will be deleted in-line below.
+        self.case_buckets_to_delete.remove(new_bucket_name)
+
+        try:
+            # Exercise 'buckets.get' w/ userProject.
+            self.assertTrue(with_user_project.exists())
+            with_user_project.reload()
+            self.assertTrue(with_user_project.requester_pays)
+
+            # Exercise 'buckets.patch' w/ userProject.
+            with_user_project.configure_website(
+                main_page_suffix='index.html', not_found_page='404.html')
+            with_user_project.patch()
+            self.assertEqual(
+                with_user_project._properties['website'], {
+                    'mainPageSuffix': 'index.html',
+                    'notFoundPage': '404.html',
+                })
+
+            # Exercise 'buckets.update' w/ userProject.
+            new_labels = {'another-label': 'another-value'}
+            with_user_project.labels = new_labels
+            with_user_project.update()
+            self.assertEqual(with_user_project.labels, new_labels)
+
+        finally:
+            # Exercise 'buckets.delete' w/ userProject.
+            with_user_project.delete()
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_bucket_acls_iam_with_user_project(self):
+        new_bucket_name = 'acl-w-user-project' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+
+        with_user_project = Config.CLIENT.bucket(
+            new_bucket_name, user_project=USER_PROJECT)
+
+        # Exercise bucket ACL w/ userProject
+        acl = with_user_project.acl
+        acl.reload()
+        acl.all().grant_read()
+        acl.save()
+        self.assertIn('READER', acl.all().get_roles())
+        del acl.entities['allUsers']
+        acl.save()
+        self.assertFalse(acl.has_entity('allUsers'))
+
+        # Exercise default object ACL w/ userProject
+        doa = with_user_project.default_object_acl
+        doa.reload()
+        doa.all().grant_read()
+        doa.save()
+        self.assertIn('READER', doa.all().get_roles())
+
+        # Exercise IAM w/ userProject
+        test_permissions = ['storage.buckets.get']
+        self.assertEqual(
+            with_user_project.test_iam_permissions(test_permissions),
+            test_permissions)
+
+        policy = with_user_project.get_iam_policy()
+        viewers = policy.setdefault('roles/storage.objectViewer', set())
+        viewers.add(policy.all_users())
+        with_user_project.set_iam_policy(policy)
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_copy_existing_file_with_user_project(self):
+        new_bucket_name = 'copy-w-requester-pays' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(created.name, new_bucket_name)
+        self.assertTrue(created.requester_pays)
+
+        to_delete = []
+        blob = storage.Blob('simple', bucket=created)
+        blob.upload_from_string(b'DEADBEEF')
+        to_delete.append(blob)
+        try:
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            new_blob = retry_bad_copy(with_user_project.copy_blob)(
+                blob, with_user_project, 'simple-copy')
+            to_delete.append(new_blob)
+
+            base_contents = blob.download_as_string()
+            copied_contents = new_blob.download_as_string()
+            self.assertEqual(base_contents, copied_contents)
+        finally:
+            for blob in to_delete:
+                retry_429(blob.delete)()
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_bucket_get_blob_with_user_project(self):
+        new_bucket_name = 'w-requester-pays' + unique_resource_id('-')
+        data = b'DEADBEEF'
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        self.assertEqual(created.name, new_bucket_name)
+        self.assertTrue(created.requester_pays)
+
+        with_user_project = Config.CLIENT.bucket(
+            new_bucket_name, user_project=USER_PROJECT)
+
+        self.assertIsNone(with_user_project.get_blob('nonesuch'))
+        to_add = created.blob('blob-name')
+        to_add.upload_from_string(data)
+        try:
+            found = with_user_project.get_blob('blob-name')
+            self.assertEqual(found.download_as_string(), data)
+        finally:
+            to_add.delete()
+
 
 class TestStorageFiles(unittest.TestCase):
 
@@ -215,6 +347,66 @@ class TestStorageWriteFiles(TestStorageFiles):
         if not isinstance(md5_hash, six.binary_type):
             md5_hash = md5_hash.encode('utf-8')
         self.assertEqual(md5_hash, file_data['hash'])
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_crud_blob_w_user_project(self):
+        with_user_project = Config.CLIENT.bucket(
+            self.bucket.name, user_project=USER_PROJECT)
+        blob = with_user_project.blob('SmallFile')
+
+        file_data = self.FILES['simple']
+        with open(file_data['path'], mode='rb') as to_read:
+            file_contents = to_read.read()
+
+        # Exercise 'objects.insert' w/ userProject.
+        blob.upload_from_filename(file_data['path'])
+
+        try:
+            # Exercise 'objects.get' (metadata) w/ userProject.
+            self.assertTrue(blob.exists())
+            blob.reload()
+
+            # Exercise 'objects.get' (media) w/ userProject.
+            downloaded = blob.download_as_string()
+            self.assertEqual(downloaded, file_contents)
+
+            # Exercise 'objects.patch' w/ userProject.
+            blob.content_language = 'en'
+            blob.patch()
+            self.assertEqual(blob.content_language, 'en')
+
+            # Exercise 'objects.update' w/ userProject.
+            metadata = {
+                'foo': 'Foo',
+                'bar': 'Bar',
+            }
+            blob.metadata = metadata
+            blob.update()
+            self.assertEqual(blob.metadata, metadata)
+        finally:
+            # Exercise 'objects.delete' (metadata) w/ userProject.
+            blob.delete()
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_blob_acl_w_user_project(self):
+        with_user_project = Config.CLIENT.bucket(
+            self.bucket.name, user_project=USER_PROJECT)
+        blob = with_user_project.blob('SmallFile')
+
+        file_data = self.FILES['simple']
+
+        blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(blob)
+
+        # Exercise bucket ACL w/ userProject
+        acl = blob.acl
+        acl.reload()
+        acl.all().grant_read()
+        acl.save()
+        self.assertIn('READER', acl.all().get_roles())
+        del acl.entities['allUsers']
+        acl.save()
+        self.assertFalse(acl.has_entity('allUsers'))
 
     def test_write_metadata(self):
         filename = self.FILES['logo']['path']
@@ -311,6 +503,15 @@ class TestStorageListFiles(TestStorageFiles):
     @RetryErrors(unittest.TestCase.failureException)
     def test_list_files(self):
         all_blobs = list(self.bucket.list_blobs())
+        self.assertEqual(sorted(blob.name for blob in all_blobs),
+                         sorted(self.FILENAMES))
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    @RetryErrors(unittest.TestCase.failureException)
+    def test_list_files_with_user_project(self):
+        with_user_project = Config.CLIENT.bucket(
+            self.bucket.name, user_project=USER_PROJECT)
+        all_blobs = list(with_user_project.list_blobs())
         self.assertEqual(sorted(blob.name for blob in all_blobs),
                          sorted(self.FILENAMES))
 
@@ -501,6 +702,32 @@ class TestStorageCompose(TestStorageFiles):
         composed = original.download_as_string()
         self.assertEqual(composed, BEFORE + TO_APPEND)
 
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_compose_with_user_project(self):
+        new_bucket_name = 'compose-user-project' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        try:
+            SOURCE_1 = b'AAA\n'
+            source_1 = created.blob('source-1')
+            source_1.upload_from_string(SOURCE_1)
+
+            SOURCE_2 = b'BBB\n'
+            source_2 = created.blob('source-2')
+            source_2.upload_from_string(SOURCE_2)
+
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            destination = with_user_project.blob('destination')
+            destination.content_type = 'text/plain'
+            destination.compose([source_1, source_2])
+
+            composed = destination.download_as_string()
+            self.assertEqual(composed, SOURCE_1 + SOURCE_2)
+        finally:
+            retry_429(created.delete)(force=True)
+
 
 class TestStorageRewrite(TestStorageFiles):
 
@@ -544,11 +771,65 @@ class TestStorageRewrite(TestStorageFiles):
         # Not adding 'dest' to 'self.case_blobs_to_delete':  it is the
         # same object as 'source'.
 
-        self.assertEqual(token, None)
+        self.assertIsNone(token)
         self.assertEqual(rewritten, len(source_data))
         self.assertEqual(total, len(source_data))
 
         self.assertEqual(dest.download_as_string(), source_data)
+
+    def test_rewrite_add_key_with_user_project(self):
+        file_data = self.FILES['simple']
+        new_bucket_name = 'rewrite-key-up' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        try:
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            source = with_user_project.blob('source')
+            source.upload_from_filename(file_data['path'])
+            source_data = source.download_as_string()
+
+            KEY = os.urandom(32)
+            dest = with_user_project.blob('dest', encryption_key=KEY)
+            token, rewritten, total = dest.rewrite(source)
+
+            self.assertEqual(token, None)
+            self.assertEqual(rewritten, len(source_data))
+            self.assertEqual(total, len(source_data))
+
+            self.assertEqual(source.download_as_string(),
+                             dest.download_as_string())
+        finally:
+            retry_429(created.delete)(force=True)
+
+    def test_rewrite_rotate_with_user_project(self):
+        BLOB_NAME = 'rotating-keys'
+        file_data = self.FILES['simple']
+        new_bucket_name = 'rewrite-rotate-up' + unique_resource_id('-')
+        created = Config.CLIENT.create_bucket(
+            new_bucket_name, requester_pays=True)
+        try:
+            with_user_project = Config.CLIENT.bucket(
+                new_bucket_name, user_project=USER_PROJECT)
+
+            SOURCE_KEY = os.urandom(32)
+            source = with_user_project.blob(
+                BLOB_NAME, encryption_key=SOURCE_KEY)
+            source.upload_from_filename(file_data['path'])
+            source_data = source.download_as_string()
+
+            DEST_KEY = os.urandom(32)
+            dest = with_user_project.blob(BLOB_NAME, encryption_key=DEST_KEY)
+            token, rewritten, total = dest.rewrite(source)
+
+            self.assertEqual(token, None)
+            self.assertEqual(rewritten, len(source_data))
+            self.assertEqual(total, len(source_data))
+
+            self.assertEqual(dest.download_as_string(), source_data)
+        finally:
+            retry_429(created.delete)(force=True)
 
 
 class TestStorageNotificationCRUD(unittest.TestCase):

@@ -140,6 +140,22 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertIsNone(bucket.user_project)
+
+    def test_bucket_w_user_project(self):
+        from google.cloud.storage.bucket import Bucket
+
+        PROJECT = 'PROJECT'
+        USER_PROJECT = 'USER_PROJECT'
+        CREDENTIALS = _make_credentials()
+        BUCKET_NAME = 'BUCKET_NAME'
+
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        bucket = client.bucket(BUCKET_NAME, user_project=USER_PROJECT)
+        self.assertIsInstance(bucket, Bucket)
+        self.assertIs(bucket.client, client)
+        self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertEqual(bucket.user_project, USER_PROJECT)
 
     def test_batch(self):
         from google.cloud.storage.batch import Batch
@@ -184,23 +200,23 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
             client._connection.API_VERSION,
             'b',
-            '%s?projection=noAcl' % (BLOB_NAME,),
+            '%s?projection=noAcl' % (BUCKET_NAME,),
         ])
 
-        data = {'name': BLOB_NAME}
+        data = {'name': BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
-        bucket = client.get_bucket(BLOB_NAME)
+        bucket = client.get_bucket(BUCKET_NAME)
 
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
             method='GET', url=URI, data=mock.ANY, headers=mock.ANY)
 
@@ -234,22 +250,22 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
             client._connection.API_VERSION,
             'b',
-            '%s?projection=noAcl' % (BLOB_NAME,),
+            '%s?projection=noAcl' % (BUCKET_NAME,),
         ])
-        data = {'name': BLOB_NAME}
+        data = {'name': BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
-        bucket = client.lookup_bucket(BLOB_NAME)
+        bucket = client.lookup_bucket(BUCKET_NAME)
 
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
             method='GET', url=URI, data=mock.ANY, headers=mock.ANY)
 
@@ -260,7 +276,7 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
@@ -268,13 +284,16 @@ class TestClient(unittest.TestCase):
             'b?project=%s' % (PROJECT,),
         ])
         data = {'error': {'message': 'Conflict'}}
+        sent = {'name': BUCKET_NAME}
         http = _make_requests_session([
             _make_json_response(data, status=http_client.CONFLICT)])
         client._http_internal = http
 
-        self.assertRaises(Conflict, client.create_bucket, BLOB_NAME)
+        self.assertRaises(Conflict, client.create_bucket, BUCKET_NAME)
         http.request.assert_called_once_with(
             method='POST', url=URI, data=mock.ANY, headers=mock.ANY)
+        json_sent = http.request.call_args_list[0][1]['data']
+        self.assertEqual(sent, json.loads(json_sent))
 
     def test_create_bucket_success(self):
         from google.cloud.storage.bucket import Bucket
@@ -283,23 +302,27 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         URI = '/'.join([
             client._connection.API_BASE_URL,
             'storage',
             client._connection.API_VERSION,
             'b?project=%s' % (PROJECT,),
         ])
-        data = {'name': BLOB_NAME}
+        sent = {'name': BUCKET_NAME, 'billing': {'requesterPays': True}}
+        data = sent
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
 
-        bucket = client.create_bucket(BLOB_NAME)
+        bucket = client.create_bucket(BUCKET_NAME, requester_pays=True)
 
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(bucket.name, BUCKET_NAME)
+        self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
             method='POST', url=URI, data=mock.ANY, headers=mock.ANY)
+        json_sent = http.request.call_args_list[0][1]['data']
+        self.assertEqual(sent, json.loads(json_sent))
 
     def test_list_buckets_empty(self):
         from six.moves.urllib.parse import parse_qs
@@ -422,7 +445,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
 
-        blob_name = 'blob-name'
+        blob_name = 'bucket-name'
         response = {'items': [{'name': blob_name}]}
 
         def dummy_response():

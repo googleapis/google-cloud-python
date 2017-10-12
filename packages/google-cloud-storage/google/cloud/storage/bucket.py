@@ -108,6 +108,10 @@ class Bucket(_PropertyMixin):
     :type name: str
     :param name: The name of the bucket. Bucket names must start and end with a
                  number or letter.
+
+    :type user_project: str
+    :param user_project: (Optional) the project ID to be billed for API
+                         requests made via this instance.
     """
 
     _MAX_OBJECTS_FOR_ITERATION = 256
@@ -131,13 +135,14 @@ class Bucket(_PropertyMixin):
     https://cloud.google.com/storage/docs/storage-classes
     """
 
-    def __init__(self, client, name=None):
+    def __init__(self, client, name=None, user_project=None):
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
         self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
         self._label_removals = set()
+        self._user_project = user_project
 
     def __repr__(self):
         return '<Bucket: %s>' % (self.name,)
@@ -155,6 +160,16 @@ class Bucket(_PropertyMixin):
         """
         self._label_removals.clear()
         return super(Bucket, self)._set_properties(value)
+
+    @property
+    def user_project(self):
+        """Project ID to be billed for API requests made via this bucket.
+
+        If unset, API requests are billed to the bucket owner.
+
+        :rtype: str
+        """
+        return self._user_project
 
     def blob(self, blob_name, chunk_size=None, encryption_key=None):
         """Factory constructor for blob object.
@@ -214,10 +229,14 @@ class Bucket(_PropertyMixin):
         :returns: True if the bucket exists in Cloud Storage.
         """
         client = self._require_client(client)
+        # We only need the status code (200 or not) so we seek to
+        # minimize the returned payload.
+        query_params = {'fields': 'name'}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         try:
-            # We only need the status code (200 or not) so we seek to
-            # minimize the returned payload.
-            query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client._connection.api_request(
@@ -243,6 +262,9 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """
+        if self.user_project is not None:
+            raise ValueError("Cannot create bucket with 'user_project' set.")
+
         client = self._require_client(client)
         query_params = {'project': client.project}
         properties = {key: self._properties[key] for key in self._changes}
@@ -334,13 +356,21 @@ class Bucket(_PropertyMixin):
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
         blob = Blob(bucket=self, name=blob_name, encryption_key=encryption_key,
                     **kwargs)
         try:
             headers = _get_encryption_headers(encryption_key)
             response = client._connection.api_request(
-                method='GET', path=blob.path, _target_object=blob,
-                headers=headers)
+                method='GET',
+                path=blob.path,
+                query_params=query_params,
+                headers=headers,
+                _target_object=blob,
+            )
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
@@ -394,7 +424,7 @@ class Bucket(_PropertyMixin):
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
-        extra_params = {}
+        extra_params = {'projection': projection}
 
         if prefix is not None:
             extra_params['prefix'] = prefix
@@ -405,10 +435,11 @@ class Bucket(_PropertyMixin):
         if versions is not None:
             extra_params['versions'] = versions
 
-        extra_params['projection'] = projection
-
         if fields is not None:
             extra_params['fields'] = fields
+
+        if self.user_project is not None:
+            extra_params['userProject'] = self.user_project
 
         client = self._require_client(client)
         path = self.path + '/o'
@@ -478,6 +509,11 @@ class Bucket(_PropertyMixin):
                  contains more than 256 objects / blobs.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if force:
             blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
@@ -499,7 +535,10 @@ class Bucket(_PropertyMixin):
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE', path=self.path, _target_object=None)
+            method='DELETE',
+            path=self.path,
+            query_params=query_params,
+            _target_object=None)
 
     def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
@@ -531,12 +570,20 @@ class Bucket(_PropertyMixin):
 
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE', path=blob_path, _target_object=None)
+            method='DELETE',
+            path=blob_path,
+            query_params=query_params,
+            _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
@@ -599,14 +646,26 @@ class Bucket(_PropertyMixin):
         :returns: The new Blob.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if new_name is None:
             new_name = blob.name
+
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
         copy_result = client._connection.api_request(
-            method='POST', path=api_path, _target_object=new_blob)
+            method='POST',
+            path=api_path,
+            query_params=query_params,
+            _target_object=new_blob,
+            )
+
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
+
         new_blob._set_properties(copy_result)
         return new_blob
 
@@ -964,9 +1023,39 @@ class Bucket(_PropertyMixin):
         details.
 
         :type value: convertible to boolean
-        :param value: should versioning be anabled for the bucket?
+        :param value: should versioning be enabled for the bucket?
         """
         self._patch_property('versioning', {'enabled': bool(value)})
+
+    @property
+    def requester_pays(self):
+        """Does the requester pay for API requests for this bucket?
+
+        .. note::
+
+           No public docs exist yet for the "requester pays" feature.
+
+        :setter: Update whether requester pays for this bucket.
+        :getter: Query whether requester pays for this bucket.
+
+        :rtype: bool
+        :returns: True if requester pays for API requests for the bucket,
+                  else False.
+        """
+        versioning = self._properties.get('billing', {})
+        return versioning.get('requesterPays', False)
+
+    @requester_pays.setter
+    def requester_pays(self, value):
+        """Update whether requester pays for API requests for this bucket.
+
+        See  https://cloud.google.com/storage/docs/<DOCS-MISSING> for
+        details.
+
+        :type value: convertible to boolean
+        :param value: should requester pay for API requests for the bucket?
+        """
+        self._patch_property('billing', {'requesterPays': bool(value)})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
@@ -1033,9 +1122,15 @@ class Bucket(_PropertyMixin):
                   the ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         info = client._connection.api_request(
             method='GET',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             _target_object=None)
         return Policy.from_api_repr(info)
 
@@ -1058,11 +1153,17 @@ class Bucket(_PropertyMixin):
                   the ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         resource = policy.to_api_repr()
         resource['resourceId'] = self.path
         info = client._connection.api_request(
             method='PUT',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             data=resource,
             _target_object=None)
         return Policy.from_api_repr(info)
@@ -1086,12 +1187,16 @@ class Bucket(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query = {'permissions': permissions}
+        query_params = {'permissions': permissions}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = '%s/iam/testPermissions' % (self.path,)
         resp = client._connection.api_request(
             method='GET',
             path=path,
-            query_params=query)
+            query_params=query_params)
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):
