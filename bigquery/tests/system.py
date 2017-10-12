@@ -20,6 +20,7 @@ import operator
 import os
 import time
 import unittest
+import uuid
 
 import six
 
@@ -688,7 +689,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_job_cancel(self):
         DATASET_ID = _make_dataset_id('job_cancel')
-        JOB_ID = 'fetch_' + DATASET_ID
+        JOB_ID = 'fetch_' + DATASET_ID + str(uuid.uuid4())
         TABLE_NAME = 'test_table'
         QUERY = 'SELECT * FROM %s.%s' % (DATASET_ID, TABLE_NAME)
 
@@ -924,7 +925,7 @@ class TestBigQuery(unittest.TestCase):
 
         query_job = Config.CLIENT.query(
             query_template.format(dataset_name, table_name),
-            job_id='test_query_w_dml_{}'.format(unique_resource_id()))
+            job_id='test_query_w_dml_{}'.format(str(uuid.uuid4())))
         query_job.result()
 
         self.assertEqual(query_job.num_dml_affected_rows, 1)
@@ -940,7 +941,7 @@ class TestBigQuery(unittest.TestCase):
 
         Config.CURSOR.execute(
             query_template.format(dataset_name, table_name),
-            job_id='test_dbapi_w_dml_{}'.format(unique_resource_id()))
+            job_id='test_dbapi_w_dml_{}'.format(str(uuid.uuid4())))
         self.assertEqual(Config.CURSOR.rowcount, 1)
         self.assertIsNone(Config.CURSOR.fetchone())
 
@@ -1112,7 +1113,7 @@ class TestBigQuery(unittest.TestCase):
                 example['sql'],
                 job_config=jconfig,
                 job_id='test_query_w_query_params{}'.format(
-                    unique_resource_id()))
+                    str(uuid.uuid4())))
             rows = list(query_job.result())
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]), 1)
