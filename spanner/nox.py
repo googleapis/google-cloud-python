@@ -42,6 +42,7 @@ def unit_tests(session, python_version):
         'py.test',
         '--quiet',
         '--cov=google.cloud.spanner',
+        '--cov=google.cloud.spanner_v1',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
