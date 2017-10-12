@@ -34,6 +34,11 @@ def _make_credentials():
 
 class TestClient(unittest.TestCase):
 
+    PROJECT = 'PROJECT'
+    DS_ID = 'DATASET_ID'
+    TABLE_ID = 'TABLE_ID'
+    TABLE_REF = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+
     @staticmethod
     def _get_target_class():
         from google.cloud.bigquery.client import Client
@@ -46,10 +51,10 @@ class TestClient(unittest.TestCase):
     def test_ctor(self):
         from google.cloud.bigquery._http import Connection
 
-        PROJECT = 'PROJECT'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, creds)
         self.assertIs(client._connection.http, http)
@@ -57,9 +62,8 @@ class TestClient(unittest.TestCase):
     def test__get_query_results_miss_w_explicit_project_and_timeout(self):
         from google.cloud.exceptions import NotFound
 
-        project = 'PROJECT'
         creds = _make_credentials()
-        client = self._make_one(project, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection()
 
         with self.assertRaises(NotFound):
@@ -75,7 +79,6 @@ class TestClient(unittest.TestCase):
             req['query_params'], {'maxResults': 0, 'timeoutMs': 500})
 
     def test__get_query_results_hit(self):
-        project = 'PROJECT'
         job_id = 'query_job'
         data = {
             'kind': 'bigquery#getQueryResultsResponse',
@@ -95,7 +98,7 @@ class TestClient(unittest.TestCase):
                 ]
             },
             'jobReference': {
-                'projectId': project,
+                'projectId': self.PROJECT,
                 'jobId': job_id,
             },
             'totalRows': '10',
@@ -105,7 +108,7 @@ class TestClient(unittest.TestCase):
         }
 
         creds = _make_credentials()
-        client = self._make_one(project, creds)
+        client = self._make_one(self.PROJECT, creds)
         client._connection = _Connection(data)
         query_results = client._get_query_results(job_id)
 
@@ -157,12 +160,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_projects_explicit_response_missing_projects_key(self):
-        PROJECT = 'PROJECT'
         PATH = 'projects'
         TOKEN = 'TOKEN'
         DATA = {}
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
         iterator = client.list_projects(max_results=3, page_token=TOKEN)
@@ -183,28 +185,27 @@ class TestClient(unittest.TestCase):
     def test_list_datasets_defaults(self):
         from google.cloud.bigquery.dataset import Dataset
 
-        PROJECT = 'PROJECT'
         DATASET_1 = 'dataset_one'
         DATASET_2 = 'dataset_two'
-        PATH = 'projects/%s/datasets' % PROJECT
+        PATH = 'projects/%s/datasets' % self.PROJECT
         TOKEN = 'TOKEN'
         DATA = {
             'nextPageToken': TOKEN,
             'datasets': [
                 {'kind': 'bigquery#dataset',
-                 'id': '%s:%s' % (PROJECT, DATASET_1),
+                 'id': '%s:%s' % (self.PROJECT, DATASET_1),
                  'datasetReference': {'datasetId': DATASET_1,
-                                      'projectId': PROJECT},
+                                      'projectId': self.PROJECT},
                  'friendlyName': None},
                 {'kind': 'bigquery#dataset',
-                 'id': '%s:%s' % (PROJECT, DATASET_2),
+                 'id': '%s:%s' % (self.PROJECT, DATASET_2),
                  'datasetReference': {'datasetId': DATASET_2,
-                                      'projectId': PROJECT},
+                                      'projectId': self.PROJECT},
                  'friendlyName': 'Two'},
             ]
         }
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
         iterator = client.list_datasets()
@@ -225,12 +226,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_datasets_explicit_response_missing_datasets_key(self):
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/datasets' % PROJECT
+        PATH = 'projects/%s/datasets' % self.PROJECT
         TOKEN = 'TOKEN'
         DATA = {}
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
         iterator = client.list_datasets(
@@ -252,45 +252,42 @@ class TestClient(unittest.TestCase):
     def test_dataset_with_specified_project(self):
         from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DATASET = 'dataset_name'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        dataset = client.dataset(DATASET, PROJECT)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        dataset = client.dataset(self.DS_ID, self.PROJECT)
         self.assertIsInstance(dataset, DatasetReference)
-        self.assertEqual(dataset.dataset_id, DATASET)
-        self.assertEqual(dataset.project, PROJECT)
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
 
     def test_dataset_with_default_project(self):
         from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DATASET = 'dataset_name'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        dataset = client.dataset(DATASET)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        dataset = client.dataset(self.DS_ID)
         self.assertIsInstance(dataset, DatasetReference)
-        self.assertEqual(dataset.dataset_id, DATASET)
-        self.assertEqual(dataset.project, PROJECT)
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.project, self.PROJECT)
 
     def test_get_dataset(self):
-        project = 'PROJECT'
-        dataset_id = 'dataset_id'
-        path = 'projects/%s/datasets/%s' % (project, dataset_id)
+        path = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=project, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         resource = {
-            'id': '%s:%s' % (project, dataset_id),
+            'id': '%s:%s' % (self.PROJECT, self.DS_ID),
             'datasetReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
             },
         }
         conn = client._connection = _Connection(resource)
-        dataset_ref = client.dataset(dataset_id)
+        dataset_ref = client.dataset(self.DS_ID)
 
         dataset = client.get_dataset(dataset_ref)
 
@@ -298,45 +295,41 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % path)
-        self.assertEqual(dataset.dataset_id, dataset_id)
+        self.assertEqual(dataset.dataset_id, self.DS_ID)
 
     def test_create_dataset_minimal(self):
         from google.cloud.bigquery.dataset import Dataset
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
-        PATH = 'projects/%s/datasets' % PROJECT
+        PATH = 'projects/%s/datasets' % self.PROJECT
         RESOURCE = {
             'datasetReference':
-                {'projectId': PROJECT, 'datasetId': DS_ID},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'etag': "etag",
-            'id': "%s:%s" % (PROJECT, DS_ID),
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
         }
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(RESOURCE)
-        ds = client.create_dataset(Dataset(client.dataset(DS_ID)))
+        ds = client.create_dataset(Dataset(client.dataset(self.DS_ID)))
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {
             'datasetReference':
-                {'projectId': PROJECT, 'datasetId': DS_ID},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'labels': {},
         }
         self.assertEqual(req['data'], SENT)
-        self.assertEqual(ds.dataset_id, DS_ID)
-        self.assertEqual(ds.project, PROJECT)
+        self.assertEqual(ds.dataset_id, self.DS_ID)
+        self.assertEqual(ds.project, self.PROJECT)
         self.assertEqual(ds.etag, RESOURCE['etag'])
         self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
 
     def test_create_dataset_w_attrs(self):
         from google.cloud.bigquery.dataset import Dataset, AccessEntry
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
-        PATH = 'projects/%s/datasets' % PROJECT
+        PATH = 'projects/%s/datasets' % self.PROJECT
         DESCRIPTION = 'DESC'
         FRIENDLY_NAME = 'FN'
         LOCATION = 'US'
@@ -349,9 +342,9 @@ class TestClient(unittest.TestCase):
         }
         RESOURCE = {
             'datasetReference':
-                {'projectId': PROJECT, 'datasetId': DS_ID},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'etag': "etag",
-            'id': "%s:%s" % (PROJECT, DS_ID),
+            'id': "%s:%s" % (self.PROJECT, self.DS_ID),
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
@@ -362,11 +355,11 @@ class TestClient(unittest.TestCase):
                 {'view': VIEW}],
         }
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(RESOURCE)
         entries = [AccessEntry('OWNER', 'userByEmail', USER_EMAIL),
                    AccessEntry(None, 'view', VIEW)]
-        ds_arg = Dataset(client.dataset(DS_ID))
+        ds_arg = Dataset(client.dataset(self.DS_ID))
         ds_arg.access_entries = entries
         ds_arg.description = DESCRIPTION
         ds_arg.friendly_name = FRIENDLY_NAME
@@ -380,7 +373,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {
             'datasetReference':
-                {'projectId': PROJECT, 'datasetId': DS_ID},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
@@ -391,8 +384,8 @@ class TestClient(unittest.TestCase):
             'labels': LABELS,
         }
         self.assertEqual(req['data'], SENT)
-        self.assertEqual(ds.dataset_id, DS_ID)
-        self.assertEqual(ds.project, PROJECT)
+        self.assertEqual(ds.dataset_id, self.DS_ID)
+        self.assertEqual(ds.project, self.PROJECT)
         self.assertEqual(ds.etag, RESOURCE['etag'])
         self.assertEqual(ds.full_dataset_id, RESOURCE['id'])
         self.assertEqual(ds.description, DESCRIPTION)
@@ -404,24 +397,20 @@ class TestClient(unittest.TestCase):
     def test_create_table_w_day_partition(self):
         from google.cloud.bigquery.table import Table
 
-        project = 'PROJECT'
-        dataset_id = 'dataset_id'
-        table_id = 'table-id'
         path = 'projects/%s/datasets/%s/tables' % (
-            project, dataset_id)
+            self.PROJECT, self.DS_ID)
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
         }
         conn = client._connection = _Connection(resource)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref)
+        table = Table(self.TABLE_REF)
         table.partitioning_type = 'DAY'
 
         got = client.create_table(table)
@@ -432,37 +421,33 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'timePartitioning': {'type': 'DAY'},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(table.partitioning_type, "DAY")
-        self.assertEqual(got.table_id, table_id)
+        self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_day_partition_and_expire(self):
         from google.cloud.bigquery.table import Table
 
-        project = 'PROJECT'
-        dataset_id = 'dataset_id'
-        table_id = 'table-id'
         path = 'projects/%s/datasets/%s/tables' % (
-            project, dataset_id)
+            self.PROJECT, self.DS_ID)
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
         }
         conn = client._connection = _Connection(resource)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref)
+        table = Table(self.TABLE_REF)
         table.partitioning_type = 'DAY'
         table.partition_expiration = 100
 
@@ -474,34 +459,31 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(table.partition_expiration, 100)
-        self.assertEqual(got.table_id, table_id)
+        self.assertEqual(got.table_id, self.TABLE_ID)
 
     def test_create_table_w_schema_and_query(self):
         from google.cloud.bigquery.table import Table, SchemaField
 
-        project = 'PROJECT'
-        dataset_id = 'dataset_id'
-        table_id = 'table-id'
         path = 'projects/%s/datasets/%s/tables' % (
-            project, dataset_id)
-        query = 'SELECT * from %s:%s' % (dataset_id, table_id)
+            self.PROJECT, self.DS_ID)
+        query = 'SELECT * from %s:%s' % (self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         resource = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -514,8 +496,7 @@ class TestClient(unittest.TestCase):
             SchemaField('age', 'INTEGER', mode='REQUIRED')
         ]
         conn = client._connection = _Connection(resource)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, schema=schema)
+        table = Table(self.TABLE_REF, schema=schema)
         table.view_query = query
 
         got = client.create_table(table)
@@ -526,9 +507,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID,
             },
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -538,56 +519,48 @@ class TestClient(unittest.TestCase):
             'view': {'query': query, 'useLegacySql': None},
         }
         self.assertEqual(req['data'], sent)
-        self.assertEqual(got.table_id, table_id)
-        self.assertEqual(got.project, project)
-        self.assertEqual(got.dataset_id, dataset_id)
+        self.assertEqual(got.table_id, self.TABLE_ID)
+        self.assertEqual(got.project, self.PROJECT)
+        self.assertEqual(got.dataset_id, self.DS_ID)
         self.assertEqual(got.schema, schema)
         self.assertEqual(got.view_query, query)
 
     def test_get_table(self):
-        project = 'PROJECT'
-        dataset_id = 'dataset_id'
-        table_id = 'table-id'
         path = 'projects/%s/datasets/%s/tables/%s' % (
-            project, dataset_id, table_id)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=project, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         resource = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID,
             },
         }
         conn = client._connection = _Connection(resource)
-        table_ref = client.dataset(dataset_id).table(table_id)
-
-        table = client.get_table(table_ref)
+        table = client.get_table(self.TABLE_REF)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % path)
-        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(table.table_id, self.TABLE_ID)
 
     def test_update_dataset_w_invalid_field(self):
         from google.cloud.bigquery.dataset import Dataset
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(ValueError):
-            client.update_dataset(Dataset(client.dataset(DS_ID)), ["foo"])
+            client.update_dataset(Dataset(client.dataset(self.DS_ID)), ["foo"])
 
     def test_update_dataset(self):
         from google.cloud.bigquery.dataset import Dataset
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
-        PATH = 'projects/%s/datasets/%s' % (PROJECT, DS_ID)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         DESCRIPTION = 'DESCRIPTION'
         FRIENDLY_NAME = 'TITLE'
         LOCATION = 'loc'
@@ -595,7 +568,7 @@ class TestClient(unittest.TestCase):
         EXP = 17
         RESOURCE = {
             'datasetReference':
-                {'projectId': PROJECT, 'datasetId': DS_ID},
+                {'projectId': self.PROJECT, 'datasetId': self.DS_ID},
             'etag': "etag",
             'description': DESCRIPTION,
             'friendlyName': FRIENDLY_NAME,
@@ -604,9 +577,9 @@ class TestClient(unittest.TestCase):
             'labels': LABELS,
         }
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(RESOURCE, RESOURCE)
-        ds = Dataset(client.dataset(DS_ID))
+        ds = Dataset(client.dataset(self.DS_ID))
         ds.description = DESCRIPTION
         ds.friendly_name = FRIENDLY_NAME
         ds.location = LOCATION
@@ -640,19 +613,16 @@ class TestClient(unittest.TestCase):
     def test_update_table(self):
         from google.cloud.bigquery.table import Table, SchemaField
 
-        project = 'PROJECT'
-        dataset_id = 'DATASET_ID'
-        table_id = 'table_id'
         path = 'projects/%s/datasets/%s/tables/%s' % (
-            project, dataset_id, table_id)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         description = 'description'
         title = 'title'
         resource = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -667,10 +637,9 @@ class TestClient(unittest.TestCase):
             SchemaField('age', 'INTEGER', mode='REQUIRED')
         ]
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(resource, resource)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, schema=schema)
+        table = Table(self.TABLE_REF, schema=schema)
         table.description = description
         table.friendly_name = title
 
@@ -679,9 +648,9 @@ class TestClient(unittest.TestCase):
 
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -708,25 +677,21 @@ class TestClient(unittest.TestCase):
     def test_update_table_only_use_legacy_sql(self):
         from google.cloud.bigquery.table import Table
 
-        project = 'PROJECT'
-        dataset_id = 'DATASET_ID'
-        table_id = 'table_id'
         path = 'projects/%s/datasets/%s/tables/%s' % (
-            project, dataset_id, table_id)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         resource = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'view': {'useLegacySql': True}
         }
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(resource)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref)
+        table = Table(self.TABLE_REF)
         table.view_use_legacy_sql = True
 
         updated_table = client.update_table(table, ['view_use_legacy_sql'])
@@ -737,9 +702,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'view': {'useLegacySql': True}
         }
@@ -753,11 +718,8 @@ class TestClient(unittest.TestCase):
         from google.cloud._helpers import _millis
         from google.cloud.bigquery.table import Table, SchemaField
 
-        project = 'PROJECT'
-        dataset_id = 'DATASET_ID'
-        table_id = 'table_id'
         path = 'projects/%s/datasets/%s/tables/%s' % (
-            project, dataset_id, table_id)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         query = 'select fullname, age from person_ages'
         location = 'EU'
         exp_time = datetime.datetime(2015, 8, 1, 23, 59, 59, tzinfo=UTC)
@@ -769,11 +731,11 @@ class TestClient(unittest.TestCase):
             SchemaField('age', 'INTEGER', mode='REQUIRED')
         ]
         resource = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'schema': schema_resource,
             'view': {'query': query, 'useLegacySql': True},
@@ -781,10 +743,9 @@ class TestClient(unittest.TestCase):
             'expirationTime': _millis(exp_time)
         }
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(resource)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref, schema=schema)
+        table = Table(self.TABLE_REF, schema=schema)
         table.location = location
         table.expires = exp_time
         table.view_query = query
@@ -800,9 +761,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'view': {'query': query, 'useLegacySql': True},
             'location': location,
@@ -820,34 +781,30 @@ class TestClient(unittest.TestCase):
     def test_update_table_w_schema_None(self):
         # Simulate deleting schema:  not sure if back-end will actually
         # allow this operation, but the spec says it is optional.
-        project = 'PROJECT'
-        dataset_id = 'DATASET_ID'
-        table_id = 'table_id'
         path = 'projects/%s/datasets/%s/tables/%s' % (
-            project, dataset_id, table_id)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         resource1 = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id},
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID},
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]}
         }
         resource2 = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id},
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID},
             'schema': {'fields': []},
         }
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(resource1, resource2)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = client.get_table(table_ref)
+        table = client.get_table(self.TABLE_REF)
         table.schema = None
 
         updated_table = client.update_table(table, ['schema'])
@@ -857,9 +814,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'PATCH')
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'schema': None
         }
@@ -870,37 +827,33 @@ class TestClient(unittest.TestCase):
     def test_update_table_delete_property(self):
         from google.cloud.bigquery.table import Table
 
-        project = 'PROJECT'
-        dataset_id = 'DATASET_ID'
-        table_id = 'table_id'
         description = 'description'
         title = 'title'
         path = 'projects/%s/datasets/%s/tables/%s' % (
-            project, dataset_id, table_id)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         resource1 = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'description': description,
             'friendlyName': title,
         }
         resource2 = {
-            'id': '%s:%s:%s' % (project, dataset_id, table_id),
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'description': None,
         }
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(resource1, resource2)
-        table_ref = client.dataset(dataset_id).table(table_id)
-        table = Table(table_ref)
+        table = Table(self.TABLE_REF)
         table.description = description
         table.friendly_name = title
         table2 = client.update_table(table, ['description', 'friendly_name'])
@@ -914,9 +867,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % path)
         sent = {
             'tableReference': {
-                'projectId': project,
-                'datasetId': dataset_id,
-                'tableId': table_id
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
             },
             'description': None,
         }
@@ -924,13 +877,11 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(table3.description)
 
     def test_list_dataset_tables_empty(self):
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection({})
 
-        dataset = client.dataset(DS_ID)
+        dataset = client.dataset(self.DS_ID)
         iterator = client.list_dataset_tables(dataset)
         self.assertIs(iterator.dataset, dataset)
         page = six.next(iterator.pages)
@@ -942,40 +893,38 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        PATH = 'projects/%s/datasets/%s/tables' % (PROJECT, DS_ID)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_dataset_tables_defaults(self):
         from google.cloud.bigquery.table import Table
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
-        PATH = 'projects/%s/datasets/%s/tables' % (PROJECT, DS_ID)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         TOKEN = 'TOKEN'
         DATA = {
             'nextPageToken': TOKEN,
             'tables': [
                 {'kind': 'bigquery#table',
-                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_1),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_1),
                  'tableReference': {'tableId': TABLE_1,
-                                    'datasetId': DS_ID,
-                                    'projectId': PROJECT},
+                                    'datasetId': self.DS_ID,
+                                    'projectId': self.PROJECT},
                  'type': 'TABLE'},
                 {'kind': 'bigquery#table',
-                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_2),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_2),
                  'tableReference': {'tableId': TABLE_2,
-                                    'datasetId': DS_ID,
-                                    'projectId': PROJECT},
+                                    'datasetId': self.DS_ID,
+                                    'projectId': self.PROJECT},
                  'type': 'TABLE'},
             ]
         }
 
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(DATA)
-        dataset = client.dataset(DS_ID)
+        dataset = client.dataset(self.DS_ID)
 
         iterator = client.list_dataset_tables(dataset)
         self.assertIs(iterator.dataset, dataset)
@@ -998,33 +947,31 @@ class TestClient(unittest.TestCase):
     def test_list_dataset_tables_explicit(self):
         from google.cloud.bigquery.table import Table
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
-        PATH = 'projects/%s/datasets/%s/tables' % (PROJECT, DS_ID)
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_ID)
         TOKEN = 'TOKEN'
         DATA = {
             'tables': [
                 {'kind': 'bigquery#dataset',
-                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_1),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_1),
                  'tableReference': {'tableId': TABLE_1,
-                                    'datasetId': DS_ID,
-                                    'projectId': PROJECT},
+                                    'datasetId': self.DS_ID,
+                                    'projectId': self.PROJECT},
                  'type': 'TABLE'},
                 {'kind': 'bigquery#dataset',
-                 'id': '%s:%s.%s' % (PROJECT, DS_ID, TABLE_2),
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_ID, TABLE_2),
                  'tableReference': {'tableId': TABLE_2,
-                                    'datasetId': DS_ID,
-                                    'projectId': PROJECT},
+                                    'datasetId': self.DS_ID,
+                                    'projectId': self.PROJECT},
                  'type': 'TABLE'},
             ]
         }
 
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection(DATA)
-        dataset = client.dataset(DS_ID)
+        dataset = client.dataset(self.DS_ID)
 
         iterator = client.list_dataset_tables(
             dataset, max_results=3, page_token=TOKEN)
@@ -1048,23 +995,19 @@ class TestClient(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_dataset_tables_wrong_type(self):
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.list_dataset_tables(client.dataset(DS_ID).table("foo"))
+            client.list_dataset_tables(client.dataset(self.DS_ID).table("foo"))
 
     def test_delete_dataset(self):
         from google.cloud.bigquery.dataset import Dataset
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
-        PATH = 'projects/%s/datasets/%s' % (PROJECT, DS_ID)
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         conn = client._connection = _Connection({}, {})
-        ds_ref = client.dataset(DS_ID)
+        ds_ref = client.dataset(self.DS_ID)
         for arg in (ds_ref, Dataset(ds_ref)):
             client.delete_dataset(arg)
             req = conn._requested[0]
@@ -1072,56 +1015,47 @@ class TestClient(unittest.TestCase):
             self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_delete_dataset_wrong_type(self):
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
         creds = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.delete_dataset(client.dataset(DS_ID).table("foo"))
+            client.delete_dataset(client.dataset(self.DS_ID).table("foo"))
 
     def test_delete_table(self):
         from google.cloud.bigquery.table import Table
 
-        project = 'PROJECT'
-        dataset_id = 'dataset_id'
-        table_id = 'table-id'
         path = 'projects/%s/datasets/%s/tables/%s' % (
-            project, dataset_id, table_id)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=project, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection({}, {})
-        table_ref = client.dataset(dataset_id).table(table_id)
 
-        for arg in (table_ref, Table(table_ref)):
+        for arg in (self.TABLE_REF, Table(self.TABLE_REF)):
             client.delete_table(arg)
             req = conn._requested[0]
             self.assertEqual(req['method'], 'DELETE')
             self.assertEqual(req['path'], '/%s' % path)
 
     def test_delete_table_w_wrong_type(self):
-        project = 'PROJECT'
-        dataset_id = 'DATASET_ID'
         creds = _make_credentials()
-        client = self._make_one(project=project, credentials=creds)
+        client = self._make_one(project=self.PROJECT, credentials=creds)
         with self.assertRaises(TypeError):
-            client.delete_table(client.dataset(dataset_id))
+            client.delete_table(client.dataset(self.DS_ID))
 
     def test_job_from_resource_unknown_type(self):
-        PROJECT = 'PROJECT'
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         with self.assertRaises(ValueError):
             client.job_from_resource({'configuration': {'nonesuch': {}}})
 
     def test_get_job_miss_w_explict_project(self):
         from google.cloud.exceptions import NotFound
 
-        PROJECT = 'PROJECT'
         OTHER_PROJECT = 'OTHER_PROJECT'
         JOB_ID = 'NONESUCH'
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection()
 
         with self.assertRaises(NotFound):
@@ -1136,15 +1070,13 @@ class TestClient(unittest.TestCase):
     def test_get_job_hit(self):
         from google.cloud.bigquery.job import QueryJob
 
-        PROJECT = 'PROJECT'
         JOB_ID = 'query_job'
-        DATASET = 'test_dataset'
         QUERY_DESTINATION_TABLE = 'query_destination_table'
         QUERY = 'SELECT * from test_dataset:test_table'
         ASYNC_QUERY_DATA = {
-            'id': '{}:{}'.format(PROJECT, JOB_ID),
+            'id': '{}:{}'.format(self.PROJECT, JOB_ID),
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'query_job',
             },
             'state': 'DONE',
@@ -1152,8 +1084,8 @@ class TestClient(unittest.TestCase):
                 'query': {
                     'query': QUERY,
                     'destinationTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': QUERY_DESTINATION_TABLE,
                     },
                     'createDisposition': 'CREATE_IF_NEEDED',
@@ -1162,7 +1094,7 @@ class TestClient(unittest.TestCase):
             },
         }
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(ASYNC_QUERY_DATA)
 
         job = client.get_job(JOB_ID)
@@ -1184,8 +1116,6 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.job import ExtractJob
         from google.cloud.bigquery.job import QueryJob
 
-        PROJECT = 'PROJECT'
-        DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
         DESTINATION_TABLE = 'destination_table'
         QUERY_DESTINATION_TABLE = 'query_destination_table'
@@ -1197,13 +1127,13 @@ class TestClient(unittest.TestCase):
             'extract_job': ExtractJob,
             'query_job': QueryJob,
         }
-        PATH = 'projects/%s/jobs' % PROJECT
+        PATH = 'projects/%s/jobs' % self.PROJECT
         TOKEN = 'TOKEN'
         QUERY = 'SELECT * from test_dataset:test_table'
         ASYNC_QUERY_DATA = {
-            'id': '%s:%s' % (PROJECT, 'query_job'),
+            'id': '%s:%s' % (self.PROJECT, 'query_job'),
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'query_job',
             },
             'state': 'DONE',
@@ -1211,8 +1141,8 @@ class TestClient(unittest.TestCase):
                 'query': {
                     'query': QUERY,
                     'destinationTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': QUERY_DESTINATION_TABLE,
                     },
                     'createDisposition': 'CREATE_IF_NEEDED',
@@ -1221,17 +1151,17 @@ class TestClient(unittest.TestCase):
             },
         }
         EXTRACT_DATA = {
-            'id': '%s:%s' % (PROJECT, 'extract_job'),
+            'id': '%s:%s' % (self.PROJECT, 'extract_job'),
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'extract_job',
             },
             'state': 'DONE',
             'configuration': {
                 'extract': {
                     'sourceTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': SOURCE_TABLE,
                     },
                     'destinationUris': [DESTINATION_URI],
@@ -1239,39 +1169,39 @@ class TestClient(unittest.TestCase):
             },
         }
         COPY_DATA = {
-            'id': '%s:%s' % (PROJECT, 'copy_job'),
+            'id': '%s:%s' % (self.PROJECT, 'copy_job'),
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'copy_job',
             },
             'state': 'DONE',
             'configuration': {
                 'copy': {
                     'sourceTables': [{
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': SOURCE_TABLE,
                     }],
                     'destinationTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': DESTINATION_TABLE,
                     },
                 }
             },
         }
         LOAD_DATA = {
-            'id': '%s:%s' % (PROJECT, 'load_job'),
+            'id': '%s:%s' % (self.PROJECT, 'load_job'),
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'load_job',
             },
             'state': 'DONE',
             'configuration': {
                 'load': {
                     'destinationTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': SOURCE_TABLE,
                     },
                     'sourceUris': [SOURCE_URI],
@@ -1288,7 +1218,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs()
@@ -1312,26 +1242,24 @@ class TestClient(unittest.TestCase):
     def test_list_jobs_load_job_wo_sourceUris(self):
         from google.cloud.bigquery.job import LoadJob
 
-        PROJECT = 'PROJECT'
-        DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
         JOB_TYPES = {
             'load_job': LoadJob,
         }
-        PATH = 'projects/%s/jobs' % PROJECT
+        PATH = 'projects/%s/jobs' % self.PROJECT
         TOKEN = 'TOKEN'
         LOAD_DATA = {
-            'id': '%s:%s' % (PROJECT, 'load_job'),
+            'id': '%s:%s' % (self.PROJECT, 'load_job'),
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'load_job',
             },
             'state': 'DONE',
             'configuration': {
                 'load': {
                     'destinationTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': SOURCE_TABLE,
                     },
                 }
@@ -1344,7 +1272,7 @@ class TestClient(unittest.TestCase):
             ]
         }
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs()
@@ -1366,12 +1294,11 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_explicit_missing(self):
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/jobs' % PROJECT
+        PATH = 'projects/%s/jobs' % self.PROJECT
         DATA = {}
         TOKEN = 'TOKEN'
         creds = _make_credentials()
-        client = self._make_one(PROJECT, creds)
+        client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
         iterator = client.list_jobs(max_results=1000, page_token=TOKEN,
@@ -1397,22 +1324,20 @@ class TestClient(unittest.TestCase):
     def test_load_table_from_storage(self):
         from google.cloud.bigquery.job import LoadJob
 
-        PROJECT = 'PROJECT'
         JOB = 'job_name'
-        DATASET = 'dataset_name'
         DESTINATION = 'destination_table'
         SOURCE_URI = 'http://example.com/source.csv'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
                 'load': {
                     'sourceUris': [SOURCE_URI],
                     'destinationTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': DESTINATION,
                     },
                 },
@@ -1420,9 +1345,10 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESOURCE)
-        destination = client.dataset(DATASET).table(DESTINATION)
+        destination = client.dataset(self.DS_ID).table(DESTINATION)
 
         job = client.load_table_from_storage(SOURCE_URI, destination,
                                              job_id=JOB)
@@ -1431,7 +1357,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/%s/jobs' % PROJECT)
+        self.assertEqual(req['path'], '/projects/%s/jobs' % self.PROJECT)
 
         self.assertIsInstance(job, LoadJob)
         self.assertIs(job._client, client)
@@ -1469,25 +1395,20 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.client import _get_upload_headers
         from google.cloud.bigquery.job import LoadJob, LoadJobConfig
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
-        TABLE_ID = 'TABLE_ID'
-
         # Create mocks to be checked for doing transport.
         resumable_url = 'http://test.invalid?upload_id=hey-you'
         response_headers = {'location': resumable_url}
         fake_transport = self._mock_transport(
             http_client.OK, response_headers)
-        client = self._make_one(project=PROJECT, _http=fake_transport)
+        client = self._make_one(project=self.PROJECT, _http=fake_transport)
         conn = client._connection = _Connection()
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
 
         # Create some mock arguments and call the method under test.
         data = b'goodbye gudbi gootbee'
         stream = io.BytesIO(data)
         config = LoadJobConfig()
         config.source_format = 'CSV'
-        job = LoadJob(None, None, table_ref, client, job_config=config)
+        job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
         metadata = job._build_resource()
         upload, transport = client._initiate_resumable_upload(
             stream, metadata, num_retries)
@@ -1496,7 +1417,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(upload, ResumableUpload)
         upload_url = (
             'https://www.googleapis.com/upload/bigquery/v2/projects/' +
-            PROJECT +
+            self.PROJECT +
             '/jobs?uploadType=resumable')
         self.assertEqual(upload.upload_url, upload_url)
         expected_headers = _get_upload_headers(conn.USER_AGENT)
@@ -1541,21 +1462,16 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.client import _get_upload_headers
         from google.cloud.bigquery.job import LoadJob, LoadJobConfig
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DATASET_ID'
-        TABLE_ID = 'TABLE_ID'
-
         fake_transport = self._mock_transport(http_client.OK, {})
-        client = self._make_one(project=PROJECT, _http=fake_transport)
+        client = self._make_one(project=self.PROJECT, _http=fake_transport)
         conn = client._connection = _Connection()
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
 
         # Create some mock arguments.
         data = b'Bzzzz-zap \x00\x01\xf4'
         stream = io.BytesIO(data)
         config = LoadJobConfig()
         config.source_format = 'CSV'
-        job = LoadJob(None, None, table_ref, client, job_config=config)
+        job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
         metadata = job._build_resource()
         size = len(data)
         response = client._do_multipart_upload(
@@ -1568,7 +1484,7 @@ class TestClient(unittest.TestCase):
 
         upload_url = (
             'https://www.googleapis.com/upload/bigquery/v2/projects/' +
-            PROJECT +
+            self.PROJECT +
             '/jobs?uploadType=multipart')
         payload = (
             b'--==0==\r\n' +
@@ -1600,26 +1516,24 @@ class TestClient(unittest.TestCase):
     def test_copy_table(self):
         from google.cloud.bigquery.job import CopyJob
 
-        PROJECT = 'PROJECT'
         JOB = 'job_name'
-        DATASET = 'dataset_name'
         SOURCE = 'source_table'
         DESTINATION = 'destination_table'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
                 'copy': {
                     'sourceTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': SOURCE,
                     },
                     'destinationTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': DESTINATION,
                     },
                 },
@@ -1627,9 +1541,10 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESOURCE)
-        dataset = client.dataset(DATASET)
+        dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
         destination = dataset.table(DESTINATION)
 
@@ -1639,7 +1554,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/projects/%s/jobs' % PROJECT)
+        self.assertEqual(req['path'], '/projects/%s/jobs' % self.PROJECT)
 
         self.assertIsInstance(job, CopyJob)
         self.assertIs(job._client, client)
@@ -1659,21 +1574,19 @@ class TestClient(unittest.TestCase):
     def test_extract_table(self):
         from google.cloud.bigquery.job import ExtractJob
 
-        PROJECT = 'PROJECT'
         JOB = 'job_id'
-        DATASET = 'dataset_id'
         SOURCE = 'source_table'
         DESTINATION = 'gs://bucket_name/object_name'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
                 'extract': {
                     'sourceTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': SOURCE,
                     },
                     'destinationUris': [DESTINATION],
@@ -1682,9 +1595,10 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESOURCE)
-        dataset = client.dataset(DATASET)
+        dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
 
         job = client.extract_table(source, DESTINATION, job_id=JOB)
@@ -1707,21 +1621,19 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.job import ExtractJobConfig
         from google.cloud.bigquery.job import DestinationFormat
 
-        PROJECT = 'PROJECT'
         JOB = 'job_id'
-        DATASET = 'dataset_id'
         SOURCE = 'source_table'
         DESTINATION = 'gs://bucket_name/object_name'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
                 'extract': {
                     'sourceTable': {
-                        'projectId': PROJECT,
-                        'datasetId': DATASET,
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_ID,
                         'tableId': SOURCE,
                     },
                     'destinationUris': [DESTINATION],
@@ -1731,9 +1643,10 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESOURCE)
-        dataset = client.dataset(DATASET)
+        dataset = client.dataset(self.DS_ID)
         source = dataset.table(SOURCE)
         job_config = ExtractJobConfig()
         job_config.destination_format = (
@@ -1758,11 +1671,10 @@ class TestClient(unittest.TestCase):
     def test_query_defaults(self):
         from google.cloud.bigquery.job import QueryJob
 
-        PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'some-random-id',
             },
             'configuration': {
@@ -1774,7 +1686,8 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESOURCE)
 
         job = client.query(QUERY)
@@ -1804,12 +1717,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.query import UDFResource
 
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
@@ -1824,7 +1736,8 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESOURCE)
         udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
         config = QueryJobConfig()
@@ -1860,12 +1773,11 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.job import QueryJobConfig
         from google.cloud.bigquery.query import ScalarQueryParameter
 
-        PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
@@ -1884,7 +1796,8 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESOURCE)
         query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
         config = QueryJobConfig()
@@ -1918,17 +1831,13 @@ class TestClient(unittest.TestCase):
             })
 
     def test_create_rows_wo_schema(self):
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
-        table = Table(table_ref)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        table = Table(self.TABLE_REF)
         ROWS = [
             ('Phred Phlyntstone', 32),
             ('Bharney Rhubble', 33),
@@ -1947,27 +1856,23 @@ class TestClient(unittest.TestCase):
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _microseconds_from_datetime
         from google.cloud.bigquery.table import Table, SchemaField
-        from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
             tzinfo=UTC)
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection({})
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
             SchemaField('age', 'INTEGER', mode='REQUIRED'),
             SchemaField('joined', 'TIMESTAMP', mode='NULLABLE'),
         ]
-        table = Table(table_ref, schema=schema)
+        table = Table(self.TABLE_REF, schema=schema)
         ROWS = [
             ('Phred Phlyntstone', 32, _datetime_to_rfc3339(WHEN)),
             ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
@@ -2002,27 +1907,23 @@ class TestClient(unittest.TestCase):
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud._helpers import _microseconds_from_datetime
         from google.cloud.bigquery.table import Table, SchemaField
-        from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
             tzinfo=UTC)
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection({})
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
             SchemaField('age', 'INTEGER', mode='REQUIRED'),
             SchemaField('joined', 'TIMESTAMP', mode='NULLABLE'),
         ]
-        table = Table(table_ref, schema=schema)
+        table = Table(self.TABLE_REF, schema=schema)
         ROWS = [
             {
                 'full_name': 'Phred Phlyntstone', 'age': 32,
@@ -2064,23 +1965,19 @@ class TestClient(unittest.TestCase):
     def test_create_rows_w_list_of_Rows(self):
         from google.cloud.bigquery._helpers import Row
         from google.cloud.bigquery.table import Table, SchemaField
-        from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection({})
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
             SchemaField('age', 'INTEGER', mode='REQUIRED'),
         ]
-        table = Table(table_ref, schema=schema)
+        table = Table(self.TABLE_REF, schema=schema)
         f2i = {'full_name': 0, 'age': 1}
         ROWS = [
             Row(('Phred Phlyntstone', 32), f2i),
@@ -2107,13 +2004,9 @@ class TestClient(unittest.TestCase):
 
     def test_create_rows_w_skip_invalid_and_ignore_unknown(self):
         from google.cloud.bigquery.table import Table, SchemaField
-        from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         RESPONSE = {
             'insertErrors': [
                 {'index': 1,
@@ -2126,15 +2019,15 @@ class TestClient(unittest.TestCase):
             ]}
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(RESPONSE)
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
             SchemaField('age', 'INTEGER', mode='REQUIRED'),
             SchemaField('voter', 'BOOLEAN', mode='NULLABLE'),
         ]
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
-        table = Table(table_ref, schema=schema)
+        table = Table(self.TABLE_REF, schema=schema)
         ROWS = [
             ('Phred Phlyntstone', 32, True),
             ('Bharney Rhubble', 33, False),
@@ -2179,24 +2072,20 @@ class TestClient(unittest.TestCase):
 
     def test_create_rows_w_repeated_fields(self):
         from google.cloud.bigquery.table import Table, SchemaField
-        from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection({})
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         full_name = SchemaField('color', 'STRING', mode='REPEATED')
         index = SchemaField('index', 'INTEGER', 'REPEATED')
         score = SchemaField('score', 'FLOAT', 'REPEATED')
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
-        table = Table(table_ref, schema=[full_name, struct])
+        table = Table(self.TABLE_REF, schema=[full_name, struct])
         ROWS = [
             (['red', 'green'], [{'index': [1, 2], 'score': [3.1415, 1.414]}]),
         ]
@@ -2220,18 +2109,14 @@ class TestClient(unittest.TestCase):
 
     def test_create_rows_w_record_schema(self):
         from google.cloud.bigquery.table import SchemaField
-        from google.cloud.bigquery.dataset import DatasetReference
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection({})
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
         local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
@@ -2256,7 +2141,7 @@ class TestClient(unittest.TestCase):
             'rows': [{'json': _row_data(row)} for row in ROWS],
         }
 
-        errors = client.create_rows(table_ref, ROWS,
+        errors = client.create_rows(self.TABLE_REF, ROWS,
                                     selected_fields=[full_name, phone])
 
         self.assertEqual(len(errors), 0)
@@ -2267,12 +2152,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
 
     def test_create_rows_errors(self):
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import Table
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         ROWS = [
             ('Phred Phlyntstone', 32, True),
             ('Bharney Rhubble', 33, False),
@@ -2281,16 +2162,16 @@ class TestClient(unittest.TestCase):
         ]
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
 
         # table ref with no selected fields
         with self.assertRaises(ValueError):
-            client.create_rows(table_ref, ROWS)
+            client.create_rows(self.TABLE_REF, ROWS)
 
         # table with no schema
         with self.assertRaises(ValueError):
-            client.create_rows(Table(table_ref), ROWS)
+            client.create_rows(Table(self.TABLE_REF), ROWS)
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
@@ -2301,18 +2182,17 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery._helpers import Row
 
         JOB = 'job-id'
-        PROJECT = 'PROJECT'
         QUERY = 'SELECT COUNT(*) FROM persons'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
                 'query': {
                     'query': QUERY,
                     'destinationTable': {
-                        'projectId': PROJECT,
+                        'projectId': self.PROJECT,
                         'datasetId': '_temp_dataset',
                         'tableId': '_temp_table',
                     },
@@ -2345,7 +2225,8 @@ class TestClient(unittest.TestCase):
         del LAST_PAGE['pageToken']
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(
             RESOURCE, RESULTS_RESOURCE, FIRST_PAGE, LAST_PAGE)
 
@@ -2366,18 +2247,17 @@ class TestClient(unittest.TestCase):
         from google.api.core.page_iterator import HTTPIterator
 
         JOB = 'job-id'
-        PROJECT = 'PROJECT'
         QUERY = 'SELECT COUNT(*) FROM persons'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
                 'query': {
                     'query': QUERY,
                     'destinationTable': {
-                        'projectId': PROJECT,
+                        'projectId': self.PROJECT,
                         'datasetId': '_temp_dataset',
                         'tableId': '_temp_table',
                     },
@@ -2399,7 +2279,8 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(
             RESOURCE, RESULTS_RESOURCE, RESULTS_RESOURCE)
 
@@ -2420,11 +2301,10 @@ class TestClient(unittest.TestCase):
         from google.api.core.page_iterator import HTTPIterator
 
         JOB = 'job-id'
-        PROJECT = 'PROJECT'
         QUERY = 'SELECT COUNT(*) FROM persons'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': JOB,
             },
             'configuration': {
@@ -2432,7 +2312,7 @@ class TestClient(unittest.TestCase):
                     'query': QUERY,
                     'useLegacySql': True,
                     'destinationTable': {
-                        'projectId': PROJECT,
+                        'projectId': self.PROJECT,
                         'datasetId': '_temp_dataset',
                         'tableId': '_temp_table',
                     },
@@ -2455,7 +2335,8 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(
             RESOURCE, RESULTS_RESOURCE, RESULTS_RESOURCE)
 
@@ -2477,15 +2358,11 @@ class TestClient(unittest.TestCase):
     def test_list_rows(self):
         import datetime
         from google.cloud._helpers import UTC
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import Table, SchemaField
         from google.cloud.bigquery._helpers import Row
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
             tzinfo=UTC)
@@ -2526,13 +2403,13 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(DATA, DATA)
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='NULLABLE')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
-        table = Table(table_ref, schema=[full_name, age, joined])
+        table = Table(self.TABLE_REF, schema=[full_name, age, joined])
 
         iterator = client.list_rows(table)
         page = six.next(iterator.pages)
@@ -2556,17 +2433,13 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['query_params'], {})
 
     def test_list_rows_query_params(self):
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import Table, SchemaField
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
-        table = Table(table_ref,
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
+        table = Table(self.TABLE_REF,
                       schema=[SchemaField('age', 'INTEGER', mode='NULLABLE')])
         tests = [
             ({}, {}),
@@ -2584,14 +2457,10 @@ class TestClient(unittest.TestCase):
                              'for kwargs %s' % test[0])
 
     def test_list_rows_repeated_fields(self):
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import SchemaField
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
@@ -2612,16 +2481,17 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(DATA)
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         color = SchemaField('color', 'STRING', mode='REPEATED')
         index = SchemaField('index', 'INTEGER', 'REPEATED')
         score = SchemaField('score', 'FLOAT', 'REPEATED')
         struct = SchemaField('struct', 'RECORD', mode='REPEATED',
                              fields=[index, score])
 
-        iterator = client.list_rows(table_ref, selected_fields=[color, struct])
+        iterator = client.list_rows(self.TABLE_REF,
+                                    selected_fields=[color, struct])
         page = six.next(iterator.pages)
         rows = list(page)
         total_rows = iterator.total_rows
@@ -2640,14 +2510,10 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_rows_w_record_schema(self):
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import Table, SchemaField
 
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
-            PROJECT, DS_ID, TABLE_ID)
+            self.PROJECT, self.DS_ID, self.TABLE_ID)
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
@@ -2670,16 +2536,16 @@ class TestClient(unittest.TestCase):
         }
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         conn = client._connection = _Connection(DATA)
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
         local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
         rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
         phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
-        table = Table(table_ref, schema=[full_name, phone])
+        table = Table(self.TABLE_REF, schema=[full_name, phone])
 
         iterator = client.list_rows(table)
         page = six.next(iterator.pages)
@@ -2707,42 +2573,36 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_rows_errors(self):
-        from google.cloud.bigquery.dataset import DatasetReference
         from google.cloud.bigquery.table import Table
-
-        PROJECT = 'PROJECT'
-        DS_ID = 'DS_ID'
-        TABLE_ID = 'TABLE_ID'
 
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
-        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
 
         # table ref with no selected fields
         with self.assertRaises(ValueError):
-            client.list_rows(table_ref)
+            client.list_rows(self.TABLE_REF)
 
         # table with no schema
         with self.assertRaises(ValueError):
-            client.list_rows(Table(table_ref))
+            client.list_rows(Table(self.TABLE_REF))
 
         # neither Table nor tableReference
         with self.assertRaises(TypeError):
             client.list_rows(1)
 
     def test_list_partitions(self):
-        PROJECT = 'PROJECT'
         RESOURCE = {
             'jobReference': {
-                'projectId': PROJECT,
+                'projectId': self.PROJECT,
                 'jobId': 'JOB_ID',
             },
             'configuration': {
                 'query': {
                     'query': 'q',
                     'destinationTable': {
-                        'projectId': PROJECT,
+                        'projectId': self.PROJECT,
                         'datasetId': 'DS_ID',
                         'tableId': 'TABLE_ID',
                     },
@@ -2772,11 +2632,11 @@ class TestClient(unittest.TestCase):
         del FIRST_PAGE['pageToken']
         creds = _make_credentials()
         http = object()
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=self.PROJECT, credentials=creds,
+                                _http=http)
         client._connection = _Connection(
             RESOURCE, RESULTS_RESOURCE, FIRST_PAGE)
-        table_ref = DatasetReference(PROJECT, 'DS_ID').table('TABLE_ID')
-        self.assertEqual(client.list_partitions(table_ref),
+        self.assertEqual(client.list_partitions(self.TABLE_REF),
                          [20160804, 20160805])
 
 
