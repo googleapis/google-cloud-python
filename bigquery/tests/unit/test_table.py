@@ -174,6 +174,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.NUM_BYTES = 12345
         self.NUM_ROWS = 67
+        self.NUM_EST_BYTES = 1234
+        self.NUM_EST_ROWS = 23
 
     def _makeResource(self):
         self._setUpConstants()
@@ -194,6 +196,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
             'numRows': self.NUM_ROWS,
             'numBytes': self.NUM_BYTES,
             'type': 'TABLE',
+            'streamingBuffer': {
+                'estimatedRows': str(self.NUM_EST_ROWS),
+                'estimatedBytes': str(self.NUM_EST_BYTES),
+                'oldestEntryTime': self.WHEN_TS * 1000},
         }
 
     def _verifyReadonlyResourceProperties(self, table, resource):
@@ -221,6 +227,16 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertEqual(table.self_link, self.RESOURCE_URL)
         else:
             self.assertIsNone(table.self_link)
+
+        if 'streamingBuffer' in resource:
+            self.assertEqual(table.streaming_buffer.estimated_rows,
+                             self.NUM_EST_ROWS)
+            self.assertEqual(table.streaming_buffer.estimated_bytes,
+                             self.NUM_EST_BYTES)
+            self.assertEqual(table.streaming_buffer.oldest_entry_time,
+                             self.WHEN)
+        else:
+            self.assertIsNone(table.streaming_buffer)
 
         self.assertEqual(table.full_table_id, self.TABLE_FULL_ID)
         self.assertEqual(table.table_type,
