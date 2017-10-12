@@ -18,6 +18,7 @@ import grpc
 import six
 
 from google.api.core import exceptions
+from google.api.core.helpers import general_helpers
 import google.auth
 import google.auth.transport.grpc
 import google.auth.transport.requests
@@ -63,7 +64,7 @@ def _wrap_stream_errors(callable_):
     """
     _patch_callable_name(callable_)
 
-    @six.wraps(callable_)
+    @general_helpers.wraps(callable_)
     def error_remapped_callable(*args, **kwargs):
         try:
             result = callable_(*args, **kwargs)

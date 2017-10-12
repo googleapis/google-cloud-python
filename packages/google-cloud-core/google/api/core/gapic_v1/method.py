@@ -26,6 +26,7 @@ import six
 
 from google.api.core import page_iterator
 from google.api.core import timeout
+from google.api.core.helpers import general_helpers
 from google.api.core.helpers import grpc_helpers
 
 _PY_VERSION = platform.python_version()
@@ -252,7 +253,7 @@ def wrap_method(
     if metadata is not None:
         metadata = _prepare_metadata(metadata)
 
-    return six.wraps(func)(
+    return general_helpers.wraps(func)(
         _GapicCallable(func, default_retry, default_timeout, metadata))
 
 
