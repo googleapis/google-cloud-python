@@ -20,6 +20,7 @@ import operator
 
 import six
 
+from google.api.core import retry
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
@@ -520,3 +521,28 @@ def _rows_page_start(iterator, page, response):
         total_rows = int(total_rows)
     iterator.total_rows = total_rows
 # pylint: enable=unused-argument
+
+
+def _should_retry(exc):
+    """Predicate for determining when to retry.
+
+    We retry if and only if the 'reason' is 'backendError'
+    or 'rateLimitExceeded'.
+    """
+    if not hasattr(exc, 'errors'):
+        return False
+    if len(exc.errors) == 0:
+        return False
+    reason = exc.errors[0]['reason']
+    return reason == 'backendError' or reason == 'rateLimitExceeded'
+
+
+DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
+"""The default retry object.
+
+Any method with a ``retry`` parameter will be retried automatically,
+with reasonable defaults. To disable retry, pass ``retry=None``.
+To modify the default retry behavior, call a ``with_XXX`` method
+on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
+pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
+"""

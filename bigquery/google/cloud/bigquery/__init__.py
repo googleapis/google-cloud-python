@@ -27,6 +27,7 @@ from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-bigquery').version
 
 from google.cloud.bigquery._helpers import Row
+from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
@@ -61,4 +62,5 @@ __all__ = [
     'Table',
     'TableReference',
     'UDFResource',
+    'DEFAULT_RETRY',
 ]
