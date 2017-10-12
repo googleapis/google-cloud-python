@@ -34,7 +34,11 @@ import os
 import time
 import warnings
 
+from six.moves.urllib.parse import parse_qsl
 from six.moves.urllib.parse import quote
+from six.moves.urllib.parse import urlencode
+from six.moves.urllib.parse import urlsplit
+from six.moves.urllib.parse import urlunsplit
 
 from google import resumable_media
 from google.resumable_media.requests import ChunkedDownload
@@ -221,6 +225,16 @@ class Blob(_PropertyMixin):
         return self.bucket.client
 
     @property
+    def user_project(self):
+        """Project ID used for API requests made via this blob.
+
+        Derived from bucket's value.
+
+        :rtype: str
+        """
+        return self.bucket.user_project
+
+    @property
     def public_url(self):
         """The public URL for this blob's object.
 
@@ -328,10 +342,14 @@ class Blob(_PropertyMixin):
         :returns: True if the blob exists in Cloud Storage.
         """
         client = self._require_client(client)
+        # We only need the status code (200 or not) so we seek to
+        # minimize the returned payload.
+        query_params = {'fields': 'name'}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         try:
-            # We only need the status code (200 or not) so we seek to
-            # minimize the returned payload.
-            query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client._connection.api_request(
@@ -385,13 +403,19 @@ class Blob(_PropertyMixin):
         :rtype: str
         :returns: The download URL for the current blob.
         """
+        name_value_pairs = []
         if self.media_link is None:
-            download_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
+            base_url = _DOWNLOAD_URL_TEMPLATE.format(path=self.path)
             if self.generation is not None:
-                download_url += u'&generation={:d}'.format(self.generation)
-            return download_url
+                name_value_pairs.append(
+                    ('generation', '{:d}'.format(self.generation)))
         else:
-            return self.media_link
+            base_url = self.media_link
+
+        if self.user_project is not None:
+            name_value_pairs.append(('userProject', self.user_project))
+
+        return _add_query_parameters(base_url, name_value_pairs)
 
     def _do_download(self, transport, file_obj, download_url, headers):
         """Perform a download without any error handling.
@@ -637,8 +661,14 @@ class Blob(_PropertyMixin):
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
-        upload_url = _MULTIPART_URL_TEMPLATE.format(
+        base_url = _MULTIPART_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
+        name_value_pairs = []
+
+        if self.user_project is not None:
+            name_value_pairs.append(('userProject', self.user_project))
+
+        upload_url = _add_query_parameters(base_url, name_value_pairs)
         upload = MultipartUpload(upload_url, headers=headers)
 
         if num_retries is not None:
@@ -709,8 +739,14 @@ class Blob(_PropertyMixin):
         if extra_headers is not None:
             headers.update(extra_headers)
 
-        upload_url = _RESUMABLE_URL_TEMPLATE.format(
+        base_url = _RESUMABLE_URL_TEMPLATE.format(
             bucket_path=self.bucket.path)
+        name_value_pairs = []
+
+        if self.user_project is not None:
+            name_value_pairs.append(('userProject', self.user_project))
+
+        upload_url = _add_query_parameters(base_url, name_value_pairs)
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
 
         if num_retries is not None:
@@ -1064,9 +1100,16 @@ class Blob(_PropertyMixin):
                   the ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
+
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         info = client._connection.api_request(
             method='GET',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             _target_object=None)
         return Policy.from_api_repr(info)
 
@@ -1089,11 +1132,18 @@ class Blob(_PropertyMixin):
                   the ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
+
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         resource = policy.to_api_repr()
         resource['resourceId'] = self.path
         info = client._connection.api_request(
             method='PUT',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             data=resource,
             _target_object=None)
         return Policy.from_api_repr(info)
@@ -1117,12 +1167,17 @@ class Blob(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query = {'permissions': permissions}
+        query_params = {'permissions': permissions}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = '%s/iam/testPermissions' % (self.path,)
         resp = client._connection.api_request(
             method='GET',
             path=path,
-            query_params=query)
+            query_params=query_params)
+
         return resp.get('permissions', [])
 
     def make_public(self, client=None):
@@ -1152,13 +1207,22 @@ class Blob(_PropertyMixin):
         """
         if self.content_type is None:
             raise ValueError("Destination 'content_type' not set.")
+
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         request = {
             'sourceObjects': [{'name': source.name} for source in sources],
             'destination': self._properties.copy(),
         }
         api_response = client._connection.api_request(
-            method='POST', path=self.path + '/compose', data=request,
+            method='POST',
+            path=self.path + '/compose',
+            query_params=query_params,
+            data=request,
             _target_object=self)
         self._set_properties(api_response)
 
@@ -1190,14 +1254,20 @@ class Blob(_PropertyMixin):
         headers.update(_get_encryption_headers(
             source._encryption_key, source=True))
 
+        query_params = {}
+
         if token:
-            query_params = {'rewriteToken': token}
-        else:
-            query_params = {}
+            query_params['rewriteToken'] = token
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
 
         api_response = client._connection.api_request(
-            method='POST', path=source.path + '/rewriteTo' + self.path,
-            query_params=query_params, data=self._properties, headers=headers,
+            method='POST',
+            path=source.path + '/rewriteTo' + self.path,
+            query_params=query_params,
+            data=self._properties,
+            headers=headers,
             _target_object=self)
         rewritten = int(api_response['totalBytesRewritten'])
         size = int(api_response['objectSize'])
@@ -1228,13 +1298,22 @@ class Blob(_PropertyMixin):
             raise ValueError("Invalid storage class: %s" % (new_class,))
 
         client = self._require_client(client)
+
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         headers = _get_encryption_headers(self._encryption_key)
         headers.update(_get_encryption_headers(
             self._encryption_key, source=True))
 
         api_response = client._connection.api_request(
-            method='POST', path=self.path + '/rewriteTo' + self.path,
-            data={'storageClass': new_class}, headers=headers,
+            method='POST',
+            path=self.path + '/rewriteTo' + self.path,
+            query_params=query_params,
+            data={'storageClass': new_class},
+            headers=headers,
             _target_object=self)
         self._set_properties(api_response['resource'])
 
@@ -1603,3 +1682,24 @@ def _raise_from_invalid_response(error):
              to the failed status code
     """
     raise exceptions.from_http_response(error.response)
+
+
+def _add_query_parameters(base_url, name_value_pairs):
+    """Add one query parameter to a base URL.
+
+    :type base_url: string
+    :param base_url: Base URL (may already contain query parameters)
+
+    :type name_value_pairs: list of (string, string) tuples.
+    :param name_value_pairs: Names and values of the query parameters to add
+
+    :rtype: string
+    :returns: URL with additional query strings appended.
+    """
+    if len(name_value_pairs) == 0:
+        return base_url
+
+    scheme, netloc, path, query, frag = urlsplit(base_url)
+    query = parse_qsl(query)
+    query.extend(name_value_pairs)
+    return urlunsplit((scheme, netloc, path, urlencode(query), frag))
