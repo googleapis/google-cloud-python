@@ -1889,10 +1889,14 @@ class TestClient(unittest.TestCase):
                     'joined': joined}
 
         SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
+            'rows': [{
+                'json': _row_data(row),
+                'insertId': str(i),
+            } for i, row in enumerate(ROWS)],
         }
 
-        errors = client.create_rows(table, ROWS)
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
+            errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(conn._requested), 1)
@@ -1950,10 +1954,14 @@ class TestClient(unittest.TestCase):
             return row
 
         SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
+            'rows': [{
+                'json': _row_data(row),
+                'insertId': str(i),
+            } for i, row in enumerate(ROWS)],
         }
 
-        errors = client.create_rows(table, ROWS)
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
+            errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(conn._requested), 1)
@@ -1990,10 +1998,14 @@ class TestClient(unittest.TestCase):
             return {'full_name': row[0], 'age': str(row[1])}
 
         SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
+            'rows': [{
+                'json': _row_data(row),
+                'insertId': str(i),
+            } for i, row in enumerate(ROWS)],
         }
 
-        errors = client.create_rows(table, ROWS)
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
+            errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(conn._requested), 1)
@@ -2095,10 +2107,14 @@ class TestClient(unittest.TestCase):
                     'struct': row[1]}
 
         SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
+            'rows': [{
+                'json': _row_data(row),
+                'insertId': str(i),
+            } for i, row in enumerate(ROWS)],
         }
 
-        errors = client.create_rows(table, ROWS)
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
+            errors = client.create_rows(table, ROWS)
 
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(conn._requested), 1)
@@ -2138,11 +2154,15 @@ class TestClient(unittest.TestCase):
                     'phone': row[1]}
 
         SENT = {
-            'rows': [{'json': _row_data(row)} for row in ROWS],
+            'rows': [{
+                'json': _row_data(row),
+                'insertId': str(i),
+            } for i, row in enumerate(ROWS)],
         }
 
-        errors = client.create_rows(self.TABLE_REF, ROWS,
-                                    selected_fields=[full_name, phone])
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
+            errors = client.create_rows(self.TABLE_REF, ROWS,
+                                        selected_fields=[full_name, phone])
 
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(conn._requested), 1)
