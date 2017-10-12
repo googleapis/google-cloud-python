@@ -161,6 +161,44 @@
 <p>Common utilities for Google Media Downloads and Resumable Uploads.</p>
 <p>Includes custom exception types, useful constants and shared helpers.</p>
 <dl class="exception">
+<dt id="google.resumable_media.common.DataCorruption">
+<em class="property">exception </em><code class="descclassname">google.resumable_media.common.</code><code class="descname">DataCorruption</code><span class="sig-paren">(</span><em>response</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.common.DataCorruption" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<p>Error class for corrupt media transfers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>response</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – The HTTP response which caused the failure.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – The positional arguments typically passed to an
+exception class.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.resumable_media.common.DataCorruption.args">
+<code class="descname">args</code><a class="headerlink" href="#google.resumable_media.common.DataCorruption.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="google.resumable_media.common.DataCorruption.response">
+<code class="descname">response</code><em class="property"> = None</em><a class="headerlink" href="#google.resumable_media.common.DataCorruption.response" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>object</em> – The HTTP response object that caused the failure.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.resumable_media.common.DataCorruption.with_traceback">
+<code class="descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.common.DataCorruption.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
 <dt id="google.resumable_media.common.InvalidResponse">
 <em class="property">exception </em><code class="descclassname">google.resumable_media.common.</code><code class="descname">InvalidResponse</code><span class="sig-paren">(</span><em>response</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#google.resumable_media.common.InvalidResponse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>

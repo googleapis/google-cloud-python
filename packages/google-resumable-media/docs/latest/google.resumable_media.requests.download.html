@@ -337,15 +337,23 @@ resource will be written to the stream.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.13.0)"><em>Session</em></a>) – A <code class="docutils literal"><span class="pre">requests</span></code> object which can
-make authenticated requests.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>transport</strong> (<a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Session" title="(in Requests v2.13.0)"><em>Session</em></a>) – A <code class="docutils literal"><span class="pre">requests</span></code> object which can
+make authenticated requests.</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The HTTP response returned by <code class="docutils literal"><span class="pre">transport</span></code>.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.13.0)">Response</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://docs.python-requests.org/en/stable/api/#requests.Response" title="(in Requests v2.13.0)">Response</a></p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the current <a class="reference internal" href="#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> has already
-finished.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="google.resumable_media.common.html#google.resumable_media.common.DataCorruption" title="google.resumable_media.common.DataCorruption"><code class="xref py py-exc docutils literal"><span class="pre">DataCorruption</span></code></a> – If the download’s
+checksum doesn’t agree with server-computed checksum.</li>
+<li><a class="reference external" href="https://docs.python.org/3.6/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the current <a class="reference internal" href="#google.resumable_media.requests.download.Download" title="google.resumable_media.requests.download.Download"><code class="xref py py-class docutils literal"><span class="pre">Download</span></code></a> has already
+finished.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>

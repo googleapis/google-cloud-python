@@ -43,6 +43,7 @@ To install with `pip`_:
 """
 
 
+from google.resumable_media.common import DataCorruption
 from google.resumable_media.common import InvalidResponse
 from google.resumable_media.common import PERMANENT_REDIRECT
 from google.resumable_media.common import RetryStrategy
@@ -51,6 +52,7 @@ from google.resumable_media.common import UPLOAD_CHUNK_SIZE
 
 
 __all__ = [
+    u'DataCorruption',
     u'InvalidResponse',
     u'PERMANENT_REDIRECT',
     u'RetryStrategy',
