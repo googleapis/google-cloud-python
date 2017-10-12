@@ -58,6 +58,7 @@ import datetime
 import six
 
 from google.api.core.helpers import datetime_helpers
+from google.api.core.helpers import general_helpers
 
 _DEFAULT_INITIAL_TIMEOUT = 5.0  # seconds
 _DEFAULT_MAXIMUM_TIMEOUT = 30.0  # seconds
@@ -92,7 +93,7 @@ class ConstantTimeout(object):
         Returns:
             Callable: The wrapped function.
         """
-        @six.wraps(func)
+        @general_helpers.wraps(func)
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
             kwargs['timeout'] = self._timeout
@@ -198,7 +199,7 @@ class ExponentialTimeout(object):
         timeouts = _exponential_timeout_generator(
             self._initial, self._maximum, self._multiplier, self._deadline)
 
-        @six.wraps(func)
+        @general_helpers.wraps(func)
         def func_with_timeout(*args, **kwargs):
             """Wrapped function that adds timeout."""
             kwargs['timeout'] = next(timeouts)

@@ -66,6 +66,7 @@ import six
 
 from google.api.core import exceptions
 from google.api.core.helpers import datetime_helpers
+from google.api.core.helpers import general_helpers
 
 _LOGGER = logging.getLogger(__name__)
 _DEFAULT_INITIAL_DELAY = 1.0  # seconds
@@ -244,7 +245,7 @@ class Retry(object):
             Callable: A callable that will invoke ``func`` with retry
                 behavior.
         """
-        @six.wraps(func)
+        @general_helpers.wraps(func)
         def retry_wrapped_func(*args, **kwargs):
             """A wrapper that calls target function with retry."""
             target = functools.partial(func, *args, **kwargs)
