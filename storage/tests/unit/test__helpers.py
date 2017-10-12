@@ -26,7 +26,7 @@ class Test_PropertyMixin(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def _derivedClass(self, path=None):
+    def _derivedClass(self, path=None, user_project=None):
 
         class Derived(self._get_target_class()):
 
@@ -36,30 +36,67 @@ class Test_PropertyMixin(unittest.TestCase):
             def path(self):
                 return path
 
+            @property
+            def user_project(self):
+                return user_project
+
         return Derived
 
     def test_path_is_abstract(self):
         mixin = self._make_one()
-        self.assertRaises(NotImplementedError, lambda: mixin.path)
+        with self.assertRaises(NotImplementedError):
+            mixin.path
 
     def test_client_is_abstract(self):
         mixin = self._make_one()
-        self.assertRaises(NotImplementedError, lambda: mixin.client)
+        with self.assertRaises(NotImplementedError):
+            mixin.client
+
+    def test_user_project_is_abstract(self):
+        mixin = self._make_one()
+        with self.assertRaises(NotImplementedError):
+            mixin.user_project
 
     def test_reload(self):
         connection = _Connection({'foo': 'Foo'})
         client = _Client(connection)
         derived = self._derivedClass('/path')()
-        # Make sure changes is not a set, so we can observe a change.
+        # Make sure changes is not a set instance before calling reload
+        # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
         derived.reload(client=client)
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-        # Make sure changes get reset by reload.
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '/path',
+            'query_params': {'projection': 'noAcl'},
+            '_target_object': derived,
+        })
+        self.assertEqual(derived._changes, set())
+
+    def test_reload_w_user_project(self):
+        user_project = 'user-project-123'
+        connection = _Connection({'foo': 'Foo'})
+        client = _Client(connection)
+        derived = self._derivedClass('/path', user_project)()
+        # Make sure changes is not a set instance before calling reload
+        # (which will clear / replace it with an empty set), checked below.
+        derived._changes = object()
+        derived.reload(client=client)
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0], {
+            'method': 'GET',
+            'path': '/path',
+            'query_params': {
+                'projection': 'noAcl',
+                'userProject': user_project,
+            },
+            '_target_object': derived,
+        })
         self.assertEqual(derived._changes, set())
 
     def test__set_properties(self):
@@ -87,11 +124,42 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-        # Since changes does not include `baz`, we don't see it sent.
-        self.assertEqual(kw[0]['data'], {'bar': BAR})
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/path',
+            'query_params': {'projection': 'full'},
+            # Since changes does not include `baz`, we don't see it sent.
+            'data': {'bar': BAR},
+            '_target_object': derived,
+        })
+        # Make sure changes get reset by patch().
+        self.assertEqual(derived._changes, set())
+
+    def test_patch_w_user_project(self):
+        user_project = 'user-project-123'
+        connection = _Connection({'foo': 'Foo'})
+        client = _Client(connection)
+        derived = self._derivedClass('/path', user_project)()
+        # Make sure changes is non-empty, so we can observe a change.
+        BAR = object()
+        BAZ = object()
+        derived._properties = {'bar': BAR, 'baz': BAZ}
+        derived._changes = set(['bar'])  # Ignore baz.
+        derived.patch(client=client)
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0], {
+            'method': 'PATCH',
+            'path': '/path',
+            'query_params': {
+                'projection': 'full',
+                'userProject': user_project,
+            },
+            # Since changes does not include `baz`, we don't see it sent.
+            'data': {'bar': BAR},
+            '_target_object': derived,
+        })
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
@@ -111,6 +179,31 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(kw[0]['method'], 'PUT')
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['data'], {'bar': BAR, 'baz': BAZ})
+        # Make sure changes get reset by patch().
+        self.assertEqual(derived._changes, set())
+
+    def test_update_w_user_project(self):
+        user_project = 'user-project-123'
+        connection = _Connection({'foo': 'Foo'})
+        client = _Client(connection)
+        derived = self._derivedClass('/path', user_project)()
+        # Make sure changes is non-empty, so we can observe a change.
+        BAR = object()
+        BAZ = object()
+        derived._properties = {'bar': BAR, 'baz': BAZ}
+        derived._changes = set(['bar'])  # Update sends 'baz' anyway.
+        derived.update(client=client)
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PUT')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(
+            kw[0]['query_params'], {
+                'projection': 'full',
+                'userProject': user_project,
+            })
         self.assertEqual(kw[0]['data'], {'bar': BAR, 'baz': BAZ})
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
