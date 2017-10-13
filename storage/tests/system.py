@@ -932,3 +932,23 @@ class TestStorageNotificationCRUD(unittest.TestCase):
                 notification.payload_format, self.payload_format())
         finally:
             notification.delete()
+
+    @unittest.skipUnless(USER_PROJECT, 'USER_PROJECT not set in environment.')
+    def test_notification_w_user_project(self):
+        new_bucket_name = 'notification-minimal' + unique_resource_id('-')
+        bucket = retry_429(Config.CLIENT.create_bucket)(
+            new_bucket_name, requester_pays=True)
+        self.case_buckets_to_delete.append(new_bucket_name)
+        with_user_project = Config.CLIENT.bucket(
+            new_bucket_name, user_project=USER_PROJECT)
+        self.assertEqual(list(with_user_project.list_notifications()), [])
+        notification = with_user_project.notification(self.TOPIC_NAME)
+        retry_429(notification.create)()
+        try:
+            self.assertTrue(notification.exists())
+            self.assertIsNotNone(notification.notification_id)
+            notifications = list(with_user_project.list_notifications())
+            self.assertEqual(len(notifications), 1)
+            self.assertEqual(notifications[0].topic_name, self.TOPIC_NAME)
+        finally:
+            notification.delete()
