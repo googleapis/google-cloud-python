@@ -30,6 +30,11 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 logger = logging.getLogger(__name__)
 
 
+def _callback_completed(future):
+    """Simple callback that just logs a `Future`'s result."""
+    logger.debug('Result: %s', future.result())
+
+
 class Policy(base.BasePolicy):
     """A consumer class based on :class:`threading.Thread`.
 
@@ -144,4 +149,4 @@ class Policy(base.BasePolicy):
             logger.debug(self._callback)
             message = Message(msg.message, msg.ack_id, self._request_queue)
             future = self._executor.submit(self._callback, message)
-            logger.debug('Result: %s' % future.result())
+            future.add_done_callback(_callback_completed)
