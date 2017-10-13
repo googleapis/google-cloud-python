@@ -15,10 +15,12 @@
 """User-friendly container for Google Cloud Bigtable Table."""
 
 
-import random
-import time
 import six
 
+from google.api.core.exceptions import RetryError
+from google.api.core.retry import Retry
+from google.api.core.retry import RetryOptions
+from google.api.core.retry import if_exception_type
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
@@ -38,8 +40,6 @@ from grpc import StatusCode
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # https://cloud.google.com/bigtable/docs/reference/data/rpc/google.bigtable.v2#google.bigtable.v2.MutateRowRequest
 _MAX_BULK_MUTATIONS = 100000
-
-_MILLIS_PER_SECOND = 1000.0
 
 
 class TableMismatchError(ValueError):
@@ -301,7 +301,7 @@ class Table(object):
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
 
-    def mutate_rows(self, rows):
+    def mutate_rows(self, rows, retry_options=None):
         """Mutates multiple rows in bulk.
 
         The method tries to update all specified rows.
@@ -312,30 +312,17 @@ class Table(object):
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
+        :type retry_options: :class:`~google.api.core.retry.RetryOptions`
+        :param retry_options: (Optional) Retry delay and deadline arguments.
+
         :rtype: list
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the `rows`.
         """
-        delay_millis = 1000
-        delay_mult = 1.5
-        max_delay_millis = 15 * 1000
-        total_timeout_millis = 5 * 60 * 1000
-
-        now = time.time()
-        deadline = now + total_timeout_millis / _MILLIS_PER_SECOND
-
         retryable_mutate_rows = _RetryableMutateRowsWorker(
-            self._instance._client, self.name, rows)
-        while now < deadline:
-            try:
-                return retryable_mutate_rows()
-            except _MutateRowsRetryableError:
-                to_sleep = random.uniform(0, delay_millis * 2)
-                time.sleep(to_sleep / _MILLIS_PER_SECOND)
-                delay_millis = min(delay_millis * delay_mult, max_delay_millis)
-                now = time.time()
-        return retryable_mutate_rows.responses_statuses
+            self._instance._client, self.name, rows, retry_options or RetryOptions())
+        return retryable_mutate_rows()
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
@@ -391,15 +378,26 @@ class _RetryableMutateRowsWorker(object):
         StatusCode.UNAVAILABLE.value[0],
     )
 
-    def __init__(self, client, table_name, rows):
+    def __init__(self, client, table_name, rows, retry_options=None):
         self.client = client
         self.table_name = table_name
         self.rows = rows
+        self.retry_options = retry_options or RetryOptions()
         self.responses_statuses = [
             None for _ in six.moves.xrange(len(self.rows))]
 
     def __call__(self):
-        return self._do_mutate_retryable_rows()
+        retry = Retry(predicate=if_exception_type(_MutateRowsRetryableError),
+                      initial=self.retry_options.initial,
+                      maximum=self.retry_options.maximum,
+                      multiplier=self.retry_options.multiplier,
+                      deadline=self.retry_options.deadline)
+        try:
+            retry(self.__class__._do_mutate_retryable_rows)(self)
+        except (RetryError, ValueError) as err:
+            # Upon timeout or sleep generator error, return responses_statuses
+            pass
+        return self.responses_statuses
 
     def _is_retryable(self, status):  # pylint: disable=no-self-use
         return (status is None or

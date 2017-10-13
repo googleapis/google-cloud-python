@@ -56,6 +56,7 @@ a ``retry`` parameter that allows you to configure the behavior:
 
 from __future__ import unicode_literals
 
+import collections
 import datetime
 import functools
 import logging
@@ -197,6 +198,34 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
         time.sleep(sleep)
 
     raise ValueError('Sleep generator stopped yielding sleep values.')
+
+
+class RetryOptions(
+        collections.namedtuple(
+            'RetryOptions',
+            ['initial',
+             'maximum',
+             'multiplier',
+             'deadline'])):
+    # pylint: disable=too-few-public-methods
+
+    def __new__(cls,
+                initial=_DEFAULT_INITIAL_DELAY,
+                maximum=_DEFAULT_MAXIMUM_DELAY,
+                multiplier=_DEFAULT_DELAY_MULTIPLIER,
+                deadline=_DEFAULT_DEADLINE):
+        assert isinstance(initial, float), 'should be a float'
+        assert isinstance(maximum, float), 'should be a float'
+        assert isinstance(multiplier, float), 'should be a float'
+        assert isinstance(deadline, float), 'should be a float'
+        assert initial <= maximum and initial <= deadline
+
+        return super(cls, RetryOptions).__new__(
+                cls,
+                initial,
+                maximum,
+                multiplier,
+                deadline)
 
 
 @six.python_2_unicode_compatible
