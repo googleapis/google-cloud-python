@@ -395,43 +395,7 @@ class TestSession(unittest.TestCase):
         self.assertIs(session._transaction, another)
         self.assertTrue(existing._rolled_back)
 
-    def test_retry_transaction_w_commit_error_txn_already_begun(self):
-        from google.gax.errors import GaxError
-        from google.cloud.spanner_v1.transaction import Transaction
-
-        TABLE_NAME = 'citizens'
-        COLUMNS = ['email', 'first_name', 'last_name', 'age']
-        VALUES = [
-            ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
-            ['bharney@example.com', 'Bharney', 'Rhubble', 31],
-        ]
-        gax_api = _SpannerApi(
-            _commit_error=True,
-        )
-        database = _Database(self.DATABASE_NAME)
-        database.spanner_api = gax_api
-        session = self._make_one(database)
-        session._session_id = 'DEADBEEF'
-        begun_txn = session._transaction = Transaction(session)
-        begun_txn._transaction_id = b'FACEDACE'
-
-        called_with = []
-
-        def unit_of_work(txn, *args, **kw):
-            called_with.append((txn, args, kw))
-            txn.insert(TABLE_NAME, COLUMNS, VALUES)
-
-        with self.assertRaises(GaxError):
-            session.run_in_transaction(unit_of_work)
-
-        self.assertEqual(len(called_with), 1)
-        txn, args, kw = called_with[0]
-        self.assertIs(txn, begun_txn)
-        self.assertEqual(txn.committed, None)
-        self.assertEqual(args, ())
-        self.assertEqual(kw, {})
-
-    def test_run_in_transaction_callback_raises_abort(self):
+    def test_run_in_transaction_callback_raises_non_gax_error(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud.spanner_v1.transaction import Transaction
@@ -466,11 +430,57 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(Testing):
             session.run_in_transaction(unit_of_work)
 
+        self.assertIsNone(session._transaction)
         self.assertEqual(len(called_with), 1)
         txn, args, kw = called_with[0]
         self.assertIsInstance(txn, Transaction)
         self.assertIsNone(txn.committed)
         self.assertTrue(txn._rolled_back)
+        self.assertEqual(args, ())
+        self.assertEqual(kw, {})
+
+    def test_run_in_transaction_callback_raises_gax_error_non_abort(self):
+        from google.gax.errors import GaxError
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
+            Transaction as TransactionPB)
+        from google.cloud.spanner_v1.transaction import Transaction
+
+        TABLE_NAME = 'citizens'
+        COLUMNS = ['email', 'first_name', 'last_name', 'age']
+        VALUES = [
+            ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+            ['bharney@example.com', 'Bharney', 'Rhubble', 31],
+        ]
+        TRANSACTION_ID = b'FACEDACE'
+        transaction_pb = TransactionPB(id=TRANSACTION_ID)
+        gax_api = _SpannerApi(
+            _begin_transaction_response=transaction_pb,
+            _rollback_response=None,
+        )
+        database = _Database(self.DATABASE_NAME)
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = 'DEADBEEF'
+
+        called_with = []
+
+        class Testing(GaxError):
+            pass
+
+        def unit_of_work(txn, *args, **kw):
+            called_with.append((txn, args, kw))
+            txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            raise Testing('testing')
+
+        with self.assertRaises(Testing):
+            session.run_in_transaction(unit_of_work)
+
+        self.assertIsNone(session._transaction)
+        self.assertEqual(len(called_with), 1)
+        txn, args, kw = called_with[0]
+        self.assertIsInstance(txn, Transaction)
+        self.assertIsNone(txn.committed)
+        self.assertFalse(txn._rolled_back)
         self.assertEqual(args, ())
         self.assertEqual(kw, {})
 
@@ -520,6 +530,43 @@ class TestSession(unittest.TestCase):
         self.assertEqual(return_value, 42)
         self.assertEqual(args, ('abc',))
         self.assertEqual(kw, {'some_arg': 'def'})
+
+    def test_run_in_transaction_w_commit_error(self):
+        from google.gax.errors import GaxError
+        from google.cloud.spanner_v1.transaction import Transaction
+
+        TABLE_NAME = 'citizens'
+        COLUMNS = ['email', 'first_name', 'last_name', 'age']
+        VALUES = [
+            ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+            ['bharney@example.com', 'Bharney', 'Rhubble', 31],
+        ]
+        gax_api = _SpannerApi(
+            _commit_error=True,
+        )
+        database = _Database(self.DATABASE_NAME)
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = 'DEADBEEF'
+        begun_txn = session._transaction = Transaction(session)
+        begun_txn._transaction_id = b'FACEDACE'
+
+        called_with = []
+
+        def unit_of_work(txn, *args, **kw):
+            called_with.append((txn, args, kw))
+            txn.insert(TABLE_NAME, COLUMNS, VALUES)
+
+        with self.assertRaises(GaxError):
+            session.run_in_transaction(unit_of_work)
+
+        self.assertIsNone(session._transaction)
+        self.assertEqual(len(called_with), 1)
+        txn, args, kw = called_with[0]
+        self.assertIs(txn, begun_txn)
+        self.assertEqual(txn.committed, None)
+        self.assertEqual(args, ())
+        self.assertEqual(kw, {})
 
     def test_run_in_transaction_w_abort_no_retry_metadata(self):
         import datetime

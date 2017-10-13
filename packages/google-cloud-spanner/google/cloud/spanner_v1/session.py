@@ -280,8 +280,8 @@ class Session(object):
             try:
                 return_value = func(txn, *args, **kw)
             except (GaxError, GrpcRendezvous) as exc:
-                _delay_until_retry(exc, deadline)
                 del self._transaction
+                _delay_until_retry(exc, deadline)
                 continue
             except Exception:
                 txn.rollback()
@@ -290,8 +290,8 @@ class Session(object):
             try:
                 txn.commit()
             except GaxError as exc:
-                _delay_until_retry(exc, deadline)
                 del self._transaction
+                _delay_until_retry(exc, deadline)
             else:
                 return return_value
 
