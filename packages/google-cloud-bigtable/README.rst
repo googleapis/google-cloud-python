@@ -18,6 +18,10 @@ Quick Start
 
     $ pip install --upgrade google-cloud-bigtable
 
+Fore more information on setting up your Python development environment, such as installing ``pip`` and on your system, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+
+.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+
 Authentication
 --------------
 
