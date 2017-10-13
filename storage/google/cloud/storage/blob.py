@@ -489,13 +489,6 @@ class Blob(_PropertyMixin):
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
-        except resumable_media.DataCorruption as exc:
-            # Delete the corrupt downloaded file.
-            os.unlink(file_obj.name)
-            raise exceptions.from_http_status(
-                exc.response.status_code, exc.message +
-                     ".  Deleted corrupt downloaded file %s" % file_obj.name)
-
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -510,8 +503,13 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj, client=client)
+        try:
+            with open(filename, 'wb') as file_obj:
+                self.download_to_file(file_obj, client=client)
+        except resumable_media.DataCorruption as exc:
+            # Delete the corrupt downloaded file.
+            os.remove(filename)
+            raise
 
         updated = self.updated
         if updated is not None:
