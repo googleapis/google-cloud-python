@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 3286ae4 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud c171fdc documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../../',
-        VERSION:     '3286ae4',
+        VERSION:     'c171fdc',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -70,6 +70,11 @@
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_callback_completed</span><span class="p">(</span><span class="n">future</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple callback that just logs a `Future`&#39;s result.&quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Result: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">BasePolicy</span><span class="p">):</span>
@@ -186,7 +191,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">)</span>
             <span class="n">message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">ack_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">)</span>
             <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_callback</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Result: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">())</span></div>
+            <span class="n">future</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">_callback_completed</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
