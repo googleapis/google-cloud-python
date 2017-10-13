@@ -36,12 +36,24 @@ from google.cloud.bigquery.job import _int_or_none
 
 
 class ExternalConfig(object):
-    """Description of an external data source."""
+    """Description of an external data source.
 
-    def __init__(self):
-        self._properties = {}
+    :type source_format: str
+    :param source_format: the format of the external data. See
+                          the ``source_format`` property on this class.
+    """
+
+    def __init__(self, source_format):
+        self._properties = {'sourceFormat': source_format}
         self._options = None
-        self._schema = None
+
+    @property
+    def source_format(self):
+        """See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceFormat
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat
+        """
+        return self._properties['sourceFormat']
 
     autodetect = _TypedApiResourceProperty(
         'autodetect', 'autodetect', bool)
@@ -71,13 +83,6 @@ class ExternalConfig(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.maxBadRecords
     """
 
-    source_format = _TypedApiResourceProperty(
-        'source_format', 'sourceFormat', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceFormat
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat
-    """
-
     source_uris = _ListApiResourceProperty(
         'source_uris', 'sourceUris', six.string_types)
     """See
@@ -85,19 +90,11 @@ class ExternalConfig(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceUris
     """
 
-    @property
-    def schema(self):
-        """See
+    schema = _ListApiResourceProperty('schema', 'schema', SchemaField)
+    """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.schema
-        """
-        return self._schema
-
-    @schema.setter
-    def schema(self, value):
-        if not all(isinstance(field, SchemaField) for field in value):
-            raise ValueError('Schema items must be fields')
-        self._schema = value
+    """
 
     @property
     def options(self):
@@ -106,7 +103,10 @@ class ExternalConfig(object):
 
     @options.setter
     def options(self, value):
-        # TODO: check that subclass is compatible with source_format.
+        if self.source_format != value._SOURCE_FORMAT:
+            raise ValueError(
+                'source format %s does not match option type %s' % (
+                    self.source_format, value.__class__.__name__))
         self._options = value
 
     def to_api_repr(self):
@@ -116,7 +116,7 @@ class ExternalConfig(object):
         :returns: A dictionary in the format used by the BigQuery API.
         """
         config = copy.deepcopy(self._properties)
-        if self.schema is not None:
+        if self.schema:
             config['schema'] = {'fields': _build_schema_resource(self.schema)}
         if self.options is not None:
             config[self.options._RESOURCE_NAME] = self.options.to_api_repr()
@@ -134,16 +134,16 @@ class ExternalConfig(object):
         :rtype: :class:`google.cloud.bigquery.external_config.CSVOptions`
         :returns: Configuration parsed from ``resource``.
         """
-        config = cls()
+        config = cls(resource['sourceFormat'])
         schema = resource.pop('schema', None)
-        if schema:
-            config.schema = _parse_schema_resource(schema)
         for optcls in (BigtableOptions, CSVOptions, GoogleSheetsOptions):
             opts = resource.pop(optcls._RESOURCE_NAME, None)
             if opts is not None:
                 config.options = optcls.from_api_repr(opts)
                 break
         config._properties = copy.deepcopy(resource)
+        if schema:
+            config.schema = _parse_schema_resource(schema)
         return config
 
 
@@ -176,7 +176,10 @@ class BigtableColumn(object):
 
     qualifier_encoded = _TypedApiResourceProperty(
         'qualifier_encoded', 'qualifierEncoded', six.binary_type)
-    """See
+    """The qualifier encoded in binary. The type is ``str`` (Python 2.x) or
+       ``bytes`` (Python 3.x). The module will handle base64 encoding for you.
+
+    See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.qualifier_encoded
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifier_encoded
     """
@@ -188,7 +191,7 @@ class BigtableColumn(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifier_string
     """
 
-    type = _TypedApiResourceProperty('type', 'type', six.string_types)
+    type_ = _TypedApiResourceProperty('type_', 'type', six.string_types)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.type
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.type
@@ -252,7 +255,7 @@ class BigtableColumnFamily(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.onlyReadLatest
     """
 
-    type = _TypedApiResourceProperty('type', 'type', six.string_types)
+    type_ = _TypedApiResourceProperty('type_', 'type', six.string_types)
     """See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.type
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.type
@@ -300,6 +303,7 @@ class BigtableOptions(object):
     """Options that describe how to treat Bigtable tables
        as BigQuery tables."""
 
+    _SOURCE_FORMAT = 'BIGTABLE'
     _RESOURCE_NAME = 'bigtableOptions'
 
     def __init__(self):
@@ -360,6 +364,7 @@ class BigtableOptions(object):
 class CSVOptions(object):
     """Options that describe how to treat CSV files as BigQuery tables."""
 
+    _SOURCE_FORMAT = 'CSV'
     _RESOURCE_NAME = 'csvOptions'
 
     def __init__(self):
@@ -441,6 +446,7 @@ class CSVOptions(object):
 class GoogleSheetsOptions(object):
     """Options that describe how to treat Google Sheets as BigQuery tables."""
 
+    _SOURCE_FORMAT = 'GOOGLE_SHEETS'
     _RESOURCE_NAME = 'googleSheetsOptions'
 
     def __init__(self):
