@@ -436,47 +436,23 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_wavelength))
 
     def test_load_table_from_storage_then_dump_table(self):
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.storage import Client as StorageClient
-
-        local_id = unique_resource_id()
-        BUCKET_NAME = 'bq_load_test' + local_id
-        BLOB_NAME = 'person_ages.csv'
-        GS_URL = 'gs://%s/%s' % (BUCKET_NAME, BLOB_NAME)
+        TABLE_ID = 'test_table'
         ROWS = [
             ('Phred Phlyntstone', 32),
             ('Bharney Rhubble', 33),
             ('Wylma Phlyntstone', 29),
             ('Bhettye Rhubble', 27),
         ]
-        TABLE_NAME = 'test_table'
-
-        storage_client = StorageClient()
-
-        # In the **very** rare case the bucket name is reserved, this
-        # fails with a ConnectionError.
-        bucket = storage_client.create_bucket(BUCKET_NAME)
-        self.to_delete.append(bucket)
-
-        blob = bucket.blob(BLOB_NAME)
-
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'w') as csv_write:
-                writer = csv.writer(csv_write)
-                writer.writerow(('Full Name', 'Age'))
-                writer.writerows(ROWS)
-
-            with open(temp.name, 'rb') as csv_read:
-                blob.upload_from_file(csv_read, content_type='text/csv')
-
-        self.to_delete.insert(0, blob)
+        GS_URL = self._write_csv_to_storage(
+            'bq_load_test' + unique_resource_id(), 'person_ages.csv',
+            ('Full Name', 'Age'), ROWS)
 
         dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
 
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age])
+        table_arg = Table(dataset.table(TABLE_ID), schema=[full_name, age])
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -486,7 +462,7 @@ class TestBigQuery(unittest.TestCase):
         config.source_format = 'CSV'
         config.write_disposition = 'WRITE_EMPTY'
         job = Config.CLIENT.load_table_from_storage(
-            GS_URL, dataset.table(TABLE_NAME), job_config=config)
+            GS_URL, dataset.table(TABLE_ID), job_config=config)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
@@ -501,44 +477,19 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_age))
 
     def test_load_table_from_storage_w_autodetect_schema(self):
-        from google.cloud._testing import _NamedTemporaryFile
-        from google.cloud.storage import Client as StorageClient
         from google.cloud.bigquery import SchemaField
 
-        local_id = unique_resource_id()
-        bucket_name = 'bq_load_test' + local_id
-        blob_name = 'person_ages.csv'
-        gs_url = 'gs://{}/{}'.format(bucket_name, blob_name)
         rows = [
             ('Phred Phlyntstone', 32),
             ('Bharney Rhubble', 33),
             ('Wylma Phlyntstone', 29),
             ('Bhettye Rhubble', 27),
         ] * 100  # BigQuery internally uses the first 100 rows to detect schema
-        table_name = 'test_table'
-
-        storage_client = StorageClient()
-
-        # In the **very** rare case the bucket name is reserved, this
-        # fails with a ConnectionError.
-        bucket = storage_client.create_bucket(bucket_name)
-        self.to_delete.append(bucket)
-
-        blob = bucket.blob(blob_name)
-
-        with _NamedTemporaryFile() as temp:
-            with open(temp.name, 'w') as csv_write:
-                writer = csv.writer(csv_write)
-                writer.writerow(('Full Name', 'Age'))
-                writer.writerows(rows)
-
-            with open(temp.name, 'rb') as csv_read:
-                blob.upload_from_file(csv_read, content_type='text/csv')
-
-        self.to_delete.insert(0, blob)
-
+        gs_url = self._write_csv_to_storage(
+            'bq_load_test' + unique_resource_id(), 'person_ages.csv',
+            ('Full Name', 'Age'), rows)
         dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
-        table_ref = dataset.table(table_name)
+        table_ref = dataset.table('test_table')
 
         config = bigquery.LoadJobConfig()
         config.autodetect = True
@@ -563,6 +514,33 @@ class TestBigQuery(unittest.TestCase):
         by_age = operator.itemgetter(1)
         self.assertEqual(
             sorted(actual_row_tuples, key=by_age), sorted(rows, key=by_age))
+
+    def _write_csv_to_storage(self, bucket_name, blob_name, header_row,
+                              data_rows):
+        from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.storage import Client as StorageClient
+
+        storage_client = StorageClient()
+
+        # In the **very** rare case the bucket name is reserved, this
+        # fails with a ConnectionError.
+        bucket = storage_client.create_bucket(bucket_name)
+        self.to_delete.append(bucket)
+
+        blob = bucket.blob(blob_name)
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as csv_write:
+                writer = csv.writer(csv_write)
+                writer.writerow(header_row)
+                writer.writerows(data_rows)
+
+            with open(temp.name, 'rb') as csv_read:
+                blob.upload_from_file(csv_read, content_type='text/csv')
+
+        self.to_delete.insert(0, blob)
+
+        return 'gs://{}/{}'.format(bucket_name, blob_name)
 
     def _load_table_for_extract_table(
             self, storage_client, rows, bucket_name, blob_name, table):
@@ -1270,6 +1248,36 @@ class TestBigQuery(unittest.TestCase):
         iterator = query_job.result(timeout=JOB_TIMEOUT)
         row_tuples = [r.values() for r in iterator]
         self.assertEqual(row_tuples, [(1,)])
+
+    def test_query_table_def(self):
+        rows = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+        gs_url = self._write_csv_to_storage(
+            'bq_load_test' + unique_resource_id(), 'person_ages.csv',
+            ('Full Name', 'Age'), rows)
+
+        job_config = bigquery.QueryJobConfig()
+        table_id = 'flintstones'
+        ec = bigquery.ExternalConfig('CSV')
+        ec.source_uris = [gs_url]
+        ec.schema = [
+            bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+        ]
+        ec.options.skip_leading_rows = 1  # skip the header row
+        job_config.table_definitions = {table_id: ec}
+        sql = 'SELECT * from %s' % table_id
+
+        got_rows = Config.CLIENT.query_rows(sql, job_config=job_config)
+
+        row_tuples = [r.values() for r in got_rows]
+        by_age = operator.itemgetter(1)
+        self.assertEqual(sorted(row_tuples, key=by_age),
+                         sorted(rows, key=by_age))
 
     def test_create_rows_nested_nested(self):
         # See #2951
