@@ -233,6 +233,10 @@ class BucketNotification(object):
 
         client = self._require_client(client)
 
+        query_params = {}
+        if self.bucket.user_project is not None:
+            query_params['userProject'] = self.bucket.user_project
+
         path = '/b/{}/notificationConfigs'.format(self.bucket.name)
         properties = self._properties.copy()
         properties['topic'] = _TOPIC_REF_FMT.format(
@@ -240,6 +244,7 @@ class BucketNotification(object):
         self._properties = client._connection.api_request(
             method='POST',
             path=path,
+            query_params=query_params,
             data=properties,
         )
 
@@ -262,8 +267,17 @@ class BucketNotification(object):
             raise ValueError("Notification not intialized by server")
 
         client = self._require_client(client)
+
+        query_params = {}
+        if self.bucket.user_project is not None:
+            query_params['userProject'] = self.bucket.user_project
+
         try:
-            client._connection.api_request(method='GET', path=self.path)
+            client._connection.api_request(
+                method='GET',
+                path=self.path,
+                query_params=query_params,
+            )
         except NotFound:
             return False
         else:
@@ -288,7 +302,16 @@ class BucketNotification(object):
             raise ValueError("Notification not intialized by server")
 
         client = self._require_client(client)
-        response = client._connection.api_request(method='GET', path=self.path)
+
+        query_params = {}
+        if self.bucket.user_project is not None:
+            query_params['userProject'] = self.bucket.user_project
+
+        response = client._connection.api_request(
+            method='GET',
+            path=self.path,
+            query_params=query_params,
+        )
         self._set_properties(response)
 
     def delete(self, client=None):
@@ -310,4 +333,13 @@ class BucketNotification(object):
             raise ValueError("Notification not intialized by server")
 
         client = self._require_client(client)
-        client._connection.api_request(method='DELETE', path=self.path)
+
+        query_params = {}
+        if self.bucket.user_project is not None:
+            query_params['userProject'] = self.bucket.user_project
+
+        client._connection.api_request(
+            method='DELETE',
+            path=self.path,
+            query_params=query_params,
+        )
