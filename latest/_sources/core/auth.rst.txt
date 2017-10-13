@@ -211,7 +211,7 @@ you need a `Google Developers Service Account`_.
 
    .. raw:: html
 
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/enable-apis.png"/>
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/enable-apis.png"/>
 
   .. note::
 
@@ -240,11 +240,11 @@ you need a `Google Developers Service Account`_.
 
    .. raw:: html
 
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/create-new-service-account.png">
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/create-new-service-account.png">
 
    .. raw:: html
 
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/create-new-service-account-existing-keys.png">
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/create-new-service-account-existing-keys.png">
 
   Find the "Add credentials" drop down and select "Service account" to be
   guided through downloading a new JSON keyfile.
@@ -256,7 +256,7 @@ you need a `Google Developers Service Account`_.
 
    .. raw:: html
 
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/reuse-service-account.png">
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/reuse-service-account.png">
 
 .. _Google Developers Console: https://console.developers.google.com/project
 .. _Google Developers Service Account: https://developers.google.com/accounts/docs/OAuth2ServiceAccount
