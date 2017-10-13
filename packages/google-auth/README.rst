@@ -22,6 +22,10 @@ You can install using `pip`_::
 
 .. _pip: https://pip.pypa.io/en/stable/
 
+For more information on setting up your Python development environment, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+
+.. _`Python Development Environment Setup Guide`: https://cloud.google.com/python/setup
+
 Documentation
 -------------
 

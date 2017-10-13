@@ -34,6 +34,10 @@ google-auth can be installed with `pip`_::
 google-auth is open-source, so you can alternatively grab the source code from
 `GitHub`_ and install from source.
 
+
+For more information on setting up your Python development environment, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+
+.. _`Python Development Environment Setup Guide`: https://cloud.google.com/python/setup
 .. _pip: https://pip.pypa.io
 .. _GitHub: https://github.com/GoogleCloudPlatform/google-auth-library-python
 
