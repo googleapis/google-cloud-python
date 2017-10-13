@@ -460,7 +460,7 @@ class Blob(_PropertyMixin):
         headers = _get_encryption_headers(self._encryption_key)
         headers['accept-encoding'] = 'gzip'
         
-        transport = self._make_transport(client)
+        transport = self._get_transport(client)
         try:
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
