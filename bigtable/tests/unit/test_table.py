@@ -591,10 +591,11 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(len(statuses), 0)
 
     def test_callable_retry(self):
-        from google.api.core.retry import RetryOptions
+        from google.api.core.retry import Retry
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import MUTATE_ROWS_DEFAULT_RETRY
         from google.rpc.status_pb2 import Status
 
         # Setup:
@@ -649,10 +650,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         client._data_stub = mock.MagicMock()
         client._data_stub.MutateRows.side_effect = [[response_1], [response_2]]
 
-        retry_options = RetryOptions(initial=0.1)
-        worker = self._make_worker(client,
-                table.name, [row_1, row_2, row_3], retry_options)
-        statuses = worker()
+        retry = MUTATE_ROWS_DEFAULT_RETRY.with_delay(initial=0.1)
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
+        statuses = worker(retry=retry)
 
         result = [status.code for status in statuses]
         expected_result = [0, 0, 1]
@@ -662,10 +662,11 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_callable_retry_timeout(self):
-        from google.api.core.retry import RetryOptions
+        from google.api.core.retry import Retry
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import MUTATE_ROWS_DEFAULT_RETRY
         from google.rpc.status_pb2 import Status
 
         # Setup:
@@ -705,11 +706,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         client._data_stub = mock.MagicMock()
         client._data_stub.MutateRows.return_value = [response]
 
-        retry_options = RetryOptions(initial=0.1, maximum=0.2,
-                multiplier=2.0, deadline=0.5)
-        worker = self._make_worker(client,
-                table.name, [row_1, row_2], retry_options)
-        statuses = worker()
+        retry = MUTATE_ROWS_DEFAULT_RETRY.with_delay(
+                initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
+        worker = self._make_worker(client, table.name, [row_1, row_2])
+        statuses = worker(retry=retry)
 
         result = [status.code for status in statuses]
         expected_result = [4, 4]
