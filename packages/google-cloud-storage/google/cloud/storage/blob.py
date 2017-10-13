@@ -503,8 +503,13 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj, client=client)
+        try:
+            with open(filename, 'wb') as file_obj:
+                self.download_to_file(file_obj, client=client)
+        except resumable_media.DataCorruption as exc:
+            # Delete the corrupt downloaded file.
+            os.remove(filename)
+            raise
 
         updated = self.updated
         if updated is not None:
