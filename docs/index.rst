@@ -34,6 +34,10 @@ The ``google-cloud`` library is ``pip`` install-able:
 
     $ pip install google-cloud
 
+Fore more information on setting up your Python development environment, such as installing ``pip`` on your system, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+
+.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+
 Cloud Datastore
 ~~~~~~~~~~~~~~~
 
