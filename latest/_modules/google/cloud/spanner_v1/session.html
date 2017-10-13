@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.session &#8212; google-cloud c171fdc documentation</title>
+    <title>google.cloud.spanner_v1.session &#8212; google-cloud 7c770c8 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'c171fdc',
+        VERSION:     '7c770c8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -322,8 +322,8 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">return_value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="n">GaxError</span><span class="p">,</span> <span class="n">GrpcRendezvous</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-                <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
+                <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
@@ -332,8 +332,8 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
             <span class="k">except</span> <span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-                <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
+                <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">return_value</span></div></div>
 
