@@ -40,17 +40,13 @@ append-mostly tables, using the processing power of Google's infrastructure.
 .. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
 .. _BigQuery API docs: https://cloud.google.com/bigquery/docs/reference/v2/
 
-Load data from CSV
-~~~~~~~~~~~~~~~~~~
+Create a dataset
+~~~~~~~~~~~~~~~~
 
 .. code:: python
 
-    import csv
-
     from google.cloud import bigquery
     from google.cloud.bigquery import Dataset
-    from google.cloud.bigquery import LoadJobConfig
-    from google.cloud.bigquery import SchemaField
 
     client = bigquery.Client()
 
@@ -59,11 +55,24 @@ Load data from CSV
     dataset.description = 'my dataset'
     dataset = client.create_dataset(dataset)  # API request
 
+Load data from CSV
+~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import csv
+
+    from google.cloud import bigquery
+    from google.cloud.bigquery import LoadJobConfig
+    from google.cloud.bigquery import SchemaField
+
+    client = bigquery.Client()
+
     SCHEMA = [
         SchemaField('full_name', 'STRING', mode='required'),
         SchemaField('age', 'INTEGER', mode='required'),
     ]
-    table = dataset_ref.table('table_name')
+    table_ref = client.dataset('dataset_name').table('table_name')
 
     load_config = LoadJobConfig()
     load_config.skip_leading_rows = 1
@@ -74,7 +83,7 @@ Load data from CSV
     #     Tim,99
     with open('csv_file.csv', 'rb') as readable:
         client.load_table_from_file(
-            readable, table, job_config=load_config)  # API request
+            readable, table_ref, job_config=load_config)  # API request
 
 Perform a query
 ~~~~~~~~~~~~~~~
@@ -89,7 +98,7 @@ Perform a query
     query_job = client.query(QUERY)  # API request
     rows = query_job.result()  # Waits for query to finish
 
-    for row in query.rows:
+    for row in rows:
         print(row.name)
 
 
