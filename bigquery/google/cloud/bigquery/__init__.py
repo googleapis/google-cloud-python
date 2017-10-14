@@ -43,6 +43,12 @@ from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.external_config import ExternalConfig
+from google.cloud.bigquery.external_config import BigtableOptions
+from google.cloud.bigquery.external_config import BigtableColumnFamily
+from google.cloud.bigquery.external_config import BigtableColumn
+from google.cloud.bigquery.external_config import CSVOptions
+from google.cloud.bigquery.external_config import GoogleSheetsOptions
 
 __all__ = [
     '__version__',
@@ -63,4 +69,10 @@ __all__ = [
     'TableReference',
     'UDFResource',
     'DEFAULT_RETRY',
+    'ExternalConfig',
+    'BigtableOptions',
+    'BigtableColumnFamily',
+    'BigtableColumn',
+    'CSVOptions',
+    'GoogleSheetsOptions',
 ]
