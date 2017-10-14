@@ -152,7 +152,7 @@ def test_subscribe_to_messages_async_callbacks():
 
             # The callback should have fired at least two times, but it may
             # take some time.
-            if callback.call_count >= 2:
+            if callback.call_count >= 2 and side_effect.call_count >= 2:
                 first = min(call_times[:2])
                 last = max(call_times[:2])
                 diff = last - first
@@ -161,7 +161,6 @@ def test_subscribe_to_messages_async_callbacks():
                 # seconds).
                 assert diff.days == 0
                 assert diff.seconds < 2
-                assert side_effect.call_count >= 2
 
         # Okay, we took too long; fail out.
         assert callback.call_count >= 2
