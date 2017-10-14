@@ -59,6 +59,10 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install gapic-google-cloud-trace-v1
 
+Fore more information on setting up your Python development environment, such as installing ``pip`` and ``virtualenv`` on your system, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+
+.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
+
 Preview
 ~~~~~~~
 

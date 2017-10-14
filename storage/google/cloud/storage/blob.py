@@ -482,8 +482,9 @@ class Blob(_PropertyMixin):
         """
         download_url = self._get_download_url()
         headers = _get_encryption_headers(self._encryption_key)
-        transport = self._get_transport(client)
+        headers['accept-encoding'] = 'gzip'
 
+        transport = self._get_transport(client)
         try:
             self._do_download(transport, file_obj, download_url, headers)
         except resumable_media.InvalidResponse as exc:
@@ -502,8 +503,13 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj, client=client)
+        try:
+            with open(filename, 'wb') as file_obj:
+                self.download_to_file(file_obj, client=client)
+        except resumable_media.DataCorruption as exc:
+            # Delete the corrupt downloaded file.
+            os.remove(filename)
+            raise
 
         updated = self.updated
         if updated is not None:
