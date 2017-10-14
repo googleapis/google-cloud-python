@@ -14,7 +14,7 @@
 
 from __future__ import absolute_import
 
-from datetime import datetime
+import datetime
 import time
 import uuid
 
@@ -137,7 +137,7 @@ def test_subscribe_to_messages_async_callbacks():
 
         def process_message(message):
             # list.append() is thread-safe.
-            call_times.append(datetime.now())
+            call_times.append(datetime.datetime.now())
             time.sleep(2)
             message.ack()
 
