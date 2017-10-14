@@ -17,6 +17,7 @@ from __future__ import absolute_import
 from concurrent import futures
 import queue
 import threading
+import time
 
 import grpc
 
@@ -115,6 +116,7 @@ def test_on_response():
     # Actually run the method and prove that the callback was
     # called in the expected way.
     policy.on_response(response)
+    time.sleep(1)
     assert callback.call_count == 2
     for call in callback.mock_calls:
         assert isinstance(call[1][0], message.Message)
