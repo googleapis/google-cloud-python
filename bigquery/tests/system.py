@@ -339,7 +339,7 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, table)
         self.assertTrue(_table_exists(table))
 
-        errors = Config.CLIENT.create_rows(table, ROWS, ROW_IDS)
+        errors = Config.CLIENT.create_rows(table, ROWS, row_ids=ROW_IDS)
         self.assertEqual(len(errors), 0)
 
         rows = ()
@@ -1356,11 +1356,9 @@ class TestBigQuery(unittest.TestCase):
         json_filename = os.path.join(WHERE, 'data', 'characters.jsonl')
         with open(json_filename) as rows_file:
             for line in rows_file:
-                mapping = json.loads(line)
-                to_insert.append(
-                    tuple(mapping[field.name] for field in schema))
+                to_insert.append(json.loads(line))
 
-        errors = Config.CLIENT.create_rows(table, to_insert)
+        errors = Config.CLIENT.create_rows_json(table, to_insert)
         self.assertEqual(len(errors), 0)
 
         retry = RetryResult(_has_rows, max_tries=8)
@@ -1369,14 +1367,14 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(len(fetched), len(to_insert))
 
-        for found, expected in zip(sorted(fetched_tuples), sorted(to_insert)):
-            self.assertEqual(found[0], expected[0])            # Name
-            self.assertEqual(found[1], int(expected[1]))       # Age
-            self.assertEqual(found[2], expected[2])            # Weight
-            self.assertEqual(found[3], expected[3])            # IsMagic
+        for found, expected in zip(sorted(fetched_tuples), to_insert):
+            self.assertEqual(found[0], expected['Name'])
+            self.assertEqual(found[1], int(expected['Age']))
+            self.assertEqual(found[2], expected['Weight'])
+            self.assertEqual(found[3], expected['IsMagic'])
 
-            self.assertEqual(len(found[4]), len(expected[4]))  # Spells
-            for f_spell, e_spell in zip(found[4], expected[4]):
+            self.assertEqual(len(found[4]), len(expected['Spells']))
+            for f_spell, e_spell in zip(found[4], expected['Spells']):
                 self.assertEqual(f_spell['Name'], e_spell['Name'])
                 parts = time.strptime(
                     e_spell['LastUsed'], '%Y-%m-%d %H:%M:%S UTC')
@@ -1390,17 +1388,18 @@ class TestBigQuery(unittest.TestCase):
                     e_spell['Icon'].encode('ascii'))
                 self.assertEqual(f_spell['Icon'], e_icon)
 
-            parts = time.strptime(expected[5], '%H:%M:%S')
+            parts = time.strptime(expected['TeaTime'], '%H:%M:%S')
             e_teatime = datetime.time(*parts[3:6])
-            self.assertEqual(found[5], e_teatime)              # TeaTime
+            self.assertEqual(found[5], e_teatime)
 
-            parts = time.strptime(expected[6], '%Y-%m-%d')
+            parts = time.strptime(expected['NextVacation'], '%Y-%m-%d')
             e_nextvac = datetime.date(*parts[0:3])
-            self.assertEqual(found[6], e_nextvac)              # NextVacation
+            self.assertEqual(found[6], e_nextvac)
 
-            parts = time.strptime(expected[7], '%Y-%m-%dT%H:%M:%S')
+            parts = time.strptime(expected['FavoriteTime'],
+                                  '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
-            self.assertEqual(found[7], e_favtime)              # FavoriteTime
+            self.assertEqual(found[7], e_favtime)
 
     def temp_dataset(self, dataset_id):
         dataset = retry_403(Config.CLIENT.create_dataset)(
