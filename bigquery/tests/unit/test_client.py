@@ -550,8 +550,7 @@ class TestClient(unittest.TestCase):
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
-            # TODO(alixh) default to Standard SQL
-            'view': {'query': query, 'useLegacySql': None},
+            'view': {'query': query, 'useLegacySql': False},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, self.TABLE_ID)
