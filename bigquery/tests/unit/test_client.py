@@ -461,6 +461,7 @@ class TestClient(unittest.TestCase):
                 'tableId': self.TABLE_ID
             },
             'timePartitioning': {'type': 'DAY'},
+            'labels': {},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(table.partitioning_type, "DAY")
@@ -499,6 +500,7 @@ class TestClient(unittest.TestCase):
                 'tableId': self.TABLE_ID
             },
             'timePartitioning': {'type': 'DAY', 'expirationMs': 100},
+            'labels': {},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(table.partitioning_type, "DAY")
@@ -551,6 +553,7 @@ class TestClient(unittest.TestCase):
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]
             },
             'view': {'query': query, 'useLegacySql': False},
+            'labels': {},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, self.TABLE_ID)
@@ -600,7 +603,8 @@ class TestClient(unittest.TestCase):
             'externalDataConfiguration': {
                 'sourceFormat': 'CSV',
                 'autodetect': True,
-            }
+            },
+            'labels': {},
         }
         self.assertEqual(req['data'], sent)
         self.assertEqual(got.table_id, self.TABLE_ID)
@@ -724,6 +728,7 @@ class TestClient(unittest.TestCase):
             'etag': 'etag',
             'description': description,
             'friendlyName': title,
+            'labels': {'x': 'y'},
         }
         schema = [
             SchemaField('full_name', 'STRING', mode='REQUIRED'),
@@ -735,9 +740,10 @@ class TestClient(unittest.TestCase):
         table = Table(self.TABLE_REF, schema=schema)
         table.description = description
         table.friendly_name = title
+        table.labels = {'x': 'y'}
 
         updated_table = client.update_table(
-            table, ['schema', 'description', 'friendly_name'])
+            table, ['schema', 'description', 'friendly_name', 'labels'])
 
         sent = {
             'tableReference': {
@@ -750,6 +756,7 @@ class TestClient(unittest.TestCase):
                 {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
             'description': description,
             'friendlyName': title,
+            'labels': {'x': 'y'},
         }
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -760,6 +767,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(updated_table.description, table.description)
         self.assertEqual(updated_table.friendly_name, table.friendly_name)
         self.assertEqual(updated_table.schema, table.schema)
+        self.assertEqual(updated_table.labels, table.labels)
 
         # ETag becomes If-Match header.
         table._properties['etag'] = 'etag'

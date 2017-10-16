@@ -163,7 +163,7 @@ class Table(object):
     all_fields = [
         'description', 'friendly_name', 'expires', 'location',
         'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
-        'external_data_configuration',
+        'external_data_configuration', 'labels',
     ]
 
     def __init__(self, table_ref, schema=()):
@@ -171,7 +171,7 @@ class Table(object):
         self._table_id = table_ref.table_id
         self._dataset_id = table_ref.dataset_id
         self._external_config = None
-        self._properties = {}
+        self._properties = {'labels': {}}
         # Let the @property do validation.
         self.schema = schema
 
@@ -237,6 +237,32 @@ class Table(object):
             raise ValueError('Schema items must be fields')
         else:
             self._schema = tuple(value)
+
+    @property
+    def labels(self):
+        """Labels for the table.
+
+        This method always returns a dict. To change a table's labels,
+        modify the dict, then call ``Client.update_table``. To delete a
+        label, set its value to ``None`` before updating.
+
+        :rtype: dict, {str -> str}
+        :returns: A dict of the the table's labels.
+        """
+        return self._properties['labels']
+
+    @labels.setter
+    def labels(self, value):
+        """Update labels for the table.
+
+        :type value: dict, {str -> str}
+        :param value: new labels
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, dict):
+            raise ValueError("Pass a dict")
+        self._properties['labels'] = value
 
     @property
     def created(self):
@@ -620,6 +646,8 @@ class Table(object):
             cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
         if 'expirationTime' in cleaned:
             cleaned['expirationTime'] = float(cleaned['expirationTime'])
+        if 'labels' not in cleaned:
+            cleaned['labels'] = {}
         self._properties.update(cleaned)
 
     def _populate_expires_resource(self, resource):
