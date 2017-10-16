@@ -14,10 +14,15 @@
 
 """This module is used to configure gcp-devrel-py-tools run-pylint."""
 
+import copy
+
+from gcp_devrel.tools import pylint
+
 # Library configuration
 
 # library_additions = {}
-# library_replacements = {}
+library_replacements = copy.deepcopy(pylint.DEFAULT_LIBRARY_RC_REPLACEMENTS)
+library_replacements['MASTER']['ignore'].append('_generated')
 
 # Test configuration
 
