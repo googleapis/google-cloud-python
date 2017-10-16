@@ -133,7 +133,7 @@ class Client(ClientWithProject):
 
         :type user_project: str
         :param user_project: (Optional) the project ID to be billed for API
-                             requests made via this instance.
+                             requests made via the bucket.
 
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket object created.

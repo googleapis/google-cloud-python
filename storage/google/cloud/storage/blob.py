@@ -226,7 +226,7 @@ class Blob(_PropertyMixin):
 
     @property
     def user_project(self):
-        """Project ID used for API requests made via this blob.
+        """Project ID billed for API requests made via this blob.
 
         Derived from bucket's value.
 
@@ -333,6 +333,9 @@ class Blob(_PropertyMixin):
     def exists(self, client=None):
         """Determines whether or not this blob exists.
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -364,6 +367,9 @@ class Blob(_PropertyMixin):
 
     def delete(self, client=None):
         """Deletes a blob from Cloud Storage.
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -470,6 +476,9 @@ class Blob(_PropertyMixin):
         `google-resumable-media`_. For example, this library allows
         downloading **parts** of a blob rather than the whole thing.
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
 
@@ -492,6 +501,9 @@ class Blob(_PropertyMixin):
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type filename: str
         :param filename: A filename to be passed to ``open``.
@@ -518,6 +530,9 @@ class Blob(_PropertyMixin):
 
     def download_as_string(self, client=None):
         """Download the contents of this blob as a string.
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -889,6 +904,9 @@ class Blob(_PropertyMixin):
         For more fine-grained over the upload process, check out
         `google-resumable-media`_.
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
@@ -952,6 +970,9 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type filename: str
         :param filename: The path to the file.
 
@@ -983,6 +1004,9 @@ class Blob(_PropertyMixin):
            <https://cloud.google.com/storage/docs/object-versioning>`_ and
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type data: bytes or str
         :param data: The data to store in this blob.  If the value is
@@ -1045,6 +1069,9 @@ class Blob(_PropertyMixin):
         If :attr:`encryption_key` is set, the blob will be encrypted with
         a `customer-supplied`_ encryption key.
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type size: int
         :param size: (Optional). The maximum number of bytes that can be
                      uploaded using this session. If the size is not known
@@ -1096,6 +1123,9 @@ class Blob(_PropertyMixin):
         See
         https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -1124,6 +1154,9 @@ class Blob(_PropertyMixin):
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type policy: :class:`google.cloud.iam.Policy`
         :param policy: policy instance used to update bucket's IAM policy.
@@ -1159,6 +1192,9 @@ class Blob(_PropertyMixin):
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type permissions: list of string
         :param permissions: the permissions to check
@@ -1200,6 +1236,9 @@ class Blob(_PropertyMixin):
     def compose(self, sources, client=None):
         """Concatenate source blobs into this one.
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type sources: list of :class:`Blob`
         :param sources: blobs whose contents will be composed into this blob.
 
@@ -1234,6 +1273,9 @@ class Blob(_PropertyMixin):
 
     def rewrite(self, source, token=None, client=None):
         """Rewrite source blob into this one.
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type source: :class:`Blob`
         :param source: blob whose contents will be rewritten into this blob.
@@ -1292,6 +1334,9 @@ class Blob(_PropertyMixin):
 
         See
         https://cloud.google.com/storage/docs/per-object-storage-class
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type new_class: str
         :param new_class: new storage class for the object
