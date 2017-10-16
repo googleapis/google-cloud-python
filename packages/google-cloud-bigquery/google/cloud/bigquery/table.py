@@ -463,6 +463,9 @@ class Table(object):
     def view_query(self):
         """SQL query defining the table as a view.
 
+        By default, the query is treated as Standard SQL. To use Legacy
+        SQL, set view_use_legacy_sql to True.
+
         :rtype: str, or ``NoneType``
         :returns: The query as set by the user, or None (the default).
         """
@@ -481,9 +484,14 @@ class Table(object):
         """
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
-        if self._properties.get('view') is None:
-            self._properties['view'] = {}
-        self._properties['view']['query'] = value
+        view = self._properties.get('view')
+        if view is None:
+            view = self._properties['view'] = {}
+        view['query'] = value
+        # The service defaults useLegacySql to True, but this
+        # client uses Standard SQL by default.
+        if view.get('useLegacySql') is None:
+            view['useLegacySql'] = False
 
     @view_query.deleter
     def view_query(self):
@@ -492,26 +500,29 @@ class Table(object):
 
     @property
     def view_use_legacy_sql(self):
-        """Specifies whether to execute the view with legacy or standard SQL.
+        """Specifies whether to execute the view with Legacy or Standard SQL.
 
-        If not set, None is returned. BigQuery's default mode is equivalent to
-        useLegacySql = True.
+        The default is False for views (use Standard SQL).
+        If this table is not a view, None is returned.
 
-        :rtype: bool, or ``NoneType``
-        :returns: The boolean for view.useLegacySql as set by the user, or
-                  None (the default).
+        :rtype: bool or ``NoneType``
+        :returns: The boolean for view.useLegacySql, or None if not a view.
         """
         view = self._properties.get('view')
         if view is not None:
-            return view.get('useLegacySql')
+            # useLegacySql is never missing from the view dict if this table
+            # was created client-side, because the view_query setter populates
+            # it. So a missing or None can only come from the server, whose
+            # default is True.
+            return view.get('useLegacySql', True)
 
     @view_use_legacy_sql.setter
     def view_use_legacy_sql(self, value):
         """Update the view sub-property 'useLegacySql'.
 
-        This boolean specifies whether to execute the view with legacy SQL
-        (True) or standard SQL (False). The default, if not specified, is
-        'True'.
+        This boolean specifies whether to execute the view with Legacy SQL
+        (True) or Standard SQL (False). The default, if not specified, is
+        'False'.
 
         :type value: bool
         :param value: The boolean for view.useLegacySql
