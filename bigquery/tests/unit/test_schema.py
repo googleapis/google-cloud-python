@@ -236,3 +236,132 @@ class TestSchemaField(unittest.TestCase):
         field1 = self._make_one('field1', 'STRING')
         expected = "SchemaField('field1', 'string', 'NULLABLE', None, ())"
         self.assertEqual(repr(field1), expected)
+
+
+# TODO: dedup with the same class in test_table.py.
+class _SchemaBase(object):
+
+    def _verify_field(self, field, r_field):
+        self.assertEqual(field.name, r_field['name'])
+        self.assertEqual(field.field_type, r_field['type'])
+        self.assertEqual(field.mode, r_field.get('mode', 'NULLABLE'))
+
+    def _verifySchema(self, schema, resource):
+        r_fields = resource['schema']['fields']
+        self.assertEqual(len(schema), len(r_fields))
+
+        for field, r_field in zip(schema, r_fields):
+            self._verify_field(field, r_field)
+
+
+class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
+
+    def _call_fut(self, resource):
+        from google.cloud.bigquery.schema import _parse_schema_resource
+
+        return _parse_schema_resource(resource)
+
+    def _makeResource(self):
+        return {
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
+            ]},
+        }
+
+    def test__parse_schema_resource_defaults(self):
+        RESOURCE = self._makeResource()
+        schema = self._call_fut(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
+
+    def test__parse_schema_resource_subfields(self):
+        RESOURCE = self._makeResource()
+        RESOURCE['schema']['fields'].append(
+            {'name': 'phone',
+             'type': 'RECORD',
+             'mode': 'REPEATED',
+             'fields': [{'name': 'type',
+                         'type': 'STRING',
+                         'mode': 'REQUIRED'},
+                        {'name': 'number',
+                         'type': 'STRING',
+                         'mode': 'REQUIRED'}]})
+        schema = self._call_fut(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
+
+    def test__parse_schema_resource_fields_without_mode(self):
+        RESOURCE = self._makeResource()
+        RESOURCE['schema']['fields'].append(
+            {'name': 'phone',
+             'type': 'STRING'})
+
+        schema = self._call_fut(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
+
+
+class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
+
+    def _call_fut(self, resource):
+        from google.cloud.bigquery.schema import _build_schema_resource
+
+        return _build_schema_resource(resource)
+
+    def test_defaults(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        resource = self._call_fut([full_name, age])
+        self.assertEqual(len(resource), 2)
+        self.assertEqual(resource[0],
+                         {'name': 'full_name',
+                          'type': 'STRING',
+                          'mode': 'REQUIRED'})
+        self.assertEqual(resource[1],
+                         {'name': 'age',
+                          'type': 'INTEGER',
+                          'mode': 'REQUIRED'})
+
+    def test_w_description(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        DESCRIPTION = 'DESCRIPTION'
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED',
+                                description=DESCRIPTION)
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        resource = self._call_fut([full_name, age])
+        self.assertEqual(len(resource), 2)
+        self.assertEqual(resource[0],
+                         {'name': 'full_name',
+                          'type': 'STRING',
+                          'mode': 'REQUIRED',
+                          'description': DESCRIPTION})
+        self.assertEqual(resource[1],
+                         {'name': 'age',
+                          'type': 'INTEGER',
+                          'mode': 'REQUIRED'})
+
+    def test_w_subfields(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        ph_type = SchemaField('type', 'STRING', 'REQUIRED')
+        ph_num = SchemaField('number', 'STRING', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='REPEATED',
+                            fields=[ph_type, ph_num])
+        resource = self._call_fut([full_name, phone])
+        self.assertEqual(len(resource), 2)
+        self.assertEqual(resource[0],
+                         {'name': 'full_name',
+                          'type': 'STRING',
+                          'mode': 'REQUIRED'})
+        self.assertEqual(resource[1],
+                         {'name': 'phone',
+                          'type': 'RECORD',
+                          'mode': 'REPEATED',
+                          'fields': [{'name': 'type',
+                                      'type': 'STRING',
+                                      'mode': 'REQUIRED'},
+                                     {'name': 'number',
+                                      'type': 'STRING',
+                                      'mode': 'REQUIRED'}]})
