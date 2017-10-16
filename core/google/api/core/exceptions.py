@@ -150,8 +150,8 @@ class TemporaryRedirect(Redirection):
 class ResumeIncomplete(Redirection):
     """Exception mapping a ``308 Resume Incomplete`` response.
 
-    .. note:: :ref:`http_client.PERMANENT_REDIRECT` is ``308``, but Google APIs
-        differ in their use of this status code.
+    .. note:: :attr:`http_client.PERMANENT_REDIRECT` is ``308``, but Google
+        APIs differ in their use of this status code.
     """
     code = 308
 
@@ -166,20 +166,20 @@ class BadRequest(ClientError):
 
 
 class InvalidArgument(BadRequest):
-    """Exception mapping a :prop:`grpc.StatusCode.INVALID_ARGUMENT` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.INVALID_ARGUMENT` error."""
     grpc_status_code = (
         grpc.StatusCode.INVALID_ARGUMENT if grpc is not None else None)
 
 
 class FailedPrecondition(BadRequest):
-    """Exception mapping a :prop:`grpc.StatusCode.FAILED_PRECONDITION`
+    """Exception mapping a :attr:`grpc.StatusCode.FAILED_PRECONDITION`
     error."""
     grpc_status_code = (
         grpc.StatusCode.FAILED_PRECONDITION if grpc is not None else None)
 
 
 class OutOfRange(BadRequest):
-    """Exception mapping a :prop:`grpc.StatusCode.OUT_OF_RANGE` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.OUT_OF_RANGE` error."""
     grpc_status_code = (
         grpc.StatusCode.OUT_OF_RANGE if grpc is not None else None)
 
@@ -190,7 +190,7 @@ class Unauthorized(ClientError):
 
 
 class Unauthenticated(Unauthorized):
-    """Exception mapping a :prop:`grpc.StatusCode.UNAUTHENTICATED` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.UNAUTHENTICATED` error."""
     grpc_status_code = (
         grpc.StatusCode.UNAUTHENTICATED if grpc is not None else None)
 
@@ -201,14 +201,14 @@ class Forbidden(ClientError):
 
 
 class PermissionDenied(Forbidden):
-    """Exception mapping a :prop:`grpc.StatusCode.PERMISSION_DENIED` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.PERMISSION_DENIED` error."""
     grpc_status_code = (
         grpc.StatusCode.PERMISSION_DENIED if grpc is not None else None)
 
 
 class NotFound(ClientError):
     """Exception mapping a ``404 Not Found`` response or a
-    :prop:`grpc.StatusCode.NOT_FOUND` error."""
+    :attr:`grpc.StatusCode.NOT_FOUND` error."""
     code = http_client.NOT_FOUND
     grpc_status_code = (
         grpc.StatusCode.NOT_FOUND if grpc is not None else None)
@@ -225,13 +225,13 @@ class Conflict(ClientError):
 
 
 class AlreadyExists(Conflict):
-    """Exception mapping a :prop:`grpc.StatusCode.ALREADY_EXISTS` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.ALREADY_EXISTS` error."""
     grpc_status_code = (
         grpc.StatusCode.ALREADY_EXISTS if grpc is not None else None)
 
 
 class Aborted(Conflict):
-    """Exception mapping a :prop:`grpc.StatusCode.ABORTED` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.ABORTED` error."""
     grpc_status_code = (
         grpc.StatusCode.ABORTED if grpc is not None else None)
 
@@ -258,13 +258,13 @@ class TooManyRequests(ClientError):
 
 
 class ResourceExhausted(TooManyRequests):
-    """Exception mapping a :prop:`grpc.StatusCode.RESOURCE_EXHAUSTED` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.RESOURCE_EXHAUSTED` error."""
     grpc_status_code = (
         grpc.StatusCode.RESOURCE_EXHAUSTED if grpc is not None else None)
 
 
 class Cancelled(ClientError):
-    """Exception mapping a :prop:`grpc.StatusCode.CANCELLED` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.CANCELLED` error."""
     # This maps to HTTP status code 499. See
     # https://github.com/googleapis/googleapis/blob/master/google/rpc\
     # /code.proto
@@ -278,24 +278,24 @@ class ServerError(GoogleAPICallError):
 
 class InternalServerError(ServerError):
     """Exception mapping a ``500 Internal Server Error`` response. or a
-    :prop:`grpc.StatusCode.INTERNAL` error."""
+    :attr:`grpc.StatusCode.INTERNAL` error."""
     code = http_client.INTERNAL_SERVER_ERROR
     grpc_status_code = grpc.StatusCode.INTERNAL if grpc is not None else None
 
 
 class Unknown(ServerError):
-    """Exception mapping a :prop:`grpc.StatusCode.UNKNOWN` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.UNKNOWN` error."""
     grpc_status_code = grpc.StatusCode.UNKNOWN if grpc is not None else None
 
 
 class DataLoss(ServerError):
-    """Exception mapping a :prop:`grpc.StatusCode.DATA_LOSS` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.DATA_LOSS` error."""
     grpc_status_code = grpc.StatusCode.DATA_LOSS if grpc is not None else None
 
 
 class MethodNotImplemented(ServerError):
     """Exception mapping a ``501 Not Implemented`` response or a
-    :prop:`grpc.StatusCode.UNIMPLEMENTED` error."""
+    :attr:`grpc.StatusCode.UNIMPLEMENTED` error."""
     code = http_client.NOT_IMPLEMENTED
     grpc_status_code = (
         grpc.StatusCode.UNIMPLEMENTED if grpc is not None else None)
@@ -308,7 +308,7 @@ class BadGateway(ServerError):
 
 class ServiceUnavailable(ServerError):
     """Exception mapping a ``503 Service Unavailable`` response or a
-    :prop:`grpc.StatusCode.UNAVAILABLE` error."""
+    :attr:`grpc.StatusCode.UNAVAILABLE` error."""
     code = http_client.SERVICE_UNAVAILABLE
     grpc_status_code = (
         grpc.StatusCode.UNAVAILABLE if grpc is not None else None)
@@ -320,7 +320,7 @@ class GatewayTimeout(ServerError):
 
 
 class DeadlineExceeded(GatewayTimeout):
-    """Exception mapping a :prop:`grpc.StatusCode.DEADLINE_EXCEEDED` error."""
+    """Exception mapping a :attr:`grpc.StatusCode.DEADLINE_EXCEEDED` error."""
     grpc_status_code = (
         grpc.StatusCode.DEADLINE_EXCEEDED if grpc is not None else None)
 
@@ -332,7 +332,7 @@ def exception_class_for_http_status(status_code):
         status_code (int): The HTTP status code.
 
     Returns:
-        type: the appropriate subclass of :class:`GoogleAPICallError`.
+        :func:`type`: the appropriate subclass of :class:`GoogleAPICallError`.
     """
     return _HTTP_CODE_TO_EXCEPTION.get(status_code, GoogleAPICallError)
 
@@ -395,7 +395,7 @@ def exception_class_for_grpc_status(status_code):
         status_code (grpc.StatusCode): The gRPC status code.
 
     Returns:
-        type: the appropriate subclass of :class:`GoogleAPICallError`.
+        :func:`type`: the appropriate subclass of :class:`GoogleAPICallError`.
     """
     return _GRPC_CODE_TO_EXCEPTION.get(status_code, GoogleAPICallError)
 

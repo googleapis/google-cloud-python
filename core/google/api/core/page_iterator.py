@@ -23,7 +23,7 @@ for more details.
     https://cloud.google.com/apis/design/design_patterns#list_pagination
 
 API clients that have methods that follow the list pagination pattern can
-return an :class:`Iterator`. You can use this iterator to get **all** of
+return an :class:`.Iterator`. You can use this iterator to get **all** of
 the results across all pages::
 
     >>> results_iterator = client.list_resources()
@@ -88,12 +88,14 @@ class Page(object):
     """Single page of results in an iterator.
 
     Args:
-        parent (Iterator): The iterator that owns the current page.
+        parent (google.api.core.page_iterator.Iterator): The iterator that owns
+            the current page.
         items (Sequence[Any]): An iterable (that also defines __len__) of items
             from a raw API response.
-        item_to_value (Callable[Iterator, Any]): Callable to convert an item
-            from the type in the raw API response into the native object. Will
-            be called with the iterator and a single item.
+        item_to_value (Callable[google.api.core.page_iterator.Iterator, Any]):
+            Callable to convert an item from the type in the raw API response
+            into the native object. Will be called with the iterator and a
+            single item.
     """
 
     def __init__(self, parent, items, item_to_value):
@@ -143,9 +145,10 @@ class Iterator(object):
 
     Args:
         client(google.cloud.client.Client): The API client.
-        item_to_value (Callable[Iterator, Any]): Callable to convert an item
-            from the type in the raw API response into the native object. Will
-            be called with the iterator and a single item.
+        item_to_value (Callable[google.api.core.page_iterator.Iterator, Any]):
+            Callable to convert an item from the type in the raw API response
+            into the native object. Will be called with the iterator and a
+            single item.
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
         max_results (int): The maximum number of results to fetch.
@@ -167,7 +170,8 @@ class Iterator(object):
         """Iterator of pages in the response.
 
         returns:
-            types.GeneratorType[Page]: A generator of :class:`Page` instances.
+            types.GeneratorType[google.api.core.page_iterator.Page]: A
+                generator of page instances.
 
         raises:
             ValueError: If the iterator has already been started.
@@ -260,9 +264,10 @@ class HTTPIterator(Iterator):
             Generally, this will be
             :meth:`google.cloud._http.JSONConnection.api_request`.
         path (str): The method path to query for the list of items.
-        item_to_value (Callable[Iterator, Any]): Callable to convert an item
-            from the type in the JSON response into a native object. Will
-            be called with the iterator and a single item.
+        item_to_value (Callable[google.api.core.page_iterator.Iterator, Any]):
+            Callable to convert an item from the type in the JSON response into
+            a native object. Will be called with the iterator and a single
+            item.
         items_key (str): The key in the API response where the list of items
             can be found.
         page_token (str): A token identifying a page in a result set to start
@@ -270,10 +275,12 @@ class HTTPIterator(Iterator):
         max_results (int): The maximum number of results to fetch.
         extra_params (dict): Extra query string parameters for the
             API call.
-        page_start (Callable[Iterator, Page, dict]):  Callable to provide any
-            special behavior after a new page has been created. Assumed
-            signature takes the :class:`Iterator` that started the page,
-            the :class:`Page` that was started and the dictionary containing
+        page_start (Callable[
+            google.api.core.page_iterator.Iterator,
+            google.api.core.page_iterator.Page, dict]): Callable to provide
+            any special behavior after a new page has been created. Assumed
+            signature takes the :class:`.Iterator` that started the page,
+            the :class:`.Page` that was started and the dictionary containing
             the page response.
         next_token (str): The name of the field used in the response for page
             tokens.
@@ -442,8 +449,8 @@ class GRPCIterator(Iterator):
         request (protobuf.Message): The request message.
         items_field (str): The field in the response message that has the
             items for the page.
-        item_to_value (Callable[Iterator, Any]): Callable to convert an item
-            from the type in the JSON response into a native object. Will
+        item_to_value (Callable[GRPCIterator, Any]): Callable to convert an
+            item from the type in the JSON response into a native object. Will
             be called with the iterator and a single item.
         request_token_field (str): The field in the request message used to
             specify the page token.
@@ -479,8 +486,8 @@ class GRPCIterator(Iterator):
         """Get the next page in the iterator.
 
         Returns:
-            Page: The next page in the iterator or :data:`None` if there are no
-                pages left.
+            Page: The next page in the iterator or :data:`None` if
+                there are no pages left.
         """
         if not self._has_next_page():
             return None
