@@ -26,6 +26,7 @@ need to be deleted during teardown.
 import operator
 import time
 
+import pytest
 import six
 
 from google.cloud.bigquery import SchemaField
@@ -50,10 +51,17 @@ QUERY = (
     'WHERE state = "TX"')
 
 
-def snippet(func):
-    """Mark ``func`` as a snippet example function."""
-    func._snippet = True
-    return func
+@pytest.fixture(scope='module')
+def client():
+    return Client()
+
+
+@pytest.fixture
+def to_delete():
+    doomed = []
+    yield doomed
+    for item in doomed:
+        item.delete()
 
 
 def _millis():
@@ -69,8 +77,7 @@ class _CloseOnDelete(object):
         self._wrapped.close()
 
 
-@snippet
-def client_list_datasets(client, _):
+def test_client_list_datasets(client):
     """List datasets for a project."""
 
     def do_something_with(_):
@@ -82,8 +89,7 @@ def client_list_datasets(client, _):
     # [END client_list_datasets]
 
 
-@snippet
-def dataset_create(client, to_delete):
+def test_dataset_create(client, to_delete):
     """Create a dataset."""
     DATASET_NAME = 'dataset_create_%d' % (_millis(),)
 
@@ -95,8 +101,7 @@ def dataset_create(client, to_delete):
     to_delete.append(dataset)
 
 
-@snippet
-def dataset_exists(client, to_delete):
+def test_dataset_exists(client, to_delete):
     """Test existence of a dataset."""
     DATASET_NAME = 'dataset_exists_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
@@ -109,8 +114,7 @@ def dataset_exists(client, to_delete):
     # [END dataset_exists]
 
 
-@snippet
-def dataset_reload(client, to_delete):
+def test_dataset_reload(client, to_delete):
     """Reload a dataset's metadata."""
     DATASET_NAME = 'dataset_reload_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
@@ -127,8 +131,7 @@ def dataset_reload(client, to_delete):
     # [END dataset_reload]
 
 
-@snippet
-def dataset_patch(client, to_delete):
+def test_dataset_patch(client, to_delete):
     """Patch a dataset's metadata."""
     DATASET_NAME = 'dataset_patch_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
@@ -148,8 +151,7 @@ def dataset_patch(client, to_delete):
     # [END dataset_patch]
 
 
-@snippet
-def dataset_update(client, to_delete):
+def test_dataset_update(client, to_delete):
     """Update a dataset's metadata."""
     DATASET_NAME = 'dataset_update_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
@@ -178,8 +180,7 @@ def dataset_update(client, to_delete):
     # [END dataset_update]
 
 
-@snippet
-def dataset_delete(client, _):
+def test_dataset_delete(client):
     """Delete a dataset."""
     DATASET_NAME = 'dataset_delete_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
@@ -192,8 +193,7 @@ def dataset_delete(client, _):
     # [END dataset_delete]
 
 
-@snippet
-def dataset_list_tables(client, to_delete):
+def test_dataset_list_tables(client, to_delete):
     """List tables within a dataset."""
     DATASET_NAME = 'dataset_list_tables_dataset_%d' % (_millis(),)
     TABLE_NAME = 'dataset_list_tables_table_%d' % (_millis(),)
@@ -214,8 +214,7 @@ def dataset_list_tables(client, to_delete):
     to_delete.insert(0, table)
 
 
-@snippet
-def table_create(client, to_delete):
+def test_table_create(client, to_delete):
     """Create a table."""
     DATASET_NAME = 'table_create_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_create_table_%d' % (_millis(),)
@@ -231,8 +230,7 @@ def table_create(client, to_delete):
     to_delete.insert(0, table)
 
 
-@snippet
-def table_exists(client, to_delete):
+def test_table_exists(client, to_delete):
     """Test existence of a table."""
     DATASET_NAME = 'table_exists_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_exists_table_%d' % (_millis(),)
@@ -250,8 +248,7 @@ def table_exists(client, to_delete):
     to_delete.insert(0, table)
 
 
-@snippet
-def table_reload(client, to_delete):
+def test_table_reload(client, to_delete):
     """Reload a table's metadata."""
     DATASET_NAME = 'table_reload_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_reload_table_%d' % (_millis(),)
@@ -276,8 +273,7 @@ def table_reload(client, to_delete):
     # [END table_reload]
 
 
-@snippet
-def table_patch(client, to_delete):
+def test_table_patch(client, to_delete):
     """Patch a table's metadata."""
     DATASET_NAME = 'table_patch_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_patch_table_%d' % (_millis(),)
@@ -304,8 +300,7 @@ def table_patch(client, to_delete):
     # [END table_patch]
 
 
-@snippet
-def table_update(client, to_delete):
+def test_table_update(client, to_delete):
     """Update a table's metadata."""
     DATASET_NAME = 'table_update_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_update_table_%d' % (_millis(),)
@@ -350,8 +345,7 @@ def _warm_up_inserted_table_data(table):
             time.sleep(5)
 
 
-@snippet
-def table_insert_fetch_data(client, to_delete):
+def test_table_insert_fetch_data(client, to_delete):
     """Insert / fetch table data."""
     DATASET_NAME = 'table_insert_fetch_data_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_insert_fetch_data_table_%d' % (_millis(),)
@@ -391,11 +385,8 @@ def table_insert_fetch_data(client, to_delete):
         assert found == to_insert
 
 
-@snippet
-def table_upload_from_file(client, to_delete):
+def test_table_upload_from_file(client, to_delete):
     """Upload table data from a CSV file."""
-    import csv
-    import tempfile
     DATASET_NAME = 'table_upload_from_file_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_upload_from_file_table_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
@@ -406,19 +397,15 @@ def table_upload_from_file(client, to_delete):
     table.create()
     to_delete.insert(0, table)
 
-    csv_file = tempfile.NamedTemporaryFile(suffix='.csv')
-    to_delete.append(_CloseOnDelete(csv_file))
-
     # [START table_upload_from_file]
-    writer = csv.writer(csv_file)
-    writer.writerow((b'full_name', b'age'))
-    writer.writerow((b'Phred Phlyntstone', b'32'))
-    writer.writerow((b'Wylma Phlyntstone', b'29'))
-    csv_file.flush()
+    csv_file = six.BytesIO(b"""full_name,age
+Phred Phlyntstone,32
+Wylma Phlyntstone,29
+""")
 
-    with open(csv_file.name, 'rb') as readable:
-        table.upload_from_file(
-            readable, source_format='CSV', skip_leading_rows=1)
+    load_job = table.upload_from_file(
+        csv_file, source_format='CSV', skip_leading_rows=1)
+    load_job.result()  # Wait for table load to complete.
     # [END table_upload_from_file]
 
     _warm_up_inserted_table_data(table)
@@ -431,12 +418,11 @@ def table_upload_from_file(client, to_delete):
 
     assert len(rows) == total == 2
     assert token is None
-    assert rows[0] == (u'Phred Phlyntstone', 32)
-    assert rows[1] == (u'Wylma Phlyntstone', 29)
+    assert (u'Phred Phlyntstone', 32) in rows
+    assert (u'Wylma Phlyntstone', 29) in rows
 
 
-@snippet
-def table_delete(client, to_delete):
+def test_table_delete(client, to_delete):
     """Delete a table."""
     DATASET_NAME = 'table_delete_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_create_table_%d' % (_millis(),)
@@ -454,8 +440,7 @@ def table_delete(client, to_delete):
     # [END table_delete]
 
 
-@snippet
-def client_list_jobs(client, _):
+def test_client_list_jobs(client):
     """List jobs for a project."""
 
     def do_something_with(_):
@@ -468,12 +453,11 @@ def client_list_jobs(client, _):
     # [END client_list_jobs]
 
 
-@snippet
-def client_run_sync_query(client, _):
+def test_client_run_sync_query(client):
     """Run a synchronous query."""
     LIMIT = 100
     LIMITED = '%s LIMIT %d' % (QUERY, LIMIT)
-    TIMEOUT_MS = 1000
+    TIMEOUT_MS = 10000
 
     # [START client_run_sync_query]
     query = client.run_sync_query(LIMITED)
@@ -486,15 +470,14 @@ def client_run_sync_query(client, _):
     # [END client_run_sync_query]
 
 
-@snippet
-def client_run_sync_query_w_param(client, _):
+def test_client_run_sync_query_w_param(client):
     """Run a synchronous query using a query parameter"""
     QUERY_W_PARAM = (
         'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
         'WHERE state = @state')
     LIMIT = 100
     LIMITED = '%s LIMIT %d' % (QUERY_W_PARAM, LIMIT)
-    TIMEOUT_MS = 1000
+    TIMEOUT_MS = 10000
 
     # [START client_run_sync_query_w_param]
     from google.cloud.bigquery import ScalarQueryParameter
@@ -510,10 +493,9 @@ def client_run_sync_query_w_param(client, _):
     # [END client_run_sync_query_w_param]
 
 
-@snippet
-def client_run_sync_query_paged(client, _):
+def test_client_run_sync_query_paged(client):
     """Run a synchronous query with paged results."""
-    TIMEOUT_MS = 1000
+    TIMEOUT_MS = 10000
     PAGE_SIZE = 100
     LIMIT = 1000
     LIMITED = '%s LIMIT %d' % (QUERY, LIMIT)
@@ -543,8 +525,7 @@ def client_run_sync_query_paged(client, _):
     assert len(all_rows) == LIMIT
 
 
-@snippet
-def client_run_sync_query_timeout(client, _):
+def test_client_run_sync_query_timeout(client):
     """Run a synchronous query w/ timeout"""
     TIMEOUT_MS = 10
 
@@ -580,28 +561,5 @@ def client_run_sync_query_timeout(client, _):
     assert len(all_rows) == iterator.total_rows
 
 
-def _find_examples():
-    funcs = [obj for obj in globals().values()
-             if getattr(obj, '_snippet', False)]
-    for func in sorted(funcs, key=lambda f: f.func_code.co_firstlineno):
-        yield func
-
-
-def main():
-    client = Client()
-    for example in _find_examples():
-        to_delete = []
-        print('%-30s: %s' % (
-            example.func_name, example.func_doc))
-        try:
-            example(client, to_delete)
-        except AssertionError as e:
-            print('   FAIL: %s' % (e,))
-        except Exception as e:  # pylint: disable=broad-except
-            print('  ERROR: %r' % (e,))
-        for item in to_delete:
-            item.delete()
-
-
 if __name__ == '__main__':
-    main()
+    pytest.main()
