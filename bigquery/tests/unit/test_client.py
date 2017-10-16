@@ -228,13 +228,15 @@ class TestClient(unittest.TestCase):
     def test_list_datasets_explicit_response_missing_datasets_key(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
         TOKEN = 'TOKEN'
+        FILTER = 'FILTER'
         DATA = {}
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(DATA)
 
         iterator = client.list_datasets(
-            include_all=True, max_results=3, page_token=TOKEN)
+            include_all=True, filter=FILTER,
+            max_results=3, page_token=TOKEN)
         page = six.next(iterator.pages)
         datasets = list(page)
         token = iterator.next_page_token
@@ -247,7 +249,8 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'],
-                         {'all': True, 'maxResults': 3, 'pageToken': TOKEN})
+                         {'all': True, 'filter': FILTER,
+                          'maxResults': 3, 'pageToken': TOKEN})
 
     def test_dataset_with_specified_project(self):
         from google.cloud.bigquery.dataset import DatasetReference
