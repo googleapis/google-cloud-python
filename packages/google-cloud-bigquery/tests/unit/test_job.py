@@ -42,27 +42,6 @@ def _make_client(project='test-project', connection=None):
     return client
 
 
-class Test__bool_or_none(unittest.TestCase):
-
-    def _call_fut(self, *args, **kwargs):
-        from google.cloud.bigquery import job
-
-        return job._bool_or_none(*args, **kwargs)
-
-    def test_w_bool(self):
-        self.assertTrue(self._call_fut(True))
-        self.assertFalse(self._call_fut(False))
-
-    def test_w_none(self):
-        self.assertIsNone(self._call_fut(None))
-
-    def test_w_str(self):
-        self.assertTrue(self._call_fut('1'))
-        self.assertTrue(self._call_fut('t'))
-        self.assertTrue(self._call_fut('true'))
-        self.assertFalse(self._call_fut('anything else'))
-
-
 class Test__int_or_none(unittest.TestCase):
 
     def _call_fut(self, *args, **kwargs):
@@ -1673,6 +1652,17 @@ class TestQueryJob(unittest.TestCase, _Base):
         for found, expected in zip(job.query_parameters, query_parameters):
             self.assertEqual(found.to_api_repr(), expected)
 
+    def _verify_table_definitions(self, job, config):
+        table_defs = config.get('tableDefinitions')
+        if job.table_definitions is None:
+            self.assertIsNone(table_defs)
+        else:
+            self.assertEqual(len(job.table_definitions), len(table_defs))
+            for found_key, found_ec in job.table_definitions.items():
+                expected_ec = table_defs.get(found_key)
+                self.assertIsNotNone(expected_ec)
+                self.assertEqual(found_ec.to_api_repr(), expected_ec)
+
     def _verify_configuration_properties(self, job, configuration):
         if 'dryRun' in configuration:
             self.assertEqual(job.dry_run,
@@ -1691,6 +1681,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self._verifyIntegerResourceProperties(job, query_config)
         self._verify_udf_resources(job, query_config)
         self._verifyQueryParameters(job, query_config)
+        self._verify_table_definitions(job, query_config)
 
         self.assertEqual(job.query, query_config['query'])
         if 'createDisposition' in query_config:
@@ -1754,6 +1745,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertIsNone(job.write_disposition)
         self.assertIsNone(job.maximum_billing_tier)
         self.assertIsNone(job.maximum_bytes_billed)
+        self.assertIsNone(job.table_definitions)
 
     def test_ctor_w_udf_resources(self):
         from google.cloud.bigquery.job import QueryJobConfig
@@ -2514,6 +2506,93 @@ class TestQueryJob(unittest.TestCase, _Base):
             },
         }
         self._verifyResourceProperties(job, RESOURCE)
+        self.assertEqual(req['data'], SENT)
+
+    def test_begin_w_table_defs(self):
+        from google.cloud.bigquery.job import QueryJobConfig
+        from google.cloud.bigquery.external_config import ExternalConfig
+        from google.cloud.bigquery.external_config import BigtableColumn
+        from google.cloud.bigquery.external_config import BigtableColumnFamily
+
+        PATH = '/projects/%s/jobs' % (self.PROJECT,)
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+
+        bt_config = ExternalConfig('BIGTABLE')
+        bt_config.ignore_unknown_values = True
+        bt_config.options.read_rowkey_as_string = True
+        cf = BigtableColumnFamily()
+        cf.family_id = 'cf'
+        col = BigtableColumn()
+        col.field_name = 'fn'
+        cf.columns = [col]
+        bt_config.options.column_families = [cf]
+        BT_CONFIG_RESOURCE = {
+            'sourceFormat': 'BIGTABLE',
+            'ignoreUnknownValues': True,
+            'bigtableOptions': {
+                'readRowkeyAsString': True,
+                'columnFamilies': [{
+                    'familyId': 'cf',
+                    'columns': [{'fieldName': 'fn'}],
+                }],
+            },
+        }
+        CSV_CONFIG_RESOURCE = {
+            'sourceFormat': 'CSV',
+            'maxBadRecords': 8,
+            'csvOptions': {
+                'allowJaggedRows': True,
+            },
+        }
+        csv_config = ExternalConfig('CSV')
+        csv_config.max_bad_records = 8
+        csv_config.options.allow_jagged_rows = True
+        bt_table = 'bigtable-table'
+        csv_table = 'csv-table'
+        RESOURCE['configuration']['query']['tableDefinitions'] = {
+            bt_table: BT_CONFIG_RESOURCE,
+            csv_table: CSV_CONFIG_RESOURCE,
+        }
+        want_resource = copy.deepcopy(RESOURCE)
+        conn = _Connection(RESOURCE)
+        client = _make_client(project=self.PROJECT, connection=conn)
+        config = QueryJobConfig()
+        config.table_definitions = {
+            bt_table: bt_config,
+            csv_table: csv_config,
+        }
+        config.use_legacy_sql = True
+        job = self._make_one(
+            self.JOB_ID, self.QUERY, client, job_config=config)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.QUERY,
+                    'useLegacySql': True,
+                    'tableDefinitions': {
+                        bt_table: BT_CONFIG_RESOURCE,
+                        csv_table: CSV_CONFIG_RESOURCE,
+                    },
+                },
+            },
+        }
+        self._verifyResourceProperties(job, want_resource)
         self.assertEqual(req['data'], SENT)
 
     def test_dry_run_query(self):
