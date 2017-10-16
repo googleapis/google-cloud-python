@@ -205,6 +205,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'csvOptions': {
                     'allowJaggedRows': True,
                     'encoding': 'encoding'}},
+            'labels': {'x': 'y'},
         }
 
     def _verifyReadonlyResourceProperties(self, table, resource):
@@ -279,6 +280,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertEqual(edc.source_format, 'CSV')
             self.assertEqual(edc.options.allow_jagged_rows, True)
 
+        if 'labels' in resource:
+            self.assertEqual(table.labels, {'x': 'y'})
+        else:
+            self.assertEqual(table.labels, {})
+
     def test_ctor(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -301,13 +307,14 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.self_link)
         self.assertIsNone(table.full_table_id)
         self.assertIsNone(table.table_type)
-
         self.assertIsNone(table.description)
         self.assertIsNone(table.expires)
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.location)
         self.assertIsNone(table.view_query)
         self.assertIsNone(table.view_use_legacy_sql)
+        self.assertIsNone(table.external_data_configuration)
+        self.assertEquals(table.labels, {})
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -533,6 +540,13 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref)
         with self.assertRaises(ValueError):
             table.external_data_configuration = 12345
+
+    def test_labels_setter_bad_value(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        with self.assertRaises(ValueError):
+            table.labels = 12345
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
