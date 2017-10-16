@@ -41,6 +41,19 @@ from test_utils.system import unique_resource_id
 JOB_TIMEOUT = 120  # 2 minutes
 WHERE = os.path.abspath(os.path.dirname(__file__))
 
+# Common table data used for many tests.
+ROWS = [
+    ('Phred Phlyntstone', 32),
+    ('Bharney Rhubble', 33),
+    ('Wylma Phlyntstone', 29),
+    ('Bhettye Rhubble', 27),
+]
+HEADER_ROW = ('Full Name', 'Age')
+SCHEMA = [
+    bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
+    bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
+]
+
 
 def _has_rows(result):
     return len(result) > 0
@@ -188,10 +201,7 @@ class TestBigQuery(unittest.TestCase):
     def test_create_table(self):
         dataset = self.temp_dataset(_make_dataset_id('create_table'))
         table_id = 'test_table'
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(table_id), schema=[full_name, age])
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
         self.assertFalse(_table_exists(table_arg))
 
         table = retry_403(Config.CLIENT.create_table)(table_arg)
@@ -230,11 +240,8 @@ class TestBigQuery(unittest.TestCase):
             'newer' + unique_resource_id(),
             'newest' + unique_resource_id(),
         ]
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         for table_name in tables_to_create:
-            table = Table(dataset.table(table_name), schema=[full_name, age])
+            table = Table(dataset.table(table_name), schema=SCHEMA)
             created_table = retry_403(Config.CLIENT.create_table)(table)
             self.to_delete.insert(0, created_table)
 
@@ -251,11 +258,7 @@ class TestBigQuery(unittest.TestCase):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
         TABLE_NAME = 'test_table'
-        schema = [
-            bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
-            bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        ]
-        table_arg = Table(dataset.table(TABLE_NAME), schema=schema)
+        table_arg = Table(dataset.table(TABLE_NAME), schema=SCHEMA)
         self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
@@ -285,11 +288,7 @@ class TestBigQuery(unittest.TestCase):
         dataset = self.temp_dataset(_make_dataset_id('update_table'))
 
         TABLE_NAME = 'test_table'
-        schema = [
-            bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
-            bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        ]
-        table_arg = Table(dataset.table(TABLE_NAME), schema=schema)
+        table_arg = Table(dataset.table(TABLE_NAME), schema=SCHEMA)
         self.assertFalse(_table_exists(table_arg))
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
@@ -357,27 +356,18 @@ class TestBigQuery(unittest.TestCase):
     def test_load_table_from_local_file_then_dump_table(self):
         from google.cloud._testing import _NamedTemporaryFile
 
-        ROWS = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
         TABLE_NAME = 'test_table'
 
         dataset = self.temp_dataset(_make_dataset_id('load_local_then_dump'))
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
         table_ref = dataset.table(TABLE_NAME)
-        table_arg = Table(table_ref, schema=[full_name, age])
+        table_arg = Table(table_ref, schema=SCHEMA)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
         with _NamedTemporaryFile() as temp:
             with open(temp.name, 'w') as csv_write:
                 writer = csv.writer(csv_write)
-                writer.writerow(('Full Name', 'Age'))
+                writer.writerow(HEADER_ROW)
                 writer.writerows(ROWS)
 
             with open(temp.name, 'rb') as csv_read:
@@ -437,22 +427,13 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_from_storage_then_dump_table(self):
         TABLE_ID = 'test_table'
-        ROWS = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
         GS_URL = self._write_csv_to_storage(
             'bq_load_test' + unique_resource_id(), 'person_ages.csv',
-            ('Full Name', 'Age'), ROWS)
+            HEADER_ROW, ROWS)
 
         dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
 
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_ID), schema=[full_name, age])
+        table_arg = Table(dataset.table(TABLE_ID), schema=SCHEMA)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -479,15 +460,12 @@ class TestBigQuery(unittest.TestCase):
     def test_load_table_from_storage_w_autodetect_schema(self):
         from google.cloud.bigquery import SchemaField
 
-        rows = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ] * 100  # BigQuery internally uses the first 100 rows to detect schema
+        rows = ROWS * 100
+        # BigQuery internally uses the first 100 rows to detect schema
+
         gs_url = self._write_csv_to_storage(
             'bq_load_test' + unique_resource_id(), 'person_ages.csv',
-            ('Full Name', 'Age'), rows)
+            HEADER_ROW, rows)
         dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
         table_ref = dataset.table('test_table')
 
@@ -557,7 +535,7 @@ class TestBigQuery(unittest.TestCase):
         with _NamedTemporaryFile() as temp:
             with open(temp.name, 'w') as csv_write:
                 writer = csv.writer(csv_write)
-                writer.writerow(('Full Name', 'Age'))
+                writer.writerow(HEADER_ROW)
                 writer.writerows(rows)
 
             with open(temp.name, 'rb') as csv_read:
@@ -589,14 +567,8 @@ class TestBigQuery(unittest.TestCase):
         table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
         table = Table(table_ref)
         self.to_delete.insert(0, table)
-        rows = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
         self._load_table_for_extract_table(
-            storage_client, rows, bucket_name, blob_name, table_ref)
+            storage_client, ROWS, bucket_name, blob_name, table_ref)
         bucket = storage_client.bucket(bucket_name)
         destination_blob_name = 'person_ages_out.csv'
         destination = bucket.blob(destination_blob_name)
@@ -621,14 +593,8 @@ class TestBigQuery(unittest.TestCase):
         table_ref = Config.CLIENT.dataset(dataset_id).table(table_id)
         table = Table(table_ref)
         self.to_delete.insert(0, table)
-        rows = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
         self._load_table_for_extract_table(
-            storage_client, rows, bucket_name, blob_name, table_ref)
+            storage_client, ROWS, bucket_name, blob_name, table_ref)
         bucket = storage_client.bucket(bucket_name)
         destination_blob_name = 'person_ages_out.csv'
         destination = bucket.blob(destination_blob_name)
@@ -673,10 +639,7 @@ class TestBigQuery(unittest.TestCase):
 
         dataset = self.temp_dataset(DATASET_ID)
 
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(TABLE_NAME), schema=[full_name, age])
+        table_arg = Table(dataset.table(TABLE_NAME), schema=SCHEMA)
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
@@ -1250,24 +1213,15 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(row_tuples, [(1,)])
 
     def test_query_table_def(self):
-        rows = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
         gs_url = self._write_csv_to_storage(
             'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            ('Full Name', 'Age'), rows)
+            HEADER_ROW, ROWS)
 
         job_config = bigquery.QueryJobConfig()
         table_id = 'flintstones'
         ec = bigquery.ExternalConfig('CSV')
         ec.source_uris = [gs_url]
-        ec.schema = [
-            bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
-            bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED'),
-        ]
+        ec.schema = SCHEMA
         ec.options.skip_leading_rows = 1  # skip the header row
         job_config.table_definitions = {table_id: ec}
         sql = 'SELECT * FROM %s' % table_id
@@ -1277,25 +1231,16 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in got_rows]
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(rows, key=by_age))
+                         sorted(ROWS, key=by_age))
 
     def test_query_external_table(self):
-        rows = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
-        ]
         gs_url = self._write_csv_to_storage(
             'bq_external_test' + unique_resource_id(), 'person_ages.csv',
-            ('Full Name', 'Age'), rows)
+            HEADER_ROW, ROWS)
         dataset_id = _make_dataset_id('query_external_table')
         dataset = self.temp_dataset(dataset_id)
         table_id = 'flintstones'
-        full_name = bigquery.SchemaField('full_name', 'STRING',
-                                         mode='REQUIRED')
-        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table_arg = Table(dataset.table(table_id), schema=[full_name, age])
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
         ec = bigquery.ExternalConfig('CSV')
         ec.source_uris = [gs_url]
         ec.options.skip_leading_rows = 1  # skip the header row
@@ -1310,7 +1255,7 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in got_rows]
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(row_tuples, key=by_age),
-                         sorted(rows, key=by_age))
+                         sorted(ROWS, key=by_age))
 
     def test_create_rows_nested_nested(self):
         # See #2951
