@@ -265,18 +265,27 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_table_exists(table))
         self.assertIsNone(table.friendly_name)
         self.assertIsNone(table.description)
+        self.assertEquals(table.labels, {})
         table.friendly_name = 'Friendly'
         table.description = 'Description'
+        table.labels = {'priority': 'high', 'color': 'blue'}
 
         table2 = Config.CLIENT.update_table(
-            table, ['friendly_name', 'description'])
+            table, ['friendly_name', 'description', 'labels'])
 
         self.assertEqual(table2.friendly_name, 'Friendly')
         self.assertEqual(table2.description, 'Description')
+        self.assertEqual(table2.labels, {'priority': 'high', 'color': 'blue'})
 
         table2.description = None
-        table3 = Config.CLIENT.update_table(table2, ['description'])
+        table2.labels = {
+            'color': 'green',   # change
+            'shape': 'circle',  # add
+            'priority': None,   # delete
+        }
+        table3 = Config.CLIENT.update_table(table2, ['description', 'labels'])
         self.assertIsNone(table3.description)
+        self.assertEqual(table3.labels, {'color': 'green', 'shape': 'circle'})
 
         # If we try to update using table2 again, it will fail because the
         # previous update changed the ETag.
