@@ -642,13 +642,16 @@ class TestClient(unittest.TestCase):
             client.update_dataset(Dataset(client.dataset(self.DS_ID)), ["foo"])
 
     def test_update_dataset(self):
-        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import Dataset, AccessEntry
 
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
         DESCRIPTION = 'DESCRIPTION'
         FRIENDLY_NAME = 'TITLE'
         LOCATION = 'loc'
         LABELS = {'priority': 'high'}
+        ACCESS = [
+                {'role': 'OWNER', 'userByEmail': 'phred@example.com'},
+        ]
         EXP = 17
         RESOURCE = {
             'datasetReference':
@@ -659,6 +662,7 @@ class TestClient(unittest.TestCase):
             'location': LOCATION,
             'defaultTableExpirationMs': EXP,
             'labels': LABELS,
+            'access': ACCESS,
         }
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
@@ -669,8 +673,11 @@ class TestClient(unittest.TestCase):
         ds.location = LOCATION
         ds.default_table_expiration_ms = EXP
         ds.labels = LABELS
+        ds.access_entries = [
+            AccessEntry('OWNER', 'userByEmail', 'phred@example.com')]
         ds2 = client.update_dataset(
-            ds, ['description', 'friendly_name', 'location', 'labels'])
+            ds, ['description', 'friendly_name', 'location', 'labels',
+                 'access_entries'])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'PATCH')
@@ -679,6 +686,7 @@ class TestClient(unittest.TestCase):
             'friendlyName': FRIENDLY_NAME,
             'location': LOCATION,
             'labels': LABELS,
+            'access': ACCESS,
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(req['path'], '/' + PATH)
@@ -687,6 +695,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds2.friendly_name, ds.friendly_name)
         self.assertEqual(ds2.location, ds.location)
         self.assertEqual(ds2.labels, ds.labels)
+        self.assertEqual(ds2.access_entries, ds.access_entries)
 
         # ETag becomes If-Match header.
         ds._properties['etag'] = 'etag'
