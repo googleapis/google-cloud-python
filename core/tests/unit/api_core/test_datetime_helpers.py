@@ -14,7 +14,7 @@
 
 import datetime
 
-from google.api.core.helpers import datetime_helpers
+from google.api.core import datetime_helpers
 
 
 def test_utcnow():

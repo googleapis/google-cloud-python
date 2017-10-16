@@ -150,7 +150,7 @@ def test_wrap_method_with_overriding_retry_and_timeout(unusued_sleep):
 
 @mock.patch('time.sleep')
 @mock.patch(
-    'google.api.core.helpers.datetime_helpers.utcnow',
+    'google.api.core.datetime_helpers.utcnow',
     side_effect=_utcnow_monotonic(),
     autospec=True)
 def test_wrap_method_with_overriding_retry_deadline(utcnow, unused_sleep):
