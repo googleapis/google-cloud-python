@@ -39,7 +39,7 @@ def _exception_class_for_grpc_status_name(name):
             ``UNAVAILABLE``.
 
     Returns:
-        type: The appropriate subclass of
+        :func:`type`: The appropriate subclass of
             :class:`google.api.core.exceptions.GoogleAPICallError`.
     """
     return exceptions.exception_class_for_grpc_status(
