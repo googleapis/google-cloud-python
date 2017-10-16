@@ -25,6 +25,7 @@ from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.query import _AbstractQueryParameter
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
@@ -39,6 +40,7 @@ from google.cloud.bigquery._helpers import _EnumApiResourceProperty
 from google.cloud.bigquery._helpers import _ListApiResourceProperty
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
+from google.cloud.bigquery._helpers import _int_or_none
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
@@ -63,22 +65,6 @@ _ERROR_REASON_TO_EXCEPTION = {
     'stopped': http_client.OK,
     'tableUnavailable': http_client.BAD_REQUEST,
 }
-
-
-def _bool_or_none(value):
-    """Helper: deserialize boolean value from JSON string."""
-    if isinstance(value, bool):
-        return value
-    if value is not None:
-        return value.lower() in ['t', 'true', '1']
-
-
-def _int_or_none(value):
-    """Helper: deserialize int value from JSON string."""
-    if isinstance(value, int):
-        return value
-    if value is not None:
-        return int(value)
 
 
 def _error_result_to_exception(error_result):
@@ -1315,6 +1301,14 @@ def _to_api_repr_udf_resources(value):
     ]
 
 
+def _from_api_repr_table_defs(resource):
+    return {k: ExternalConfig.from_api_repr(v) for k, v in resource.items()}
+
+
+def _to_api_repr_table_defs(value):
+    return {k: ExternalConfig.to_api_repr(v) for k, v in value.items()}
+
+
 class QueryJobConfig(object):
     """Configuration options for query jobs.
 
@@ -1469,6 +1463,16 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
     """
 
+    table_definitions = _TypedApiResourceProperty(
+        'table_definitions', 'tableDefinitions', dict)
+    """
+    Definitions for external tables. A dictionary from table names (strings)
+    to :class:`google.cloud.bigquery.external_config.ExternalConfig`.
+
+    See
+    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
+    """
+
     _maximum_billing_tier = None
     _maximum_bytes_billed = None
 
@@ -1478,6 +1482,8 @@ class QueryJobConfig(object):
         'destinationTable': (
             TableReference.from_api_repr, TableReference.to_api_repr),
         'maximumBytesBilled': (int, str),
+        'tableDefinitions': (_from_api_repr_table_defs,
+                             _to_api_repr_table_defs),
         _QUERY_PARAMETERS_KEY: (
             _from_api_repr_query_parameters, _to_api_repr_query_parameters),
         _UDF_RESOURCES_KEY: (
@@ -1614,6 +1620,13 @@ class QueryJob(_AsyncJob):
         :class:`~google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed`.
         """
         return self._configuration.maximum_bytes_billed
+
+    @property
+    def table_definitions(self):
+        """See
+        :class:`~google.cloud.bigquery.job.QueryJobConfig.table_definitions`.
+        """
+        return self._configuration.table_definitions
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""

@@ -29,122 +29,10 @@ from google.cloud.bigquery._helpers import _to_bytes
 from google.cloud.bigquery._helpers import _bytes_to_json
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
 from google.cloud.bigquery._helpers import _ListApiResourceProperty
+from google.cloud.bigquery._helpers import _int_or_none
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
-from google.cloud.bigquery.job import _int_or_none
-
-
-class ExternalConfig(object):
-    """Description of an external data source.
-
-    :type source_format: str
-    :param source_format: the format of the external data. See
-                          the ``source_format`` property on this class.
-    """
-
-    def __init__(self, source_format):
-        self._properties = {'sourceFormat': source_format}
-        self._options = None
-
-    @property
-    def source_format(self):
-        """See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceFormat
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat
-        """
-        return self._properties['sourceFormat']
-
-    autodetect = _TypedApiResourceProperty(
-        'autodetect', 'autodetect', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).autodetect
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.autodetect
-    """
-
-    compression = _TypedApiResourceProperty(
-        'compression', 'compression', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).compression
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.compression
-    """
-
-    ignore_unknown_values = _TypedApiResourceProperty(
-        'ignore_unknown_values', 'ignoreUnknownValues', bool)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.ignoreUnknownValues
-    """
-
-    max_bad_records = _TypedApiResourceProperty(
-        'max_bad_records', 'maxBadRecords', six.integer_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).maxBadRecords
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.maxBadRecords
-    """
-
-    source_uris = _ListApiResourceProperty(
-        'source_uris', 'sourceUris', six.string_types)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceUris
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceUris
-    """
-
-    schema = _ListApiResourceProperty('schema', 'schema', SchemaField)
-    """See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.schema
-    """
-
-    @property
-    def options(self):
-        """Source-specific options. A subclass of ExternalConfigOptions."""
-        return self._options
-
-    @options.setter
-    def options(self, value):
-        if self.source_format != value._SOURCE_FORMAT:
-            raise ValueError(
-                'source format %s does not match option type %s' % (
-                    self.source_format, value.__class__.__name__))
-        self._options = value
-
-    def to_api_repr(self):
-        """Build an API representation of this object.
-
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
-        """
-        config = copy.deepcopy(self._properties)
-        if self.schema:
-            config['schema'] = {'fields': _build_schema_resource(self.schema)}
-        if self.options is not None:
-            config[self.options._RESOURCE_NAME] = self.options.to_api_repr()
-        return config
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct a CSVOptions given its API representation
-
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
-
-        :rtype: :class:`google.cloud.bigquery.external_config.CSVOptions`
-        :returns: Configuration parsed from ``resource``.
-        """
-        config = cls(resource['sourceFormat'])
-        schema = resource.pop('schema', None)
-        for optcls in (BigtableOptions, CSVOptions, GoogleSheetsOptions):
-            opts = resource.pop(optcls._RESOURCE_NAME, None)
-            if opts is not None:
-                config.options = optcls.from_api_repr(opts)
-                break
-        config._properties = copy.deepcopy(resource)
-        if schema:
-            config.schema = _parse_schema_resource(schema)
-        return config
 
 
 class BigtableColumn(object):
@@ -220,9 +108,9 @@ class BigtableColumn(object):
         :rtype: :class:`google.cloud.bigquery.external_config.BigtableColumn`
         :returns: Configuration parsed from ``resource``.
         """
-        qe = resource.pop('qualifierEncoded', None)
         config = cls()
         config._properties = copy.deepcopy(resource)
+        qe = resource.get('qualifierEncoded')
         if qe:
             config.qualifier_encoded = base64.standard_b64decode(_to_bytes(qe))
         return config
@@ -436,7 +324,7 @@ class CSVOptions(object):
         :rtype: :class:`google.cloud.bigquery.external_config.CSVOptions`
         :returns: Configuration parsed from ``resource``.
         """
-        slr = resource.pop('skipLeadingRows', None)
+        slr = resource.get('skipLeadingRows')
         config = cls()
         config._properties = copy.deepcopy(resource)
         config.skip_leading_rows = _int_or_none(slr)
@@ -484,8 +372,121 @@ class GoogleSheetsOptions(object):
             :class:`google.cloud.bigquery.external_config.GoogleSheetsOptions`
         :returns: Configuration parsed from ``resource``.
         """
-        slr = resource.pop('skipLeadingRows', None)
+        slr = resource.get('skipLeadingRows')
         config = cls()
         config._properties = copy.deepcopy(resource)
         config.skip_leading_rows = _int_or_none(slr)
+        return config
+
+
+_OPTION_CLASSES = (BigtableOptions, CSVOptions, GoogleSheetsOptions)
+
+
+class ExternalConfig(object):
+    """Description of an external data source.
+
+    :type source_format: str
+    :param source_format: the format of the external data. See
+                          the ``source_format`` property on this class.
+    """
+
+    def __init__(self, source_format):
+        self._properties = {'sourceFormat': source_format}
+        self._options = None
+        for optcls in _OPTION_CLASSES:
+            if source_format == optcls._SOURCE_FORMAT:
+                self._options = optcls()
+                break
+
+    @property
+    def source_format(self):
+        """See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceFormat
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat
+        """
+        return self._properties['sourceFormat']
+
+    @property
+    def options(self):
+        """Source-specific options."""
+        return self._options
+
+    autodetect = _TypedApiResourceProperty(
+        'autodetect', 'autodetect', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).autodetect
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.autodetect
+    """
+
+    compression = _TypedApiResourceProperty(
+        'compression', 'compression', six.string_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).compression
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.compression
+    """
+
+    ignore_unknown_values = _TypedApiResourceProperty(
+        'ignore_unknown_values', 'ignoreUnknownValues', bool)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.ignoreUnknownValues
+    """
+
+    max_bad_records = _TypedApiResourceProperty(
+        'max_bad_records', 'maxBadRecords', six.integer_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).maxBadRecords
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.maxBadRecords
+    """
+
+    source_uris = _ListApiResourceProperty(
+        'source_uris', 'sourceUris', six.string_types)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceUris
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceUris
+    """
+
+    schema = _ListApiResourceProperty('schema', 'schema', SchemaField)
+    """See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.schema
+    """
+
+    def to_api_repr(self):
+        """Build an API representation of this object.
+
+        :rtype: dict
+        :returns: A dictionary in the format used by the BigQuery API.
+        """
+        config = copy.deepcopy(self._properties)
+        if self.schema:
+            config['schema'] = {'fields': _build_schema_resource(self.schema)}
+        if self.options is not None:
+            r = self.options.to_api_repr()
+            if r != {}:
+                config[self.options._RESOURCE_NAME] = r
+        return config
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct a CSVOptions given its API representation
+
+        :type resource: dict
+        :param resource:
+            An extract job configuration in the same representation as is
+            returned from the API.
+
+        :rtype: :class:`google.cloud.bigquery.external_config.CSVOptions`
+        :returns: Configuration parsed from ``resource``.
+        """
+        config = cls(resource['sourceFormat'])
+        schema = resource.get('schema')
+        for optcls in _OPTION_CLASSES:
+            opts = resource.get(optcls._RESOURCE_NAME)
+            if opts is not None:
+                config._options = optcls.from_api_repr(opts)
+                break
+        config._properties = copy.deepcopy(resource)
+        if schema:
+            config.schema = _parse_schema_resource(schema)
         return config
