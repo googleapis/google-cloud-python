@@ -24,10 +24,10 @@ import platform
 import pkg_resources
 import six
 
+from google.api.core import general_helpers
+from google.api.core import grpc_helpers
 from google.api.core import page_iterator
 from google.api.core import timeout
-from google.api.core.helpers import general_helpers
-from google.api.core.helpers import grpc_helpers
 
 _PY_VERSION = platform.python_version()
 _GRPC_VERSION = pkg_resources.get_distribution('grpcio').version

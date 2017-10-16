@@ -18,7 +18,7 @@ import grpc
 import six
 
 from google.api.core import exceptions
-from google.api.core.helpers import general_helpers
+from google.api.core import general_helpers
 import google.auth
 import google.auth.transport.grpc
 import google.auth.transport.requests

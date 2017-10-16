@@ -17,7 +17,7 @@ import mock
 import pytest
 
 from google.api.core import exceptions
-from google.api.core.helpers import grpc_helpers
+from google.api.core import grpc_helpers
 
 
 def test__patch_callable_name():
@@ -110,7 +110,7 @@ def test_wrap_stream_errors_iterator():
     assert exc_info.value.response == grpc_error
 
 
-@mock.patch('google.api.core.helpers.grpc_helpers._wrap_unary_errors')
+@mock.patch('google.api.core.grpc_helpers._wrap_unary_errors')
 def test_wrap_errors_non_streaming(wrap_unary_errors):
     callable_ = mock.create_autospec(grpc.UnaryUnaryMultiCallable)
 
@@ -120,7 +120,7 @@ def test_wrap_errors_non_streaming(wrap_unary_errors):
     wrap_unary_errors.assert_called_once_with(callable_)
 
 
-@mock.patch('google.api.core.helpers.grpc_helpers._wrap_stream_errors')
+@mock.patch('google.api.core.grpc_helpers._wrap_stream_errors')
 def test_wrap_errors_streaming(wrap_stream_errors):
     callable_ = mock.create_autospec(grpc.UnaryStreamMultiCallable)
 
