@@ -259,7 +259,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self.assertEqual(table.view_query, resource['view']['query'])
             self.assertEqual(
                 table.view_use_legacy_sql,
-                resource['view'].get('useLegacySql'))
+                resource['view'].get('useLegacySql', True))
         else:
             self.assertIsNone(table.view_query)
             self.assertIsNone(table.view_use_legacy_sql)
@@ -487,6 +487,10 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref)
         table.view_query = 'select * from foo'
         self.assertEqual(table.view_query, 'select * from foo')
+        self.assertEqual(table.view_use_legacy_sql, False)
+
+        table.view_use_legacy_sql = True
+        self.assertEqual(table.view_use_legacy_sql, True)
 
     def test_view_query_deleter(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -495,6 +499,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.view_query = 'select * from foo'
         del table.view_query
         self.assertIsNone(table.view_query)
+        self.assertIsNone(table.view_use_legacy_sql)
 
     def test_view_use_legacy_sql_setter_bad_value(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -507,9 +512,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
         table = self._make_one(table_ref)
-        table.view_use_legacy_sql = False
+        table.view_use_legacy_sql = True
         table.view_query = 'select * from foo'
-        self.assertEqual(table.view_use_legacy_sql, False)
+        self.assertEqual(table.view_use_legacy_sql, True)
         self.assertEqual(table.view_query, 'select * from foo')
 
     def test_from_api_repr_missing_identity(self):
