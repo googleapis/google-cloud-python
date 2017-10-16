@@ -324,10 +324,17 @@ class Client(ClientWithProject):
         for f in fields:
             if not hasattr(dataset, f):
                 raise ValueError('No Dataset field %s' % f)
-            # snake case to camel case
-            words = f.split('_')
-            api_field = words[0] + ''.join(map(str.capitalize, words[1:]))
-            partial[api_field] = getattr(dataset, f)
+            # All dataset attributes are trivially convertible to JSON except
+            # for access entries.
+            if f == 'access_entries':
+                attr = dataset._build_access_resource()
+                api_field = 'access'
+            else:
+                attr = getattr(dataset, f)
+                # snake case to camel case
+                words = f.split('_')
+                api_field = words[0] + ''.join(map(str.capitalize, words[1:]))
+            partial[api_field] = attr
         if dataset.etag is not None:
             headers = {'If-Match': dataset.etag}
         else:
