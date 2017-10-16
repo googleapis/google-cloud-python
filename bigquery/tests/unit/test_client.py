@@ -2800,6 +2800,35 @@ class TestClient(unittest.TestCase):
                          [20160804, 20160805])
 
 
+class Test_make_job_id(unittest.TestCase):
+    def _call_fut(self, job_id, prefix=None):
+        from google.cloud.bigquery.client import _make_job_id
+
+        return _make_job_id(job_id, prefix=prefix)
+
+    def test__make_job_id_wo_suffix(self):
+        job_id = self._call_fut('job_id')
+
+        self.assertEqual(job_id, 'job_id')
+
+    def test__make_job_id_w_suffix(self):
+        with mock.patch('uuid.uuid4', side_effect=['212345']):
+            job_id = self._call_fut(None, prefix='job_id')
+
+        self.assertEqual(job_id, 'job_id212345')
+
+    def test__make_random_job_id(self):
+        with mock.patch('uuid.uuid4', side_effect=['212345']):
+            job_id = self._call_fut(None)
+
+        self.assertEqual(job_id, '212345')
+
+    def test__make_job_id_w_job_id_overrides_prefix(self):
+        job_id = self._call_fut('job_id', prefix='unused_prefix')
+
+        self.assertEqual(job_id, 'job_id')
+
+
 class TestClientUpload(object):
     # NOTE: This is a "partner" to `TestClient` meant to test some of the
     #       "load_table_from_file" portions of `Client`. It also uses

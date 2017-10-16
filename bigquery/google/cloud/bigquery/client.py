@@ -592,8 +592,8 @@ class Client(ClientWithProject):
             extra_params=extra_params)
 
     def load_table_from_storage(self, source_uris, destination,
-                                job_id=None, job_config=None,
-                                retry=DEFAULT_RETRY):
+                                job_id=None, job_id_prefix=None,
+                                job_config=None, retry=DEFAULT_RETRY):
         """Starts a job for loading data into a table from CloudStorage.
 
         See
@@ -611,6 +611,11 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) Name of the job.
 
+        :type job_id_prefix: str or ``NoneType``
+        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+                              randomly generated job ID. This parameter will be
+                              ignored if a ``job_id`` is also given.
+
         :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
@@ -620,7 +625,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: a new ``LoadJob`` instance
         """
-        job_id = _make_job_id(job_id)
+        job_id = _make_job_id(job_id, prefix=job_id_prefix)
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
         job = LoadJob(job_id, source_uris, destination, self, job_config)
@@ -631,7 +636,7 @@ class Client(ClientWithProject):
                              rewind=False,
                              size=None,
                              num_retries=_DEFAULT_NUM_RETRIES,
-                             job_id=None, job_config=None):
+                             job_id=None, job_id_prefix=None, job_config=None):
         """Upload the contents of this table from a file-like object.
 
         Like load_table_from_storage, this creates, starts and returns
@@ -658,6 +663,11 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) Name of the job.
 
+        :type job_id_prefix: str or ``NoneType``
+        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+                              randomly generated job ID. This parameter will be
+                              ignored if a ``job_id`` is also given.
+
         :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
@@ -670,7 +680,7 @@ class Client(ClientWithProject):
                  be determined, or if the ``file_obj`` can be detected to be
                  a file opened in text mode.
         """
-        job_id = _make_job_id(job_id)
+        job_id = _make_job_id(job_id, prefix=job_id_prefix)
         job = LoadJob(job_id, None, destination, self, job_config)
         job_resource = job._build_resource()
         if rewind:
@@ -794,8 +804,8 @@ class Client(ClientWithProject):
 
         return response
 
-    def copy_table(self, sources, destination, job_id=None, job_config=None,
-                   retry=DEFAULT_RETRY):
+    def copy_table(self, sources, destination, job_id=None, job_id_prefix=None,
+                   job_config=None, retry=DEFAULT_RETRY):
         """Start a job for copying one or more tables into another table.
 
         See
@@ -814,6 +824,11 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) The ID of the job.
 
+        :type job_id_prefix: str or ``NoneType``
+        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+                              randomly generated job ID. This parameter will be
+                              ignored if a ``job_id`` is also given.
+
         :type job_config: :class:`google.cloud.bigquery.job.CopyJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
@@ -823,7 +838,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.job.CopyJob`
         :returns: a new ``CopyJob`` instance
         """
-        job_id = _make_job_id(job_id)
+        job_id = _make_job_id(job_id, job_id_prefix)
 
         if not isinstance(sources, collections.Sequence):
             sources = [sources]
@@ -834,7 +849,7 @@ class Client(ClientWithProject):
 
     def extract_table(
             self, source, destination_uris, job_config=None, job_id=None,
-            retry=DEFAULT_RETRY):
+            job_id_prefix=None, retry=DEFAULT_RETRY):
         """Start a job to extract a table into Cloud Storage files.
 
         See
@@ -856,6 +871,11 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) The ID of the job.
 
+        :type job_id_prefix: str or ``NoneType``
+        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+                              randomly generated job ID. This parameter will be
+                              ignored if a ``job_id`` is also given.
+
         :type job_config: :class:`google.cloud.bigquery.job.ExtractJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
@@ -865,7 +885,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
-        job_id = _make_job_id(job_id)
+        job_id = _make_job_id(job_id, prefix=job_id_prefix)
 
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
@@ -876,7 +896,8 @@ class Client(ClientWithProject):
         job.begin(retry=retry)
         return job
 
-    def query(self, query, job_config=None, job_id=None, retry=DEFAULT_RETRY):
+    def query(self, query, job_config=None, job_id=None, job_id_prefix=None,
+              retry=DEFAULT_RETRY):
         """Start a job that runs a SQL query.
 
         See
@@ -893,13 +914,18 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) ID to use for the query job.
 
+        :type job_id_prefix: str or ``NoneType``
+        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+                              randomly generated job ID. This parameter will be
+                              ignored if a ``job_id`` is also given.
+
         :type retry: :class:`google.api.core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.job.QueryJob`
         :returns: a new ``QueryJob`` instance
         """
-        job_id = _make_job_id(job_id)
+        job_id = _make_job_id(job_id, job_id_prefix)
         job = QueryJob(job_id, query, client=self, job_config=job_config)
         job.begin(retry=retry)
         return job
@@ -1262,18 +1288,24 @@ def _item_to_table(iterator, resource):
     return Table.from_api_repr(resource)
 
 
-def _make_job_id(job_id):
+def _make_job_id(job_id, prefix=None):
     """Construct an ID for a new job.
 
     :type job_id: str or ``NoneType``
     :param job_id: the user-provided job ID
 
+    :type prefix: str or ``NoneType``
+    :param prefix: (Optional) the user-provided job ID prefix
+
     :rtype: str
     :returns: A job ID
     """
-    if job_id is None:
+    if job_id is not None:
+        return job_id
+    elif prefix is not None:
+        return str(prefix) + str(uuid.uuid4())
+    else:
         return str(uuid.uuid4())
-    return job_id
 
 
 def _check_mode(stream):

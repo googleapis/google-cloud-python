@@ -667,7 +667,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_job_cancel(self):
         DATASET_ID = _make_dataset_id('job_cancel')
-        JOB_ID = 'fetch_' + DATASET_ID + str(uuid.uuid4())
+        JOB_ID_PREFIX = 'fetch_' + DATASET_ID
         TABLE_NAME = 'test_table'
         QUERY = 'SELECT * FROM %s.%s' % (DATASET_ID, TABLE_NAME)
 
@@ -680,7 +680,7 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        job = Config.CLIENT.query(QUERY, job_id=JOB_ID)
+        job = Config.CLIENT.query(QUERY, job_id_prefix=JOB_ID_PREFIX)
         job.cancel()
 
         retry = RetryInstanceState(_job_done, max_tries=8)
@@ -903,7 +903,7 @@ class TestBigQuery(unittest.TestCase):
 
         query_job = Config.CLIENT.query(
             query_template.format(dataset_name, table_name),
-            job_id='test_query_w_dml_{}'.format(str(uuid.uuid4())))
+            job_id_prefix='test_query_w_dml_')
         query_job.result()
 
         self.assertEqual(query_job.num_dml_affected_rows, 1)
@@ -1090,8 +1090,7 @@ class TestBigQuery(unittest.TestCase):
             query_job = Config.CLIENT.query(
                 example['sql'],
                 job_config=jconfig,
-                job_id='test_query_w_query_params{}'.format(
-                    str(uuid.uuid4())))
+                job_id_prefix='test_query_w_query_params')
             rows = list(query_job.result())
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]), 1)
