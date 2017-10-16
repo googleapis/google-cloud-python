@@ -81,14 +81,20 @@ class ReadRowsIterator(object):
     def responses_for_row(self):
         """ Property that gives the number of calls made so far for the current
         row.  If 1, then either this row is being read for the first time,
-        or the most recent response requied a retry, causing the row to be
+        or the most recent response required a retry, causing the row to be
         read again
 
         :rtype: int
-        :returns: Int that gives the number of calls make so far for the
+        :returns: Int that gives the number of calls made so far for the
         current row.
         """
         return self._responses_for_row
+
+    def clear_responses_for_row(self):
+        """
+        Signals that a new row has been started.
+        """
+        self._responses_for_row = 0
 
     def next(self, *args, **kwargs):
         """
@@ -98,9 +104,6 @@ class ReadRowsIterator(object):
         delay = self.retry_options.backoff_settings.initial_retry_delay_millis
         exc = errors.RetryError('Retry total timeout exceeded before any'
                                 'response was received')
-        timeout = (self.retry_options.backoff_settings
-                   .initial_rpc_timeout_millis /
-                   _MILLIS_PER_SECOND)
 
         now = time.time()
         deadline = now + self.total_timeout
@@ -125,9 +128,6 @@ class ReadRowsIterator(object):
                 time.sleep(to_sleep / _MILLIS_PER_SECOND)
                 delay = min(delay * self.delay_mult, self.max_delay_millis)
                 now = time.time()
-                timeout = min(
-                    timeout * self.timeout_mult, self.max_timeout,
-                    deadline - now)
                 self._responses_for_row = 0
                 self.set_stream()
 
