@@ -55,7 +55,6 @@ class TestExternalConfig(unittest.TestCase):
                 ],
             },
         })
-        want_resource = copy.deepcopy(resource)
         ec = ExternalConfig.from_api_repr(resource)
         self._verify_base(ec)
         self.assertEqual(ec.schema,
@@ -63,7 +62,7 @@ class TestExternalConfig(unittest.TestCase):
         self.assertIsNone(ec.options)
 
         got_resource = ec.to_api_repr()
-        self.assertEqual(got_resource, want_resource)
+        self.assertEqual(got_resource, resource)
 
     def _verify_base(self, ec):
         self.assertEqual(ec.autodetect, True)
@@ -85,7 +84,6 @@ class TestExternalConfig(unittest.TestCase):
             'sourceFormat': 'GOOGLE_SHEETS',
             'googleSheetsOptions': {'skipLeadingRows': '123'},
             })
-        want_resource = copy.deepcopy(resource)
 
         ec = ExternalConfig.from_api_repr(resource)
 
@@ -96,13 +94,13 @@ class TestExternalConfig(unittest.TestCase):
 
         got_resource = ec.to_api_repr()
 
-        self.assertEqual(got_resource, want_resource)
+        self.assertEqual(got_resource, resource)
 
-        del want_resource['googleSheetsOptions']['skipLeadingRows']
-        ec = ExternalConfig.from_api_repr(copy.deepcopy(want_resource))
+        del resource['googleSheetsOptions']['skipLeadingRows']
+        ec = ExternalConfig.from_api_repr(resource)
         self.assertIsNone(ec.options.skip_leading_rows)
         got_resource = ec.to_api_repr()
-        self.assertEqual(got_resource, want_resource)
+        self.assertEqual(got_resource, resource)
 
     def test_api_repr_csv(self):
         from google.cloud.bigquery.external_config import CSVOptions
@@ -118,7 +116,6 @@ class TestExternalConfig(unittest.TestCase):
                 'encoding': 'encoding',
             },
         })
-        want_resource = copy.deepcopy(resource)
 
         ec = ExternalConfig.from_api_repr(resource)
 
@@ -134,13 +131,13 @@ class TestExternalConfig(unittest.TestCase):
 
         got_resource = ec.to_api_repr()
 
-        self.assertEqual(got_resource, want_resource)
+        self.assertEqual(got_resource, resource)
 
-        del want_resource['csvOptions']['skipLeadingRows']
-        ec = ExternalConfig.from_api_repr(copy.deepcopy(want_resource))
+        del resource['csvOptions']['skipLeadingRows']
+        ec = ExternalConfig.from_api_repr(resource)
         self.assertIsNone(ec.options.skip_leading_rows)
         got_resource = ec.to_api_repr()
-        self.assertEqual(got_resource, want_resource)
+        self.assertEqual(got_resource, resource)
 
     def test_api_repr_bigtable(self):
         from google.cloud.bigquery.external_config import BigtableOptions
@@ -178,7 +175,6 @@ class TestExternalConfig(unittest.TestCase):
                 ],
             },
         })
-        want_resource = copy.deepcopy(resource)
 
         ec = ExternalConfig.from_api_repr(resource)
 
@@ -207,19 +203,7 @@ class TestExternalConfig(unittest.TestCase):
 
         got_resource = ec.to_api_repr()
 
-        self.assertEqual(got_resource, want_resource)
-
-    def test_option_mismatch(self):
-        from google.cloud.bigquery.external_config import CSVOptions
-        from google.cloud.bigquery.external_config import BigtableOptions
-        from google.cloud.bigquery.external_config import GoogleSheetsOptions
-
-        for source_format, opts in (('BIGTABLE', CSVOptions()),
-                                    ('CSV', GoogleSheetsOptions()),
-                                    ('GOOGLE_SHEETS', BigtableOptions())):
-            ec = ExternalConfig(source_format)
-            with self.assertRaises(ValueError):
-                ec.options = opts
+        self.assertEqual(got_resource, resource)
 
 
 def _copy_and_update(d, u):
