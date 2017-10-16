@@ -90,6 +90,8 @@ class _PropertyMixin(object):
     def reload(self, client=None):
         """Reload properties from Cloud Storage.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -139,6 +141,8 @@ class _PropertyMixin(object):
 
         Updates the ``_properties`` with the response from the backend.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -163,6 +167,8 @@ class _PropertyMixin(object):
         """Sends all properties in a PUT request.
 
         Updates the ``_properties`` with the response from the backend.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``

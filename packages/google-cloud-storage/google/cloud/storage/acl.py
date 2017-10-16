@@ -399,6 +399,8 @@ class ACL(object):
     def reload(self, client=None):
         """Reload the ACL data from Cloud Storage.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -463,6 +465,8 @@ class ACL(object):
     def save(self, acl=None, client=None):
         """Save this ACL for the current bucket.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type acl: :class:`google.cloud.storage.acl.ACL`, or a compatible list.
         :param acl: The ACL object to save.  If left blank, this will save
                     current entries.
@@ -483,6 +487,8 @@ class ACL(object):
 
     def save_predefined(self, predefined, client=None):
         """Save this ACL for the current bucket using a predefined ACL.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type predefined: str
         :param predefined: An identifier for a predefined ACL.  Must be one
@@ -505,6 +511,8 @@ class ACL(object):
 
     def clear(self, client=None):
         """Remove all ACL entries.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         Note that this won't actually remove *ALL* the rules, but it
         will remove all the non-default rules.  In short, you'll still
