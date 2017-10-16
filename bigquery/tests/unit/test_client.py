@@ -559,6 +559,56 @@ class TestClient(unittest.TestCase):
         self.assertEqual(got.schema, schema)
         self.assertEqual(got.view_query, query)
 
+    def test_create_table_w_external(self):
+        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.external_config import ExternalConfig
+
+        path = 'projects/%s/datasets/%s/tables' % (
+            self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        resource = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID
+            },
+            'externalDataConfiguration': {
+                'sourceFormat': 'CSV',
+                'autodetect': True,
+            },
+        }
+        conn = client._connection = _Connection(resource)
+        table = Table(self.TABLE_REF)
+        ec = ExternalConfig('CSV')
+        ec.autodetect = True
+        table.external_data_configuration = ec
+
+        got = client.create_table(table)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % path)
+        sent = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_ID,
+            },
+            'externalDataConfiguration': {
+                'sourceFormat': 'CSV',
+                'autodetect': True,
+            }
+        }
+        self.assertEqual(req['data'], sent)
+        self.assertEqual(got.table_id, self.TABLE_ID)
+        self.assertEqual(got.project, self.PROJECT)
+        self.assertEqual(got.dataset_id, self.DS_ID)
+        self.assertEqual(got.external_data_configuration.source_format, 'CSV')
+        self.assertEqual(got.external_data_configuration.autodetect, True)
+
     def test_get_table(self):
         path = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_ID, self.TABLE_ID)
