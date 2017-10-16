@@ -14,10 +14,10 @@
 
 """Helpers for retrying functions with exponential back-off.
 
-The :cls:`Retry` decorator can be used to retry functions that raise exceptions
-using exponential backoff. Because a exponential sleep algorithm is used,
-the retry is limited by a `deadline`. The deadline is the maxmimum amount of
-time a method can block. This is used instead of total number of retries
+The :class:`Retry` decorator can be used to retry functions that raise
+exceptions using exponential backoff. Because a exponential sleep algorithm is
+used, the retry is limited by a `deadline`. The deadline is the maxmimum amount
+of time a method can block. This is used instead of total number of retries
 because it is difficult to ascertain the amount of time a function can block
 when using total number of retries and exponential backoff.
 
@@ -79,7 +79,8 @@ def if_exception_type(*exception_types):
     """Creates a predicate to check if the exception is of a given type.
 
     Args:
-        exception_types (Sequence[type]): The exception types to check for.
+        exception_types (Sequence[:func:`type`]): The exception types to check
+            for.
 
     Returns:
         Callable[Exception]: A predicate that returns True if the provided
@@ -148,7 +149,7 @@ def retry_target(target, predicate, sleep_generator, deadline, on_error=None):
         predicate (Callable[Exception]): A callable used to determine if an
             exception raised by the target should be considered retryable.
             It should return True to retry or False otherwise.
-        sleep_generator (Iterator[float]): An infinite iterator that determines
+        sleep_generator (Iterable[float]): An infinite iterator that determines
             how long to sleep between retries.
         deadline (float): How long to keep retrying the target.
         on_error (Callable): A function to call while processing a retryable

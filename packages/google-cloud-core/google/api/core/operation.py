@@ -57,8 +57,9 @@ class Operation(polling.PollingFuture):
             latest state of the operation.
         cancel (Callable[[], None]): A callable that tries to cancel
             the operation.
-        result_type (type): The protobuf type for the operation's result.
-        metadata_type (type): The protobuf type for the operation's
+        result_type (func:`type`): The protobuf type for the operation's
+            result.
+        metadata_type (func:`type`): The protobuf type for the operation's
             metadata.
     """
 
@@ -200,7 +201,7 @@ def from_http_json(operation, api_request, result_type, **kwargs):
         api_request (Callable): A callable used to make an API request. This
             should generally be
             :meth:`google.cloud._http.Connection.api_request`.
-        result_type (type): The protobuf result type.
+        result_type (:func:`type`): The protobuf result type.
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
@@ -256,7 +257,7 @@ def from_grpc(operation, operations_stub, result_type, **kwargs):
         operation (google.longrunning.operations_pb2.Operation): The operation.
         operations_stub (google.longrunning.operations_pb2.OperationsStub):
             The operations stub.
-        result_type (type): The protobuf result type.
+        result_type (:func:`type`): The protobuf result type.
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
@@ -283,7 +284,7 @@ def from_gapic(operation, operations_client, result_type, **kwargs):
         operation (google.longrunning.operations_pb2.Operation): The operation.
         operations_client (google.api.core.operations_v1.OperationsClient):
             The operations client.
-        result_type (type): The protobuf result type.
+        result_type (:func:`type`): The protobuf result type.
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
