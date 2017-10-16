@@ -76,7 +76,7 @@ def system_tests(session, python_version):
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
-    session.install('.')
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
     session.run(
