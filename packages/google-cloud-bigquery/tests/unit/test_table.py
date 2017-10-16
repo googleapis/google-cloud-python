@@ -200,6 +200,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
                 'estimatedRows': str(self.NUM_EST_ROWS),
                 'estimatedBytes': str(self.NUM_EST_BYTES),
                 'oldestEntryTime': self.WHEN_TS * 1000},
+            'externalDataConfiguration': {
+                'sourceFormat': 'CSV',
+                'csvOptions': {
+                    'allowJaggedRows': True,
+                    'encoding': 'encoding'}},
         }
 
     def _verifyReadonlyResourceProperties(self, table, resource):
@@ -268,6 +273,11 @@ class TestTable(unittest.TestCase, _SchemaBase):
             self._verifySchema(table.schema, resource)
         else:
             self.assertEqual(table.schema, [])
+
+        if 'externalDataConfiguration' in resource:
+            edc = table.external_data_configuration
+            self.assertEqual(edc.source_format, 'CSV')
+            self.assertEqual(edc.options.allow_jagged_rows, True)
 
     def test_ctor(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -517,6 +527,13 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.view_use_legacy_sql, True)
         self.assertEqual(table.view_query, 'select * from foo')
 
+    def test_external_data_configuration_setter_bad_value(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        with self.assertRaises(ValueError):
+            table.external_data_configuration = 12345
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         RESOURCE = {}
@@ -720,116 +737,3 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
         self.assertEqual(
             self._call_fut(MAPPING, table.schema),
             ('Phred Phlyntstone', 32, ['red', 'green'], None))
-
-
-class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
-
-    def _call_fut(self, resource):
-        from google.cloud.bigquery.table import _parse_schema_resource
-
-        return _parse_schema_resource(resource)
-
-    def _makeResource(self):
-        return {
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
-            ]},
-        }
-
-    def test__parse_schema_resource_defaults(self):
-        RESOURCE = self._makeResource()
-        schema = self._call_fut(RESOURCE['schema'])
-        self._verifySchema(schema, RESOURCE)
-
-    def test__parse_schema_resource_subfields(self):
-        RESOURCE = self._makeResource()
-        RESOURCE['schema']['fields'].append(
-            {'name': 'phone',
-             'type': 'RECORD',
-             'mode': 'REPEATED',
-             'fields': [{'name': 'type',
-                         'type': 'STRING',
-                         'mode': 'REQUIRED'},
-                        {'name': 'number',
-                         'type': 'STRING',
-                         'mode': 'REQUIRED'}]})
-        schema = self._call_fut(RESOURCE['schema'])
-        self._verifySchema(schema, RESOURCE)
-
-    def test__parse_schema_resource_fields_without_mode(self):
-        RESOURCE = self._makeResource()
-        RESOURCE['schema']['fields'].append(
-            {'name': 'phone',
-             'type': 'STRING'})
-
-        schema = self._call_fut(RESOURCE['schema'])
-        self._verifySchema(schema, RESOURCE)
-
-
-class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
-
-    def _call_fut(self, resource):
-        from google.cloud.bigquery.table import _build_schema_resource
-
-        return _build_schema_resource(resource)
-
-    def test_defaults(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        resource = self._call_fut([full_name, age])
-        self.assertEqual(len(resource), 2)
-        self.assertEqual(resource[0],
-                         {'name': 'full_name',
-                          'type': 'STRING',
-                          'mode': 'REQUIRED'})
-        self.assertEqual(resource[1],
-                         {'name': 'age',
-                          'type': 'INTEGER',
-                          'mode': 'REQUIRED'})
-
-    def test_w_description(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        DESCRIPTION = 'DESCRIPTION'
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED',
-                                description=DESCRIPTION)
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        resource = self._call_fut([full_name, age])
-        self.assertEqual(len(resource), 2)
-        self.assertEqual(resource[0],
-                         {'name': 'full_name',
-                          'type': 'STRING',
-                          'mode': 'REQUIRED',
-                          'description': DESCRIPTION})
-        self.assertEqual(resource[1],
-                         {'name': 'age',
-                          'type': 'INTEGER',
-                          'mode': 'REQUIRED'})
-
-    def test_w_subfields(self):
-        from google.cloud.bigquery.table import SchemaField
-
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        ph_type = SchemaField('type', 'STRING', 'REQUIRED')
-        ph_num = SchemaField('number', 'STRING', 'REQUIRED')
-        phone = SchemaField('phone', 'RECORD', mode='REPEATED',
-                            fields=[ph_type, ph_num])
-        resource = self._call_fut([full_name, phone])
-        self.assertEqual(len(resource), 2)
-        self.assertEqual(resource[0],
-                         {'name': 'full_name',
-                          'type': 'STRING',
-                          'mode': 'REQUIRED'})
-        self.assertEqual(resource[1],
-                         {'name': 'phone',
-                          'type': 'RECORD',
-                          'mode': 'REPEATED',
-                          'fields': [{'name': 'type',
-                                      'type': 'STRING',
-                                      'mode': 'REQUIRED'},
-                                     {'name': 'number',
-                                      'type': 'STRING',
-                                      'mode': 'REQUIRED'}]})

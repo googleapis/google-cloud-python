@@ -1257,7 +1257,7 @@ class TestBigQuery(unittest.TestCase):
             ('Bhettye Rhubble', 27),
         ]
         gs_url = self._write_csv_to_storage(
-            'bq_load_test' + unique_resource_id(), 'person_ages.csv',
+            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
             ('Full Name', 'Age'), rows)
 
         job_config = bigquery.QueryJobConfig()
@@ -1270,9 +1270,42 @@ class TestBigQuery(unittest.TestCase):
         ]
         ec.options.skip_leading_rows = 1  # skip the header row
         job_config.table_definitions = {table_id: ec}
-        sql = 'SELECT * from %s' % table_id
+        sql = 'SELECT * FROM %s' % table_id
 
         got_rows = Config.CLIENT.query_rows(sql, job_config=job_config)
+
+        row_tuples = [r.values() for r in got_rows]
+        by_age = operator.itemgetter(1)
+        self.assertEqual(sorted(row_tuples, key=by_age),
+                         sorted(rows, key=by_age))
+
+    def test_query_external_table(self):
+        rows = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+        gs_url = self._write_csv_to_storage(
+            'bq_external_test' + unique_resource_id(), 'person_ages.csv',
+            ('Full Name', 'Age'), rows)
+        dataset_id = _make_dataset_id('query_external_table')
+        dataset = self.temp_dataset(dataset_id)
+        table_id = 'flintstones'
+        full_name = bigquery.SchemaField('full_name', 'STRING',
+                                         mode='REQUIRED')
+        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table_arg = Table(dataset.table(table_id), schema=[full_name, age])
+        ec = bigquery.ExternalConfig('CSV')
+        ec.source_uris = [gs_url]
+        ec.options.skip_leading_rows = 1  # skip the header row
+        table_arg.external_data_configuration = ec
+        table = Config.CLIENT.create_table(table_arg)
+        self.to_delete.insert(0, table)
+
+        sql = 'SELECT * FROM %s.%s' % (dataset_id, table_id)
+
+        got_rows = Config.CLIENT.query_rows(sql)
 
         row_tuples = [r.values() for r in got_rows]
         by_age = operator.itemgetter(1)
