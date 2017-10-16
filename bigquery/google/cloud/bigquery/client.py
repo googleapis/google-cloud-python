@@ -904,9 +904,7 @@ class Client(ClientWithProject):
         job.begin(retry=retry)
         return job
 
-    def create_rows(self, table, rows, row_ids=None, selected_fields=None,
-                    skip_invalid_rows=None, ignore_unknown_values=None,
-                    template_suffix=None, retry=DEFAULT_RETRY):
+    def create_rows(self, table, rows, selected_fields=None, **kwargs):
         """API call:  insert table data via a POST request
 
         See
@@ -928,14 +926,72 @@ class Client(ClientWithProject):
                      include all required fields in the schema.  Keys which do
                      not correspond to a field in the schema are ignored.
 
-        :type row_ids: list of string
-        :param row_ids: (Optional)  Unique ids, one per row being inserted.
-                        If omitted, unique IDs are created.
-
         :type selected_fields: list of :class:`SchemaField`
         :param selected_fields:
             The fields to return. Required if ``table`` is a
             :class:`~google.cloud.bigquery.table.TableReference`.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to
+                       `~google.cloud.bigquery.client.Client.create_rows_json`
+
+        :rtype: list of mappings
+        :returns: One mapping per row with insert errors:  the "index" key
+                  identifies the row, and the "errors" key contains a list
+                  of the mappings describing one or more problems with the
+                  row.
+        :raises: ValueError if table's schema is not set
+        """
+        if selected_fields is not None:
+            schema = selected_fields
+        elif isinstance(table, TableReference):
+            raise ValueError('need selected_fields with TableReference')
+        elif isinstance(table, Table):
+            if len(table._schema) == 0:
+                raise ValueError(_TABLE_HAS_NO_SCHEMA)
+            schema = table.schema
+        else:
+            raise TypeError('table should be Table or TableReference')
+
+        json_rows = []
+
+        for index, row in enumerate(rows):
+            if isinstance(row, dict):
+                row = _row_from_mapping(row, schema)
+            json_row = {}
+
+            for field, value in zip(schema, row):
+                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
+                if converter is not None:  # STRING doesn't need converting
+                    value = converter(value)
+                json_row[field.name] = value
+
+            json_rows.append(json_row)
+
+        return self.create_rows_json(table, json_rows, **kwargs)
+
+    def create_rows_json(self, table, json_rows, row_ids=None,
+                         skip_invalid_rows=None, ignore_unknown_values=None,
+                         template_suffix=None, retry=DEFAULT_RETRY):
+        """API call:  insert table data via a POST request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
+
+        :type table: One of:
+                     :class:`~google.cloud.bigquery.table.Table`
+                     :class:`~google.cloud.bigquery.table.TableReference`
+        :param table: the destination table for the row data, or a reference
+                      to it.
+
+        :type json_rows: list of dictionaries
+        :param json_rows: Row data to be inserted. Keys must match the table
+                          schema fields and values must be JSON-compatible
+                          representations.
+
+        :type row_ids: list of string
+        :param row_ids: (Optional)  Unique ids, one per row being inserted.
+                        If omitted, unique IDs are created.
 
         :type skip_invalid_rows: bool
         :param skip_invalid_rows: (Optional)  Insert all valid rows of a
@@ -966,34 +1022,12 @@ class Client(ClientWithProject):
                   identifies the row, and the "errors" key contains a list
                   of the mappings describing one or more problems with the
                   row.
-        :raises: ValueError if table's schema is not set
         """
-        if selected_fields is not None:
-            schema = selected_fields
-        elif isinstance(table, TableReference):
-            raise ValueError('need selected_fields with TableReference')
-        elif isinstance(table, Table):
-            if len(table._schema) == 0:
-                raise ValueError(_TABLE_HAS_NO_SCHEMA)
-            schema = table.schema
-        else:
-            raise TypeError('table should be Table or TableReference')
-
         rows_info = []
         data = {'rows': rows_info}
 
-        for index, row in enumerate(rows):
-            if isinstance(row, dict):
-                row = _row_from_mapping(row, schema)
-            row_info = {}
-
-            for field, value in zip(schema, row):
-                converter = _SCALAR_VALUE_TO_JSON_ROW.get(field.field_type)
-                if converter is not None:  # STRING doesn't need converting
-                    value = converter(value)
-                row_info[field.name] = value
-
-            info = {'json': row_info}
+        for index, row in enumerate(json_rows):
+            info = {'json': row}
             if row_ids is not None:
                 info['insertId'] = row_ids[index]
             else:

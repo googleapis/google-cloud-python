@@ -2283,6 +2283,61 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.create_rows(1, ROWS)
 
+    def test_create_rows_json(self):
+        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.dataset import DatasetReference
+
+        PROJECT = 'PROJECT'
+        DS_ID = 'DS_ID'
+        TABLE_ID = 'TABLE_ID'
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            PROJECT, DS_ID, TABLE_ID)
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection({})
+        table_ref = DatasetReference(PROJECT, DS_ID).table(TABLE_ID)
+        schema = [
+            SchemaField('full_name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED'),
+            SchemaField('joined', 'TIMESTAMP', mode='NULLABLE'),
+        ]
+        table = Table(table_ref, schema=schema)
+        ROWS = [
+            {
+                'full_name': 'Phred Phlyntstone', 'age': '32',
+                'joined': '2015-07-24T19:53:19.006000Z'
+            },
+            {
+                'full_name': 'Bharney Rhubble', 'age': '33',
+                'joined': 1437767600.006
+            },
+            {
+                'full_name': 'Wylma Phlyntstone', 'age': '29',
+                'joined': 1437767601.006
+            },
+            {
+                'full_name': 'Bhettye Rhubble', 'age': '27', 'joined': None
+            },
+        ]
+
+        SENT = {
+            'rows': [{
+                'json': row,
+                'insertId': str(i),
+            } for i, row in enumerate(ROWS)],
+        }
+
+        with mock.patch('uuid.uuid4', side_effect=map(str, range(len(ROWS)))):
+            errors = client.create_rows_json(table, ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
     def test_query_rows_defaults(self):
         from google.api.core.page_iterator import HTTPIterator
         from google.cloud.bigquery._helpers import Row
