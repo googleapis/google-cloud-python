@@ -152,7 +152,7 @@ class Client(ClientWithProject):
             page_token=page_token,
             max_results=max_results)
 
-    def list_datasets(self, include_all=False, max_results=None,
+    def list_datasets(self, include_all=False, filter=None, max_results=None,
                       page_token=None, retry=DEFAULT_RETRY):
         """List datasets for the project associated with this client.
 
@@ -161,6 +161,11 @@ class Client(ClientWithProject):
 
         :type include_all: bool
         :param include_all: True if results include hidden datasets.
+
+        :type filter: str
+        :param filter: an expression for filtering the results by label.
+                       For syntax, see
+                       https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
 
         :type max_results: int
         :param max_results: maximum number of datasets to return, If not
@@ -181,6 +186,10 @@ class Client(ClientWithProject):
         extra_params = {}
         if include_all:
             extra_params['all'] = True
+        if filter:
+            # TODO: consider supporting a dict of label -> value for filter,
+            # and converting it into a string here.
+            extra_params['filter'] = filter
         path = '/projects/%s/datasets' % (self.project,)
         return page_iterator.HTTPIterator(
             client=self,
