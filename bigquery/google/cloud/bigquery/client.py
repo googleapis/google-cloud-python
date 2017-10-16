@@ -612,7 +612,7 @@ class Client(ClientWithProject):
         :param job_id: (Optional) Name of the job.
 
         :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+        :param job_id_prefix: (Optional) the user-provided prefix for a
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
@@ -625,7 +625,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: a new ``LoadJob`` instance
         """
-        job_id = _make_job_id(job_id, prefix=job_id_prefix)
+        job_id = _make_job_id(job_id, job_id_prefix)
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
         job = LoadJob(job_id, source_uris, destination, self, job_config)
@@ -664,7 +664,7 @@ class Client(ClientWithProject):
         :param job_id: (Optional) Name of the job.
 
         :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+        :param job_id_prefix: (Optional) the user-provided prefix for a
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
@@ -680,7 +680,7 @@ class Client(ClientWithProject):
                  be determined, or if the ``file_obj`` can be detected to be
                  a file opened in text mode.
         """
-        job_id = _make_job_id(job_id, prefix=job_id_prefix)
+        job_id = _make_job_id(job_id, job_id_prefix)
         job = LoadJob(job_id, None, destination, self, job_config)
         job_resource = job._build_resource()
         if rewind:
@@ -825,7 +825,7 @@ class Client(ClientWithProject):
         :param job_id: (Optional) The ID of the job.
 
         :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+        :param job_id_prefix: (Optional) the user-provided prefix for a
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
@@ -872,7 +872,7 @@ class Client(ClientWithProject):
         :param job_id: (Optional) The ID of the job.
 
         :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+        :param job_id_prefix: (Optional) the user-provided prefix for a
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
@@ -885,7 +885,7 @@ class Client(ClientWithProject):
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
-        job_id = _make_job_id(job_id, prefix=job_id_prefix)
+        job_id = _make_job_id(job_id, job_id_prefix)
 
         if isinstance(destination_uris, six.string_types):
             destination_uris = [destination_uris]
@@ -915,7 +915,7 @@ class Client(ClientWithProject):
         :param job_id: (Optional) ID to use for the query job.
 
         :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided job ID prefix for a
+        :param job_id_prefix: (Optional) the user-provided prefix for a
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
@@ -1295,7 +1295,7 @@ def _make_job_id(job_id, prefix=None):
     :param job_id: the user-provided job ID
 
     :type prefix: str or ``NoneType``
-    :param prefix: (Optional) the user-provided job ID prefix
+    :param prefix: (Optional) the user-provided prefix for a job ID
 
     :rtype: str
     :returns: A job ID
