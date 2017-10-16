@@ -23,6 +23,9 @@ import six
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
 from google.cloud.bigquery.schema import SchemaField
+from google.cloud.bigquery.schema import _build_schema_resource
+from google.cloud.bigquery.schema import _parse_schema_resource
+from google.cloud.bigquery.external_config import ExternalConfig
 
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
@@ -159,13 +162,15 @@ class Table(object):
 
     all_fields = [
         'description', 'friendly_name', 'expires', 'location',
-        'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema'
+        'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
+        'external_data_configuration',
     ]
 
     def __init__(self, table_ref, schema=()):
         self._project = table_ref.project
         self._table_id = table_ref.table_id
         self._dataset_id = table_ref.dataset_id
+        self._external_config = None
         self._properties = {}
         # Let the @property do validation.
         self.schema = schema
@@ -537,9 +542,36 @@ class Table(object):
 
     @property
     def streaming_buffer(self):
+        """Information about a table's streaming buffer.
+
+        :rtype: :class:`StreamingBuffer`
+        :returns: Streaming buffer information, returned from get_table.
+        """
         sb = self._properties.get('streamingBuffer')
         if sb is not None:
             return StreamingBuffer(sb)
+
+    @property
+    def external_data_configuration(self):
+        """Configuration for an external data source.
+
+        If not set, None is returned.
+
+        :rtype: :class:`ExternalConfig`, or ``NoneType``
+        :returns: The external configuration, or None (the default).
+        """
+        return self._external_config
+
+    @external_data_configuration.setter
+    def external_data_configuration(self, value):
+        """Sets the configuration for an external data source.
+
+        :type value: :class:`ExternalConfig`, or ``NoneType``
+        :param value: The ExternalConfig, or None to unset.
+        """
+        if not (value is None or isinstance(value, ExternalConfig)):
+            raise ValueError("Pass an ExternalConfig or None")
+        self._external_config = value
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -579,6 +611,9 @@ class Table(object):
         cleaned = api_response.copy()
         schema = cleaned.pop('schema', {'fields': ()})
         self.schema = _parse_schema_resource(schema)
+        ec = cleaned.pop('externalDataConfiguration', None)
+        if ec:
+            self.external_data_configuration = ExternalConfig.from_api_repr(ec)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
@@ -614,12 +649,20 @@ class Table(object):
                 'fields': _build_schema_resource(self._schema),
             }
 
+    def _populate_external_config(self, resource):
+        if not self.external_data_configuration:
+            resource['externalDataConfiguration'] = None
+        else:
+            resource['externalDataConfiguration'] = ExternalConfig.to_api_repr(
+                self.external_data_configuration)
+
     custom_resource_fields = {
         'expires': _populate_expires_resource,
         'partitioning_type': _populate_partitioning_type_resource,
         'view_query': _populate_view_query_resource,
         'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
-        'schema': _populate_schema_resource
+        'schema': _populate_schema_resource,
+        'external_data_configuration': _populate_external_config,
     }
 
     def _build_resource(self, filter_fields):
@@ -690,50 +733,3 @@ class StreamingBuffer(object):
         # time is in milliseconds since the epoch.
         self.oldest_entry_time = _datetime_from_microseconds(
             1000.0 * int(resource['oldestEntryTime']))
-
-
-def _parse_schema_resource(info):
-    """Parse a resource fragment into a schema field.
-
-    :type info: mapping
-    :param info: should contain a "fields" key to be parsed
-
-    :rtype: list of :class:`SchemaField`, or ``NoneType``
-    :returns: a list of parsed fields, or ``None`` if no "fields" key is
-                present in ``info``.
-    """
-    if 'fields' not in info:
-        return ()
-
-    schema = []
-    for r_field in info['fields']:
-        name = r_field['name']
-        field_type = r_field['type']
-        mode = r_field.get('mode', 'NULLABLE')
-        description = r_field.get('description')
-        sub_fields = _parse_schema_resource(r_field)
-        schema.append(
-            SchemaField(name, field_type, mode, description, sub_fields))
-    return schema
-
-
-def _build_schema_resource(fields):
-    """Generate a resource fragment for a schema.
-
-    :type fields: sequence of :class:`SchemaField`
-    :param fields: schema to be dumped
-
-    :rtype: mapping
-    :returns: a mapping describing the schema of the supplied fields.
-    """
-    infos = []
-    for field in fields:
-        info = {'name': field.name,
-                'type': field.field_type,
-                'mode': field.mode}
-        if field.description is not None:
-            info['description'] = field.description
-        if field.fields:
-            info['fields'] = _build_schema_resource(field.fields)
-        infos.append(info)
-    return infos
