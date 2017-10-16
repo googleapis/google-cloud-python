@@ -64,9 +64,9 @@ import time
 
 import six
 
+from google.api.core import datetime_helpers
 from google.api.core import exceptions
-from google.api.core.helpers import datetime_helpers
-from google.api.core.helpers import general_helpers
+from google.api.core import general_helpers
 
 _LOGGER = logging.getLogger(__name__)
 _DEFAULT_INITIAL_DELAY = 1.0  # seconds

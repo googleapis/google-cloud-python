@@ -57,7 +57,7 @@ def test_exponential_sleep_generator_base_2(uniform):
 
 @mock.patch('time.sleep', autospec=True)
 @mock.patch(
-    'google.api.core.helpers.datetime_helpers.utcnow',
+    'google.api.core.datetime_helpers.utcnow',
     return_value=datetime.datetime.min,
     autospec=True)
 def test_retry_target_success(utcnow, sleep):
@@ -79,7 +79,7 @@ def test_retry_target_success(utcnow, sleep):
 
 @mock.patch('time.sleep', autospec=True)
 @mock.patch(
-    'google.api.core.helpers.datetime_helpers.utcnow',
+    'google.api.core.datetime_helpers.utcnow',
     return_value=datetime.datetime.min,
     autospec=True)
 def test_retry_target_w_on_error(utcnow, sleep):
@@ -107,7 +107,7 @@ def test_retry_target_w_on_error(utcnow, sleep):
 
 @mock.patch('time.sleep', autospec=True)
 @mock.patch(
-    'google.api.core.helpers.datetime_helpers.utcnow',
+    'google.api.core.datetime_helpers.utcnow',
     return_value=datetime.datetime.min,
     autospec=True)
 def test_retry_target_non_retryable_error(utcnow, sleep):
@@ -124,7 +124,7 @@ def test_retry_target_non_retryable_error(utcnow, sleep):
 
 @mock.patch('time.sleep', autospec=True)
 @mock.patch(
-    'google.api.core.helpers.datetime_helpers.utcnow', autospec=True)
+    'google.api.core.datetime_helpers.utcnow', autospec=True)
 def test_retry_target_deadline_exceeded(utcnow, sleep):
     predicate = retry.if_exception_type(ValueError)
     exception = ValueError('meep')

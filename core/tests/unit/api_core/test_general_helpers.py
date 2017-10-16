@@ -14,7 +14,7 @@
 
 import functools
 
-from google.api.core.helpers import general_helpers
+from google.api.core import general_helpers
 
 
 def test_wraps_normal_func():
