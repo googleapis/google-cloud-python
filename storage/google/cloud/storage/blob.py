@@ -1093,8 +1093,9 @@ class Blob(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
+        .. warning::
+
+           The ``objects.getIamPolicy`` API is deprecated.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -1122,8 +1123,9 @@ class Blob(_PropertyMixin):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
+        .. warning::
+
+           The ``objects.setIamPolicy`` API is deprecated.
 
         :type policy: :class:`google.cloud.iam.Policy`
         :param policy: policy instance used to update bucket's IAM policy.
@@ -1157,8 +1159,9 @@ class Blob(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
+        .. warning::
+
+           The ``objects.testIamPermissions`` API is deprecated.
 
         :type permissions: list of string
         :param permissions: the permissions to check
