@@ -57,8 +57,8 @@ import datetime
 
 import six
 
-from google.api.core.helpers import datetime_helpers
-from google.api.core.helpers import general_helpers
+from google.api.core import datetime_helpers
+from google.api.core import general_helpers
 
 _DEFAULT_INITIAL_TIMEOUT = 5.0  # seconds
 _DEFAULT_MAXIMUM_TIMEOUT = 30.0  # seconds

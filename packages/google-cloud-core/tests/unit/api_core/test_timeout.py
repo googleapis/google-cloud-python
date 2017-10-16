@@ -28,7 +28,7 @@ def test__exponential_timeout_generator_base_2():
     assert result == [1, 2, 4, 8, 16, 32, 60, 60]
 
 
-@mock.patch('google.api.core.helpers.datetime_helpers.utcnow', autospec=True)
+@mock.patch('google.api.core.datetime_helpers.utcnow', autospec=True)
 def test__exponential_timeout_generator_base_deadline(utcnow):
     # Make each successive call to utcnow() advance one second.
     utcnow.side_effect = [
