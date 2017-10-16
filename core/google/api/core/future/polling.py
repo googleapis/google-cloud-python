@@ -70,7 +70,8 @@ class PollingFuture(base.Future):
         """Poll and wait for the Future to be resolved.
 
         Args:
-            timeout (int): How long to wait for the operation to complete.
+            timeout (int):
+                How long (in seconds) to wait for the operation to complete.
                 If None, wait indefinitely.
         """
         if self._result_set:
@@ -91,7 +92,8 @@ class PollingFuture(base.Future):
         """Get the result of the operation, blocking if necessary.
 
         Args:
-            timeout (int): How long to wait for the operation to complete.
+            timeout (int):
+                How long (in seconds) to wait for the operation to complete.
                 If None, wait indefinitely.
 
         Returns:
