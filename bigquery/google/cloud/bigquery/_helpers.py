@@ -546,3 +546,11 @@ To modify the default retry behavior, call a ``with_XXX`` method
 on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
 pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
 """
+
+
+def _int_or_none(value):
+    """Helper: deserialize int value from JSON string."""
+    if isinstance(value, int):
+        return value
+    if value is not None:
+        return int(value)
