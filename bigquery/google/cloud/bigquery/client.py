@@ -1108,10 +1108,10 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) ID to use for the query job.
 
-        :type timeout: int
+        :type timeout: float
         :param timeout:
-            (Optional) How long to wait for job to complete before raising a
-            :class:`TimeoutError`.
+            (Optional) How long (in seconds) to wait for job to complete
+            before raising a :class:`TimeoutError`.
 
         :rtype: :class:`~google.api.core.page_iterator.Iterator`
         :returns:
