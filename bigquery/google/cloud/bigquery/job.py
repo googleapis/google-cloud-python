@@ -1522,6 +1522,7 @@ class QueryJob(_AsyncJob):
         self.query = query
         self._configuration = job_config
         self._query_results = None
+        self._done_timeout = None
 
     @property
     def allow_large_results(self):
@@ -1871,7 +1872,7 @@ class QueryJob(_AsyncJob):
         """
         if not self._query_results:
             self._query_results = self._client._get_query_results(
-                self.job_id, retry)
+                self.job_id, retry, project=self.project)
         return self._query_results
 
     def done(self, retry=DEFAULT_RETRY):
@@ -1880,11 +1881,25 @@ class QueryJob(_AsyncJob):
         :rtype: bool
         :returns: True if the job is complete, False otherwise.
         """
+        # Since the API to getQueryResults can hang up to the timeout value
+        # (default of 10 seconds), set the timeout parameter to ensure that
+        # the timeout from the futures API is respected. See:
+        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4135
+        timeout_ms = None
+        if self._done_timeout is not None:
+            # Subtract a buffer of a 100 milliseconds for context switching,
+            # network latency, etc.
+            timeout_ms = int(1000 * self._done_timeout) - 100
+            timeout_ms = max(min(timeout_ms, 10000), 0)
+            self._done_timeout -= (timeout_ms / 1000.0)
+            self._done_timeout = max(0, self._done_timeout)
+
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
         if self.state != _DONE_STATE:
             self._query_results = self._client._get_query_results(
-                self.job_id, retry)
+                self.job_id, retry,
+                project=self.project, timeout_ms=timeout_ms)
 
             # Only reload the job once we know the query is complete.
             # This will ensure that fields such as the destination table are
@@ -1894,10 +1909,14 @@ class QueryJob(_AsyncJob):
 
         return self.state == _DONE_STATE
 
+    def _blocking_poll(self, timeout=None):
+        self._done_timeout = timeout
+        super(QueryJob, self)._blocking_poll(timeout=timeout)
+
     def result(self, timeout=None, retry=DEFAULT_RETRY):
         """Start the job and wait for it to complete and get the result.
 
-        :type timeout: int
+        :type timeout: float
         :param timeout:
             How long to wait for job to complete before raising a
             :class:`TimeoutError`.
