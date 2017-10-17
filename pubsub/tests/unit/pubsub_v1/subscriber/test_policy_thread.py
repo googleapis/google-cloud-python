@@ -134,3 +134,10 @@ def test_on_response():
     assert len(add_done_callback_calls) == 2
     for call in add_done_callback_calls:
         assert call[1][0] == thread._callback_completed
+
+
+def test__callback_completed():
+    future = mock.Mock()
+    thread._callback_completed(future)
+    result_calls = [m for m in future.method_calls if m[0] == 'result']
+    assert len(result_calls) == 1
