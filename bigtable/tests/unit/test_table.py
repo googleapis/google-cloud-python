@@ -994,6 +994,39 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
         self.assertEqual(result, expected_result)
 
+    def test_do_mutate_retryable_rows_mismatch_num_responses(self):
+        from google.cloud.bigtable._generated.bigtable_pb2 import (
+            MutateRowsResponse)
+        from google.cloud.bigtable.row import DirectRow
+        from google.rpc.status_pb2 import Status
+        from tests.unit._testing import _FakeStub
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+
+        response = MutateRowsResponse(
+            entries=[
+                MutateRowsResponse.Entry(
+                    index=0,
+                    status=Status(code=0),
+                ),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub([response])
+
+        worker = self._make_worker(table._instance._client,
+                table.name, [row_1, row_2])
+        with self.assertRaises(AssertionError):
+            statuses = worker._do_mutate_retryable_rows()
+
 
 class Test__create_row_request(unittest.TestCase):
 
