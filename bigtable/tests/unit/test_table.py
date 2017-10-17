@@ -595,7 +595,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable.table import MUTATE_ROWS_DEFAULT_RETRY
+        from google.cloud.bigtable.table import DEFAULT_RETRY
         from google.rpc.status_pb2 import Status
 
         # Setup:
@@ -650,7 +650,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         client._data_stub = mock.MagicMock()
         client._data_stub.MutateRows.side_effect = [[response_1], [response_2]]
 
-        retry = MUTATE_ROWS_DEFAULT_RETRY.with_delay(initial=0.1)
+        retry = DEFAULT_RETRY.with_delay(initial=0.1)
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
         statuses = worker(retry=retry)
 
@@ -666,7 +666,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable.table import MUTATE_ROWS_DEFAULT_RETRY
+        from google.cloud.bigtable.table import DEFAULT_RETRY
         from google.rpc.status_pb2 import Status
 
         # Setup:
@@ -706,7 +706,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         client._data_stub = mock.MagicMock()
         client._data_stub.MutateRows.return_value = [response]
 
-        retry = MUTATE_ROWS_DEFAULT_RETRY.with_delay(
+        retry = DEFAULT_RETRY.with_delay(
                 initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
         worker = self._make_worker(client, table.name, [row_1, row_2])
         statuses = worker(retry=retry)
@@ -776,9 +776,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_retry(self):
+        from google.api.core.exceptions import ServiceUnavailable
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
-        from google.cloud.bigtable.table import _MutateRowsRetryableError
         from google.cloud.bigtable.row import DirectRow
         from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
@@ -826,13 +826,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         worker = self._make_worker(table._instance._client,
                 table.name, [row_1, row_2, row_3])
 
-        with self.assertRaises(_MutateRowsRetryableError) as cm:
+        with self.assertRaises(ServiceUnavailable):
             worker._do_mutate_retryable_rows()
-
-        err = cm.exception
-        self.assertEqual(len(err.retryable_responses), 1)
-        self.assertEqual(err.retryable_responses[0].index, 1)
-        self.assertEqual(err.retryable_responses[0].status.code, 4)
 
         statuses = worker.responses_statuses
         result = [status.code for status in statuses]
@@ -841,9 +836,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_second_retry(self):
+        from google.api.core.exceptions import ServiceUnavailable
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
-        from google.cloud.bigtable.table import _MutateRowsRetryableError
         from google.cloud.bigtable.row import DirectRow
         from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
@@ -896,13 +891,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         worker.responses_statuses = self._make_responses_statuses(
                 [0, 4, 1, 10])
 
-        with self.assertRaises(_MutateRowsRetryableError) as cm:
+        with self.assertRaises(ServiceUnavailable):
             worker._do_mutate_retryable_rows()
-
-        err = cm.exception
-        self.assertEqual(len(err.retryable_responses), 1)
-        self.assertEqual(err.retryable_responses[0].index, 3)
-        self.assertEqual(err.retryable_responses[0].status.code, 4)
 
         statuses = worker.responses_statuses
         result = [status.code for status in statuses]
