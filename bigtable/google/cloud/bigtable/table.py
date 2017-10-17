@@ -450,15 +450,19 @@ class _RetryableMutateRowsWorker(object):
         responses = self.client._data_stub.MutateRows(
             mutate_rows_request)
 
+        num_responses = 0
         num_retryable_responses = 0
         for response in responses:
             for entry in response.entries:
+                num_responses += 1
                 index = index_into_all_rows[entry.index]
                 self.responses_statuses[index] = entry.status
                 if self._is_retryable(entry.status):
                     num_retryable_responses += 1
                 if entry.status.code == 0:
                     self.rows[index].clear()
+
+        assert len(retryable_rows) == num_responses
 
         if num_retryable_responses:
             raise from_grpc_status(StatusCode.UNAVAILABLE,
