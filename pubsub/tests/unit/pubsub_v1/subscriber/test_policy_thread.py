@@ -94,8 +94,15 @@ def test_on_exception_other():
 def test_on_response():
     callback = mock.Mock(spec=())
 
+    # Create mock ThreadPoolExecutor, pass into create_policy(), and verify
+    # that both executor.submit() and future.add_done_callback are called
+    # twice.
+    future = mock.Mock()
+    attrs = {'submit.return_value': future}
+    executor = mock.Mock(**attrs)
+
     # Set up the policy.
-    policy = create_policy()
+    policy = create_policy(executor=executor)
     policy._callback = callback
 
     # Set up the messages to send.
@@ -112,9 +119,25 @@ def test_on_response():
         ],
     )
 
-    # Actually run the method and prove that the callback was
-    # called in the expected way.
+    # Actually run the method and prove that executor.submit and
+    # future.add_done_callback were called in the expected way.
     policy.on_response(response)
-    assert callback.call_count == 2
-    for call in callback.mock_calls:
-        assert isinstance(call[1][0], message.Message)
+
+    submit_calls = [m for m in executor.method_calls if m[0] == 'submit']
+    assert len(submit_calls) == 2
+    for call in submit_calls:
+        assert call[1][0] == callback
+        assert isinstance(call[1][1], message.Message)
+
+    add_done_callback_calls = [
+        m for m in future.method_calls if m[0] == 'add_done_callback']
+    assert len(add_done_callback_calls) == 2
+    for call in add_done_callback_calls:
+        assert call[1][0] == thread._callback_completed
+
+
+def test__callback_completed():
+    future = mock.Mock()
+    thread._callback_completed(future)
+    result_calls = [m for m in future.method_calls if m[0] == 'result']
+    assert len(result_calls) == 1
