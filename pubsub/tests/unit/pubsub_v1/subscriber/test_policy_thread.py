@@ -94,9 +94,9 @@ def test_on_exception_other():
 def test_on_response():
     callback = mock.Mock(spec=())
 
-    # TODO Create mock ThreadPoolExecutor, pass into create_policy(), and
-    # verify that both executor.submit() and future.add_done_callback are
-    # called twice.
+    # Create mock ThreadPoolExecutor, pass into create_policy(), and verify
+    # that both executor.submit() and future.add_done_callback are called
+    # twice.
     future = mock.Mock()
     attrs = {'submit.return_value': future}
     executor = mock.Mock(**attrs)
