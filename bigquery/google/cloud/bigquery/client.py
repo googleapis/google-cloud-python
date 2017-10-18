@@ -47,6 +47,7 @@ from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
+from google.cloud.bigquery._helpers import _snake_to_camel_case
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
@@ -340,9 +341,7 @@ class Client(ClientWithProject):
                 api_field = 'access'
             else:
                 attr = getattr(dataset, f)
-                # snake case to camel case
-                words = f.split('_')
-                api_field = words[0] + ''.join(map(str.capitalize, words[1:]))
+                api_field = _snake_to_camel_case(f)
             partial[api_field] = attr
         if dataset.etag is not None:
             headers = {'If-Match': dataset.etag}
