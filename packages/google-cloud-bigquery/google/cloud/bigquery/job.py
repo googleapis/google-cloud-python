@@ -143,9 +143,6 @@ class AutoDetectSchema(_TypedApiResourceProperty):
     """
     def __set__(self, instance, value):
         self._validate(value)
-        if instance.schema:
-            raise ValueError('A schema should not be already defined '
-                             'when using schema auto-detection')
         instance._properties[self.resource_name] = value
 
 
@@ -638,9 +635,6 @@ class LoadJobConfig(object):
     def schema(self, value):
         if not all(isinstance(field, SchemaField) for field in value):
             raise ValueError('Schema items must be fields')
-        if self.autodetect:
-            raise ValueError(
-                'Schema can not be set if `autodetect` property is True')
         self._schema = tuple(value)
 
     def to_api_repr(self):
