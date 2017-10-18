@@ -16,7 +16,7 @@
 
 import six
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud.bigquery._helpers import _TypedProperty
 from google.cloud.bigquery._helpers import _rows_from_json
 from google.cloud.bigquery.dataset import Dataset
@@ -420,7 +420,7 @@ class QueryResults(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
                   which counts the total number of rows **in the result
@@ -467,10 +467,10 @@ def _rows_page_start_query(iterator, page, response):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type page: :class:`~google.cloud.iterator.Page`
+    :type page: :class:`~google.api_core.page_iterator.Page`
     :param page: The page that was just created.
 
     :type response: dict
