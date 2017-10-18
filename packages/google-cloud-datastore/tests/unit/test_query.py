@@ -488,7 +488,7 @@ class TestIterator(unittest.TestCase):
             iterator._process_query_results(response_pb)
 
     def _next_page_helper(self, txn_id=None):
-        from google.api.core import page_iterator
+        from google.api_core import page_iterator
         from google.cloud.proto.datastore.v1 import datastore_pb2
         from google.cloud.proto.datastore.v1 import entity_pb2
         from google.cloud.proto.datastore.v1 import query_pb2
