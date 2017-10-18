@@ -21,7 +21,7 @@
 # Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
-from google.api.core import exceptions
+from google.api_core import exceptions
 
 try:
     from grpc._channel import _Rendezvous

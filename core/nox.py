@@ -18,6 +18,9 @@ import os
 import nox
 
 
+LOCAL_DEPS = ('../api_core/',)
+
+
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
 def unit_tests(session, python_version):
@@ -35,6 +38,7 @@ def unit_tests(session, python_version):
         'pytest',
         'pytest-cov',
         'grpcio >= 1.0.2',
+        *LOCAL_DEPS
     )
     session.install('-e', '.')
 
@@ -43,7 +47,6 @@ def unit_tests(session, python_version):
         'py.test',
         '--quiet',
         '--cov=google.cloud',
-        '--cov=google.api.core',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
