@@ -466,8 +466,9 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_load_table_from_storage_w_autodetect_schema(self):
+    def test_load_table_from_storage_w_autodetect_schema_then_get_job(self):
         from google.cloud.bigquery import SchemaField
+        from google.cloud.bigquery.job import LoadJob
 
         rows = ROWS * 100
         # BigQuery internally uses the first 100 rows to detect schema
@@ -477,11 +478,12 @@ class TestBigQuery(unittest.TestCase):
             HEADER_ROW, rows)
         dataset = self.temp_dataset(_make_dataset_id('load_gcs_then_dump'))
         table_ref = dataset.table('test_table')
+        JOB_ID = 'load_table_w_autodetect_{}'.format(str(uuid.uuid4()))
 
         config = bigquery.LoadJobConfig()
         config.autodetect = True
-        job = Config.CLIENT.load_table_from_storage(gs_url, table_ref,
-                                                    job_config=config)
+        job = Config.CLIENT.load_table_from_storage(
+            gs_url, table_ref, job_config=config, job_id=JOB_ID)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
@@ -501,6 +503,12 @@ class TestBigQuery(unittest.TestCase):
         by_age = operator.itemgetter(1)
         self.assertEqual(
             sorted(actual_row_tuples, key=by_age), sorted(rows, key=by_age))
+
+        fetched_job = Config.CLIENT.get_job(JOB_ID)
+
+        self.assertIsInstance(fetched_job, LoadJob)
+        self.assertEqual(fetched_job.job_id, JOB_ID)
+        self.assertEqual(fetched_job.autodetect, True)
 
     def _write_csv_to_storage(self, bucket_name, blob_name, header_row,
                               data_rows):
