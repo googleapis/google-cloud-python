@@ -233,7 +233,7 @@ class TestCluster(unittest.TestCase):
         self.assertEqual(cluster.location, LOCATION)
 
     def test_create(self):
-        from google.api.core import operation
+        from google.api_core import operation
         from google.longrunning import operations_pb2
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
@@ -275,7 +275,7 @@ class TestCluster(unittest.TestCase):
 
     def test_update(self):
         import datetime
-        from google.api.core import operation
+        from google.api_core import operation
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.cloud._helpers import _datetime_to_pb_timestamp

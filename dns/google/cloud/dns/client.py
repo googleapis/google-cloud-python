@@ -14,7 +14,7 @@
 
 """Client for interacting with the Google Cloud DNS API."""
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud.client import ClientWithProject
 
 from google.cloud.dns._http import Connection
@@ -85,7 +85,7 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            zones.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.dns.zone.ManagedZone`
                   belonging to this project.
         """
@@ -125,7 +125,7 @@ class Client(ClientWithProject):
 def _item_to_zone(iterator, resource):
     """Convert a JSON managed zone to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict

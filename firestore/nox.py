@@ -20,8 +20,8 @@ import nox
 import nox.command
 
 
-# NOTE: The following should be used eventually:
 LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
     os.path.join('..', 'core'),
 )
 

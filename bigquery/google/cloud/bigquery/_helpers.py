@@ -818,7 +818,7 @@ def _item_to_row(iterator, resource):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -834,10 +834,10 @@ def _item_to_row(iterator, resource):
 def _rows_page_start(iterator, page, response):
     """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type page: :class:`~google.cloud.iterator.Page`
+    :type page: :class:`~google.api_core.page_iterator.Page`
     :param page: The page that was just created.
 
     :type response: dict

@@ -42,7 +42,6 @@ def unit_tests(session, python_version):
     session.run(
         'py.test',
         '--quiet',
-        '--cov=google.cloud',
         '--cov=google.api_core',
         '--cov=tests.unit',
         '--cov-append',

@@ -15,7 +15,7 @@
 """Define API Datasets."""
 import six
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.exceptions import NotFound
 from google.cloud.bigquery.table import Table
@@ -561,7 +561,7 @@ class Dataset(object):
                            datasets. If not passed, the API will return the
                            first page of datasets.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
                   contained within the current dataset.
         """
@@ -595,7 +595,7 @@ class Dataset(object):
 def _item_to_table(iterator, resource):
     """Convert a JSON table to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict

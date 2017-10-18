@@ -828,7 +828,7 @@ class _MockIterator(object):
         return self
 
     def __next__(self):
-        from google.api.core.exceptions import ServiceUnavailable
+        from google.api_core.exceptions import ServiceUnavailable
 
         try:
             return next(self._iter_values)

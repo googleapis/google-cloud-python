@@ -19,7 +19,7 @@ import threading
 import six
 from six.moves import http_client
 
-import google.api.core.future.polling
+import google.api_core.future.polling
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
@@ -140,7 +140,7 @@ class WriteDisposition(_EnumProperty):
     WRITE_EMPTY = 'WRITE_EMPTY'
 
 
-class _AsyncJob(google.api.core.future.polling.PollingFuture):
+class _AsyncJob(google.api_core.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
     :type name: str
@@ -496,7 +496,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
 
         This always returns False. It's not possible to check if a job was
         cancelled in the API. This method is here to satisfy the interface
-        for :class:`google.api.core.future.Future`.
+        for :class:`google.api_core.future.Future`.
 
         :rtype: bool
         :returns: False
@@ -1316,7 +1316,7 @@ class QueryJob(_AsyncJob):
             How long to wait for job to complete before raising a
             :class:`TimeoutError`.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
             Iterator of row data :class:`tuple`s. During each page, the
             iterator will have the ``total_rows`` attribute set, which counts

@@ -23,7 +23,7 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud import exceptions
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
@@ -712,7 +712,7 @@ class Table(object):
         :param client: (Optional) The client to use.  If not passed, falls
                        back to the ``client`` stored on the current dataset.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
                   which counts the total number of rows **in the table**

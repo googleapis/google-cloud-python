@@ -19,7 +19,11 @@ import os
 import nox
 
 
-LOCAL_DEPS = ('../core/', '../logging/')
+LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
+    os.path.join('..', 'core'),
+    os.path.join('..', 'logging'),
+)
 
 
 @nox.session

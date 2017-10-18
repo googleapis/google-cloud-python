@@ -17,7 +17,7 @@
 
 import re
 
-from google.api.core import operation
+from google.api_core import operation
 from google.cloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
 from google.cloud.bigtable._generated import (
