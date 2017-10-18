@@ -54,8 +54,7 @@ def docs(session):
 
     # Install Sphinx and also all of the google-cloud-* packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
-    session.install('Sphinx >= 1.6.3', 'sphinx_rtd_theme')
-    session.install(*ALL_PACKAGES)
+    session.install('-r', os.path.join('docs', 'requirements.txt'))
 
     # Build the docs!
     session.run(

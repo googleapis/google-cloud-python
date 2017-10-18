@@ -1,6 +1,7 @@
 setuptools >= 36.4.0
 sphinx >= 1.6.3
 
+api_core/
 core/
 storage/
 bigquery/
