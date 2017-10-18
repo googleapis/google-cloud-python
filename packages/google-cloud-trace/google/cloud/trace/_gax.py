@@ -14,7 +14,7 @@
 
 """GAX Wrapper for interacting with the Stackdriver Trace API."""
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud.gapic.trace.v1 import trace_service_client
 from google.cloud.proto.devtools.cloudtrace.v1 import trace_pb2
 from google.gax import CallOptions
@@ -131,7 +131,7 @@ class _TraceAPI(object):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Traces that match the specified filter conditions.
         """
         if page_token is None:
@@ -170,7 +170,7 @@ def _parse_trace_pb(trace_pb):
 def _item_to_mapping(iterator, trace_pb):
     """Helper callable function for the GAXIterator
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type trace_pb: :class:`google.cloud.proto.devtools.cloudtrace.v1.
