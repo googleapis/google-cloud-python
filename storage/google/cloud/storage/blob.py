@@ -1120,8 +1120,9 @@ class Blob(_PropertyMixin):
     def get_iam_policy(self, client=None):
         """Retrieve the IAM policy for the object.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy
+        .. warning::
+
+           The ``objects.getIamPolicy`` API is deprecated.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1152,8 +1153,9 @@ class Blob(_PropertyMixin):
     def set_iam_policy(self, policy, client=None):
         """Update the IAM policy for the bucket.
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy
+        .. warning::
+
+           The ``objects.setIamPolicy`` API is deprecated.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1190,8 +1192,9 @@ class Blob(_PropertyMixin):
     def test_iam_permissions(self, permissions, client=None):
         """API call:  test permissions
 
-        See
-        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions
+        .. warning::
+
+           The ``objects.testIamPermissions`` API is deprecated.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
