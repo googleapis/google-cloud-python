@@ -2171,6 +2171,34 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(query_request['method'], 'GET')
         self.assertEqual(reload_request['method'], 'GET')
 
+    def test_result_w_timeout(self):
+        begun_resource = self._makeResource()
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(
+            begun_resource, query_resource, done_resource)
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        job.result(timeout=1.0)
+
+        self.assertEqual(len(connection._requested), 3)
+        begin_request, query_request, reload_request = connection._requested
+        self.assertEqual(begin_request['method'], 'POST')
+        self.assertEqual(query_request['method'], 'GET')
+        self.assertEqual(
+            query_request['path'],
+            '/projects/{}/queries/{}'.format(self.PROJECT, self.JOB_ID))
+        self.assertEqual(query_request['query_params']['timeoutMs'], 900)
+        self.assertEqual(reload_request['method'], 'GET')
+
     def test_result_error(self):
         from google.cloud import exceptions
 
