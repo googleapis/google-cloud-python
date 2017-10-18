@@ -16,11 +16,11 @@ from __future__ import absolute_import
 
 import threading
 
-import google.api.core.future
+import google.api_core.future
 from google.cloud.pubsub_v1.publisher import exceptions
 
 
-class Future(google.api.core.future.Future):
+class Future(google.api_core.future.Future):
     """Encapsulation of the asynchronous execution of an action.
 
     This object is returned from asychronous Pub/Sub calls, and is the

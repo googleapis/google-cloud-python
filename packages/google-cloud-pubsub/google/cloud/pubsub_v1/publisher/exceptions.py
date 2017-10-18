@@ -16,7 +16,7 @@ from __future__ import absolute_import
 
 from concurrent.futures import TimeoutError
 
-from google.api.core.exceptions import GoogleAPICallError
+from google.api_core.exceptions import GoogleAPICallError
 
 
 class PublishError(GoogleAPICallError):
