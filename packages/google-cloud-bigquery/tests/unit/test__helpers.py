@@ -749,6 +749,20 @@ class Test_time_to_json(unittest.TestCase):
         self.assertEqual(self._call_fut(when), '12:13:41')
 
 
+class Test_snake_to_camel_case(unittest.TestCase):
+
+    def _call_fut(self, value):
+        from google.cloud.bigquery._helpers import _snake_to_camel_case
+
+        return _snake_to_camel_case(value)
+
+    def test_w_snake_case_string(self):
+        self.assertEqual(self._call_fut('friendly_name'), 'friendlyName')
+
+    def test_w_camel_case_string(self):
+        self.assertEqual(self._call_fut('friendlyName'), 'friendlyName')
+
+
 class Test_TypedApiResourceProperty(unittest.TestCase):
 
     @staticmethod
