@@ -100,8 +100,8 @@ class PollingFuture(base.Future):
             google.protobuf.Message: The Operation's result.
 
         Raises:
-            google.gax.GaxError: If the operation errors or if the timeout is
-                reached before the operation completes.
+            google.api_core.GoogleAPICallError: If the operation errors or if
+                the timeout is reached before the operation completes.
         """
         self._blocking_poll(timeout=timeout)
 
@@ -120,7 +120,8 @@ class PollingFuture(base.Future):
                 If None, wait indefinitely.
 
         Returns:
-            Optional[google.gax.GaxError]: The operation's error.
+            Optional[google.api_core.GoogleAPICallError]: The operation's
+                error.
         """
         self._blocking_poll()
         return self._exception
