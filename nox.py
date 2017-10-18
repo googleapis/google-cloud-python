@@ -17,31 +17,6 @@ import os
 import nox
 
 
-ALL_PACKAGES = (
-    'core/',
-    'storage/',
-    'bigquery/',
-    'bigtable/',
-    'datastore/',
-    'dns/',
-    'firestore/',
-    'language/',
-    'logging/',
-    # error_reporting is out of alphabetical order, it depends on logging.
-    'error_reporting/',
-    'monitoring/',
-    'pubsub/',
-    'resource_manager/',
-    'runtimeconfig/',
-    'spanner/',
-    'speech/',
-    'trace/',
-    'translate/',
-    'videointelligence/',
-    'vision/',
-)
-
-
 @nox.session
 def docs(session):
     """Build the docs."""
