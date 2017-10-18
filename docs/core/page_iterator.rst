@@ -1,6 +1,6 @@
 Page Iterators
 ==============
 
-.. automodule:: google.api.core.page_iterator
+.. automodule:: google.api_core.page_iterator
   :members:
   :show-inheritance:

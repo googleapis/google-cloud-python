@@ -1,6 +1,6 @@
 Path Templates
 ==============
 
-.. automodule:: google.api.core.path_template
+.. automodule:: google.api_core.path_template
   :members:
   :show-inheritance:
