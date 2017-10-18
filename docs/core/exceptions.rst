@@ -1,6 +1,6 @@
 Exceptions
 ==========
 
-.. automodule:: google.api.core.exceptions
+.. automodule:: google.api_core.exceptions
   :members:
   :show-inheritance:

@@ -1,6 +1,6 @@
 Timeout
 =======
 
-.. automodule:: google.api.core.timeout
+.. automodule:: google.api_core.timeout
   :members:
   :show-inheritance:

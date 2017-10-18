@@ -1,6 +1,6 @@
 Long-Running Operations
 =======================
 
-.. automodule:: google.api.core.operation
+.. automodule:: google.api_core.operation
   :members:
   :show-inheritance:
