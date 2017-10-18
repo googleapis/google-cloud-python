@@ -67,7 +67,7 @@ def _prepare_metadata(metadata):
         Sequence[Tuple(str, str)]: The gRPC-friendly metadata keys and values.
     """
     client_metadata = 'api-core/{} gl-python/{} grpc/{}'.format(
-        _API_CORE_VERSION, _PY_VERSION, _API_CORE_VERSION)
+        _API_CORE_VERSION, _PY_VERSION, _GRPC_VERSION)
 
     # Merge this with any existing metric metadata.
     if METRICS_METADATA_KEY in metadata:

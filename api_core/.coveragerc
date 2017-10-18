@@ -11,4 +11,3 @@ exclude_lines =
     def __repr__
     # Ignore abstract methods
     raise NotImplementedError
-    raise NotImplementedError()
