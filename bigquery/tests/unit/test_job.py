@@ -426,32 +426,6 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.schema = [full_name, age]
         self.assertEqual(config.schema, [full_name, age])
 
-    def test_schema_setter_w_autodetect(self):
-        from google.cloud.bigquery.schema import SchemaField
-
-        config = LoadJobConfig()
-        schema = [SchemaField('full_name', 'STRING')]
-        config.autodetect = False
-        config.schema = schema
-        self.assertEqual(config.schema, schema)
-
-        config.schema = []
-        config.autodetect = True
-        with self.assertRaises(ValueError):
-            config.schema = schema
-
-    def test_autodetect_setter_w_schema(self):
-        from google.cloud.bigquery.schema import SchemaField
-
-        config = LoadJobConfig()
-
-        config.autodetect = False
-        config.schema = [SchemaField('full_name', 'STRING')]
-        self.assertEqual(config.autodetect, False)
-
-        with self.assertRaises(ValueError):
-            config.autodetect = True
-
     def test_props_set_by_server(self):
         import datetime
         from google.cloud._helpers import UTC
