@@ -44,6 +44,7 @@ from google.cloud.bigquery._helpers import _int_or_none
 
 _DONE_STATE = 'DONE'
 _STOPPED_REASON = 'stopped'
+_TIMEOUT_BUFFER_SECS = 0.1
 
 _ERROR_REASON_TO_EXCEPTION = {
     'accessDenied': http_client.FORBIDDEN,
@@ -1887,12 +1888,12 @@ class QueryJob(_AsyncJob):
         # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4135
         timeout_ms = None
         if self._done_timeout is not None:
-            # Subtract a buffer of a 100 milliseconds for context switching,
-            # network latency, etc.
-            timeout_ms = int(1000 * self._done_timeout) - 100
-            timeout_ms = max(min(timeout_ms, 10000), 0)
-            self._done_timeout -= (timeout_ms / 1000.0)
+            # Subtract a buffer for context switching, network latency, etc.
+            timeout = self._done_timeout - _TIMEOUT_BUFFER_SECS
+            timeout = max(min(timeout, 10), 0)
+            self._done_timeout -= timeout
             self._done_timeout = max(0, self._done_timeout)
+            timeout_ms = int(timeout * 1000)
 
         # Do not refresh is the state is already done, as the job will not
         # change once complete.
