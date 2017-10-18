@@ -21,7 +21,7 @@ import json
 
 import six
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
@@ -42,7 +42,7 @@ from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 def _blobs_page_start(iterator, page, response):
     """Grab prefixes after a :class:`~google.cloud.iterator.Page` started.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type page: :class:`~google.cloud.api.core.page_iterator.Page`
@@ -63,7 +63,7 @@ def _item_to_blob(iterator, item):
         This assumes that the ``bucket`` attribute has been
         added to the iterator after being created.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type item: dict
@@ -86,7 +86,7 @@ def _item_to_notification(iterator, item):
         This assumes that the ``bucket`` attribute has been
         added to the iterator after being created.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type item: dict
@@ -430,7 +430,7 @@ class Bucket(_PropertyMixin):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
