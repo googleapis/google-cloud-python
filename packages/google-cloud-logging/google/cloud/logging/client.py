@@ -195,7 +195,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
                   accessible to the current client.
         """
@@ -244,7 +244,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            sinks.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.logging.sink.Sink`
                   accessible to the current client.
@@ -289,7 +289,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            metrics.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.metric.Metric`
                   accessible to the current client.
         """
