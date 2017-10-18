@@ -367,6 +367,12 @@ _SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
 _SCALAR_VALUE_TO_JSON_PARAM['TIMESTAMP'] = _timestamp_to_json_parameter
 
 
+def _snake_to_camel_case(value):
+    """Convert snake case string to camel case."""
+    words = value.split('_')
+    return words[0] + ''.join(map(str.capitalize, words[1:]))
+
+
 class _ApiResourceProperty(object):
     """Base property implementation.
 
