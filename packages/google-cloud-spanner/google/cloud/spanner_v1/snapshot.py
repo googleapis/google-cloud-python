@@ -20,7 +20,7 @@ from google.protobuf.struct_pb2 import Struct
 from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 
-from google.api.core.exceptions import ServiceUnavailable
+from google.api_core.exceptions import ServiceUnavailable
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.spanner_v1._helpers import _make_value_pb
