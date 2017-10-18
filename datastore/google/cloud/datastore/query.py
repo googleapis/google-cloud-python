@@ -16,7 +16,7 @@
 
 import base64
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
 
 from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
@@ -570,7 +570,7 @@ def _pb_from_query(query):
 def _item_to_entity(iterator, entity_pb):
     """Convert a raw protobuf entity to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type entity_pb:

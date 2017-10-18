@@ -18,6 +18,11 @@ import os
 import nox
 
 
+LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
+)
+
+
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
 def unit_tests(session, python_version):
@@ -35,6 +40,7 @@ def unit_tests(session, python_version):
         'pytest',
         'pytest-cov',
         'grpcio >= 1.0.2',
+        *LOCAL_DEPS
     )
     session.install('-e', '.')
 
@@ -43,7 +49,6 @@ def unit_tests(session, python_version):
         'py.test',
         '--quiet',
         '--cov=google.cloud',
-        '--cov=google.api.core',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
@@ -63,16 +68,9 @@ def lint(session):
     """
     session.interpreter = 'python3.6'
     session.install(
-        'flake8', 'flake8-import-order', 'pylint', 'gcp-devrel-py-tools')
+        'flake8', 'flake8-import-order', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google', 'tests')
-    session.run(
-        'gcp-devrel-py-tools', 'run-pylint',
-        '--config', 'pylint.config.py',
-        '--library-filesets', 'google',
-        '--test-filesets', 'tests',
-        # Temporarily allow this to fail.
-        success_codes=range(0, 100))
 
 
 @nox.session

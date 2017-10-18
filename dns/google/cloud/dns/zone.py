@@ -16,7 +16,7 @@
 
 import six
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _rfc3339_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.dns.changes import Changes
@@ -340,7 +340,7 @@ class ManagedZone(object):
             (Optional) the client to use.  If not passed, falls back to the
             ``client`` stored on the current zone.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~.resource_record_set.ResourceRecordSet`
                   belonging to this zone.
         """
@@ -378,7 +378,7 @@ class ManagedZone(object):
             (Optional) the client to use.  If not passed, falls back to the
             ``client`` stored on the current zone.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~.changes.Changes`
                   belonging to this zone.
         """
@@ -400,7 +400,7 @@ class ManagedZone(object):
 def _item_to_resource_record_set(iterator, resource):
     """Convert a JSON resource record set value to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict
@@ -415,7 +415,7 @@ def _item_to_resource_record_set(iterator, resource):
 def _item_to_changes(iterator, resource):
     """Convert a JSON "changes" value to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict

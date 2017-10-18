@@ -19,6 +19,12 @@ import os
 import nox
 
 
+LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
+    os.path.join('..', 'core'),
+)
+
+
 @nox.session
 @nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
 def unit_tests(session, python_version):
@@ -31,7 +37,7 @@ def unit_tests(session, python_version):
     session.virtualenv_dirname = 'unit-' + python_version
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov', '../core/')
+    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
