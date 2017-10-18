@@ -187,7 +187,7 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase
 
-        :rtype: :class:`~google.api.core.operation.Operation`
+        :rtype: :class:`~google.api_core.operation.Operation`
         :returns: a future used to poll the status of the create request
         :raises Conflict: if the database already exists
         :raises NotFound: if the instance owning the database does not exist
@@ -271,7 +271,7 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
-        :rtype: :class:`google.api.core.operation.Operation`
+        :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance
         :raises NotFound: if the database does not exist
         :raises GaxError:

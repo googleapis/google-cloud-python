@@ -24,7 +24,7 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner_v1.database.Database`
 """
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
@@ -194,7 +194,7 @@ class Client(ClientWithProject):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
             Iterator of
             :class:`~google.cloud.spanner_v1.instance.InstanceConfig`
@@ -258,7 +258,7 @@ class Client(ClientWithProject):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`
             resources within the client's project.
@@ -278,7 +278,7 @@ def _item_to_instance_config(
         iterator, config_pb):  # pylint: disable=unused-argument
     """Convert an instance config protobuf to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type config_pb:
@@ -294,7 +294,7 @@ def _item_to_instance_config(
 def _item_to_instance(iterator, instance_pb):
     """Convert an instance protobuf to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`

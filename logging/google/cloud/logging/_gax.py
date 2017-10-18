@@ -16,7 +16,7 @@
 
 import functools
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud.gapic.logging.v2.config_service_v2_client import (
     ConfigServiceV2Client)
 from google.cloud.gapic.logging.v2.logging_service_v2_client import (
@@ -84,7 +84,7 @@ class _LoggingAPI(object):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.logging.entries._BaseEntry`
                   accessible to the current API.
         """
@@ -332,7 +332,7 @@ class _MetricsAPI(object):
                            passed, the API will return the first page of
                            metrics.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of
                   :class:`~google.cloud.logging.metric.Metric`
                   accessible to the current API.
@@ -510,12 +510,12 @@ def _item_to_entry(iterator, entry_pb, loggers):
 
         This method does not have the correct signature to be used as
         the ``item_to_value`` argument to
-        :class:`~google.api.core.page_iterator.Iterator`. It is intended to be
+        :class:`~google.api_core.page_iterator.Iterator`. It is intended to be
         patched with a mutable ``loggers`` argument that can be updated
         on subsequent calls. For an example, see how the method is
         used above in :meth:`_LoggingAPI.list_entries`.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type entry_pb: :class:`.log_entry_pb2.LogEntry`
@@ -537,7 +537,7 @@ def _item_to_entry(iterator, entry_pb, loggers):
 def _item_to_sink(iterator, log_sink_pb):
     """Convert a sink protobuf to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type log_sink_pb:
@@ -556,7 +556,7 @@ def _item_to_sink(iterator, log_sink_pb):
 def _item_to_metric(iterator, log_metric_pb):
     """Convert a metric protobuf to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type log_metric_pb:

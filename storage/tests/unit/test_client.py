@@ -427,7 +427,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(parse_qs(uri_parts.query), expected_query)
 
     def test_page_empty_response(self):
-        from google.api.core import page_iterator
+        from google.api_core import page_iterator
 
         project = 'PROJECT'
         credentials = _make_credentials()
