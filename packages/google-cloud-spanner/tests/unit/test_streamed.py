@@ -314,6 +314,22 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
+    def test__merge_chunk_array_of_string_with_empty(self):
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        FIELDS = [
+            self._make_array_field('name', element_type_code='STRING'),
+        ]
+        streamed._metadata = self._make_result_set_metadata(FIELDS)
+        streamed._pending_chunk = self._make_list_value([u'A', u'B', u'C'])
+        chunk = self._make_list_value([])
+
+        merged = streamed._merge_chunk(chunk)
+
+        expected = self._make_list_value([u'A', u'B', u'C'])
+        self.assertEqual(merged, expected)
+        self.assertIsNone(streamed._pending_chunk)
+
     def test__merge_chunk_array_of_string(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
