@@ -1,0 +1,73 @@
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+from google.api_core.gapic_v1 import client_info
+
+
+def test_constructor_defaults():
+    info = client_info.ClientInfo()
+
+    assert info.python_version is not None
+    assert info.grpc_version is not None
+    assert info.api_core_version is not None
+    assert info.gapic_version is None
+    assert info.client_library_version is None
+
+
+def test_constructor_options():
+    info = client_info.ClientInfo(
+        python_version='1',
+        grpc_version='2',
+        api_core_version='3',
+        gapic_version='4',
+        client_library_version='5')
+
+    assert info.python_version == '1'
+    assert info.grpc_version == '2'
+    assert info.api_core_version == '3'
+    assert info.gapic_version == '4'
+    assert info.client_library_version == '5'
+
+
+def test_to_user_agent_minimal():
+    info = client_info.ClientInfo(
+        python_version='1',
+        grpc_version='2',
+        api_core_version='3')
+
+    user_agent = info.to_user_agent()
+
+    assert user_agent == 'gl-python/1 gax/3 grpc/2'
+
+
+def test_to_user_agent_full():
+    info = client_info.ClientInfo(
+        python_version='1',
+        grpc_version='2',
+        api_core_version='3',
+        gapic_version='4',
+        client_library_version='5')
+
+    user_agent = info.to_user_agent()
+
+    assert user_agent == 'gl-python/1 gccl/5 gapic/4 gax/3 grpc/2'
+
+
+def test_to_grpc_metadata():
+    info = client_info.ClientInfo()
+
+    metadata = info.to_grpc_metadata()
+
+    assert metadata == (client_info.METRICS_METADATA_KEY, info.to_user_agent())
