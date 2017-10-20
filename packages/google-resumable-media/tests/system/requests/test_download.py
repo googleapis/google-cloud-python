@@ -31,11 +31,31 @@ from tests.system import utils
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 DATA_DIR = os.path.join(CURR_DIR, u'..', u'..', u'data')
-IMG_FILES = (
-    os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg')),
-    os.path.realpath(os.path.join(DATA_DIR, u'image2.jpg')),
-)
 PLAIN_TEXT = u'text/plain'
+IMAGE_JPEG = u'image/jpeg'
+ALL_FILES = (
+    {
+        u'path': os.path.realpath(os.path.join(DATA_DIR, u'image1.jpg')),
+        u'content_type': IMAGE_JPEG,
+        u'checksum': u'1bsd83IYNug8hd+V1ING3Q==',
+        u'slices': (
+            slice(1024, 16386, None),  # obj[1024:16386]
+            slice(None, 8192, None),  # obj[:8192]
+            slice(-256, None, None),  # obj[-256:]
+            slice(262144, None, None),  # obj[262144:]
+        ),
+    }, {
+        u'path': os.path.realpath(os.path.join(DATA_DIR, u'image2.jpg')),
+        u'content_type': IMAGE_JPEG,
+        u'checksum': u'gdLXJltiYAMP9WZZFEQI1Q==',
+        u'slices': (
+            slice(1024, 16386, None),  # obj[1024:16386]
+            slice(None, 8192, None),  # obj[:8192]
+            slice(-256, None, None),  # obj[-256:]
+            slice(262144, None, None),  # obj[262144:]
+        ),
+    },
+)
 ENCRYPTED_ERR = (
     b'The target object is encrypted by a customer-supplied encryption key.')
 NO_BODY_ERR = (
@@ -90,19 +110,27 @@ def delete_blob(transport, blob_name):
     assert response.status_code == http_client.NO_CONTENT
 
 
+def _get_contents(info):
+    with open(info[u'path'], u'rb') as file_obj:
+        return file_obj.read()
+
+
+def _get_blob_name(info):
+    return info.get(u'name', os.path.basename(info[u'path']))
+
+
 @pytest.fixture(scope=u'module')
 def add_files(authorized_transport):
     blob_names = []
-    for img_file in IMG_FILES:
-        with open(img_file, u'rb') as file_obj:
-            actual_contents = file_obj.read()
+    for info in ALL_FILES:
+        actual_contents = _get_contents(info)
+        blob_name = _get_blob_name(info)
 
-        blob_name = os.path.basename(img_file)
         blob_names.append(blob_name)
         upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
         upload = resumable_requests.SimpleUpload(upload_url)
         response = upload.transmit(
-            authorized_transport, actual_contents, u'image/jpeg')
+            authorized_transport, actual_contents, info[u'content_type'])
         assert response.status_code == http_client.OK
 
     yield
@@ -125,11 +153,9 @@ def check_tombstoned(download, transport):
 
 
 def test_download_full(add_files, authorized_transport):
-    for img_file in IMG_FILES:
-        with open(img_file, u'rb') as file_obj:
-            actual_contents = file_obj.read()
-
-        blob_name = os.path.basename(img_file)
+    for info in ALL_FILES:
+        actual_contents = _get_contents(info)
+        blob_name = _get_blob_name(info)
 
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
@@ -142,11 +168,9 @@ def test_download_full(add_files, authorized_transport):
 
 
 def test_download_to_stream(add_files, authorized_transport):
-    for img_file in IMG_FILES:
-        with open(img_file, u'rb') as file_obj:
-            actual_contents = file_obj.read()
-
-        blob_name = os.path.basename(img_file)
+    for info in ALL_FILES:
+        actual_contents = _get_contents(info)
+        blob_name = _get_blob_name(info)
 
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
@@ -165,12 +189,8 @@ def test_download_to_stream(add_files, authorized_transport):
 
 
 def test_corrupt_download(add_files, corrupting_transport):
-    actual_checksums = {
-        u'image1.jpg': u'1bsd83IYNug8hd+V1ING3Q==',
-        u'image2.jpg': u'gdLXJltiYAMP9WZZFEQI1Q==',
-    }
-    for img_file in IMG_FILES:
-        blob_name = os.path.basename(img_file)
+    for info in ALL_FILES:
+        blob_name = _get_blob_name(info)
 
         # Create the actual download object.
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
@@ -183,7 +203,7 @@ def test_corrupt_download(add_files, corrupting_transport):
         assert download.finished
         msg = download_mod._CHECKSUM_MISMATCH.format(
             download.media_url, CorruptingAuthorizedSession.EMPTY_HASH,
-            actual_checksums[blob_name])
+            info[u'checksum'])
         assert exc_info.value.args == (msg,)
 
 
@@ -280,28 +300,25 @@ def test_bad_range(simple_file, authorized_transport):
     check_tombstoned(download, authorized_transport)
 
 
+def _download_slice(media_url, slice_):
+    assert slice_.step is None
+
+    end = None
+    if slice_.stop is not None:
+        end = slice_.stop - 1
+
+    return resumable_requests.Download(
+        media_url, start=slice_.start, end=end)
+
+
 def test_download_partial(add_files, authorized_transport):
-    slices = (
-        slice(1024, 16386, None),  # obj[1024:16386]
-        slice(None, 8192, None),  # obj[:8192]
-        slice(-256, None, None),  # obj[-256:]
-        slice(262144, None, None),  # obj[262144:]
-    )
-    for img_file in IMG_FILES:
-        with open(img_file, u'rb') as file_obj:
-            actual_contents = file_obj.read()
+    for info in ALL_FILES:
+        actual_contents = _get_contents(info)
+        blob_name = _get_blob_name(info)
 
-        blob_name = os.path.basename(img_file)
-
-        # Create the multiple download "slices".
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-        downloads = (
-            resumable_requests.Download(media_url, start=1024, end=16385),
-            resumable_requests.Download(media_url, end=8191),
-            resumable_requests.Download(media_url, start=-256),
-            resumable_requests.Download(media_url, start=262144),
-        )
-        for download, slice_ in zip(downloads, slices):
+        for slice_ in info[u'slices']:
+            download = _download_slice(media_url, slice_)
             response = download.consume(authorized_transport)
             assert response.status_code == http_client.PARTIAL_CONTENT
             assert response.content == actual_contents[slice_]
@@ -346,10 +363,9 @@ def consume_chunks(download, authorized_transport,
 
 
 def test_chunked_download(add_files, authorized_transport):
-    for img_file in IMG_FILES:
-        blob_name = os.path.basename(img_file)
-        with open(img_file, u'rb') as file_obj:
-            actual_contents = file_obj.read()
+    for info in ALL_FILES:
+        actual_contents = _get_contents(info)
+        blob_name = _get_blob_name(info)
 
         total_bytes = len(actual_contents)
         num_chunks, chunk_size = get_chunk_size(7, total_bytes)
@@ -373,18 +389,18 @@ def test_chunked_download(add_files, authorized_transport):
 
 
 def test_chunked_download_partial(add_files, authorized_transport):
-    slices = (
-        slice(1024, 16386, None),  # obj[1024:16386]
-        slice(0, 8192, None),  # obj[0:8192]
-        slice(262144, None, None),  # obj[262144:]
-    )
-    for img_file in IMG_FILES:
-        with open(img_file, u'rb') as file_obj:
-            actual_contents = file_obj.read()
+    for info in ALL_FILES:
+        actual_contents = _get_contents(info)
+        blob_name = _get_blob_name(info)
 
-        blob_name = os.path.basename(img_file)
         media_url = utils.DOWNLOAD_URL_TEMPLATE.format(blob_name=blob_name)
-        for slice_ in slices:
+        for slice_ in info[u'slices']:
+            # Manually replace a missing start with 0.
+            start = 0 if slice_.start is None else slice_.start
+            # Chunked downloads don't support a negative index.
+            if start < 0:
+                continue
+
             # First determine how much content is in the slice and
             # use it to determine a chunking strategy.
             total_bytes = len(actual_contents)
@@ -398,11 +414,11 @@ def test_chunked_download_partial(add_files, authorized_transport):
                 end = end_byte
 
             num_chunks, chunk_size = get_chunk_size(
-                7, end_byte - slice_.start + 1)
+                7, end_byte - start + 1)
             # Create the actual download object.
             stream = io.BytesIO()
             download = resumable_requests.ChunkedDownload(
-                media_url, chunk_size, stream, start=slice_.start, end=end)
+                media_url, chunk_size, stream, start=start, end=end)
             # Consume the resource in chunks.
             num_responses, last_response = consume_chunks(
                 download, authorized_transport, total_bytes, actual_contents)
