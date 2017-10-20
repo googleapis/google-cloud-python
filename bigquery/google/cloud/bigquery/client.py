@@ -606,9 +606,9 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params)
 
-    def load_table_from_storage(self, source_uris, destination,
-                                job_id=None, job_id_prefix=None,
-                                job_config=None, retry=DEFAULT_RETRY):
+    def load_table_from_uri(self, source_uris, destination,
+                            job_id=None, job_id_prefix=None,
+                            job_config=None, retry=DEFAULT_RETRY):
         """Starts a job for loading data into a table from CloudStorage.
 
         See
@@ -654,7 +654,7 @@ class Client(ClientWithProject):
                              job_id=None, job_id_prefix=None, job_config=None):
         """Upload the contents of this table from a file-like object.
 
-        Like load_table_from_storage, this creates, starts and returns
+        Like load_table_from_uri, this creates, starts and returns
         a ``LoadJob``.
 
         :type file_obj: file
