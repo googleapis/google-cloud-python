@@ -22,6 +22,8 @@ SYSTEM_TEST_ENV_VARS = (
     'GOOGLE_RESUMABLE_MEDIA_BUCKET',
     'GOOGLE_APPLICATION_CREDENTIALS',
 )
+REQUESTS = 'requests >= 2.18.0, < 3.0.0dev'
+GOOGLE_AUTH = 'google-auth >= 0.10.0'
 
 
 @nox.session
@@ -33,7 +35,7 @@ def unit_tests(session, python_version):
     session.interpreter = 'python{}'.format(python_version)
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('mock', 'pytest', 'pytest-cov', REQUESTS)
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
@@ -63,7 +65,11 @@ def docs(session):
     # Install Sphinx and other dependencies.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
     session.install(
-        'sphinx', 'sphinx_rtd_theme', 'sphinx-docstring-typing >= 0.0.3')
+        'sphinx',
+        'sphinx_rtd_theme',
+        'sphinx-docstring-typing >= 0.0.3',
+        REQUESTS,
+    )
     session.install('-e', '.')
 
     # Build the docs!
@@ -82,7 +88,8 @@ def doctest(session):
         'sphinx_rtd_theme',
         'sphinx-docstring-typing >= 0.0.3',
         'mock',
-        'google-auth'
+        GOOGLE_AUTH,
+        REQUESTS,
     )
     session.install('-e', '.')
 
@@ -142,7 +149,7 @@ def system_tests(session, python_version):
 
     # Install all test dependencies, then install this package into the
     # virutalenv's dist-packages.
-    session.install('mock', 'pytest', 'requests', 'google-auth >= 0.10.0')
+    session.install('mock', 'pytest', REQUESTS, GOOGLE_AUTH)
     session.install('-e', '.')
 
     # Run py.test against the system tests.

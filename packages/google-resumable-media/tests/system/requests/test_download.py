@@ -59,8 +59,7 @@ ALL_FILES = (
         u'path': os.path.realpath(os.path.join(DATA_DIR, u'file.txt.gz')),
         u'uncompressed': os.path.realpath(os.path.join(DATA_DIR, u'file.txt')),
         u'content_type': PLAIN_TEXT,
-        # NOTE: This **should** be u'KHRs/+ZSrc/FuuR4qz/PZQ=='.
-        u'checksum': u'XHSHAr/SpIeZtZbjgQ4nGw==',
+        u'checksum': u'KHRs/+ZSrc/FuuR4qz/PZQ==',
         u'slices': (),
         u'metadata': {
             u'contentEncoding': u'gzip',
@@ -96,7 +95,7 @@ class CorruptingAuthorizedSession(tr_requests.AuthorizedSession):
     def request(self, method, url, data=None, headers=None, **kwargs):
         """Implementation of Requests' request."""
         response = tr_requests.AuthorizedSession.request(
-            self, method, url, data=data, headers=headers)
+            self, method, url, data=data, headers=headers, **kwargs)
         response.headers[download_mod._HASH_HEADER] = (
             u'md5={}'.format(self.EMPTY_HASH))
         return response

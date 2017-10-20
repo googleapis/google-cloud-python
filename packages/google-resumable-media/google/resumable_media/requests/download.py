@@ -18,6 +18,8 @@ import base64
 import hashlib
 import logging
 
+import urllib3.response
+
 from google.resumable_media import _download
 from google.resumable_media import common
 from google.resumable_media.requests import _helpers
@@ -113,11 +115,14 @@ class Download(_helpers.RequestsMixin, _download.Download):
         else:
             md5_hash = hashlib.md5()
         with response:
+            # NOTE: This might "donate" ``md5_hash`` to the decoder and replace
+            #       it with a ``_DoNothingHash``.
+            local_hash = _add_decoder(response.raw, md5_hash)
             body_iter = response.iter_content(
                 chunk_size=_SINGLE_GET_CHUNK_SIZE, decode_unicode=False)
             for chunk in body_iter:
                 self._stream.write(chunk)
-                md5_hash.update(chunk)
+                local_hash.update(chunk)
 
         if expected_md5_hash is None:
             return
@@ -286,3 +291,58 @@ class _DoNothingHash(object):
         Args:
             unused_chunk (bytes): A chunk of data.
         """
+
+
+def _add_decoder(response_raw, md5_hash):
+    """Patch the ``_decoder`` on a ``urllib3`` response.
+
+    This is so that we can intercept the compressed bytes before they are
+    decoded.
+
+    Only patches if the content encoding is ``gzip``.
+
+    Args:
+        response_raw (urllib3.response.HTTPResponse): The raw response for
+            an HTTP request.
+        md5_hash (Union[_DoNothingHash, hashlib.md5]): A hash function which
+            will get updated when it encounters compressed bytes.
+
+    Returns:
+        Union[_DoNothingHash, hashlib.md5]: Either the original ``md5_hash``
+        if ``_decoder`` is not patched. Otherwise, returns a ``_DoNothingHash``
+        since the caller will no longer need to hash to decoded bytes.
+    """
+    encoding = response_raw.headers.get(u'content-encoding', u'').lower()
+    if encoding != u'gzip':
+        return md5_hash
+
+    response_raw._decoder = _GzipDecoder(md5_hash)
+    return _DoNothingHash()
+
+
+class _GzipDecoder(urllib3.response.GzipDecoder):
+    """Custom subclass of ``urllib3`` decoder for ``gzip``-ed bytes.
+
+    Allows an MD5 hash function to see the compressed bytes before they are
+    decoded. This way the hash of the compressed value can be computed.
+
+    Args:
+        md5_hash (Union[_DoNothingHash, hashlib.md5]): A hash function which
+            will get updated when it encounters compressed bytes.
+    """
+
+    def __init__(self, md5_hash):
+        super(_GzipDecoder, self).__init__()
+        self._md5_hash = md5_hash
+
+    def decompress(self, data):
+        """Decompress the bytes.
+
+        Args:
+            data (bytes): The compressed bytes to be decompressed.
+
+        Returns:
+            bytes: The decompressed bytes from ``data``.
+        """
+        self._md5_hash.update(data)
+        return super(_GzipDecoder, self).decompress(data)

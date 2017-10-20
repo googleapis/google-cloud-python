@@ -256,8 +256,15 @@ class TestChunkedDownload(object):
         response_headers = self._response_headers(
             start_byte, end_byte, total_bytes)
         return mock.Mock(
-            content=content, headers=response_headers, status_code=status_code,
-            spec=[u'content', u'headers', u'status_code'])
+            content=content,
+            headers=response_headers,
+            status_code=status_code,
+            spec=[
+                u'content',
+                u'headers',
+                u'status_code',
+            ],
+        )
 
     def test_consume_next_chunk_already_finished(self):
         download = download_mod.ChunkedDownload(EXAMPLE_URL, 512, None)
@@ -355,20 +362,62 @@ def test__DoNothingHash():
     assert return_value is None
 
 
+class Test__add_decoder(object):
+
+    def test_non_gzipped(self):
+        response_raw = mock.Mock(headers={}, spec=[u'headers'])
+        md5_hash = download_mod._add_decoder(
+            response_raw, mock.sentinel.md5_hash)
+
+        assert md5_hash is mock.sentinel.md5_hash
+
+    def test_gzipped(self):
+        headers = {u'content-encoding': u'gzip'}
+        response_raw = mock.Mock(
+            headers=headers, spec=[u'headers', u'_decoder'])
+        md5_hash = download_mod._add_decoder(
+            response_raw, mock.sentinel.md5_hash)
+
+        assert md5_hash is not mock.sentinel.md5_hash
+        assert isinstance(md5_hash, download_mod._DoNothingHash)
+        assert isinstance(response_raw._decoder, download_mod._GzipDecoder)
+        assert response_raw._decoder._md5_hash is mock.sentinel.md5_hash
+
+
+class Test_GzipDecoder(object):
+
+    def test_constructor(self):
+        decoder = download_mod._GzipDecoder(mock.sentinel.md5_hash)
+        assert decoder._md5_hash is mock.sentinel.md5_hash
+
+    def test_decompress(self):
+        md5_hash = mock.Mock(spec=['update'])
+        decoder = download_mod._GzipDecoder(md5_hash)
+
+        data = b'\x1f\x8b\x08\x08'
+        result = decoder.decompress(data)
+
+        assert result == b''
+        md5_hash.update.assert_called_once_with(data)
+
+
 def _mock_response(status_code=http_client.OK, chunks=(), headers=None):
     if headers is None:
         headers = {}
 
     if chunks:
+        mock_raw = mock.Mock(headers=headers, spec=[u'headers'])
         response = mock.MagicMock(
             headers=headers,
             status_code=int(status_code),
+            raw=mock_raw,
             spec=[
                 u'__enter__',
                 u'__exit__',
                 u'iter_content',
                 u'status_code',
                 u'headers',
+                u'raw',
             ],
         )
         # i.e. context manager returns ``self``.
