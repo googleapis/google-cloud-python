@@ -31,7 +31,7 @@ names = []
 for module in (
         http_pb2,
         video_intelligence_pb2,
-        operations_pb2,
+        #operations_pb2,
         any_pb2,
         descriptor_pb2,
         duration_pb2,

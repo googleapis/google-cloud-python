@@ -39,7 +39,9 @@ setup(
     packages=find_packages(exclude=('tests*',)),
     install_requires=(
         'googleapis-common-protos >= 1.5.3, < 2.0dev',
+        # GAX remains for the time being for the v1beta1 interface.
         'google-gax >= 0.15.14, < 0.16dev',
+        'google-api-core >= 0.1.0, < 0.2.0dev',
         'grpcio >= 1.2.0, < 1.6dev',
         'six >= 1.10.0',
     ),
