@@ -1,0 +1,59 @@
+version: 1.0.{build}.{branch}
+
+build: off
+
+matrix:
+  fast_finish: true
+
+# We always use a 64-bit machine, but can build x86 distributions
+# with the PYTHON_ARCH variable.
+platform:
+    - x64
+
+environment:
+
+  matrix:
+
+    # See: https://www.appveyor.com/docs/installed-software/#python
+
+    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python34"
+    - PYTHON: "C:\\Python34-x64"
+    - PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
+
+install:
+  - cmd: echo "Filesystem root:"
+  - dir C:\
+
+  - echo "Installed SDKs:"
+  - dir "C:/Program Files/Microsoft SDKs/Windows"
+
+  # Prepend "current" Python to the PATH of this build (this cannot be
+  # done from inside the powershell script as it would require to restart
+  # the parent CMD process).
+  - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+
+  # Check that we have the expected version and architecture for Python
+  - python appveyor\env_info.py
+
+  # Base packaging requirements.
+  - python -m pip install --upgrade pip setuptools
+  - python -m pip install --upgrade virtualenv wheel
+
+  # Set up virtual environment for testing.
+  - python -m virtualenv test-venv
+  - test-venv\Scripts\pip install --upgrade --requirement appveyor\requirements.txt
+
+build_script:
+  # Build an actual wheel for the source in current form.
+  - python setup.py bdist_wheel --dist-dir dist
+
+test_script:
+  # Install from the built wheel.
+  - test-venv\Scripts\pip install google-resumable-media --no-index --find-links dist
+  # Run the tests.
+  - test-venv\Scripts\py.test tests\unit
