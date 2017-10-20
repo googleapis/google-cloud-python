@@ -23,7 +23,6 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
-import operator
 import time
 
 import pytest
@@ -32,7 +31,7 @@ import six
 from google.cloud.bigquery import SchemaField
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.table import Table
-from google.cloud.bigquery.dataset import Dataset, DatasetReference
+from google.cloud.bigquery.dataset import Dataset
 from google.cloud import bigquery
 
 ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
