@@ -61,7 +61,7 @@ class VideoIntelligenceServiceClient(object):
                  channel=None,
                  credentials=None,
                  client_config=video_intelligence_service_client_config.config,
-                 library_identifier=None):
+                 client_info=None):
         """Constructor.
 
         Args:
@@ -75,7 +75,13 @@ class VideoIntelligenceServiceClient(object):
                 credentials from the environment.
             client_config (dict):
                 A dictionary of call options for each method. If not specified
-                the default configuration is used.
+                the default configuration is used. Generally, you only need
+                to set this if you're developing your own client library.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
         """
 
         # gRPC channel & client stub initialization.
@@ -99,8 +105,11 @@ class VideoIntelligenceServiceClient(object):
             google.api_core.operations_v1.OperationsClient(channel))
 
         # Client information initialization.
-        client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-            gapic_version=_GAPIC_LIBRARY_VERSION)
+        if client_info is None:
+            client_info = (
+                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
+
+        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
         # The interface config contains all of the default settings for retry
         # and timeout for each RPC method.
