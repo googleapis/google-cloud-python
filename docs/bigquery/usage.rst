@@ -5,12 +5,8 @@ BigQuery
   :maxdepth: 2
   :hidden:
 
-  client
-  dataset
-  job
-  query
-  schema
-  table
+  reference
+  dbapi
 
 Authentication / Configuration
 ------------------------------

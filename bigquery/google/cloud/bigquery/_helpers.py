@@ -502,7 +502,7 @@ def _item_to_row(iterator, resource):
     :type resource: dict
     :param resource: An item to be converted to a row.
 
-    :rtype: :class:`Row`
+    :rtype: :class:`~google.cloud.bigquery.Row`
     :returns: The next row in the page.
     """
     return Row(_row_tuple_from_json(resource, iterator.schema),
