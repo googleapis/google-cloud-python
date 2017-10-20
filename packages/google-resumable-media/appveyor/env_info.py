@@ -21,27 +21,30 @@ import struct
 import sys
 
 
-def env_var(var_name):
-    value = os.environ.get(var_name)
-    print('os.environ[{!r}]: {}'.format(var_name, value))
-
-
 def main():
-    print('os.name: {}'.format(os.name))
-    env_var('PYTHON_ARCH')
-    env_var('PYTHON_VERSION')
-    print('sys.platform: {}'.format(sys.platform))
-
+    print('>>> import os')
+    print('>>> os.name')
+    print(repr(os.name))
+    print('>>> print(os.environ.get(\'PYTHON_ARCH\'))')
+    print(os.environ.get('PYTHON_ARCH'))
+    print('>>> print(os.environ.get(\'PYTHON_VERSION\'))')
+    print(os.environ.get('PYTHON_VERSION'))
+    print('>>> import sys')
+    print('>>> sys.platform')
+    print(repr(sys.platform))
+    print('>>> sys.maxsize')
+    print(repr(sys.maxsize))
     if sys.maxsize == 2**63 - 1:
-        print('sys.maxsize: 2^(63) - 1')
+        print('>>> sys.maxsize == 2**63 - 1')
+        print('True')
     elif sys.maxsize == 2**31 - 1:
-        print('sys.maxsize: 2^(31) - 1')
-    else:
-        print('sys.maxsize: {}'.format(sys.maxsize))
-
-    print('sys.version:\n{}'.format(sys.version))
-    bitness = struct.calcsize('P') * 8
-    print('struct.calcsize(\'P\') * 8: {}'.format(bitness))
+        print('>>> sys.maxsize == 2**31 - 1')
+        print('True')
+    print('>>> print(sys.version)')
+    print(sys.version)
+    print('>>> import struct')
+    print('>>> struct.calcsize(\'P\') * 8')
+    print(repr(struct.calcsize('P') * 8))
 
 
 if __name__ == '__main__':

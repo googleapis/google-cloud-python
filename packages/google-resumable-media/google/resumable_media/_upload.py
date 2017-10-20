@@ -40,7 +40,7 @@ _CONTENT_TYPE_HEADER = u'content-type'
 _CONTENT_RANGE_TEMPLATE = u'bytes {:d}-{:d}/{:d}'
 _RANGE_UNKNOWN_TEMPLATE = u'bytes {:d}-{:d}/*'
 _EMPTY_RANGE_TEMPLATE = u'bytes */{:d}'
-_BOUNDARY_WIDTH = len(repr(sys.maxsize - 1))
+_BOUNDARY_WIDTH = len(str(sys.maxsize - 1))
 _BOUNDARY_FORMAT = u'==============={{:0{:d}d}}=='.format(_BOUNDARY_WIDTH)
 _MULTIPART_SEP = b'--'
 _CRLF = b'\r\n'
