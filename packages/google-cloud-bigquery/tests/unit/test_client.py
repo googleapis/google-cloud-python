@@ -1425,7 +1425,7 @@ class TestClient(unittest.TestCase):
                           'allUsers': True,
                           'stateFilter': 'done'})
 
-    def test_load_table_from_storage(self):
+    def test_load_table_from_uri(self):
         from google.cloud.bigquery.job import LoadJob
 
         JOB = 'job_name'
@@ -1454,10 +1454,9 @@ class TestClient(unittest.TestCase):
         conn = client._connection = _Connection(RESOURCE)
         destination = client.dataset(self.DS_ID).table(DESTINATION)
 
-        job = client.load_table_from_storage(SOURCE_URI, destination,
-                                             job_id=JOB)
+        job = client.load_table_from_uri(SOURCE_URI, destination, job_id=JOB)
 
-        # Check that load_table_from_storage actually starts the job.
+        # Check that load_table_from_uri actually starts the job.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -1471,8 +1470,7 @@ class TestClient(unittest.TestCase):
 
         conn = client._connection = _Connection(RESOURCE)
 
-        job = client.load_table_from_storage([SOURCE_URI], destination,
-                                             job_id=JOB)
+        job = client.load_table_from_uri([SOURCE_URI], destination, job_id=JOB)
         self.assertIsInstance(job, LoadJob)
         self.assertIs(job._client, client)
         self.assertEqual(job.job_id, JOB)

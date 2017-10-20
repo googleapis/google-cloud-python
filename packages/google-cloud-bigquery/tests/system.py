@@ -434,7 +434,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_wavelength),
                          sorted(ROWS, key=by_wavelength))
 
-    def test_load_table_from_storage_then_dump_table(self):
+    def test_load_table_from_uri_then_dump_table(self):
         TABLE_ID = 'test_table'
         GS_URL = self._write_csv_to_storage(
             'bq_load_test' + unique_resource_id(), 'person_ages.csv',
@@ -451,7 +451,7 @@ class TestBigQuery(unittest.TestCase):
         config.skip_leading_rows = 1
         config.source_format = 'CSV'
         config.write_disposition = 'WRITE_EMPTY'
-        job = Config.CLIENT.load_table_from_storage(
+        job = Config.CLIENT.load_table_from_uri(
             GS_URL, dataset.table(TABLE_ID), job_config=config)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
@@ -466,7 +466,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_load_table_from_storage_w_autodetect_schema_then_get_job(self):
+    def test_load_table_from_uri_w_autodetect_schema_then_get_job(self):
         from google.cloud.bigquery import SchemaField
         from google.cloud.bigquery.job import LoadJob
 
@@ -482,7 +482,7 @@ class TestBigQuery(unittest.TestCase):
 
         config = bigquery.LoadJobConfig()
         config.autodetect = True
-        job = Config.CLIENT.load_table_from_storage(
+        job = Config.CLIENT.load_table_from_uri(
             gs_url, table_ref, job_config=config, job_id=JOB_ID)
 
         # Allow for 90 seconds of "warm up" before rows visible.  See
@@ -563,8 +563,8 @@ class TestBigQuery(unittest.TestCase):
         table_ref = dataset.table(table.table_id)
         config = bigquery.LoadJobConfig()
         config.autodetect = True
-        job = Config.CLIENT.load_table_from_storage(gs_url, table_ref,
-                                                    job_config=config)
+        job = Config.CLIENT.load_table_from_uri(gs_url, table_ref,
+                                                job_config=config)
         # TODO(jba): do we need this retry now that we have job.result()?
         # Allow for 90 seconds of "warm up" before rows visible.  See
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
