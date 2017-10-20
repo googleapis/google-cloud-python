@@ -132,8 +132,8 @@ class VideoIntelligenceServiceClient(object):
                        video_context=None,
                        output_uri=None,
                        location_id=None,
-                       retry=None,
-                       timeout=None):
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Performs asynchronous video annotation. Progress and results can be
         retrieved through the ``google.longrunning.Operations`` interface.
