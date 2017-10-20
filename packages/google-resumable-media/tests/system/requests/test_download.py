@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import copy
 import hashlib
 import io
 import os
@@ -54,6 +55,16 @@ ALL_FILES = (
             slice(-256, None, None),  # obj[-256:]
             slice(262144, None, None),  # obj[262144:]
         ),
+    }, {
+        u'path': os.path.realpath(os.path.join(DATA_DIR, u'file.txt.gz')),
+        u'uncompressed': os.path.realpath(os.path.join(DATA_DIR, u'file.txt')),
+        u'content_type': PLAIN_TEXT,
+        # NOTE: This **should** be u'KHRs/+ZSrc/FuuR4qz/PZQ=='.
+        u'checksum': u'XHSHAr/SpIeZtZbjgQ4nGw==',
+        u'slices': (),
+        u'metadata': {
+            u'contentEncoding': u'gzip',
+        },
     },
 )
 ENCRYPTED_ERR = (
@@ -110,27 +121,44 @@ def delete_blob(transport, blob_name):
     assert response.status_code == http_client.NO_CONTENT
 
 
-def _get_contents(info):
+def _get_contents_for_upload(info):
     with open(info[u'path'], u'rb') as file_obj:
         return file_obj.read()
 
 
+def _get_contents(info):
+    full_path = info.get(u'uncompressed', info[u'path'])
+    with open(full_path, u'rb') as file_obj:
+        return file_obj.read()
+
+
 def _get_blob_name(info):
-    return info.get(u'name', os.path.basename(info[u'path']))
+    full_path = info.get(u'uncompressed', info[u'path'])
+    return os.path.basename(full_path)
 
 
 @pytest.fixture(scope=u'module')
 def add_files(authorized_transport):
     blob_names = []
     for info in ALL_FILES:
-        actual_contents = _get_contents(info)
+        to_upload = _get_contents_for_upload(info)
         blob_name = _get_blob_name(info)
 
         blob_names.append(blob_name)
-        upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(blob_name=blob_name)
-        upload = resumable_requests.SimpleUpload(upload_url)
-        response = upload.transmit(
-            authorized_transport, actual_contents, info[u'content_type'])
+        if u'metadata' in info:
+            upload = resumable_requests.MultipartUpload(utils.MULTIPART_UPLOAD)
+            metadata = copy.deepcopy(info[u'metadata'])
+            metadata[u'name'] = blob_name
+            response = upload.transmit(
+                authorized_transport, to_upload,
+                metadata, info[u'content_type'])
+        else:
+            upload_url = utils.SIMPLE_UPLOAD_TEMPLATE.format(
+                blob_name=blob_name)
+            upload = resumable_requests.SimpleUpload(upload_url)
+            response = upload.transmit(
+                authorized_transport, to_upload, info[u'content_type'])
+
         assert response.status_code == http_client.OK
 
     yield
