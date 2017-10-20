@@ -19,19 +19,15 @@ pagination, and long-running operations to gRPC methods.
 """
 
 import functools
-import platform
 
-import pkg_resources
 import six
 
 from google.api_core import general_helpers
 from google.api_core import grpc_helpers
 from google.api_core import page_iterator
 from google.api_core import timeout
+from google.api_core.gapic_v1 import client_info
 
-_PY_VERSION = platform.python_version()
-_GRPC_VERSION = pkg_resources.get_distribution('grpcio').version
-_API_CORE_VERSION = pkg_resources.get_distribution('google-api-core').version
 METRICS_METADATA_KEY = 'x-goog-api-client'
 USE_DEFAULT_METADATA = object()
 DEFAULT = object()
@@ -55,28 +51,6 @@ def _apply_decorators(func, decorators):
         func = decorator(func)
 
     return func
-
-
-def _prepare_metadata(metadata):
-    """Transforms metadata to gRPC format and adds global metrics.
-
-    Args:
-        metadata (Mapping[str, str]): Any current metadata.
-
-    Returns:
-        Sequence[Tuple(str, str)]: The gRPC-friendly metadata keys and values.
-    """
-    client_metadata = 'api-core/{} gl-python/{} grpc/{}'.format(
-        _API_CORE_VERSION, _PY_VERSION, _GRPC_VERSION)
-
-    # Merge this with any existing metric metadata.
-    if METRICS_METADATA_KEY in metadata:
-        client_metadata = '{} {}'.format(
-            client_metadata, metadata[METRICS_METADATA_KEY])
-
-    metadata[METRICS_METADATA_KEY] = client_metadata
-
-    return list(metadata.items())
 
 
 def _determine_timeout(default_timeout, specified_timeout, retry):
@@ -125,16 +99,16 @@ class _GapicCallable(object):
         timeout (google.api_core.timeout.Timeout): The default timeout
             for the callable. If ``None``, this callable will not specify
             a timeout argument to the low-level RPC method by default.
-        metadata (Optional[Sequence[Tuple[str, str]]]): gRPC call metadata
-            that's passed to the low-level RPC method. If ``None``, no metadata
-            will be passed to the low-level RPC method.
+        user_agent_metadata (Tuple[str, str]): The user agent metadata key and
+            value to provide to the RPC method. If ``None``, no additional
+            metadata will be passed to the RPC method.
     """
 
-    def __init__(self, target, retry, timeout, metadata):
+    def __init__(self, target, retry, timeout, user_agent_metadata=None):
         self._target = target
         self._retry = retry
         self._timeout = timeout
-        self._metadata = metadata
+        self._user_agent_metadata = user_agent_metadata
 
     def __call__(self, *args, **kwargs):
         """Invoke the low-level RPC with retry, timeout, and metadata."""
@@ -156,17 +130,18 @@ class _GapicCallable(object):
         # Apply all applicable decorators.
         wrapped_func = _apply_decorators(self._target, [retry, timeout_])
 
-        # Set the metadata for the call using the metadata calculated by
-        # _prepare_metadata.
-        if self._metadata is not None:
-            kwargs['metadata'] = self._metadata
+        # Add the user agent metadata to the call.
+        if self._user_agent_metadata is not None:
+            metadata = kwargs.get('metadata', [])
+            metadata.append(self._user_agent_metadata)
+            kwargs['metadata'] = metadata
 
         return wrapped_func(*args, **kwargs)
 
 
 def wrap_method(
         func, default_retry=None, default_timeout=None,
-        metadata=USE_DEFAULT_METADATA):
+        client_info=client_info.DEFAULT_CLIENT_INFO):
     """Wrap an RPC method with common behavior.
 
     This applies common error wrapping, retry, and timeout behavior a function.
@@ -234,11 +209,12 @@ def wrap_method(
         default_timeout (Optional[google.api_core.Timeout]): The default
             timeout strategy. Can also be specified as an int or float. If
             ``None``, the method will not have timeout specified by default.
-        metadata (Optional(Mapping[str, str])): A dict of metadata keys and
-            values. This will be augmented with common ``x-google-api-client``
-            metadata. If ``None``, metadata will not be passed to the function
-            at all, if :attr:`USE_DEFAULT_METADATA` (the default) then only the
-            common metadata will be provided.
+        client_info
+            (Optional[google.api_core.gapic_v1.client_info.ClientInfo]):
+                Client information used to create a user-agent string that's
+                passed as gRPC metadata to the method. If unspecified, then
+                a sane default will be used. If ``None``, then no user agent
+                metadata will be provided to the RPC method.
 
     Returns:
         Callable: A new callable that takes optional ``retry`` and ``timeout``
@@ -247,14 +223,15 @@ def wrap_method(
     """
     func = grpc_helpers.wrap_errors(func)
 
-    if metadata is USE_DEFAULT_METADATA:
-        metadata = {}
-
-    if metadata is not None:
-        metadata = _prepare_metadata(metadata)
+    if client_info is not None:
+        user_agent_metadata = client_info.to_grpc_metadata()
+    else:
+        user_agent_metadata = None
 
     return general_helpers.wraps(func)(
-        _GapicCallable(func, default_retry, default_timeout, metadata))
+        _GapicCallable(
+            func, default_retry, default_timeout,
+            user_agent_metadata=user_agent_metadata))
 
 
 def wrap_with_paging(

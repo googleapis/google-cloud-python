@@ -19,6 +19,7 @@ import mock
 from google.api_core import exceptions
 from google.api_core import retry
 from google.api_core import timeout
+import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.method
 import google.api_core.page_iterator
 
@@ -34,59 +35,48 @@ def _utcnow_monotonic():
 def test_wrap_method_basic():
     method = mock.Mock(spec=['__call__'], return_value=42)
 
-    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, metadata=None)
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(method)
 
     result = wrapped_method(1, 2, meep='moop')
 
     assert result == 42
+    method.assert_called_once_with(1, 2, meep='moop', metadata=mock.ANY)
+
+    # Check that the default client info was specified in the metadata.
+    metadata = method.call_args[1]['metadata']
+    assert len(metadata) == 1
+    client_info = google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO
+    user_agent_metadata = client_info.to_grpc_metadata()
+    assert user_agent_metadata in metadata
+
+
+def test_wrap_method_with_no_client_info():
+    method = mock.Mock(spec=['__call__'])
+
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
+        method, client_info=None)
+
+    wrapped_method(1, 2, meep='moop')
+
     method.assert_called_once_with(1, 2, meep='moop')
 
 
-def test_wrap_method_with_default_metadata():
-    method = mock.Mock(spec=['__call__'])
-
-    wrapped_method = google.api_core.gapic_v1.method.wrap_method(method)
-
-    wrapped_method(1, 2, meep='moop')
-
-    method.assert_called_once_with(1, 2, meep='moop', metadata=mock.ANY)
-
-    metadata = method.call_args[1]['metadata']
-    assert len(metadata) == 1
-    assert metadata[0][0] == 'x-goog-api-client'
-    assert 'api-core' in metadata[0][1]
-
-
-def test_wrap_method_with_custom_metadata():
+def test_wrap_method_with_custom_client_info():
+    client_info = google.api_core.gapic_v1.client_info.ClientInfo(
+        python_version=1, grpc_version=2, api_core_version=3, gapic_version=4,
+        client_library_version=5)
     method = mock.Mock(spec=['__call__'])
 
     wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, metadata={'foo': 'bar'})
+        method, client_info=client_info)
 
     wrapped_method(1, 2, meep='moop')
 
     method.assert_called_once_with(1, 2, meep='moop', metadata=mock.ANY)
 
+    # Check that the custom client info was specified in the metadata.
     metadata = method.call_args[1]['metadata']
-    assert len(metadata) == 2
-    assert ('foo', 'bar') in metadata
-
-
-def test_wrap_method_with_merged_metadata():
-    method = mock.Mock(spec=['__call__'])
-
-    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
-        method, metadata={'x-goog-api-client': 'foo/1.2.3'})
-
-    wrapped_method(1, 2, meep='moop')
-
-    method.assert_called_once_with(1, 2, meep='moop', metadata=mock.ANY)
-
-    metadata = method.call_args[1]['metadata']
-    assert len(metadata) == 1
-    assert metadata[0][0] == 'x-goog-api-client'
-    assert metadata[0][1].endswith(' foo/1.2.3')
+    assert client_info.to_grpc_metadata() in metadata
 
 
 @mock.patch('time.sleep')
