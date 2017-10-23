@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import concurrent.futures
 import csv
 import datetime
 import json
@@ -24,6 +25,7 @@ import uuid
 
 import six
 
+from google.api.core.exceptions import GoogleAPICallError
 from google.api.core.exceptions import PreconditionFailed
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
@@ -1221,6 +1223,33 @@ class TestBigQuery(unittest.TestCase):
 
         rows = list(iterator)
         self.assertEqual(len(rows), LIMIT)
+
+    def test_query_rows_w_timeout(self):
+        with self.assertRaises(concurrent.futures.TimeoutError) as context:
+            Config.CLIENT.query_rows(
+                'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
+                job_id_prefix='test_query_rows_w_timeout_',
+                timeout=1)  # 1 second is much too short for this query.
+
+        exc = context.exception
+        Config.CLIENT.cancel_job(exc.job_id, project=exc.project)
+
+        self.assertEqual(exc.project, Config.CLIENT.project)
+        self.assertIn('test_query_rows_w_timeout_', exc.job_id)
+        self.assertIn(exc.project, exc.full_job_id)
+        self.assertIn(exc.job_id, exc.full_job_id)
+
+    def test_query_rows_w_error(self):
+        with self.assertRaises(GoogleAPICallError) as context:
+            Config.CLIENT.query_rows(
+                'SELECT some_garbage FROM bad_table;',
+                job_id_prefix='test_query_rows_w_error_')
+
+        exc = context.exception
+        self.assertEqual(exc.project, Config.CLIENT.project)
+        self.assertIn('test_query_rows_w_error_', exc.job_id)
+        self.assertIn(exc.project, exc.full_job_id)
+        self.assertIn(exc.job_id, exc.full_job_id)
 
     def test_query_future(self):
         query_job = Config.CLIENT.query('SELECT 1')
