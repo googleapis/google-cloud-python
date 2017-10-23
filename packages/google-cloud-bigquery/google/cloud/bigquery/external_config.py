@@ -105,7 +105,7 @@ class BigtableColumn(object):
         :param resource:
             A column in the same representation as is returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.external_config.BigtableColumn`
+        :rtype: :class:`~google.cloud.bigquery.BigtableColumn`
         :returns: Configuration parsed from ``resource``.
         """
         config = cls()
@@ -177,7 +177,7 @@ class BigtableColumnFamily(object):
             from the API.
 
         :rtype:
-            :class:`google.cloud.bigquery.external_config.BigtableColumnFamily`
+            :class:`~google.cloud.bigquery.BigtableColumnFamily`
         :returns: Configuration parsed from ``resource``.
         """
         config = cls()
@@ -239,7 +239,7 @@ class BigtableOptions(object):
             A BigtableOptions in the same representation as is returned
             from the API.
 
-        :rtype: :class:`google.cloud.bigquery.external_config.BigtableOptions`
+        :rtype: :class:`~google.cloud.bigquery.BigtableOptions`
         :returns: Configuration parsed from ``resource``.
         """
         config = cls()
@@ -321,7 +321,7 @@ class CSVOptions(object):
             A CSVOptions in the same representation as is
             returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.external_config.CSVOptions`
+        :rtype: :class:`~google.cloud.bigquery.CSVOptions`
         :returns: Configuration parsed from ``resource``.
         """
         slr = resource.get('skipLeadingRows')
@@ -369,7 +369,7 @@ class GoogleSheetsOptions(object):
             returned from the API.
 
         :rtype:
-            :class:`google.cloud.bigquery.external_config.GoogleSheetsOptions`
+            :class:`~google.cloud.bigquery.GoogleSheetsOptions`
         :returns: Configuration parsed from ``resource``.
         """
         slr = resource.get('skipLeadingRows')
@@ -476,7 +476,7 @@ class ExternalConfig(object):
             An extract job configuration in the same representation as is
             returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.external_config.CSVOptions`
+        :rtype: :class:`~google.cloud.bigquery.CSVOptions`
         :returns: Configuration parsed from ``resource``.
         """
         config = cls(resource['sourceFormat'])
