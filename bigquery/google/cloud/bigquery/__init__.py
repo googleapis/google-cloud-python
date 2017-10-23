@@ -26,15 +26,18 @@ The main concepts with this API are:
 from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-bigquery').version
 
-from google.cloud.bigquery._helpers import Row
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import CopyJobConfig
+from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import ExtractJobConfig
+from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
+from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import LoadJobConfig
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
@@ -52,27 +55,34 @@ from google.cloud.bigquery.external_config import GoogleSheetsOptions
 
 __all__ = [
     '__version__',
-    'AccessEntry',
-    'ArrayQueryParameter',
     'Client',
+    # Queries
+    'QueryJob',
+    'QueryJobConfig',
+    'ArrayQueryParameter',
+    'ScalarQueryParameter',
+    'StructQueryParameter',
+    # Datasets
     'Dataset',
     'DatasetReference',
-    'CopyJobConfig',
-    'ExtractJobConfig',
-    'QueryJobConfig',
-    'Row',
-    'LoadJobConfig',
-    'ScalarQueryParameter',
-    'SchemaField',
-    'StructQueryParameter',
+    'AccessEntry',
+    # Tables
     'Table',
     'TableReference',
+    'CopyJob',
+    'CopyJobConfig',
+    'ExtractJob',
+    'ExtractJobConfig',
+    'LoadJob',
+    'LoadJobConfig',
+    # Shared helpers
+    'SchemaField',
     'UDFResource',
-    'DEFAULT_RETRY',
     'ExternalConfig',
     'BigtableOptions',
     'BigtableColumnFamily',
     'BigtableColumn',
     'CSVOptions',
     'GoogleSheetsOptions',
+    'DEFAULT_RETRY',
 ]

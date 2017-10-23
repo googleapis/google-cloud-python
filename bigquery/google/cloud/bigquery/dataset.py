@@ -146,7 +146,7 @@ class DatasetReference(object):
         :type table_id: str
         :param table_id: the ID of the table.
 
-        :rtype: :class:`google.cloud.bigquery.table.TableReference`
+        :rtype: :class:`google.cloud.bigquery.TableReference`
         :returns: a TableReference for a table in this dataset.
         """
         return TableReference(self, table_id)
@@ -169,7 +169,7 @@ class DatasetReference(object):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this :class:`DatasetReference`.
+            tuple: The contents of this :class:`.DatasetReference`.
         """
         return (
             self._project,
@@ -197,7 +197,7 @@ class Dataset(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type dataset_ref: :class:`~google.cloud.bigquery.dataset.DatasetReference`
+    :type dataset_ref: :class:`~google.cloud.bigquery.DatasetReference`
     :param dataset_ref: a pointer to a dataset
     """
 
@@ -238,7 +238,7 @@ class Dataset(object):
     def access_entries(self, value):
         """Update dataset's access entries
 
-        :type value: list of :class:`AccessEntry`
+        :type value: list of :class:`~google.cloud.bigquery.AccessEntry`
         :param value: roles granted to entities for this dataset
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
@@ -429,7 +429,7 @@ class Dataset(object):
         :type resource: dict
         :param resource: dataset resource representation returned from the API
 
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
+        :rtype: :class:`~google.cloud.bigquery.Dataset`
         :returns: Dataset parsed from ``resource``.
         """
         dsr = resource.get('datasetReference')
@@ -451,7 +451,7 @@ class Dataset(object):
         :type access: list of mappings
         :param access: each mapping represents a single access entry.
 
-        :rtype: list of :class:`AccessEntry`
+        :rtype: list of :class:`~google.cloud.bigquery.AccessEntry`
         :returns: a list of parsed entries.
         :raises: :class:`ValueError` if a entry in ``access`` has more keys
                  than ``role`` and one additional key.
@@ -530,7 +530,7 @@ class Dataset(object):
         :type table_id: str
         :param table_id: the ID of the table.
 
-        :rtype: :class:`google.cloud.bigquery.table.TableReference`
+        :rtype: :class:`~google.cloud.bigquery.TableReference`
         :returns: a TableReference for a table in this dataset.
         """
         return TableReference(self, table_id)

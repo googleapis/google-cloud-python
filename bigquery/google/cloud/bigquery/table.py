@@ -39,7 +39,7 @@ class TableReference(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type dataset_ref: :class:`google.cloud.bigquery.dataset.DatasetReference`
+    :type dataset_ref: :class:`google.cloud.bigquery.DatasetReference`
     :param dataset_ref: a pointer to the dataset
 
     :type table_id: str
@@ -95,7 +95,7 @@ class TableReference(object):
         :type resource: dict
         :param resource: table reference representation returned from the API
 
-        :rtype: :class:`google.cloud.bigquery.table.TableReference`
+        :rtype: :class:`google.cloud.bigquery.TableReference`
         :returns: Table reference parsed from ``resource``.
         """
         from google.cloud.bigquery.dataset import DatasetReference
@@ -152,10 +152,10 @@ class Table(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type table_ref: :class:`google.cloud.bigquery.table.TableReference`
+    :type table_ref: :class:`google.cloud.bigquery.TableReference`
     :param table_ref: a pointer to a table
 
-    :type schema: list of :class:`SchemaField`
+    :type schema: list of :class:`~google.cloud.bigquery.SchemaField`
     :param schema: The table's schema
     """
 
@@ -217,7 +217,7 @@ class Table(object):
     def schema(self):
         """Table's schema.
 
-        :rtype: list of :class:`SchemaField`
+        :rtype: list of :class:`~google.cloud.bigquery.SchemaField`
         :returns: fields describing the schema
         """
         return list(self._schema)
@@ -226,7 +226,7 @@ class Table(object):
     def schema(self, value):
         """Update table's schema
 
-        :type value: list of :class:`SchemaField`
+        :type value: list of :class:`~google.cloud.bigquery.SchemaField`
         :param value: fields describing the schema
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
@@ -386,7 +386,7 @@ class Table(object):
         """Update the experation time in ms for a partition
 
         :type value: int
-        :param value: partition experiation time in ms
+        :param value: partition experiation time in milliseconds
         """
         if not isinstance(value, (int, type(None))):
             raise ValueError(
@@ -571,7 +571,7 @@ class Table(object):
     def streaming_buffer(self):
         """Information about a table's streaming buffer.
 
-        :rtype: :class:`StreamingBuffer`
+        :rtype: :class:`~google.cloud.bigquery.StreamingBuffer`
         :returns: Streaming buffer information, returned from get_table.
         """
         sb = self._properties.get('streamingBuffer')
@@ -584,7 +584,7 @@ class Table(object):
 
         If not set, None is returned.
 
-        :rtype: :class:`ExternalConfig`, or ``NoneType``
+        :rtype: :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``
         :returns: The external configuration, or None (the default).
         """
         return self._external_config
@@ -593,7 +593,8 @@ class Table(object):
     def external_data_configuration(self, value):
         """Sets the configuration for an external data source.
 
-        :type value: :class:`ExternalConfig`, or ``NoneType``
+        :type value:
+            :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``
         :param value: The ExternalConfig, or None to unset.
         """
         if not (value is None or isinstance(value, ExternalConfig)):
@@ -607,10 +608,10 @@ class Table(object):
         :type resource: dict
         :param resource: table resource representation returned from the API
 
-        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
+        :type dataset: :class:`google.cloud.bigquery.Dataset`
         :param dataset: The dataset containing the table.
 
-        :rtype: :class:`google.cloud.bigquery.table.Table`
+        :rtype: :class:`google.cloud.bigquery.Table`
         :returns: Table parsed from ``resource``.
         """
         from google.cloud.bigquery import dataset
@@ -719,7 +720,7 @@ def _row_from_mapping(mapping, schema):
            required fields in the schema.  Keys which do not correspond
            to a field in the schema are ignored.
 
-    :type schema: list of :class:`SchemaField`
+    :type schema: list of :class:`~google.cloud.bigquery.SchemaField`
     :param schema: The schema of the table destination for the rows
 
     :rtype: tuple
