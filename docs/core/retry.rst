@@ -1,6 +1,6 @@
 Retry
 =====
 
-.. automodule:: google.api.core.retry
+.. automodule:: google.api_core.retry
   :members:
   :show-inheritance:

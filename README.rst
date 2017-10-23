@@ -49,6 +49,7 @@ Cloud Platform services:
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
+-  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
@@ -95,6 +96,8 @@ updates. See `versioning`_ for more details.
 .. _Google Cloud Video Intelligence: https://pypi.python.org/pypi/google-cloud-videointelligence
 .. _Video Intelligence README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/videointelligence
 .. _versioning: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/CONTRIBUTING.rst#versioning
+.. _Google Cloud Firestore: https://pypi.org/project/google-cloud-firestore/
+.. _Firestore README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/firestore
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.

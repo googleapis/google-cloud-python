@@ -232,7 +232,7 @@ class TestInstance(unittest.TestCase):
 
     def test_create(self):
         import datetime
-        from google.api.core import operation
+        from google.api_core import operation
         from google.longrunning import operations_pb2
         from google.protobuf.any_pb2 import Any
         from google.cloud.bigtable._generated import (
@@ -285,7 +285,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(kwargs, {})
 
     def test_create_w_explicit_serve_nodes(self):
-        from google.api.core import operation
+        from google.api_core import operation
         from google.longrunning import operations_pb2
         from google.cloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)

@@ -16,7 +16,7 @@
 
 import re
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
@@ -198,7 +198,7 @@ class Instance(object):
 
            before calling :meth:`create`.
 
-        :rtype: :class:`google.api.core.operation.Operation`
+        :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance
         :raises Conflict: if the instance already exists
         :raises GaxError:
@@ -289,7 +289,7 @@ class Instance(object):
 
             before calling :meth:`update`.
 
-        :rtype: :class:`google.api.core.operation.Operation`
+        :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance
         :raises NotFound: if the instance does not exist
         :raises GaxError: for other errors returned from the call
@@ -374,7 +374,7 @@ class Instance(object):
         :type page_token: str
         :param page_token: (Optional) Token for fetching next page of results.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api._ore.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.spanner_v1.database.Database`
             resources within the current instance.
@@ -393,7 +393,7 @@ class Instance(object):
 def _item_to_database(iterator, database_pb):
     """Convert a database protobuf to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type database_pb: :class:`~google.spanner.admin.database.v1.Database`

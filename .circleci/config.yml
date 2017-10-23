@@ -41,6 +41,12 @@ jobs:
             python3.6 test_utils/scripts/get_target_packages.py > ~/target_packages
             cat ~/target_packages
       - run:
+          name: Run tests - google.api_core
+          command: |
+            if [[ -n $(grep api_core ~/target_packages) ]]; then
+              nox -f api_core/nox.py
+            fi
+      - run:
           name: Run tests - google.cloud.core
           command: |
             if [[ -n $(grep core ~/target_packages) ]]; then
@@ -135,6 +141,12 @@ jobs:
           command: |
             if [[ -n $(grep storage ~/target_packages) ]]; then
               nox -f storage/nox.py
+            fi
+      - run:
+          name: Run tests - google.cloud.trace
+          command: |
+            if [[ -n $(grep trace ~/target_packages) ]]; then
+              nox -f trace/nox.py
             fi
       - run:
           name: Run tests - google.cloud.translate

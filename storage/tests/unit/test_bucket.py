@@ -1539,7 +1539,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertRaises(ValueError, bucket.make_public, recursive=True)
 
     def test_page_empty_response(self):
-        from google.api.core import page_iterator
+        from google.api_core import page_iterator
 
         connection = _Connection()
         client = _Client(connection)

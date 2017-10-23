@@ -15,7 +15,7 @@
 """Client for interacting with the Google Cloud Storage API."""
 
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
@@ -266,7 +266,7 @@ class Client(ClientWithProject):
             response with just the next page token and the language of each
             bucket returned: 'items/id,nextPageToken'
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`
                   belonging to this project.
         """
@@ -293,7 +293,7 @@ class Client(ClientWithProject):
 def _item_to_bucket(iterator, item):
     """Convert a JSON bucket to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type item: dict
