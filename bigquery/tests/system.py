@@ -24,7 +24,7 @@ import uuid
 
 import six
 
-from google.api.core.exceptions import PreconditionFailed
+from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
 from google.cloud.bigquery.table import Table
@@ -814,7 +814,7 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(rows[0][0], example['expected'])
 
     def test_query_rows_w_failed_query(self):
-        from google.api.core.exceptions import BadRequest
+        from google.api_core.exceptions import BadRequest
 
         with self.assertRaises(BadRequest):
             Config.CLIENT.query_rows('invalid syntax;')

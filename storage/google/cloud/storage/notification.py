@@ -16,7 +16,7 @@
 
 import re
 
-from google.api.core.exceptions import NotFound
+from google.api_core.exceptions import NotFound
 
 
 OBJECT_FINALIZE_EVENT_TYPE = 'OBJECT_FINALIZE'
@@ -337,7 +337,7 @@ class BucketNotification(object):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :raises: :class:`google.api.core.exceptions.NotFound`:
+        :raises: :class:`google.api_core.exceptions.NotFound`:
             if the notification does not exist.
         :raises ValueError: if the notification has no ID.
         """

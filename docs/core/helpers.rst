@@ -5,7 +5,7 @@ Helpers
 General Helpers
 ---------------
 
-.. automodule:: google.api.core.general_helpers
+.. automodule:: google.api_core.general_helpers
   :members:
   :show-inheritance:
 
@@ -13,7 +13,7 @@ General Helpers
 Datetime Helpers
 ----------------
 
-.. automodule:: google.api.core.datetime_helpers
+.. automodule:: google.api_core.datetime_helpers
   :members:
   :show-inheritance:
 
@@ -21,6 +21,6 @@ Datetime Helpers
 gRPC Helpers
 ------------
 
-.. automodule:: google.api.core.grpc_helpers
+.. automodule:: google.api_core.grpc_helpers
   :members:
   :show-inheritance:

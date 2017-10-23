@@ -2406,7 +2406,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
 
     def test_query_rows_defaults(self):
-        from google.api.core.page_iterator import HTTPIterator
+        from google.api_core.page_iterator import HTTPIterator
         from google.cloud.bigquery._helpers import Row
 
         JOB = 'job-id'
@@ -2472,7 +2472,7 @@ class TestClient(unittest.TestCase):
             req['data']['jobReference']['jobId'], six.string_types)
 
     def test_query_rows_w_job_id(self):
-        from google.api.core.page_iterator import HTTPIterator
+        from google.api_core.page_iterator import HTTPIterator
 
         JOB = 'job-id'
         QUERY = 'SELECT COUNT(*) FROM persons'
@@ -2526,7 +2526,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_rows_w_job_config(self):
         from google.cloud.bigquery.job import QueryJobConfig
-        from google.api.core.page_iterator import HTTPIterator
+        from google.api_core.page_iterator import HTTPIterator
 
         JOB = 'job-id'
         QUERY = 'SELECT COUNT(*) FROM persons'

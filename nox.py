@@ -17,31 +17,6 @@ import os
 import nox
 
 
-ALL_PACKAGES = (
-    'core/',
-    'storage/',
-    'bigquery/',
-    'bigtable/',
-    'datastore/',
-    'dns/',
-    'firestore/',
-    'language/',
-    'logging/',
-    # error_reporting is out of alphabetical order, it depends on logging.
-    'error_reporting/',
-    'monitoring/',
-    'pubsub/',
-    'resource_manager/',
-    'runtimeconfig/',
-    'spanner/',
-    'speech/',
-    'trace/',
-    'translate/',
-    'videointelligence/',
-    'vision/',
-)
-
-
 @nox.session
 def docs(session):
     """Build the docs."""
@@ -54,8 +29,7 @@ def docs(session):
 
     # Install Sphinx and also all of the google-cloud-* packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
-    session.install('Sphinx >= 1.6.3', 'sphinx_rtd_theme')
-    session.install(*ALL_PACKAGES)
+    session.install('-r', os.path.join('docs', 'requirements.txt'))
 
     # Build the docs!
     session.run(

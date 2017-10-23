@@ -14,7 +14,7 @@
 
 """Create / interact with Google Cloud RuntimeConfig configs."""
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud.exceptions import NotFound
 from google.cloud.runtimeconfig._helpers import config_name_from_full_name
 from google.cloud.runtimeconfig.variable import Variable
@@ -232,7 +232,7 @@ class Config(object):
             (Optional) The client to use.  If not passed, falls back to the
             ``client`` stored on the current config.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.runtimeconfig.variable.Variable`
             belonging to this project.
@@ -255,7 +255,7 @@ class Config(object):
 def _item_to_variable(iterator, resource):
     """Convert a JSON variable to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type resource: dict

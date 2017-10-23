@@ -256,6 +256,12 @@ def _merge_array(lhs, rhs, type_):
         lhs.list_value.values.extend(rhs.list_value.values)
         return lhs
     lhs, rhs = list(lhs.list_value.values), list(rhs.list_value.values)
+
+    # Sanity check: If either list is empty, short-circuit.
+    # This is effectively a no-op.
+    if not len(lhs) or not len(rhs):
+        return Value(list_value=ListValue(values=(lhs + rhs)))
+
     first = rhs.pop(0)
     if first.HasField('null_value'):  # can't merge
         lhs.append(first)

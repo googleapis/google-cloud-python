@@ -27,7 +27,7 @@ from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
@@ -137,10 +137,10 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            projects.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.client.Project`
                   accessible to the current client.
         """
@@ -177,10 +177,10 @@ class Client(ClientWithProject):
                            not passed, the API will return the first page of
                            datasets.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.
                   accessible to the current client.
         """
@@ -274,7 +274,7 @@ class Client(ClientWithProject):
             :class:`google.cloud.bigquery.dataset.DatasetReference`
         :param dataset_ref: the dataset to use.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
@@ -292,7 +292,7 @@ class Client(ClientWithProject):
             :class:`google.cloud.bigquery.table.TableReference`
         :param table_ref: the table to use.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.table.Table`
@@ -322,7 +322,7 @@ class Client(ClientWithProject):
         :param fields: the fields of ``dataset`` to change, spelled as the
                        Dataset properties (e.g. "friendly_name").
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
@@ -361,7 +361,7 @@ class Client(ClientWithProject):
             :class:`google.cloud.bigquery.table.Table`
         :param table_ref: the table to update.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.table.Table`
@@ -398,10 +398,10 @@ class Client(ClientWithProject):
                            datasets. If not passed, the API will return the
                            first page of datasets.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
                   contained within the current dataset.
         """
@@ -429,7 +429,7 @@ class Client(ClientWithProject):
                        :class:`~google.cloud.bigquery.dataset.Dataset`
                        :class:`~google.cloud.bigquery.dataset.DatasetReference`
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :param dataset: the dataset to delete, or a reference to it.
@@ -449,7 +449,7 @@ class Client(ClientWithProject):
                      :class:`~google.cloud.bigquery.table.TableReference`
         :param table: the table to delete, or a reference to it.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
         """
         if not isinstance(table, (Table, TableReference)):
@@ -462,7 +462,7 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: Name of the query job.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :type project: str
@@ -534,7 +534,7 @@ class Client(ClientWithProject):
         :param project:
             project ID owning the job (defaults to the client's project)
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.cloud.bigquery.job._AsyncJob`
@@ -581,10 +581,10 @@ class Client(ClientWithProject):
                              * ``"pending"``
                              * ``"running"``
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterable of job instances.
         """
         extra_params = {'projection': 'full'}
@@ -634,7 +634,7 @@ class Client(ClientWithProject):
         :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.job.LoadJob`
@@ -847,7 +847,7 @@ class Client(ClientWithProject):
         :type job_config: :class:`google.cloud.bigquery.job.CopyJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.job.CopyJob`
@@ -894,7 +894,7 @@ class Client(ClientWithProject):
         :type job_config: :class:`google.cloud.bigquery.job.ExtractJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
@@ -934,7 +934,7 @@ class Client(ClientWithProject):
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`google.cloud.bigquery.job.QueryJob`
@@ -1055,7 +1055,7 @@ class Client(ClientWithProject):
             on the schema of the template table. See
             https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: list of mappings
@@ -1121,7 +1121,7 @@ class Client(ClientWithProject):
             (Optional) How long (in seconds) to wait for job to complete
             before raising a :class:`TimeoutError`.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
             Iterator of row data :class:`tuple`s. During each page, the
             iterator will have the ``total_rows`` attribute set, which counts
@@ -1172,10 +1172,10 @@ class Client(ClientWithProject):
         :param page_token: (Optional) The zero-based index of the starting
                            row to read.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of row data :class:`tuple`s. During each page, the
                   iterator will have the ``total_rows`` attribute set,
                   which counts the total number of rows **in the table**
@@ -1225,7 +1225,7 @@ class Client(ClientWithProject):
                      :class:`~google.cloud.bigquery.table.TableReference`
         :param table: the table to list, or a reference to it.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: list
@@ -1245,7 +1245,7 @@ class Client(ClientWithProject):
 def _item_to_project(iterator, resource):
     """Convert a JSON project to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -1261,7 +1261,7 @@ def _item_to_project(iterator, resource):
 def _item_to_dataset(iterator, resource):
     """Convert a JSON dataset to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -1276,7 +1276,7 @@ def _item_to_dataset(iterator, resource):
 def _item_to_job(iterator, resource):
     """Convert a JSON job to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
@@ -1291,7 +1291,7 @@ def _item_to_job(iterator, resource):
 def _item_to_table(iterator, resource):
     """Convert a JSON table to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
