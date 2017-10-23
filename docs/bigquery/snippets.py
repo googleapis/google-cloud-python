@@ -102,6 +102,7 @@ def test_create_dataset(client, to_delete):
     DATASET_ID = 'create_dataset_%d' % (_millis(),)
 
     # [START create_dataset]
+    # DATASET_ID = 'dataset_ids_are_strings'
     dataset_ref = client.dataset(DATASET_ID)
     dataset = bigquery.Dataset(dataset_ref)
     dataset.description = 'my dataset'
@@ -141,7 +142,7 @@ def test_update_dataset_simple(client, to_delete):
     assert dataset.description == ORIGINAL_DESCRIPTION
     dataset.description = UPDATED_DESCRIPTION
 
-    client.update_dataset(dataset, ['description'])  # API request
+    dataset = client.update_dataset(dataset, ['description'])  # API request
 
     assert dataset.description == UPDATED_DESCRIPTION
     # [END update_dataset_simple]
@@ -280,7 +281,7 @@ def test_update_table_simple(client, to_delete):
     assert table.description == ORIGINAL_DESCRIPTION
     table.description = UPDATED_DESCRIPTION
 
-    client.update_table(table, ['description'])  # API request
+    table = client.update_table(table, ['description'])  # API request
 
     assert table.description == UPDATED_DESCRIPTION
     # [END update_table_simple]
@@ -319,21 +320,6 @@ def test_update_table_multiple_properties(client, to_delete):
     assert table.description == UPDATED_DESCRIPTION
     assert table.schema == NEW_SCHEMA
     # [END update_table_multiple_properties]
-
-
-def _warm_up_inserted_table_data(client, table):
-    # Allow for 90 seconds of "warm up" before rows visible.  See
-    # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-    rows = ()
-    counter = 18
-
-    while len(rows) == 0 and counter > 0:
-        counter -= 1
-        iterator = client.list_rows(table)
-        page = six.next(iterator.pages)
-        rows = list(page)
-        if len(rows) == 0:
-            time.sleep(5)
 
 
 def test_table_create_rows(client, to_delete):
