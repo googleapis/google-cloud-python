@@ -32,7 +32,7 @@ class SchemaField(object):
     :type description: str
     :param description: optional description for the field.
 
-    :type fields: tuple of :class:`SchemaField`
+    :type fields: tuple of :class:`~google.cloud.bigquery.SchemaField`
     :param fields: subfields (requires ``field_type`` of 'RECORD').
     """
     def __init__(self, name, field_type, mode='NULLABLE',

@@ -181,7 +181,7 @@ class Client(ClientWithProject):
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.
+        :returns: Iterator of :class:`~google.cloud.bigquery.Dataset`.
                   accessible to the current client.
         """
         extra_params = {}
@@ -212,7 +212,7 @@ class Client(ClientWithProject):
         :param project: (Optional) project ID for the dataset (defaults to
                         the project of the client).
 
-        :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`
+        :rtype: :class:`google.cloud.bigquery.DatasetReference`
         :returns: a new ``DatasetReference`` instance
         """
         if project is None:
@@ -226,12 +226,12 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
-        :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`
+        :type dataset: :class:`~google.cloud.bigquery.Dataset`
         :param dataset: A ``Dataset`` populated with the desired initial state.
                         If project is missing, it defaults to the project of
                         the client.
 
-        :rtype: ":class:`~google.cloud.bigquery.dataset.Dataset`"
+        :rtype: ":class:`~google.cloud.bigquery.Dataset`"
         :returns: a new ``Dataset`` returned from the service.
         """
         path = '/projects/%s/datasets' % (dataset.project,)
@@ -245,10 +245,10 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
 
-        :type table: :class:`~google.cloud.bigquery.table.Table`
+        :type table: :class:`~google.cloud.bigquery.Table`
         :param table: A ``Table`` populated with the desired initial state.
 
-        :rtype: ":class:`~google.cloud.bigquery.table.Table`"
+        :rtype: ":class:`~google.cloud.bigquery.Table`"
         :returns: a new ``Table`` returned from the service.
         """
         path = '/projects/%s/datasets/%s/tables' % (
@@ -271,13 +271,13 @@ class Client(ClientWithProject):
         """Fetch the dataset referenced by ``dataset_ref``
 
         :type dataset_ref:
-            :class:`google.cloud.bigquery.dataset.DatasetReference`
+            :class:`google.cloud.bigquery.DatasetReference`
         :param dataset_ref: the dataset to use.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
+        :rtype: :class:`google.cloud.bigquery.Dataset`
         :returns: a ``Dataset`` instance
         """
         api_response = self._call_api(retry,
@@ -289,13 +289,13 @@ class Client(ClientWithProject):
         """Fetch the table referenced by ``table_ref``
 
         :type table_ref:
-            :class:`google.cloud.bigquery.table.TableReference`
+            :class:`google.cloud.bigquery.TableReference`
         :param table_ref: the table to use.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.table.Table`
+        :rtype: :class:`google.cloud.bigquery.Table`
         :returns: a ``Table`` instance
         """
         api_response = self._call_api(retry, method='GET', path=table_ref.path)
@@ -315,7 +315,7 @@ class Client(ClientWithProject):
         will only be saved if no modifications to the dataset occurred
         since the read.
 
-        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
+        :type dataset: :class:`google.cloud.bigquery.Dataset`
         :param dataset: the dataset to update.
 
         :type fields: sequence of string
@@ -325,7 +325,7 @@ class Client(ClientWithProject):
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
+        :rtype: :class:`google.cloud.bigquery.Dataset`
         :returns: the modified ``Dataset`` instance
         """
         path = '/projects/%s/datasets/%s' % (dataset.project,
@@ -358,13 +358,13 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
 
         :type table:
-            :class:`google.cloud.bigquery.table.Table`
+            :class:`google.cloud.bigquery.Table`
         :param table_ref: the table to update.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.table.Table`
+        :rtype: :class:`google.cloud.bigquery.Table`
         :returns: a ``Table`` instance
         """
         partial = table._build_resource(properties)
@@ -385,8 +385,8 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
 
         :type dataset: One of:
-                       :class:`~google.cloud.bigquery.dataset.Dataset`
-                       :class:`~google.cloud.bigquery.dataset.DatasetReference`
+                       :class:`~google.cloud.bigquery.Dataset`
+                       :class:`~google.cloud.bigquery.DatasetReference`
         :param dataset: the dataset whose tables to list, or a reference to it.
 
         :type max_results: int
@@ -402,7 +402,7 @@ class Client(ClientWithProject):
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
+        :returns: Iterator of :class:`~google.cloud.bigquery.Table`
                   contained within the current dataset.
         """
         if not isinstance(dataset, (Dataset, DatasetReference)):
@@ -426,8 +426,8 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
 
         :type dataset: One of:
-                       :class:`~google.cloud.bigquery.dataset.Dataset`
-                       :class:`~google.cloud.bigquery.dataset.DatasetReference`
+                       :class:`~google.cloud.bigquery.Dataset`
+                       :class:`~google.cloud.bigquery.DatasetReference`
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
@@ -445,8 +445,8 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete
 
         :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
+                     :class:`~google.cloud.bigquery.Table`
+                     :class:`~google.cloud.bigquery.TableReference`
         :param table: the table to delete, or a reference to it.
 
         :type retry: :class:`google.api_core.retry.Retry`
@@ -475,7 +475,7 @@ class Client(ClientWithProject):
             (Optional) number of milliseconds the the API call should wait for
             the query to complete before the request times out.
 
-        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
+        :rtype: :class:`google.cloud.bigquery.QueryResults`
         :returns: a new ``QueryResults`` instance
         """
 
@@ -503,11 +503,10 @@ class Client(ClientWithProject):
         :param resource: one job resource from API response
 
         :rtype: One of:
-                :class:`google.cloud.bigquery.job.LoadJob`,
-                :class:`google.cloud.bigquery.job.CopyJob`,
-                :class:`google.cloud.bigquery.job.ExtractJob`,
-                :class:`google.cloud.bigquery.job.QueryJob`,
-                :class:`google.cloud.bigquery.job.RunSyncQueryJob`
+                :class:`google.cloud.bigquery.LoadJob`,
+                :class:`google.cloud.bigquery.CopyJob`,
+                :class:`google.cloud.bigquery.ExtractJob`,
+                :class:`google.cloud.bigquery.QueryJob`
         :returns: the job instance, constructed via the resource
         """
         config = resource['configuration']
@@ -537,7 +536,11 @@ class Client(ClientWithProject):
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.cloud.bigquery.job._AsyncJob`
+        :rtype: One of:
+                :class:`google.cloud.bigquery.LoadJob`,
+                :class:`google.cloud.bigquery.CopyJob`,
+                :class:`google.cloud.bigquery.ExtractJob`,
+                :class:`google.cloud.bigquery.QueryJob`
         :returns:
             Concrete job instance, based on the resource returned by the API.
         """
@@ -631,13 +634,13 @@ class Client(ClientWithProject):
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
-        :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`
+        :type job_config: :class:`google.cloud.bigquery.LoadJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.job.LoadJob`
+        :rtype: :class:`google.cloud.bigquery.LoadJob`
         :returns: a new ``LoadJob`` instance
         """
         job_id = _make_job_id(job_id, job_id_prefix)
@@ -683,10 +686,10 @@ class Client(ClientWithProject):
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
-        :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`
+        :type job_config: :class:`google.cloud.bigquery.LoadJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
-        :rtype: :class:`~google.cloud.bigquery.jobs.LoadJob`
+        :rtype: :class:`~google.cloud.bigquery.LoadJob`
 
         :returns: the job instance used to load the data (e.g., for
                   querying status). Note that the job is already started:
@@ -827,9 +830,9 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy
 
         :type sources: One of:
-                       :class:`~google.cloud.bigquery.table.TableReference`
+                       :class:`~google.cloud.bigquery.TableReference`
                        sequence of
-                       :class:`~google.cloud.bigquery.table.TableReference`
+                       :class:`~google.cloud.bigquery.TableReference`
         :param sources: Table or tables to be copied.
 
 
@@ -844,13 +847,13 @@ class Client(ClientWithProject):
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
-        :type job_config: :class:`google.cloud.bigquery.job.CopyJobConfig`
+        :type job_config: :class:`google.cloud.bigquery.CopyJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.job.CopyJob`
+        :rtype: :class:`google.cloud.bigquery.CopyJob`
         :returns: a new ``CopyJob`` instance
         """
         job_id = _make_job_id(job_id, job_id_prefix)
@@ -870,7 +873,7 @@ class Client(ClientWithProject):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract
 
-        :type source: :class:`google.cloud.bigquery.table.TableReference`
+        :type source: :class:`google.cloud.bigquery.TableReference`
         :param source: table to be extracted.
 
         :type destination_uris: One of:
@@ -891,13 +894,13 @@ class Client(ClientWithProject):
                               randomly generated job ID. This parameter will be
                               ignored if a ``job_id`` is also given.
 
-        :type job_config: :class:`google.cloud.bigquery.job.ExtractJobConfig`
+        :type job_config: :class:`google.cloud.bigquery.ExtractJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
+        :rtype: :class:`google.cloud.bigquery.ExtractJob`
         :returns: a new ``ExtractJob`` instance
         """
         job_id = _make_job_id(job_id, job_id_prefix)
@@ -923,7 +926,7 @@ class Client(ClientWithProject):
             SQL query to be executed. Defaults to the standard SQL dialect.
             Use the ``job_config`` parameter to change dialects.
 
-        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`
+        :type job_config: :class:`google.cloud.bigquery.QueryJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
         :type job_id: str
@@ -937,7 +940,7 @@ class Client(ClientWithProject):
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`google.cloud.bigquery.job.QueryJob`
+        :rtype: :class:`google.cloud.bigquery.QueryJob`
         :returns: a new ``QueryJob`` instance
         """
         job_id = _make_job_id(job_id, job_id_prefix)
@@ -952,8 +955,8 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
+                     :class:`~google.cloud.bigquery.Table`
+                     :class:`~google.cloud.bigquery.TableReference`
         :param table: the destination table for the row data, or a reference
                       to it.
 
@@ -967,14 +970,15 @@ class Client(ClientWithProject):
                      include all required fields in the schema.  Keys which do
                      not correspond to a field in the schema are ignored.
 
-        :type selected_fields: list of :class:`SchemaField`
+        :type selected_fields:
+            list of :class:`~google.cloud.bigquery.SchemaField`
         :param selected_fields:
             The fields to return. Required if ``table`` is a
-            :class:`~google.cloud.bigquery.table.TableReference`.
+            :class:`~google.cloud.bigquery.TableReference`.
 
         :type kwargs: dict
         :param kwargs: Keyword arguments to
-                       `~google.cloud.bigquery.client.Client.create_rows_json`
+                       `~google.cloud.bigquery.Client.create_rows_json`
 
         :rtype: list of mappings
         :returns: One mapping per row with insert errors:  the "index" key
@@ -1020,8 +1024,8 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
 
         :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
+                     :class:`~google.cloud.bigquery.Table`
+                     :class:`~google.cloud.bigquery.TableReference`
         :param table: the destination table for the row data, or a reference
                       to it.
 
@@ -1110,7 +1114,7 @@ class Client(ClientWithProject):
             SQL query to be executed. Defaults to the standard SQL dialect.
             Use the ``job_config`` parameter to change dialects.
 
-        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`
+        :type job_config: :class:`google.cloud.bigquery.QueryJobConfig`
         :param job_config: (Optional) Extra configuration options for the job.
 
         :type job_id: str
@@ -1152,14 +1156,15 @@ class Client(ClientWithProject):
            local copy of the schema is up-to-date, call ``client.get_table``.
 
         :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
+                     :class:`~google.cloud.bigquery.Table`
+                     :class:`~google.cloud.bigquery.TableReference`
         :param table: the table to list, or a reference to it.
 
-        :type selected_fields: list of :class:`SchemaField`
+        :type selected_fields:
+            list of :class:`~google.cloud.bigquery.SchemaField`
         :param selected_fields:
             The fields to return. Required if ``table`` is a
-            :class:`~google.cloud.bigquery.table.TableReference`.
+            :class:`~google.cloud.bigquery.TableReference`.
 
         :type max_results: int
         :param max_results: maximum number of rows to return.
@@ -1221,8 +1226,8 @@ class Client(ClientWithProject):
         """List the partitions in a table.
 
         :type table: One of:
-                     :class:`~google.cloud.bigquery.table.Table`
-                     :class:`~google.cloud.bigquery.table.TableReference`
+                     :class:`~google.cloud.bigquery.Table`
+                     :class:`~google.cloud.bigquery.TableReference`
         :param table: the table to list, or a reference to it.
 
         :type retry: :class:`google.api_core.retry.Retry`
@@ -1297,7 +1302,7 @@ def _item_to_table(iterator, resource):
     :type resource: dict
     :param resource: An item to be converted to a table.
 
-    :rtype: :class:`~google.cloud.bigquery.table.Table`
+    :rtype: :class:`~google.cloud.bigquery.Table`
     :returns: The next table in the page.
     """
     return Table.from_api_repr(resource)

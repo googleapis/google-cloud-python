@@ -5,12 +5,8 @@ BigQuery
   :maxdepth: 2
   :hidden:
 
-  client
-  dataset
-  job
-  query
-  schema
-  table
+  reference
+  dbapi
 
 Authentication / Configuration
 ------------------------------
@@ -211,7 +207,7 @@ Queries
 -------
 
 Querying data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 
 .. literalinclude:: snippets.py
    :start-after: [START client_query]
@@ -224,7 +220,7 @@ Querying data
 
 
 Run a query using a named query parameter
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See BigQuery documentation for more information on
 `parameterized queries <https://cloud.google.com/bigquery/docs/parameterized-queries>`_.
