@@ -20,7 +20,7 @@ import threading
 import six
 from six.moves import http_client
 
-import google.api.core.future.polling
+import google.api_core.future.polling
 from google.cloud import exceptions
 from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
@@ -147,7 +147,7 @@ class AutoDetectSchema(_TypedApiResourceProperty):
         instance._properties[self.resource_name] = value
 
 
-class _AsyncJob(google.api.core.future.polling.PollingFuture):
+class _AsyncJob(google.api_core.future.polling.PollingFuture):
     """Base class for asynchronous jobs.
 
     :type job_id: str
@@ -379,7 +379,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :raises: :exc:`ValueError` if the job has already begin.
@@ -408,7 +408,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: bool
@@ -436,7 +436,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
         """
         client = self._require_client(client)
@@ -494,7 +494,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: bool
@@ -530,7 +530,7 @@ class _AsyncJob(google.api.core.future.polling.PollingFuture):
 
         This always returns False. It's not possible to check if a job was
         cancelled in the API. This method is here to satisfy the interface
-        for :class:`google.api.core.future.Future`.
+        for :class:`google.api_core.future.Future`.
 
         :rtype: bool
         :returns: False
@@ -1859,7 +1859,7 @@ class QueryJob(_AsyncJob):
     def query_results(self, retry=DEFAULT_RETRY):
         """Construct a QueryResults instance, bound to this job.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.cloud.bigquery.query.QueryResults`
@@ -1916,10 +1916,10 @@ class QueryJob(_AsyncJob):
             How long to wait for job to complete before raising a
             :class:`TimeoutError`.
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the call that retrieves rows.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
             Iterator of row data :class:`tuple`s. During each page, the
             iterator will have the ``total_rows`` attribute set, which counts
