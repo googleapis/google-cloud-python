@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import concurrent.futures
 import csv
 import datetime
 import json
@@ -24,6 +25,7 @@ import uuid
 
 import six
 
+from google.api_core.exceptions import GoogleAPICallError
 from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
@@ -818,7 +820,13 @@ class TestBigQuery(unittest.TestCase):
 
         with self.assertRaises(BadRequest):
             Config.CLIENT.query_rows('invalid syntax;')
-            # TODO(swast): Ensure that job ID is surfaced in the exception.
+
+    def test_query_rows_w_timeout(self):
+        with self.assertRaises(concurrent.futures.TimeoutError) as context:
+            Config.CLIENT.query_rows(
+                'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
+                job_id_prefix='test_query_rows_w_timeout_',
+                timeout=1)  # 1 second is much too short for this query.
 
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()

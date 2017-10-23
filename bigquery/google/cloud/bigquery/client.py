@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import collections
+import concurrent.futures
 import functools
 import os
 import uuid
@@ -28,6 +29,8 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.api_core import page_iterator
+from google.api_core.exceptions import GoogleAPICallError
+from google.api_core.exceptions import NotFound
 
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
@@ -506,7 +509,7 @@ class Client(ClientWithProject):
                 :class:`google.cloud.bigquery.LoadJob`,
                 :class:`google.cloud.bigquery.CopyJob`,
                 :class:`google.cloud.bigquery.ExtractJob`,
-                :class:`google.cloud.bigquery.QueryJob`
+                or :class:`google.cloud.bigquery.QueryJob`
         :returns: the job instance, constructed via the resource
         """
         config = resource['configuration']
@@ -540,7 +543,7 @@ class Client(ClientWithProject):
                 :class:`google.cloud.bigquery.LoadJob`,
                 :class:`google.cloud.bigquery.CopyJob`,
                 :class:`google.cloud.bigquery.ExtractJob`,
-                :class:`google.cloud.bigquery.QueryJob`
+                or :class:`google.cloud.bigquery.QueryJob`
         :returns:
             Concrete job instance, based on the resource returned by the API.
         """
@@ -555,6 +558,42 @@ class Client(ClientWithProject):
             retry, method='GET', path=path, query_params=extra_params)
 
         return self.job_from_resource(resource)
+
+    def cancel_job(self, job_id, project=None, retry=DEFAULT_RETRY):
+        """Attempt to cancel a job from a job ID.
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel
+
+        :type job_id: str
+        :param job_id: Name of the job.
+
+        :type project: str
+        :param project:
+            project ID owning the job (defaults to the client's project)
+
+        :type retry: :class:`google.api.core.retry.Retry`
+        :param retry: (Optional) How to retry the RPC.
+
+        :rtype: One of:
+                :class:`google.cloud.bigquery.job.LoadJob`,
+                :class:`google.cloud.bigquery.job.CopyJob`,
+                :class:`google.cloud.bigquery.job.ExtractJob`,
+                or :class:`google.cloud.bigquery.job.QueryJob`
+        :returns:
+            Concrete job instance, based on the resource returned by the API.
+        """
+        extra_params = {'projection': 'full'}
+
+        if project is None:
+            project = self.project
+
+        path = '/projects/{}/jobs/{}/cancel'.format(project, job_id)
+
+        resource = self._call_api(
+            retry, method='POST', path=path, query_params=extra_params)
+
+        return self.job_from_resource(resource['job'])
 
     def list_jobs(self, max_results=None, page_token=None, all_users=None,
                   state_filter=None, retry=DEFAULT_RETRY):
@@ -1101,8 +1140,9 @@ class Client(ClientWithProject):
 
         return errors
 
-    def query_rows(self, query, job_config=None, job_id=None, timeout=None,
-                   retry=DEFAULT_RETRY):
+    def query_rows(
+            self, query, job_config=None, job_id=None, job_id_prefix=None,
+            timeout=None, retry=DEFAULT_RETRY):
         """Start a query job and wait for the results.
 
         See
@@ -1119,10 +1159,15 @@ class Client(ClientWithProject):
         :type job_id: str
         :param job_id: (Optional) ID to use for the query job.
 
+        :type job_id_prefix: str or ``NoneType``
+        :param job_id_prefix: (Optional) the user-provided prefix for a
+                              randomly generated job ID. This parameter will be
+                              ignored if a ``job_id`` is also given.
+
         :type timeout: float
         :param timeout:
             (Optional) How long (in seconds) to wait for job to complete
-            before raising a :class:`TimeoutError`.
+            before raising a :class:`concurrent.futures.TimeoutError`.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
@@ -1132,13 +1177,29 @@ class Client(ClientWithProject):
             from the total number of rows in the current page:
             ``iterator.page.num_items``).
 
-        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
-            failed or  :class:`TimeoutError` if the job did not complete in the
-            given timeout.
+        :raises:
+            :class:`~google.api.core.exceptions.GoogleAPICallError` if the
+            job failed or :class:`concurrent.futures.TimeoutError` if the job
+            did not complete in the given timeout.
+
+            When an exception happens, the query job will be cancelled on a
+            best-effort basis.
         """
-        job = self.query(
-            query, job_config=job_config, job_id=job_id, retry=retry)
-        return job.result(timeout=timeout)
+        job_id = _make_job_id(job_id, job_id_prefix)
+
+        try:
+            job = self.query(
+                query, job_config=job_config, job_id=job_id, retry=retry)
+            rows_iterator = job.result(timeout=timeout)
+        except (GoogleAPICallError, concurrent.futures.TimeoutError):
+            try:
+                self.cancel_job(job_id)
+            except NotFound:
+                # It's OK if couldn't cancel because job never got created.
+                pass
+            raise
+
+        return rows_iterator
 
     def list_rows(self, table, selected_fields=None, max_results=None,
                   page_token=None, start_index=None, retry=DEFAULT_RETRY):
