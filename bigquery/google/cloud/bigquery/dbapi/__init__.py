@@ -19,11 +19,6 @@ for Google BigQuery.
 
 .. _Python Database API Specification v2.0 (DB-API):
    https://www.python.org/dev/peps/pep-0249/
-
-.. warning::
-   The ``dbapi`` module is **alpha**. The implementation is not complete. It
-   might be changed in backward-incompatible ways and is not subject to any SLA
-   or deprecation policy.
 """
 
 from google.cloud.bigquery.dbapi.connection import connect

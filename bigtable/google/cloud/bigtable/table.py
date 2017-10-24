@@ -113,7 +113,7 @@ class Table(object):
         .. warning::
 
            At most one of ``filter_`` and ``append`` can be used in a
-           :class:`Row`.
+           :class:`.Row`.
 
         :type row_key: bytes
         :param row_key: The key for the row being created.
