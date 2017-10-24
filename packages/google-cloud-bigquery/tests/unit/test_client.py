@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import concurrent.futures
 import copy
 import email
 import io
@@ -1212,6 +1213,63 @@ class TestClient(unittest.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/projects/PROJECT/jobs/query_job')
+        self.assertEqual(req['query_params'], {'projection': 'full'})
+
+    def test_cancel_job_miss_w_explict_project(self):
+        from google.cloud.exceptions import NotFound
+
+        OTHER_PROJECT = 'OTHER_PROJECT'
+        JOB_ID = 'NONESUCH'
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _Connection()
+
+        with self.assertRaises(NotFound):
+            client.cancel_job(JOB_ID, project=OTHER_PROJECT)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(
+            req['path'], '/projects/OTHER_PROJECT/jobs/NONESUCH/cancel')
+        self.assertEqual(req['query_params'], {'projection': 'full'})
+
+    def test_cancel_job_hit(self):
+        from google.cloud.bigquery.job import QueryJob
+
+        JOB_ID = 'query_job'
+        QUERY = 'SELECT * from test_dataset:test_table'
+        QUERY_JOB_RESOURCE = {
+            'id': '{}:{}'.format(self.PROJECT, JOB_ID),
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': 'query_job',
+            },
+            'state': 'RUNNING',
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                }
+            },
+        }
+        RESOURCE = {
+            'job': QUERY_JOB_RESOURCE,
+        }
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = _Connection(RESOURCE)
+
+        job = client.cancel_job(JOB_ID)
+
+        self.assertIsInstance(job, QueryJob)
+        self.assertEqual(job.job_id, JOB_ID)
+        self.assertEqual(job.query, QUERY)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(
+            req['path'], '/projects/PROJECT/jobs/query_job/cancel')
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_defaults(self):
@@ -2583,6 +2641,82 @@ class TestClient(unittest.TestCase):
         self.assertEqual(configuration['query']['useLegacySql'], True)
         self.assertEqual(configuration['dryRun'], True)
 
+    def test_query_rows_w_timeout_error(self):
+        JOB = 'job-id'
+        QUERY = 'SELECT COUNT(*) FROM persons'
+        RESOURCE = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': JOB,
+            },
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                },
+            },
+            'status': {
+                'state': 'RUNNING',
+            },
+        }
+        CANCEL_RESOURCE = {'job': RESOURCE}
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection(RESOURCE, CANCEL_RESOURCE)
+
+        with mock.patch(
+                'google.cloud.bigquery.job.QueryJob.result') as mock_result:
+            mock_result.side_effect = concurrent.futures.TimeoutError(
+                'time is up')
+
+            with self.assertRaises(concurrent.futures.TimeoutError):
+                client.query_rows(
+                    QUERY,
+                    job_id_prefix='test_query_rows_w_timeout_',
+                    timeout=1)
+
+        # Should attempt to create and cancel the job.
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        cancelreq = conn._requested[1]
+        self.assertEqual(cancelreq['method'], 'POST')
+        self.assertIn(
+            '/projects/PROJECT/jobs/test_query_rows_w_timeout_',
+            cancelreq['path'])
+        self.assertIn('/cancel', cancelreq['path'])
+
+    def test_query_rows_w_api_error(self):
+        from google.api_core.exceptions import NotFound
+
+        QUERY = 'SELECT COUNT(*) FROM persons'
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT, credentials=creds, _http=http)
+        conn = client._connection = _Connection()
+
+        # Expect a 404 error since we didn't supply a job resource.
+        with self.assertRaises(NotFound):
+            client.query_rows(
+                QUERY,
+                job_id_prefix='test_query_rows_w_error_',
+                timeout=1)
+
+        # Should attempt to create and cancel the job.
+        self.assertEqual(len(conn._requested), 2)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/projects/PROJECT/jobs')
+        cancelreq = conn._requested[1]
+        self.assertEqual(cancelreq['method'], 'POST')
+        self.assertIn(
+            '/projects/PROJECT/jobs/test_query_rows_w_error_',
+            cancelreq['path'])
+        self.assertIn('/cancel', cancelreq['path'])
+
     def test_list_rows(self):
         import datetime
         from google.cloud._helpers import UTC
@@ -3224,7 +3358,7 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from google.cloud.exceptions import NotFound
+        from google.api_core.exceptions import NotFound
         self._requested.append(kw)
 
         if len(self._responses) == 0:
