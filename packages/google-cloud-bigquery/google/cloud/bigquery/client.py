@@ -647,7 +647,7 @@ class Client(ClientWithProject):
         if isinstance(source_uris, six.string_types):
             source_uris = [source_uris]
         job = LoadJob(job_id, source_uris, destination, self, job_config)
-        job.begin(retry=retry)
+        job._begin(retry=retry)
         return job
 
     def load_table_from_file(self, file_obj, destination,
@@ -692,8 +692,7 @@ class Client(ClientWithProject):
         :rtype: :class:`~google.cloud.bigquery.LoadJob`
 
         :returns: the job instance used to load the data (e.g., for
-                  querying status). Note that the job is already started:
-                  do not call ``job.begin()``.
+                  querying status).
         :raises: :class:`ValueError` if ``size`` is not passed in and can not
                  be determined, or if the ``file_obj`` can be detected to be
                  a file opened in text mode.
@@ -862,7 +861,7 @@ class Client(ClientWithProject):
             sources = [sources]
         job = CopyJob(job_id, sources, destination, client=self,
                       job_config=job_config)
-        job.begin(retry=retry)
+        job._begin(retry=retry)
         return job
 
     def extract_table(
@@ -911,7 +910,7 @@ class Client(ClientWithProject):
         job = ExtractJob(
             job_id, source, destination_uris, client=self,
             job_config=job_config)
-        job.begin(retry=retry)
+        job._begin(retry=retry)
         return job
 
     def query(self, query, job_config=None, job_id=None, job_id_prefix=None,
@@ -945,7 +944,7 @@ class Client(ClientWithProject):
         """
         job_id = _make_job_id(job_id, job_id_prefix)
         job = QueryJob(job_id, query, client=self, job_config=job_config)
-        job.begin(retry=retry)
+        job._begin(retry=retry)
         return job
 
     def create_rows(self, table, rows, selected_fields=None, **kwargs):
