@@ -43,7 +43,7 @@ def test_check_protobuf_helpers_ok():
     assert protobuf_helpers.check_oneof(foo='bar') is None
     assert protobuf_helpers.check_oneof(foo='bar', baz=None) is None
     assert protobuf_helpers.check_oneof(foo=None, baz='bacon') is None
-    assert (protobuf_helpers.check_oneof(foo='bar', spam=None, eggs=None) 
+    assert (protobuf_helpers.check_oneof(foo='bar', spam=None, eggs=None)
             is None)
 
 
