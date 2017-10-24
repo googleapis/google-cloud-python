@@ -13,15 +13,16 @@
 # limitations under the License.
 
 """Define API Datasets."""
+
+from __future__ import absolute_import
+
 import six
 
-from google.api_core import page_iterator
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud.exceptions import NotFound
-from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableReference
 
 
-class AccessGrant(object):
+class AccessEntry(object):
     """Represent grant of an access role to an entity.
 
     Every entry in the access list will have exactly one of
@@ -76,7 +77,7 @@ class AccessGrant(object):
         self.entity_id = entity_id
 
     def __eq__(self, other):
-        if not isinstance(other, AccessGrant):
+        if not isinstance(other, AccessEntry):
             return NotImplemented
         return (
             self.role == other.role and
@@ -87,8 +88,107 @@ class AccessGrant(object):
         return not self == other
 
     def __repr__(self):
-        return '<AccessGrant: role=%s, %s=%s>' % (
+        return '<AccessEntry: role=%s, %s=%s>' % (
             self.role, self.entity_type, self.entity_id)
+
+
+class DatasetReference(object):
+    """DatasetReferences are pointers to datasets.
+
+    See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
+
+    :type project: str
+    :param project: the ID of the project
+
+    :type dataset_id: str
+    :param dataset_id: the ID of the dataset
+    """
+
+    def __init__(self, project, dataset_id):
+        if not isinstance(project, six.string_types):
+            raise ValueError("Pass a string for project")
+        if not isinstance(dataset_id, six.string_types):
+            raise ValueError("Pass a string for dataset_id")
+        self._project = project
+        self._dataset_id = dataset_id
+
+    @property
+    def project(self):
+        """Project ID of the dataset.
+
+        :rtype: str
+        :returns: the project ID.
+        """
+        return self._project
+
+    @property
+    def dataset_id(self):
+        """Dataset ID.
+
+        :rtype: str
+        :returns: the dataset ID.
+        """
+        return self._dataset_id
+
+    @property
+    def path(self):
+        """URL path for the dataset's APIs.
+
+        :rtype: str
+        :returns: the path based on project and dataset name.
+        """
+        return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
+
+    def table(self, table_id):
+        """Constructs a TableReference.
+
+        :type table_id: str
+        :param table_id: the ID of the table.
+
+        :rtype: :class:`google.cloud.bigquery.TableReference`
+        :returns: a TableReference for a table in this dataset.
+        """
+        return TableReference(self, table_id)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        project = resource['projectId']
+        dataset_id = resource['datasetId']
+        return cls(project, dataset_id)
+
+    def to_api_repr(self):
+        return {
+            'projectId': self._project,
+            'datasetId': self._dataset_id,
+        }
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            tuple: The contents of this :class:`.DatasetReference`.
+        """
+        return (
+            self._project,
+            self._dataset_id,
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, DatasetReference):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def __repr__(self):
+        return 'DatasetReference{}'.format(self._key())
 
 
 class Dataset(object):
@@ -97,37 +197,22 @@ class Dataset(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type name: str
-    :param name: the name of the dataset
-
-    :type client: :class:`google.cloud.bigquery.client.Client`
-    :param client: A client which holds credentials and project configuration
-                   for the dataset (which requires a project).
-
-    :type access_grants: list of :class:`AccessGrant`
-    :param access_grants: roles granted to entities for this dataset
-
-    :type project: str
-    :param project: (Optional) project ID for the dataset (defaults to
-                    the project of the client).
+    :type dataset_ref: :class:`~google.cloud.bigquery.DatasetReference`
+    :param dataset_ref: a pointer to a dataset
     """
 
-    _access_grants = None
-
-    def __init__(self, name, client, access_grants=(), project=None):
-        self.name = name
-        self._client = client
-        self._properties = {}
-        # Let the @property do validation.
-        self.access_grants = access_grants
-        self._project = project or client.project
+    def __init__(self, dataset_ref):
+        self._project = dataset_ref.project
+        self._dataset_id = dataset_ref.dataset_id
+        self._properties = {'labels': {}}
+        self._access_entries = ()
 
     @property
     def project(self):
         """Project bound to the dataset.
 
         :rtype: str
-        :returns: the project (derived from the client).
+        :returns: the project.
         """
         return self._project
 
@@ -136,32 +221,32 @@ class Dataset(object):
         """URL path for the dataset's APIs.
 
         :rtype: str
-        :returns: the path based on project and dataste name.
+        :returns: the path based on project and dataset ID.
         """
-        return '/projects/%s/datasets/%s' % (self.project, self.name)
+        return '/projects/%s/datasets/%s' % (self.project, self.dataset_id)
 
     @property
-    def access_grants(self):
-        """Dataset's access grants.
+    def access_entries(self):
+        """Dataset's access entries.
 
-        :rtype: list of :class:`AccessGrant`
+        :rtype: list of :class:`AccessEntry`
         :returns: roles granted to entities for this dataset
         """
-        return list(self._access_grants)
+        return list(self._access_entries)
 
-    @access_grants.setter
-    def access_grants(self, value):
-        """Update dataset's access grants
+    @access_entries.setter
+    def access_entries(self, value):
+        """Update dataset's access entries
 
-        :type value: list of :class:`AccessGrant`
+        :type value: list of :class:`~google.cloud.bigquery.AccessEntry`
         :param value: roles granted to entities for this dataset
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not an AccessGrant
+                 any item in the sequence is not an AccessEntry
         """
-        if not all(isinstance(field, AccessGrant) for field in value):
-            raise ValueError('Values must be AccessGrant instances')
-        self._access_grants = tuple(value)
+        if not all(isinstance(field, AccessEntry) for field in value):
+            raise ValueError('Values must be AccessEntry instances')
+        self._access_entries = tuple(value)
 
     @property
     def created(self):
@@ -177,7 +262,16 @@ class Dataset(object):
 
     @property
     def dataset_id(self):
-        """ID for the dataset resource.
+        """Dataset ID.
+
+        :rtype: str
+        :returns: the dataset ID.
+        """
+        return self._dataset_id
+
+    @property
+    def full_dataset_id(self):
+        """ID for the dataset resource, in the form "project_id:dataset_id".
 
         :rtype: str, or ``NoneType``
         :returns: the ID (None until set from the server).
@@ -302,68 +396,75 @@ class Dataset(object):
             raise ValueError("Pass a string, or None")
         self._properties['location'] = value
 
+    @property
+    def labels(self):
+        """Labels for the dataset.
+
+        This method always returns a dict. To change a dataset's labels,
+        modify the dict, then call ``Client.update_dataset``. To delete a
+        label, set its value to ``None`` before updating.
+
+        :rtype: dict, {str -> str}
+        :returns: A dict of the the dataset's labels.
+        """
+        return self._properties['labels']
+
+    @labels.setter
+    def labels(self, value):
+        """Update labels for the dataset.
+
+        :type value: dict, {str -> str}
+        :param value: new labels
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, dict):
+            raise ValueError("Pass a dict")
+        self._properties['labels'] = value
+
     @classmethod
-    def from_api_repr(cls, resource, client):
+    def from_api_repr(cls, resource):
         """Factory:  construct a dataset given its API representation
 
         :type resource: dict
         :param resource: dataset resource representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.client.Client`
-        :param client: Client which holds credentials and project
-                       configuration for the dataset.
-
-        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`
+        :rtype: :class:`~google.cloud.bigquery.Dataset`
         :returns: Dataset parsed from ``resource``.
         """
-        if ('datasetReference' not in resource or
-                'datasetId' not in resource['datasetReference']):
+        dsr = resource.get('datasetReference')
+        if dsr is None or 'datasetId' not in dsr:
             raise KeyError('Resource lacks required identity information:'
                            '["datasetReference"]["datasetId"]')
-        name = resource['datasetReference']['datasetId']
-        dataset = cls(name, client=client)
+        dataset_id = dsr['datasetId']
+        dataset = cls(DatasetReference(dsr['projectId'], dataset_id))
         dataset._set_properties(resource)
         return dataset
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`google.cloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
-
     @staticmethod
-    def _parse_access_grants(access):
-        """Parse a resource fragment into a set of access grants.
+    def _parse_access_entries(access):
+        """Parse a resource fragment into a set of access entries.
 
         ``role`` augments the entity type and present **unless** the entity
         type is ``view``.
 
         :type access: list of mappings
-        :param access: each mapping represents a single access grant.
+        :param access: each mapping represents a single access entry.
 
-        :rtype: list of :class:`AccessGrant`
-        :returns: a list of parsed grants.
-        :raises: :class:`ValueError` if a grant in ``access`` has more keys
+        :rtype: list of :class:`~google.cloud.bigquery.AccessEntry`
+        :returns: a list of parsed entries.
+        :raises: :class:`ValueError` if a entry in ``access`` has more keys
                  than ``role`` and one additional key.
         """
         result = []
-        for grant in access:
-            grant = grant.copy()
-            role = grant.pop('role', None)
-            entity_type, entity_id = grant.popitem()
-            if len(grant) != 0:
-                raise ValueError('Grant has unexpected keys remaining.', grant)
+        for entry in access:
+            entry = entry.copy()
+            role = entry.pop('role', None)
+            entity_type, entity_id = entry.popitem()
+            if len(entry) != 0:
+                raise ValueError('Entry has unexpected keys remaining.', entry)
             result.append(
-                AccessGrant(role, entity_type, entity_id))
+                AccessEntry(role, entity_type, entity_id))
         return result
 
     def _set_properties(self, api_response):
@@ -375,7 +476,7 @@ class Dataset(object):
         self._properties.clear()
         cleaned = api_response.copy()
         access = cleaned.pop('access', ())
-        self.access_grants = self._parse_access_grants(access)
+        self.access_entries = self._parse_access_entries(access)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
@@ -383,15 +484,17 @@ class Dataset(object):
         if 'defaultTableExpirationMs' in cleaned:
             cleaned['defaultTableExpirationMs'] = int(
                 cleaned['defaultTableExpirationMs'])
+        if 'labels' not in cleaned:
+            cleaned['labels'] = {}
         self._properties.update(cleaned)
 
     def _build_access_resource(self):
-        """Generate a resource fragment for dataset's access grants."""
+        """Generate a resource fragment for dataset's access entries."""
         result = []
-        for grant in self.access_grants:
-            info = {grant.entity_type: grant.entity_id}
-            if grant.role is not None:
-                info['role'] = grant.role
+        for entry in self.access_entries:
+            info = {entry.entity_type: entry.entity_id}
+            if entry.role is not None:
+                info['role'] = entry.role
             result.append(info)
         return result
 
@@ -399,7 +502,7 @@ class Dataset(object):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'datasetReference': {
-                'projectId': self.project, 'datasetId': self.name},
+                'projectId': self.project, 'datasetId': self.dataset_id},
         }
         if self.default_table_expiration_ms is not None:
             value = self.default_table_expiration_ms
@@ -414,194 +517,20 @@ class Dataset(object):
         if self.location is not None:
             resource['location'] = self.location
 
-        if len(self.access_grants) > 0:
+        if len(self.access_entries) > 0:
             resource['access'] = self._build_access_resource()
+
+        resource['labels'] = self.labels  # labels is never None
 
         return resource
 
-    def create(self, client=None):
-        """API call:  create the dataset via a PUT request.
+    def table(self, table_id):
+        """Constructs a TableReference.
 
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert
+        :type table_id: str
+        :param table_id: the ID of the table.
 
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
+        :rtype: :class:`~google.cloud.bigquery.TableReference`
+        :returns: a TableReference for a table in this dataset.
         """
-        client = self._require_client(client)
-        path = '/projects/%s/datasets' % (self.project,)
-        api_response = client._connection.api_request(
-            method='POST', path=path, data=self._build_resource())
-        self._set_properties(api_response)
-
-    def exists(self, client=None):
-        """API call:  test for the existence of the dataset via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: bool
-        :returns: Boolean indicating existence of the dataset.
-        """
-        client = self._require_client(client)
-
-        try:
-            client._connection.api_request(method='GET', path=self.path,
-                                           query_params={'fields': 'id'})
-        except NotFound:
-            return False
-        else:
-            return True
-
-    def reload(self, client=None):
-        """API call:  refresh dataset properties via a GET request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-
-        api_response = client._connection.api_request(
-            method='GET', path=self.path)
-        self._set_properties(api_response)
-
-    def patch(self, client=None, **kw):
-        """API call:  update individual dataset properties via a PATCH request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/patch
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :type kw: ``dict``
-        :param kw: properties to be patched.
-
-        :raises: ValueError for invalid value types.
-        """
-        client = self._require_client(client)
-
-        partial = {}
-
-        if 'default_table_expiration_ms' in kw:
-            value = kw['default_table_expiration_ms']
-            if not isinstance(value, six.integer_types) and value is not None:
-                raise ValueError("Pass an integer, or None")
-            partial['defaultTableExpirationMs'] = value
-
-        if 'description' in kw:
-            partial['description'] = kw['description']
-
-        if 'friendly_name' in kw:
-            partial['friendlyName'] = kw['friendly_name']
-
-        if 'location' in kw:
-            partial['location'] = kw['location']
-
-        api_response = client._connection.api_request(
-            method='PATCH', path=self.path, data=partial)
-        self._set_properties(api_response)
-
-    def update(self, client=None):
-        """API call:  update dataset properties via a PUT request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/update
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        api_response = client._connection.api_request(
-            method='PUT', path=self.path, data=self._build_resource())
-        self._set_properties(api_response)
-
-    def delete(self, client=None):
-        """API call:  delete the dataset via a DELETE request.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete
-
-        :type client: :class:`~google.cloud.bigquery.client.Client` or
-                      ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        client._connection.api_request(method='DELETE', path=self.path)
-
-    def list_tables(self, max_results=None, page_token=None):
-        """List tables for the project associated with this client.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
-
-        :type max_results: int
-        :param max_results: (Optional) Maximum number of tables to return.
-                            If not passed, defaults to a value set by the API.
-
-        :type page_token: str
-        :param page_token: (Optional) Opaque marker for the next "page" of
-                           datasets. If not passed, the API will return the
-                           first page of datasets.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
-                  contained within the current dataset.
-        """
-        path = '/projects/%s/datasets/%s/tables' % (self.project, self.name)
-        result = page_iterator.HTTPIterator(
-            client=self._client,
-            api_request=self._client._connection.api_request,
-            path=path,
-            item_to_value=_item_to_table,
-            items_key='tables',
-            page_token=page_token,
-            max_results=max_results)
-        result.dataset = self
-        return result
-
-    def table(self, name, schema=()):
-        """Construct a table bound to this dataset.
-
-        :type name: str
-        :param name: Name of the table.
-
-        :type schema: list of :class:`google.cloud.bigquery.table.SchemaField`
-        :param schema: The table's schema
-
-        :rtype: :class:`google.cloud.bigquery.table.Table`
-        :returns: a new ``Table`` instance
-        """
-        return Table(name, dataset=self, schema=schema)
-
-
-def _item_to_table(iterator, resource):
-    """Convert a JSON table to the native object.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type resource: dict
-    :param resource: An item to be converted to a table.
-
-    :rtype: :class:`~google.cloud.bigquery.table.Table`
-    :returns: The next table in the page.
-    """
-    return Table.from_api_repr(resource, iterator.dataset)
+        return TableReference(self, table_id)

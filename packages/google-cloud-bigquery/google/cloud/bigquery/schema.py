@@ -32,7 +32,7 @@ class SchemaField(object):
     :type description: str
     :param description: optional description for the field.
 
-    :type fields: tuple of :class:`SchemaField`
+    :type fields: tuple of :class:`~google.cloud.bigquery.SchemaField`
     :param fields: subfields (requires ``field_type`` of 'RECORD').
     """
     def __init__(self, name, field_type, mode='NULLABLE',
@@ -126,7 +126,7 @@ class SchemaField(object):
         return answer
 
     def _key(self):
-        """A tuple key that unique-ly describes this field.
+        """A tuple key that uniquely describes this field.
 
         Used to compute this instance's hashcode and evaluate equality.
 
@@ -154,3 +154,50 @@ class SchemaField(object):
 
     def __repr__(self):
         return 'SchemaField{}'.format(self._key())
+
+
+def _parse_schema_resource(info):
+    """Parse a resource fragment into a schema field.
+
+    :type info: mapping
+    :param info: should contain a "fields" key to be parsed
+
+    :rtype: list of :class:`SchemaField`, or ``NoneType``
+    :returns: a list of parsed fields, or ``None`` if no "fields" key is
+                present in ``info``.
+    """
+    if 'fields' not in info:
+        return ()
+
+    schema = []
+    for r_field in info['fields']:
+        name = r_field['name']
+        field_type = r_field['type']
+        mode = r_field.get('mode', 'NULLABLE')
+        description = r_field.get('description')
+        sub_fields = _parse_schema_resource(r_field)
+        schema.append(
+            SchemaField(name, field_type, mode, description, sub_fields))
+    return schema
+
+
+def _build_schema_resource(fields):
+    """Generate a resource fragment for a schema.
+
+    :type fields: sequence of :class:`SchemaField`
+    :param fields: schema to be dumped
+
+    :rtype: mapping
+    :returns: a mapping describing the schema of the supplied fields.
+    """
+    infos = []
+    for field in fields:
+        info = {'name': field.name,
+                'type': field.field_type,
+                'mode': field.mode}
+        if field.description is not None:
+            info['description'] = field.description
+        if field.fields:
+            info['fields'] = _build_schema_resource(field.fields)
+        infos.append(info)
+    return infos

@@ -15,10 +15,10 @@
 """Cursor for the Google BigQuery DB-API."""
 
 import collections
-import uuid
 
 import six
 
+from google.cloud.bigquery import job
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 import google.cloud.exceptions
@@ -52,7 +52,7 @@ class Cursor(object):
         # a single row at a time.
         self.arraysize = 1
         self._query_data = None
-        self._query_results = None
+        self._query_job = None
 
     def close(self):
         """No-op."""
@@ -133,10 +133,8 @@ class Cursor(object):
             is generated at random.
         """
         self._query_data = None
-        self._query_results = None
+        self._query_job = None
         client = self.connection._client
-        if job_id is None:
-            job_id = str(uuid.uuid4())
 
         # The DB-API uses the pyformat formatting, since the way BigQuery does
         # query parameters was not one of the standard options. Convert both
@@ -146,20 +144,19 @@ class Cursor(object):
             operation, parameters=parameters)
         query_parameters = _helpers.to_query_parameters(parameters)
 
-        query_job = client.run_async_query(
-            job_id,
-            formatted_operation,
-            query_parameters=query_parameters)
-        query_job.use_legacy_sql = False
+        config = job.QueryJobConfig()
+        config.query_parameters = query_parameters
+        config.use_legacy_sql = False
+        self._query_job = client.query(
+            formatted_operation, job_config=config, job_id=job_id)
 
         # Wait for the query to finish.
         try:
-            query_job.result()
+            self._query_job.result()
         except google.cloud.exceptions.GoogleCloudError:
-            raise exceptions.DatabaseError(query_job.errors)
+            raise exceptions.DatabaseError(self._query_job.errors)
 
-        query_results = query_job.query_results()
-        self._query_results = query_results
+        query_results = self._query_job.query_results()
         self._set_rowcount(query_results)
         self._set_description(query_results.schema)
 
@@ -180,16 +177,24 @@ class Cursor(object):
 
         Mutates self to indicate that iteration has started.
         """
-        if self._query_results is None:
+        if self._query_job is None:
             raise exceptions.InterfaceError(
                 'No query results: execute() must be called before fetch.')
 
-        if size is None:
-            size = self.arraysize
+        is_dml = (
+            self._query_job.statement_type
+            and self._query_job.statement_type.upper() != 'SELECT')
+        if is_dml:
+            self._query_data = iter([])
+            return
 
         if self._query_data is None:
-            self._query_data = iter(
-                self._query_results.fetch_data(max_results=size))
+            client = self.connection._client
+            # TODO(tswast): pass in page size to list_rows based on arraysize
+            rows_iter = client.list_rows(
+                self._query_job.destination,
+                selected_fields=self._query_job.query_results().schema)
+            self._query_data = iter(rows_iter)
 
     def fetchone(self):
         """Fetch a single row from the results of the last ``execute*()`` call.
@@ -247,7 +252,7 @@ class Cursor(object):
             if called before ``execute()``.
         """
         self._try_fetch()
-        return [row for row in self._query_data]
+        return list(self._query_data)
 
     def setinputsizes(self, sizes):
         """No-op."""
