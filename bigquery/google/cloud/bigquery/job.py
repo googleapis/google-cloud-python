@@ -509,16 +509,18 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def result(self, timeout=None):
         """Start the job and wait for it to complete and get the result.
 
-        :type timeout: int
-        :param timeout: How long to wait for job to complete before raising
-            a :class:`TimeoutError`.
+        :type timeout: float
+        :param timeout:
+            How long (in seconds) to wait for job to complete before raising
+            a :class:`concurrent.futures.TimeoutError`.
 
         :rtype: _AsyncJob
         :returns: This instance.
 
-        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
-            failed or  :class:`TimeoutError` if the job did not complete in the
-            given timeout.
+        :raises:
+            :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or :class:`concurrent.futures.TimeoutError` if the job did
+            not complete in the given timeout.
         """
         if self.state is None:
             self._begin()
@@ -1913,8 +1915,8 @@ class QueryJob(_AsyncJob):
 
         :type timeout: float
         :param timeout:
-            How long to wait for job to complete before raising a
-            :class:`TimeoutError`.
+            How long (in seconds) to wait for job to complete before raising
+            a :class:`concurrent.futures.TimeoutError`.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the call that retrieves rows.
@@ -1927,9 +1929,10 @@ class QueryJob(_AsyncJob):
             from the total number of rows in the current page:
             ``iterator.page.num_items``).
 
-        :raises: :class:`~google.cloud.exceptions.GoogleCloudError` if the job
-            failed or  :class:`TimeoutError` if the job did not complete in the
-            given timeout.
+        :raises:
+            :class:`~google.cloud.exceptions.GoogleCloudError` if the job
+            failed or :class:`concurrent.futures.TimeoutError` if the job did
+            not complete in the given timeout.
         """
         super(QueryJob, self).result(timeout=timeout)
         # Return an iterator instead of returning the job.
