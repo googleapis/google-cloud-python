@@ -35,5 +35,5 @@ def safe_invoke_callback(callback, *args, **kwargs):
     # We intentionally want to swallow all exceptions.
     try:
         return callback(*args, **kwargs)
-    except:
+    except Exception:
         _LOGGER.exception('Error while executing Future callback.')
