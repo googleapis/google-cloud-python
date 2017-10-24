@@ -572,7 +572,7 @@ class Client(ClientWithProject):
         :param project:
             project ID owning the job (defaults to the client's project)
 
-        :type retry: :class:`google.api.core.retry.Retry`
+        :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: One of:
@@ -1178,7 +1178,7 @@ class Client(ClientWithProject):
             ``iterator.page.num_items``).
 
         :raises:
-            :class:`~google.api.core.exceptions.GoogleAPICallError` if the
+            :class:`~google.api_core.exceptions.GoogleAPICallError` if the
             job failed or :class:`concurrent.futures.TimeoutError` if the job
             did not complete in the given timeout.
 
