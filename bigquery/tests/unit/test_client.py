@@ -2670,7 +2670,7 @@ class TestClient(unittest.TestCase):
             mock_result.side_effect = concurrent.futures.TimeoutError(
                 'time is up')
 
-            with self.assertRaises(concurrent.futures.TimeoutError) as context:
+            with self.assertRaises(concurrent.futures.TimeoutError):
                 client.query_rows(
                     QUERY,
                     job_id_prefix='test_query_rows_w_timeout_',
@@ -2679,7 +2679,6 @@ class TestClient(unittest.TestCase):
         # Should attempt to create and cancel the job.
         self.assertEqual(len(conn._requested), 2)
         req = conn._requested[0]
-        configuration = req['data']['configuration']
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/projects/PROJECT/jobs')
         cancelreq = conn._requested[1]
@@ -2709,7 +2708,6 @@ class TestClient(unittest.TestCase):
         # Should attempt to create and cancel the job.
         self.assertEqual(len(conn._requested), 2)
         req = conn._requested[0]
-        configuration = req['data']['configuration']
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/projects/PROJECT/jobs')
         cancelreq = conn._requested[1]

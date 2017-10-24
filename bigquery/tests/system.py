@@ -25,7 +25,6 @@ import uuid
 
 import six
 
-from google.api_core.exceptions import GoogleAPICallError
 from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
@@ -822,7 +821,7 @@ class TestBigQuery(unittest.TestCase):
             Config.CLIENT.query_rows('invalid syntax;')
 
     def test_query_rows_w_timeout(self):
-        with self.assertRaises(concurrent.futures.TimeoutError) as context:
+        with self.assertRaises(concurrent.futures.TimeoutError):
             Config.CLIENT.query_rows(
                 'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
                 job_id_prefix='test_query_rows_w_timeout_',
