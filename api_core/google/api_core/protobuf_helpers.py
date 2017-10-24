@@ -47,13 +47,12 @@ def check_oneof(**kwargs):
     """Raise ValueError if more than one keyword argument is not none.
     Args:
         kwargs (dict): The keyword arguments sent to the function.
-    Returns: None
     Raises:
         ValueError: If more than one entry in kwargs is not none.
     """
     # Sanity check: If no keyword arguments were sent, this is fine.
     if not kwargs:
-        return None
+        return
 
     not_nones = [val for val in kwargs.values() if val is not None]
     if len(not_nones) > 1:
