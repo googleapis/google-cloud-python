@@ -368,7 +368,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         config = resource['configuration'][cls._JOB_TYPE]
         return job_id, config
 
-    def begin(self, client=None, retry=DEFAULT_RETRY):
+    def _begin(self, client=None, retry=DEFAULT_RETRY):
         """API call:  begin the job via a POST request
 
         See
@@ -521,7 +521,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             given timeout.
         """
         if self.state is None:
-            self.begin()
+            self._begin()
         # TODO: modify PollingFuture so it can pass a retry argument to done().
         return super(_AsyncJob, self).result(timeout=timeout)
 

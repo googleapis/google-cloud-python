@@ -553,7 +553,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         job._properties['status'] = {'state': 'RUNNING'}
 
         with self.assertRaises(ValueError):
-            job.begin()
+            job._begin()
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
@@ -568,7 +568,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client)
 
-        job.begin()
+        job._begin()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -608,7 +608,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.autodetect = True
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF,
                              client, config)
-        job.begin()
+        job._begin()
 
         sent = {
             'jobReference': {
@@ -688,7 +688,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         config.source_format = 'CSV'
         config.write_disposition = 'WRITE_TRUNCATE'
 
-        job.begin(client=client2)
+        job._begin(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -1019,7 +1019,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         destination = self._table_ref(self.DESTINATION_TABLE)
         job = self._make_one(self.JOB_ID, [source], destination, client)
 
-        job.begin()
+        job._begin()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -1077,7 +1077,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         config.write_disposition = 'WRITE_TRUNCATE'
         job = self._make_one(self.JOB_ID, [source], destination, client1,
                              config)
-        job.begin(client=client2)
+        job._begin(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -1339,7 +1339,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
                              client)
 
-        job.begin()
+        job._begin()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -1394,7 +1394,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_ID, source, [self.DESTINATION_URI],
                              client1, job_config)
 
-        job.begin(client=client2)
+        job._begin(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -2243,7 +2243,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
 
-        job.begin()
+        job._begin()
 
         self.assertIsNone(job.default_dataset)
         self.assertEqual(job.udf_resources, [])
@@ -2324,7 +2324,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client1, job_config=config)
 
-        job.begin(client=client2)
+        job._begin(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -2373,7 +2373,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
 
-        job.begin()
+        job._begin()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -2431,7 +2431,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=jconfig)
 
-        job.begin()
+        job._begin()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -2486,7 +2486,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=jconfig)
 
-        job.begin()
+        job._begin()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -2572,7 +2572,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
 
-        job.begin()
+        job._begin()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -2615,7 +2615,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(
             self.JOB_ID, self.QUERY, client, job_config=config)
 
-        job.begin()
+        job._begin()
         self.assertEqual(job.udf_resources, [])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
