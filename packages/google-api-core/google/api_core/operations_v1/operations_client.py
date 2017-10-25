@@ -35,7 +35,10 @@ automatically by another client class to deal with operations.
     /operations.proto
 """
 
+import functools
+
 from google.api_core import gapic_v1
+from google.api_core import page_iterator
 from google.api_core.operations_v1 import operations_client_config
 from google.longrunning import operations_pb2
 
@@ -71,12 +74,6 @@ class OperationsClient(object):
             self.operations_stub.ListOperations,
             default_retry=method_configs['ListOperations'].retry,
             default_timeout=method_configs['ListOperations'].timeout)
-
-        self._list_operations = gapic_v1.method.wrap_with_paging(
-            self._list_operations,
-            'operations',
-            'page_token',
-            'next_page_token')
 
         self._cancel_operation = gapic_v1.method.wrap_method(
             self.operations_stub.CancelOperation,
@@ -182,7 +179,20 @@ class OperationsClient(object):
         # Create the request object.
         request = operations_pb2.ListOperationsRequest(
             name=name, filter=filter_)
-        return self._list_operations(request, retry=retry, timeout=timeout)
+
+        # Create the method used to fetch pages
+        method = functools.partial(
+            self._list_operations, retry=retry, timeout=timeout)
+
+        iterator = page_iterator.GRPCIterator(
+            client=None,
+            method=method,
+            request=request,
+            items_field='operations',
+            request_token_field='page_token',
+            response_token_field='next_page_token')
+
+        return iterator
 
     def cancel_operation(
             self, name,
