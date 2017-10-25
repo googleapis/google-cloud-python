@@ -378,7 +378,7 @@ def from_http_response(response):
     error_message = payload.get('error', {}).get('message', 'unknown error')
     errors = payload.get('error', {}).get('errors', ())
 
-    message = '{method} {url}: {error}'.format(
+    message = u'{method} {url}: {error}'.format(
         method=response.request.method,
         url=response.request.url,
         error=error_message)
