@@ -135,6 +135,22 @@ def test_from_http_response_bad_json_content():
     assert exception.message == 'POST https://example.com/: unknown error'
 
 
+def test_from_http_response_json_unicode_content():
+    response = make_response(json.dumps({
+        'error': {
+            'message': u'\u2019 message',
+            'errors': ['1', '2']
+        }
+    }).encode('utf-8'))
+
+    exception = exceptions.from_http_response(response)
+
+    assert isinstance(exception, exceptions.NotFound)
+    assert exception.code == http_client.NOT_FOUND
+    assert exception.message == u'POST https://example.com/: \u2019 message'
+    assert exception.errors == ['1', '2']
+
+
 def test_from_grpc_status():
     message = 'message'
     exception = exceptions.from_grpc_status(
