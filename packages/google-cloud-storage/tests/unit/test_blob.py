@@ -441,7 +441,9 @@ class Test_Blob(unittest.TestCase):
         response.status_code = status_code
         response.headers.update(headers)
         if stream:
-            response.raw = io.BytesIO(content)
+            raw = io.BytesIO(content)
+            raw.headers = headers
+            response.raw = raw
             response._content = False
         else:
             response.raw = None
@@ -677,15 +679,18 @@ class Test_Blob(unittest.TestCase):
         empty_hash = base64.b64encode(
             hashlib.md5(b'').digest()).decode(u'utf-8')
         headers = {'x-goog-hash': 'md5=' + empty_hash}
+        mock_raw = mock.Mock(headers=headers, spec=['headers'])
         response = mock.MagicMock(
             headers=headers,
             status_code=http_client.OK,
+            raw=mock_raw,
             spec=[
                 '__enter__',
                 '__exit__',
                 'headers',
                 'iter_content',
                 'status_code',
+                'raw',
             ],
         )
         # i.e. context manager returns ``self``.
