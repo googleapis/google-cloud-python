@@ -17,13 +17,13 @@
 
 import six
 
-from google.api.core.exceptions import RetryError
-from google.api.core.exceptions import Aborted
-from google.api.core.exceptions import DeadlineExceeded
-from google.api.core.exceptions import ServiceUnavailable
-from google.api.core.exceptions import from_grpc_status
-from google.api.core.retry import Retry
-from google.api.core.retry import if_exception_type
+from google.api_core.exceptions import RetryError
+from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import DeadlineExceeded
+from google.api_core.exceptions import ServiceUnavailable
+from google.api_core.exceptions import from_grpc_status
+from google.api_core.retry import Retry
+from google.api_core.retry import if_exception_type
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
@@ -326,7 +326,7 @@ class Table(object):
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
-        :type retry: :class:`~google.api.core.retry.Retry`
+        :type retry: :class:`~google.api_core.retry.Retry`
         :param retry: (Optional) Retry delay and deadline arguments. Can be
                       specified using ``DEFAULT_RETRY.with_delay`` and/or
                       ``DEFAULT_RETRY.with_deadline``.
@@ -430,7 +430,7 @@ class _RetryableMutateRowsWorker(object):
 
         :rtype: list
         :return: ``responses_statuses`` (`google.rpc.status_pb2.Status`)
-        :raises: :exc:`~google.api.core.exceptions.ServiceUnavailable` if any
+        :raises: :exc:`~google.api_core.exceptions.ServiceUnavailable` if any
                  row returned a transient error. An artificial exception
                  to work with ``DEFAULT_RETRY``.
         """
