@@ -76,4 +76,3 @@ def get_messages(module):
         if inspect.isclass(candidate) and issubclass(candidate, Message):
             answer[name] = candidate
     return answer
-
