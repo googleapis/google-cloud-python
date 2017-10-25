@@ -60,7 +60,7 @@ class _AbstractQueryParameter(object):
         :type resource: dict
         :param resource: JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.ScalarQueryParameter`
+        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
         """
         raise NotImplementedError
 
@@ -105,7 +105,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
                      :class:`datetime.date`.
         :param value: the scalar parameter value.
 
-        :rtype: :class:`~google.cloud.bigquery.ScalarQueryParameter`
+        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
         :returns: instance without name
         """
         return cls(None, type_, value)
@@ -117,7 +117,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         :type resource: dict
         :param resource: JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.ScalarQueryParameter`
+        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`
         :returns: instance
         """
         name = resource.get('name')
@@ -155,7 +155,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
 
         Returns:
             tuple: The contents of this
-                   :class:`~google.cloud.bigquery.ScalarQueryParameter`.
+                   :class:`~google.cloud.bigquery.query.ScalarQueryParameter`.
         """
         return (
             self.name,
@@ -207,7 +207,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         :type values: list of appropriate scalar type
         :param values: the parameter array values.
 
-        :rtype: :class:`~google.cloud.bigquery.ArrayQueryParameter`
+        :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`
         :returns: instance without name
         """
         return cls(None, array_type, values)
@@ -250,7 +250,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         :type resource: dict
         :param resource: JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.ArrayQueryParameter`
+        :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`
         :returns: instance
         """
         array_type = resource['parameterType']['arrayType']['type']
@@ -295,7 +295,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 
         Returns:
             tuple: The contents of this
-                   :class:`~google.cloud.bigquery.ArrayQueryParameter`.
+                   :class:`~google.cloud.bigquery.query.ArrayQueryParameter`.
         """
         return (
             self.name,
@@ -323,9 +323,9 @@ class StructQueryParameter(_AbstractQueryParameter):
                  parameter can only be addressed via position (``?``).
 
     :type sub_params:
-        tuple of :class:`~google.cloud.bigquery.ScalarQueryParameter`,
-        :class:`~google.cloud.bigquery.ArrayQueryParameter`, or
-        :class:`~google.cloud.bigquery.StructQueryParameter`
+        tuple of :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
+        :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or
+        :class:`~google.cloud.bigquery.query.StructQueryParameter`
     :param sub_params: the sub-parameters for the struct
     """
     def __init__(self, name, *sub_params):
@@ -348,12 +348,13 @@ class StructQueryParameter(_AbstractQueryParameter):
         """Factory for positional parameters.
 
         :type sub_params:
-            tuple of :class:`~google.cloud.bigquery.ScalarQueryParameter`,
-            :class:`~google.cloud.bigquery.ArrayQueryParameter`, or
-            :class:`~google.cloud.bigquery.StructQueryParameter`
+            tuple of
+            :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
+            :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or
+            :class:`~google.cloud.bigquery.query.StructQueryParameter`
         :param sub_params: the sub-parameters for the struct
 
-        :rtype: :class:`~google.cloud.bigquery.StructQueryParameter`
+        :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`
         :returns: instance without name
         """
         return cls(None, *sub_params)
@@ -365,7 +366,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         :type resource: dict
         :param resource: JSON mapping of parameter
 
-        :rtype: :class:`~google.cloud.bigquery.StructQueryParameter`
+        :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`
         :returns: instance
         """
         name = resource.get('name')
