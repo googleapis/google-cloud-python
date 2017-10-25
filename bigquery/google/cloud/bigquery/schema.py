@@ -32,7 +32,7 @@ class SchemaField(object):
     :type description: str
     :param description: optional description for the field.
 
-    :type fields: tuple of :class:`~google.cloud.bigquery.SchemaField`
+    :type fields: tuple of :class:`~google.cloud.bigquery.schema.SchemaField`
     :param fields: subfields (requires ``field_type`` of 'RECORD').
     """
     def __init__(self, name, field_type, mode='NULLABLE',
@@ -53,7 +53,8 @@ class SchemaField(object):
                 :meth:`to_api_repr`.
 
         Returns:
-            SchemaField: The ``SchemaField`` object.
+            google.cloud.biquery.schema.SchemaField:
+                The ``SchemaField`` object.
         """
         return cls(
             field_type=api_repr['type'].upper(),
@@ -131,7 +132,8 @@ class SchemaField(object):
         Used to compute this instance's hashcode and evaluate equality.
 
         Returns:
-            tuple: The contents of this :class:`SchemaField`.
+            tuple: The contents of this
+                   :class:`~google.cloud.bigquery.schema.SchemaField`.
         """
         return (
             self._name,
@@ -162,7 +164,9 @@ def _parse_schema_resource(info):
     :type info: mapping
     :param info: should contain a "fields" key to be parsed
 
-    :rtype: list of :class:`SchemaField`, or ``NoneType``
+    :rtype:
+        list of :class:`google.cloud.bigquery.schema.SchemaField`, or
+        ``NoneType``
     :returns: a list of parsed fields, or ``None`` if no "fields" key is
                 present in ``info``.
     """
@@ -184,7 +188,8 @@ def _parse_schema_resource(info):
 def _build_schema_resource(fields):
     """Generate a resource fragment for a schema.
 
-    :type fields: sequence of :class:`SchemaField`
+    :type fields:
+        sequence of :class:`~google.cloud.bigquery.schema.SchemaField`
     :param fields: schema to be dumped
 
     :rtype: mapping

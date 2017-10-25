@@ -146,7 +146,7 @@ class DatasetReference(object):
         :type table_id: str
         :param table_id: the ID of the table.
 
-        :rtype: :class:`google.cloud.bigquery.TableReference`
+        :rtype: :class:`google.cloud.bigquery.table.TableReference`
         :returns: a TableReference for a table in this dataset.
         """
         return TableReference(self, table_id)
@@ -197,7 +197,7 @@ class Dataset(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets
 
-    :type dataset_ref: :class:`~google.cloud.bigquery.DatasetReference`
+    :type dataset_ref: :class:`~google.cloud.bigquery.dataset.DatasetReference`
     :param dataset_ref: a pointer to a dataset
     """
 
@@ -238,7 +238,8 @@ class Dataset(object):
     def access_entries(self, value):
         """Update dataset's access entries
 
-        :type value: list of :class:`~google.cloud.bigquery.AccessEntry`
+        :type value:
+            list of :class:`~google.cloud.bigquery.dataset.AccessEntry`
         :param value: roles granted to entities for this dataset
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
@@ -401,8 +402,9 @@ class Dataset(object):
         """Labels for the dataset.
 
         This method always returns a dict. To change a dataset's labels,
-        modify the dict, then call ``Client.update_dataset``. To delete a
-        label, set its value to ``None`` before updating.
+        modify the dict, then call
+        :meth:`google.cloud.bigquery.client.Client.update_dataset`. To delete
+        a label, set its value to ``None`` before updating.
 
         :rtype: dict, {str -> str}
         :returns: A dict of the the dataset's labels.
@@ -429,7 +431,7 @@ class Dataset(object):
         :type resource: dict
         :param resource: dataset resource representation returned from the API
 
-        :rtype: :class:`~google.cloud.bigquery.Dataset`
+        :rtype: :class:`~google.cloud.bigquery.dataset.Dataset`
         :returns: Dataset parsed from ``resource``.
         """
         dsr = resource.get('datasetReference')
@@ -451,7 +453,7 @@ class Dataset(object):
         :type access: list of mappings
         :param access: each mapping represents a single access entry.
 
-        :rtype: list of :class:`~google.cloud.bigquery.AccessEntry`
+        :rtype: list of :class:`~google.cloud.bigquery.dataset.AccessEntry`
         :returns: a list of parsed entries.
         :raises: :class:`ValueError` if a entry in ``access`` has more keys
                  than ``role`` and one additional key.
@@ -530,7 +532,7 @@ class Dataset(object):
         :type table_id: str
         :param table_id: the ID of the table.
 
-        :rtype: :class:`~google.cloud.bigquery.TableReference`
+        :rtype: :class:`~google.cloud.bigquery.table.TableReference`
         :returns: a TableReference for a table in this dataset.
         """
         return TableReference(self, table_id)

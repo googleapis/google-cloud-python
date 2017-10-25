@@ -153,7 +153,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     :type job_id: str
     :param job_id: the job's ID in the project associated with the client.
 
-    :type client: :class:`google.cloud.bigquery.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration.
     """
     def __init__(self, job_id, client):
@@ -176,12 +176,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     def _require_client(self, client):
         """Check client or verify over-ride.
 
-        :type client: :class:`~google.cloud.bigquery.Client` or
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :rtype: :class:`google.cloud.bigquery.Client`
+        :rtype: :class:`google.cloud.bigquery.client.Client`
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
@@ -374,7 +374,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert
 
-        :type client: :class:`~google.cloud.bigquery.Client` or
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
@@ -403,7 +403,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
-        :type client: :class:`~google.cloud.bigquery.Client` or
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
@@ -431,7 +431,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
-        :type client: :class:`~google.cloud.bigquery.Client` or
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
@@ -450,7 +450,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel
 
-        :type client: :class:`~google.cloud.bigquery.Client` or
+        :type client: :class:`~google.cloud.bigquery.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
@@ -665,7 +665,7 @@ class LoadJobConfig(object):
             An extract job configuration in the same representation as is
             returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.ExtractJobConfig`
+        :rtype: :class:`google.cloud.bigquery.job.LoadJobConfig`
         :returns: Configuration parsed from ``resource``.
         """
         schema = resource.pop('schema', {'fields': ()})
@@ -693,7 +693,7 @@ class LoadJob(_AsyncJob):
     :type destination: :class:`google.cloud.bigquery.TableReference`
     :param destination: reference to table into which data is to be loaded.
 
-    :type client: :class:`google.cloud.bigquery.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
@@ -714,98 +714,98 @@ class LoadJob(_AsyncJob):
     @property
     def allow_jagged_rows(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.allow_jagged_rows`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.allow_jagged_rows`.
         """
         return self._configuration.allow_jagged_rows
 
     @property
     def allow_quoted_newlines(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.allow_quoted_newlines`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.allow_quoted_newlines`.
         """
         return self._configuration.allow_quoted_newlines
 
     @property
     def autodetect(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.autodetect`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.autodetect`.
         """
         return self._configuration.autodetect
 
     @property
     def create_disposition(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.create_disposition`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.create_disposition`.
         """
         return self._configuration.create_disposition
 
     @property
     def encoding(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.encoding`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.encoding`.
         """
         return self._configuration.encoding
 
     @property
     def field_delimiter(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.field_delimiter`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.field_delimiter`.
         """
         return self._configuration.field_delimiter
 
     @property
     def ignore_unknown_values(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.ignore_unknown_values`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.ignore_unknown_values`.
         """
         return self._configuration.ignore_unknown_values
 
     @property
     def max_bad_records(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.max_bad_records`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.max_bad_records`.
         """
         return self._configuration.max_bad_records
 
     @property
     def null_marker(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.null_marker`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.null_marker`.
         """
         return self._configuration.null_marker
 
     @property
     def quote_character(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.quote_character`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.quote_character`.
         """
         return self._configuration.quote_character
 
     @property
     def skip_leading_rows(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.skip_leading_rows`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.skip_leading_rows`.
         """
         return self._configuration.skip_leading_rows
 
     @property
     def source_format(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.source_format`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.source_format`.
         """
         return self._configuration.source_format
 
     @property
     def write_disposition(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.write_disposition`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.write_disposition`.
         """
         return self._configuration.write_disposition
 
     @property
     def schema(self):
         """See
-        :class:`~google.cloud.bigquery.LoadJobConfig.schema`.
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.schema`.
         """
         return self._configuration.schema
 
@@ -886,11 +886,11 @@ class LoadJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.LoadJob`
+        :rtype: :class:`google.cloud.bigquery.job.LoadJob`
         :returns: Job parsed from ``resource``.
         """
         job_id, config_resource = cls._get_resource_config(resource)
@@ -945,7 +945,7 @@ class CopyJobConfig(object):
             An extract job configuration in the same representation as is
             returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.ExtractJobConfig`
+        :rtype: :class:`google.cloud.bigquery.job.CopyJobConfig`
         :returns: Configuration parsed from ``resource``.
         """
         config = cls()
@@ -965,11 +965,11 @@ class CopyJob(_AsyncJob):
     :type destination: :class:`google.cloud.bigquery.TableReference`
     :param destination: Table into which data is to be loaded.
 
-    :type client: :class:`google.cloud.bigquery.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-    :type job_config: :class:`~google.cloud.bigquery.CopyJobConfig`
+    :type job_config: :class:`~google.cloud.bigquery.job.CopyJobConfig`
     :param job_config:
         (Optional) Extra configuration options for the copy job.
     """
@@ -988,14 +988,14 @@ class CopyJob(_AsyncJob):
     @property
     def create_disposition(self):
         """See
-        :class:`~google.cloud.bigquery.CopyJobConfig.create_disposition`.
+        :attr:`google.cloud.bigquery.job.CopyJobConfig.create_disposition`.
         """
         return self._configuration.create_disposition
 
     @property
     def write_disposition(self):
         """See
-        :class:`~google.cloud.bigquery.CopyJobConfig.write_disposition`.
+        :attr:`google.cloud.bigquery.job.CopyJobConfig.write_disposition`.
         """
         return self._configuration.write_disposition
 
@@ -1042,11 +1042,11 @@ class CopyJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.CopyJob`
+        :rtype: :class:`google.cloud.bigquery.job.CopyJob`
         :returns: Job parsed from ``resource``.
         """
         job_id, config_resource = cls._get_resource_config(resource)
@@ -1120,7 +1120,7 @@ class ExtractJobConfig(object):
             An extract job configuration in the same representation as is
             returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.ExtractJobConfig`
+        :rtype: :class:`google.cloud.bigquery.job.ExtractJobConfig`
         :returns: Configuration parsed from ``resource``.
         """
         config = cls()
@@ -1142,11 +1142,11 @@ class ExtractJob(_AsyncJob):
         URIs describing where the extracted data will be written in Cloud
         Storage, using the format ``gs://<bucket_name>/<object_name_or_glob>``.
 
-    :type client: :class:`google.cloud.bigquery.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client:
         A client which holds credentials and project configuration.
 
-    :type job_config: :class:`~google.cloud.bigquery.ExtractJobConfig`
+    :type job_config: :class:`~google.cloud.bigquery.job.ExtractJobConfig`
     :param job_config:
         (Optional) Extra configuration options for the extract job.
     """
@@ -1166,28 +1166,28 @@ class ExtractJob(_AsyncJob):
     @property
     def compression(self):
         """See
-        :class:`~google.cloud.bigquery.ExtractJobConfig.compression`.
+        :attr:`google.cloud.bigquery.job.ExtractJobConfig.compression`.
         """
         return self._configuration.compression
 
     @property
     def destination_format(self):
         """See
-        :class:`~google.cloud.bigquery.ExtractJobConfig.destination_format`.
+        :attr:`google.cloud.bigquery.job.ExtractJobConfig.destination_format`.
         """
         return self._configuration.destination_format
 
     @property
     def field_delimiter(self):
         """See
-        :class:`~google.cloud.bigquery.ExtractJobConfig.field_delimiter`.
+        :attr:`google.cloud.bigquery.job.ExtractJobConfig.field_delimiter`.
         """
         return self._configuration.field_delimiter
 
     @property
     def print_header(self):
         """See
-        :class:`~google.cloud.bigquery.ExtractJobConfig.print_header`.
+        :attr:`google.cloud.bigquery.job.ExtractJobConfig.print_header`.
         """
         return self._configuration.print_header
 
@@ -1248,11 +1248,11 @@ class ExtractJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.ExtractJob`
+        :rtype: :class:`google.cloud.bigquery.job.ExtractJob`
         :returns: Job parsed from ``resource``.
         """
         job_id, config_resource = cls._get_resource_config(resource)
@@ -1353,7 +1353,7 @@ class QueryJobConfig(object):
             An extract job configuration in the same representation as is
             returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.ExtractJobConfig`
+        :rtype: :class:`google.cloud.bigquery.job.QueryJobConfig`
         :returns: Configuration parsed from ``resource``.
         """
         config = cls()
@@ -1369,7 +1369,9 @@ class QueryJobConfig(object):
 
     allow_large_results = _TypedApiResourceProperty(
         'allow_large_results', 'allowLargeResults', bool)
-    """See
+    """bool: Allow large query results tables (legacy SQL, only)
+
+    See
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.allowLargeResults
     """
 
@@ -1387,12 +1389,18 @@ class QueryJobConfig(object):
 
     destination = _TypedApiResourceProperty(
         'destination', 'destinationTable', TableReference)
-    """See
+    """
+    google.cloud.bigquery.table.TableReference: table where results are written
+
+    See
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
     """
 
     dry_run = _TypedApiResourceProperty('dry_run', 'dryRun', bool)
-    """See
+    """
+    bool: ``True`` if this query should be a dry run to estimate costs.
+
+    See
     https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.dryRun
     """
 
@@ -1497,11 +1505,11 @@ class QueryJob(_AsyncJob):
     :type query: str
     :param query: SQL query string
 
-    :type client: :class:`google.cloud.bigquery.Client`
+    :type client: :class:`google.cloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
 
-    :type job_config: :class:`~google.cloud.bigquery.QueryJobConfig`
+    :type job_config: :class:`~google.cloud.bigquery.job.QueryJobConfig`
     :param job_config:
         (Optional) Extra configuration options for the query job.
     """
@@ -1524,105 +1532,105 @@ class QueryJob(_AsyncJob):
     @property
     def allow_large_results(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.allow_large_results`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.allow_large_results`.
         """
         return self._configuration.allow_large_results
 
     @property
     def create_disposition(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.create_disposition`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.create_disposition`.
         """
         return self._configuration.create_disposition
 
     @property
     def default_dataset(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.default_dataset`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.default_dataset`.
         """
         return self._configuration.default_dataset
 
     @property
     def destination(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.destination`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.destination`.
         """
         return self._configuration.destination
 
     @property
     def dry_run(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.dry_run`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.dry_run`.
         """
         return self._configuration.dry_run
 
     @property
     def flatten_results(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.flatten_results`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.flatten_results`.
         """
         return self._configuration.flatten_results
 
     @property
     def priority(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.priority`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.priority`.
         """
         return self._configuration.priority
 
     @property
     def query_parameters(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.query_parameters`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.query_parameters`.
         """
         return self._configuration.query_parameters
 
     @property
     def udf_resources(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.udf_resources`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.udf_resources`.
         """
         return self._configuration.udf_resources
 
     @property
     def use_legacy_sql(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.use_legacy_sql`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.use_legacy_sql`.
         """
         return self._configuration.use_legacy_sql
 
     @property
     def use_query_cache(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.use_query_cache`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.use_query_cache`.
         """
         return self._configuration.use_query_cache
 
     @property
     def write_disposition(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.write_disposition`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.write_disposition`.
         """
         return self._configuration.write_disposition
 
     @property
     def maximum_billing_tier(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.maximum_billing_tier`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.maximum_billing_tier`.
         """
         return self._configuration.maximum_billing_tier
 
     @property
     def maximum_bytes_billed(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.maximum_bytes_billed`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.maximum_bytes_billed`.
         """
         return self._configuration.maximum_bytes_billed
 
     @property
     def table_definitions(self):
         """See
-        :class:`~google.cloud.bigquery.QueryJobConfig.table_definitions`.
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.table_definitions`.
         """
         return self._configuration.table_definitions
 
@@ -1683,11 +1691,11 @@ class QueryJob(_AsyncJob):
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
-        :type client: :class:`google.cloud.bigquery.Client`
+        :type client: :class:`google.cloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`google.cloud.bigquery.RunAsyncQueryJob`
+        :rtype: :class:`google.cloud.bigquery.job.QueryJob`
         :returns: Job parsed from ``resource``.
         """
         job_id, config = cls._get_resource_config(resource)
