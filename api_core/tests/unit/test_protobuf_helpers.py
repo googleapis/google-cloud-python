@@ -16,6 +16,7 @@ import pytest
 
 from google.api_core import protobuf_helpers
 from google.protobuf import any_pb2
+from google.protobuf.message import Message
 from google.type import date_pb2
 from google.type import timeofday_pb2
 
@@ -35,3 +36,32 @@ def test_from_any_pb_failure():
 
     with pytest.raises(TypeError):
         protobuf_helpers.from_any_pb(timeofday_pb2.TimeOfDay, in_message)
+
+
+def test_check_protobuf_helpers_ok():
+    assert protobuf_helpers.check_oneof() is None
+    assert protobuf_helpers.check_oneof(foo='bar') is None
+    assert protobuf_helpers.check_oneof(foo='bar', baz=None) is None
+    assert protobuf_helpers.check_oneof(foo=None, baz='bacon') is None
+    assert (protobuf_helpers.check_oneof(foo='bar', spam=None, eggs=None)
+            is None)
+
+
+def test_check_protobuf_helpers_failures():
+    with pytest.raises(ValueError):
+        protobuf_helpers.check_oneof(foo='bar', spam='eggs')
+    with pytest.raises(ValueError):
+        protobuf_helpers.check_oneof(foo='bar', baz='bacon', spam='eggs')
+    with pytest.raises(ValueError):
+        protobuf_helpers.check_oneof(foo='bar', spam=0, eggs=None)
+
+
+def test_get_messages():
+    answer = protobuf_helpers.get_messages(date_pb2)
+
+    # Ensure that Date was exported properly.
+    assert answer['Date'] is date_pb2.Date
+
+    # Ensure that no non-Message objects were exported.
+    for value in answer.values():
+        assert issubclass(value, Message)

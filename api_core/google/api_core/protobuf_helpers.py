@@ -14,6 +14,11 @@
 
 """Helpers for :mod:`protobuf`."""
 
+import collections
+import inspect
+
+from google.protobuf.message import Message
+
 
 def from_any_pb(pb_type, any_pb):
     """Converts an ``Any`` protobuf to the specified message type.
@@ -36,3 +41,38 @@ def from_any_pb(pb_type, any_pb):
                 any_pb.__class__.__name__, pb_type.__name__))
 
     return msg
+
+
+def check_oneof(**kwargs):
+    """Raise ValueError if more than one keyword argument is not none.
+    Args:
+        kwargs (dict): The keyword arguments sent to the function.
+    Raises:
+        ValueError: If more than one entry in kwargs is not none.
+    """
+    # Sanity check: If no keyword arguments were sent, this is fine.
+    if not kwargs:
+        return
+
+    not_nones = [val for val in kwargs.values() if val is not None]
+    if len(not_nones) > 1:
+        raise ValueError('Only one of {fields} should be set.'.format(
+            fields=', '.join(sorted(kwargs.keys())),
+        ))
+
+
+def get_messages(module):
+    """Return a dictionary of message names and objects.
+    Args:
+        module (module): A Python module; dir() will be run against this
+            module to find Message subclasses.
+    Returns:
+        dict[str, Message]: A dictionary with the Message class names as
+            keys, and the Message subclasses themselves as values.
+    """
+    answer = collections.OrderedDict()
+    for name in dir(module):
+        candidate = getattr(module, name)
+        if inspect.isclass(candidate) and issubclass(candidate, Message):
+            answer[name] = candidate
+    return answer
