@@ -591,7 +591,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(len(statuses), 0)
 
     def test_callable_retry(self):
-        from google.api.core.retry import Retry
+        from google.api_core.retry import Retry
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
@@ -662,7 +662,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_callable_retry_timeout(self):
-        from google.api.core.retry import Retry
+        from google.api_core.retry import Retry
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
@@ -675,7 +675,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - Initial attempt will mutate all 2 rows.
         # Expectation:
         #   - Both rows always return retryable errors.
-        #   - google.api.core.Retry should keep retrying.
+        #   - google.api_core.Retry should keep retrying.
         #   - Check MutateRows is called multiple times.
         #   - By the time deadline is reached, statuses should be
         #       [retryable, retryable]
@@ -776,7 +776,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_retry(self):
-        from google.api.core.exceptions import ServiceUnavailable
+        from google.api_core.exceptions import ServiceUnavailable
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
@@ -836,7 +836,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_second_retry(self):
-        from google.api.core.exceptions import ServiceUnavailable
+        from google.api_core.exceptions import ServiceUnavailable
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
