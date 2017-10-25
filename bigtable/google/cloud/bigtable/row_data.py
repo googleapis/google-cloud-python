@@ -421,7 +421,8 @@ class PartialRowsData(object):
                 cell.row_key = previous.row_key
             if not cell.family_name:
                 cell.family_name = previous.family_name
-            if cell.qualifier is None: # Note: qualifier can be empty string
+            # NOTE: ``cell.qualifier`` **can** be empty string.
+            if cell.qualifier is None:
                 cell.qualifier = previous.qualifier
 
     def _save_current_row(self):
