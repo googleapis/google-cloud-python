@@ -16,6 +16,11 @@
 
 The main concepts with this API are:
 
+- :class:`~google.cloud.bigquery.client.Client` manages connections to the
+  BigQuery API. Use the client methods to run jobs (such as a
+  :class:`~google.cloud.bigquery.job.QueryJob` via
+  :meth:`~google.cloud.bigquery.client.Client.query`) and manage resources.
+
 - :class:`~google.cloud.bigquery.dataset.Dataset` represents a
   collection of tables.
 

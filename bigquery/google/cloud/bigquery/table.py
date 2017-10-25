@@ -95,7 +95,7 @@ class TableReference(object):
         :type resource: dict
         :param resource: table reference representation returned from the API
 
-        :rtype: :class:`google.cloud.bigquery.TableReference`
+        :rtype: :class:`google.cloud.bigquery.table.TableReference`
         :returns: Table reference parsed from ``resource``.
         """
         from google.cloud.bigquery.dataset import DatasetReference
@@ -152,10 +152,10 @@ class Table(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type table_ref: :class:`google.cloud.bigquery.TableReference`
+    :type table_ref: :class:`google.cloud.bigquery.table.TableReference`
     :param table_ref: a pointer to a table
 
-    :type schema: list of :class:`~google.cloud.bigquery.SchemaField`
+    :type schema: list of :class:`~google.cloud.bigquery.schema.SchemaField`
     :param schema: The table's schema
     """
 
@@ -217,7 +217,7 @@ class Table(object):
     def schema(self):
         """Table's schema.
 
-        :rtype: list of :class:`~google.cloud.bigquery.SchemaField`
+        :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField`
         :returns: fields describing the schema
         """
         return list(self._schema)
@@ -226,7 +226,7 @@ class Table(object):
     def schema(self, value):
         """Update table's schema
 
-        :type value: list of :class:`~google.cloud.bigquery.SchemaField`
+        :type value: list of :class:`~google.cloud.bigquery.schema.SchemaField`
         :param value: fields describing the schema
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
@@ -611,7 +611,7 @@ class Table(object):
         :type dataset: :class:`google.cloud.bigquery.Dataset`
         :param dataset: The dataset containing the table.
 
-        :rtype: :class:`google.cloud.bigquery.Table`
+        :rtype: :class:`google.cloud.bigquery.table.Table`
         :returns: Table parsed from ``resource``.
         """
         from google.cloud.bigquery import dataset
@@ -720,7 +720,7 @@ def _row_from_mapping(mapping, schema):
            required fields in the schema.  Keys which do not correspond
            to a field in the schema are ignored.
 
-    :type schema: list of :class:`~google.cloud.bigquery.SchemaField`
+    :type schema: list of :class:`~google.cloud.bigquery.schema.SchemaField`
     :param schema: The schema of the table destination for the rows
 
     :rtype: tuple
