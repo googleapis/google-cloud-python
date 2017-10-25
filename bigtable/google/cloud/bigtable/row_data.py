@@ -114,7 +114,7 @@ class PartialRowData(object):
     """Representation of partial row in a Google Cloud Bigtable Table.
 
     These are expected to be updated directly from a
-   :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+    :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
 
     :type row_key: bytes
     :param row_key: The key for the row holding the (partial) data.
