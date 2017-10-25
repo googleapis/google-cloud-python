@@ -334,7 +334,7 @@ class TestPartialRowsData(unittest.TestCase):
         prd._copy_from_previous(cell)
         self.assertEqual(cell.row_key, '')
         self.assertEqual(cell.family_name, u'')
-        self.assertEqual(cell.qualifier, b'')
+        self.assertEqual(cell.qualifier, None)
         self.assertEqual(cell.timestamp_micros, 0)
         self.assertEqual(cell.labels, [])
 
@@ -530,6 +530,7 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     def _match_results(self, testcase_name, expected_result=_marker):
         chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
+
         iterator = _MockCancellableIterator(response)
         prd = self._make_one(iterator)
         prd.consume_next()
@@ -635,6 +636,8 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     def test_empty_cell_chunk(self):
         self._match_results('empty cell chunk')
 
+    def test_empty_second_qualifier(self):
+        self._match_results('empty second qualifier')
 
 def _flatten_cells(prd):
     # Match results format from JSON testcases.
@@ -678,7 +681,7 @@ class _PartialCellData(object):
 
     row_key = ''
     family_name = u''
-    qualifier = b''
+    qualifier = None
     timestamp_micros = 0
 
     def __init__(self, **kw):

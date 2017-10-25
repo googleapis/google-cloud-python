@@ -114,7 +114,7 @@ class PartialRowData(object):
     """Representation of partial row in a Google Cloud Bigtable Table.
 
     These are expected to be updated directly from a
-    :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+   :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
 
     :type row_key: bytes
     :param row_key: The key for the row holding the (partial) data.
@@ -421,7 +421,7 @@ class PartialRowsData(object):
                 cell.row_key = previous.row_key
             if not cell.family_name:
                 cell.family_name = previous.family_name
-            if not cell.qualifier:
+            if cell.qualifier is None: # Note: qualifier can be empty string
                 cell.qualifier = previous.qualifier
 
     def _save_current_row(self):
