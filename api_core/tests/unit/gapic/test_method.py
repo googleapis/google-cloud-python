@@ -179,38 +179,3 @@ def test_wrap_method_with_overriding_timeout_as_a_number():
 
     assert result == 42
     method.assert_called_once_with(timeout=22, metadata=mock.ANY)
-
-
-def test_wrap_with_paging():
-    page_one = mock.Mock(
-        spec=['items', 'page_token', 'next_page_token'],
-        items=[1, 2],
-        next_page_token='icanhasnextpls')
-    page_two = mock.Mock(
-        spec=['items', 'page_token', 'next_page_token'],
-        items=[3, 4],
-        next_page_token=None)
-    method = mock.Mock(
-        spec=['__call__', '__name__'], side_effect=(page_one, page_two))
-    method.__name__ = 'mockmethod'
-
-    wrapped_method = google.api_core.gapic_v1.method.wrap_with_paging(
-        method, 'items', 'page_token', 'next_page_token')
-
-    request = mock.Mock(spec=['page_token'], page_token=None)
-    result = wrapped_method(request, extra='param')
-
-    # Should return an iterator and should not have actually called the
-    # method yet.
-    assert isinstance(result, google.api_core.page_iterator.Iterator)
-    method.assert_not_called()
-    assert request.page_token is None
-
-    # Draining the iterator should call the method until no more pages are
-    # returned.
-    results = list(result)
-
-    assert results == [1, 2, 3, 4]
-    assert method.call_count == 2
-    method.assert_called_with(request, extra='param')
-    assert request.page_token == 'icanhasnextpls'
