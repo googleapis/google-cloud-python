@@ -29,11 +29,12 @@ def unit_tests(session, python_version):
     session.virtualenv_dirname = 'unit-' + python_version
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('mock', 'pytest', 'pytest-cov', '../api_core')
     session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run('py.test', '--quiet', 'tests/')
+
 
 @nox.session
 def lint_setup_py(session):
