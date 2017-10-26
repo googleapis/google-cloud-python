@@ -179,15 +179,15 @@ def _set_field_on_message(msg, key, value):
             if isinstance(item, collections.Mapping):
                 getattr(msg, key).add(**item)
             else:
+                # protobuf's RepeatedCompositeContainer doesn't support
+                # append.
                 getattr(msg, key).extend([item])
     elif isinstance(value, collections.Mapping):
         # Assign the dictionary values to the protobuf message.
         for item_key, item_value in value.items():
             set(getattr(msg, key), item_key, item_value)
     elif isinstance(value, Message):
-        # Assign the protobuf message values to the protobuf message.
-        for item_key, item_value in value.ListFields():
-            set(getattr(msg, key), item_key.name, item_value)
+        getattr(msg, key).CopyFrom(value)
     else:
         setattr(msg, key, value)
 
