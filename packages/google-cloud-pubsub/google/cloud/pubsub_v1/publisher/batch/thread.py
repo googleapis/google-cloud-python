@@ -237,6 +237,8 @@ class Batch(base.Batch):
 
         # Store the actual message in the batch's message queue.
         self._messages.append(message)
+        if len(self._messages) >= self.settings.max_messages:
+            self.commit()
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
