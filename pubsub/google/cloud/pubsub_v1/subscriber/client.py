@@ -16,6 +16,10 @@ from __future__ import absolute_import
 
 import pkg_resources
 
+import grpc
+
+from google import auth
+from google.api_core import grpc_helpers
 from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
@@ -49,6 +53,23 @@ class Client(object):
             arguments.
     """
     def __init__(self, policy_class=thread.Policy, **kwargs):
+        # Use a custom channel.
+        # We need this in order to set appropriate default message size and
+        # keepalive options.
+        target = '{host}:{port}'.format(
+            host=subscriber_client.SubscriberClient.SERVICE_ADDRESS,
+            port=subscriber_client.SubscriberClient.DEFAULT_SERVICE_PORT,
+        )
+        kwargs.setdefault('channel', grpc_helpers.create_channel(
+            target=target,
+            scopes=subscriber_client.SubscriberClient._ALL_SCOPES,
+            options={
+                'grpc.max_send_message_length': -1,
+                'grpc.max_receive_message_length': -1,
+                # 'grpc.keepalive_time_ms': 30000,
+            }.items(),
+        ))
+
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         kwargs['lib_name'] = 'gccl'
