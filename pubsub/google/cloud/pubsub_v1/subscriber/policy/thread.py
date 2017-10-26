@@ -112,7 +112,7 @@ class Policy(base.BasePolicy):
             callback (Callable): The callback function.
 
         Returns:
-            ~.pubsub_v1.subscriber.future.Future: A future that provides
+            ~google.api_core.future.Future: A future that provides
                 an interface to block on the subscription if desired, and
                 handle errors.
         """

@@ -63,7 +63,7 @@ class Future(google.api_core.future.Future):
         return True
 
     def done(self):
-        """Return True if the publish has completed, False otherwise.
+        """Return True the future is done, False otherwise.
 
         This still returns True in failure cases; checking :meth:`result` or
         :meth:`exception` is the canonical way to assess success or failure.
@@ -97,7 +97,7 @@ class Future(google.api_core.future.Future):
             return self._result
         raise err
 
-    def exception(self, timeout=None, _wait=1):
+    def exception(self, timeout=None):
         """Return the exception raised by the call, if any.
 
         This blocks until the message has successfully been published, and
@@ -131,14 +131,14 @@ class Future(google.api_core.future.Future):
         when the future finishes running.
         """
         if self.done():
-            fn(self)
+            return fn(self)
         self._callbacks.append(fn)
 
     def set_result(self, result):
         """Set the result of the future to the provided result.
 
         Args:
-            result (str): The message ID.
+            result (Any): The result
         """
         # Sanity check: A future can only complete once.
         if self.done():

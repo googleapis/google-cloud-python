@@ -401,7 +401,7 @@ class BasePolicy(object):
                 Pub/Sub Message.
 
         Returns:
-            ~.pubsub_v1.subscriber.future.Future: A future that provides
+            ~google.api_core.future.Future: A future that provides
                 an interface to block on the subscription if desired, and
                 handle errors.
         """
