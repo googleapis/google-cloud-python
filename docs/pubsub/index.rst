@@ -100,7 +100,14 @@ use of a callback.
     >>> def callback(message):
     ...     print(message.data)
     ...     message.ack()
-    >>> subscription.open(callback)
+    >>> future = subscription.open(callback)
+
+You can use the future to block the main thread, and raise any exceptions
+that originate asychronously.
+
+.. code-block:: python
+
+    >>> future.result()
 
 To learn more, consult the :doc:`subscriber documentation <subscriber/index>`.
 

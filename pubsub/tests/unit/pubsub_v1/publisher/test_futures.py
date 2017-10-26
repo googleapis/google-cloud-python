@@ -29,7 +29,10 @@ def test_cancelled():
 
 
 def test_running():
-    assert Future().running() is True
+    future = Future()
+    assert future.running() is True
+    future.set_result('foobar')
+    assert future.running() is False
 
 
 def test_done():
