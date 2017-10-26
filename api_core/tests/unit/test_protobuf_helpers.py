@@ -121,7 +121,7 @@ def test_set_dict():
     assert mapping == {'foo': 'bar'}
 
 
-def test_set_pb2():
+def test_set_msg():
     msg = timestamp_pb2.Timestamp()
     protobuf_helpers.set(msg, 'seconds', 42)
     assert msg.seconds == 42
@@ -175,6 +175,16 @@ def test_set_list_clear_existing():
 def test_set_msg_with_msg_field():
     rule = http_pb2.HttpRule()
     pattern = http_pb2.CustomHttpPattern(kind='foo', path='bar')
+
+    protobuf_helpers.set(rule, 'custom', pattern)
+
+    assert rule.custom.kind == 'foo'
+    assert rule.custom.path == 'bar'
+
+
+def test_set_msg_with_dict_field():
+    rule = http_pb2.HttpRule()
+    pattern = {'kind': 'foo', 'path': 'bar'}
 
     protobuf_helpers.set(rule, 'custom', pattern)
 

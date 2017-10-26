@@ -85,8 +85,20 @@ def get_messages(module):
 
 
 def _resolve_subkeys(key, separator='.'):
-    """Given a key which may actually be a nested key, return the top level
-    key and any nested subkeys as separate values.
+    """Resolve a potentially nested key.
+
+    If the key contains the ``separator`` (e.g. ``.``) then the key will be
+    split on the first instance of the subkey::
+
+       >>> _resolve_subkeys('a.b.c')
+       ('a', 'b.c')
+       >>> _resolve_subkeys('d|e|f', separator='|')
+       ('d', 'e|f')
+
+    If not, the subkey will be :data:`None`::
+
+        >>> _resolve_subkeys('foo')
+        ('foo', None)
 
     Args:
         key (str): A string that may or may not contain the separator.
@@ -95,12 +107,12 @@ def _resolve_subkeys(key, separator='.'):
     Returns:
         Tuple[str, str]: The key and subkey(s).
     """
-    subkey = None
-    if separator in key:
-        index = key.index(separator)
-        subkey = key[index + 1:]
-        key = key[:index]
-    return key, subkey
+    parts = key.split(separator, 1)
+
+    if len(parts) > 1:
+        return parts
+    else:
+        return parts[0], None
 
 
 def get(msg_or_dict, key, default=_SENTINEL):
@@ -115,8 +127,8 @@ def get(msg_or_dict, key, default=_SENTINEL):
             default is generally recommended, as protobuf messages almost
             always have default values for unset values and it is not always
             possible to tell the difference between a falsy value and an
-            unset one. If no default is set then raises :class:`KeyError` will
-            be raised if the key is not present in the object.
+            unset one. If no default is set then :class:`KeyError` will be
+            raised if the key is not present in the object.
 
     Returns:
         Any: The return value from the underlying Message or dict.
@@ -146,10 +158,38 @@ def get(msg_or_dict, key, default=_SENTINEL):
         raise KeyError(key)
 
     # If a subkey exists, call this method recursively against the answer.
-    if subkey and answer is not default:
+    if subkey is not None and answer is not default:
         return get(answer, subkey, default=default)
 
     return answer
+
+
+def _set_field_on_message(msg, key, value):
+    """Set helper for protobuf Messages."""
+    # Attempt to set the value on the types of objects we know how to deal
+    # with.
+    if isinstance(value, (collections.MutableSequence, tuple)):
+        # Clear the existing repeated protobuf message of any elements
+        # currently inside it.
+        while getattr(msg, key):
+            getattr(msg, key).pop()
+
+        # Write our new elements to the repeated field.
+        for item in value:
+            if isinstance(item, collections.Mapping):
+                getattr(msg, key).add(**item)
+            else:
+                getattr(msg, key).extend([item])
+    elif isinstance(value, collections.Mapping):
+        # Assign the dictionary values to the protobuf message.
+        for item_key, item_value in value.items():
+            set(getattr(msg, key), item_key, item_value)
+    elif isinstance(value, Message):
+        # Assign the protobuf message values to the protobuf message.
+        for item_key, item_value in value.ListFields():
+            set(getattr(msg, key), item_key.name, item_value)
+    else:
+        setattr(msg, key, value)
 
 
 def set(msg_or_dict, key, value):
@@ -171,51 +211,29 @@ def set(msg_or_dict, key, value):
                 type(msg_or_dict)))
 
     # We may be setting a nested key. Resolve this.
-    key, subkey = _resolve_subkeys(key)
+    basekey, subkey = _resolve_subkeys(key)
 
     # If a subkey exists, then get that object and call this method
     # recursively against it using the subkey.
     if subkey is not None:
         if isinstance(msg_or_dict, collections.MutableMapping):
-            msg_or_dict.setdefault(key, {})
-        set(get(msg_or_dict, key), subkey, value)
+            msg_or_dict.setdefault(basekey, {})
+        set(get(msg_or_dict, basekey), subkey, value)
         return
 
-    # Attempt to set the value on the types of objects we know how to deal
-    # with.
     if isinstance(msg_or_dict, collections.MutableMapping):
         msg_or_dict[key] = value
-    elif isinstance(value, (collections.MutableSequence, tuple)):
-        # Clear the existing repeated protobuf message of any elements
-        # currently inside it.
-        while getattr(msg_or_dict, key):
-            getattr(msg_or_dict, key).pop()
-
-        # Write our new elements to the repeated field.
-        for item in value:
-            if isinstance(item, collections.Mapping):
-                getattr(msg_or_dict, key).add(**item)
-            else:
-                getattr(msg_or_dict, key).extend([item])
-    elif isinstance(value, collections.Mapping):
-        # Assign the dictionary values to the protobuf message.
-        for item_key, item_value in value.items():
-            set(getattr(msg_or_dict, key), item_key, item_value)
-    elif isinstance(value, Message):
-        # Assign the protobuf message values to the protobuf message.
-        for item_key, item_value in value.ListFields():
-            set(getattr(msg_or_dict, key), item_key.name, item_value)
     else:
-        setattr(msg_or_dict, key, value)
+        _set_field_on_message(msg_or_dict, key, value)
 
 
 def setdefault(msg_or_dict, key, value):
-    """Set the key on a protobuf Message or dictioanary to a given value if the
+    """Set the key on a protobuf Message or dictionary to a given value if the
     current value is falsy.
 
     Because protobuf Messages do not distinguish between unset values and
-    falsy ones particularly well, this method treats any falsy value
-    (e.g. 0, empty list) as a target to be overwritten, on both Messages
+    falsy ones particularly well (by design), this method treats any falsy
+    value (e.g. 0, empty list) as a target to be overwritten, on both Messages
     and dictionaries.
 
     Args:
