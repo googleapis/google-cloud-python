@@ -63,6 +63,7 @@ class Batch(base.Batch):
 
         # These objects are all communicated between threads; ensure that
         # any writes to them are atomic.
+        # import pdb ; pdb.set_trace()
         self._futures = []
         self._messages = []
         self._size = 0
@@ -237,6 +238,8 @@ class Batch(base.Batch):
 
         # Store the actual message in the batch's message queue.
         self._messages.append(message)
+        if len(self._messages) >= self.settings.max_messages:
+            self.commit()
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.
