@@ -29,6 +29,7 @@ from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber import message
+from google.cloud.pubsub_v1.subscriber.futures import Future
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -56,6 +57,18 @@ def test_close():
         policy.close()
         stop_consuming.assert_called_once_with()
     assert 'callback request worker' not in policy._consumer.helper_threads
+
+
+def test_close_with_future():
+    policy = create_policy()
+    policy._future = Future(policy=policy)
+    consumer = policy._consumer
+    with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
+        future = policy.future
+        policy.close()
+        stop_consuming.assert_called_once_with()
+    assert policy.future != future
+    assert future.result() is None
 
 
 @mock.patch.object(_helper_threads.HelperThreadRegistry, 'start')
@@ -86,9 +99,11 @@ def test_on_exception_deadline_exceeded():
 
 def test_on_exception_other():
     policy = create_policy()
+    policy._future = Future(policy=policy)
     exc = TypeError('wahhhhhh')
     with pytest.raises(TypeError):
         policy.on_exception(exc)
+        policy.future.result()
 
 
 def test_on_response():

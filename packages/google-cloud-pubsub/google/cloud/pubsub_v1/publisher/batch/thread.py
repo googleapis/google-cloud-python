@@ -224,7 +224,7 @@ class Batch(base.Batch):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.futures.Future: An object conforming to
+            ~google.api_core.future.Future: An object conforming to
                 the :class:`concurrent.futures.Future` interface.
         """
         # Coerce the type, just in case.

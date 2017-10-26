@@ -23,6 +23,7 @@ import grpc
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
+from google.cloud.pubsub_v1.subscriber.futures import Future
 from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
 
@@ -63,6 +64,9 @@ class Policy(base.BasePolicy):
         # Default the callback to a no-op; it is provided by `.open`.
         self._callback = lambda message: None
 
+        # Default the future to None; it is provided by `.open`.
+        self._future = None
+
         # Create a queue for keeping track of shared state.
         if queue is None:
             queue = Queue()
@@ -87,9 +91,15 @@ class Policy(base.BasePolicy):
 
     def close(self):
         """Close the existing connection."""
-        # Close the main subscription connection.
+        # Stop consuming messages.
         self._consumer.helper_threads.stop('callback requests worker')
         self._consumer.stop_consuming()
+
+        # The subscription is closing cleanly; resolve the future if it is not
+        # resolved already.
+        if self._future and not self._future.done():
+            self._future.set_result(None)
+        self._future = None
 
     def open(self, callback):
         """Open a streaming pull connection and begin receiving messages.
@@ -100,7 +110,17 @@ class Policy(base.BasePolicy):
 
         Args:
             callback (Callable): The callback function.
+
+        Returns:
+            ~google.api_core.future.Future: A future that provides
+                an interface to block on the subscription if desired, and
+                handle errors.
         """
+        # Create the Future that this method will return.
+        # This future is the main thread's interface to handle exceptions,
+        # block on the subscription, etc.
+        self._future = Future(policy=self)
+
         # Start the thread to pass the requests.
         logger.debug('Starting callback requests worker.')
         self._callback = callback
@@ -120,6 +140,9 @@ class Policy(base.BasePolicy):
         self._leaser.daemon = True
         self._leaser.start()
 
+        # Return the future.
+        return self._future
+
     def on_callback_request(self, callback_request):
         """Map the callback request to the appropriate GRPC request."""
         action, kwargs = callback_request[0], callback_request[1]
@@ -136,8 +159,8 @@ class Policy(base.BasePolicy):
         if getattr(exception, 'code', lambda: None)() == deadline_exceeded:
             return
 
-        # Raise any other exception.
-        raise exception
+        # Set any other exception on the future.
+        self._future.set_exception(exception)
 
     def on_response(self, response):
         """Process all received Pub/Sub messages.
