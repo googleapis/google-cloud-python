@@ -92,7 +92,7 @@ the topic, and subscribe to that.
     ... )
     >>> subscription = subscriber.create_subscription(subscription_name, topic)
 
-The subscription is opened asychronously, and messages are processed by
+The subscription is opened asynchronously, and messages are processed by
 use of a callback.
 
 .. code-block:: python
