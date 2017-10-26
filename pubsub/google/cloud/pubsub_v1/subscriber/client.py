@@ -66,7 +66,7 @@ class Client(object):
             options={
                 'grpc.max_send_message_length': -1,
                 'grpc.max_receive_message_length': -1,
-                # 'grpc.keepalive_time_ms': 30000,
+                'grpc.keepalive_time_ms': 30000,
             }.items(),
         ))
 
