@@ -32,6 +32,7 @@ priority.
 The following client libraries have **beta** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
+-  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
@@ -49,7 +50,6 @@ Cloud Platform services:
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
--  `Google Cloud Firestore`_ (`Firestore README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
 -  `Stackdriver Error Reporting`_ (`Error Reporting README`_)
