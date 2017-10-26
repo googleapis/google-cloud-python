@@ -97,7 +97,7 @@ class Future(google.api_core.future.Future):
             return self._result
         raise err
 
-    def exception(self, timeout=None, _wait=1):
+    def exception(self, timeout=None):
         """Return the exception raised by the call, if any.
 
         This blocks until the message has successfully been published, and
