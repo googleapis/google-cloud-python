@@ -69,6 +69,7 @@ class BasePolicy(object):
         self._consumer = _consumer.Consumer(self)
         self._ack_deadline = 10
         self._last_histogram_size = 0
+        self._future = None
         self.flow_control = flow_control
         self.histogram = _histogram.Histogram(data=histogram_data)
 
@@ -96,6 +97,16 @@ class BasePolicy(object):
         if len(self.histogram) > target:
             self._ack_deadline = self.histogram.percentile(percent=99)
         return self._ack_deadline
+
+    @property
+    def future(self):
+        """Return the Future in use, if any.
+
+        Returns:
+            ~.pubsub_v1.subscriber.future.Future: A Future conforming to the
+                ``~concurrent.futures.Future`` interface.
+        """
+        return self._future
 
     @property
     def managed_ack_ids(self):
@@ -388,5 +399,10 @@ class BasePolicy(object):
         Args:
             callback (Callable[Message]): A callable that receives a
                 Pub/Sub Message.
+
+        Returns:
+            ~.pubsub_v1.subscriber.future.Future: A future that provides
+                an interface to block on the subscription if desired, and
+                handle errors.
         """
         raise NotImplementedError

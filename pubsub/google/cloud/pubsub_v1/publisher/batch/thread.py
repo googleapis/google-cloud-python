@@ -63,6 +63,7 @@ class Batch(base.Batch):
 
         # These objects are all communicated between threads; ensure that
         # any writes to them are atomic.
+        # import pdb ; pdb.set_trace()
         self._futures = []
         self._messages = []
         self._size = 0
