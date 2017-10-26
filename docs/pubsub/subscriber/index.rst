@@ -67,7 +67,7 @@ this method will actually begin consumption of the subscription.
 Subscription Callbacks
 ----------------------
 
-Because subscriptions in this Pub/Sub client are opened asychronously,
+Because subscriptions in this Pub/Sub client are opened asynchronously,
 processing the messages that are yielded by the subscription is handled
 through **callbacks**.
 
