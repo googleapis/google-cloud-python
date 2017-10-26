@@ -91,7 +91,30 @@ Here is an example:
         message.ack()
 
     # Open the subscription, passing the callback.
-    subscription.open(callback)
+    future = subscription.open(callback)
+
+The :meth:`~.pubsub_v1.subscriber.policy.thread.Policy.open` method returns
+a :class:`~.pubsub_v1.subscriber.futures.Future`, which is both the interface
+to wait on messages (e.g. block the primary thread) and to address exceptions.
+
+To block the thread you are in while messages are coming in the stream,
+use the :meth:`~.pubsub_v1.subscriber.futures.Future.result` method:
+
+.. code-block:: python
+
+    future.result()
+
+You can also use this for error handling; any exceptions that crop up on a
+thread will be set on the future.
+
+.. code-block:: python
+
+    try:
+        future.result()
+    except Exception as ex:
+        subscription.close()
+        raise
+
 
 Explaining Ack
 --------------
