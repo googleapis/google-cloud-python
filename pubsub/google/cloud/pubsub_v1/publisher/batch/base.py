@@ -128,7 +128,7 @@ class Batch(object):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.batch.mp.Future: An object conforming to the
+            ~google.api_core.future.Future: An object conforming to the
                 :class:`concurrent.futures.Future` interface.
         """
         raise NotImplementedError
