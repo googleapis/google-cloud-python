@@ -189,6 +189,27 @@ def test_publish():
     assert batch.size > 0  # I do not always trust protobuf.
 
 
+def test_publish_max_messages():
+    batch = create_batch(max_messages=4)
+    messages = (
+        types.PubsubMessage(data=b'foobarbaz'),
+        types.PubsubMessage(data=b'spameggs'),
+        types.PubsubMessage(data=b'1335020400'),
+    )
+
+    # Publish each of the messages, which should save them to the batch.
+    with mock.patch.object(batch, 'commit') as commit:
+        for message in messages:
+            batch.publish(message)
+
+        # Commit should not yet have been called.
+        assert commit.call_count == 0
+
+        # When a fourth message is published, commit should be called.
+        batch.publish(types.PubsubMessage(data=b'last one'))
+        commit.assert_called_once_with()
+
+
 def test_publish_dict():
     batch = create_batch()
     batch.publish({'data': b'foobarbaz', 'attributes': {'spam': 'eggs'}})
