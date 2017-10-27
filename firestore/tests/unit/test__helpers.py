@@ -14,6 +14,7 @@
 
 import collections
 import datetime
+import sys
 import unittest
 
 import mock
@@ -673,6 +674,8 @@ class Test_decode_value(unittest.TestCase):
         value = _value_pb(double_value=float_val)
         self.assertEqual(self._call_fut(value), float_val)
 
+    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+                     'known datetime bug (bpo-23517) in Python')
     def test_datetime(self):
         from google.protobuf import timestamp_pb2
         from google.cloud._helpers import UTC
@@ -811,6 +814,8 @@ class Test_decode_dict(unittest.TestCase):
 
         return decode_dict(value_fields, client)
 
+    @unittest.skipIf((3,) <= sys.version_info < (3,4,4),
+                     'known datetime bug (bpo-23517) in Python')
     def test_many_types(self):
         from google.protobuf import struct_pb2
         from google.protobuf import timestamp_pb2
