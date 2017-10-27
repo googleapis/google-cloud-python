@@ -9,8 +9,7 @@ existing open and closed issues to see if there is already work being done.
 If you can provide us with as much of the following information as possible it
 will help us identify the cause of your issue more quickly.
 
-1. Specify API type in Title followed by a colon and space and a descriptive Detail:
-   ie. (BigQuery: Detail)
+1. Specify the API at the beginning of the title (for example, "BigQuery: ...")
    General, Core, and Other are also allowed as types
 2. OS type and version
 3. Python version and virtual environment information `python --version`
