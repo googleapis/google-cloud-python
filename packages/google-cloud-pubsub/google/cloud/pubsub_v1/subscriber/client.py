@@ -15,7 +15,11 @@
 from __future__ import absolute_import
 
 import pkg_resources
+import os
 
+import grpc
+
+from google.api_core import grpc_helpers
 from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
@@ -49,6 +53,29 @@ class Client(object):
             arguments.
     """
     def __init__(self, policy_class=thread.Policy, **kwargs):
+        # Sanity check: Is our goal to use the emulator?
+        # If so, create a grpc insecure channel with the emulator host
+        # as the target.
+        if os.environ.get('PUBSUB_EMULATOR_HOST'):
+            kwargs['channel'] = grpc.insecure_channel(
+                target=os.environ.get('PUBSUB_EMULATOR_HOST'),
+            )
+
+        # Use a custom channel.
+        # We need this in order to set appropriate default message size and
+        # keepalive options.
+        if 'channel' not in kwargs:
+            kwargs['channel'] = grpc_helpers.create_channel(
+                credentials=kwargs.get('credentials', None),
+                target=self.target,
+                scopes=subscriber_client.SubscriberClient._ALL_SCOPES,
+                options={
+                    'grpc.max_send_message_length': -1,
+                    'grpc.max_receive_message_length': -1,
+                    'grpc.keepalive_time_ms': 30000,
+                }.items(),
+            )
+
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         kwargs['lib_name'] = 'gccl'
@@ -58,6 +85,18 @@ class Client(object):
         # The subcription class is responsible to retrieving and dispatching
         # messages.
         self._policy_class = policy_class
+
+    @property
+    def target(self):
+        """Return the target (where the API is).
+
+        Returns:
+            str: The location of the API.
+        """
+        return '{host}:{port}'.format(
+            host=subscriber_client.SubscriberClient.SERVICE_ADDRESS,
+            port=subscriber_client.SubscriberClient.DEFAULT_SERVICE_PORT,
+        )
 
     def subscribe(self, subscription, callback=None, flow_control=()):
         """Return a representation of an individual subscription.

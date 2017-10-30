@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
+import os
+
 import mock
 
 import pytest
@@ -36,6 +39,18 @@ def test_init():
     assert client.batch_settings.max_bytes == 5 * (2 ** 20)
     assert client.batch_settings.max_latency == 0.05
     assert client.batch_settings.max_messages == 1000
+
+
+def test_init_emulator(monkeypatch):
+    monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/foo/bar/')
+    client = create_client()
+
+    # Establish that a gRPC request would attempt to hit the emulator host.
+    #
+    # Sadly, there seems to be no good way to do this without poking at
+    # the private API of gRPC.
+    channel = client.api.publisher_stub.Publish._channel
+    assert channel.target().decode('utf8') == '/foo/bar/'
 
 
 def test_batch_accepting():

@@ -15,11 +15,14 @@
 from __future__ import absolute_import
 
 import copy
+import os
 import pkg_resources
 import threading
 
+import grpc
 import six
 
+from google.api_core import grpc_helpers
 from google.cloud.gapic.pubsub.v1 import publisher_client
 
 from google.cloud.pubsub_v1 import _gapic
@@ -53,6 +56,28 @@ class Client(object):
             Generally, you should not need to set additional keyword arguments.
     """
     def __init__(self, batch_settings=(), batch_class=thread.Batch, **kwargs):
+        # Sanity check: Is our goal to use the emulator?
+        # If so, create a grpc insecure channel with the emulator host
+        # as the target.
+        if os.environ.get('PUBSUB_EMULATOR_HOST'):
+            kwargs['channel'] = grpc.insecure_channel(
+                target=os.environ.get('PUBSUB_EMULATOR_HOST'),
+            )
+
+        # Use a custom channel.
+        # We need this in order to set appropriate default message size and
+        # keepalive options.
+        if 'channel' not in kwargs:
+            kwargs['channel'] = grpc_helpers.create_channel(
+                credentials=kwargs.get('credentials', None),
+                target=self.target,
+                scopes=publisher_client.PublisherClient._ALL_SCOPES,
+                options={
+                    'grpc.max_send_message_length': -1,
+                    'grpc.max_receive_message_length': -1,
+                }.items(),
+            )
+
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
         kwargs['lib_name'] = 'gccl'
@@ -65,6 +90,18 @@ class Client(object):
         self._batch_class = batch_class
         self._batch_lock = threading.Lock()
         self._batches = {}
+
+    @property
+    def target(self):
+        """Return the target (where the API is).
+
+        Returns:
+            str: The location of the API.
+        """
+        return '{host}:{port}'.format(
+            host=publisher_client.PublisherClient.SERVICE_ADDRESS,
+            port=publisher_client.PublisherClient.DEFAULT_SERVICE_PORT,
+        )
 
     def batch(self, topic, message, create=True, autocommit=True):
         """Return the current batch for the provided topic.
