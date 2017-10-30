@@ -52,7 +52,7 @@ SETUP_BASE = {
 }
 
 REQUIREMENTS = [
-    'google-cloud-core[grpc] >= 0.27.1, < 0.28dev',
+    'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
     'google-gax >= 0.15.14, < 0.16dev',
 ]
 
