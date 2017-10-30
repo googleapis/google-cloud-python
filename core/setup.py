@@ -51,16 +51,16 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-api-core >= 0.1.0, < 0.2.0dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
 ]
 
 EXTRAS_REQUIREMENTS = {
-    'grpc': ['grpcio >= 1.2.0, < 1.6dev'],
+    'grpc': ['grpcio >= 1.7.0'],
 }
 
 setup(
     name='google-cloud-core',
-    version='0.27.1',
+    version='0.28.0',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[
