@@ -14,6 +14,8 @@
 
 import datetime
 
+import pytest
+
 from google.auth import _helpers
 from google.auth import credentials
 
@@ -75,6 +77,40 @@ def test_before_request():
     assert credentials.valid
     assert credentials.token == 'token'
     assert headers['authorization'] == 'Bearer token'
+
+
+def test_anonymous_credentials_ctor():
+    anon = credentials.AnonymousCredentials()
+    assert anon.token is None
+    assert anon.expiry is None
+    assert not anon.expired
+    assert anon.valid
+
+
+def test_anonymous_credentials_refresh():
+    anon = credentials.AnonymousCredentials()
+    request = object()
+    with pytest.raises(ValueError):
+        anon.refresh(request)
+
+
+def test_anonymous_credentials_apply_default():
+    anon = credentials.AnonymousCredentials()
+    headers = {}
+    anon.apply(headers)
+    assert headers == {}
+    with pytest.raises(ValueError):
+        anon.apply(headers, token='TOKEN')
+
+
+def test_anonymous_credentials_before_request():
+    anon = credentials.AnonymousCredentials()
+    request = object()
+    method = 'GET'
+    url = 'https://example.com/api/endpoint'
+    headers = {}
+    anon.before_request(request, method, url, headers)
+    assert headers == {}
 
 
 class ReadOnlyScopedCredentialsImpl(

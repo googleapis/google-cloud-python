@@ -122,6 +122,43 @@ class Credentials(object):
         self.apply(headers)
 
 
+class AnonymousCredentials(Credentials):
+    """Credentials that do not provide any authentication information.
+
+    These are useful in the case of services that support anonymous access or
+    local service emulators that do not use credentials.
+    """
+
+    @property
+    def expired(self):
+        """Returns `False`, anonymous credentials never expire."""
+        return False
+
+    @property
+    def valid(self):
+        """Returns `True`, anonymous credentials are always valid."""
+        return True
+
+    def refresh(self, request):
+        """Raises :class:`ValueError``, anonymous credentials cannot be
+        refreshed."""
+        raise ValueError("Anonymous credentials cannot be refreshed.")
+
+    def apply(self, headers, token=None):
+        """Anonymous credentials do nothing to the request.
+
+        The optional ``token`` argument is not supported.
+
+        Raises:
+            ValueError: If a token was specified.
+        """
+        if token is not None:
+            raise ValueError("Anonymous credentials don't support tokens.")
+
+    def before_request(self, request, method, url, headers):
+        """Anonymous credentials do nothing to the request."""
+
+
 @six.add_metaclass(abc.ABCMeta)
 class ReadOnlyScoped(object):
     """Interface for credentials whose scopes can be queried.
