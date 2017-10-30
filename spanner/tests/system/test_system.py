@@ -57,7 +57,6 @@ if CREATE_INSTANCE:
 else:
     INSTANCE_ID = os.environ.get('GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE',
                                  'google-cloud-python-systest')
-DATABASE_ID = 'test_database'
 EXISTING_INSTANCES = []
 COUNTERS_TABLE = 'counters'
 COUNTERS_COLUMNS = ('name', 'value')
@@ -237,12 +236,13 @@ class _TestData(object):
 
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
+    DATABASE_ID = 'test_database'
 
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool()
         cls._db = Config.INSTANCE.database(
-            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
+            cls.DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
         cls._db.create()
 
     @classmethod
@@ -376,6 +376,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
 
 class TestSessionAPI(unittest.TestCase, _TestData):
+    DATABASE_ID = 'test_sessions'
     ALL_TYPES_TABLE = 'all_types'
     ALL_TYPES_COLUMNS = (
         'list_goes_on',
@@ -407,7 +408,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
     def setUpClass(cls):
         pool = BurstyPool()
         cls._db = Config.INSTANCE.database(
-            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
+            cls.DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
         operation = cls._db.create()
         operation.result(30)  # raises on failure / timeout.
 
