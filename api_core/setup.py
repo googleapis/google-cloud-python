@@ -60,12 +60,12 @@ REQUIREMENTS = [
 
 EXTRAS_REQUIREMENTS = {
     ':python_version<"3.2"': ['futures >= 3.0.0'],
-    'grpc': ['grpcio >= 1.2.0, < 1.6dev'],
+    'grpc': ['grpcio >= 1.7.0'],
 }
 
 setup(
     name='google-api-core',
-    version='0.1.0',
+    version='0.1.1',
     description='Core Google API Client Library',
     long_description=README,
     namespace_packages=['google'],
