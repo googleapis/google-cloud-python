@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Define API Datasets."""
+"""Define API Tables."""
 
 from __future__ import absolute_import
 
 import datetime
+import operator
 
 import six
 
@@ -759,3 +760,61 @@ class StreamingBuffer(object):
         # time is in milliseconds since the epoch.
         self.oldest_entry_time = _datetime_from_microseconds(
             1000.0 * int(resource['oldestEntryTime']))
+
+
+class Row(object):
+    """A BigQuery row.
+
+    Values can be accessed by position (index), by key like a dict,
+    or as properties.
+
+    :type values: tuple
+    :param values:  the row values
+
+    :type field_to_index: dict
+    :param field_to_index:  a mapping from schema field names to indexes
+    """
+
+    # Choose unusual field names to try to avoid conflict with schema fields.
+    __slots__ = ('_xxx_values', '_xxx_field_to_index')
+
+    def __init__(self, values, field_to_index):
+        self._xxx_values = values
+        self._xxx_field_to_index = field_to_index
+
+    def values(self):
+        return self._xxx_values
+
+    def __getattr__(self, name):
+        i = self._xxx_field_to_index.get(name)
+        if i is None:
+            raise AttributeError('no row field "%s"' % name)
+        return self._xxx_values[i]
+
+    def __len__(self):
+        return len(self._xxx_values)
+
+    def __getitem__(self, key):
+        if isinstance(key, six.string_types):
+            i = self._xxx_field_to_index.get(key)
+            if i is None:
+                raise KeyError('no row field "%s"' % key)
+            key = i
+        return self._xxx_values[key]
+
+    def __eq__(self, other):
+        if not isinstance(other, Row):
+            return NotImplemented
+        return(
+            self._xxx_values == other._xxx_values and
+            self._xxx_field_to_index == other._xxx_field_to_index)
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __repr__(self):
+        # sort field dict by value, for determinism
+        items = sorted(self._xxx_field_to_index.items(),
+                       key=operator.itemgetter(1))
+        f2i = '{' + ', '.join('%r: %d' % i for i in items) + '}'
+        return 'Row({}, {})'.format(self._xxx_values, f2i)

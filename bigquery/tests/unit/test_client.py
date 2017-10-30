@@ -2182,8 +2182,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
 
     def test_create_rows_w_list_of_Rows(self):
-        from google.cloud.bigquery._helpers import Row
-        from google.cloud.bigquery.table import Table, SchemaField
+        from google.cloud.bigquery.table import Table, SchemaField, Row
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_ID, self.TABLE_ID)
@@ -2465,7 +2464,7 @@ class TestClient(unittest.TestCase):
 
     def test_query_rows_defaults(self):
         from google.api_core.page_iterator import HTTPIterator
-        from google.cloud.bigquery._helpers import Row
+        from google.cloud.bigquery.table import Row
 
         JOB = 'job-id'
         QUERY = 'SELECT COUNT(*) FROM persons'
@@ -2720,8 +2719,7 @@ class TestClient(unittest.TestCase):
     def test_list_rows(self):
         import datetime
         from google.cloud._helpers import UTC
-        from google.cloud.bigquery.table import Table, SchemaField
-        from google.cloud.bigquery._helpers import Row
+        from google.cloud.bigquery.table import Table, SchemaField, Row
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_ID, self.TABLE_ID)

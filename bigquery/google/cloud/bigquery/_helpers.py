@@ -16,9 +16,6 @@
 
 import base64
 import datetime
-import operator
-
-import six
 
 from google.api_core import retry
 from google.cloud._helpers import UTC
@@ -178,64 +175,6 @@ _QUERY_PARAMS_FROM_JSON = dict(_CELLDATA_FROM_JSON)
 _QUERY_PARAMS_FROM_JSON['TIMESTAMP'] = _timestamp_query_param_from_json
 
 
-class Row(object):
-    """A BigQuery row.
-
-    Values can be accessed by position (index), by key like a dict,
-    or as properties.
-
-    :type values: tuple
-    :param values:  the row values
-
-    :type field_to_index: dict
-    :param field_to_index:  a mapping from schema field names to indexes
-    """
-
-    # Choose unusual field names to try to avoid conflict with schema fields.
-    __slots__ = ('_xxx_values', '_xxx_field_to_index')
-
-    def __init__(self, values, field_to_index):
-        self._xxx_values = values
-        self._xxx_field_to_index = field_to_index
-
-    def values(self):
-        return self._xxx_values
-
-    def __getattr__(self, name):
-        i = self._xxx_field_to_index.get(name)
-        if i is None:
-            raise AttributeError('no row field "%s"' % name)
-        return self._xxx_values[i]
-
-    def __len__(self):
-        return len(self._xxx_values)
-
-    def __getitem__(self, key):
-        if isinstance(key, six.string_types):
-            i = self._xxx_field_to_index.get(key)
-            if i is None:
-                raise KeyError('no row field "%s"' % key)
-            key = i
-        return self._xxx_values[key]
-
-    def __eq__(self, other):
-        if not isinstance(other, Row):
-            return NotImplemented
-        return(
-            self._xxx_values == other._xxx_values and
-            self._xxx_field_to_index == other._xxx_field_to_index)
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __repr__(self):
-        # sort field dict by value, for determinism
-        items = sorted(self._xxx_field_to_index.items(),
-                       key=operator.itemgetter(1))
-        f2i = '{' + ', '.join('%r: %d' % i for i in items) + '}'
-        return 'Row({}, {})'.format(self._xxx_values, f2i)
-
-
 def _field_to_index_mapping(schema):
     """Create a mapping from schema field name to index of field."""
     return {f.name: i for i, f in enumerate(schema)}
@@ -270,6 +209,8 @@ def _row_tuple_from_json(row, schema):
 
 def _rows_from_json(values, schema):
     """Convert JSON row data to rows with appropriate types."""
+    from google.cloud.bigquery import Row
+
     field_to_index = _field_to_index_mapping(schema)
     return [Row(_row_tuple_from_json(r, schema), field_to_index)
             for r in values]
@@ -505,6 +446,8 @@ def _item_to_row(iterator, resource):
     :rtype: :class:`~google.cloud.bigquery.Row`
     :returns: The next row in the page.
     """
+    from google.cloud.bigquery import Row
+
     return Row(_row_tuple_from_json(resource, iterator.schema),
                iterator._field_to_index)
 

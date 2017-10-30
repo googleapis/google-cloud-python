@@ -466,25 +466,6 @@ class Test_row_tuple_from_json(unittest.TestCase):
                 {u'first': [5, 6], u'second': 7},
             ],))
 
-    def test_row(self):
-        from google.cloud.bigquery._helpers import Row
-
-        VALUES = (1, 2, 3)
-        r = Row(VALUES, {'a': 0, 'b': 1, 'c': 2})
-        self.assertEqual(r.a, 1)
-        self.assertEqual(r[1], 2)
-        self.assertEqual(r['c'], 3)
-        self.assertEqual(len(r), 3)
-        self.assertEqual(r.values(), VALUES)
-        self.assertEqual(repr(r),
-                         "Row((1, 2, 3), {'a': 0, 'b': 1, 'c': 2})")
-        self.assertFalse(r != r)
-        self.assertFalse(r == 3)
-        with self.assertRaises(AttributeError):
-            r.z
-        with self.assertRaises(KeyError):
-            r['z']
-
 
 class Test_rows_from_json(unittest.TestCase):
 
@@ -494,7 +475,7 @@ class Test_rows_from_json(unittest.TestCase):
         return _rows_from_json(rows, schema)
 
     def test_w_record_subfield(self):
-        from google.cloud.bigquery._helpers import Row
+        from google.cloud.bigquery.table import Row
 
         full_name = _Field('REQUIRED', 'full_name', 'STRING')
         area_code = _Field('REQUIRED', 'area_code', 'STRING')
@@ -541,7 +522,7 @@ class Test_rows_from_json(unittest.TestCase):
         self.assertEqual(coerced, expected)
 
     def test_w_int64_float64_bool(self):
-        from google.cloud.bigquery._helpers import Row
+        from google.cloud.bigquery.table import Row
 
         # "Standard" SQL dialect uses 'INT64', 'FLOAT64', 'BOOL'.
         candidate = _Field('REQUIRED', 'candidate', 'STRING')

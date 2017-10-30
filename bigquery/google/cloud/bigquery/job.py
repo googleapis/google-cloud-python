@@ -1931,10 +1931,10 @@ class QueryJob(_AsyncJob):
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
-            Iterator of row data :class:`tuple`s. During each page, the
-            iterator will have the ``total_rows`` attribute set, which counts
-            the total number of rows **in the result set** (this is distinct
-            from the total number of rows in the current page:
+            Iterator of row data :class:`~google.cloud.bigquery.Row`s. During
+            each page, the iterator will have the ``total_rows`` attribute set,
+            which counts the total number of rows **in the result set** (this
+            is distinct from the total number of rows in the current page:
             ``iterator.page.num_items``).
 
         :raises:
