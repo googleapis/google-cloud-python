@@ -60,7 +60,7 @@ REQUIREMENTS = [
 
 EXTRAS_REQUIREMENTS = {
     ':python_version<"3.2"': ['futures >= 3.0.0'],
-    'grpc': ['grpcio >= 1.2.0, < 1.6dev'],
+    'grpc': ['grpcio >= 1.7.0'],
 }
 
 setup(
