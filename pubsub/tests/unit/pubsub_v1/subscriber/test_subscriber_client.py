@@ -29,6 +29,18 @@ def test_init():
     assert client._policy_class is thread.Policy
 
 
+def test_init_emulator(monkeypatch):
+    monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/baz/bacon/')
+    client = create_client()
+
+    # Establish that a gRPC request would attempt to hit the emulator host.
+    #
+    # Sadly, there seems to be no good way to do this without poking at
+    # the private API of gRPC.
+    channel = client.api.subscriber_stub.Pull._channel
+    assert channel.target().decode('utf8') == '/baz/bacon/'
+
+
 def test_subscribe():
     client = create_client()
     subscription = client.subscribe('sub_name_a')
