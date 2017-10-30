@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import os
+import tempfile
 import time
 import unittest
+import wave
 
 import six
 
@@ -245,3 +247,59 @@ class TestSpeechClient(unittest.TestCase):
             for results in self._make_streaming_request(
                     file_obj, single_utterance=False):
                 self._check_results(results.alternatives)
+
+    def test_long_running_recognize(self):
+
+        def _build_large_audio_file(wav, reps):
+            ''' From https://stackoverflow.com/questions/46538867/
+                             attributeerror-wave-write-instance-has-no-
+                             attribute-exit
+            '''
+            def __enter__(self):
+                return self
+            def __exit__(self, exc_type, exc_value, traceback):
+                self.close()
+
+            wave.Wave_read.__exit__ = wave.Wave_write.__exit__ = __exit__
+            wave.Wave_read.__enter__ = wave.Wave_write.__enter__ = __enter__
+            data = []
+
+            ''' From https://stackoverflow.com/questions/2890703/
+                             how-to-join-two-wav-files-using-python
+            '''
+            for rep in range(0, reps):
+                with wave.open(AUDIO_FILE, 'rb') as wavfile:
+                    data.append([wavfile.getparams(),
+                                 wavfile.readframes(wavfile.getnframes())])
+
+            with wave.open(wav.name, 'wb') as wavfile:
+                wavfile.setparams(data[0][0])
+                for rep in range(0, reps):
+                    wavfile.writeframes(data[rep][1])
+            return wav.name
+        
+        wav = tempfile.NamedTemporaryFile()
+        reps = 15
+        audio_file = _build_large_audio_file(wav, reps)
+        client = speech.SpeechClient()
+        with open(audio_file, 'rb') as audio:
+            content = audio.read()
+            operation = client.long_running_recognize(
+                config=speech.types.RecognitionConfig(
+                    encoding='LINEAR16',
+                    language_code='en-US',
+                ),
+                audio=speech.types.RecognitionAudio(content=content)
+            )
+        
+        try:
+            opresult = operation.result()
+        except GaxError:
+            self.fail()
+        self.assertGreater(len(opresult.results), 0)
+        for result in opresult.results:
+            self.assertGreater(len(result.alternatives), 0)
+            for alternative in result.alternatives:
+                self.assertEqual(alternative.transcript.lower(),
+                                 ("hello thank you for using google cloud "
+                                  "platform " *reps)[:-1])
