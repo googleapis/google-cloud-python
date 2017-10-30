@@ -225,6 +225,54 @@ class TestLanguageServiceClient(unittest.TestCase):
         self.assertRaises(errors.GaxError, client.analyze_syntax, document)
 
     @mock.patch('google.gax.config.create_stub', spec=True)
+    def test_classify_text(self, mock_create_stub):
+        # Mock gRPC layer
+        grpc_stub = mock.Mock()
+        mock_create_stub.return_value = grpc_stub
+
+        client = language_v1.LanguageServiceClient()
+
+        # Mock request
+        document = {}
+
+        # Mock response
+        expected_response = {}
+        expected_response = language_service_pb2.ClassifyTextResponse(
+            **expected_response)
+        grpc_stub.ClassifyText.return_value = expected_response
+
+        response = client.classify_text(document)
+        self.assertEqual(expected_response, response)
+
+        grpc_stub.ClassifyText.assert_called_once()
+        args, kwargs = grpc_stub.ClassifyText.call_args
+        self.assertEqual(len(args), 2)
+        self.assertEqual(len(kwargs), 1)
+        self.assertIn('metadata', kwargs)
+        actual_request = args[0]
+
+        expected_request = language_service_pb2.ClassifyTextRequest(
+            document=document)
+        self.assertEqual(expected_request, actual_request)
+
+    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
+    @mock.patch('google.gax.config.create_stub', spec=True)
+    def test_classify_text_exception(self, mock_create_stub):
+        # Mock gRPC layer
+        grpc_stub = mock.Mock()
+        mock_create_stub.return_value = grpc_stub
+
+        client = language_v1.LanguageServiceClient()
+
+        # Mock request
+        document = {}
+
+        # Mock exception response
+        grpc_stub.ClassifyText.side_effect = CustomException()
+
+        self.assertRaises(errors.GaxError, client.classify_text, document)
+
+    @mock.patch('google.gax.config.create_stub', spec=True)
     def test_annotate_text(self, mock_create_stub):
         # Mock gRPC layer
         grpc_stub = mock.Mock()

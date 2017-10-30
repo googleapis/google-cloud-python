@@ -35,6 +35,11 @@ class LanguageServiceStub(object):
         request_serializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.AnalyzeSyntaxRequest.SerializeToString,
         response_deserializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.AnalyzeSyntaxResponse.FromString,
         )
+    self.ClassifyText = channel.unary_unary(
+        '/google.cloud.language.v1.LanguageService/ClassifyText',
+        request_serializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.ClassifyTextRequest.SerializeToString,
+        response_deserializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.ClassifyTextResponse.FromString,
+        )
     self.AnnotateText = channel.unary_unary(
         '/google.cloud.language.v1.LanguageService/AnnotateText',
         request_serializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.AnnotateTextRequest.SerializeToString,
@@ -80,6 +85,13 @@ class LanguageServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def ClassifyText(self, request, context):
+    """Classifies a document into categories.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def AnnotateText(self, request, context):
     """A convenience method that provides all the features that analyzeSentiment,
     analyzeEntities, and analyzeSyntax provide in one call.
@@ -110,6 +122,11 @@ def add_LanguageServiceServicer_to_server(servicer, server):
           servicer.AnalyzeSyntax,
           request_deserializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.AnalyzeSyntaxRequest.FromString,
           response_serializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.AnalyzeSyntaxResponse.SerializeToString,
+      ),
+      'ClassifyText': grpc.unary_unary_rpc_method_handler(
+          servicer.ClassifyText,
+          request_deserializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.ClassifyTextRequest.FromString,
+          response_serializer=google_dot_cloud_dot_language__v1_dot_proto_dot_language__service__pb2.ClassifyTextResponse.SerializeToString,
       ),
       'AnnotateText': grpc.unary_unary_rpc_method_handler(
           servicer.AnnotateText,

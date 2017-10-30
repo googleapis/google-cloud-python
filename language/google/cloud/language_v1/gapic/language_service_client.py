@@ -143,6 +143,9 @@ class LanguageServiceClient(object):
         self._analyze_syntax = api_callable.create_api_call(
             self.language_service_stub.AnalyzeSyntax,
             settings=defaults['analyze_syntax'])
+        self._classify_text = api_callable.create_api_call(
+            self.language_service_stub.ClassifyText,
+            settings=defaults['classify_text'])
         self._annotate_text = api_callable.create_api_call(
             self.language_service_stub.AnnotateText,
             settings=defaults['annotate_text'])
@@ -283,6 +286,36 @@ class LanguageServiceClient(object):
         request = language_service_pb2.AnalyzeSyntaxRequest(
             document=document, encoding_type=encoding_type)
         return self._analyze_syntax(request, options)
+
+    def classify_text(self, document, options=None):
+        """
+        Classifies a document into categories.
+
+        Example:
+            >>> from google.cloud import language_v1
+            >>>
+            >>> client = language_v1.LanguageServiceClient()
+            >>>
+            >>> document = {}
+            >>>
+            >>> response = client.classify_text(document)
+
+        Args:
+            document (Union[dict, ~google.cloud.language_v1.types.Document]): Input document.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.language_v1.types.Document`
+            options (~google.gax.CallOptions): Overrides the default
+                settings for this call, e.g, timeout, retries etc.
+
+        Returns:
+            A :class:`~google.cloud.language_v1.types.ClassifyTextResponse` instance.
+
+        Raises:
+            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
+            :exc:`ValueError` if the parameters are invalid.
+        """
+        request = language_service_pb2.ClassifyTextRequest(document=document)
+        return self._classify_text(request, options)
 
     def annotate_text(self,
                       document,

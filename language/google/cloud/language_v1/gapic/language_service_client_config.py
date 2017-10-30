@@ -37,6 +37,11 @@ config = {
                     "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
+                "ClassifyText": {
+                    "timeout_millis": 30000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
                 "AnnotateText": {
                     "timeout_millis": 30000,
                     "retry_codes_name": "idempotent",
