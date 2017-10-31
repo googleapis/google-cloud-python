@@ -1,11 +1,14 @@
 # Changelog
 
-## v0.28.0
+[PyPI History][1]
 
-**v0.28.0 significantly changes the interface for this package.** For examples
-of the differences between v0.28.0 and previous versions, see [Migrating to
-the BigQuery Python client library
-v0.28](https://cloud.google.com/bigquery/docs/python-client-migration).
+[1]: https://pypi.org/project/google-cloud-bigquery/#history
+
+## 0.28.0
+
+**0.28.0 significantly changes the interface for this package.** For examples
+of the differences between 0.28.0 and previous versions, see
+[Migrating to the BigQuery Python client library 0.28][2].
 These changes can be summarized as follows:
 
 -   Query and view operations default to the standard SQL dialect. (#4192)
@@ -14,6 +17,8 @@ These changes can be summarized as follows:
     queries, immediately start the job.
 -   Functions to create, get, update, delete datasets and tables moved to the
     client class.
+
+[2]: https://cloud.google.com/bigquery/docs/python-client-migration
 
 ### Fixes
 
@@ -110,7 +115,7 @@ These changes can be summarized as follows:
 PyPI: https://pypi.org/project/google-cloud-bigquery/0.28.0/
 
 
-## v0.27.0
+## 0.27.0
 
 - Remove client-side enum validation. (#3735)
 - Add `Table.row_from_mapping` helper. (#3425)
