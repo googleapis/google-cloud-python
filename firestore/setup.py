@@ -51,12 +51,13 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.28.0, < 0.29dev',
-    'google-gax>=0.15.7, <0.16dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
+    'google-gax >= 0.15.7, < 0.16dev',
 ]
 
 setuptools.setup(
     name='google-cloud-firestore',
-    version='0.27.0',
+    version='0.28.0',
     description='Python Client for Google Cloud Firestore',
     long_description=README,
     namespace_packages=[

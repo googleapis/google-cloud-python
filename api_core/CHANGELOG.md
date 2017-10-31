@@ -1,10 +1,14 @@
 # Changelog
 
-## v0.1.1
+[PyPI History][1]
+
+[1]: https://pypi.org/project/google-api-core/#history
+
+## 0.1.1
 
 - Upgrading `grpcio` dependency from `1.2.0, < 1.6dev` to `>= 1.7.0` (#4280)
 
-## v0.1.0
+## 0.1.0
 
 Initial release
 

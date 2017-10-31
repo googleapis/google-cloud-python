@@ -52,6 +52,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
     'google-gax >= 0.15.14, < 0.16dev',
 ]
 EXTRAS_REQUIRE = {
@@ -60,7 +61,7 @@ EXTRAS_REQUIRE = {
 
 setup(
     name='google-cloud-language',
-    version='0.29.0',
+    version='0.30.0',
     description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[

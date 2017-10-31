@@ -52,13 +52,14 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.28.0, < 0.29dev',
-    'google-cloud-logging >= 1.3.0, < 1.4dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
+    'google-cloud-logging >= 1.4.0, < 1.5dev',
     'gapic-google-cloud-error-reporting-v1beta1 >= 0.15.0, < 0.16dev'
 ]
 
 setup(
     name='google-cloud-error-reporting',
-    version='0.27.0',
+    version='0.28.0',
     description='Python Client for Stackdriver Error Reporting',
     long_description=README,
     namespace_packages=[
