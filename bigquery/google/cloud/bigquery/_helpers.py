@@ -443,7 +443,7 @@ def _item_to_row(iterator, resource):
     :type resource: dict
     :param resource: An item to be converted to a row.
 
-    :rtype: :class:`~google.cloud.bigquery.Row`
+    :rtype: :class:`~google.cloud.bigquery.table.Row`
     :returns: The next row in the page.
     """
     from google.cloud.bigquery import Row

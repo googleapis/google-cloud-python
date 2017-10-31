@@ -40,7 +40,7 @@ class TableReference(object):
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/tables
 
-    :type dataset_ref: :class:`google.cloud.bigquery.DatasetReference`
+    :type dataset_ref: :class:`google.cloud.bigquery.dataset.DatasetReference`
     :param dataset_ref: a pointer to the dataset
 
     :type table_id: str
@@ -609,7 +609,7 @@ class Table(object):
         :type resource: dict
         :param resource: table resource representation returned from the API
 
-        :type dataset: :class:`google.cloud.bigquery.Dataset`
+        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`
         :param dataset: The dataset containing the table.
 
         :rtype: :class:`google.cloud.bigquery.table.Table`

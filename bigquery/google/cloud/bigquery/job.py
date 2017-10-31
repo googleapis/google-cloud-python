@@ -690,7 +690,7 @@ class LoadJob(_AsyncJob):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris
         for supported URI formats. Pass None for jobs that load from a file.
 
-    :type destination: :class:`google.cloud.bigquery.TableReference`
+    :type destination: :class:`google.cloud.bigquery.table.TableReference`
     :param destination: reference to table into which data is to be loaded.
 
     :type client: :class:`google.cloud.bigquery.client.Client`
@@ -959,10 +959,10 @@ class CopyJob(_AsyncJob):
     :type job_id: str
     :param job_id: the job's ID, within the project belonging to ``client``.
 
-    :type sources: list of :class:`google.cloud.bigquery.TableReference`
+    :type sources: list of :class:`google.cloud.bigquery.table.TableReference`
     :param sources: Table into which data is to be loaded.
 
-    :type destination: :class:`google.cloud.bigquery.TableReference`
+    :type destination: :class:`google.cloud.bigquery.table.TableReference`
     :param destination: Table into which data is to be loaded.
 
     :type client: :class:`google.cloud.bigquery.client.Client`
@@ -1134,7 +1134,7 @@ class ExtractJob(_AsyncJob):
     :type job_id: str
     :param job_id: the job's ID
 
-    :type source: :class:`google.cloud.bigquery.TableReference`
+    :type source: :class:`google.cloud.bigquery.table.TableReference`
     :param source: Table into which data is to be loaded.
 
     :type destination_uris: list of string
@@ -1931,11 +1931,11 @@ class QueryJob(_AsyncJob):
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
-            Iterator of row data :class:`~google.cloud.bigquery.Row`s. During
-            each page, the iterator will have the ``total_rows`` attribute set,
-            which counts the total number of rows **in the result set** (this
-            is distinct from the total number of rows in the current page:
-            ``iterator.page.num_items``).
+            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.
+            During each page, the iterator will have the ``total_rows``
+            attribute set, which counts the total number of rows **in the
+            result set** (this is distinct from the total number of rows in
+            the current page: ``iterator.page.num_items``).
 
         :raises:
             :class:`~google.cloud.exceptions.GoogleCloudError` if the job

@@ -1172,11 +1172,11 @@ class Client(ClientWithProject):
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
-            Iterator of row data :class:`~google.cloud.bigquery.Row`s. During
-            each page, the iterator will have the ``total_rows`` attribute set,
-            which counts the total number of rows **in the result set** (this
-            is distinct from the total number of rows in the current page:
-            ``iterator.page.num_items``).
+            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.
+            During each page, the iterator will have the ``total_rows``
+            attribute set, which counts the total number of rows **in the
+            result set** (this is distinct from the total number of rows in
+            the current page: ``iterator.page.num_items``).
 
         :raises:
             :class:`~google.api_core.exceptions.GoogleAPICallError` if the
@@ -1242,11 +1242,12 @@ class Client(ClientWithProject):
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of row data :class:`~google.cloud.bigquery.Row`s.
-                  During each page, the iterator will have the ``total_rows``
-                  attribute set, which counts the total number of rows **in
-                  the table** (this is distinct from the total number of rows
-                  in the current page: ``iterator.page.num_items``).
+        :returns: Iterator of row data
+                  :class:`~google.cloud.bigquery.table.Row`-s. During each
+                  page, the iterator will have the ``total_rows`` attribute
+                  set, which counts the total number of rows **in the table**
+                  (this is distinct from the total number of rows in the
+                  current page: ``iterator.page.num_items``).
 
         """
         if selected_fields is not None:

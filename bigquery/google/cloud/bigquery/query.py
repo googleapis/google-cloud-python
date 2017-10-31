@@ -597,7 +597,7 @@ class QueryResults(object):
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#rows
 
-        :rtype: list of :class:`~google.cloud.bigquery.Row`
+        :rtype: list of :class:`~google.cloud.bigquery.table.Row`
         :returns: fields describing the schema (None until set by the server).
         """
         return _rows_from_json(self._properties.get('rows', ()), self.schema)
