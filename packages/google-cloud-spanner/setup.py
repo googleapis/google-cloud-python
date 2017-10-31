@@ -53,14 +53,15 @@ SETUP_BASE = {
 REQUIREMENTS = [
     'google-auth >= 1.1.0',
     'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
-    'google-gax>=0.15.15, <0.16dev',
-    'grpc-google-iam-v1>=0.11.4, <0.12dev',
-    'requests>=2.18.4, <3.0dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
+    'google-gax >= 0.15.15, < 0.16dev',
+    'grpc-google-iam-v1 >= 0.11.4, < 0.12dev',
+    'requests >= 2.18.4, < 3.0dev',
 ]
 
 setup(
     name='google-cloud-spanner',
-    version='0.28.0',
+    version='0.29.0',
     description='Python Client for Cloud Spanner',
     long_description=README,
     namespace_packages=[
