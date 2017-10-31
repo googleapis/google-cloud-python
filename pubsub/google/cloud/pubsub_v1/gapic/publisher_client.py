@@ -104,7 +104,7 @@ class PublisherClient(object):
         if channel is not None and credentials is not None:
             raise ValueError(
                 'channel and credentials arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name___))
+                'exclusive.'.format(self.__class__.__name__))
 
         if channel is None:
             channel = google.api_core.grpc_helpers.create_channel(

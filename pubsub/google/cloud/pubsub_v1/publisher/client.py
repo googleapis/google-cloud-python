@@ -69,9 +69,9 @@ class Client(object):
         # keepalive options.
         if 'channel' not in kwargs:
             kwargs['channel'] = grpc_helpers.create_channel(
-                credentials=kwargs.get('credentials', None),
+                credentials=kwargs.pop('credentials', None),
                 target=self.target,
-                scopes=publisher_client.PublisherClient._ALL_SCOPES,
+                scopes=publisher_client.PublisherClient._DEFAULT_SCOPES,
                 options={
                     'grpc.max_send_message_length': -1,
                     'grpc.max_receive_message_length': -1,
@@ -80,8 +80,6 @@ class Client(object):
 
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
-        kwargs['lib_name'] = 'gccl'
-        kwargs['lib_version'] = __VERSION__
         self.api = publisher_client.PublisherClient(**kwargs)
         self.batch_settings = types.BatchSettings(*batch_settings)
 
@@ -98,10 +96,7 @@ class Client(object):
         Returns:
             str: The location of the API.
         """
-        return '{host}:{port}'.format(
-            host=publisher_client.PublisherClient.SERVICE_ADDRESS,
-            port=publisher_client.PublisherClient.DEFAULT_SERVICE_PORT,
-        )
+        return publisher_client.PublisherClient.SERVICE_ADDRESS
 
     def batch(self, topic, message, create=True, autocommit=True):
         """Return the current batch for the provided topic.
