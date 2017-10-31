@@ -51,10 +51,12 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
-    'google-gax >= 0.15.13, < 0.16dev',
-    'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
+    'google-api-core>=0.1.0, <0.2.0dev',
+    'google-auth>=1.0.2, <2.0dev',
+    'googleapis-common-protos[grpc]>=1.5.2, <2.0dev',
+    'grpc-google-iam-v1>=0.11.1, <0.12dev',
     'psutil >= 5.2.2, < 6.0dev',
+    'requests>=2.18.4, <3.0dev',
 ]
 
 setup(
@@ -65,10 +67,6 @@ setup(
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.cloud.gapic',
-        'google.cloud.gapic.pubsub',
-        'google.cloud.proto',
-        'google.cloud.proto.pubsub',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,

@@ -20,10 +20,10 @@ import os
 import grpc
 
 from google.api_core import grpc_helpers
-from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import subscriber_client
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -66,9 +66,9 @@ class Client(object):
         # keepalive options.
         if 'channel' not in kwargs:
             kwargs['channel'] = grpc_helpers.create_channel(
-                credentials=kwargs.get('credentials', None),
+                credentials=kwargs.pop('credentials', None),
                 target=self.target,
-                scopes=subscriber_client.SubscriberClient._ALL_SCOPES,
+                scopes=subscriber_client.SubscriberClient._DEFAULT_SCOPES,
                 options={
                     'grpc.max_send_message_length': -1,
                     'grpc.max_receive_message_length': -1,
@@ -78,8 +78,6 @@ class Client(object):
 
         # Add the metrics headers, and instantiate the underlying GAPIC
         # client.
-        kwargs['lib_name'] = 'gccl'
-        kwargs['lib_version'] = __VERSION__
         self.api = subscriber_client.SubscriberClient(**kwargs)
 
         # The subcription class is responsible to retrieving and dispatching
@@ -93,10 +91,7 @@ class Client(object):
         Returns:
             str: The location of the API.
         """
-        return '{host}:{port}'.format(
-            host=subscriber_client.SubscriberClient.SERVICE_ADDRESS,
-            port=subscriber_client.SubscriberClient.DEFAULT_SERVICE_PORT,
-        )
+        return subscriber_client.SubscriberClient.SERVICE_ADDRESS
 
     def subscribe(self, subscription, callback=None, flow_control=()):
         """Return a representation of an individual subscription.
