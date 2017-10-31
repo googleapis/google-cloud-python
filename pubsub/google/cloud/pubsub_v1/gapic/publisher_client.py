@@ -29,6 +29,7 @@ import google.api_core.gapic_v1.client_info
 import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
+import google.api_core.page_iterator
 import google.api_core.path_template
 
 from google.cloud.pubsub_v1.gapic import publisher_client_config
