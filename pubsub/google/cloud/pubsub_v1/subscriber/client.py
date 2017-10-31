@@ -20,10 +20,10 @@ import os
 import grpc
 
 from google.api_core import grpc_helpers
-from google.cloud.gapic.pubsub.v1 import subscriber_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import subscriber_client
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
