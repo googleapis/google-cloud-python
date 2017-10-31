@@ -59,7 +59,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-speech',
-    version='0.30.0',
+    version='0.30.1.dev1',
     description='Python Client for Google Cloud Speech',
     long_description=README,
     namespace_packages=[
