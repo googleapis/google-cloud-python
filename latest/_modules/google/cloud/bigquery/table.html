@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,62 +56,165 @@
 
 <span class="sd">&quot;&quot;&quot;Define API Datasets.&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
 <span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google</span> <span class="k">import</span> <span class="n">resumable_media</span>
-<span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">MultipartUpload</span>
-<span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
-
-<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
-<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_millis_from_datetime</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_snake_to_camel_case</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_item_to_row</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_page_start</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_build_schema_resource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.external_config</span> <span class="k">import</span> <span class="n">ExternalConfig</span>
 
 
-<span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;Table has no schema:  call &#39;table.reload()&#39;&quot;</span>
+<span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;Table has no schema:  call &#39;client.get_table()&#39;&quot;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
-<span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">1048576</span>  <span class="c1"># 1024 * 1024 B = 1 MB</span>
-<span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/bigquery/v2/projects/&#39;</span>
-    <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{project}</span><span class="s1">/jobs?uploadType=&#39;</span><span class="p">)</span>
-<span class="n">_MULTIPART_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;multipart&#39;</span>
-<span class="n">_RESUMABLE_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;resumable&#39;</span>
-<span class="n">_GENERIC_CONTENT_TYPE</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;*/*&#39;</span>
-<span class="n">_READ_LESS_THAN_SIZE</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s1">&#39;Size </span><span class="si">{:d}</span><span class="s1"> was specified but the file-like object only had &#39;</span>
-    <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> bytes remaining.&#39;</span><span class="p">)</span>
-<span class="n">_DEFAULT_NUM_RETRIES</span> <span class="o">=</span> <span class="mi">6</span>
 
 
-<div class="viewcode-block" id="Table"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table">[docs]</a><span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TableReference"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.TableReference">[docs]</a><span class="k">class</span> <span class="nc">TableReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;TableReferences are pointers to tables.</span>
+
+<span class="sd">    See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables</span>
+
+<span class="sd">    :type dataset_ref: :class:`google.cloud.bigquery.DatasetReference`</span>
+<span class="sd">    :param dataset_ref: a pointer to the dataset</span>
+
+<span class="sd">    :type table_id: str</span>
+<span class="sd">    :param table_id: the ID of the table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">dataset_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span> <span class="o">=</span> <span class="n">table_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project bound to the table.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the project (derived from the dataset reference).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID of dataset containing the table.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the ID (derived from the dataset reference).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Table ID.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the table ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;URL path for the table&#39;s APIs.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the path based on project, dataset and table IDs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TableReference.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.TableReference.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct a table reference given its API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: table reference representation returned from the API</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :returns: Table reference parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
+
+        <span class="n">project</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="n">table_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">DatasetReference</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">),</span> <span class="n">table_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TableReference.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.TableReference.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct the API resource representation of this table reference.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: Table reference as represented as an API resource</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+            <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
+            <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this :class:`DatasetReference`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;TableReference</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.Table">[docs]</a><span class="k">class</span> <span class="nc">Table</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Tables represent a set of rows whose values correspond to a schema.</span>
 
 <span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables</span>
 
-<span class="sd">    :type name: str</span>
-<span class="sd">    :param name: the name of the table</span>
+<span class="sd">    :type table_ref: :class:`google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">    :param table_ref: a pointer to a table</span>
 
-<span class="sd">    :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`</span>
-<span class="sd">    :param dataset: The dataset which contains the table.</span>
-
-<span class="sd">    :type schema: list of :class:`SchemaField`</span>
+<span class="sd">    :type schema: list of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
 <span class="sd">    :param schema: The table&#39;s schema</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_schema</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">all_fields</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;friendly_name&#39;</span><span class="p">,</span> <span class="s1">&#39;expires&#39;</span><span class="p">,</span> <span class="s1">&#39;location&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;partitioning_type&#39;</span><span class="p">,</span> <span class="s1">&#39;view_use_legacy_sql&#39;</span><span class="p">,</span> <span class="s1">&#39;view_query&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;external_data_configuration&#39;</span><span class="p">,</span> <span class="s1">&#39;labels&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">table_ref</span><span class="o">.</span><span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span> <span class="o">=</span> <span class="n">table_ref</span><span class="o">.</span><span class="n">table_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">table_ref</span><span class="o">.</span><span class="n">dataset_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_config</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">{}}</span>
         <span class="c1"># Let the @property do validation.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
 
@@ -122,31 +225,41 @@
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the project (derived from the dataset).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dataset_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Name of dataset containing the table.</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID of dataset containing the table.</span>
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the ID (derived from the dataset).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID of the table.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the table ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the table&#39;s APIs.</span>
 
 <span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: the path based on project and dataste name.</span>
+<span class="sd">        :returns: the path based on project, dataset and table IDs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Table&#39;s schema.</span>
 
-<span class="sd">        :rtype: list of :class:`SchemaField`</span>
+<span class="sd">        :rtype: list of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
 <span class="sd">        :returns: fields describing the schema</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
@@ -155,15 +268,44 @@
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update table&#39;s schema</span>
 
-<span class="sd">        :type value: list of :class:`SchemaField`</span>
+<span class="sd">        :type value: list of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
 <span class="sd">        :param value: fields describing the schema</span>
 
 <span class="sd">        :raises: TypeError if &#39;value&#39; is not a sequence, or ValueError if</span>
 <span class="sd">                 any item in the sequence is not a SchemaField</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Labels for the table.</span>
+
+<span class="sd">        This method always returns a dict. To change a table&#39;s labels,</span>
+<span class="sd">        modify the dict, then call ``Client.update_table``. To delete a</span>
+<span class="sd">        label, set its value to ``None`` before updating.</span>
+
+<span class="sd">        :rtype: dict, {str -&gt; str}</span>
+<span class="sd">        :returns: A dict of the the table&#39;s labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+
+    <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update labels for the table.</span>
+
+<span class="sd">        :type value: dict, {str -&gt; str}</span>
+<span class="sd">        :param value: new labels</span>
+
+<span class="sd">        :raises: ValueError for invalid value types.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a dict&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -230,11 +372,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;ID for the table resource.</span>
+    <span class="k">def</span> <span class="nf">full_table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID for the table, in the form ``project_id:dataset_id:table_id``.</span>
 
 <span class="sd">        :rtype: str, or ``NoneType``</span>
-<span class="sd">        :returns: the ID (None until set from the server).</span>
+<span class="sd">        :returns: the full ID (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
@@ -286,7 +428,7 @@
         <span class="sd">&quot;&quot;&quot;Update the experation time in ms for a partition</span>
 
 <span class="sd">        :type value: int</span>
-<span class="sd">        :param value: partition experiation time in ms</span>
+<span class="sd">        :param value: partition experiation time in milliseconds</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -395,6 +537,9 @@
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;SQL query defining the table as a view.</span>
 
+<span class="sd">        By default, the query is treated as Standard SQL. To use Legacy</span>
+<span class="sd">        SQL, set view_use_legacy_sql to True.</span>
+
 <span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The query as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -413,9 +558,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">][</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">view</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="c1"># The service defaults useLegacySql to True, but this</span>
+        <span class="c1"># client uses Standard SQL by default.</span>
+        <span class="k">if</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">view</span><span class="p">[</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="nd">@view_query</span><span class="o">.</span><span class="n">deleter</span>
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -424,26 +574,29 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">view_use_legacy_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Specifies whether to execute the view with legacy or standard SQL.</span>
+        <span class="sd">&quot;&quot;&quot;Specifies whether to execute the view with Legacy or Standard SQL.</span>
 
-<span class="sd">        If not set, None is returned. BigQuery&#39;s default mode is equivalent to</span>
-<span class="sd">        useLegacySql = True.</span>
+<span class="sd">        The default is False for views (use Standard SQL).</span>
+<span class="sd">        If this table is not a view, None is returned.</span>
 
-<span class="sd">        :rtype: bool, or ``NoneType``</span>
-<span class="sd">        :returns: The boolean for view.useLegacySql as set by the user, or</span>
-<span class="sd">                  None (the default).</span>
+<span class="sd">        :rtype: bool or ``NoneType``</span>
+<span class="sd">        :returns: The boolean for view.useLegacySql, or None if not a view.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">)</span>
+            <span class="c1"># useLegacySql is never missing from the view dict if this table</span>
+            <span class="c1"># was created client-side, because the view_query setter populates</span>
+            <span class="c1"># it. So a missing or None can only come from the server, whose</span>
+            <span class="c1"># default is True.</span>
+            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@view_use_legacy_sql</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">view_use_legacy_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the view sub-property &#39;useLegacySql&#39;.</span>
 
-<span class="sd">        This boolean specifies whether to execute the view with legacy SQL</span>
-<span class="sd">        (True) or standard SQL (False). The default, if not specified, is</span>
-<span class="sd">        &#39;True&#39;.</span>
+<span class="sd">        This boolean specifies whether to execute the view with Legacy SQL</span>
+<span class="sd">        (True) or Standard SQL (False). The default, if not specified, is</span>
+<span class="sd">        &#39;False&#39;.</span>
 
 <span class="sd">        :type value: bool</span>
 <span class="sd">        :param value: The boolean for view.useLegacySql</span>
@@ -456,59 +609,67 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">][</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="Table.list_partitions"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.list_partitions">[docs]</a>    <span class="k">def</span> <span class="nf">list_partitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List the partitions in a table.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">streaming_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Information about a table&#39;s streaming buffer.</span>
 
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :rtype: list</span>
-<span class="sd">        :returns: a list of time partitions</span>
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.StreamingBuffer`</span>
+<span class="sd">        :returns: Streaming buffer information, returned from get_table.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span>
-            <span class="s1">&#39;SELECT partition_id from [</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">$__PARTITIONS_SUMMARY__]&#39;</span> <span class="o">%</span>
-            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-        <span class="n">query</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">rows</span><span class="p">]</span></div>
+        <span class="n">sb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;streamingBuffer&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">StreamingBuffer</span><span class="p">(</span><span class="n">sb</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Table.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">external_data_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Configuration for an external data source.</span>
+
+<span class="sd">        If not set, None is returned.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``</span>
+<span class="sd">        :returns: The external configuration, or None (the default).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_config</span>
+
+    <span class="nd">@external_data_configuration</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">external_data_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets the configuration for an external data source.</span>
+
+<span class="sd">        :type value:</span>
+<span class="sd">            :class:`~google.cloud.bigquery.ExternalConfig`, or ``NoneType``</span>
+<span class="sd">        :param value: The ExternalConfig, or None to unset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ExternalConfig</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass an ExternalConfig or None&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_config</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="Table.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.Table.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a table given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: table resource representation returned from the API</span>
 
-<span class="sd">        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">        :type dataset: :class:`google.cloud.bigquery.Dataset`</span>
 <span class="sd">        :param dataset: The dataset containing the table.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.table.Table`</span>
 <span class="sd">        :returns: Table parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">dataset</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
                 <span class="s1">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information:&#39;</span>
                            <span class="s1">&#39;[&quot;tableReference&quot;][&quot;tableId&quot;]&#39;</span><span class="p">)</span>
-        <span class="n">table_name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="n">project_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
+        <span class="n">table_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">DatasetReference</span><span class="p">(</span><span class="n">project_id</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
+
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">))</span>
         <span class="n">table</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">table</span></div>
-
-    <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :returns: The client passed in or the currently bound client.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">_client</span>
-        <span class="k">return</span> <span class="n">client</span>
 
     <span class="k">def</span> <span class="nf">_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update properties from resource in body of ``api_response``</span>
@@ -520,875 +681,126 @@
         <span class="n">cleaned</span> <span class="o">=</span> <span class="n">api_response</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">schema</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">()})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">ec</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;externalDataConfiguration&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ec</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">external_data_configuration</span> <span class="o">=</span> <span class="n">ExternalConfig</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">ec</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;creationTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
             <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="s1">&#39;lastModifiedTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
             <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;lastModifiedTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;lastModifiedTime&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="s1">&#39;expirationTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
             <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;labels&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
+            <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cleaned</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_populate_expires_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_populate_partitioning_type_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_populate_view_use_legacy_sql_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;view&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">][</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_use_legacy_sql</span>
+
+    <span class="k">def</span> <span class="nf">_populate_view_query_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="s1">&#39;view&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">][</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_query</span>
+
+    <span class="k">def</span> <span class="nf">_populate_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">),</span>
+            <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_populate_external_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_data_configuration</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;externalDataConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;externalDataConfiguration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ExternalConfig</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">external_data_configuration</span><span class="p">)</span>
+
+    <span class="n">custom_resource_fields</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;expires&#39;</span><span class="p">:</span> <span class="n">_populate_expires_resource</span><span class="p">,</span>
+        <span class="s1">&#39;partitioning_type&#39;</span><span class="p">:</span> <span class="n">_populate_partitioning_type_resource</span><span class="p">,</span>
+        <span class="s1">&#39;view_query&#39;</span><span class="p">:</span> <span class="n">_populate_view_query_resource</span><span class="p">,</span>
+        <span class="s1">&#39;view_use_legacy_sql&#39;</span><span class="p">:</span> <span class="n">_populate_view_use_legacy_sql_resource</span><span class="p">,</span>
+        <span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_populate_schema_resource</span><span class="p">,</span>
+        <span class="s1">&#39;external_data_configuration&#39;</span><span class="p">:</span> <span class="n">_populate_external_config</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_fields</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for ``create`` or ``update``.&quot;&quot;&quot;</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;tableReference&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
+                <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+                <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
+                <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="p">},</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filter_fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_resource_fields</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">custom_resource_fields</span><span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">api_field</span> <span class="o">=</span> <span class="n">_snake_to_camel_case</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">resource</span><span class="p">[</span><span class="n">api_field</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resource</span></div>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expires</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">friendly_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">friendly_name</span>
+<span class="k">def</span> <span class="nf">_row_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a mapping to a row tuple using the schema.</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+<span class="sd">    :type mapping: dict</span>
+<span class="sd">    :param mapping: Mapping of row data: must contain keys for all</span>
+<span class="sd">           required fields in the schema.  Keys which do not correspond</span>
+<span class="sd">           to a field in the schema are ignored.</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partitioning_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">]</span>
+<span class="sd">    :type schema: list of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
+<span class="sd">    :param schema: The schema of the table destination for the rows</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">view</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">view</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_query</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_use_legacy_sql</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">view</span><span class="p">[</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_use_legacy_sql</span>
+<span class="sd">    :rtype: tuple</span>
+<span class="sd">    :returns: Tuple whose elements are ordered according to the schema.</span>
+<span class="sd">    :raises: ValueError if schema is empty</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="k">return</span> <span class="n">resource</span>
-
-<div class="viewcode-block" id="Table.create"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  create the table via a PUT request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables&#39;</span> <span class="o">%</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Table.exists"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  test for the existence of the table via a GET request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        :returns: Boolean indicating existence of the table.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                           <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span><span class="p">})</span>
-        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REQUIRED&#39;</span><span class="p">:</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REPEATED&#39;</span><span class="p">:</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">()))</span>
+        <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">:</span>
+            <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Unknown field mode: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Table.reload"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  refresh table properties via a GET request</span>
 
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/get</span>
+<div class="viewcode-block" id="StreamingBuffer"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.StreamingBuffer">[docs]</a><span class="k">class</span> <span class="nc">StreamingBuffer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Information about a table&#39;s streaming buffer.</span>
 
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+<span class="sd">    See https://cloud.google.com/bigquery/streaming-data-into-bigquery.</span>
 
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Table.patch"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.patch">[docs]</a>    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-              <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">friendly_name</span><span class="o">=</span><span class="n">_MARKER</span><span class="p">,</span>
-              <span class="n">description</span><span class="o">=</span><span class="n">_MARKER</span><span class="p">,</span>
-              <span class="n">location</span><span class="o">=</span><span class="n">_MARKER</span><span class="p">,</span>
-              <span class="n">expires</span><span class="o">=</span><span class="n">_MARKER</span><span class="p">,</span>
-              <span class="n">view_query</span><span class="o">=</span><span class="n">_MARKER</span><span class="p">,</span>
-              <span class="n">schema</span><span class="o">=</span><span class="n">_MARKER</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update individual table properties via a PATCH request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/patch</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :type friendly_name: str</span>
-<span class="sd">        :param friendly_name: (Optional) a descriptive name for this table.</span>
-
-<span class="sd">        :type description: str</span>
-<span class="sd">        :param description: (Optional) a description of this table.</span>
-
-<span class="sd">        :type location: str</span>
-<span class="sd">        :param location:</span>
-<span class="sd">            (Optional) the geographic location where the table resides.</span>
-
-<span class="sd">        :type expires: :class:`datetime.datetime`</span>
-<span class="sd">        :param expires: (Optional) point in time at which the table expires.</span>
-
-<span class="sd">        :type view_query: str</span>
-<span class="sd">        :param view_query: SQL query defining the table as a view</span>
-
-<span class="sd">        :type schema: list of :class:`SchemaField`</span>
-<span class="sd">        :param schema: fields describing the schema</span>
-
-<span class="sd">        :raises: ValueError for invalid value types.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-        <span class="n">partial</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="n">expires</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expires</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="n">expires</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a datetime, or None&quot;</span><span class="p">)</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
-
-        <span class="k">if</span> <span class="n">friendly_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">friendly_name</span>
-
-        <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
-
-        <span class="k">if</span> <span class="n">view_query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">view_query</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">view_query</span><span class="p">}</span>
-
-        <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)}</span>
-
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Table.update"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update table properties via a PUT request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Table.delete"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  delete the table via a DELETE request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Table.fetch_data"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.fetch_data">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  fetch the table data via a GET request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list</span>
-
-<span class="sd">        .. note::</span>
-
-<span class="sd">           This method assumes that its instance&#39;s ``schema`` attribute is</span>
-<span class="sd">           up-to-date with the schema as defined on the back-end:  if the</span>
-<span class="sd">           two schemas are not identical, the values returned may be</span>
-<span class="sd">           incomplete.  To ensure that the local copy of the schema is</span>
-<span class="sd">           up-to-date, call :meth:`reload`.</span>
-
-<span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: (Optional) Maximum number of rows to return.</span>
-
-<span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: (Optional) Token representing a cursor into the</span>
-<span class="sd">                           table&#39;s rows.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: (Optional) The client to use.  If not passed, falls</span>
-<span class="sd">                       back to the ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of row data :class:`tuple`s. During each page, the</span>
-<span class="sd">                  iterator will have the ``total_rows`` attribute set,</span>
-<span class="sd">                  which counts the total number of rows **in the table**</span>
-<span class="sd">                  (this is distinct from the total number of rows in the</span>
-<span class="sd">                  current page: ``iterator.page.num_items``).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
-
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/data&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
-            <span class="n">api_request</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
-            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-            <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">,</span>
-            <span class="n">next_token</span><span class="o">=</span><span class="s1">&#39;pageToken&#39;</span><span class="p">,</span>
-            <span class="n">extra_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span>
-        <span class="k">return</span> <span class="n">iterator</span></div>
-
-<div class="viewcode-block" id="Table.row_from_mapping"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.row_from_mapping">[docs]</a>    <span class="k">def</span> <span class="nf">row_from_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert a mapping to a row tuple using the schema.</span>
-
-<span class="sd">        :type mapping: dict</span>
-<span class="sd">        :param mapping: Mapping of row data: must contain keys for all</span>
-<span class="sd">               required fields in the schema.  Keys which do not correspond</span>
-<span class="sd">               to a field in the schema are ignored.</span>
-
-<span class="sd">        :rtype: tuple</span>
-<span class="sd">        :returns: Tuple whose elements are ordered according to the table&#39;s</span>
-<span class="sd">                  schema.</span>
-<span class="sd">        :raises: ValueError if table&#39;s schema is not set</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
-
-        <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REQUIRED&#39;</span><span class="p">:</span>
-                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;REPEATED&#39;</span><span class="p">:</span>
-                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">()))</span>
-            <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">:</span>
-                <span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Unknown field mode: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Table.insert_data"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.insert_data">[docs]</a>    <span class="k">def</span> <span class="nf">insert_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">rows</span><span class="p">,</span>
-                    <span class="n">row_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">skip_invalid_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">ignore_unknown_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">template_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  insert table data via a POST request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</span>
-
-<span class="sd">        :type rows: list of tuples</span>
-<span class="sd">        :param rows: Row data to be inserted. Each tuple should contain data</span>
-<span class="sd">                     for each schema field on the current table and in the</span>
-<span class="sd">                     same order as the schema fields.</span>
-
-<span class="sd">        :type row_ids: list of string</span>
-<span class="sd">        :param row_ids: Unique ids, one per row being inserted.  If not</span>
-<span class="sd">                        passed, no de-duplication occurs.</span>
-
-<span class="sd">        :type skip_invalid_rows: bool</span>
-<span class="sd">        :param skip_invalid_rows: (Optional)  Insert all valid rows of a</span>
-<span class="sd">                                  request, even if invalid rows exist.</span>
-<span class="sd">                                  The default value is False, which causes</span>
-<span class="sd">                                  the entire request to fail if any invalid</span>
-<span class="sd">                                  rows exist.</span>
-
-<span class="sd">        :type ignore_unknown_values: bool</span>
-<span class="sd">        :param ignore_unknown_values: (Optional) Accept rows that contain</span>
-<span class="sd">                                      values that do not match the schema.</span>
-<span class="sd">                                      The unknown values are ignored. Default</span>
-<span class="sd">                                      is False, which treats unknown values as</span>
-<span class="sd">                                      errors.</span>
-
-<span class="sd">        :type template_suffix: str</span>
-<span class="sd">        :param template_suffix:</span>
-<span class="sd">            (Optional) treat ``name`` as a template table and provide a suffix.</span>
-<span class="sd">            BigQuery will create the table ``&lt;name&gt; + &lt;template_suffix&gt;`` based</span>
-<span class="sd">            on the schema of the template table. See</span>
-<span class="sd">            https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :rtype: list of mappings</span>
-<span class="sd">        :returns: One mapping per row with insert errors:  the &quot;index&quot; key</span>
-<span class="sd">                  identifies the row, and the &quot;errors&quot; key contains a list</span>
-<span class="sd">                  of the mappings describing one or more problems with the</span>
-<span class="sd">                  row.</span>
-<span class="sd">        :raises: ValueError if table&#39;s schema is not set</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
-
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">rows_info</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="n">rows_info</span><span class="p">}</span>
-
-        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-            <span class="n">row_info</span> <span class="o">=</span> <span class="p">{}</span>
-
-            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
-                <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># STRING doesn&#39;t need converting</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="n">row_info</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="n">row_info</span><span class="p">}</span>
-            <span class="k">if</span> <span class="n">row_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_ids</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-
-            <span class="n">rows_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">skip_invalid_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;skipInvalidRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">skip_invalid_rows</span>
-
-        <span class="k">if</span> <span class="n">ignore_unknown_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_unknown_values</span>
-
-        <span class="k">if</span> <span class="n">template_suffix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;templateSuffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">template_suffix</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/insertAll&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;insertErrors&#39;</span><span class="p">,</span> <span class="p">()):</span>
-            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]),</span>
-                           <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]})</span>
-
-        <span class="k">return</span> <span class="n">errors</span></div>
-
-    <span class="k">def</span> <span class="nf">_get_transport</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the client&#39;s transport.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: The client to use.</span>
-
-<span class="sd">        :rtype transport:</span>
-<span class="sd">            :class:`~google.auth.transport.requests.AuthorizedSession`</span>
-<span class="sd">        :returns: The transport (with credentials) that will</span>
-<span class="sd">                  make authenticated requests.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">_http</span>
-
-    <span class="k">def</span> <span class="nf">_initiate_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span>
-                                   <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initiate a resumable upload.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: The client to use.</span>
-
-<span class="sd">        :type stream: IO[bytes]</span>
-<span class="sd">        :param stream: A bytes IO object open for reading.</span>
-
-<span class="sd">        :type metadata: dict</span>
-<span class="sd">        :param metadata: The metadata associated with the upload.</span>
-
-<span class="sd">        :type num_retries: int</span>
-<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
-<span class="sd">                            argument will be removed in a future release.)</span>
-
-<span class="sd">        :rtype: tuple</span>
-<span class="sd">        :returns:</span>
-<span class="sd">            Pair of</span>
-
-<span class="sd">            * The :class:`~google.resumable_media.requests.ResumableUpload`</span>
-<span class="sd">              that was created</span>
-<span class="sd">            * The ``transport`` used to initiate the upload.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">_DEFAULT_CHUNKSIZE</span>
-        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
-        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_RESUMABLE_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-        <span class="n">upload</span> <span class="o">=</span> <span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
-                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
-
-        <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
-            <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">_GENERIC_CONTENT_TYPE</span><span class="p">,</span>
-            <span class="n">stream_final</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span>
-
-    <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: The client to use.</span>
-
-<span class="sd">        :type stream: IO[bytes]</span>
-<span class="sd">        :param stream: A bytes IO object open for reading.</span>
-
-<span class="sd">        :type metadata: dict</span>
-<span class="sd">        :param metadata: The metadata associated with the upload.</span>
-
-<span class="sd">        :type num_retries: int</span>
-<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
-<span class="sd">                            argument will be removed in a future release.)</span>
-
-<span class="sd">        :rtype: :class:`~requests.Response`</span>
-<span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the final chunk</span>
-<span class="sd">                  is uploaded.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
-            <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
-
-        <span class="k">while</span> <span class="ow">not</span> <span class="n">upload</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">response</span>
-
-    <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
-                             <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Perform a multipart upload.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: The client to use.</span>
-
-<span class="sd">        :type stream: IO[bytes]</span>
-<span class="sd">        :param stream: A bytes IO object open for reading.</span>
-
-<span class="sd">        :type metadata: dict</span>
-<span class="sd">        :param metadata: The metadata associated with the upload.</span>
-
-<span class="sd">        :type size: int</span>
-<span class="sd">        :param size: The number of bytes to be uploaded (which will be read</span>
-<span class="sd">                     from ``stream``). If not provided, the upload will be</span>
-<span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
-
-<span class="sd">        :type num_retries: int</span>
-<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
-<span class="sd">                            argument will be removed in a future release.)</span>
-
-<span class="sd">        :rtype: :class:`~requests.Response`</span>
-<span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the multipart</span>
-<span class="sd">                  upload request.</span>
-<span class="sd">        :raises: :exc:`ValueError` if the ``stream`` has fewer than ``size``</span>
-<span class="sd">                 bytes remaining.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_READ_LESS_THAN_SIZE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_transport</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
-
-        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_MULTIPART_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-        <span class="n">upload</span> <span class="o">=</span> <span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
-                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
-
-        <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span>
-            <span class="n">transport</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">_GENERIC_CONTENT_TYPE</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">response</span>
-
-    <span class="k">def</span> <span class="nf">_do_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Determine an upload strategy and then perform the upload.</span>
-
-<span class="sd">        If ``size`` is :data:`None`, then a resumable upload will be used,</span>
-<span class="sd">        otherwise the content and the metadata will be uploaded</span>
-<span class="sd">        in a single multipart upload request.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: The client to use.</span>
-
-<span class="sd">        :type stream: IO[bytes]</span>
-<span class="sd">        :param stream: A bytes IO object open for reading.</span>
-
-<span class="sd">        :type metadata: dict</span>
-<span class="sd">        :param metadata: The metadata associated with the upload.</span>
-
-<span class="sd">        :type size: int</span>
-<span class="sd">        :param size: The number of bytes to be uploaded (which will be read</span>
-<span class="sd">                     from ``stream``). If not provided, the upload will be</span>
-<span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
-
-<span class="sd">        :type num_retries: int</span>
-<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
-<span class="sd">                            argument will be removed in a future release.)</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: The parsed JSON from the &quot;200 OK&quot; response. This will be the</span>
-<span class="sd">                  **only** response in the multipart case and it will be the</span>
-<span class="sd">                  **final** response in the resumable case.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_resumable_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_multipart_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-    <span class="c1"># pylint: disable=too-many-arguments,too-many-locals</span>
-<div class="viewcode-block" id="Table.upload_from_file"><a class="viewcode-back" href="../../../../bigquery/table.html#google.cloud.bigquery.table.Table.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                         <span class="n">file_obj</span><span class="p">,</span>
-                         <span class="n">source_format</span><span class="p">,</span>
-                         <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                         <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">num_retries</span><span class="o">=</span><span class="n">_DEFAULT_NUM_RETRIES</span><span class="p">,</span>
-                         <span class="n">allow_jagged_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">allow_quoted_newlines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">create_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">field_delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">ignore_unknown_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">max_bad_records</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">quote_character</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">skip_leading_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">write_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">job_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">null_marker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Upload the contents of this table from a file-like object.</span>
-
-<span class="sd">        :type file_obj: file</span>
-<span class="sd">        :param file_obj: A file handle opened in binary mode for reading.</span>
-
-<span class="sd">        :type source_format: str</span>
-<span class="sd">        :param source_format: Any supported format. The full list of supported</span>
-<span class="sd">            formats is documented under the</span>
-<span class="sd">            ``configuration.extract.destinationFormat`` property on this page:</span>
-<span class="sd">            https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs</span>
-
-<span class="sd">        :type rewind: bool</span>
-<span class="sd">        :param rewind: If True, seek to the beginning of the file handle before</span>
-<span class="sd">                       writing the file.</span>
-
-<span class="sd">        :type size: int</span>
-<span class="sd">        :param size: The number of bytes to read from the file handle.</span>
-<span class="sd">                     If not provided, we&#39;ll try to guess the size using</span>
-<span class="sd">                     :func:`os.fstat`. (If the file handle is not from the</span>
-<span class="sd">                     filesystem this won&#39;t be possible.)</span>
-
-<span class="sd">        :type num_retries: int</span>
-<span class="sd">        :param num_retries: Number of upload retries. Defaults to 6.</span>
-
-<span class="sd">        :type allow_jagged_rows: bool</span>
-<span class="sd">        :param allow_jagged_rows: job configuration option;  see</span>
-<span class="sd">                                  :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type allow_quoted_newlines: bool</span>
-<span class="sd">        :param allow_quoted_newlines: job configuration option; see</span>
-<span class="sd">                                      :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type create_disposition: str</span>
-<span class="sd">        :param create_disposition: job configuration option; see</span>
-<span class="sd">                                   :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type encoding: str</span>
-<span class="sd">        :param encoding: job configuration option; see</span>
-<span class="sd">                         :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type field_delimiter: str</span>
-<span class="sd">        :param field_delimiter: job configuration option; see</span>
-<span class="sd">                                :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type ignore_unknown_values: bool</span>
-<span class="sd">        :param ignore_unknown_values: job configuration option; see</span>
-<span class="sd">                                      :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type max_bad_records: int</span>
-<span class="sd">        :param max_bad_records: job configuration option; see</span>
-<span class="sd">                                :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type quote_character: str</span>
-<span class="sd">        :param quote_character: job configuration option; see</span>
-<span class="sd">                                :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type skip_leading_rows: int</span>
-<span class="sd">        :param skip_leading_rows: job configuration option; see</span>
-<span class="sd">                                  :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type write_disposition: str</span>
-<span class="sd">        :param write_disposition: job configuration option; see</span>
-<span class="sd">                                  :meth:`google.cloud.bigquery.job.LoadJob`.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
-<span class="sd">                       to the ``client`` stored on the current table.</span>
-
-<span class="sd">        :type job_name: str</span>
-<span class="sd">        :param job_name: Optional. The id of the job. Generated if not</span>
-<span class="sd">                         explicitly passed in.</span>
-
-<span class="sd">        :type null_marker: str</span>
-<span class="sd">        :param null_marker: Optional. A custom null marker (example: &quot;\\N&quot;)</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.bigquery.jobs.LoadTableFromStorageJob`</span>
-
-<span class="sd">        :returns: the job instance used to load the data (e.g., for</span>
-<span class="sd">                  querying status). Note that the job is already started:</span>
-<span class="sd">                  do not call ``job.begin()``.</span>
-<span class="sd">        :raises: :class:`ValueError` if ``size`` is not passed in and can not</span>
-<span class="sd">                 be determined, or if the ``file_obj`` can be detected to be</span>
-<span class="sd">                 a file opened in text mode.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">_maybe_rewind</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="n">rewind</span><span class="p">)</span>
-        <span class="n">_check_mode</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_get_upload_metadata</span><span class="p">(</span>
-            <span class="n">source_format</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">_configure_job_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">allow_jagged_rows</span><span class="p">,</span>
-                                <span class="n">allow_quoted_newlines</span><span class="p">,</span> <span class="n">create_disposition</span><span class="p">,</span>
-                                <span class="n">encoding</span><span class="p">,</span> <span class="n">field_delimiter</span><span class="p">,</span>
-                                <span class="n">ignore_unknown_values</span><span class="p">,</span> <span class="n">max_bad_records</span><span class="p">,</span>
-                                <span class="n">quote_character</span><span class="p">,</span> <span class="n">skip_leading_rows</span><span class="p">,</span>
-                                <span class="n">write_disposition</span><span class="p">,</span> <span class="n">job_name</span><span class="p">,</span> <span class="n">null_marker</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">created_json</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_upload</span><span class="p">(</span>
-                <span class="n">client</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">created_json</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_response</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">response</span><span class="p">)</span></div></div>
-    <span class="c1"># pylint: enable=too-many-arguments,too-many-locals</span>
-
-
-<span class="k">def</span> <span class="nf">_configure_job_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span>  <span class="c1"># pylint: disable=too-many-arguments</span>
-                            <span class="n">allow_jagged_rows</span><span class="p">,</span>
-                            <span class="n">allow_quoted_newlines</span><span class="p">,</span>
-                            <span class="n">create_disposition</span><span class="p">,</span>
-                            <span class="n">encoding</span><span class="p">,</span>
-                            <span class="n">field_delimiter</span><span class="p">,</span>
-                            <span class="n">ignore_unknown_values</span><span class="p">,</span>
-                            <span class="n">max_bad_records</span><span class="p">,</span>
-                            <span class="n">quote_character</span><span class="p">,</span>
-                            <span class="n">skip_leading_rows</span><span class="p">,</span>
-                            <span class="n">write_disposition</span><span class="p">,</span>
-                            <span class="n">job_name</span><span class="p">,</span>
-                            <span class="n">null_marker</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Helper for :meth:`Table.upload_from_file`.&quot;&quot;&quot;</span>
-    <span class="n">load_config</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="s1">&#39;load&#39;</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="n">allow_jagged_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;allowJaggedRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allow_jagged_rows</span>
-
-    <span class="k">if</span> <span class="n">allow_quoted_newlines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;allowQuotedNewlines&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allow_quoted_newlines</span>
-
-    <span class="k">if</span> <span class="n">create_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;createDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_disposition</span>
-
-    <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoding</span>
-
-    <span class="k">if</span> <span class="n">field_delimiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;fieldDelimiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_delimiter</span>
-
-    <span class="k">if</span> <span class="n">ignore_unknown_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_unknown_values</span>
-
-    <span class="k">if</span> <span class="n">max_bad_records</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;maxBadRecords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_bad_records</span>
-
-    <span class="k">if</span> <span class="n">quote_character</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;quote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">quote_character</span>
-
-    <span class="k">if</span> <span class="n">skip_leading_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">skip_leading_rows</span>
-
-    <span class="k">if</span> <span class="n">write_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;writeDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">write_disposition</span>
-
-    <span class="k">if</span> <span class="n">job_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="n">job_name</span><span class="p">}</span>
-
-    <span class="k">if</span> <span class="n">null_marker</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;nullMarker&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">null_marker</span>
-
-
-<span class="k">def</span> <span class="nf">_parse_schema_resource</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Parse a resource fragment into a schema field.</span>
-
-<span class="sd">    :type info: mapping</span>
-<span class="sd">    :param info: should contain a &quot;fields&quot; key to be parsed</span>
-
-<span class="sd">    :rtype: list of :class:`SchemaField`, or ``NoneType``</span>
-<span class="sd">    :returns: a list of parsed fields, or ``None`` if no &quot;fields&quot; key is</span>
-<span class="sd">                present in ``info``.</span>
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: streaming buffer representation returned from the API</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s1">&#39;fields&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">()</span>
 
-    <span class="n">schema</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">r_field</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-        <span class="n">field_type</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">)</span>
-        <span class="n">description</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
-        <span class="n">sub_fields</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">r_field</span><span class="p">)</span>
-        <span class="n">schema</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">sub_fields</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">schema</span>
-
-
-<span class="k">def</span> <span class="nf">_build_schema_resource</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate a resource fragment for a schema.</span>
-
-<span class="sd">    :type fields: sequence of :class:`SchemaField`</span>
-<span class="sd">    :param fields: schema to be dumped</span>
-
-<span class="sd">    :rtype: mapping</span>
-<span class="sd">    :returns: a mapping describing the schema of the supplied fields.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">infos</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
-                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">}</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
-        <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">infos</span>
-<span class="c1"># pylint: enable=unused-argument</span>
-
-
-<span class="k">def</span> <span class="nf">_maybe_rewind</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Rewind the stream if desired.</span>
-
-<span class="sd">    :type stream: IO[bytes]</span>
-<span class="sd">    :param stream: A bytes IO object open for reading.</span>
-
-<span class="sd">    :type rewind: bool</span>
-<span class="sd">    :param rewind: Indicates if we should seek to the beginning of the stream.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
-        <span class="n">stream</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_check_mode</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check that a stream was opened in read-binary mode.</span>
-
-<span class="sd">    :type stream: IO[bytes]</span>
-<span class="sd">    :param stream: A bytes IO object open for reading.</span>
-
-<span class="sd">    :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute</span>
-<span class="sd">             and is not among ``rb``, ``r+b`` or ``rb+``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mode</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">,</span> <span class="s1">&#39;r+b&#39;</span><span class="p">,</span> <span class="s1">&#39;rb+&#39;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Cannot upload files opened in text mode:  use &quot;</span>
-            <span class="s2">&quot;open(filename, mode=&#39;rb&#39;) or open(filename, mode=&#39;r+b&#39;)&quot;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_get_upload_headers</span><span class="p">(</span><span class="n">user_agent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the headers for an upload request.</span>
-
-<span class="sd">    :type user_agent: str</span>
-<span class="sd">    :param user_agent: The user-agent for requests.</span>
-
-<span class="sd">    :rtype: dict</span>
-<span class="sd">    :returns: The headers to be used for the request.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">user_agent</span><span class="p">,</span>
-        <span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
-    <span class="p">}</span>
-
-
-<span class="k">def</span> <span class="nf">_get_upload_metadata</span><span class="p">(</span><span class="n">source_format</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get base metadata for creating a table.</span>
-
-<span class="sd">    :type source_format: str</span>
-<span class="sd">    :param source_format: one of &#39;CSV&#39; or &#39;NEWLINE_DELIMITED_JSON&#39;.</span>
-<span class="sd">                          job configuration option.</span>
-
-<span class="sd">    :type schema: list</span>
-<span class="sd">    :param schema: List of :class:`SchemaField` associated with a table.</span>
-
-<span class="sd">    :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`</span>
-<span class="sd">    :param dataset: A dataset which contains a table.</span>
-
-<span class="sd">    :type name: str</span>
-<span class="sd">    :param name: The name of the table.</span>
-
-<span class="sd">    :rtype: dict</span>
-<span class="sd">    :returns: The metadata dictionary.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">load_config</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">,</span>
-        <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-            <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="n">schema</span><span class="p">:</span>
-        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">),</span>
-        <span class="p">}</span>
-
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;load&#39;</span><span class="p">:</span> <span class="n">load_config</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">}</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimated_bytes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;estimatedBytes&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">estimated_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;estimatedRows&#39;</span><span class="p">])</span>
+        <span class="c1"># time is in milliseconds since the epoch.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldest_entry_time</span> <span class="o">=</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span>
+            <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;oldestEntryTime&#39;</span><span class="p">]))</span></div>
 </pre></div>
 
           </div>
@@ -1464,7 +876,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

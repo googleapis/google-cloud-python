@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,7 +57,7 @@
 <span class="sd">&quot;&quot;&quot;Client for interacting with the Google Cloud Storage API.&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_LocalStack</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
@@ -175,7 +175,7 @@
 
 <span class="sd">        :type user_project: str</span>
 <span class="sd">        :param user_project: (Optional) the project ID to be billed for API</span>
-<span class="sd">                             requests made via this instance.</span>
+<span class="sd">                             requests made via the bucket.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The bucket object created.</span>
@@ -308,7 +308,7 @@
 <span class="sd">            response with just the next page token and the language of each</span>
 <span class="sd">            bucket returned: &#39;items/id,nextPageToken&#39;</span>
 
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">                  belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -335,7 +335,7 @@
 <span class="k">def</span> <span class="nf">_item_to_bucket</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON bucket to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type item: dict</span>
@@ -423,7 +423,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

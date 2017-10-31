@@ -1,0 +1,513 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>DB-API Reference &#8212; google-cloud 2185302 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2185302',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bigtable" href="../bigtable/usage.html" />
+    <link rel="prev" title="API Reference" href="reference.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.bigquery.dbapi">
+<span id="db-api-reference"></span><h1>DB-API Reference<a class="headerlink" href="#module-google.cloud.bigquery.dbapi" title="Permalink to this headline">#</a></h1>
+<p>Google BigQuery implementation of the Database API Specification v2.0.</p>
+<p>This module implements the <a class="reference external" href="https://www.python.org/dev/peps/pep-0249/">Python Database API Specification v2.0 (DB-API)</a>
+for Google BigQuery.</p>
+<dl class="function">
+<dt id="google.cloud.bigquery.dbapi.connect">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">connect</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/connection.html#connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.connect" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a DB-API connection to Google BigQuery.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">Client</span></code>) – (Optional) A client used to connect to BigQuery. If not passed, a
+client is created using default options inferred from the environment.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dbapi.Connection" title="google.cloud.bigquery.dbapi.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new DB-API connection to BigQuery.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.dbapi.Connection">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>DB-API Connection to Google BigQuery.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">Client</span></code>) – A client used to connect to BigQuery.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Connection.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/connection.html#Connection.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Connection.close" title="Permalink to this definition">#</a></dt>
+<dd><p>No-op.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Connection.commit">
+<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Connection.commit" title="Permalink to this definition">#</a></dt>
+<dd><p>No-op.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Connection.cursor">
+<code class="descname">cursor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/connection.html#Connection.cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Connection.cursor" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a new cursor object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dbapi.Cursor" title="google.cloud.bigquery.dbapi.Cursor"><code class="xref py py-class docutils literal"><span class="pre">Cursor</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A DB-API cursor that uses this connection.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.dbapi.Cursor">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Cursor</code><span class="sig-paren">(</span><em>connection</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>DB-API Cursor to Google BigQuery.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="#google.cloud.bigquery.dbapi.Connection" title="google.cloud.bigquery.dbapi.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a>) – A DB-API connection to Google BigQuery.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.close" title="Permalink to this definition">#</a></dt>
+<dd><p>No-op.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>operation</em>, <em>parameters=None</em>, <em>job_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.execute" title="Permalink to this definition">#</a></dt>
+<dd><p>Prepare and execute a database operation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When setting query parameters, values which are “text”
+(<code class="docutils literal"><span class="pre">unicode</span></code> in Python2, <code class="docutils literal"><span class="pre">str</span></code> in Python3) will use
+the ‘STRING’ BigQuery type. Values which are “bytes” (<code class="docutils literal"><span class="pre">str</span></code> in
+Python2, <code class="docutils literal"><span class="pre">bytes</span></code> in Python3), will use using the ‘BYTES’ type.</p>
+<p>A <cite>~datetime.datetime</cite> parameter without timezone information uses
+the ‘DATETIME’ BigQuery type (example: Global Pi Day Celebration
+March 14, 2017 at 1:59pm). A <cite>~datetime.datetime</cite> parameter with
+timezone information uses the ‘TIMESTAMP’ BigQuery type (example:
+a wedding on April 29, 2011 at 11am, British Summer Time).</p>
+<p>For more information about BigQuery data types, see:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types">https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types</a></p>
+<p class="last"><code class="docutils literal"><span class="pre">STRUCT</span></code>/<code class="docutils literal"><span class="pre">RECORD</span></code> and <code class="docutils literal"><span class="pre">REPEATED</span></code> query parameters are not
+yet supported. See:
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3524">https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3524</a></p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>operation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A Google BigQuery query string.</li>
+<li><strong>parameters</strong> (<em>Mapping</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>Any</em><em>] or </em><em>Sequence</em><em>[</em><em>Any</em><em>]</em>) – (Optional) dictionary or sequence of parameter values.</li>
+<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The job_id to use. If not set, a job ID
+is generated at random.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.executemany">
+<code class="descname">executemany</code><span class="sig-paren">(</span><em>operation</em>, <em>seq_of_parameters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.executemany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.executemany" title="Permalink to this definition">#</a></dt>
+<dd><p>Prepare and execute a database operation multiple times.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>operation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A Google BigQuery query string.</li>
+<li><strong>parameters</strong> – Sequence of many sets of parameter values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.fetchall">
+<code class="descname">fetchall</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.fetchall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.fetchall" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch all remaining results from the last <code class="docutils literal"><span class="pre">execute*()</span></code> call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)">tuple</a>]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of all the rows in the results.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dbapi.InterfaceError" title="google.cloud.bigquery.dbapi.InterfaceError"><code class="xref py py-class docutils literal"><span class="pre">InterfaceError</span></code></a>
+if called before <code class="docutils literal"><span class="pre">execute()</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.fetchmany">
+<code class="descname">fetchmany</code><span class="sig-paren">(</span><em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.fetchmany"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.fetchmany" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch multiple results from the last <code class="docutils literal"><span class="pre">execute*()</span></code> call.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The size parameter is not used for the request/response size.
+Set the <code class="docutils literal"><span class="pre">arraysize</span></code> attribute before calling <code class="docutils literal"><span class="pre">execute()</span></code> to
+set the batch size.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of rows to return. Defaults to the
+<code class="docutils literal"><span class="pre">arraysize</span></code> property value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">List[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)">tuple</a>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of rows.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dbapi.InterfaceError" title="google.cloud.bigquery.dbapi.InterfaceError"><code class="xref py py-class docutils literal"><span class="pre">InterfaceError</span></code></a>
+if called before <code class="docutils literal"><span class="pre">execute()</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.fetchone">
+<code class="descname">fetchone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.fetchone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.fetchone" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch a single row from the results of the last <code class="docutils literal"><span class="pre">execute*()</span></code> call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)">tuple</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A tuple representing a row or <code class="docutils literal"><span class="pre">None</span></code> if no more data is
+available.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dbapi.InterfaceError" title="google.cloud.bigquery.dbapi.InterfaceError"><code class="xref py py-class docutils literal"><span class="pre">InterfaceError</span></code></a>
+if called before <code class="docutils literal"><span class="pre">execute()</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.setinputsizes">
+<code class="descname">setinputsizes</code><span class="sig-paren">(</span><em>sizes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.setinputsizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.setinputsizes" title="Permalink to this definition">#</a></dt>
+<dd><p>No-op.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.dbapi.Cursor.setoutputsize">
+<code class="descname">setoutputsize</code><span class="sig-paren">(</span><em>size</em>, <em>column=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/cursor.html#Cursor.setoutputsize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Cursor.setoutputsize" title="Permalink to this definition">#</a></dt>
+<dd><p>No-op.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.Warning">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Warning</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#Warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Warning" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<p>Exception raised for important DB-API warnings.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.Error">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Error</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#Error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Error" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<p>Exception representing all non-warning DB-API errors.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.InterfaceError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">InterfaceError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#InterfaceError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.InterfaceError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.Error</span></code></p>
+<p>DB-API error related to the database interface.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.DatabaseError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">DatabaseError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#DatabaseError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.DatabaseError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.Error</span></code></p>
+<p>DB-API error related to the database.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.DataError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">DataError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#DataError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.DataError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.DatabaseError</span></code></p>
+<p>DB-API error due to problems with the processed data.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.OperationalError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">OperationalError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#OperationalError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.OperationalError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.DatabaseError</span></code></p>
+<p>DB-API error related to the database operation.</p>
+<p>These errors are not necessarily under the control of the programmer.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.IntegrityError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">IntegrityError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#IntegrityError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.IntegrityError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.DatabaseError</span></code></p>
+<p>DB-API error when integrity of the database is affected.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.InternalError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">InternalError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#InternalError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.InternalError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.DatabaseError</span></code></p>
+<p>DB-API error when the database encounters an internal error.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.ProgrammingError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">ProgrammingError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#ProgrammingError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.ProgrammingError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.DatabaseError</span></code></p>
+<p>DB-API exception raised for programming errors.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="google.cloud.bigquery.dbapi.NotSupportedError">
+<em class="property">exception </em><code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">NotSupportedError</code><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/exceptions.html#NotSupportedError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.NotSupportedError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dbapi.exceptions.DatabaseError</span></code></p>
+<p>DB-API error for operations not supported by the database or API.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.bigquery.dbapi.Binary">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Binary</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/types.html#Binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.Binary" title="Permalink to this definition">#</a></dt>
+<dd><p>Contruct a DB-API binary value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A string to encode as a binary value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)">bytes</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The UTF-8 encoded bytes representing the string.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.dbapi.Date">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Date</code><a class="headerlink" href="#google.cloud.bigquery.dbapi.Date" title="Permalink to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">date</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.bigquery.dbapi.DateFromTicks">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">DateFromTicks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dbapi.DateFromTicks" title="Permalink to this definition">#</a></dt>
+<dd><p>timestamp -&gt; local date from a POSIX timestamp (like time.time()).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.dbapi.Time">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Time</code><a class="headerlink" href="#google.cloud.bigquery.dbapi.Time" title="Permalink to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">time</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.bigquery.dbapi.TimeFromTicks">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">TimeFromTicks</code><span class="sig-paren">(</span><em>ticks</em>, <em>tz=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dbapi/types.html#TimeFromTicks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dbapi.TimeFromTicks" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a DB-API time value from the given ticks value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ticks</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – a number of seconds since the epoch; see the documentation of the
+standard Python time module for details.</li>
+<li><strong>tz</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.tzinfo" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.tzinfo</span></code></a>) – (Optional) time zone to use for conversion</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.time" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.time</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">time represented by ticks.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.dbapi.Timestamp">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">Timestamp</code><a class="headerlink" href="#google.cloud.bigquery.dbapi.Timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">datetime</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.bigquery.dbapi.TimestampFromTicks">
+<code class="descclassname">google.cloud.bigquery.dbapi.</code><code class="descname">TimestampFromTicks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.bigquery.dbapi.TimestampFromTicks" title="Permalink to this definition">#</a></dt>
+<dd><p>timestamp[, tz] -&gt; tz’s local time from POSIX timestamp.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">BigQuery</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="reference.html">API Reference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DB-API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#authentication-configuration">Authentication / Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#projects">Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#queries">Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">BigQuery</a><ul>
+      <li>Previous: <a href="reference.html" title="previous chapter">API Reference</a></li>
+      <li>Next: <a href="../bigtable/usage.html" title="next chapter">Bigtable</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/bigquery/dbapi.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

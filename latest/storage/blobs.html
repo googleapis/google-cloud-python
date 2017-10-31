@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Blobs / Objects &#8212; google-cloud 448b147 documentation</title>
+    <title>Blobs / Objects &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -137,6 +137,8 @@ will not be set on objects not created via <code class="docutils literal"><span 
 <dt id="google.cloud.storage.blob.Blob.compose">
 <code class="descname">compose</code><span class="sig-paren">(</span><em>sources</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.compose" title="Permalink to this definition">#</a></dt>
 <dd><p>Concatenate source blobs into this one.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -268,6 +270,8 @@ API documents for details.</p>
 </div>
 <p>If <code class="xref py py-attr docutils literal"><span class="pre">encryption_key</span></code> is set, the blob will be encrypted with
 a <a class="reference external" href="https://cloud.google.com/storage/docs/encryption#customer-supplied">customer-supplied</a> encryption key.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -305,6 +309,8 @@ if the session creation response returns an error status.</p>
 <dt id="google.cloud.storage.blob.Blob.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a blob from Cloud Storage.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -329,6 +335,8 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.blob.Blob.download_as_string">
 <code class="descname">download_as_string</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.download_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_as_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob as a string.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -376,6 +384,8 @@ least 32.</p>
 <p>For more fine-grained over the download process, check out
 <a class="reference external" href="https://googlecloudplatform.github.io/google-resumable-media-python/latest/google.resumable_media.requests.html">google-resumable-media</a>. For example, this library allows
 downloading <strong>parts</strong> of a blob rather than the whole thing.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -399,6 +409,8 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.blob.Blob.download_to_filename">
 <code class="descname">download_to_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.download_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.download_to_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob into a named file.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -439,6 +451,8 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.blob.Blob.exists">
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>Determines whether or not this blob exists.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -537,6 +551,8 @@ is not set locally.</td>
 <dd><p>Retrieve the IAM policy for the object.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy">https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy</a></p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -545,7 +561,7 @@ is not set locally.</td>
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current object’s bucket.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../core/modules.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the policy instance, based on the resource returned from
 the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API request.</td>
@@ -687,6 +703,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <code class="descname">patch</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.blob.Blob.patch" title="Permalink to this definition">#</a></dt>
 <dd><p>Sends all changed properties in a PATCH request.</p>
 <p>Updates the <code class="docutils literal"><span class="pre">_properties</span></code> with the response from the backend.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -759,6 +776,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <dt id="google.cloud.storage.blob.Blob.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.blob.Blob.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reload properties from Cloud Storage.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -775,6 +793,8 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <dt id="google.cloud.storage.blob.Blob.rewrite">
 <code class="descname">rewrite</code><span class="sig-paren">(</span><em>source</em>, <em>token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/blob.html#Blob.rewrite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.blob.Blob.rewrite" title="Permalink to this definition">#</a></dt>
 <dd><p>Rewrite source blob into this one.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -828,19 +848,21 @@ not set locally.</td>
 <dd><p>Update the IAM policy for the bucket.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy">https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy</a></p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>policy</strong> (<a class="reference internal" href="../core/modules.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a>) – policy instance used to update bucket’s IAM policy.</li>
+<li><strong>policy</strong> (<a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a>) – policy instance used to update bucket’s IAM policy.</li>
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/modules.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/iam.html#google.cloud.iam.Policy" title="google.cloud.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.iam.Policy</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the policy instance, based on the resource returned from
@@ -898,6 +920,8 @@ the “storage.objects.rewrite” method).</p>
 <dd><p>API call:  test permissions</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions">https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions</a></p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -963,6 +987,7 @@ not been deleted, this will never be set.</td>
 <code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.storage.blob.Blob.update" title="Permalink to this definition">#</a></dt>
 <dd><p>Sends all properties in a PUT request.</p>
 <p>Updates the <code class="docutils literal"><span class="pre">_properties</span></code> with the response from the backend.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -981,6 +1006,8 @@ not been deleted, this will never be set.</td>
 <dd><p>Update blob’s storage class via a rewrite-in-place.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/per-object-storage-class">https://cloud.google.com/storage/docs/per-object-storage-class</a></p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1049,6 +1076,8 @@ for details.</p>
 least 32.</p>
 <p>For more fine-grained over the upload process, check out
 <a class="reference external" href="https://googlecloudplatform.github.io/google-resumable-media-python/latest/google.resumable_media.requests.html">google-resumable-media</a>.</p>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1098,6 +1127,8 @@ overwrite any existing contents.</p>
 <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
 API documents for details.</p>
 </div>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1128,6 +1159,8 @@ overwrite any existing contents.</p>
 <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
 API documents for details.</p>
 </div>
+<p>If <a class="reference internal" href="#google.cloud.storage.blob.Blob.user_project" title="google.cloud.storage.blob.Blob.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set on the bucket, bills the API request
+to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1150,7 +1183,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dl class="attribute">
 <dt id="google.cloud.storage.blob.Blob.user_project">
 <code class="descname">user_project</code><a class="headerlink" href="#google.cloud.storage.blob.Blob.user_project" title="Permalink to this definition">#</a></dt>
-<dd><p>Project ID used for API requests made via this blob.</p>
+<dd><p>Project ID billed for API requests made via this blob.</p>
 <p>Derived from bucket’s value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1248,7 +1281,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

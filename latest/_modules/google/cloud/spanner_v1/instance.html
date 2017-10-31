@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.instance &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.spanner_v1.instance &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,7 +58,7 @@
 
 <span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">INITIAL_PAGE</span>
 <span class="kn">from</span> <span class="nn">google.gax.errors</span> <span class="k">import</span> <span class="n">GaxError</span>
 <span class="kn">from</span> <span class="nn">google.gax.grpc</span> <span class="k">import</span> <span class="n">exc_to_code</span>
@@ -240,7 +240,7 @@
 
 <span class="sd">           before calling :meth:`create`.</span>
 
-<span class="sd">        :rtype: :class:`google.api.core.operation.Operation`</span>
+<span class="sd">        :rtype: :class:`google.api_core.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
 <span class="sd">        :raises Conflict: if the instance already exists</span>
 <span class="sd">        :raises GaxError:</span>
@@ -331,7 +331,7 @@
 
 <span class="sd">            before calling :meth:`update`.</span>
 
-<span class="sd">        :rtype: :class:`google.api.core.operation.Operation`</span>
+<span class="sd">        :rtype: :class:`google.api_core.operation.Operation`</span>
 <span class="sd">        :returns: an operation instance</span>
 <span class="sd">        :raises NotFound: if the instance does not exist</span>
 <span class="sd">        :raises GaxError: for other errors returned from the call</span>
@@ -416,7 +416,7 @@
 <span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: (Optional) Token for fetching next page of results.</span>
 
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api._ore.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
 <span class="sd">            Iterator of :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">            resources within the current instance.</span>
@@ -435,7 +435,7 @@
 <span class="k">def</span> <span class="nf">_item_to_database</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">database_pb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a database protobuf to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type database_pb: :class:`~google.spanner.admin.database.v1.Database`</span>
@@ -520,7 +520,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

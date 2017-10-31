@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dataset &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.bigquery.dataset &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -55,15 +55,16 @@
 <span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Define API Datasets.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
 
 
-<div class="viewcode-block" id="AccessGrant"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.AccessGrant">[docs]</a><span class="k">class</span> <span class="nc">AccessGrant</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="AccessEntry"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.AccessEntry">[docs]</a><span class="k">class</span> <span class="nc">AccessEntry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Represent grant of an access role to an entity.</span>
 
 <span class="sd">    Every entry in the access list will have exactly one of</span>
@@ -118,7 +119,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">entity_id</span> <span class="o">=</span> <span class="n">entity_id</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">AccessGrant</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">AccessEntry</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">role</span> <span class="ow">and</span>
@@ -129,47 +130,131 @@
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;AccessGrant: role=</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">=</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;AccessEntry: role=</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">=</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity_id</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DatasetReference"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.DatasetReference">[docs]</a><span class="k">class</span> <span class="nc">DatasetReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;DatasetReferences are pointers to datasets.</span>
+
+<span class="sd">    See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets</span>
+
+<span class="sd">    :type project: str</span>
+<span class="sd">    :param project: the ID of the project</span>
+
+<span class="sd">    :type dataset_id: str</span>
+<span class="sd">    :param dataset_id: the ID of the dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string for project&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string for dataset_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project ID of the dataset.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the project ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dataset ID.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the dataset ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;URL path for the dataset&#39;s APIs.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the path based on project and dataset name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DatasetReference.table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.DatasetReference.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a TableReference.</span>
+
+<span class="sd">        :type table_id: str</span>
+<span class="sd">        :param table_id: the ID of the table.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :returns: a TableReference for a table in this dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">TableReference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+            <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this :class:`.DatasetReference`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_project</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;DatasetReference</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Datasets are containers for tables.</span>
 
 <span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets</span>
 
-<span class="sd">    :type name: str</span>
-<span class="sd">    :param name: the name of the dataset</span>
-
-<span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
-<span class="sd">    :param client: A client which holds credentials and project configuration</span>
-<span class="sd">                   for the dataset (which requires a project).</span>
-
-<span class="sd">    :type access_grants: list of :class:`AccessGrant`</span>
-<span class="sd">    :param access_grants: roles granted to entities for this dataset</span>
-
-<span class="sd">    :type project: str</span>
-<span class="sd">    :param project: (Optional) project ID for the dataset (defaults to</span>
-<span class="sd">                    the project of the client).</span>
+<span class="sd">    :type dataset_ref: :class:`~google.cloud.bigquery.dataset.DatasetReference`</span>
+<span class="sd">    :param dataset_ref: a pointer to a dataset</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_access_grants</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">access_grants</span><span class="o">=</span><span class="p">(),</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># Let the @property do validation.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">access_grants</span> <span class="o">=</span> <span class="n">access_grants</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">project</span> <span class="ow">or</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_ref</span><span class="o">.</span><span class="n">dataset_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_access_entries</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Project bound to the dataset.</span>
 
 <span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: the project (derived from the client).</span>
+<span class="sd">        :returns: the project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span>
 
@@ -178,32 +263,33 @@
         <span class="sd">&quot;&quot;&quot;URL path for the dataset&#39;s APIs.</span>
 
 <span class="sd">        :rtype: str</span>
-<span class="sd">        :returns: the path based on project and dataste name.</span>
+<span class="sd">        :returns: the path based on project and dataset ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">access_grants</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Dataset&#39;s access grants.</span>
+    <span class="k">def</span> <span class="nf">access_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dataset&#39;s access entries.</span>
 
-<span class="sd">        :rtype: list of :class:`AccessGrant`</span>
+<span class="sd">        :rtype: list of :class:`AccessEntry`</span>
 <span class="sd">        :returns: roles granted to entities for this dataset</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_access_grants</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_access_entries</span><span class="p">)</span>
 
-    <span class="nd">@access_grants</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">access_grants</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update dataset&#39;s access grants</span>
+    <span class="nd">@access_entries</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">access_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update dataset&#39;s access entries</span>
 
-<span class="sd">        :type value: list of :class:`AccessGrant`</span>
+<span class="sd">        :type value:</span>
+<span class="sd">            list of :class:`~google.cloud.bigquery.dataset.AccessEntry`</span>
 <span class="sd">        :param value: roles granted to entities for this dataset</span>
 
 <span class="sd">        :raises: TypeError if &#39;value&#39; is not a sequence, or ValueError if</span>
-<span class="sd">                 any item in the sequence is not an AccessGrant</span>
+<span class="sd">                 any item in the sequence is not an AccessEntry</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">AccessGrant</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Values must be AccessGrant instances&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_access_grants</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">AccessEntry</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Values must be AccessEntry instances&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_access_entries</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -219,7 +305,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;ID for the dataset resource.</span>
+        <span class="sd">&quot;&quot;&quot;Dataset ID.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the dataset ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">full_dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID for the dataset resource, in the form &quot;project_id:dataset_id&quot;.</span>
 
 <span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the ID (None until set from the server).</span>
@@ -344,68 +439,76 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="Dataset.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Labels for the dataset.</span>
+
+<span class="sd">        This method always returns a dict. To change a dataset&#39;s labels,</span>
+<span class="sd">        modify the dict, then call</span>
+<span class="sd">        :meth:`google.cloud.bigquery.client.Client.update_dataset`. To delete</span>
+<span class="sd">        a label, set its value to ``None`` before updating.</span>
+
+<span class="sd">        :rtype: dict, {str -&gt; str}</span>
+<span class="sd">        :returns: A dict of the the dataset&#39;s labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+
+    <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update labels for the dataset.</span>
+
+<span class="sd">        :type value: dict, {str -&gt; str}</span>
+<span class="sd">        :param value: new labels</span>
+
+<span class="sd">        :raises: ValueError for invalid value types.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a dict&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="Dataset.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.Dataset.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a dataset given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: dataset resource representation returned from the API</span>
 
-<span class="sd">        :type client: :class:`google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :param client: Client which holds credentials and project</span>
-<span class="sd">                       configuration for the dataset.</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.dataset.Dataset`</span>
 <span class="sd">        :returns: Dataset parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;datasetReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="s1">&#39;datasetId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">]):</span>
+        <span class="n">dsr</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dsr</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s1">&#39;datasetId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dsr</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information:&#39;</span>
                            <span class="s1">&#39;[&quot;datasetReference&quot;][&quot;datasetId&quot;]&#39;</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">][</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dsr</span><span class="p">[</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">DatasetReference</span><span class="p">(</span><span class="n">dsr</span><span class="p">[</span><span class="s1">&#39;projectId&#39;</span><span class="p">],</span> <span class="n">dataset_id</span><span class="p">))</span>
         <span class="n">dataset</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dataset</span></div>
 
-    <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.client.Client`</span>
-<span class="sd">        :returns: The client passed in or the currently bound client.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
-        <span class="k">return</span> <span class="n">client</span>
-
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_parse_access_grants</span><span class="p">(</span><span class="n">access</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parse a resource fragment into a set of access grants.</span>
+    <span class="k">def</span> <span class="nf">_parse_access_entries</span><span class="p">(</span><span class="n">access</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse a resource fragment into a set of access entries.</span>
 
 <span class="sd">        ``role`` augments the entity type and present **unless** the entity</span>
 <span class="sd">        type is ``view``.</span>
 
 <span class="sd">        :type access: list of mappings</span>
-<span class="sd">        :param access: each mapping represents a single access grant.</span>
+<span class="sd">        :param access: each mapping represents a single access entry.</span>
 
-<span class="sd">        :rtype: list of :class:`AccessGrant`</span>
-<span class="sd">        :returns: a list of parsed grants.</span>
-<span class="sd">        :raises: :class:`ValueError` if a grant in ``access`` has more keys</span>
+<span class="sd">        :rtype: list of :class:`~google.cloud.bigquery.dataset.AccessEntry`</span>
+<span class="sd">        :returns: a list of parsed entries.</span>
+<span class="sd">        :raises: :class:`ValueError` if a entry in ``access`` has more keys</span>
 <span class="sd">                 than ``role`` and one additional key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">grant</span> <span class="ow">in</span> <span class="n">access</span><span class="p">:</span>
-            <span class="n">grant</span> <span class="o">=</span> <span class="n">grant</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">role</span> <span class="o">=</span> <span class="n">grant</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">entity_type</span><span class="p">,</span> <span class="n">entity_id</span> <span class="o">=</span> <span class="n">grant</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grant</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Grant has unexpected keys remaining.&#39;</span><span class="p">,</span> <span class="n">grant</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">access</span><span class="p">:</span>
+            <span class="n">entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;role&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">entity_type</span><span class="p">,</span> <span class="n">entity_id</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">popitem</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Entry has unexpected keys remaining.&#39;</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">AccessGrant</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">))</span>
+                <span class="n">AccessEntry</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">def</span> <span class="nf">_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">):</span>
@@ -417,7 +520,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">cleaned</span> <span class="o">=</span> <span class="n">api_response</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">access</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;access&#39;</span><span class="p">,</span> <span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">access_grants</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_access_grants</span><span class="p">(</span><span class="n">access</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">access_entries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_access_entries</span><span class="p">(</span><span class="n">access</span><span class="p">)</span>
         <span class="k">if</span> <span class="s1">&#39;creationTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
             <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="s1">&#39;lastModifiedTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
@@ -425,15 +528,17 @@
         <span class="k">if</span> <span class="s1">&#39;defaultTableExpirationMs&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
             <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;defaultTableExpirationMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
                 <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;defaultTableExpirationMs&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;labels&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
+            <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cleaned</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_build_access_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a resource fragment for dataset&#39;s access grants.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Generate a resource fragment for dataset&#39;s access entries.&quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">grant</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">access_grants</span><span class="p">:</span>
-            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="n">grant</span><span class="o">.</span><span class="n">entity_type</span><span class="p">:</span> <span class="n">grant</span><span class="o">.</span><span class="n">entity_id</span><span class="p">}</span>
-            <span class="k">if</span> <span class="n">grant</span><span class="o">.</span><span class="n">role</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grant</span><span class="o">.</span><span class="n">role</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">access_entries</span><span class="p">:</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="n">entry</span><span class="o">.</span><span class="n">entity_type</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">entity_id</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">role</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">role</span>
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 
@@ -441,7 +546,7 @@
         <span class="sd">&quot;&quot;&quot;Generate a resource for ``create`` or ``update``.&quot;&quot;&quot;</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;datasetReference&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
+                <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">},</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_table_expiration_ms</span>
@@ -456,197 +561,23 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">access_grants</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">access_entries</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;access&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_access_resource</span><span class="p">()</span>
+
+        <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>  <span class="c1"># labels is never None</span>
 
         <span class="k">return</span> <span class="n">resource</span>
 
-<div class="viewcode-block" id="Dataset.create"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  create the dataset via a PUT request.</span>
+<div class="viewcode-block" id="Dataset.table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.Dataset.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a TableReference.</span>
 
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</span>
+<span class="sd">        :type table_id: str</span>
+<span class="sd">        :param table_id: the ID of the table.</span>
 
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :returns: a TableReference for a table in this dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Dataset.exists"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  test for the existence of the dataset via a GET request</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        :returns: Boolean indicating existence of the dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                           <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span><span class="p">})</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
-
-<div class="viewcode-block" id="Dataset.reload"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  refresh dataset properties via a GET request.</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/get</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Dataset.patch"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.patch">[docs]</a>    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update individual dataset properties via a PATCH request.</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/patch</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-
-<span class="sd">        :type kw: ``dict``</span>
-<span class="sd">        :param kw: properties to be patched.</span>
-
-<span class="sd">        :raises: ValueError for invalid value types.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
-        <span class="n">partial</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="s1">&#39;default_table_expiration_ms&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;default_table_expiration_ms&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass an integer, or None&quot;</span><span class="p">)</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;defaultTableExpirationMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-        <span class="k">if</span> <span class="s1">&#39;description&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="s1">&#39;friendly_name&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;friendly_name&#39;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="s1">&#39;location&#39;</span> <span class="ow">in</span> <span class="n">kw</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span>
-
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Dataset.update"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update dataset properties via a PUT request.</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/update</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Dataset.delete"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  delete the dataset via a DELETE request.</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete</span>
-
-<span class="sd">        :type client: :class:`~google.cloud.bigquery.client.Client` or</span>
-<span class="sd">                      ``NoneType``</span>
-<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
-<span class="sd">                       ``client`` stored on the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Dataset.list_tables"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.list_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List tables for the project associated with this client.</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list</span>
-
-<span class="sd">        :type max_results: int</span>
-<span class="sd">        :param max_results: (Optional) Maximum number of tables to return.</span>
-<span class="sd">                            If not passed, defaults to a value set by the API.</span>
-
-<span class="sd">        :type page_token: str</span>
-<span class="sd">        :param page_token: (Optional) Opaque marker for the next &quot;page&quot; of</span>
-<span class="sd">                           datasets. If not passed, the API will return the</span>
-<span class="sd">                           first page of datasets.</span>
-
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`</span>
-<span class="sd">                  contained within the current dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
-            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span>
-            <span class="n">api_request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_table</span><span class="p">,</span>
-            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;tables&#39;</span><span class="p">,</span>
-            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="n">result</span></div>
-
-<div class="viewcode-block" id="Dataset.table"><a class="viewcode-back" href="../../../../bigquery/dataset.html#google.cloud.bigquery.dataset.Dataset.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a table bound to this dataset.</span>
-
-<span class="sd">        :type name: str</span>
-<span class="sd">        :param name: Name of the table.</span>
-
-<span class="sd">        :type schema: list of :class:`google.cloud.bigquery.table.SchemaField`</span>
-<span class="sd">        :param schema: The table&#39;s schema</span>
-
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.table.Table`</span>
-<span class="sd">        :returns: a new ``Table`` instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span></div></div>
-
-
-<span class="k">def</span> <span class="nf">_item_to_table</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert a JSON table to the native object.</span>
-
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
-<span class="sd">    :param iterator: The iterator that is currently in use.</span>
-
-<span class="sd">    :type resource: dict</span>
-<span class="sd">    :param resource: An item to be converted to a table.</span>
-
-<span class="sd">    :rtype: :class:`~google.cloud.bigquery.table.Table`</span>
-<span class="sd">    :returns: The next table in the page.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TableReference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
@@ -722,7 +653,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

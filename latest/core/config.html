@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Configuration &#8212; google-cloud 448b147 documentation</title>
+    <title>Configuration &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -91,6 +91,44 @@ using the <code class="docutils literal"><span class="pre">gcloud</span></code> 
 </pre></div>
 </div>
 </div>
+<div class="section" id="module-google.cloud.environment_vars">
+<span id="environment-variables"></span><h2>Environment Variables<a class="headerlink" href="#module-google.cloud.environment_vars" title="Permalink to this headline">#</a></h2>
+<p>Comprehensive list of environment variables used in google-cloud.</p>
+<p>These enable many types of implicit behavior in both production
+and tests.</p>
+<dl class="data">
+<dt id="google.cloud.environment_vars.BIGTABLE_EMULATOR">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">BIGTABLE_EMULATOR</code><em class="property"> = 'BIGTABLE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.BIGTABLE_EMULATOR" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for Bigtable emulator.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.DISABLE_GRPC">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">DISABLE_GRPC</code><em class="property"> = 'GOOGLE_CLOUD_DISABLE_GRPC'</em><a class="headerlink" href="#google.cloud.environment_vars.DISABLE_GRPC" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable acting as flag to disable gRPC.</p>
+<p>To be used for APIs where both an HTTP and gRPC implementation
+exist.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.GCD_DATASET">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">GCD_DATASET</code><em class="property"> = 'DATASTORE_DATASET'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_DATASET" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining default dataset ID under GCD.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.GCD_HOST">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">GCD_HOST</code><em class="property"> = 'DATASTORE_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.GCD_HOST" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for GCD dataset server.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="google.cloud.environment_vars.PUBSUB_EMULATOR">
+<code class="descclassname">google.cloud.environment_vars.</code><code class="descname">PUBSUB_EMULATOR</code><em class="property"> = 'PUBSUB_EMULATOR_HOST'</em><a class="headerlink" href="#google.cloud.environment_vars.PUBSUB_EMULATOR" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for Pub/Sub emulator.</p>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -122,8 +160,16 @@ using the <code class="docutils literal"><span class="pre">gcloud</span></code> 
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auth.html">Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html">Shared Core Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Base Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="retry.html">Retry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeout.html">Timeout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="page_iterator.html">Page Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">Identity and Access Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation.html">Long-Running Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations_client.html">Long-Running Operations Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_template.html">Path Templates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
@@ -175,7 +221,7 @@ using the <code class="docutils literal"><span class="pre">gcloud</span></code> 
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

@@ -1,0 +1,653 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.api_core.page_iterator &#8212; google-cloud 2185302 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2185302',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.api_core.page_iterator</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2015 Google Inc.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Iterators for paging through paged API methods.</span>
+
+<span class="sd">These iterators simplify the process of paging through API responses</span>
+<span class="sd">where the request takes a page token and the response is a list of results with</span>
+<span class="sd">a token for the next page. See `list pagination`_ in the Google API Style Guide</span>
+<span class="sd">for more details.</span>
+
+<span class="sd">.. _list pagination:</span>
+<span class="sd">    https://cloud.google.com/apis/design/design_patterns#list_pagination</span>
+
+<span class="sd">API clients that have methods that follow the list pagination pattern can</span>
+<span class="sd">return an :class:`.Iterator`. You can use this iterator to get **all** of</span>
+<span class="sd">the results across all pages::</span>
+
+<span class="sd">    &gt;&gt;&gt; results_iterator = client.list_resources()</span>
+<span class="sd">    &gt;&gt;&gt; list(results_iterator)  # Convert to a list (consumes all values).</span>
+
+<span class="sd">Or you can walk your way through items and call off the search early if</span>
+<span class="sd">you find what you&#39;re looking for (resulting in possibly fewer requests)::</span>
+
+<span class="sd">    &gt;&gt;&gt; for resource in results_iterator:</span>
+<span class="sd">    ...     print(resource.name)</span>
+<span class="sd">    ...     if not resource.is_valid:</span>
+<span class="sd">    ...         break</span>
+
+<span class="sd">At any point, you may check the number of items consumed by referencing the</span>
+<span class="sd">``num_results`` property of the iterator::</span>
+
+<span class="sd">    &gt;&gt;&gt; for my_item in results_iterator:</span>
+<span class="sd">    ...     if results_iterator.num_results &gt;= 10:</span>
+<span class="sd">    ...         break</span>
+
+<span class="sd">When iterating, not every new item will send a request to the server.</span>
+<span class="sd">To iterate based on each page of items (where a page corresponds to</span>
+<span class="sd">a request)::</span>
+
+<span class="sd">    &gt;&gt;&gt; for page in results_iterator.pages:</span>
+<span class="sd">    ...     print(&#39;=&#39; * 20)</span>
+<span class="sd">    ...     print(&#39;    Page number: {:d}&#39;.format(iterator.page_number))</span>
+<span class="sd">    ...     print(&#39;  Items in page: {:d}&#39;.format(page.num_items))</span>
+<span class="sd">    ...     print(&#39;     First item: {!r}&#39;.format(next(page)))</span>
+<span class="sd">    ...     print(&#39;Items remaining: {:d}&#39;.format(page.remaining))</span>
+<span class="sd">    ...     print(&#39;Next page token: {}&#39;.format(iterator.next_page_token))</span>
+<span class="sd">    ====================</span>
+<span class="sd">        Page number: 1</span>
+<span class="sd">      Items in page: 1</span>
+<span class="sd">         First item: &lt;MyItemClass at 0x7f1d3cccf690&gt;</span>
+<span class="sd">    Items remaining: 0</span>
+<span class="sd">    Next page token: eav1OzQB0OM8rLdGXOEsyQWSG</span>
+<span class="sd">    ====================</span>
+<span class="sd">        Page number: 2</span>
+<span class="sd">      Items in page: 19</span>
+<span class="sd">         First item: &lt;MyItemClass at 0x7f1d3cccffd0&gt;</span>
+<span class="sd">    Items remaining: 18</span>
+<span class="sd">    Next page token: None</span>
+
+<span class="sd">Then, for each page you can get all the resources on that page by iterating</span>
+<span class="sd">through it or using :func:`list`::</span>
+
+<span class="sd">    &gt;&gt;&gt; list(page)</span>
+<span class="sd">    [</span>
+<span class="sd">        &lt;MyItemClass at 0x7fd64a098ad0&gt;,</span>
+<span class="sd">        &lt;MyItemClass at 0x7fd64a098ed0&gt;,</span>
+<span class="sd">        &lt;MyItemClass at 0x7fd64a098e90&gt;,</span>
+<span class="sd">    ]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">abc</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+
+<div class="viewcode-block" id="Page"><a class="viewcode-back" href="../../../core/page_iterator.html#google.api_core.page_iterator.Page">[docs]</a><span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Single page of results in an iterator.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        parent (google.api_core.page_iterator.Iterator): The iterator that owns</span>
+<span class="sd">            the current page.</span>
+<span class="sd">        items (Sequence[Any]): An iterable (that also defines __len__) of items</span>
+<span class="sd">            from a raw API response.</span>
+<span class="sd">        item_to_value (Callable[google.api_core.page_iterator.Iterator, Any]):</span>
+<span class="sd">            Callable to convert an item from the type in the raw API response</span>
+<span class="sd">            into the native object. Will be called with the iterator and a</span>
+<span class="sd">            single item.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_item_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span> <span class="o">=</span> <span class="n">item_to_value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;int: Total items in the page.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_num_items</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">remaining</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;int: Remaining items in the page.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The :class:`Page` is an iterator of items.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="Page.next"><a class="viewcode-back" href="../../../core/page_iterator.html#google.api_core.page_iterator.Page.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the next value in the page.&quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_item_iter</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+        <span class="c1"># Since we&#39;ve successfully got the next value from the</span>
+        <span class="c1"># iterator, we update the number of remaining.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remaining</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="c1"># Alias needed for Python 2/3 support.</span>
+    <span class="fm">__next__</span> <span class="o">=</span> <span class="nb">next</span></div>
+
+
+<span class="k">def</span> <span class="nf">_item_to_value_identity</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An item to value transformer that returns the item un-changed.&quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="c1"># We are conforming to the interface defined by Iterator.</span>
+    <span class="k">return</span> <span class="n">item</span>
+
+
+<div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../core/page_iterator.html#google.api_core.page_iterator.Iterator">[docs]</a><span class="nd">@six</span><span class="o">.</span><span class="n">add_metaclass</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A generic class for iterating through API list responses.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client(google.cloud.client.Client): The API client.</span>
+<span class="sd">        item_to_value (Callable[google.api_core.page_iterator.Iterator, Any]):</span>
+<span class="sd">            Callable to convert an item from the type in the raw API response</span>
+<span class="sd">            into the native object. Will be called with the iterator and a</span>
+<span class="sd">            single item.</span>
+<span class="sd">        page_token (str): A token identifying a page in a result set to start</span>
+<span class="sd">            fetching results from.</span>
+<span class="sd">        max_results (int): The maximum number of results to fetch.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_value_identity</span><span class="p">,</span>
+                 <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span> <span class="o">=</span> <span class="n">item_to_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">max_results</span>
+        <span class="c1"># The attributes below will change over the life of the iterator.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterator of pages in the response.</span>
+
+<span class="sd">        returns:</span>
+<span class="sd">            types.GeneratorType[google.api_core.page_iterator.Page]: A</span>
+<span class="sd">                generator of page instances.</span>
+
+<span class="sd">        raises:</span>
+<span class="sd">            ValueError: If the iterator has already been started.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_items_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterator for each item returned.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page_iter</span><span class="p">(</span><span class="n">increment</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">page</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">yield</span> <span class="n">item</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Iterator for each item returned.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            types.GeneratorType[Any]: A generator of items from the API.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the iterator has already been started.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Iterator has already started&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_iter</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_page_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">increment</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generator of pages of API responses.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            increment (bool): Flag indicating if the total number of results</span>
+<span class="sd">                should be incremented on each page. This is useful since a page</span>
+<span class="sd">                iterator will want to increment by results per page while an</span>
+<span class="sd">                items iterator will want to increment per item.</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            Page: each page of items from the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_page</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">increment</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">+=</span> <span class="n">page</span><span class="o">.</span><span class="n">num_items</span>
+            <span class="k">yield</span> <span class="n">page</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_page</span><span class="p">()</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
+
+<span class="sd">        This does nothing and is intended to be over-ridden by subclasses</span>
+<span class="sd">        to return the next :class:`Page`.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: Always, this method is abstract.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<span class="k">def</span> <span class="nf">_do_nothing_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper to provide custom behavior after a :class:`Page` is started.</span>
+
+<span class="sd">    This is a do-nothing stand-in as the default value.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        iterator (Iterator): An iterator that holds some request info.</span>
+<span class="sd">        page (Page): The page that was just created.</span>
+<span class="sd">        response (Any): The API response for a page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="HTTPIterator"><a class="viewcode-back" href="../../../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator">[docs]</a><span class="k">class</span> <span class="nc">HTTPIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A generic class for iterating through HTTP/JSON API list responses.</span>
+
+<span class="sd">    To make an iterator work, you&#39;ll need to provide a way to convert a JSON</span>
+<span class="sd">    item returned from the API into the object of your choice (via</span>
+<span class="sd">    ``item_to_value``). You also may need to specify a custom ``items_key`` so</span>
+<span class="sd">    that a given response (containing a page of results) can be parsed into an</span>
+<span class="sd">    iterable page of the actual objects you want.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (google.cloud.client.Client): The API client.</span>
+<span class="sd">        api_request (Callable): The function to use to make API requests.</span>
+<span class="sd">            Generally, this will be</span>
+<span class="sd">            :meth:`google.cloud._http.JSONConnection.api_request`.</span>
+<span class="sd">        path (str): The method path to query for the list of items.</span>
+<span class="sd">        item_to_value (Callable[google.api_core.page_iterator.Iterator, Any]):</span>
+<span class="sd">            Callable to convert an item from the type in the JSON response into</span>
+<span class="sd">            a native object. Will be called with the iterator and a single</span>
+<span class="sd">            item.</span>
+<span class="sd">        items_key (str): The key in the API response where the list of items</span>
+<span class="sd">            can be found.</span>
+<span class="sd">        page_token (str): A token identifying a page in a result set to start</span>
+<span class="sd">            fetching results from.</span>
+<span class="sd">        max_results (int): The maximum number of results to fetch.</span>
+<span class="sd">        extra_params (dict): Extra query string parameters for the</span>
+<span class="sd">            API call.</span>
+<span class="sd">        page_start (Callable[</span>
+<span class="sd">            google.api_core.page_iterator.Iterator,</span>
+<span class="sd">            google.api_core.page_iterator.Page, dict]): Callable to provide</span>
+<span class="sd">            any special behavior after a new page has been created. Assumed</span>
+<span class="sd">            signature takes the :class:`.Iterator` that started the page,</span>
+<span class="sd">            the :class:`.Page` that was started and the dictionary containing</span>
+<span class="sd">            the page response.</span>
+<span class="sd">        next_token (str): The name of the field used in the response for page</span>
+<span class="sd">            tokens.</span>
+
+<span class="sd">    .. autoattribute:: pages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_DEFAULT_ITEMS_KEY</span> <span class="o">=</span> <span class="s1">&#39;items&#39;</span>
+    <span class="n">_PAGE_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;pageToken&#39;</span>
+    <span class="n">_MAX_RESULTS</span> <span class="o">=</span> <span class="s1">&#39;maxResults&#39;</span>
+    <span class="n">_NEXT_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;nextPageToken&#39;</span>
+    <span class="n">_RESERVED_PARAMS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="n">_PAGE_TOKEN</span><span class="p">])</span>
+    <span class="n">_HTTP_METHOD</span> <span class="o">=</span> <span class="s1">&#39;GET&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span>
+                 <span class="n">items_key</span><span class="o">=</span><span class="n">_DEFAULT_ITEMS_KEY</span><span class="p">,</span>
+                 <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">page_start</span><span class="o">=</span><span class="n">_do_nothing_page_start</span><span class="p">,</span> <span class="n">next_token</span><span class="o">=</span><span class="n">_NEXT_TOKEN</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HTTPIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span> <span class="o">=</span> <span class="n">api_request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_key</span> <span class="o">=</span> <span class="n">items_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="n">extra_params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_page_start</span> <span class="o">=</span> <span class="n">page_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_next_token</span> <span class="o">=</span> <span class="n">next_token</span>
+        <span class="c1"># Verify inputs / provide defaults.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_params</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_verify_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Verifies the parameters don&#39;t use any reserved parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If a reserved parameter is used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reserved_in_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_RESERVED_PARAMS</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reserved_in_use</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Using a reserved parameter&#39;</span><span class="p">,</span>
+                             <span class="n">reserved_in_use</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[Page]: The next page in the iterator or :data:`None` if</span>
+<span class="sd">                there are no pages left.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_next_page</span><span class="p">():</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_next_page_response</span><span class="p">()</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_key</span><span class="p">,</span> <span class="p">())</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_page_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_token</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">page</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_has_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determines whether or not there are more pages with results.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Whether the iterator has more pages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_get_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Getter for query parameters for the next request.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary of query parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_PAGE_TOKEN</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_RESULTS</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">_get_next_page_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Requests the next page from the path provided.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: The parsed JSON response of the next page&#39;s contents.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the HTTP method is not ``GET`` or ``POST``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_query_params</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span>
+                <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">,</span>
+                <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected HTTP method&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_HTTP_METHOD</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">_GAXIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A generic class for iterating through Cloud gRPC APIs list responses.</span>
+
+<span class="sd">    Any:</span>
+<span class="sd">        client (google.cloud.client.Client): The API client.</span>
+<span class="sd">        page_iter (google.gax.PageIterator): A GAX page iterator to be wrapped</span>
+<span class="sd">            to conform to the :class:`Iterator` interface.</span>
+<span class="sd">        item_to_value (Callable[Iterator, Any]): Callable to convert an item</span>
+<span class="sd">            from the the protobuf response into a native object. Will</span>
+<span class="sd">            be called with the iterator and a single item.</span>
+<span class="sd">        max_results (int): The maximum number of results to fetch.</span>
+
+<span class="sd">    .. autoattribute:: pages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_GAXIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_iter</span><span class="o">.</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span> <span class="o">=</span> <span class="n">page_iter</span>
+
+    <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
+
+<span class="sd">        Wraps the response from the :class:`~google.gax.PageIterator` in a</span>
+<span class="sd">        :class:`Page` instance and captures some state at each page.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[Page]: The next page in the iterator or :data:`None` if</span>
+<span class="sd">                  there are no pages left.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span><span class="p">)</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span><span class="o">.</span><span class="n">page_token</span> <span class="ow">or</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">page</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="GRPCIterator"><a class="viewcode-back" href="../../../core/page_iterator.html#google.api_core.page_iterator.GRPCIterator">[docs]</a><span class="k">class</span> <span class="nc">GRPCIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A generic class for iterating through gRPC list responses.</span>
+
+<span class="sd">    .. note:: The class does not take a ``page_token`` argument because it can</span>
+<span class="sd">        just be specified in the ``request``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (google.cloud.client.Client): The API client. This unused by</span>
+<span class="sd">            this class, but kept to satisfy the :class:`Iterator` interface.</span>
+<span class="sd">        method (Callable[protobuf.Message]): A bound gRPC method that should</span>
+<span class="sd">            take a single message for the request.</span>
+<span class="sd">        request (protobuf.Message): The request message.</span>
+<span class="sd">        items_field (str): The field in the response message that has the</span>
+<span class="sd">            items for the page.</span>
+<span class="sd">        item_to_value (Callable[GRPCIterator, Any]): Callable to convert an</span>
+<span class="sd">            item from the type in the JSON response into a native object. Will</span>
+<span class="sd">            be called with the iterator and a single item.</span>
+<span class="sd">        request_token_field (str): The field in the request message used to</span>
+<span class="sd">            specify the page token.</span>
+<span class="sd">        response_token_field (str): The field in the response message that has</span>
+<span class="sd">            the token for the next page.</span>
+<span class="sd">        max_results (int): The maximum number of results to fetch.</span>
+
+<span class="sd">    .. autoattribute:: pages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_DEFAULT_REQUEST_TOKEN_FIELD</span> <span class="o">=</span> <span class="s1">&#39;page_token&#39;</span>
+    <span class="n">_DEFAULT_RESPONSE_TOKEN_FIELD</span> <span class="o">=</span> <span class="s1">&#39;next_page_token&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">client</span><span class="p">,</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_value_identity</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="n">_DEFAULT_REQUEST_TOKEN_FIELD</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="n">_DEFAULT_RESPONSE_TOKEN_FIELD</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GRPCIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request</span> <span class="o">=</span> <span class="n">request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items_field</span> <span class="o">=</span> <span class="n">items_field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_token_field</span> <span class="o">=</span> <span class="n">request_token_field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_response_token_field</span> <span class="o">=</span> <span class="n">response_token_field</span>
+
+    <span class="k">def</span> <span class="nf">_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the next page in the iterator.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Page: The next page in the iterator or :data:`None` if</span>
+<span class="sd">                there are no pages left.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_next_page</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_token_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_token_field</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_field</span><span class="p">)</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">page</span>
+
+    <span class="k">def</span> <span class="nf">_has_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determines whether or not there are more pages with results.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Whether the iterator has more pages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Note: intentionally a falsy check instead of a None check. The RPC</span>
+        <span class="c1"># can return an empty string indicating no more pages.</span>
+        <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="k">else</span> <span class="kc">False</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

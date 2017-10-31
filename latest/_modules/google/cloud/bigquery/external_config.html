@@ -1,0 +1,624 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.bigquery.external_config &#8212; google-cloud 2185302 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2185302',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.bigquery.external_config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017 Google Inc.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Define classes that describe external data sources.</span>
+
+<span class="sd">   These are used for both Table.externalDataConfiguration and</span>
+<span class="sd">   Job.configuration.query.tableDefinitions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_json</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_TypedApiResourceProperty</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_ListApiResourceProperty</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_int_or_none</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_build_schema_resource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
+
+
+<div class="viewcode-block" id="BigtableColumn"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableColumn">[docs]</a><span class="k">class</span> <span class="nc">BigtableColumn</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Options for a Bigtable column.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;encoding&#39;</span><span class="p">,</span> <span class="s1">&#39;encoding&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.encoding</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.encoding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">field_name</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;field_name&#39;</span><span class="p">,</span> <span class="s1">&#39;fieldName&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.field_name</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.field_name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">only_read_latest</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;only_read_latest&#39;</span><span class="p">,</span> <span class="s1">&#39;onlyReadLatest&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.only_read_latest</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.only_read_latest</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">qualifier_encoded</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;qualifier_encoded&#39;</span><span class="p">,</span> <span class="s1">&#39;qualifierEncoded&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;The qualifier encoded in binary. The type is ``str`` (Python 2.x) or</span>
+<span class="sd">       ``bytes`` (Python 3.x). The module will handle base64 encoding for you.</span>
+
+<span class="sd">    See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.qualifier_encoded</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifier_encoded</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">qualifier_string</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;qualifier_string&#39;</span><span class="p">,</span> <span class="s1">&#39;qualifierString&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.qualifier_string</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.qualifier_string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">type_</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span><span class="s1">&#39;type_&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns.type</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns.type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BigtableColumn.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableColumn.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
+        <span class="n">qe</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;qualifierEncoded&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">qe</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;qualifierEncoded&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_bytes_to_json</span><span class="p">(</span><span class="n">qe</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span></div>
+
+<div class="viewcode-block" id="BigtableColumn.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableColumn.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a BigtableColumn given its API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource:</span>
+<span class="sd">            A column in the same representation as is returned from the API.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.BigtableColumn`</span>
+<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">qe</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;qualifierEncoded&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">qe</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">qualifier_encoded</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">standard_b64decode</span><span class="p">(</span><span class="n">_to_bytes</span><span class="p">(</span><span class="n">qe</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">config</span></div></div>
+
+
+<div class="viewcode-block" id="BigtableColumnFamily"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableColumnFamily">[docs]</a><span class="k">class</span> <span class="nc">BigtableColumnFamily</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Options for a Bigtable column family.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;encoding&#39;</span><span class="p">,</span> <span class="s1">&#39;encoding&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.encoding</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.encoding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">family_id</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;family_id&#39;</span><span class="p">,</span> <span class="s1">&#39;familyId&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.familyId</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.familyId</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">only_read_latest</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;only_read_latest&#39;</span><span class="p">,</span> <span class="s1">&#39;onlyReadLatest&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.onlyReadLatest</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.onlyReadLatest</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">type_</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span><span class="s1">&#39;type_&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.type</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">columns</span> <span class="o">=</span> <span class="n">_ListApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;columns&#39;</span><span class="p">,</span> <span class="s1">&#39;columns&#39;</span><span class="p">,</span> <span class="n">BigtableColumn</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies.columns</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies.columns</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BigtableColumnFamily.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableColumnFamily.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
+        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">config</span></div>
+
+<div class="viewcode-block" id="BigtableColumnFamily.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableColumnFamily.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a BigtableColumnFamily given its</span>
+<span class="sd">           API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource:</span>
+<span class="sd">            A column family in the same representation as is returned</span>
+<span class="sd">            from the API.</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">            :class:`~google.cloud.bigquery.external_config.BigtableColumnFamily`</span>
+<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">BigtableColumn</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;columns&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">config</span></div></div>
+
+
+<div class="viewcode-block" id="BigtableOptions"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableOptions">[docs]</a><span class="k">class</span> <span class="nc">BigtableOptions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Options that describe how to treat Bigtable tables</span>
+<span class="sd">       as BigQuery tables.&quot;&quot;&quot;</span>
+
+    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;BIGTABLE&#39;</span>
+    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;bigtableOptions&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">ignore_unspecified_column_families</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;ignore_unspecified_column_families&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ignoreUnspecifiedColumnFamilies&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.ignoreUnspecifiedColumnFamilies</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.ignoreUnspecifiedColumnFamilies</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">read_rowkey_as_string</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;read_rowkey_as_string&#39;</span><span class="p">,</span> <span class="s1">&#39;readRowkeyAsString&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.readRowkeyAsString</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.readRowkeyAsString</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">column_families</span> <span class="o">=</span> <span class="n">_ListApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;column_families&#39;</span><span class="p">,</span> <span class="s1">&#39;columnFamilies&#39;</span><span class="p">,</span> <span class="n">BigtableColumnFamily</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).bigtableOptions.columnFamilies</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.bigtableOptions.columnFamilies</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BigtableOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
+        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;columnFamilies&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cf</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+                                    <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;columnFamilies&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">config</span></div>
+
+<div class="viewcode-block" id="BigtableOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.BigtableOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a BigtableOptions given its API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource:</span>
+<span class="sd">            A BigtableOptions in the same representation as is returned</span>
+<span class="sd">            from the API.</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">            :class:`~google.cloud.bigquery.external_config.BigtableOptions`</span>
+<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">column_families</span> <span class="o">=</span> <span class="p">[</span><span class="n">BigtableColumnFamily</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">cf</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">cf</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;columnFamilies&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">config</span></div></div>
+
+
+<div class="viewcode-block" id="CSVOptions"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.CSVOptions">[docs]</a><span class="k">class</span> <span class="nc">CSVOptions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Options that describe how to treat CSV files as BigQuery tables.&quot;&quot;&quot;</span>
+
+    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
+    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;csvOptions&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">allow_jagged_rows</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;allow_jagged_rows&#39;</span><span class="p">,</span> <span class="s1">&#39;allowJaggedRows&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowJaggedRows</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowJaggedRows</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">allow_quoted_newlines</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;allow_quoted_newlines&#39;</span><span class="p">,</span> <span class="s1">&#39;allowQuotedNewlines&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.allowQuotedNewlines</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.allowQuotedNewlines</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;encoding&#39;</span><span class="p">,</span> <span class="s1">&#39;encoding&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.encoding</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.encoding</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">field_delimiter</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;field_delimiter&#39;</span><span class="p">,</span> <span class="s1">&#39;fieldDelimiter&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.fieldDelimiter</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.fieldDelimiter</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">quote_character</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;quote_character&#39;</span><span class="p">,</span> <span class="s1">&#39;quote&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.quote</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.quote</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;skip_leading_rows&#39;</span><span class="p">,</span> <span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).csvOptions.skipLeadingRows</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.csvOptions.skipLeadingRows</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CSVOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.CSVOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
+        <span class="n">slr</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">slr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">slr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span></div>
+
+<div class="viewcode-block" id="CSVOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.CSVOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a CSVOptions given its API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource:</span>
+<span class="sd">            A CSVOptions in the same representation as is</span>
+<span class="sd">            returned from the API.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.external_config.CSVOptions`</span>
+<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">slr</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="n">slr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span></div></div>
+
+
+<div class="viewcode-block" id="GoogleSheetsOptions"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.GoogleSheetsOptions">[docs]</a><span class="k">class</span> <span class="nc">GoogleSheetsOptions</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Options that describe how to treat Google Sheets as BigQuery tables.&quot;&quot;&quot;</span>
+
+    <span class="n">_SOURCE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;GOOGLE_SHEETS&#39;</span>
+    <span class="n">_RESOURCE_NAME</span> <span class="o">=</span> <span class="s1">&#39;googleSheetsOptions&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;skip_leading_rows&#39;</span><span class="p">,</span> <span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).googleSheetsOptions.skipLeadingRows</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.googleSheetsOptions.skipLeadingRows</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GoogleSheetsOptions.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
+        <span class="n">slr</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">slr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">slr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span></div>
+
+<div class="viewcode-block" id="GoogleSheetsOptions.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.GoogleSheetsOptions.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a GoogleSheetsOptions given its API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource:</span>
+<span class="sd">            An GoogleSheetsOptions in the same representation as is</span>
+<span class="sd">            returned from the API.</span>
+
+<span class="sd">        :rtype:</span>
+<span class="sd">            :class:`~google.cloud.bigquery.external_config.GoogleSheetsOptions`</span>
+<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">slr</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="n">_int_or_none</span><span class="p">(</span><span class="n">slr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span></div></div>
+
+
+<span class="n">_OPTION_CLASSES</span> <span class="o">=</span> <span class="p">(</span><span class="n">BigtableOptions</span><span class="p">,</span> <span class="n">CSVOptions</span><span class="p">,</span> <span class="n">GoogleSheetsOptions</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ExternalConfig"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.ExternalConfig">[docs]</a><span class="k">class</span> <span class="nc">ExternalConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Description of an external data source.</span>
+
+<span class="sd">    :type source_format: str</span>
+<span class="sd">    :param source_format: the format of the external data. See</span>
+<span class="sd">                          the ``source_format`` property on this class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_format</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">optcls</span> <span class="ow">in</span> <span class="n">_OPTION_CLASSES</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">source_format</span> <span class="o">==</span> <span class="n">optcls</span><span class="o">.</span><span class="n">_SOURCE_FORMAT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">optcls</span><span class="p">()</span>
+                <span class="k">break</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">source_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceFormat</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceFormat</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Source-specific options.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span>
+
+    <span class="n">autodetect</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;autodetect&#39;</span><span class="p">,</span> <span class="s1">&#39;autodetect&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).autodetect</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.autodetect</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">compression</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;compression&#39;</span><span class="p">,</span> <span class="s1">&#39;compression&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).compression</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.compression</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ignore_unknown_values</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;ignore_unknown_values&#39;</span><span class="p">,</span> <span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).ignoreUnknownValues</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.ignoreUnknownValues</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_bad_records</span> <span class="o">=</span> <span class="n">_TypedApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;max_bad_records&#39;</span><span class="p">,</span> <span class="s1">&#39;maxBadRecords&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).maxBadRecords</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.maxBadRecords</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">source_uris</span> <span class="o">=</span> <span class="n">_ListApiResourceProperty</span><span class="p">(</span>
+        <span class="s1">&#39;source_uris&#39;</span><span class="p">,</span> <span class="s1">&#39;sourceUris&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).sourceUris</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.sourceUris</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">schema</span> <span class="o">=</span> <span class="n">_ListApiResourceProperty</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions.(key).schema</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externalDataConfiguration.schema</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ExternalConfig.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.ExternalConfig.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build an API representation of this object.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary in the format used by the BigQuery API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span>
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">r</span> <span class="o">!=</span> <span class="p">{}:</span>
+                <span class="n">config</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">_RESOURCE_NAME</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
+        <span class="k">return</span> <span class="n">config</span></div>
+
+<div class="viewcode-block" id="ExternalConfig.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.external_config.ExternalConfig.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct a CSVOptions given its API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource:</span>
+<span class="sd">            An extract job configuration in the same representation as is</span>
+<span class="sd">            returned from the API.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.external_config.CSVOptions`</span>
+<span class="sd">        :returns: Configuration parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;sourceFormat&#39;</span><span class="p">])</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">optcls</span> <span class="ow">in</span> <span class="n">_OPTION_CLASSES</span><span class="p">:</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">optcls</span><span class="o">.</span><span class="n">_RESOURCE_NAME</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">opts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">optcls</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
+                <span class="k">break</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">schema</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">config</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.schema &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.bigquery.schema &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,7 +57,7 @@
 <span class="sd">&quot;&quot;&quot;Schemas for BigQuery tables / queries.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="SchemaField"><a class="viewcode-back" href="../../../../bigquery/schema.html#google.cloud.bigquery.schema.SchemaField">[docs]</a><span class="k">class</span> <span class="nc">SchemaField</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SchemaField"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.schema.SchemaField">[docs]</a><span class="k">class</span> <span class="nc">SchemaField</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Describe a single field within a table schema.</span>
 
 <span class="sd">    :type name: str</span>
@@ -74,7 +74,7 @@
 <span class="sd">    :type description: str</span>
 <span class="sd">    :param description: optional description for the field.</span>
 
-<span class="sd">    :type fields: tuple of :class:`SchemaField`</span>
+<span class="sd">    :type fields: tuple of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
 <span class="sd">    :param fields: subfields (requires ``field_type`` of &#39;RECORD&#39;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;NULLABLE&#39;</span><span class="p">,</span>
@@ -85,7 +85,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SchemaField.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/schema.html#google.cloud.bigquery.schema.SchemaField.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SchemaField.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.schema.SchemaField.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a ``SchemaField`` object deserialized from a dictionary.</span>
 
@@ -95,7 +95,8 @@
 <span class="sd">                :meth:`to_api_repr`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            SchemaField: The ``SchemaField`` object.</span>
+<span class="sd">            google.cloud.biquery.schema.SchemaField:</span>
+<span class="sd">                The ``SchemaField`` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">field_type</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
@@ -145,7 +146,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span>
 
-<div class="viewcode-block" id="SchemaField.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/schema.html#google.cloud.bigquery.schema.SchemaField.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SchemaField.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.schema.SchemaField.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a dictionary representing this schema field.</span>
 
 <span class="sd">        Returns:</span>
@@ -168,12 +169,13 @@
         <span class="k">return</span> <span class="n">answer</span></div>
 
     <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A tuple key that unique-ly describes this field.</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
 
 <span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            tuple: The contents of this :class:`SchemaField`.</span>
+<span class="sd">            tuple: The contents of this</span>
+<span class="sd">                   :class:`~google.cloud.bigquery.schema.SchemaField`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
@@ -196,6 +198,56 @@
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;SchemaField</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
+
+
+<span class="k">def</span> <span class="nf">_parse_schema_resource</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse a resource fragment into a schema field.</span>
+
+<span class="sd">    :type info: mapping</span>
+<span class="sd">    :param info: should contain a &quot;fields&quot; key to be parsed</span>
+
+<span class="sd">    :rtype:</span>
+<span class="sd">        list of :class:`google.cloud.bigquery.schema.SchemaField`, or</span>
+<span class="sd">        ``NoneType``</span>
+<span class="sd">    :returns: a list of parsed fields, or ``None`` if no &quot;fields&quot; key is</span>
+<span class="sd">                present in ``info``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;fields&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">()</span>
+
+    <span class="n">schema</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r_field</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
+        <span class="n">sub_fields</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">r_field</span><span class="p">)</span>
+        <span class="n">schema</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">sub_fields</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">schema</span>
+
+
+<span class="k">def</span> <span class="nf">_build_schema_resource</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a resource fragment for a schema.</span>
+
+<span class="sd">    :type fields:</span>
+<span class="sd">        sequence of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
+<span class="sd">    :param fields: schema to be dumped</span>
+
+<span class="sd">    :rtype: mapping</span>
+<span class="sd">    :returns: a mapping describing the schema of the supplied fields.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">infos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
+                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+        <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">infos</span>
 </pre></div>
 
           </div>
@@ -271,7 +323,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

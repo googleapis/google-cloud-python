@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -63,7 +63,7 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_rfc3339</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_NOW</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
@@ -84,7 +84,7 @@
 <span class="k">def</span> <span class="nf">_blobs_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Grab prefixes after a :class:`~google.cloud.iterator.Page` started.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type page: :class:`~google.cloud.api.core.page_iterator.Page`</span>
@@ -105,7 +105,7 @@
 <span class="sd">        This assumes that the ``bucket`` attribute has been</span>
 <span class="sd">        added to the iterator after being created.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type item: dict</span>
@@ -128,7 +128,7 @@
 <span class="sd">        This assumes that the ``bucket`` attribute has been</span>
 <span class="sd">        added to the iterator after being created.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that has retrieved the item.</span>
 
 <span class="sd">    :type item: dict</span>
@@ -262,6 +262,8 @@
 <div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -299,6 +301,8 @@
 
 <span class="sd">        This implements &quot;storage.buckets.insert&quot;.</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -320,6 +324,8 @@
         <span class="sd">&quot;&quot;&quot;Sends all changed properties in a PATCH request.</span>
 
 <span class="sd">        Updates the ``_properties`` with the response from the backend.</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -376,6 +382,8 @@
 <span class="sd">          :start-after: [START get_blob]</span>
 <span class="sd">          :end-before: [END get_blob]</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type blob_name: str</span>
 <span class="sd">        :param blob_name: The name of the blob to retrieve.</span>
 
@@ -427,6 +435,8 @@
                    <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an iterator used to find blobs in the bucket.</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type max_results: int</span>
 <span class="sd">        :param max_results: (Optional) Maximum number of blobs to return.</span>
 
@@ -462,7 +472,7 @@
 <span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`</span>
 <span class="sd">                  in this bucket matching the arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -504,6 +514,8 @@
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/notifications/list</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -538,6 +550,8 @@
 <span class="sd">        this will cowardly refuse to delete the objects (or the bucket). This</span>
 <span class="sd">        is to prevent accidental bucket deletion and to prevent extremely long</span>
 <span class="sd">        runtime of this method.</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        :type force: bool</span>
 <span class="sd">        :param force: If True, empties the bucket&#39;s objects then deletes it.</span>
@@ -594,6 +608,8 @@
 <span class="sd">          :start-after: [START delete_blob]</span>
 <span class="sd">          :end-before: [END delete_blob]</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type blob_name: str</span>
 <span class="sd">        :param blob_name: A blob name to delete.</span>
 
@@ -632,6 +648,8 @@
 
 <span class="sd">        Uses :meth:`delete_blob` to delete each individual blob.</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type blobs: list</span>
 <span class="sd">        :param blobs: A list of :class:`~google.cloud.storage.blob.Blob`-s or</span>
 <span class="sd">                      blob names to delete.</span>
@@ -664,6 +682,8 @@
 <div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">preserve_acl</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copy the given blob to the given bucket, optionally with a new name.</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        :type blob: :class:`google.cloud.storage.blob.Blob`</span>
 <span class="sd">        :param blob: The blob to be copied.</span>
@@ -713,6 +733,8 @@
 
 <div class="viewcode-block" id="Bucket.rename_blob"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.rename_blob">[docs]</a>    <span class="k">def</span> <span class="nf">rename_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rename the given blob using copy and delete operations.</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        Effectively, copies blob to the same bucket with a new name, then</span>
 <span class="sd">        deletes the blob.</span>
@@ -1154,6 +1176,8 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -1181,6 +1205,8 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        :type policy: :class:`google.cloud.iam.Policy`</span>
 <span class="sd">        :param policy: policy instance used to update bucket&#39;s IAM policy.</span>
@@ -1215,6 +1241,8 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/buckets/testIamPermissions</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        :type permissions: list of string</span>
 <span class="sd">        :param permissions: the permissions to check</span>
@@ -1428,7 +1456,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

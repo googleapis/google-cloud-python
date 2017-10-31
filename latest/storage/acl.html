@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ACL &#8212; google-cloud 448b147 documentation</title>
+    <title>ACL &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -107,7 +107,7 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({'bucketOwnerFullControl', 'authenticatedRead', 'private', 'publicReadWrite', 'publicRead', 'projectPrivate', 'bucketOwnerRead'})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset({'publicRead', 'authenticatedRead', 'bucketOwnerFullControl', 'projectPrivate', 'publicReadWrite', 'bucketOwnerRead', 'private'})</em><a class="headerlink" href="#google.cloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control/lists#predefined-acl">https://cloud.google.com/storage/docs/access-control/lists#predefined-acl</a></p>
 </dd></dl>
@@ -162,6 +162,7 @@ when sending metadata for ACLs to the API.</p>
 <dt id="google.cloud.storage.acl.ACL.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/acl.html#ACL.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.acl.ACL.clear" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove all ACL entries.</p>
+<p>If <code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code> is set, bills the API request to that project.</p>
 <p>Note that this won’t actually remove <em>ALL</em> the rules, but it
 will remove all the non-default rules.  In short, you’ll still
 have access to a bucket that you created even after you clear
@@ -335,6 +336,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <dt id="google.cloud.storage.acl.ACL.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/acl.html#ACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.acl.ACL.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reload the ACL data from Cloud Storage.</p>
+<p>If <code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -357,6 +359,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.acl.ACL.save">
 <code class="descname">save</code><span class="sig-paren">(</span><em>acl=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/acl.html#ACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.acl.ACL.save" title="Permalink to this definition">#</a></dt>
 <dd><p>Save this ACL for the current bucket.</p>
+<p>If <code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -378,6 +381,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <dt id="google.cloud.storage.acl.ACL.save_predefined">
 <code class="descname">save_predefined</code><span class="sig-paren">(</span><em>predefined</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/acl.html#ACL.save_predefined"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.acl.ACL.save_predefined" title="Permalink to this definition">#</a></dt>
 <dd><p>Save this ACL for the current bucket using a predefined ACL.</p>
+<p>If <code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -587,7 +591,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

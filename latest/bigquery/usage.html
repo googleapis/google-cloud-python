@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud 448b147 documentation</title>
+    <title>BigQuery &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -24,8 +24,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Client" href="client.html" />
-    <link rel="prev" title="Shared Core Modules" href="../core/modules.html" />
+    <link rel="next" title="API Reference" href="reference.html" />
+    <link rel="prev" title="Path Templates" href="../core/path_template.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -48,10 +48,10 @@
 <div class="section" id="authentication-configuration">
 <h2>Authentication / Configuration<a class="headerlink" href="#authentication-configuration" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first">Use <a class="reference internal" href="client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
+<li><p class="first">Use <a class="reference internal" href="reference.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
 your applications.</p>
 </li>
-<li><p class="first"><a class="reference internal" href="client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
+<li><p class="first"><a class="reference internal" href="reference.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
 and an authenticated connection to the BigQuery service.</p>
 </li>
 <li><p class="first">The authentication credentials can be implicitly determined from the
@@ -62,7 +62,7 @@ and
 </li>
 <li><p class="first">After setting <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and
 <span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_CLOUD_PROJECT</span></code> environment variables, create an instance of
-<a class="reference internal" href="client.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>.</p>
+<a class="reference internal" href="reference.html#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
@@ -80,17 +80,15 @@ environment variables, GAE, and GCE).</p>
 <p>To override the project inferred from the environment, pass an explicit
 <code class="docutils literal"><span class="pre">project</span></code> to the constructor, or to either of the alternative
 <code class="docutils literal"><span class="pre">classmethod</span></code> factories:</p>
-<blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div></blockquote>
 <div class="section" id="project-acls">
 <h3>Project ACLs<a class="headerlink" href="#project-acls" title="Permalink to this headline">#</a></h3>
 <p>Each project has an access control list granting reader / writer / owner
 permission to one or more entities.  This list cannot be queried or set
-via the API:  it must be managed using the Google Developer Console.</p>
+via the API; it must be managed using the Google Developer Console.</p>
 </div>
 </div>
 <div class="section" id="datasets">
@@ -103,6 +101,8 @@ which maps to the ACL inherited from its project.</li>
 <li>A default table expiration period.  If set, tables created within the
 dataset will have the value as their expiration period.</li>
 </ul>
+<p>See BigQuery documentation for more information on
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/datasets">Datasets</a>.</p>
 <div class="section" id="dataset-operations">
 <h3>Dataset operations<a class="headerlink" href="#dataset-operations" title="Permalink to this headline">#</a></h3>
 <p>List datasets for the client’s project:</p>
@@ -111,117 +111,142 @@ dataset will have the value as their expiration period.</li>
 </pre></div>
 </div>
 <p>Create a new dataset for the client’s project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">DATASET_NAME</span><span class="p">)</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
-</pre></div>
-</div>
-<p>Check for the existence of a dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="ow">not</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
-    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># DATASET_ID = &#39;dataset_ids_are_strings&#39;</span>
+    <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">DATASET_ID</span><span class="p">)</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;my dataset&#39;</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>  <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Refresh metadata for a dataset (to pick up changes made by another client):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
     <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">LOCALLY_CHANGED_DESCRIPTION</span>
     <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">LOCALLY_CHANGED_DESCRIPTION</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>              <span class="c1"># API request</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>  <span class="c1"># API request</span>
     <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
 </pre></div>
 </div>
-<p>Patch metadata for a dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ONE_DAY_MS</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>
-    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">PATCHED_DESCRIPTION</span><span class="p">,</span>
-        <span class="n">default_table_expiration_ms</span><span class="o">=</span><span class="n">ONE_DAY_MS</span>
-    <span class="p">)</span>      <span class="c1"># API request</span>
-    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">PATCHED_DESCRIPTION</span>
+<p>Update a property in a dataset’s metadata:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">UPDATED_DESCRIPTION</span>
+</pre></div>
+</div>
+<p>Update multiple properties in a dataset’s metadata:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">AccessEntry</span><span class="p">(</span>
+        <span class="n">role</span><span class="o">=</span><span class="s1">&#39;READER&#39;</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="s1">&#39;domain&#39;</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">entry</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span>
+    <span class="n">ONE_DAY_MS</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># in milliseconds</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="o">=</span> <span class="n">ONE_DAY_MS</span>
+    <span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span><span class="p">)</span>
+    <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span> <span class="o">=</span> <span class="n">entries</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_dataset</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;default_table_expiration_ms&#39;</span><span class="p">,</span> <span class="s1">&#39;access_entries&#39;</span><span class="p">]</span>
+    <span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">UPDATED_DESCRIPTION</span>
     <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="o">==</span> <span class="n">ONE_DAY_MS</span>
-</pre></div>
-</div>
-<p>Replace the ACL for a dataset, and update all writeable fields:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">acl</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bigquery</span><span class="o">.</span><span class="n">Access</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="s1">&#39;READER&#39;</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="s1">&#39;domain&#39;</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="s1">&#39;example.com&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="n">acl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span>
 </pre></div>
 </div>
 <p>Delete a dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="ow">not</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">NotFound</span><span class="p">):</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>  <span class="c1"># API request</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="tables">
 <h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">#</a></h2>
-<p>Tables exist within datasets.  List tables for the dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">list_tables</span><span class="p">())</span>  <span class="c1"># API request(s)</span>
+<p>Tables exist within datasets. See BigQuery documentation for more information
+on <a class="reference external" href="https://cloud.google.com/bigquery/docs/tables">Tables</a>.</p>
+<div class="section" id="table-operations">
+<h3>Table operations<a class="headerlink" href="#table-operations" title="Permalink to this headline">#</a></h3>
+<p>List tables for the dataset:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_dataset_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_NAME</span><span class="p">)</span>
+
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">view_query</span> <span class="o">=</span> <span class="n">QUERY</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>                          <span class="c1"># API request</span>
-    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">list_tables</span><span class="p">())</span>  <span class="c1"># API request(s)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>                          <span class="c1"># API request</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_dataset_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
+
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">TABLE_NAME</span>
+    <span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;my_table&#39;</span>
 </pre></div>
 </div>
 <p>Create a table:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_NAME</span><span class="p">,</span> <span class="n">SCHEMA</span><span class="p">)</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>                          <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">SCHEMA</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">),</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">SCHEMA</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>      <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;my_table&#39;</span>
 </pre></div>
 </div>
-<p>Check for the existence of a table:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_NAME</span><span class="p">,</span> <span class="n">SCHEMA</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="ow">not</span> <span class="n">table</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>               <span class="c1"># API request</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>                          <span class="c1"># API request</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>                   <span class="c1"># API request</span>
-</pre></div>
-</div>
-<p>Refresh metadata for a table (to pick up changes made by another client):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="n">ORIGINAL_FRIENDLY_NAME</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">=</span> <span class="n">LOCALLY_CHANGED_FRIENDLY_NAME</span>
+<p>Get a table:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
     <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">LOCALLY_CHANGED_DESCRIPTION</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                  <span class="c1"># API request</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="n">ORIGINAL_FRIENDLY_NAME</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
     <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
 </pre></div>
 </div>
-<p>Patch specific properties for a table:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="n">ORIGINAL_FRIENDLY_NAME</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
-        <span class="n">friendly_name</span><span class="o">=</span><span class="n">PATCHED_FRIENDLY_NAME</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="n">PATCHED_DESCRIPTION</span><span class="p">,</span>
-    <span class="p">)</span>      <span class="c1"># API request</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="n">PATCHED_FRIENDLY_NAME</span>
-    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">PATCHED_DESCRIPTION</span>
+<p>Update a property in a table’s metadata:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_table</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">])</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">UPDATED_DESCRIPTION</span>
 </pre></div>
 </div>
-<p>Update all writable metadata for a table</p>
+<p>Update multiple properties in a table’s metadata:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="n">ORIGINAL_FRIENDLY_NAME</span>
     <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
-    <span class="n">NEW_SCHEMA</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">[:]</span>
-    <span class="n">NEW_SCHEMA</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">,</span> <span class="s1">&#39;string&#39;</span><span class="p">))</span>
+
+    <span class="n">NEW_SCHEMA</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+    <span class="n">NEW_SCHEMA</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">))</span>
     <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">=</span> <span class="n">UPDATED_FRIENDLY_NAME</span>
     <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
     <span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">NEW_SCHEMA</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>              <span class="c1"># API request</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_table</span><span class="p">(</span>
+        <span class="n">table</span><span class="p">,</span>
+        <span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="s1">&#39;friendly_name&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">]</span>
+    <span class="p">)</span>  <span class="c1"># API request</span>
+
     <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">==</span> <span class="n">UPDATED_FRIENDLY_NAME</span>
     <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">UPDATED_DESCRIPTION</span>
     <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">==</span> <span class="n">NEW_SCHEMA</span>
 </pre></div>
 </div>
 <p>Get rows from a table’s data:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">():</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>  <span class="c1"># API request</span>
         <span class="n">do_something</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Utilize iterator properties returned with row data:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">total_rows</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next_page_token</span>
 </pre></div>
 </div>
 <p>Insert rows into a table’s data:</p>
@@ -230,334 +255,197 @@ dataset will have the value as their expiration period.</li>
         <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Wylma Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span>
     <span class="p">]</span>
 
-    <span class="n">table</span><span class="o">.</span><span class="n">insert_data</span><span class="p">(</span><span class="n">ROWS_TO_INSERT</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">ROWS_TO_INSERT</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">errors</span> <span class="o">==</span> <span class="p">[]</span>
 </pre></div>
 </div>
 <p>Upload table data from a file:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">csv_file</span><span class="p">)</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">((</span><span class="sa">b</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;age&#39;</span><span class="p">))</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">((</span><span class="sa">b</span><span class="s1">&#39;Phred Phlyntstone&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;32&#39;</span><span class="p">))</span>
-    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">((</span><span class="sa">b</span><span class="s1">&#39;Wylma Phlyntstone&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;29&#39;</span><span class="p">))</span>
-    <span class="n">csv_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;&quot;full_name,age</span>
+<span class="s2">Phred Phlyntstone,32</span>
+<span class="s2">Wylma Phlyntstone,29</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">csv_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">readable</span><span class="p">:</span>
-        <span class="n">table</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span>
-            <span class="n">readable</span><span class="p">,</span> <span class="n">source_format</span><span class="o">=</span><span class="s1">&#39;CSV&#39;</span><span class="p">,</span> <span class="n">skip_leading_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">TABLE_ID</span><span class="p">)</span>
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_file</span><span class="p">(</span>
+        <span class="n">csv_file</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+</pre></div>
+</div>
+<p>Load table data from Google Cloud Storage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;person_ages&#39;</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
+    <span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">),</span>
+        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">GS_URL</span> <span class="o">=</span> <span class="s1">&#39;gs://</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
+    <span class="n">job_id_prefix</span> <span class="o">=</span> <span class="s2">&quot;my_job&quot;</span>
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">create_disposition</span> <span class="o">=</span> <span class="s1">&#39;NEVER&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_EMPTY&#39;</span>
+    <span class="n">load_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_uri</span><span class="p">(</span>
+        <span class="n">GS_URL</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span>
+        <span class="n">job_id_prefix</span><span class="o">=</span><span class="n">job_id_prefix</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_type</span> <span class="o">==</span> <span class="s1">&#39;load&#39;</span>
+
+    <span class="n">load_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for table load to complete.</span>
+
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="k">assert</span> <span class="n">load_job</span><span class="o">.</span><span class="n">job_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">job_id_prefix</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Copy a table:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">source_dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">DatasetReference</span><span class="p">(</span>
+        <span class="s1">&#39;bigquery-public-data&#39;</span><span class="p">,</span> <span class="s1">&#39;samples&#39;</span><span class="p">)</span>
+    <span class="n">source_table_ref</span> <span class="o">=</span> <span class="n">source_dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;shakespeare&#39;</span><span class="p">)</span>
+
+    <span class="n">dest_dataset</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">DATASET_ID</span><span class="p">))</span>
+    <span class="n">dest_dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">dest_dataset</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">dest_table_ref</span> <span class="o">=</span> <span class="n">dest_dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;destination_table&#39;</span><span class="p">)</span>
+
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">CopyJobConfig</span><span class="p">()</span>
+    <span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">copy_table</span><span class="p">(</span>
+        <span class="n">source_table_ref</span><span class="p">,</span> <span class="n">dest_table_ref</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># Waits for job to complete.</span>
+
+    <span class="k">assert</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="n">dest_table</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">dest_table_ref</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="n">dest_table</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;destination_table&#39;</span>
+</pre></div>
+</div>
+<p>Extract a table to Google Cloud Storage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.storage</span> <span class="k">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">StorageClient</span>
+
+    <span class="n">storage_client</span> <span class="o">=</span> <span class="n">StorageClient</span><span class="p">()</span>
+    <span class="n">bucket</span> <span class="o">=</span> <span class="n">storage_client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">destination_blob_name</span> <span class="o">=</span> <span class="s1">&#39;person_ages_out.csv&#39;</span>
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="n">destination_blob_name</span><span class="p">)</span>
+
+    <span class="n">destination_uri</span> <span class="o">=</span> <span class="s1">&#39;gs://</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">destination_blob_name</span><span class="p">)</span>
+    <span class="n">extract_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">extract_table</span><span class="p">(</span>
+        <span class="n">table_ref</span><span class="p">,</span> <span class="n">destination_uri</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">extract_job</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># Waits for job to complete.</span>
+
+    <span class="n">got</span> <span class="o">=</span> <span class="n">destination</span><span class="o">.</span><span class="n">download_as_string</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="s1">&#39;Bharney Rhubble&#39;</span> <span class="ow">in</span> <span class="n">got</span>
 </pre></div>
 </div>
 <p>Delete a table:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">table</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>              <span class="c1"># API request</span>
-    <span class="k">assert</span> <span class="ow">not</span> <span class="n">table</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+
+    <span class="n">client</span><span class="o">.</span><span class="n">delete_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">NotFound</span><span class="p">):</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="jobs">
-<h2>Jobs<a class="headerlink" href="#jobs" title="Permalink to this headline">#</a></h2>
-<p>Jobs describe actions peformed on data in BigQuery tables:</p>
+</div>
+<div class="section" id="queries">
+<h2>Queries<a class="headerlink" href="#queries" title="Permalink to this headline">#</a></h2>
+<div class="section" id="querying-data">
+<h3>Querying data<a class="headerlink" href="#querying-data" title="Permalink to this headline">#</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
+        <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
+        <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
+    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># in seconds</span>
+    <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+    <span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
+
+    <span class="c1"># Waits for the query to finish</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="n">query_job</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Use of the <code class="docutils literal"><span class="pre">timeout</span></code> parameter is optional. The query will continue to
+run in the background even if it takes longer the timeout allowed.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="run-a-query-using-a-named-query-parameter">
+<h3>Run a query using a named query parameter<a class="headerlink" href="#run-a-query-using-a-named-query-parameter" title="Permalink to this headline">#</a></h3>
+<p>See BigQuery documentation for more information on
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/parameterized-queries">parameterized queries</a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY_W_PARAM</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;SELECT name, state &#39;</span>
+        <span class="s1">&#39;FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
+        <span class="s1">&#39;WHERE state = @state &#39;</span>
+        <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
+    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># in seconds</span>
+    <span class="n">param</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="s1">&#39;TX&#39;</span><span class="p">)</span>
+    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">param</span><span class="p">]</span>
+    <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+        <span class="n">QUERY_W_PARAM</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>  <span class="c1"># API request - starts the query</span>
+    <span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;RUNNING&#39;</span>
+
+    <span class="c1"># Waits for the query to finish</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="n">query_job</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">query_job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;DONE&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;TX&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="querying-table-rows">
+<h3>Querying Table Rows<a class="headerlink" href="#querying-table-rows" title="Permalink to this headline">#</a></h3>
+<p>Run a query and wait for it to finish:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
+        <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
+        <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
+    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># in seconds</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">query_rows</span><span class="p">(</span><span class="n">QUERY</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">))</span>  <span class="c1"># API request</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>Use of the <code class="docutils literal"><span class="pre">timeout</span></code> parameter is optional. The query will continue to
+run in the background even if it takes longer the timeout allowed. The job
+may be retrieved using the job ID via
+<a class="reference internal" href="reference.html#google.cloud.bigquery.client.Client.get_job" title="google.cloud.bigquery.client.Client.get_job"><code class="xref py py-meth docutils literal"><span class="pre">get_job()</span></code></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="list-jobs-for-a-project">
+<h3>List jobs for a project<a class="headerlink" href="#list-jobs-for-a-project" title="Permalink to this headline">#</a></h3>
+<p>Jobs describe actions performed on data in BigQuery tables:</p>
 <ul class="simple">
 <li>Load data into a table</li>
 <li>Run a query against data in one or more tables</li>
 <li>Extract data from a table</li>
 <li>Copy a table</li>
 </ul>
-<p>List jobs for a project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">job_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">job_iterator</span><span class="p">:</span>   <span class="c1"># API request(s)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">job_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">()</span>  <span class="c1"># API request(s)</span>
+    <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">job_iterator</span><span class="p">:</span>
         <span class="n">do_something_with</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="section" id="querying-data-synchronous">
-<h3>Querying data (synchronous)<a class="headerlink" href="#querying-data-synchronous" title="Permalink to this headline">#</a></h3>
-<p>Run a query which can be expected to complete within bounded time:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">LIMITED</span><span class="p">)</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>             <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="n">query</span><span class="o">.</span><span class="n">complete</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="n">LIMIT</span>
-    <span class="k">assert</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Run a query using a named query parameter:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">ScalarQueryParameter</span>
-    <span class="n">param</span> <span class="o">=</span> <span class="n">ScalarQueryParameter</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="s1">&#39;TX&#39;</span><span class="p">)</span>
-    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">LIMITED</span><span class="p">,</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">[</span><span class="n">param</span><span class="p">])</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>             <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="n">query</span><span class="o">.</span><span class="n">complete</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="n">LIMIT</span>
-    <span class="k">assert</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>If the rows returned by the query do not fit into the initial response,
-then we need to fetch the remaining rows via
-<a class="reference internal" href="query.html#google.cloud.bigquery.query.QueryResults.fetch_data" title="google.cloud.bigquery.query.QueryResults.fetch_data"><code class="xref py py-meth docutils literal"><span class="pre">fetch_data()</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">LIMITED</span><span class="p">)</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">PAGE_SIZE</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>                     <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="n">query</span><span class="o">.</span><span class="n">complete</span>
-    <span class="k">assert</span> <span class="n">query</span><span class="o">.</span><span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="n">PAGE_SIZE</span>
-    <span class="k">assert</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-
-    <span class="n">iterator</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span>   <span class="c1"># API request(s) during iteration</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
-        <span class="n">do_something_with</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>If the query takes longer than the timeout allowed, <code class="docutils literal"><span class="pre">query.complete</span></code>
-will be <code class="docutils literal"><span class="pre">False</span></code>.  In that case, we need to poll the associated job until
-it is done, and then fetch the results:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">TIMEOUT_MS</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">query</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>                           <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">complete</span>
-
-    <span class="n">job</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">job</span>
-    <span class="n">job</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                          <span class="c1"># API rquest</span>
-    <span class="n">retry_count</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">while</span> <span class="n">retry_count</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="sa">u</span><span class="s1">&#39;DONE&#39;</span><span class="p">:</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.5</span><span class="o">**</span><span class="n">retry_count</span><span class="p">)</span>      <span class="c1"># exponential backoff</span>
-        <span class="n">retry_count</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                      <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="sa">u</span><span class="s1">&#39;DONE&#39;</span>
-
-    <span class="n">iterator</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span>         <span class="c1"># API request(s) during iteration</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
-        <span class="n">do_something_with</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="querying-data-asynchronous">
-<h3>Querying data (asynchronous)<a class="headerlink" href="#querying-data-asynchronous" title="Permalink to this headline">#</a></h3>
-<p>Background a query, loading the results into a table:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
-<span class="go">SELECT firstname + &#39; &#39; + last_name AS full_name,</span>
-<span class="go">       FLOOR(DATEDIFF(CURRENT_DATE(), birth_date) / 365) AS age</span>
-<span class="go"> FROM dataset_name.persons</span>
-<span class="go">&quot;&quot;&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_async_query</span><span class="p">(</span><span class="s1">&#39;fullname-age-query-job&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">table</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span><span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
-<span class="go">&#39;fullname-age-query-job&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
-<span class="go">&#39;query&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">None</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last simple">
-<li>The <code class="docutils literal"><span class="pre">created</span></code> and <code class="docutils literal"><span class="pre">state</span></code> fields are not set until the job
-is submitted to the BigQuery back-end.</li>
-</ul>
-</div>
-<p>Then, begin executing the job on the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;RUNNING&#39;</span>
-</pre></div>
-</div>
-<p>Poll until the job is complete:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="s1">&#39;DONE&#39;</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">retry_count</span> <span class="o">-=</span> <span class="mi">1</span>
-<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">job</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;done&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">ended</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=&lt;UTC&gt;)</span>
-</pre></div>
-</div>
-<p>Retrieve the results:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rows</span><span class="p">,</span> <span class="n">total_count</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">do_something_with</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">break</span>
-<span class="gp">... </span>    <span class="n">rows</span><span class="p">,</span> <span class="n">total_count</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>       <span class="c1"># API request</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="inserting-data-asynchronous">
-<h3>Inserting data (asynchronous)<a class="headerlink" href="#inserting-data-asynchronous" title="Permalink to this headline">#</a></h3>
-<p>Start a job loading data asynchronously from a set of CSV files, located on
-Google Cloud Storage, appending rows into an existing table.  First, create
-the job locally:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="kn">import</span> <span class="n">SchemaField</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_storage</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s1">&#39;load-from-storage-job&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="s1">&#39;gs://bucket-name/object-prefix*&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># count of skipped header rows</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
-<span class="go">&#39;load-from-storage-job&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
-<span class="go">&#39;load&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">None</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last simple">
-<li><code class="docutils literal"><span class="pre">google.cloud.bigquery</span></code> generates a UUID for each job.</li>
-<li>The <code class="docutils literal"><span class="pre">created</span></code> and <code class="docutils literal"><span class="pre">state</span></code> fields are not set until the job
-is submitted to the BigQuery back-end.</li>
-</ul>
-</div>
-<p>Then, begin executing the job on the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;RUNNING&#39;</span>
-</pre></div>
-</div>
-<p>Poll until the job is complete:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="s1">&#39;DONE&#39;</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">retry_count</span> <span class="o">-=</span> <span class="mi">1</span>
-<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">job</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;done&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">ended</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=&lt;UTC&gt;)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="exporting-data-async">
-<h3>Exporting data (async)<a class="headerlink" href="#exporting-data-async" title="Permalink to this headline">#</a></h3>
-<p>Start a job exporting a table’s data asynchronously to a set of CSV files,
-located on Google Cloud Storage.  First, create the job locally:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">extract_table_to_storage</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s1">&#39;extract-person-ages-job&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s1">&#39;gs://bucket-name/export-prefix*.csv&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">destination_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
-<span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">print_header</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
-<span class="go">&#39;extract-person-ages-job&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
-<span class="go">&#39;extract&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">None</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last simple">
-<li><code class="docutils literal"><span class="pre">google.cloud.bigquery</span></code> generates a UUID for each job.</li>
-<li>The <code class="docutils literal"><span class="pre">created</span></code> and <code class="docutils literal"><span class="pre">state</span></code> fields are not set until the job
-is submitted to the BigQuery back-end.</li>
-</ul>
-</div>
-<p>Then, begin executing the job on the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;RUNNING&#39;</span>
-</pre></div>
-</div>
-<p>Poll until the job is complete:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="s1">&#39;DONE&#39;</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">retry_count</span> <span class="o">-=</span> <span class="mi">1</span>
-<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">job</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;done&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">ended</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=&lt;UTC&gt;)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="copy-tables-async">
-<h3>Copy tables (async)<a class="headerlink" href="#copy-tables-async" title="Permalink to this headline">#</a></h3>
-<p>First, create the job locally:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">source_table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">destination_table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person_ages_copy&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">copy_table</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s1">&#39;copy-table-job&#39;</span><span class="p">,</span> <span class="n">destination_table</span><span class="p">,</span> <span class="n">source_table</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
-<span class="go">&#39;copy-table-job&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
-<span class="go">&#39;copy&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">None</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last simple">
-<li><code class="docutils literal"><span class="pre">google.cloud.bigquery</span></code> generates a UUID for each job.</li>
-<li>The <code class="docutils literal"><span class="pre">created</span></code> and <code class="docutils literal"><span class="pre">state</span></code> fields are not set until the job
-is submitted to the BigQuery back-end.</li>
-</ul>
-</div>
-<p>Then, begin executing the job on the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;RUNNING&#39;</span>
-</pre></div>
-</div>
-<p>Poll until the job is complete:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="s1">&#39;DONE&#39;</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">retry_count</span> <span class="o">-=</span> <span class="mi">1</span>
-<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">job</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;done&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">ended</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=&lt;UTC&gt;)</span>
 </pre></div>
 </div>
 </div>
@@ -592,17 +480,13 @@ is submitted to the BigQuery back-end.</li>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">BigQuery</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="client.html">Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dataset.html">Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="job.html">Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query.html">Query</a></li>
-<li class="toctree-l2"><a class="reference internal" href="schema.html">Schemas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="table.html">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dbapi.html">DB-API Reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#authentication-configuration">Authentication / Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#projects">Projects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#jobs">Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#queries">Queries</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
@@ -628,8 +512,8 @@ is submitted to the BigQuery back-end.</li>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../core/modules.html" title="previous chapter">Shared Core Modules</a></li>
-      <li>Next: <a href="client.html" title="next chapter">Client</a></li>
+      <li>Previous: <a href="../core/path_template.html" title="previous chapter">Path Templates</a></li>
+      <li>Next: <a href="reference.html" title="next chapter">API Reference</a></li>
   </ul></li>
 </ul>
 </div>
@@ -651,7 +535,7 @@ is submitted to the BigQuery back-end.</li>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

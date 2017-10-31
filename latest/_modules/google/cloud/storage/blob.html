@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.blob &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.storage.blob &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -268,7 +268,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">user_project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Project ID used for API requests made via this blob.</span>
+        <span class="sd">&quot;&quot;&quot;Project ID billed for API requests made via this blob.</span>
 
 <span class="sd">        Derived from bucket&#39;s value.</span>
 
@@ -375,6 +375,9 @@
 <div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this blob exists.</span>
 
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
+
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -406,6 +409,9 @@
 
 <div class="viewcode-block" id="Blob.delete"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from Cloud Storage.</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -512,6 +518,9 @@
 <span class="sd">        `google-resumable-media`_. For example, this library allows</span>
 <span class="sd">        downloading **parts** of a blob rather than the whole thing.</span>
 
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
+
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle to which to write the blob&#39;s data.</span>
 
@@ -534,6 +543,9 @@
 
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type filename: str</span>
 <span class="sd">        :param filename: A filename to be passed to ``open``.</span>
@@ -560,6 +572,9 @@
 
 <div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
@@ -931,6 +946,9 @@
 <span class="sd">        For more fine-grained over the upload process, check out</span>
 <span class="sd">        `google-resumable-media`_.</span>
 
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
+
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
 
@@ -994,6 +1012,9 @@
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
 
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
+
 <span class="sd">        :type filename: str</span>
 <span class="sd">        :param filename: The path to the file.</span>
 
@@ -1025,6 +1046,9 @@
 <span class="sd">           &lt;https://cloud.google.com/storage/docs/object-versioning&gt;`_ and</span>
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type data: bytes or str</span>
 <span class="sd">        :param data: The data to store in this blob.  If the value is</span>
@@ -1087,6 +1111,9 @@
 <span class="sd">        If :attr:`encryption_key` is set, the blob will be encrypted with</span>
 <span class="sd">        a `customer-supplied`_ encryption key.</span>
 
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
+
 <span class="sd">        :type size: int</span>
 <span class="sd">        :param size: (Optional). The maximum number of bytes that can be</span>
 <span class="sd">                     uploaded using this session. If the size is not known</span>
@@ -1138,6 +1165,9 @@
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/getIamPolicy</span>
 
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
+
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -1166,6 +1196,9 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/setIamPolicy</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type policy: :class:`google.cloud.iam.Policy`</span>
 <span class="sd">        :param policy: policy instance used to update bucket&#39;s IAM policy.</span>
@@ -1201,6 +1234,9 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/json_api/v1/objects/testIamPermissions</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type permissions: list of string</span>
 <span class="sd">        :param permissions: the permissions to check</span>
@@ -1242,6 +1278,9 @@
 <div class="viewcode-block" id="Blob.compose"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.compose">[docs]</a>    <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Concatenate source blobs into this one.</span>
 
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
+
 <span class="sd">        :type sources: list of :class:`Blob`</span>
 <span class="sd">        :param sources: blobs whose contents will be composed into this blob.</span>
 
@@ -1276,6 +1315,9 @@
 
 <div class="viewcode-block" id="Blob.rewrite"><a class="viewcode-back" href="../../../../storage/blobs.html#google.cloud.storage.blob.Blob.rewrite">[docs]</a>    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rewrite source blob into this one.</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type source: :class:`Blob`</span>
 <span class="sd">        :param source: blob whose contents will be rewritten into this blob.</span>
@@ -1334,6 +1376,9 @@
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/storage/docs/per-object-storage-class</span>
+
+<span class="sd">        If :attr:`user_project` is set on the bucket, bills the API request</span>
+<span class="sd">        to that project.</span>
 
 <span class="sd">        :type new_class: str</span>
 <span class="sd">        :param new_class: new storage class for the object</span>
@@ -1826,7 +1871,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

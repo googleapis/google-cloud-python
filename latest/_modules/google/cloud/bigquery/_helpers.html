@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery._helpers &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.bigquery._helpers &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,10 +57,12 @@
 <span class="sd">&quot;&quot;&quot;Shared helper functions for BigQuery API classes.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
-<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">operator</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">retry</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">UTC</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_date_from_iso8601_date</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
@@ -111,6 +113,39 @@
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
         <span class="c1"># value will be a float in seconds, to microsecond precision, in UTC.</span>
         <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mf">1e6</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_timestamp_query_param_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a datetime, if set or not nullable.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): The timestamp.</span>
+<span class="sd">        field (.SchemaField): The field corresponding to the value.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[datetime.datetime]: The parsed datetime object from</span>
+<span class="sd">        ``value`` if the ``field`` is not null (otherwise it is</span>
+<span class="sd">        :data:`None`).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+        <span class="c1"># Canonical formats for timestamps in BigQuery are flexible. See:</span>
+        <span class="c1"># g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type</span>
+        <span class="c1"># The separator between the date and time can be &#39;T&#39; or &#39; &#39;.</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># The UTC timezone may be formatted as Z or +00:00.</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+            <span class="c1"># YYYY-MM-DDTHH:MM:SS.ffffff</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_MICROS_NO_ZULU</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">UTC</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># YYYY-MM-DDTHH:MM:SS</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_NO_FRACTION</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">UTC</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
 
 <span class="k">def</span> <span class="nf">_datetime_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
@@ -181,8 +216,74 @@
     <span class="s1">&#39;RECORD&#39;</span><span class="p">:</span> <span class="n">_record_from_json</span><span class="p">,</span>
 <span class="p">}</span>
 
+<span class="n">_QUERY_PARAMS_FROM_JSON</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_CELLDATA_FROM_JSON</span><span class="p">)</span>
+<span class="n">_QUERY_PARAMS_FROM_JSON</span><span class="p">[</span><span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_timestamp_query_param_from_json</span>
 
-<span class="k">def</span> <span class="nf">_row_from_json</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+
+<span class="k">class</span> <span class="nc">Row</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A BigQuery row.</span>
+
+<span class="sd">    Values can be accessed by position (index), by key like a dict,</span>
+<span class="sd">    or as properties.</span>
+
+<span class="sd">    :type values: tuple</span>
+<span class="sd">    :param values:  the row values</span>
+
+<span class="sd">    :type field_to_index: dict</span>
+<span class="sd">    :param field_to_index:  a mapping from schema field names to indexes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Choose unusual field names to try to avoid conflict with schema fields.</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_xxx_values&#39;</span><span class="p">,</span> <span class="s1">&#39;_xxx_field_to_index&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">field_to_index</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">=</span> <span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">=</span> <span class="n">field_to_index</span>
+
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;no row field &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;no row field &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Row</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># sort field dict by value, for determinism</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+                       <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">f2i</span> <span class="o">=</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1">: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;Row(</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">,</span> <span class="n">f2i</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a mapping from schema field name to index of field.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schema</span><span class="p">)}</span>
+
+
+<span class="k">def</span> <span class="nf">_row_tuple_from_json</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert JSON row data to row with appropriate types.</span>
 
 <span class="sd">    Note:  ``row[&#39;f&#39;]`` and ``schema`` are presumed to be of the same length.</span>
@@ -209,9 +310,11 @@
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_rows_from_json</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_rows_from_json</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert JSON row data to rows with appropriate types.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">_row_from_json</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span>
+    <span class="n">field_to_index</span> <span class="o">=</span> <span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Row</span><span class="p">(</span><span class="n">_row_tuple_from_json</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">schema</span><span class="p">),</span> <span class="n">field_to_index</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_int_to_json</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -306,51 +409,64 @@
 <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span><span class="p">[</span><span class="s1">&#39;TIMESTAMP&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_timestamp_to_json_parameter</span>
 
 
-<span class="k">class</span> <span class="nc">_ConfigurationProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_snake_to_camel_case</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert snake case string to camel case.&quot;&quot;&quot;</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">capitalize</span><span class="p">,</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+
+<span class="k">class</span> <span class="nc">_ApiResourceProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base property implementation.</span>
 
-<span class="sd">    Values will be stored on a `_configuration` helper attribute of the</span>
+<span class="sd">    Values will be stored on a `_properties` helper attribute of the</span>
 <span class="sd">    property&#39;s job instance.</span>
 
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name:  name of the property</span>
+
+<span class="sd">    :type resource_name: str</span>
+<span class="sd">    :param resource_name:  name of the property in the resource dictionary</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_backing_name</span> <span class="o">=</span> <span class="s1">&#39;_</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource_name</span> <span class="o">=</span> <span class="n">resource_name</span>
 
     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocal:  accesstor&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  accessor&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_configuration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Subclasses override to impose validation policy.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocal:  mutator&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  mutator&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_configuration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing_name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">__delete__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocal:  deleter&quot;&quot;&quot;</span>
-        <span class="nb">delattr</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_configuration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backing_name</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  deleter&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_name</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">_TypedProperty</span><span class="p">(</span><span class="n">_ConfigurationProperty</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_TypedApiResourceProperty</span><span class="p">(</span><span class="n">_ApiResourceProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Property implementation:  validates based on value type.</span>
 
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param name:  name of the property</span>
 
+<span class="sd">    :type resource_name: str</span>
+<span class="sd">    :param resource_name:  name of the property in the resource dictionary</span>
+
 <span class="sd">    :type property_type: type or sequence of types</span>
 <span class="sd">    :param property_type: type to be validated</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">property_type</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_TypedProperty</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">,</span> <span class="n">property_type</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_TypedApiResourceProperty</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_type</span> <span class="o">=</span> <span class="n">property_type</span>
 
     <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -358,497 +474,59 @@
 
 <span class="sd">        :raises: ValueError on a type mismatch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_type</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Required type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">property_type</span><span class="p">,))</span>
 
 
-<span class="k">class</span> <span class="nc">_EnumProperty</span><span class="p">(</span><span class="n">_ConfigurationProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enumeration class.</span>
+<span class="k">class</span> <span class="nc">_ListApiResourceProperty</span><span class="p">(</span><span class="n">_ApiResourceProperty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Property implementation:  validates based on value type.</span>
 
 <span class="sd">    :type name: str</span>
-<span class="sd">    :param name:  name of the property.</span>
+<span class="sd">    :param name:  name of the property</span>
+
+<span class="sd">    :type resource_name: str</span>
+<span class="sd">    :param resource_name:  name of the property in the resource dictionary</span>
+
+<span class="sd">    :type property_type: type or sequence of types</span>
+<span class="sd">    :param property_type: type to be validated</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-
-<span class="k">class</span> <span class="nc">UDFResource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Describe a single user-defined function (UDF) resource.</span>
-
-<span class="sd">    :type udf_type: str</span>
-<span class="sd">    :param udf_type: the type of the resource (&#39;inlineCode&#39; or &#39;resourceUri&#39;)</span>
-
-<span class="sd">    :type value: str</span>
-<span class="sd">    :param value: the inline code or resource URI.</span>
-
-<span class="sd">    See</span>
-<span class="sd">    https://cloud.google.com/bigquery/user-defined-functions#api</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_type</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">udf_type</span> <span class="o">=</span> <span class="n">udf_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">UDFResource</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">udf_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">udf_type</span> <span class="ow">and</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
-
-
-<span class="k">class</span> <span class="nc">UDFResourcesProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Custom property type, holding :class:`UDFResource` instances.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">,</span> <span class="n">property_type</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_ListApiResourceProperty</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">resource_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">property_type</span> <span class="o">=</span> <span class="n">property_type</span>
 
     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Descriptor protocol:  accessor&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_udf_resources</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_name</span><span class="p">,</span> <span class="p">[])</span>
 
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  mutator&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">UDFResource</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;udf items must be UDFResource&quot;</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_udf_resources</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Ensure that &#39;value&#39; is of the appropriate type.</span>
 
-
-<span class="k">class</span> <span class="nc">AbstractQueryParameter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for named / positional query parameters.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
-
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource: JSON mapping of parameter</span>
-
-<span class="sd">        :rtype: :class:`ScalarQueryParameter`</span>
+<span class="sd">        :raises: ValueError on a type mismatch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-
-<span class="k">class</span> <span class="nc">ScalarQueryParameter</span><span class="p">(</span><span class="n">AbstractQueryParameter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Named / positional query parameters for scalar values.</span>
-
-<span class="sd">    :type name: str or None</span>
-<span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
-<span class="sd">                 parameter can only be addressed via position (``?``).</span>
-
-<span class="sd">    :type type_: str</span>
-<span class="sd">    :param type_: name of parameter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
-<span class="sd">                  &#39;FLOAT64&#39;, &#39;BOOL&#39;, &#39;TIMESTAMP&#39;, &#39;DATETIME&#39;, or &#39;DATE&#39;.</span>
-
-<span class="sd">    :type value: str, int, float, bool, :class:`datetime.datetime`, or</span>
-<span class="sd">                 :class:`datetime.date`.</span>
-<span class="sd">    :param value: the scalar parameter value.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory for positional paramater.</span>
-
-<span class="sd">        :type type_: str</span>
-<span class="sd">        :param type_:</span>
-<span class="sd">            name of parameter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
-<span class="sd">            &#39;FLOAT64&#39;, &#39;BOOL&#39;, &#39;TIMESTAMP&#39;, &#39;DATETIME&#39;, or &#39;DATE&#39;.</span>
-
-<span class="sd">        :type value: str, int, float, bool, :class:`datetime.datetime`, or</span>
-<span class="sd">                     :class:`datetime.date`.</span>
-<span class="sd">        :param value: the scalar parameter value.</span>
-
-<span class="sd">        :rtype: :class:`ScalarQueryParameter`</span>
-<span class="sd">        :returns: instance without name</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
-
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource: JSON mapping of parameter</span>
-
-<span class="sd">        :rtype: :class:`ScalarQueryParameter`</span>
-<span class="sd">        :returns: instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-        <span class="n">type_</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
-        <span class="n">converted</span> <span class="o">=</span> <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: JSON mapping</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">return</span> <span class="n">resource</span>
-
-    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
-
-<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: The contents of this :class:`ScalarQueryParameter`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ScalarQueryParameter</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;ScalarQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
-
-
-<span class="k">class</span> <span class="nc">ArrayQueryParameter</span><span class="p">(</span><span class="n">AbstractQueryParameter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Named / positional query parameters for array values.</span>
-
-<span class="sd">    :type name: str or None</span>
-<span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
-<span class="sd">                 parameter can only be addressed via position (``?``).</span>
-
-<span class="sd">    :type array_type: str</span>
-<span class="sd">    :param array_type:</span>
-<span class="sd">        name of type of array elements.  One of `&#39;STRING&#39;`, `&#39;INT64&#39;`,</span>
-<span class="sd">        `&#39;FLOAT64&#39;`, `&#39;BOOL&#39;`, `&#39;TIMESTAMP&#39;`, or `&#39;DATE&#39;`.</span>
-
-<span class="sd">    :type values: list of appropriate scalar type.</span>
-<span class="sd">    :param values: the parameter array values.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">=</span> <span class="n">array_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
-
-<span class="sd">        :type array_type: str</span>
-<span class="sd">        :param array_type:</span>
-<span class="sd">            name of type of array elements.  One of `&#39;STRING&#39;`, `&#39;INT64&#39;`,</span>
-<span class="sd">            `&#39;FLOAT64&#39;`, `&#39;BOOL&#39;`, `&#39;TIMESTAMP&#39;`, or `&#39;DATE&#39;`.</span>
-
-<span class="sd">        :type values: list of appropriate scalar type</span>
-<span class="sd">        :param values: the parameter array values.</span>
-
-<span class="sd">        :rtype: :class:`ArrayQueryParameter`</span>
-<span class="sd">        :returns: instance without name</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_api_repr_struct</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-        <span class="n">converted</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c1"># We need to flatten the array to use the StructQueryParameter</span>
-        <span class="c1"># parse code.</span>
-        <span class="n">resource_template</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="c1"># The arrayType includes all the types of the fields of the STRUCT</span>
-            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">]</span>
-        <span class="p">}</span>
-        <span class="k">for</span> <span class="n">array_value</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;arrayValues&#39;</span><span class="p">]:</span>
-            <span class="n">struct_resource</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource_template</span><span class="p">)</span>
-            <span class="n">struct_resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array_value</span>
-            <span class="n">struct_value</span> <span class="o">=</span> <span class="n">StructQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
-            <span class="n">converted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">struct_value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_api_repr_scalar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-        <span class="n">array_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">value</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">value</span>
-            <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;arrayValues&#39;</span><span class="p">]]</span>
-        <span class="n">converted</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">array_type</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
-
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource: JSON mapping of parameter</span>
-
-<span class="sd">        :rtype: :class:`ArrayQueryParameter`</span>
-<span class="sd">        :returns: instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">array_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_struct</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_scalar</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: JSON mapping</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;RECORD&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
-            <span class="n">reprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
-            <span class="n">a_type</span> <span class="o">=</span> <span class="n">reprs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;parameterType&#39;</span><span class="p">]</span>
-            <span class="n">a_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">repr_</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">repr_</span> <span class="ow">in</span> <span class="n">reprs</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">a_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="p">}</span>
-            <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
-            <span class="n">a_values</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
-        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;arrayType&#39;</span><span class="p">:</span> <span class="n">a_type</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;arrayValues&#39;</span><span class="p">:</span> <span class="n">a_values</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">return</span> <span class="n">resource</span>
-
-    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
-
-<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: The contents of this :class:`ArrayQueryParameter`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ArrayQueryParameter</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;ArrayQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
-
-
-<span class="k">class</span> <span class="nc">StructQueryParameter</span><span class="p">(</span><span class="n">AbstractQueryParameter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Named / positional query parameters for struct values.</span>
-
-<span class="sd">    :type name: str or None</span>
-<span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
-<span class="sd">                 parameter can only be addressed via position (``?``).</span>
-
-<span class="sd">    :type sub_params: tuple of :class:`ScalarQueryParameter`</span>
-<span class="sd">    :param sub_params: the sub-parameters for the struct</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">sub_params</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
-                <span class="n">types</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;STRUCT&#39;</span>
-                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">ArrayQueryParameter</span><span class="p">):</span>
-                <span class="n">types</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ARRAY&#39;</span>
-                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">types</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">type_</span>
-                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">value</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
-
-<span class="sd">        :type sub_params: tuple of :class:`ScalarQueryParameter`</span>
-<span class="sd">        :param sub_params: the sub-parameters for the struct</span>
-
-<span class="sd">        :rtype: :class:`StructQueryParameter`</span>
-<span class="sd">        :returns: instance without name</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
-
-<span class="sd">        :type resource: dict</span>
-<span class="sd">        :param resource: JSON mapping of parameter</span>
-
-<span class="sd">        :rtype: :class:`StructQueryParameter`</span>
-<span class="sd">        :returns: instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">type_resources</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">types</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">struct_types</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;structTypes&#39;</span><span class="p">]:</span>
-            <span class="n">types</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-            <span class="n">type_resources</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">struct_values</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;structValues&#39;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">struct_values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">type_</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="n">converted</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
-                <span class="n">struct_resource</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
-                    <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">type_resources</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                    <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                <span class="p">}</span>
-                <span class="n">converted</span> <span class="o">=</span> <span class="n">StructQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">:</span>
-                <span class="n">struct_resource</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
-                    <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">type_resources</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                    <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                <span class="p">}</span>
-                <span class="n">converted</span> <span class="o">=</span> <span class="n">ArrayQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
-                <span class="n">converted</span> <span class="o">=</span> <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">instance</span><span class="o">.</span><span class="n">struct_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">converted</span>
-        <span class="k">return</span> <span class="n">instance</span>
-
-    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
-
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: JSON mapping</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">s_types</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">type_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">type_</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;STRUCT&#39;</span><span class="p">,</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">):</span>
-                <span class="n">repr_</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-                <span class="n">s_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">repr_</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">]}</span>
-                <span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">repr_</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">s_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">type_</span><span class="p">}}</span>
-                <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                <span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
-
-        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;structTypes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">s_types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">],</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;structValues&#39;</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
-            <span class="p">},</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">return</span> <span class="n">resource</span>
-
-    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
-
-<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            tuple: The contents of this :class:`ArrayQueryParameter`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span><span class="p">,</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">StructQueryParameter</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">NotImplemented</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;StructQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span>
-
-
-<span class="k">class</span> <span class="nc">QueryParametersProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Custom property type, holding query parameter instances.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  accessor</span>
-
-<span class="sd">        :type instance: :class:`QueryParametersProperty`</span>
-<span class="sd">        :param instance: instance owning the property (None if accessed via</span>
-<span class="sd">                         the class).</span>
-
-<span class="sd">        :type owner: type</span>
-<span class="sd">        :param owner: the class owning the property.</span>
-
-<span class="sd">        :rtype: list of instances of classes derived from</span>
-<span class="sd">                :class:`AbstractQueryParameter`.</span>
-<span class="sd">        :returns: the descriptor, if accessed via the class, or the instance&#39;s</span>
-<span class="sd">                  query parameters.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">instance</span><span class="o">.</span><span class="n">_query_parameters</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Descriptor protocol:  mutator</span>
-
-<span class="sd">        :type instance: :class:`QueryParametersProperty`</span>
-<span class="sd">        :param instance: instance owning the property (None if accessed via</span>
-<span class="sd">                         the class).</span>
-
-<span class="sd">        :type value: list of instances of classes derived from</span>
-<span class="sd">                     :class:`AbstractQueryParameter`.</span>
-<span class="sd">        :param value: new query parameters for the instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">AbstractQueryParameter</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span>
+                <span class="s1">&#39;Required type: list of </span><span class="si">{}</span><span class="s1">. &#39;</span>
+                <span class="s1">&#39;To unset, use del or set to empty list&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">property_type</span><span class="p">,))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_type</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;query parameters must be derived from AbstractQueryParameter&quot;</span><span class="p">)</span>
-        <span class="n">instance</span><span class="o">.</span><span class="n">_query_parameters</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="s1">&#39;Required type: list of </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">property_type</span><span class="p">,))</span>
+
+
+<span class="k">class</span> <span class="nc">_EnumApiResourceProperty</span><span class="p">(</span><span class="n">_ApiResourceProperty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Pseudo-enumeration class.</span>
+
+<span class="sd">    :type name: str</span>
+<span class="sd">    :param name:  name of the property.</span>
+
+<span class="sd">    :type resource_name: str</span>
+<span class="sd">    :param resource_name:  name of the property in the resource dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">_item_to_row</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
@@ -860,26 +538,27 @@
 <span class="sd">        added to the iterator after being created, which</span>
 <span class="sd">        should be done by the caller.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type resource: dict</span>
 <span class="sd">    :param resource: An item to be converted to a row.</span>
 
-<span class="sd">    :rtype: tuple</span>
+<span class="sd">    :rtype: :class:`~google.cloud.bigquery.Row`</span>
 <span class="sd">    :returns: The next row in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_row_from_json</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Row</span><span class="p">(</span><span class="n">_row_tuple_from_json</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span><span class="p">),</span>
+               <span class="n">iterator</span><span class="o">.</span><span class="n">_field_to_index</span><span class="p">)</span>
 
 
 <span class="c1"># pylint: disable=unused-argument</span>
 <span class="k">def</span> <span class="nf">_rows_page_start</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Grab total rows when :class:`~google.cloud.iterator.Page` starts.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
-<span class="sd">    :type page: :class:`~google.cloud.iterator.Page`</span>
+<span class="sd">    :type page: :class:`~google.api_core.page_iterator.Page`</span>
 <span class="sd">    :param page: The page that was just created.</span>
 
 <span class="sd">    :type response: dict</span>
@@ -890,6 +569,39 @@
         <span class="n">total_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span><span class="p">)</span>
     <span class="n">iterator</span><span class="o">.</span><span class="n">total_rows</span> <span class="o">=</span> <span class="n">total_rows</span>
 <span class="c1"># pylint: enable=unused-argument</span>
+
+
+<span class="k">def</span> <span class="nf">_should_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Predicate for determining when to retry.</span>
+
+<span class="sd">    We retry if and only if the &#39;reason&#39; is &#39;backendError&#39;</span>
+<span class="sd">    or &#39;rateLimitExceeded&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="s1">&#39;errors&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">reason</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;reason&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">reason</span> <span class="o">==</span> <span class="s1">&#39;backendError&#39;</span> <span class="ow">or</span> <span class="n">reason</span> <span class="o">==</span> <span class="s1">&#39;rateLimitExceeded&#39;</span>
+
+
+<span class="n">DEFAULT_RETRY</span> <span class="o">=</span> <span class="n">retry</span><span class="o">.</span><span class="n">Retry</span><span class="p">(</span><span class="n">predicate</span><span class="o">=</span><span class="n">_should_retry</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;The default retry object.</span>
+
+<span class="sd">Any method with a ``retry`` parameter will be retried automatically,</span>
+<span class="sd">with reasonable defaults. To disable retry, pass ``retry=None``.</span>
+<span class="sd">To modify the default retry behavior, call a ``with_XXX`` method</span>
+<span class="sd">on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,</span>
+<span class="sd">pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_int_or_none</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper: deserialize int value from JSON string.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </pre></div>
 
           </div>
@@ -965,7 +677,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

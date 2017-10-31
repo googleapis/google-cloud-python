@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.iam &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.iam &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -77,7 +77,7 @@
 <span class="s2">Assigning to &#39;</span><span class="si">{}</span><span class="s2">&#39; is deprecated.  Replace with &#39;policy[</span><span class="si">{}</span><span class="s2">] = members.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">):</span>
+<div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;IAM Policy</span>
 
 <span class="sd">    See</span>
@@ -169,7 +169,7 @@
             <span class="ne">DeprecationWarning</span><span class="p">)</span>
         <span class="bp">self</span><span class="p">[</span><span class="n">VIEWER_ROLE</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-<div class="viewcode-block" id="Policy.user"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.user">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Policy.user"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.user">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a user member.</span>
 
@@ -181,7 +181,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;user:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">email</span><span class="p">,)</span></div>
 
-<div class="viewcode-block" id="Policy.service_account"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.service_account">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Policy.service_account"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.service_account">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">service_account</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a service account member.</span>
 
@@ -193,7 +193,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;serviceAccount:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">email</span><span class="p">,)</span></div>
 
-<div class="viewcode-block" id="Policy.group"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.group">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Policy.group"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.group">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a group member.</span>
 
@@ -205,7 +205,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;group:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">email</span><span class="p">,)</span></div>
 
-<div class="viewcode-block" id="Policy.domain"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.domain">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Policy.domain"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.domain">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">domain</span><span class="p">(</span><span class="n">domain</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a domain member.</span>
 
@@ -217,7 +217,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;domain:</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">domain</span><span class="p">,)</span></div>
 
-<div class="viewcode-block" id="Policy.all_users"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.all_users">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Policy.all_users"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.all_users">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">all_users</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a member representing all users.</span>
 
@@ -226,7 +226,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;allUsers&#39;</span></div>
 
-<div class="viewcode-block" id="Policy.authenticated_users"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.authenticated_users">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Policy.authenticated_users"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.authenticated_users">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">authenticated_users</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a member representing all authenticated users.</span>
 
@@ -235,7 +235,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;allAuthenticatedUsers&#39;</span></div>
 
-<div class="viewcode-block" id="Policy.from_api_repr"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Policy.from_api_repr"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a policy from the resource returned from the API.</span>
 
@@ -254,7 +254,7 @@
             <span class="n">policy</span><span class="p">[</span><span class="n">role</span><span class="p">]</span> <span class="o">=</span> <span class="n">members</span>
         <span class="k">return</span> <span class="n">policy</span></div>
 
-<div class="viewcode-block" id="Policy.to_api_repr"><a class="viewcode-back" href="../../../core/modules.html#google.cloud.iam.Policy.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Policy.to_api_repr"><a class="viewcode-back" href="../../../core/iam.html#google.cloud.iam.Policy.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a Policy resource.</span>
 
 <span class="sd">        :rtype: dict</span>
@@ -357,7 +357,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

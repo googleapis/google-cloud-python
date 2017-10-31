@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.streamed &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.spanner_v1.streamed &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -298,6 +298,12 @@
         <span class="n">lhs</span><span class="o">.</span><span class="n">list_value</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">rhs</span><span class="o">.</span><span class="n">list_value</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">lhs</span>
     <span class="n">lhs</span><span class="p">,</span> <span class="n">rhs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">lhs</span><span class="o">.</span><span class="n">list_value</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">rhs</span><span class="o">.</span><span class="n">list_value</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="c1"># Sanity check: If either list is empty, short-circuit.</span>
+    <span class="c1"># This is effectively a no-op.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">rhs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Value</span><span class="p">(</span><span class="n">list_value</span><span class="o">=</span><span class="n">ListValue</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">(</span><span class="n">lhs</span> <span class="o">+</span> <span class="n">rhs</span><span class="p">)))</span>
+
     <span class="n">first</span> <span class="o">=</span> <span class="n">rhs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">first</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;null_value&#39;</span><span class="p">):</span>  <span class="c1"># can&#39;t merge</span>
         <span class="n">lhs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
@@ -420,7 +426,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

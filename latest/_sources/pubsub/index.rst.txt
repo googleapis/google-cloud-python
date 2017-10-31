@@ -92,7 +92,7 @@ the topic, and subscribe to that.
     ... )
     >>> subscription = subscriber.create_subscription(subscription_name, topic)
 
-The subscription is opened asychronously, and messages are processed by
+The subscription is opened asynchronously, and messages are processed by
 use of a callback.
 
 .. code-block:: python
@@ -100,7 +100,14 @@ use of a callback.
     >>> def callback(message):
     ...     print(message.data)
     ...     message.ack()
-    >>> subscription.open(callback)
+    >>> future = subscription.open(callback)
+
+You can use the future to block the main thread, and raise any exceptions
+that originate asychronously.
+
+.. code-block:: python
+
+    >>> future.result()
 
 To learn more, consult the :doc:`subscriber documentation <subscriber/index>`.
 

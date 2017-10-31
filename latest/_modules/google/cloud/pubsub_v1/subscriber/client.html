@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.client &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.client &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,7 +57,11 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">import</span> <span class="nn">grpc</span>
+
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">grpc_helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.gapic.pubsub.v1</span> <span class="k">import</span> <span class="n">subscriber_client</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">_gapic</span>
@@ -91,6 +95,29 @@
 <span class="sd">            arguments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy_class</span><span class="o">=</span><span class="n">thread</span><span class="o">.</span><span class="n">Policy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Sanity check: Is our goal to use the emulator?</span>
+        <span class="c1"># If so, create a grpc insecure channel with the emulator host</span>
+        <span class="c1"># as the target.</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PUBSUB_EMULATOR_HOST&#39;</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span>
+                <span class="n">target</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PUBSUB_EMULATOR_HOST&#39;</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Use a custom channel.</span>
+        <span class="c1"># We need this in order to set appropriate default message size and</span>
+        <span class="c1"># keepalive options.</span>
+        <span class="k">if</span> <span class="s1">&#39;channel&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;credentials&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+                <span class="n">scopes</span><span class="o">=</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="o">.</span><span class="n">_ALL_SCOPES</span><span class="p">,</span>
+                <span class="n">options</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s1">&#39;grpc.max_send_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;grpc.max_receive_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="s1">&#39;grpc.keepalive_time_ms&#39;</span><span class="p">:</span> <span class="mi">30000</span><span class="p">,</span>
+                <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+            <span class="p">)</span>
+
         <span class="c1"># Add the metrics headers, and instantiate the underlying GAPIC</span>
         <span class="c1"># client.</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lib_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gccl&#39;</span>
@@ -100,6 +127,18 @@
         <span class="c1"># The subcription class is responsible to retrieving and dispatching</span>
         <span class="c1"># messages.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_policy_class</span> <span class="o">=</span> <span class="n">policy_class</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the target (where the API is).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The location of the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{host}</span><span class="s1">:</span><span class="si">{port}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+            <span class="n">port</span><span class="o">=</span><span class="n">subscriber_client</span><span class="o">.</span><span class="n">SubscriberClient</span><span class="o">.</span><span class="n">DEFAULT_SERVICE_PORT</span><span class="p">,</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Client.subscribe"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/client.html#google.cloud.pubsub_v1.subscriber.client.Client.subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Return a representation of an individual subscription.</span>
@@ -213,7 +252,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

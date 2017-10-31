@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,18 +56,60 @@
 
 <span class="sd">&quot;&quot;&quot;Client for interacting with the Google BigQuery API.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.api.core</span> <span class="k">import</span> <span class="n">page_iterator</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">concurrent.futures</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">google</span> <span class="k">import</span> <span class="n">resumable_media</span>
+<span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">MultipartUpload</span>
+<span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
+
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">GoogleAPICallError</span>
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">_TABLE_HAS_NO_SCHEMA</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_row_from_mapping</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">CopyJob</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">ExtractTableToStorageJob</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">LoadTableFromStorageJob</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">QueryJob</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">ExtractJob</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">LoadJob</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">QueryJob</span><span class="p">,</span> <span class="n">QueryJobConfig</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">QueryResults</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_item_to_row</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_page_start</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_field_to_index_mapping</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_snake_to_camel_case</span>
 
 
-<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">1048576</span>  <span class="c1"># 1024 * 1024 B = 1 MB</span>
+<span class="n">_MAX_MULTIPART_SIZE</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>
+<span class="n">_DEFAULT_NUM_RETRIES</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">u</span><span class="s1">&#39;https://www.googleapis.com/upload/bigquery/v2/projects/&#39;</span>
+    <span class="sa">u</span><span class="s1">&#39;</span><span class="si">{project}</span><span class="s1">/jobs?uploadType=&#39;</span><span class="p">)</span>
+<span class="n">_MULTIPART_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;multipart&#39;</span>
+<span class="n">_RESUMABLE_URL_TEMPLATE</span> <span class="o">=</span> <span class="n">_BASE_UPLOAD_TEMPLATE</span> <span class="o">+</span> <span class="sa">u</span><span class="s1">&#39;resumable&#39;</span>
+<span class="n">_GENERIC_CONTENT_TYPE</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;*/*&#39;</span>
+<span class="n">_READ_LESS_THAN_SIZE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;Size </span><span class="si">{:d}</span><span class="s1"> was specified but the file-like object only had &#39;</span>
+    <span class="s1">&#39;</span><span class="si">{:d}</span><span class="s1"> bytes remaining.&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Wrapper for resource describing a BigQuery project.</span>
 
 <span class="sd">    :type project_id: str</span>
@@ -84,14 +126,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">numeric_id</span> <span class="o">=</span> <span class="n">numeric_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">friendly_name</span> <span class="o">=</span> <span class="n">friendly_name</span>
 
-<div class="viewcode-block" id="Project.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Project.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Project.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Project.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory: construct an instance from a resource dict.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;numericId&#39;</span><span class="p">],</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">])</span></div></div>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
 <span class="sd">    :type project: str</span>
@@ -124,7 +166,8 @@
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Client.list_projects"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.list_projects">[docs]</a>    <span class="k">def</span> <span class="nf">list_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_projects"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_projects">[docs]</a>    <span class="k">def</span> <span class="nf">list_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List projects for the project associated with this client.</span>
 
 <span class="sd">        See</span>
@@ -139,21 +182,24 @@
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           projects.</span>
 
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of :class:`~google.cloud.bigquery.client.Project`</span>
 <span class="sd">                  accessible to the current client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-            <span class="n">api_request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
             <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/projects&#39;</span><span class="p">,</span>
             <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_project</span><span class="p">,</span>
             <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;projects&#39;</span><span class="p">,</span>
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_datasets"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.list_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">list_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_datasets"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_datasets">[docs]</a>    <span class="k">def</span> <span class="nf">list_datasets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List datasets for the project associated with this client.</span>
 
 <span class="sd">        See</span>
@@ -161,6 +207,11 @@
 
 <span class="sd">        :type include_all: bool</span>
 <span class="sd">        :param include_all: True if results include hidden datasets.</span>
+
+<span class="sd">        :type filter: str</span>
+<span class="sd">        :param filter: an expression for filtering the results by label.</span>
+<span class="sd">                       For syntax, see</span>
+<span class="sd">                       https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.</span>
 
 <span class="sd">        :type max_results: int</span>
 <span class="sd">        :param max_results: maximum number of datasets to return, If not</span>
@@ -171,17 +222,24 @@
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           datasets.</span>
 
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.</span>
 <span class="sd">                  accessible to the current client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">include_all</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="nb">filter</span><span class="p">:</span>
+            <span class="c1"># TODO: consider supporting a dict of label -&gt; value for filter,</span>
+            <span class="c1"># and converting it into a string here.</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">filter</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-            <span class="n">api_request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
             <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_dataset</span><span class="p">,</span>
             <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;datasets&#39;</span><span class="p">,</span>
@@ -189,26 +247,268 @@
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a dataset bound to this client.</span>
+<div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a reference to a dataset.</span>
 
-<span class="sd">        :type dataset_name: str</span>
-<span class="sd">        :param dataset_name: Name of the dataset.</span>
+<span class="sd">        :type dataset_id: str</span>
+<span class="sd">        :param dataset_id: ID of the dataset.</span>
 
 <span class="sd">        :type project: str</span>
 <span class="sd">        :param project: (Optional) project ID for the dataset (defaults to</span>
 <span class="sd">                        the project of the client).</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`</span>
-<span class="sd">        :returns: a new ``Dataset`` instance</span>
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.dataset.DatasetReference`</span>
+<span class="sd">        :returns: a new ``DatasetReference`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
 
-    <span class="k">def</span> <span class="nf">_get_query_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DatasetReference</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.create_dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">create_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  create the dataset via a PUT request.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</span>
+
+<span class="sd">        :type dataset: :class:`~google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">        :param dataset: A ``Dataset`` populated with the desired initial state.</span>
+<span class="sd">                        If project is missing, it defaults to the project of</span>
+<span class="sd">                        the client.</span>
+
+<span class="sd">        :rtype: &quot;:class:`~google.cloud.bigquery.dataset.Dataset`&quot;</span>
+<span class="sd">        :returns: a new ``Dataset`` returned from the service.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.create_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_table">[docs]</a>    <span class="k">def</span> <span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  create a table via a PUT request</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/insert</span>
+
+<span class="sd">        :type table: :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">        :param table: A ``Table`` populated with the desired initial state.</span>
+
+<span class="sd">        :rtype: &quot;:class:`~google.cloud.bigquery.table.Table`&quot;</span>
+<span class="sd">        :returns: a new ``Table`` returned from the service.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">(</span><span class="n">Table</span><span class="o">.</span><span class="n">all_fields</span><span class="p">)</span>
+        <span class="n">doomed</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">resource</span> <span class="k">if</span> <span class="n">resource</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">doomed</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">resource</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_call_api</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">call</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">retry</span><span class="p">:</span>
+            <span class="n">call</span> <span class="o">=</span> <span class="n">retry</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Client.get_dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.get_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch the dataset referenced by ``dataset_ref``</span>
+
+<span class="sd">        :type dataset_ref:</span>
+<span class="sd">            :class:`google.cloud.bigquery.dataset.DatasetReference`</span>
+<span class="sd">        :param dataset_ref: the dataset to use.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">        :returns: a ``Dataset`` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span>
+                                      <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                                      <span class="n">path</span><span class="o">=</span><span class="n">dataset_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.get_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.get_table">[docs]</a>    <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_ref</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch the table referenced by ``table_ref``</span>
+
+<span class="sd">        :type table_ref:</span>
+<span class="sd">            :class:`google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param table_ref: the table to use.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.table.Table`</span>
+<span class="sd">        :returns: a ``Table`` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table_ref</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.update_dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.update_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">update_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Change some fields of a dataset.</span>
+
+<span class="sd">        Use ``fields`` to specify which fields to update. At least one field</span>
+<span class="sd">        must be provided. If a field is listed in ``fields`` and is ``None`` in</span>
+<span class="sd">        ``dataset``, it will be deleted.</span>
+
+<span class="sd">        If ``dataset.etag`` is not ``None``, the update will only</span>
+<span class="sd">        succeed if the dataset on the server has the same ETag. Thus</span>
+<span class="sd">        reading a dataset with ``get_dataset``, changing its fields,</span>
+<span class="sd">        and then passing it ``update_dataset`` will ensure that the changes</span>
+<span class="sd">        will only be saved if no modifications to the dataset occurred</span>
+<span class="sd">        since the read.</span>
+
+<span class="sd">        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">        :param dataset: the dataset to update.</span>
+
+<span class="sd">        :type fields: sequence of string</span>
+<span class="sd">        :param fields: the fields of ``dataset`` to change, spelled as the</span>
+<span class="sd">                       Dataset properties (e.g. &quot;friendly_name&quot;).</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">        :returns: the modified ``Dataset`` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                                             <span class="n">dataset</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+        <span class="n">partial</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No Dataset field </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">f</span><span class="p">)</span>
+            <span class="c1"># All dataset attributes are trivially convertible to JSON except</span>
+            <span class="c1"># for access entries.</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="s1">&#39;access_entries&#39;</span><span class="p">:</span>
+                <span class="n">attr</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">_build_access_resource</span><span class="p">()</span>
+                <span class="n">api_field</span> <span class="o">=</span> <span class="s1">&#39;access&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attr</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                <span class="n">api_field</span> <span class="o">=</span> <span class="n">_snake_to_camel_case</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">partial</span><span class="p">[</span><span class="n">api_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">attr</span>
+        <span class="k">if</span> <span class="n">dataset</span><span class="o">.</span><span class="n">etag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;If-Match&#39;</span><span class="p">:</span> <span class="n">dataset</span><span class="o">.</span><span class="n">etag</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.update_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.update_table">[docs]</a>    <span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  update table properties via a PUT request</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update</span>
+
+<span class="sd">        :type table:</span>
+<span class="sd">            :class:`google.cloud.bigquery.table.Table`</span>
+<span class="sd">        :param table_ref: the table to update.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.table.Table`</span>
+<span class="sd">        :returns: a ``Table`` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">partial</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">etag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;If-Match&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">etag</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+            <span class="n">retry</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.list_dataset_tables"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_dataset_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_dataset_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List tables in the dataset.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list</span>
+
+<span class="sd">        :type dataset: One of:</span>
+<span class="sd">                       :class:`~google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">                       :class:`~google.cloud.bigquery.dataset.DatasetReference`</span>
+<span class="sd">        :param dataset: the dataset whose tables to list, or a reference to it.</span>
+
+<span class="sd">        :type max_results: int</span>
+<span class="sd">        :param max_results: (Optional) Maximum number of tables to return.</span>
+<span class="sd">                            If not passed, defaults to a value set by the API.</span>
+
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token: (Optional) Opaque marker for the next &quot;page&quot; of</span>
+<span class="sd">                           datasets. If not passed, the API will return the</span>
+<span class="sd">                           first page of datasets.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">                  contained within the current dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;dataset must be a Dataset or a DatasetReference&#39;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/tables&#39;</span> <span class="o">%</span> <span class="n">dataset</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_table</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;tables&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Client.delete_dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.delete_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete a dataset.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete</span>
+
+<span class="sd">        :type dataset: One of:</span>
+<span class="sd">                       :class:`~google.cloud.bigquery.dataset.Dataset`</span>
+<span class="sd">                       :class:`~google.cloud.bigquery.dataset.DatasetReference`</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :param dataset: the dataset to delete, or a reference to it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;dataset must be a Dataset or a DatasetReference&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.delete_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete a table</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/delete</span>
+
+<span class="sd">        :type table: One of:</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param table: the table to delete, or a reference to it.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="p">(</span><span class="n">Table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;table must be a Table or a TableReference&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_query_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the query results object for a query job.</span>
 
 <span class="sd">        :type job_id: str</span>
 <span class="sd">        :param job_id: Name of the query job.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
 
 <span class="sd">        :type project: str</span>
 <span class="sd">        :param project:</span>
@@ -234,38 +534,111 @@
 
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">{}</span><span class="s1">/queries/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">job_id</span><span class="p">)</span>
 
-        <span class="n">resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="c1"># This call is typically made in a polling loop that checks whether the</span>
+        <span class="c1"># job is complete (from QueryJob.done(), called ultimately from</span>
+        <span class="c1"># QueryJob.result()). So we don&#39;t need to poll here.</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">QueryResults</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">QueryResults</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Client.job_from_resource"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.job_from_resource">[docs]</a>    <span class="k">def</span> <span class="nf">job_from_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.job_from_resource"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.job_from_resource">[docs]</a>    <span class="k">def</span> <span class="nf">job_from_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Detect correct job type from resource and instantiate.</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: one job resource from API response</span>
 
 <span class="sd">        :rtype: One of:</span>
-<span class="sd">                :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`,</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.LoadJob`,</span>
 <span class="sd">                :class:`google.cloud.bigquery.job.CopyJob`,</span>
-<span class="sd">                :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`,</span>
-<span class="sd">                :class:`google.cloud.bigquery.job.QueryJob`,</span>
-<span class="sd">                :class:`google.cloud.bigquery.job.RunSyncQueryJob`</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.ExtractJob`,</span>
+<span class="sd">                or :class:`google.cloud.bigquery.job.QueryJob`</span>
 <span class="sd">        :returns: the job instance, constructed via the resource</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="s1">&#39;load&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">LoadTableFromStorageJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">LoadJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">elif</span> <span class="s1">&#39;copy&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">CopyJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">elif</span> <span class="s1">&#39;extract&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ExtractTableToStorageJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ExtractJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">elif</span> <span class="s1">&#39;query&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">QueryJob</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot parse job resource&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_jobs"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.list_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_users</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                  <span class="n">state_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.get_job"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.get_job">[docs]</a>    <span class="k">def</span> <span class="nf">get_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch a job for the project associated with this client.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get</span>
+
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: Name of the job.</span>
+
+<span class="sd">        :type project: str</span>
+<span class="sd">        :param project:</span>
+<span class="sd">            project ID owning the job (defaults to the client&#39;s project)</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: One of:</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.LoadJob`,</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.CopyJob`,</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.ExtractJob`,</span>
+<span class="sd">                or :class:`google.cloud.bigquery.job.QueryJob`</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Concrete job instance, based on the resource returned by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;full&#39;</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">{}</span><span class="s1">/jobs/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">job_id</span><span class="p">)</span>
+
+        <span class="n">resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.cancel_job"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.cancel_job">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_id</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Attempt to cancel a job from a job ID.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel</span>
+
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: Name of the job.</span>
+
+<span class="sd">        :type project: str</span>
+<span class="sd">        :param project:</span>
+<span class="sd">            project ID owning the job (defaults to the client&#39;s project)</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: One of:</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.LoadJob`,</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.CopyJob`,</span>
+<span class="sd">                :class:`google.cloud.bigquery.job.ExtractJob`,</span>
+<span class="sd">                or :class:`google.cloud.bigquery.job.QueryJob`</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Concrete job instance, based on the resource returned by the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;full&#39;</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">{}</span><span class="s1">/jobs/</span><span class="si">{}</span><span class="s1">/cancel&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">job_id</span><span class="p">)</span>
+
+        <span class="n">resource</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+            <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;job&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Client.list_jobs"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_users</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">state_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List jobs for the project associated with this client.</span>
 
 <span class="sd">        See</span>
@@ -292,7 +665,10 @@
 <span class="sd">                             * ``&quot;pending&quot;``</span>
 <span class="sd">                             * ``&quot;running&quot;``</span>
 
-<span class="sd">        :rtype: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">        :returns: Iterable of job instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;full&#39;</span><span class="p">}</span>
@@ -306,7 +682,7 @@
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/jobs&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-            <span class="n">api_request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
             <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_job</span><span class="p">,</span>
             <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;jobs&#39;</span><span class="p">,</span>
@@ -314,132 +690,670 @@
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.load_table_from_storage"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.load_table_from_storage">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">*</span><span class="n">source_uris</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a job for loading data into a table from CloudStorage.</span>
+<div class="viewcode-block" id="Client.load_table_from_uri"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.load_table_from_uri">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
+                            <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Starts a job for loading data into a table from CloudStorage.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load</span>
 
-<span class="sd">        :type job_name: str</span>
-<span class="sd">        :param job_name: Name of the job.</span>
-
-<span class="sd">        :type destination: :class:`google.cloud.bigquery.table.Table`</span>
-<span class="sd">        :param destination: Table into which data is to be loaded.</span>
-
-<span class="sd">        :type source_uris: sequence of string</span>
+<span class="sd">        :type source_uris: One of:</span>
+<span class="sd">                           str</span>
+<span class="sd">                           sequence of string</span>
 <span class="sd">        :param source_uris: URIs of data files to be loaded; in format</span>
 <span class="sd">                            ``gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;``.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.job.LoadTableFromStorageJob`</span>
-<span class="sd">        :returns: a new ``LoadTableFromStorageJob`` instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">LoadTableFromStorageJob</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span>
-                                       <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+<span class="sd">        :type destination: :class:`google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param destination: Table into which data is to be loaded.</span>
 
-<div class="viewcode-block" id="Client.copy_table"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.copy_table">[docs]</a>    <span class="k">def</span> <span class="nf">copy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">*</span><span class="n">sources</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a job for copying one or more tables into another table.</span>
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: (Optional) Name of the job.</span>
+
+<span class="sd">        :type job_id_prefix: str or ``NoneType``</span>
+<span class="sd">        :param job_id_prefix: (Optional) the user-provided prefix for a</span>
+<span class="sd">                              randomly generated job ID. This parameter will be</span>
+<span class="sd">                              ignored if a ``job_id`` is also given.</span>
+
+<span class="sd">        :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`</span>
+<span class="sd">        :param job_config: (Optional) Extra configuration options for the job.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.job.LoadJob`</span>
+<span class="sd">        :returns: a new :class:`~google.cloud.bigquery.job.LoadJob` instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_uris</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">source_uris</span> <span class="o">=</span> <span class="p">[</span><span class="n">source_uris</span><span class="p">]</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">LoadJob</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div>
+
+<div class="viewcode-block" id="Client.load_table_from_file"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.load_table_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span>
+                             <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                             <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">num_retries</span><span class="o">=</span><span class="n">_DEFAULT_NUM_RETRIES</span><span class="p">,</span>
+                             <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload the contents of this table from a file-like object.</span>
+
+<span class="sd">        Like load_table_from_uri, this creates, starts and returns</span>
+<span class="sd">        a ``LoadJob``.</span>
+
+<span class="sd">        :type file_obj: file</span>
+<span class="sd">        :param file_obj: A file handle opened in binary mode for reading.</span>
+
+<span class="sd">        :type destination: :class:`google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param destination: Table into which data is to be loaded.</span>
+
+<span class="sd">        :type rewind: bool</span>
+<span class="sd">        :param rewind: If True, seek to the beginning of the file handle before</span>
+<span class="sd">                       reading the file.</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size: The number of bytes to read from the file handle.</span>
+<span class="sd">                     If size is ``None`` or large, resumable upload will be</span>
+<span class="sd">                     used. Otherwise, multipart upload will be used.</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. Defaults to 6.</span>
+
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: (Optional) Name of the job.</span>
+
+<span class="sd">        :type job_id_prefix: str or ``NoneType``</span>
+<span class="sd">        :param job_id_prefix: (Optional) the user-provided prefix for a</span>
+<span class="sd">                              randomly generated job ID. This parameter will be</span>
+<span class="sd">                              ignored if a ``job_id`` is also given.</span>
+
+<span class="sd">        :type job_config: :class:`google.cloud.bigquery.job.LoadJobConfig`</span>
+<span class="sd">        :param job_config: (Optional) Extra configuration options for the job.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :returns: the job instance used to load the data (e.g., for</span>
+<span class="sd">                  querying status).</span>
+<span class="sd">        :raises: :class:`ValueError` if ``size`` is not passed in and can not</span>
+<span class="sd">                 be determined, or if the ``file_obj`` can be detected to be</span>
+<span class="sd">                 a file opened in text mode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">LoadJob</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="p">)</span>
+        <span class="n">job_resource</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
+            <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
+        <span class="n">_check_mode</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">size</span> <span class="o">&gt;=</span> <span class="n">_MAX_MULTIPART_SIZE</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_resumable_upload</span><span class="p">(</span>
+                    <span class="n">file_obj</span><span class="p">,</span> <span class="n">job_resource</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_multipart_upload</span><span class="p">(</span>
+                    <span class="n">file_obj</span><span class="p">,</span> <span class="n">job_resource</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">InvalidResponse</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_http_response</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_do_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a resumable upload.</span>
+
+<span class="sd">        :type stream: IO[bytes]</span>
+<span class="sd">        :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">        :type metadata: dict</span>
+<span class="sd">        :param metadata: The metadata associated with the upload.</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
+<span class="sd">        :rtype: :class:`~requests.Response`</span>
+<span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the final chunk</span>
+<span class="sd">                  is uploaded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initiate_resumable_upload</span><span class="p">(</span>
+            <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">upload</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit_next_chunk</span><span class="p">(</span><span class="n">transport</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">def</span> <span class="nf">_initiate_resumable_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initiate a resumable upload.</span>
+
+<span class="sd">        :type stream: IO[bytes]</span>
+<span class="sd">        :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">        :type metadata: dict</span>
+<span class="sd">        :param metadata: The metadata associated with the upload.</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Pair of</span>
+
+<span class="sd">            * The :class:`~google.resumable_media.requests.ResumableUpload`</span>
+<span class="sd">              that was created</span>
+<span class="sd">            * The ``transport`` used to initiate the upload.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">chunk_size</span> <span class="o">=</span> <span class="n">_DEFAULT_CHUNKSIZE</span>
+        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
+        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_RESUMABLE_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="c1"># TODO: modify ResumableUpload to take a retry.Retry object</span>
+        <span class="c1"># that it can use for the initial RPC.</span>
+        <span class="n">upload</span> <span class="o">=</span> <span class="n">ResumableUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="n">upload</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span>
+            <span class="n">transport</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">_GENERIC_CONTENT_TYPE</span><span class="p">,</span>
+            <span class="n">stream_final</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">upload</span><span class="p">,</span> <span class="n">transport</span>
+
+    <span class="k">def</span> <span class="nf">_do_multipart_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">num_retries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Perform a multipart upload.</span>
+
+<span class="sd">        :type stream: IO[bytes]</span>
+<span class="sd">        :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">        :type metadata: dict</span>
+<span class="sd">        :param metadata: The metadata associated with the upload.</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size: The number of bytes to be uploaded (which will be read</span>
+<span class="sd">                     from ``stream``). If not provided, the upload will be</span>
+<span class="sd">                     concluded once ``stream`` is exhausted (or :data:`None`).</span>
+
+<span class="sd">        :type num_retries: int</span>
+<span class="sd">        :param num_retries: Number of upload retries. (Deprecated: This</span>
+<span class="sd">                            argument will be removed in a future release.)</span>
+
+<span class="sd">        :rtype: :class:`~requests.Response`</span>
+<span class="sd">        :returns: The &quot;200 OK&quot; response object returned after the multipart</span>
+<span class="sd">                  upload request.</span>
+<span class="sd">        :raises: :exc:`ValueError` if the ``stream`` has fewer than ``size``</span>
+<span class="sd">                 bytes remaining.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_READ_LESS_THAN_SIZE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">_get_upload_headers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">)</span>
+
+        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">_MULTIPART_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">upload</span> <span class="o">=</span> <span class="n">MultipartUpload</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">num_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">upload</span><span class="o">.</span><span class="n">_retry_strategy</span> <span class="o">=</span> <span class="n">resumable_media</span><span class="o">.</span><span class="n">RetryStrategy</span><span class="p">(</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">transmit</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">_GENERIC_CONTENT_TYPE</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+
+<div class="viewcode-block" id="Client.copy_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.copy_table">[docs]</a>    <span class="k">def</span> <span class="nf">copy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start a job for copying one or more tables into another table.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy</span>
 
-<span class="sd">        :type job_name: str</span>
-<span class="sd">        :param job_name: Name of the job.</span>
+<span class="sd">        :type sources: One of:</span>
+<span class="sd">                       :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">                       sequence of</span>
+<span class="sd">                       :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param sources: Table or tables to be copied.</span>
 
-<span class="sd">        :type destination: :class:`google.cloud.bigquery.table.Table`</span>
+
+<span class="sd">        :type destination: :class:`google.cloud.bigquery.table.TableReference`</span>
 <span class="sd">        :param destination: Table into which data is to be copied.</span>
 
-<span class="sd">        :type sources: sequence of :class:`google.cloud.bigquery.table.Table`</span>
-<span class="sd">        :param sources: tables to be copied.</span>
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: (Optional) The ID of the job.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.job.CopyJob`</span>
-<span class="sd">        :returns: a new ``CopyJob`` instance</span>
+<span class="sd">        :type job_id_prefix: str or ``NoneType``</span>
+<span class="sd">        :param job_id_prefix: (Optional) the user-provided prefix for a</span>
+<span class="sd">                              randomly generated job ID. This parameter will be</span>
+<span class="sd">                              ignored if a ``job_id`` is also given.</span>
+
+<span class="sd">        :type job_config: :class:`google.cloud.bigquery.job.CopyJobConfig`</span>
+<span class="sd">        :param job_config: (Optional) Extra configuration options for the job.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.job.copyjob`</span>
+<span class="sd">        :returns: a new :class:`google.cloud.bigquery.job.copyjob` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">CopyJob</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Client.extract_table_to_storage"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.extract_table_to_storage">[docs]</a>    <span class="k">def</span> <span class="nf">extract_table_to_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">*</span><span class="n">destination_uris</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a job for extracting a table into Cloud Storage files.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sources</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Sequence</span><span class="p">):</span>
+            <span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">sources</span><span class="p">]</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">CopyJob</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div>
+
+<div class="viewcode-block" id="Client.extract_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.extract_table">[docs]</a>    <span class="k">def</span> <span class="nf">extract_table</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start a job to extract a table into Cloud Storage files.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.extract</span>
 
-<span class="sd">        :type job_name: str</span>
-<span class="sd">        :param job_name: Name of the job.</span>
-
-<span class="sd">        :type source: :class:`google.cloud.bigquery.table.Table`</span>
+<span class="sd">        :type source: :class:`google.cloud.bigquery.table.TableReference`</span>
 <span class="sd">        :param source: table to be extracted.</span>
 
-<span class="sd">        :type destination_uris: sequence of string</span>
-<span class="sd">        :param destination_uris: URIs of CloudStorage file(s) into which</span>
-<span class="sd">                                 table data is to be extracted; in format</span>
-<span class="sd">                                 ``gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;``.</span>
+<span class="sd">        :type destination_uris: One of:</span>
+<span class="sd">                                str or</span>
+<span class="sd">                                sequence of str</span>
+<span class="sd">        :param destination_uris:</span>
+<span class="sd">            URIs of Cloud Storage file(s) into which table data is to be</span>
+<span class="sd">            extracted; in format ``gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;``.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.job.ExtractTableToStorageJob`</span>
-<span class="sd">        :returns: a new ``ExtractTableToStorageJob`` instance</span>
+<span class="sd">        :type kwargs: dict</span>
+<span class="sd">        :param kwargs: Additional keyword arguments.</span>
+
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: (Optional) The ID of the job.</span>
+
+<span class="sd">        :type job_id_prefix: str or ``NoneType``</span>
+<span class="sd">        :param job_id_prefix: (Optional) the user-provided prefix for a</span>
+<span class="sd">                              randomly generated job ID. This parameter will be</span>
+<span class="sd">                              ignored if a ``job_id`` is also given.</span>
+
+<span class="sd">        :type job_config: :class:`google.cloud.bigquery.job.ExtractJobConfig`</span>
+<span class="sd">        :param job_config: (Optional) Extra configuration options for the job.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`google.cloud.bigquery.job.ExtractJob`</span>
+<span class="sd">        :returns: a new :class:`google.cloud.bigquery.job.ExtractJob` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">ExtractTableToStorageJob</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span>
-                                        <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Client.run_async_query"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.run_async_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_async_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span>
-                        <span class="n">udf_resources</span><span class="o">=</span><span class="p">(),</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">()):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a job for running a SQL query asynchronously.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destination_uris</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">destination_uris</span> <span class="o">=</span> <span class="p">[</span><span class="n">destination_uris</span><span class="p">]</span>
+
+        <span class="n">job</span> <span class="o">=</span> <span class="n">ExtractJob</span><span class="p">(</span>
+            <span class="n">job_id</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div>
+
+<div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start a job that runs a SQL query.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query</span>
 
-<span class="sd">        :type job_name: str</span>
-<span class="sd">        :param job_name: Name of the job.</span>
-
 <span class="sd">        :type query: str</span>
-<span class="sd">        :param query: SQL query to be executed</span>
+<span class="sd">        :param query:</span>
+<span class="sd">            SQL query to be executed. Defaults to the standard SQL dialect.</span>
+<span class="sd">            Use the ``job_config`` parameter to change dialects.</span>
 
-<span class="sd">        :type udf_resources: tuple</span>
-<span class="sd">        :param udf_resources: An iterable of</span>
-<span class="sd">                            :class:`google.cloud.bigquery._helpers.UDFResource`</span>
-<span class="sd">                            (empty by default)</span>
+<span class="sd">        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`</span>
+<span class="sd">        :param job_config: (Optional) Extra configuration options for the job.</span>
 
-<span class="sd">        :type query_parameters: tuple</span>
-<span class="sd">        :param query_parameters:</span>
-<span class="sd">            An iterable of</span>
-<span class="sd">            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`</span>
-<span class="sd">            (empty by default)</span>
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: (Optional) ID to use for the query job.</span>
+
+<span class="sd">        :type job_id_prefix: str or ``NoneType``</span>
+<span class="sd">        :param job_id_prefix: (Optional) the user-provided prefix for a</span>
+<span class="sd">                              randomly generated job ID. This parameter will be</span>
+<span class="sd">                              ignored if a ``job_id`` is also given.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.job.QueryJob`</span>
-<span class="sd">        :returns: a new ``QueryJob`` instance</span>
+<span class="sd">        :returns: a new :class:`google.cloud.bigquery.job.QueryJob` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">QueryJob</span><span class="p">(</span><span class="n">job_name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                        <span class="n">udf_resources</span><span class="o">=</span><span class="n">udf_resources</span><span class="p">,</span>
-                        <span class="n">query_parameters</span><span class="o">=</span><span class="n">query_parameters</span><span class="p">)</span></div>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">QueryJob</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div>
 
-<div class="viewcode-block" id="Client.run_sync_query"><a class="viewcode-back" href="../../../../bigquery/client.html#google.cloud.bigquery.client.Client.run_sync_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_sync_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">udf_resources</span><span class="o">=</span><span class="p">(),</span> <span class="n">query_parameters</span><span class="o">=</span><span class="p">()):</span>
-        <span class="sd">&quot;&quot;&quot;Run a SQL query synchronously.</span>
+<div class="viewcode-block" id="Client.create_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_rows">[docs]</a>    <span class="k">def</span> <span class="nf">create_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  insert table data via a POST request</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</span>
+
+<span class="sd">        :type table: One of:</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param table: the destination table for the row data, or a reference</span>
+<span class="sd">                      to it.</span>
+
+<span class="sd">        :type rows: One of:</span>
+<span class="sd">                    list of tuples</span>
+<span class="sd">                    list of dictionaries</span>
+<span class="sd">        :param rows: Row data to be inserted. If a list of tuples is given,</span>
+<span class="sd">                     each tuple should contain data for each schema field on</span>
+<span class="sd">                     the current table and in the same order as the schema</span>
+<span class="sd">                     fields.  If a list of dictionaries is given, the keys must</span>
+<span class="sd">                     include all required fields in the schema.  Keys which do</span>
+<span class="sd">                     not correspond to a field in the schema are ignored.</span>
+
+<span class="sd">        :type selected_fields:</span>
+<span class="sd">            list of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
+<span class="sd">        :param selected_fields:</span>
+<span class="sd">            The fields to return. Required if ``table`` is a</span>
+<span class="sd">            :class:`~google.cloud.bigquery.table.TableReference`.</span>
+
+<span class="sd">        :type kwargs: dict</span>
+<span class="sd">        :param kwargs:</span>
+<span class="sd">            Keyword arguments to</span>
+<span class="sd">            :meth:`~google.cloud.bigquery.client.Client.create_rows_json`</span>
+
+<span class="sd">        :rtype: list of mappings</span>
+<span class="sd">        :returns: One mapping per row with insert errors:  the &quot;index&quot; key</span>
+<span class="sd">                  identifies the row, and the &quot;errors&quot; key contains a list</span>
+<span class="sd">                  of the mappings describing one or more problems with the</span>
+<span class="sd">                  row.</span>
+<span class="sd">        :raises: ValueError if table&#39;s schema is not set</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">selected_fields</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;need selected_fields with TableReference&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;table should be Table or TableReference&#39;</span><span class="p">)</span>
+
+        <span class="n">json_rows</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">_row_from_mapping</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+            <span class="n">json_row</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+                <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># STRING doesn&#39;t need converting</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">json_row</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="n">json_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json_row</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_rows_json</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.create_rows_json"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_rows_json">[docs]</a>    <span class="k">def</span> <span class="nf">create_rows_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="n">row_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">skip_invalid_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_unknown_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">template_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  insert table data via a POST request</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</span>
+
+<span class="sd">        :type table: One of:</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param table: the destination table for the row data, or a reference</span>
+<span class="sd">                      to it.</span>
+
+<span class="sd">        :type json_rows: list of dictionaries</span>
+<span class="sd">        :param json_rows: Row data to be inserted. Keys must match the table</span>
+<span class="sd">                          schema fields and values must be JSON-compatible</span>
+<span class="sd">                          representations.</span>
+
+<span class="sd">        :type row_ids: list of string</span>
+<span class="sd">        :param row_ids: (Optional)  Unique ids, one per row being inserted.</span>
+<span class="sd">                        If omitted, unique IDs are created.</span>
+
+<span class="sd">        :type skip_invalid_rows: bool</span>
+<span class="sd">        :param skip_invalid_rows: (Optional)  Insert all valid rows of a</span>
+<span class="sd">                                  request, even if invalid rows exist.</span>
+<span class="sd">                                  The default value is False, which causes</span>
+<span class="sd">                                  the entire request to fail if any invalid</span>
+<span class="sd">                                  rows exist.</span>
+
+<span class="sd">        :type ignore_unknown_values: bool</span>
+<span class="sd">        :param ignore_unknown_values: (Optional) Accept rows that contain</span>
+<span class="sd">                                      values that do not match the schema.</span>
+<span class="sd">                                      The unknown values are ignored. Default</span>
+<span class="sd">                                      is False, which treats unknown values as</span>
+<span class="sd">                                      errors.</span>
+
+<span class="sd">        :type template_suffix: str</span>
+<span class="sd">        :param template_suffix:</span>
+<span class="sd">            (Optional) treat ``name`` as a template table and provide a suffix.</span>
+<span class="sd">            BigQuery will create the table ``&lt;name&gt; + &lt;template_suffix&gt;`` based</span>
+<span class="sd">            on the schema of the template table. See</span>
+<span class="sd">            https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: list of mappings</span>
+<span class="sd">        :returns: One mapping per row with insert errors:  the &quot;index&quot; key</span>
+<span class="sd">                  identifies the row, and the &quot;errors&quot; key contains a list</span>
+<span class="sd">                  of the mappings describing one or more problems with the</span>
+<span class="sd">                  row.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows_info</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="n">rows_info</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">json_rows</span><span class="p">):</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="n">row</span><span class="p">}</span>
+            <span class="k">if</span> <span class="n">row_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_ids</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+            <span class="n">rows_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">skip_invalid_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;skipInvalidRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">skip_invalid_rows</span>
+
+        <span class="k">if</span> <span class="n">ignore_unknown_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_unknown_values</span>
+
+        <span class="k">if</span> <span class="n">template_suffix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;templateSuffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">template_suffix</span>
+
+        <span class="c1"># We can always retry, because every row has an insert ID.</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span>
+            <span class="n">retry</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/insertAll&#39;</span> <span class="o">%</span> <span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;insertErrors&#39;</span><span class="p">,</span> <span class="p">()):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]),</span>
+                           <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]})</span>
+
+        <span class="k">return</span> <span class="n">errors</span></div>
+
+<div class="viewcode-block" id="Client.query_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.query_rows">[docs]</a>    <span class="k">def</span> <span class="nf">query_rows</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start a query job and wait for the results.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query</span>
 
 <span class="sd">        :type query: str</span>
-<span class="sd">        :param query: SQL query to be executed</span>
+<span class="sd">        :param query:</span>
+<span class="sd">            SQL query to be executed. Defaults to the standard SQL dialect.</span>
+<span class="sd">            Use the ``job_config`` parameter to change dialects.</span>
 
-<span class="sd">        :type udf_resources: tuple</span>
-<span class="sd">        :param udf_resources: An iterable of</span>
-<span class="sd">                            :class:`google.cloud.bigquery._helpers.UDFResource`</span>
-<span class="sd">                            (empty by default)</span>
+<span class="sd">        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`</span>
+<span class="sd">        :param job_config: (Optional) Extra configuration options for the job.</span>
 
-<span class="sd">        :type query_parameters: tuple</span>
-<span class="sd">        :param query_parameters:</span>
-<span class="sd">            An iterable of</span>
-<span class="sd">            :class:`google.cloud.bigquery._helpers.AbstractQueryParameter`</span>
-<span class="sd">            (empty by default)</span>
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: (Optional) ID to use for the query job.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.query.QueryResults`</span>
-<span class="sd">        :returns: a new ``QueryResults`` instance</span>
+<span class="sd">        :type job_id_prefix: str or ``NoneType``</span>
+<span class="sd">        :param job_id_prefix: (Optional) the user-provided prefix for a</span>
+<span class="sd">                              randomly generated job ID. This parameter will be</span>
+<span class="sd">                              ignored if a ``job_id`` is also given.</span>
+
+<span class="sd">        :type timeout: float</span>
+<span class="sd">        :param timeout:</span>
+<span class="sd">            (Optional) How long (in seconds) to wait for job to complete</span>
+<span class="sd">            before raising a :class:`concurrent.futures.TimeoutError`.</span>
+
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Iterator of row data :class:`tuple`s. During each page, the</span>
+<span class="sd">            iterator will have the ``total_rows`` attribute set, which counts</span>
+<span class="sd">            the total number of rows **in the result set** (this is distinct</span>
+<span class="sd">            from the total number of rows in the current page:</span>
+<span class="sd">            ``iterator.page.num_items``).</span>
+
+<span class="sd">        :raises:</span>
+<span class="sd">            :class:`~google.api_core.exceptions.GoogleAPICallError` if the</span>
+<span class="sd">            job failed or :class:`concurrent.futures.TimeoutError` if the job</span>
+<span class="sd">            did not complete in the given timeout.</span>
+
+<span class="sd">            When an exception happens, the query job will be cancelled on a</span>
+<span class="sd">            best-effort basis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">QueryResults</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
-                            <span class="n">udf_resources</span><span class="o">=</span><span class="n">udf_resources</span><span class="p">,</span>
-                            <span class="n">query_parameters</span><span class="o">=</span><span class="n">query_parameters</span><span class="p">)</span></div></div>
+        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+                <span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+            <span class="n">rows_iterator</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">,</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cancel_job</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+                <span class="c1"># It&#39;s OK if couldn&#39;t cancel because job never got created.</span>
+                <span class="k">pass</span>
+            <span class="k">raise</span>
+
+        <span class="k">return</span> <span class="n">rows_iterator</span></div>
+
+<div class="viewcode-block" id="Client.list_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_rows">[docs]</a>    <span class="k">def</span> <span class="nf">list_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List the rows of the table.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/list</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           This method assumes that the provided schema is up-to-date with the</span>
+<span class="sd">           schema as defined on the back-end: if the two schemas are not</span>
+<span class="sd">           identical, the values returned may be incomplete. To ensure that the</span>
+<span class="sd">           local copy of the schema is up-to-date, call ``client.get_table``.</span>
+
+<span class="sd">        :type table: One of:</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param table: the table to list, or a reference to it.</span>
+
+<span class="sd">        :type selected_fields:</span>
+<span class="sd">            list of :class:`~google.cloud.bigquery.schema.SchemaField`</span>
+<span class="sd">        :param selected_fields:</span>
+<span class="sd">            The fields to return. Required if ``table`` is a</span>
+<span class="sd">            :class:`~google.cloud.bigquery.table.TableReference`.</span>
+
+<span class="sd">        :type max_results: int</span>
+<span class="sd">        :param max_results: maximum number of rows to return.</span>
+
+<span class="sd">        :type page_token: str</span>
+<span class="sd">        :param page_token: (Optional) Token representing a cursor into the</span>
+<span class="sd">                           table&#39;s rows.</span>
+
+<span class="sd">        :type start_index: int</span>
+<span class="sd">        :param page_token: (Optional) The zero-based index of the starting</span>
+<span class="sd">                           row to read.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">        :returns: Iterator of row data :class:`tuple`s. During each page, the</span>
+<span class="sd">                  iterator will have the ``total_rows`` attribute set,</span>
+<span class="sd">                  which counts the total number of rows **in the table**</span>
+<span class="sd">                  (this is distinct from the total number of rows in the</span>
+<span class="sd">                  current page: ``iterator.page.num_items``).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">selected_fields</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">TableReference</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;need selected_fields with TableReference&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">Table</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_TABLE_HAS_NO_SCHEMA</span><span class="p">)</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">schema</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;table should be Table or TableReference&#39;</span><span class="p">)</span>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">selected_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;selectedFields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">selected_fields</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">start_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;startIndex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_index</span>
+
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
+            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/data&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+            <span class="n">next_token</span><span class="o">=</span><span class="s1">&#39;pageToken&#39;</span><span class="p">,</span>
+            <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="n">iterator</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
+
+<div class="viewcode-block" id="Client.list_partitions"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_partitions">[docs]</a>    <span class="k">def</span> <span class="nf">list_partitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List the partitions in a table.</span>
+
+<span class="sd">        :type table: One of:</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">                     :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :param table: the table to list, or a reference to it.</span>
+
+<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: a list of time partitions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">QueryJobConfig</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># required for &#39;$&#39; syntax</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_rows</span><span class="p">(</span>
+            <span class="s1">&#39;SELECT partition_id from [</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">$__PARTITIONS_SUMMARY__]&#39;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">),</span>
+            <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># pylint: disable=unused-argument</span>
 <span class="k">def</span> <span class="nf">_item_to_project</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON project to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type resource: dict</span>
@@ -455,7 +1369,7 @@
 <span class="k">def</span> <span class="nf">_item_to_dataset</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON dataset to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type resource: dict</span>
@@ -464,13 +1378,13 @@
 <span class="sd">    :rtype: :class:`.Dataset`</span>
 <span class="sd">    :returns: The next dataset in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_item_to_job</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a JSON job to the native object.</span>
 
-<span class="sd">    :type iterator: :class:`~google.api.core.page_iterator.Iterator`</span>
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">    :param iterator: The iterator that is currently in use.</span>
 
 <span class="sd">    :type resource: dict</span>
@@ -480,6 +1394,75 @@
 <span class="sd">    :returns: The next job in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_item_to_table</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a JSON table to the native object.</span>
+
+<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">    :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: An item to be converted to a table.</span>
+
+<span class="sd">    :rtype: :class:`~google.cloud.bigquery.table.Table`</span>
+<span class="sd">    :returns: The next table in the page.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct an ID for a new job.</span>
+
+<span class="sd">    :type job_id: str or ``NoneType``</span>
+<span class="sd">    :param job_id: the user-provided job ID</span>
+
+<span class="sd">    :type prefix: str or ``NoneType``</span>
+<span class="sd">    :param prefix: (Optional) the user-provided prefix for a job ID</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :returns: A job ID</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">job_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">job_id</span>
+    <span class="k">elif</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">_check_mode</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check that a stream was opened in read-binary mode.</span>
+
+<span class="sd">    :type stream: IO[bytes]</span>
+<span class="sd">    :param stream: A bytes IO object open for reading.</span>
+
+<span class="sd">    :raises: :exc:`ValueError` if the ``stream.mode`` is a valid attribute</span>
+<span class="sd">             and is not among ``rb``, ``r+b`` or ``rb+``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;rb&#39;</span><span class="p">,</span> <span class="s1">&#39;r+b&#39;</span><span class="p">,</span> <span class="s1">&#39;rb+&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot upload files opened in text mode:  use &quot;</span>
+            <span class="s2">&quot;open(filename, mode=&#39;rb&#39;) or open(filename, mode=&#39;r+b&#39;)&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_upload_headers</span><span class="p">(</span><span class="n">user_agent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the headers for an upload request.</span>
+
+<span class="sd">    :type user_agent: str</span>
+<span class="sd">    :param user_agent: The user-agent for requests.</span>
+
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns: The headers to be used for the request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">user_agent</span><span class="p">,</span>
+        <span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
 </pre></div>
 
           </div>
@@ -555,7 +1538,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

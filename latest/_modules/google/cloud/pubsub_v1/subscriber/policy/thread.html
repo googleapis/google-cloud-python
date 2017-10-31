@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -65,6 +65,7 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">types</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber</span> <span class="k">import</span> <span class="n">_helper_threads</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber.futures</span> <span class="k">import</span> <span class="n">Future</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber.policy</span> <span class="k">import</span> <span class="n">base</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.subscriber.message</span> <span class="k">import</span> <span class="n">Message</span>
 
@@ -105,6 +106,9 @@
         <span class="c1"># Default the callback to a no-op; it is provided by `.open`.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">message</span><span class="p">:</span> <span class="kc">None</span>
 
+        <span class="c1"># Default the future to None; it is provided by `.open`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="c1"># Create a queue for keeping track of shared state.</span>
         <span class="k">if</span> <span class="n">queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
@@ -129,9 +133,15 @@
 
 <div class="viewcode-block" id="Policy.close"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Close the existing connection.&quot;&quot;&quot;</span>
-        <span class="c1"># Close the main subscription connection.</span>
+        <span class="c1"># Stop consuming messages.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">helper_threads</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="s1">&#39;callback requests worker&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">stop_consuming</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">stop_consuming</span><span class="p">()</span>
+
+        <span class="c1"># The subscription is closing cleanly; resolve the future if it is not</span>
+        <span class="c1"># resolved already.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="Policy.open"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Open a streaming pull connection and begin receiving messages.</span>
@@ -142,7 +152,17 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            callback (Callable): The callback function.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~google.api_core.future.Future: A future that provides</span>
+<span class="sd">                an interface to block on the subscription if desired, and</span>
+<span class="sd">                handle errors.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create the Future that this method will return.</span>
+        <span class="c1"># This future is the main thread&#39;s interface to handle exceptions,</span>
+        <span class="c1"># block on the subscription, etc.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="n">Future</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
         <span class="c1"># Start the thread to pass the requests.</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Starting callback requests worker.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">callback</span>
@@ -160,7 +180,10 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Spawning lease maintenance worker.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maintain_leases</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="c1"># Return the future.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span></div>
 
     <span class="k">def</span> <span class="nf">on_callback_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_request</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Map the callback request to the appropriate GRPC request.&quot;&quot;&quot;</span>
@@ -178,8 +201,8 @@
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">exception</span><span class="p">,</span> <span class="s1">&#39;code&#39;</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span><span class="p">)()</span> <span class="o">==</span> <span class="n">deadline_exceeded</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="c1"># Raise any other exception.</span>
-        <span class="k">raise</span> <span class="n">exception</span>
+        <span class="c1"># Set any other exception on the future.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">on_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Process all received Pub/Sub messages.</span>
@@ -267,7 +290,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

@@ -1,0 +1,255 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Timeout &#8212; google-cloud 2185302 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2185302',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Page Iterators" href="page_iterator.html" />
+    <link rel="prev" title="Retry" href="retry.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.api_core.timeout">
+<span id="timeout"></span><h1>Timeout<a class="headerlink" href="#module-google.api_core.timeout" title="Permalink to this headline">#</a></h1>
+<p>Decorators for applying timeout arguments to functions.</p>
+<p>These decorators are used to wrap API methods to apply either a constant
+or exponential timeout argument.</p>
+<p>For example, imagine an API method that can take a while to return results,
+such as one that might block until a resource is ready:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_thing_ready</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://example.com/is_thing_ready&#39;</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This module allows a function like this to be wrapped so that timeouts are
+automatically determined, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">timeout_</span> <span class="o">=</span> <span class="n">timeout</span><span class="o">.</span><span class="n">ExponentialTimeout</span><span class="p">()</span>
+<span class="n">is_thing_ready_with_timeout</span> <span class="o">=</span> <span class="n">timeout_</span><span class="p">(</span><span class="n">is_thing_ready</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">is_thing_ready_with_timeout</span><span class="p">({</span><span class="s1">&#39;example&#39;</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">})</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>In this example the first call to <code class="docutils literal"><span class="pre">is_thing_ready</span></code> will have a relatively
+small timeout (like 1 second). If the resource is available and the request
+completes quickly, the loop exits. But, if the resource isn’t yet available
+and the request times out, it’ll be retried - this time with a larger timeout.</p>
+<p>In the broader context these decorators are typically combined with
+<a class="reference internal" href="retry.html#module-google.api_core.retry" title="google.api_core.retry"><code class="xref py py-mod docutils literal"><span class="pre">google.api_core.retry</span></code></a> to implement API methods with a signature that
+matches <code class="docutils literal"><span class="pre">api_method(request,</span> <span class="pre">timeout=None,</span> <span class="pre">retry=None)</span></code>.</p>
+<dl class="class">
+<dt id="google.api_core.timeout.ConstantTimeout">
+<em class="property">class </em><code class="descclassname">google.api_core.timeout.</code><code class="descname">ConstantTimeout</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ConstantTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ConstantTimeout" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A decorator that adds a constant timeout argument.</p>
+<p>This is effectively equivalent to
+<code class="docutils literal"><span class="pre">functools.partial(func,</span> <span class="pre">timeout=timeout)</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – the timeout (in seconds) to applied to the
+wrapped function. If <cite>None</cite>, the target function is expected to
+never timeout.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.api_core.timeout.ExponentialTimeout">
+<em class="property">class </em><code class="descclassname">google.api_core.timeout.</code><code class="descname">ExponentialTimeout</code><span class="sig-paren">(</span><em>initial=5.0</em>, <em>maximum=30.0</em>, <em>multiplier=2.0</em>, <em>deadline=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ExponentialTimeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ExponentialTimeout" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A decorator that adds an exponentially increasing timeout argument.</p>
+<p>This is useful if a function is called multiple times. Each time the
+function is called this decorator will calculate a new timeout parameter
+based on the the number of times the function has been called.</p>
+<p>For example</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The initial timeout to pass.</li>
+<li><strong>maximum</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The maximum timeout for any one call.</li>
+<li><strong>multiplier</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The multiplier applied to the timeout for each
+invocation.</li>
+<li><strong>deadline</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The overall deadline across all
+invocations. This is used to prevent a very large calculated
+timeout from pushing the overall execution time over the deadline.
+This is especially useful in conjuction with
+<a class="reference internal" href="retry.html#module-google.api_core.retry" title="google.api_core.retry"><code class="xref py py-mod docutils literal"><span class="pre">google.api_core.retry</span></code></a>. If <code class="docutils literal"><span class="pre">None</span></code>, the timeouts will not
+be adjusted to accomodate an overall deadline.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="google.api_core.timeout.ExponentialTimeout.with_deadline">
+<code class="descname">with_deadline</code><span class="sig-paren">(</span><em>deadline</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/timeout.html#ExponentialTimeout.with_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.timeout.ExponentialTimeout.with_deadline" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a copy of this teimout with the given deadline.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>deadline</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The overall deadline across all invocations.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new instance with the given deadline.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.api_core.timeout.ExponentialTimeout" title="google.api_core.timeout.ExponentialTimeout">ExponentialTimeout</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Core</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth.html">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Base Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="retry.html">Retry</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Timeout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="page_iterator.html">Page Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">Identity and Access Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation.html">Long-Running Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations_client.html">Long-Running Operations Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_template.html">Path Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Core</a><ul>
+      <li>Previous: <a href="retry.html" title="previous chapter">Retry</a></li>
+      <li>Next: <a href="page_iterator.html" title="next chapter">Page Iterators</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/core/timeout.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,454 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.api_core.retry &#8212; google-cloud 2185302 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2185302',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.api_core.retry</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017 Google Inc.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Helpers for retrying functions with exponential back-off.</span>
+
+<span class="sd">The :class:`Retry` decorator can be used to retry functions that raise</span>
+<span class="sd">exceptions using exponential backoff. Because a exponential sleep algorithm is</span>
+<span class="sd">used, the retry is limited by a `deadline`. The deadline is the maxmimum amount</span>
+<span class="sd">of time a method can block. This is used instead of total number of retries</span>
+<span class="sd">because it is difficult to ascertain the amount of time a function can block</span>
+<span class="sd">when using total number of retries and exponential backoff.</span>
+
+<span class="sd">By default, this decorator will retry transient</span>
+<span class="sd">API errors (see :func:`if_transient_error`). For example:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    @retry.Retry()</span>
+<span class="sd">    def call_flaky_rpc():</span>
+<span class="sd">        return client.flaky_rpc()</span>
+
+<span class="sd">    # Will retry flaky_rpc() if it raises transient API errors.</span>
+<span class="sd">    result = call_flaky_rpc()</span>
+
+<span class="sd">You can pass a custom predicate to retry on different exceptions, such as</span>
+<span class="sd">waiting for an eventually consistent item to be available:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    @retry.Retry(predicate=if_exception_type(exceptions.NotFound))</span>
+<span class="sd">    def check_if_exists():</span>
+<span class="sd">        return client.does_thing_exist()</span>
+
+<span class="sd">    is_available = check_if_exists()</span>
+
+<span class="sd">Some client library methods apply retry automatically. These methods can accept</span>
+<span class="sd">a ``retry`` parameter that allows you to configure the behavior:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    my_retry = retry.Retry(deadline=60)</span>
+<span class="sd">    result = client.some_method(retry=my_retry)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">datetime_helpers</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">general_helpers</span>
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">_DEFAULT_INITIAL_DELAY</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># seconds</span>
+<span class="n">_DEFAULT_MAXIMUM_DELAY</span> <span class="o">=</span> <span class="mf">60.0</span>  <span class="c1"># seconds</span>
+<span class="n">_DEFAULT_DELAY_MULTIPLIER</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">_DEFAULT_DEADLINE</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">*</span> <span class="mf">2.0</span>  <span class="c1"># seconds</span>
+
+
+<div class="viewcode-block" id="if_exception_type"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.if_exception_type">[docs]</a><span class="k">def</span> <span class="nf">if_exception_type</span><span class="p">(</span><span class="o">*</span><span class="n">exception_types</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a predicate to check if the exception is of a given type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        exception_types (Sequence[:func:`type`]): The exception types to check</span>
+<span class="sd">            for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[Exception]: A predicate that returns True if the provided</span>
+<span class="sd">            exception is of the given type(s).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">if_exception_type_predicate</span><span class="p">(</span><span class="n">exception</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Bound predicate for checking an exception type.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exception</span><span class="p">,</span> <span class="n">exception_types</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">if_exception_type_predicate</span></div>
+
+
+<span class="c1"># pylint: disable=invalid-name</span>
+<span class="c1"># Pylint sees this as a constant, but it is also an alias that should be</span>
+<span class="c1"># considered a function.</span>
+<span class="n">if_transient_error</span> <span class="o">=</span> <span class="n">if_exception_type</span><span class="p">((</span>
+    <span class="n">exceptions</span><span class="o">.</span><span class="n">InternalServerError</span><span class="p">,</span>
+    <span class="n">exceptions</span><span class="o">.</span><span class="n">TooManyRequests</span><span class="p">))</span>
+<span class="sd">&quot;&quot;&quot;A predicate that checks if an exception is a transient API error.</span>
+
+<span class="sd">The following server errors are considered transient:</span>
+
+<span class="sd">- :class:`google.api_core.exceptions.InternalServerError` - HTTP 500, gRPC</span>
+<span class="sd">    ``INTERNAL(13)`` and its subclasses.</span>
+<span class="sd">- :class:`google.api_core.exceptions.TooManyRequests` - HTTP 429</span>
+<span class="sd">- :class:`google.api_core.exceptions.ResourceExhausted` - gRPC</span>
+<span class="sd">    ``RESOURCE_EXHAUSTED(8)``</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># pylint: enable=invalid-name</span>
+
+
+<div class="viewcode-block" id="exponential_sleep_generator"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.exponential_sleep_generator">[docs]</a><span class="k">def</span> <span class="nf">exponential_sleep_generator</span><span class="p">(</span>
+        <span class="n">initial</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="n">_DEFAULT_DELAY_MULTIPLIER</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates sleep intervals based on the exponential back-off algorithm.</span>
+
+<span class="sd">    This implements the `Truncated Exponential Back-off`_ algorithm.</span>
+
+<span class="sd">    .. _Truncated Exponential Back-off:</span>
+<span class="sd">        https://cloud.google.com/storage/docs/exponential-backoff</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial (float): The minimum about of time to delay. This must</span>
+<span class="sd">            be greater than 0.</span>
+<span class="sd">        maximum (float): The maximum about of time to delay.</span>
+<span class="sd">        multiplier (float): The multiplier applied to the delay.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        float: successive sleep intervals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">delay</span> <span class="o">=</span> <span class="n">initial</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># Introduce jitter by yielding a delay that is uniformly distributed</span>
+        <span class="c1"># to average out to the delay time.</span>
+        <span class="k">yield</span> <span class="nb">min</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">delay</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">maximum</span><span class="p">)</span>
+        <span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span> <span class="o">*</span> <span class="n">multiplier</span></div>
+
+
+<div class="viewcode-block" id="retry_target"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.retry_target">[docs]</a><span class="k">def</span> <span class="nf">retry_target</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">sleep_generator</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Call a function and retry if it fails.</span>
+
+<span class="sd">    This is the lowest-level retry helper. Generally, you&#39;ll use the</span>
+<span class="sd">    higher-level retry helper :class:`Retry`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target(Callable): The function to call and retry. This must be a</span>
+<span class="sd">            nullary function - apply arguments with `functools.partial`.</span>
+<span class="sd">        predicate (Callable[Exception]): A callable used to determine if an</span>
+<span class="sd">            exception raised by the target should be considered retryable.</span>
+<span class="sd">            It should return True to retry or False otherwise.</span>
+<span class="sd">        sleep_generator (Iterable[float]): An infinite iterator that determines</span>
+<span class="sd">            how long to sleep between retries.</span>
+<span class="sd">        deadline (float): How long to keep retrying the target.</span>
+<span class="sd">        on_error (Callable): A function to call while processing a retryable</span>
+<span class="sd">            exception.  Any error raised by this function will *not* be</span>
+<span class="sd">            caught.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: the return value of the target function.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        google.api_core.RetryError: If the deadline is exceeded while retrying.</span>
+<span class="sd">        ValueError: If the sleep generator stops yielding values.</span>
+<span class="sd">        Exception: If the target raises a method that isn&#39;t retryable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">deadline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">deadline_datetime</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">deadline</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">deadline_datetime</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">last_exc</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">sleep</span> <span class="ow">in</span> <span class="n">sleep_generator</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">target</span><span class="p">()</span>
+
+        <span class="c1"># pylint: disable=broad-except</span>
+        <span class="c1"># This function explicitly must deal with broad exceptions.</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">predicate</span><span class="p">(</span><span class="n">exc</span><span class="p">):</span>
+                <span class="k">raise</span>
+            <span class="n">last_exc</span> <span class="o">=</span> <span class="n">exc</span>
+            <span class="k">if</span> <span class="n">on_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">on_error</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime_helpers</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">deadline_datetime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">deadline_datetime</span> <span class="o">&lt;</span> <span class="n">now</span><span class="p">:</span>
+            <span class="n">six</span><span class="o">.</span><span class="n">raise_from</span><span class="p">(</span>
+                <span class="n">exceptions</span><span class="o">.</span><span class="n">RetryError</span><span class="p">(</span>
+                    <span class="s1">&#39;Deadline of </span><span class="si">{:.1f}</span><span class="s1">s exceeded while calling </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">deadline</span><span class="p">,</span> <span class="n">target</span><span class="p">),</span>
+                    <span class="n">last_exc</span><span class="p">),</span>
+                <span class="n">last_exc</span><span class="p">)</span>
+
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Retrying due to </span><span class="si">{}</span><span class="s1">, sleeping </span><span class="si">{:.1f}</span><span class="s1">s ...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">last_exc</span><span class="p">,</span> <span class="n">sleep</span><span class="p">))</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Sleep generator stopped yielding sleep values.&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Retry"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry">[docs]</a><span class="nd">@six</span><span class="o">.</span><span class="n">python_2_unicode_compatible</span>
+<span class="k">class</span> <span class="nc">Retry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Exponential retry decorator.</span>
+
+<span class="sd">    This class is a decorator used to add exponential back-off retry behavior</span>
+<span class="sd">    to an RPC call.</span>
+
+<span class="sd">    Although the default behavior is to retry transient API errors, a</span>
+<span class="sd">    different predicate can be provided to retry other exceptions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        predicate (Callable[Exception]): A callable that should return ``True``</span>
+<span class="sd">            if the given exception is retryable.</span>
+<span class="sd">        initial (float): The minimum about of time to delay in seconds. This</span>
+<span class="sd">            must be greater than 0.</span>
+<span class="sd">        maximum (float): The maximum about of time to delay in seconds.</span>
+<span class="sd">        multiplier (float): The multiplier applied to the delay.</span>
+<span class="sd">        deadline (float): How long to keep retrying in seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="n">if_transient_error</span><span class="p">,</span>
+            <span class="n">initial</span><span class="o">=</span><span class="n">_DEFAULT_INITIAL_DELAY</span><span class="p">,</span>
+            <span class="n">maximum</span><span class="o">=</span><span class="n">_DEFAULT_MAXIMUM_DELAY</span><span class="p">,</span>
+            <span class="n">multiplier</span><span class="o">=</span><span class="n">_DEFAULT_DELAY_MULTIPLIER</span><span class="p">,</span>
+            <span class="n">deadline</span><span class="o">=</span><span class="n">_DEFAULT_DEADLINE</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span> <span class="o">=</span> <span class="n">initial</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span> <span class="o">=</span> <span class="n">multiplier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span> <span class="o">=</span> <span class="n">maximum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span> <span class="o">=</span> <span class="n">deadline</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrap a callable with retry behavior.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable): The callable to add retry behavior to.</span>
+<span class="sd">            on_error (Callable): A function to call while processing a</span>
+<span class="sd">                retryable exception.  Any error raised by this function will</span>
+<span class="sd">                *not* be caught.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Callable: A callable that will invoke ``func`` with retry</span>
+<span class="sd">                behavior.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nd">@general_helpers</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">retry_wrapped_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;A wrapper that calls target function with retry.&quot;&quot;&quot;</span>
+            <span class="n">target</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">sleep_generator</span> <span class="o">=</span> <span class="n">exponential_sleep_generator</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">retry_target</span><span class="p">(</span>
+                <span class="n">target</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="p">,</span>
+                <span class="n">sleep_generator</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span><span class="p">,</span>
+                <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">retry_wrapped_func</span>
+
+<div class="viewcode-block" id="Retry.with_deadline"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry.with_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">with_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of this retry with the given deadline.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            deadline (float): How long to keep retrying.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Retry: A new retry instance with the given deadline.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Retry</span><span class="p">(</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="p">,</span>
+            <span class="n">initial</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span>
+            <span class="n">maximum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span>
+            <span class="n">multiplier</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span>
+            <span class="n">deadline</span><span class="o">=</span><span class="n">deadline</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Retry.with_predicate"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry.with_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">with_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of this retry with the given predicate.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            predicate (Callable[Exception]): A callable that should return</span>
+<span class="sd">                ``True`` if the given exception is retryable.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Retry: A new retry instance with the given predicate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Retry</span><span class="p">(</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="n">predicate</span><span class="p">,</span>
+            <span class="n">initial</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span>
+            <span class="n">maximum</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span>
+            <span class="n">multiplier</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span>
+            <span class="n">deadline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Retry.with_delay"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry.with_delay">[docs]</a>    <span class="k">def</span> <span class="nf">with_delay</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of this retry with the given delay options.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            initial (float): The minimum about of time to delay. This must</span>
+<span class="sd">                be greater than 0.</span>
+<span class="sd">            maximum (float): The maximum about of time to delay.</span>
+<span class="sd">            multiplier (float): The multiplier applied to the delay.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Retry: A new retry instance with the given predicate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Retry</span><span class="p">(</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="p">,</span>
+            <span class="n">initial</span><span class="o">=</span><span class="n">initial</span> <span class="k">if</span> <span class="n">initial</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span>
+            <span class="n">maximum</span><span class="o">=</span><span class="n">maximum</span> <span class="k">if</span> <span class="n">maximum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span>
+            <span class="n">multiplier</span><span class="o">=</span><span class="n">multiplier</span> <span class="k">if</span> <span class="n">maximum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span>
+            <span class="n">deadline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s1">&#39;&lt;Retry predicate=</span><span class="si">{}</span><span class="s1">, initial=</span><span class="si">{:.1f}</span><span class="s1">, maximum=</span><span class="si">{:.1f}</span><span class="s1">, &#39;</span>
+            <span class="s1">&#39;multiplier=</span><span class="si">{:.1f}</span><span class="s1">, deadline=</span><span class="si">{:.1f}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

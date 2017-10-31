@@ -4,6 +4,13 @@ Core
 .. toctree::
     config
     auth
-    operation-api
-    modules
-
+    client
+    exceptions
+    helpers
+    retry
+    timeout
+    page_iterator
+    iam
+    operation
+    operations_client
+    path_template

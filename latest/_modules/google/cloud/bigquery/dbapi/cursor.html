@@ -1,0 +1,471 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.bigquery.dbapi.cursor &#8212; google-cloud 2185302 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '2185302',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.bigquery.dbapi.cursor</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017 Google Inc.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Cursor for the Google BigQuery DB-API.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">job</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.dbapi</span> <span class="k">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.dbapi</span> <span class="k">import</span> <span class="n">exceptions</span>
+<span class="kn">import</span> <span class="nn">google.cloud.exceptions</span>
+
+<span class="c1"># Per PEP 249: A 7-item sequence containing information describing one result</span>
+<span class="c1"># column. The first two items (name and type_code) are mandatory, the other</span>
+<span class="c1"># five are optional and are set to None if no meaningful values can be</span>
+<span class="c1"># provided.</span>
+<span class="n">Column</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s1">&#39;Column&#39;</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type_code&#39;</span><span class="p">,</span> <span class="s1">&#39;display_size&#39;</span><span class="p">,</span> <span class="s1">&#39;internal_size&#39;</span><span class="p">,</span> <span class="s1">&#39;precision&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;null_ok&#39;</span><span class="p">,</span>
+    <span class="p">])</span>
+
+
+<div class="viewcode-block" id="Cursor"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor">[docs]</a><span class="k">class</span> <span class="nc">Cursor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;DB-API Cursor to Google BigQuery.</span>
+
+<span class="sd">    :type connection: :class:`~google.cloud.bigquery.dbapi.Connection`</span>
+<span class="sd">    :param connection: A DB-API connection to Google BigQuery.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Per PEP 249: The attribute is -1 in case no .execute*() has been</span>
+        <span class="c1"># performed on the cursor or the rowcount of the last operation</span>
+        <span class="c1"># cannot be determined by the interface.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="c1"># Per PEP 249: The arraysize attribute defaults to 1, meaning to fetch</span>
+        <span class="c1"># a single row at a time.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arraysize</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Cursor.close"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;No-op.&quot;&quot;&quot;</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set description from schema.</span>
+
+<span class="sd">        :type schema: Sequence[google.cloud.bigquery.schema.SchemaField]</span>
+<span class="sd">        :param schema: A description of fields in the schema.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span>
+            <span class="n">Column</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">type_code</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
+                <span class="n">display_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">internal_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">null_ok</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">is_nullable</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_set_rowcount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query_results</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the rowcount from query results.</span>
+
+<span class="sd">        Normally, this sets rowcount to the number of rows returned by the</span>
+<span class="sd">        query, but if it was a DML statement, it sets rowcount to the number</span>
+<span class="sd">        of modified rows.</span>
+
+<span class="sd">        :type query_results:</span>
+<span class="sd">            :class:`~google.cloud.bigquery.query.QueryResults`</span>
+<span class="sd">        :param query_results: results of a query</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_rows</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">num_dml_affected_rows</span> <span class="o">=</span> <span class="n">query_results</span><span class="o">.</span><span class="n">num_dml_affected_rows</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">total_rows</span> <span class="o">=</span> <span class="n">query_results</span><span class="o">.</span><span class="n">total_rows</span>
+        <span class="k">if</span> <span class="n">num_dml_affected_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">num_dml_affected_rows</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">total_rows</span> <span class="o">=</span> <span class="n">num_dml_affected_rows</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rowcount</span> <span class="o">=</span> <span class="n">total_rows</span>
+
+<div class="viewcode-block" id="Cursor.execute"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.execute">[docs]</a>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepare and execute a database operation.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            When setting query parameters, values which are &quot;text&quot;</span>
+<span class="sd">            (``unicode`` in Python2, ``str`` in Python3) will use</span>
+<span class="sd">            the &#39;STRING&#39; BigQuery type. Values which are &quot;bytes&quot; (``str`` in</span>
+<span class="sd">            Python2, ``bytes`` in Python3), will use using the &#39;BYTES&#39; type.</span>
+
+<span class="sd">            A `~datetime.datetime` parameter without timezone information uses</span>
+<span class="sd">            the &#39;DATETIME&#39; BigQuery type (example: Global Pi Day Celebration</span>
+<span class="sd">            March 14, 2017 at 1:59pm). A `~datetime.datetime` parameter with</span>
+<span class="sd">            timezone information uses the &#39;TIMESTAMP&#39; BigQuery type (example:</span>
+<span class="sd">            a wedding on April 29, 2011 at 11am, British Summer Time).</span>
+
+<span class="sd">            For more information about BigQuery data types, see:</span>
+<span class="sd">            https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types</span>
+
+<span class="sd">            ``STRUCT``/``RECORD`` and ``REPEATED`` query parameters are not</span>
+<span class="sd">            yet supported. See:</span>
+<span class="sd">            https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3524</span>
+
+<span class="sd">        :type operation: str</span>
+<span class="sd">        :param operation: A Google BigQuery query string.</span>
+
+<span class="sd">        :type parameters: Mapping[str, Any] or Sequence[Any]</span>
+<span class="sd">        :param parameters:</span>
+<span class="sd">            (Optional) dictionary or sequence of parameter values.</span>
+
+<span class="sd">        :type job_id: str</span>
+<span class="sd">        :param job_id: (Optional) The job_id to use. If not set, a job ID</span>
+<span class="sd">            is generated at random.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">_client</span>
+
+        <span class="c1"># The DB-API uses the pyformat formatting, since the way BigQuery does</span>
+        <span class="c1"># query parameters was not one of the standard options. Convert both</span>
+        <span class="c1"># the query and the parameters to the format expected by the client</span>
+        <span class="c1"># libraries.</span>
+        <span class="n">formatted_operation</span> <span class="o">=</span> <span class="n">_format_operation</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="n">query_parameters</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">to_query_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">query_parameters</span> <span class="o">=</span> <span class="n">query_parameters</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">formatted_operation</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">)</span>
+
+        <span class="c1"># Wait for the query to finish.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleCloudError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">DatabaseError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
+
+        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_rowcount</span><span class="p">(</span><span class="n">query_results</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_description</span><span class="p">(</span><span class="n">query_results</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Cursor.executemany"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.executemany">[docs]</a>    <span class="k">def</span> <span class="nf">executemany</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">seq_of_parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepare and execute a database operation multiple times.</span>
+
+<span class="sd">        :type operation: str</span>
+<span class="sd">        :param operation: A Google BigQuery query string.</span>
+
+<span class="sd">        :type seq_of_parameters: Sequence[Mapping[str, Any] or Sequence[Any]]</span>
+<span class="sd">        :param parameters: Sequence of many sets of parameter values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">parameters</span> <span class="ow">in</span> <span class="n">seq_of_parameters</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_try_fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Try to start fetching data, if not yet started.</span>
+
+<span class="sd">        Mutates self to indicate that iteration has started.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">InterfaceError</span><span class="p">(</span>
+                <span class="s1">&#39;No query results: execute() must be called before fetch.&#39;</span><span class="p">)</span>
+
+        <span class="n">is_dml</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">statement_type</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">statement_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;SELECT&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_dml</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">([])</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">_client</span>
+            <span class="c1"># TODO(tswast): pass in page size to list_rows based on arraysize</span>
+            <span class="n">rows_iter</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span>
+                <span class="n">selected_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">rows_iter</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Cursor.fetchone"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.fetchone">[docs]</a>    <span class="k">def</span> <span class="nf">fetchone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch a single row from the results of the last ``execute*()`` call.</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            A tuple representing a row or ``None`` if no more data is</span>
+<span class="sd">            available.</span>
+<span class="sd">        :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`</span>
+<span class="sd">            if called before ``execute()``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_try_fetch</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Cursor.fetchmany"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.fetchmany">[docs]</a>    <span class="k">def</span> <span class="nf">fetchmany</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch multiple results from the last ``execute*()`` call.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            The size parameter is not used for the request/response size.</span>
+<span class="sd">            Set the ``arraysize`` attribute before calling ``execute()`` to</span>
+<span class="sd">            set the batch size.</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size:</span>
+<span class="sd">            (Optional) Maximum number of rows to return. Defaults to the</span>
+<span class="sd">            ``arraysize`` property value.</span>
+
+<span class="sd">        :rtype: List[tuple]</span>
+<span class="sd">        :returns: A list of rows.</span>
+<span class="sd">        :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`</span>
+<span class="sd">            if called before ``execute()``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arraysize</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_try_fetch</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span><span class="p">:</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">size</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">rows</span></div>
+
+<div class="viewcode-block" id="Cursor.fetchall"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.fetchall">[docs]</a>    <span class="k">def</span> <span class="nf">fetchall</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch all remaining results from the last ``execute*()`` call.</span>
+
+<span class="sd">        :rtype: List[tuple]</span>
+<span class="sd">        :returns: A list of all the rows in the results.</span>
+<span class="sd">        :raises: :class:`~google.cloud.bigquery.dbapi.InterfaceError`</span>
+<span class="sd">            if called before ``execute()``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_try_fetch</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Cursor.setinputsizes"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.setinputsizes">[docs]</a>    <span class="k">def</span> <span class="nf">setinputsizes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sizes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;No-op.&quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Cursor.setoutputsize"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.setoutputsize">[docs]</a>    <span class="k">def</span> <span class="nf">setoutputsize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;No-op.&quot;&quot;&quot;</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_format_operation_list</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Formats parameters in operation in the way BigQuery expects.</span>
+
+<span class="sd">    The input operation will be a query like ``SELECT %s`` and the output</span>
+<span class="sd">    will be a query like ``SELECT ?``.</span>
+
+<span class="sd">    :type operation: str</span>
+<span class="sd">    :param operation: A Google BigQuery query string.</span>
+
+<span class="sd">    :type parameters: Sequence[Any]</span>
+<span class="sd">    :param parameters: Sequence of parameter values.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :returns: A formatted query string.</span>
+<span class="sd">    :raises: :class:`~google.cloud.bigquery.dbapi.ProgrammingError`</span>
+<span class="sd">        if a parameter used in the operation is not found in the</span>
+<span class="sd">        ``parameters`` argument.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">formatted_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;?&#39;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">operation</span> <span class="o">%</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">formatted_params</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ProgrammingError</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_format_operation_dict</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Formats parameters in operation in the way BigQuery expects.</span>
+
+<span class="sd">    The input operation will be a query like ``SELECT %(namedparam)s`` and</span>
+<span class="sd">    the output will be a query like ``SELECT @namedparam``.</span>
+
+<span class="sd">    :type operation: str</span>
+<span class="sd">    :param operation: A Google BigQuery query string.</span>
+
+<span class="sd">    :type parameters: Mapping[str, Any]</span>
+<span class="sd">    :param parameters: Dictionary of parameter values.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :returns: A formatted query string.</span>
+<span class="sd">    :raises: :class:`~google.cloud.bigquery.dbapi.ProgrammingError`</span>
+<span class="sd">        if a parameter used in the operation is not found in the</span>
+<span class="sd">        ``parameters`` argument.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">formatted_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
+        <span class="n">escaped_name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;`&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\`&#39;</span><span class="p">)</span>
+        <span class="n">formatted_params</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;@`</span><span class="si">{}</span><span class="s1">`&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">escaped_name</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">operation</span> <span class="o">%</span> <span class="n">formatted_params</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ProgrammingError</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_format_operation</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Formats parameters in operation in way BigQuery expects.</span>
+
+<span class="sd">    :type: str</span>
+<span class="sd">    :param operation: A Google BigQuery query string.</span>
+
+<span class="sd">    :type: Mapping[str, Any] or Sequence[Any]</span>
+<span class="sd">    :param parameters: Optional parameter values.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :returns: A formatted query string.</span>
+<span class="sd">    :raises: :class:`~google.cloud.bigquery.dbapi.ProgrammingError`</span>
+<span class="sd">        if a parameter used in the operation is not found in the</span>
+<span class="sd">        ``parameters`` argument.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">operation</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_format_operation_dict</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_format_operation_list</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

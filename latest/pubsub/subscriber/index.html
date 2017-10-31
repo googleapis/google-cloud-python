@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscribing to Messages &#8212; google-cloud 448b147 documentation</title>
+    <title>Subscribing to Messages &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -96,7 +96,7 @@ this method will actually begin consumption of the subscription.</p>
 </div>
 <div class="section" id="subscription-callbacks">
 <h2>Subscription Callbacks<a class="headerlink" href="#subscription-callbacks" title="Permalink to this headline">#</a></h2>
-<p>Because subscriptions in this Pub/Sub client are opened asychronously,
+<p>Because subscriptions in this Pub/Sub client are opened asynchronously,
 processing the messages that are yielded by the subscription is handled
 through <strong>callbacks</strong>.</p>
 <p>The basic idea: Define a function that takes one argument; this argument
@@ -114,7 +114,24 @@ must pass the callback that will be used.</p>
     <span class="n">message</span><span class="o">.</span><span class="n">ack</span><span class="p">()</span>
 
 <span class="c1"># Open the subscription, passing the callback.</span>
-<span class="n">subscription</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="n">future</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open" title="google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open"><code class="xref py py-meth docutils literal"><span class="pre">open()</span></code></a> method returns
+a <code class="xref py py-class docutils literal"><span class="pre">Future</span></code>, which is both the interface
+to wait on messages (e.g. block the primary thread) and to address exceptions.</p>
+<p>To block the thread you are in while messages are coming in the stream,
+use the <code class="xref py py-meth docutils literal"><span class="pre">result()</span></code> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also use this for error handling; any exceptions that crop up on a
+thread will be set on the future.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+    <span class="n">subscription</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">raise</span>
 </pre></div>
 </div>
 </div>
@@ -227,7 +244,7 @@ message, and that the service should redeliver it.</p>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

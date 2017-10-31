@@ -1,0 +1,428 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.api_core.operation &#8212; google-cloud 2185302 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2185302',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.api_core.operation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2016 Google Inc.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Futures for long-running operations returned from Google Cloud APIs.</span>
+
+<span class="sd">These futures can be used to synchronously wait for the result of a</span>
+<span class="sd">long-running operation using :meth:`Operation.result`:</span>
+
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    operation = my_api_client.long_running_method()</span>
+<span class="sd">    result = operation.result()</span>
+
+<span class="sd">Or asynchronously using callbacks and :meth:`Operation.add_done_callback`:</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    operation = my_api_client.long_running_method()</span>
+
+<span class="sd">    def my_callback(future):</span>
+<span class="sd">        result = future.result()</span>
+
+<span class="sd">    operation.add_done_callback(my_callback)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">protobuf_helpers</span>
+<span class="kn">from</span> <span class="nn">google.api_core.future</span> <span class="k">import</span> <span class="n">polling</span>
+<span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="k">import</span> <span class="n">operations_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">json_format</span>
+<span class="kn">from</span> <span class="nn">google.rpc</span> <span class="k">import</span> <span class="n">code_pb2</span>
+
+
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.Operation">[docs]</a><span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">polling</span><span class="o">.</span><span class="n">PollingFuture</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Future for interacting with a Google API Long-Running Operation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        operation (google.longrunning.operations_pb2.Operation): The</span>
+<span class="sd">            initial operation.</span>
+<span class="sd">        refresh (Callable[[], Operation]): A callable that returns the</span>
+<span class="sd">            latest state of the operation.</span>
+<span class="sd">        cancel (Callable[[], None]): A callable that tries to cancel</span>
+<span class="sd">            the operation.</span>
+<span class="sd">        result_type (func:`type`): The protobuf type for the operation&#39;s</span>
+<span class="sd">            result.</span>
+<span class="sd">        metadata_type (func:`type`): The protobuf type for the operation&#39;s</span>
+<span class="sd">            metadata.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span>
+            <span class="n">result_type</span><span class="p">,</span> <span class="n">metadata_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Operation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="o">=</span> <span class="n">operation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh</span> <span class="o">=</span> <span class="n">refresh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancel</span> <span class="o">=</span> <span class="n">cancel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_result_type</span> <span class="o">=</span> <span class="n">result_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_type</span> <span class="o">=</span> <span class="n">metadata_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_completion_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="c1"># Invoke this in case the operation came back already complete.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_result_from_operation</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.longrunning.Operation: The current long-running operation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;google.protobuf.Message: the current operation metadata.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">from_any_pb</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_result_from_operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the result or exception from the operation if it is complete.&quot;&quot;&quot;</span>
+        <span class="c1"># This must be done in a lock to prevent the polling thread</span>
+        <span class="c1"># and main thread from both executing the completion logic</span>
+        <span class="c1"># at the same time.</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_completion_lock</span><span class="p">:</span>
+            <span class="c1"># If the operation isn&#39;t complete or if the result has already been</span>
+            <span class="c1"># set, do not call set_result/set_exception again.</span>
+            <span class="c1"># Note: self._result_set is set to True in set_result and</span>
+            <span class="c1"># set_exception, in case those methods are invoked directly.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">done</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_result_set</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;response&#39;</span><span class="p">):</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">from_any_pb</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_result_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">response</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">):</span>
+                <span class="n">exception</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleAPICallError</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
+                    <span class="n">errors</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">error</span><span class="p">,),</span>
+                    <span class="n">response</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exception</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleAPICallError</span><span class="p">(</span>
+                    <span class="s1">&#39;Unexpected state: Long-running operation had neither &#39;</span>
+                    <span class="s1">&#39;response nor error set.&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_refresh_and_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Refresh the operation and update the result if needed.&quot;&quot;&quot;</span>
+        <span class="c1"># If the currently cached operation is done, no need to make another</span>
+        <span class="c1"># RPC as it will not change once done.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refresh</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_result_from_operation</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Operation.done"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.Operation.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks to see if the operation is complete.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the operation is complete, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_and_update</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">done</span></div>
+
+<div class="viewcode-block" id="Operation.cancel"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.Operation.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Attempt to cancel the operation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the cancel RPC was made, False if the operation is</span>
+<span class="sd">                already complete.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cancel</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="Operation.cancelled"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.Operation.cancelled">[docs]</a>    <span class="k">def</span> <span class="nf">cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;True if the operation was cancelled.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refresh_and_update</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_operation</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">code_pb2</span><span class="o">.</span><span class="n">CANCELLED</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_refresh_http</span><span class="p">(</span><span class="n">api_request</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Refresh an operation using a JSON/HTTP client.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        api_request (Callable): A callable used to make an API request. This</span>
+<span class="sd">            should generally be</span>
+<span class="sd">            :meth:`google.cloud._http.Connection.api_request`.</span>
+<span class="sd">        operation_name (str): The name of the operation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        google.longrunning.operations_pb2.Operation: The operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;operations/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="n">api_response</span> <span class="o">=</span> <span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
+        <span class="n">api_response</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">_cancel_http</span><span class="p">(</span><span class="n">api_request</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cancel an operation using a JSON/HTTP client.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        api_request (Callable): A callable used to make an API request. This</span>
+<span class="sd">            should generally be</span>
+<span class="sd">            :meth:`google.cloud._http.Connection.api_request`.</span>
+<span class="sd">        operation_name (str): The name of the operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;operations/</span><span class="si">{}</span><span class="s1">:cancel&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="from_http_json"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.from_http_json">[docs]</a><span class="k">def</span> <span class="nf">from_http_json</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an operation future using a HTTP/JSON client.</span>
+
+<span class="sd">    This interacts with the long-running operations `service`_ (specific</span>
+<span class="sd">    to a given API) vis `HTTP/JSON`_.</span>
+
+<span class="sd">    .. _HTTP/JSON: https://cloud.google.com/speech/reference/rest/\</span>
+<span class="sd">            v1beta1/operations#Operation</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        operation (dict): Operation as a dictionary.</span>
+<span class="sd">        api_request (Callable): A callable used to make an API request. This</span>
+<span class="sd">            should generally be</span>
+<span class="sd">            :meth:`google.cloud._http.Connection.api_request`.</span>
+<span class="sd">        result_type (:func:`type`): The protobuf result type.</span>
+<span class="sd">        kwargs: Keyword args passed into the :class:`Operation` constructor.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Operation: The operation future to track the given operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">operation_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
+        <span class="n">operation</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
+    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="n">_refresh_http</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">operation_proto</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="n">_cancel_http</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">operation_proto</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="n">operation_proto</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_refresh_grpc</span><span class="p">(</span><span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Refresh an operation using a gRPC client.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        operations_stub (google.longrunning.operations_pb2.OperationsStub):</span>
+<span class="sd">            The gRPC operations stub.</span>
+<span class="sd">        operation_name (str): The name of the operation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        google.longrunning.operations_pb2.Operation: The operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">request_pb</span> <span class="o">=</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">GetOperationRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">operations_stub</span><span class="o">.</span><span class="n">GetOperation</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_cancel_grpc</span><span class="p">(</span><span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cancel an operation using a gRPC client.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        operations_stub (google.longrunning.operations_pb2.OperationsStub):</span>
+<span class="sd">            The gRPC operations stub.</span>
+<span class="sd">        operation_name (str): The name of the operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">request_pb</span> <span class="o">=</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">CancelOperationRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="n">operations_stub</span><span class="o">.</span><span class="n">CancelOperation</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="from_grpc"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.from_grpc">[docs]</a><span class="k">def</span> <span class="nf">from_grpc</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an operation future using a gRPC client.</span>
+
+<span class="sd">    This interacts with the long-running operations `service`_ (specific</span>
+<span class="sd">    to a given API) via gRPC.</span>
+
+<span class="sd">    .. _service: https://github.com/googleapis/googleapis/blob/\</span>
+<span class="sd">                 050400df0fdb16f63b63e9dee53819044bffc857/\</span>
+<span class="sd">                 google/longrunning/operations.proto#L38</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        operation (google.longrunning.operations_pb2.Operation): The operation.</span>
+<span class="sd">        operations_stub (google.longrunning.operations_pb2.OperationsStub):</span>
+<span class="sd">            The operations stub.</span>
+<span class="sd">        result_type (:func:`type`): The protobuf result type.</span>
+<span class="sd">        kwargs: Keyword args passed into the :class:`Operation` constructor.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Operation: The operation future to track the given operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="n">_refresh_grpc</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="n">_cancel_grpc</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_gapic"><a class="viewcode-back" href="../../../core/operation.html#google.api_core.operation.from_gapic">[docs]</a><span class="k">def</span> <span class="nf">from_gapic</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">operations_client</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an operation future from a gapic client.</span>
+
+<span class="sd">    This interacts with the long-running operations `service`_ (specific</span>
+<span class="sd">    to a given API) via a gapic client.</span>
+
+<span class="sd">    .. _service: https://github.com/googleapis/googleapis/blob/\</span>
+<span class="sd">                 050400df0fdb16f63b63e9dee53819044bffc857/\</span>
+<span class="sd">                 google/longrunning/operations.proto#L38</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        operation (google.longrunning.operations_pb2.Operation): The operation.</span>
+<span class="sd">        operations_client (google.api_core.operations_v1.OperationsClient):</span>
+<span class="sd">            The operations client.</span>
+<span class="sd">        result_type (:func:`type`): The protobuf result type.</span>
+<span class="sd">        kwargs: Keyword args passed into the :class:`Operation` constructor.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Operation: The operation future to track the given operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="n">operations_client</span><span class="o">.</span><span class="n">get_operation</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">cancel</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+        <span class="n">operations_client</span><span class="o">.</span><span class="n">cancel_operation</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">refresh</span><span class="p">,</span> <span class="n">cancel</span><span class="p">,</span> <span class="n">result_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

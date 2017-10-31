@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Core &#8212; google-cloud 448b147 documentation</title>
+    <title>Core &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="config.html#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config.html#authentication">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#module-google.cloud.environment_vars">Environment Variables</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication</a><ul>
@@ -70,14 +71,21 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Shared Core Modules</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#module-google.cloud.client">Base Client</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#module-google.cloud.exceptions">Exceptions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#module-google.cloud.environment_vars">Environment Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html#module-google.cloud.iam">IAM Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Base Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#module-google.api_core.general_helpers">General Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#module-google.api_core.datetime_helpers">Datetime Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#module-google.api_core.grpc_helpers">gRPC Helpers</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="retry.html">Retry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="timeout.html">Timeout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="page_iterator.html">Page Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iam.html">Identity and Access Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operation.html">Long-Running Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operations_client.html">Long-Running Operations Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="path_template.html">Path Templates</a></li>
 </ul>
 </div>
 </div>
@@ -111,8 +119,16 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Core</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="auth.html">Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="operation-api.html">Long-Running Operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules.html">Shared Core Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client.html">Base Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="retry.html">Retry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timeout.html">Timeout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="page_iterator.html">Page Iterators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iam.html">Identity and Access Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operation.html">Long-Running Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations_client.html">Long-Running Operations Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_template.html">Path Templates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
@@ -162,7 +178,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

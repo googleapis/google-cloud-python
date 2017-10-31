@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.acl &#8212; google-cloud 448b147 documentation</title>
+    <title>google.cloud.storage.acl &#8212; google-cloud 2185302 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '448b147',
+        VERSION:     '2185302',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -441,6 +441,8 @@
 <div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../../storage/acl.html#google.cloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type client: :class:`~google.cloud.storage.client.Client` or</span>
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -505,6 +507,8 @@
 <div class="viewcode-block" id="ACL.save"><a class="viewcode-back" href="../../../../storage/acl.html#google.cloud.storage.acl.ACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket.</span>
 
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
+
 <span class="sd">        :type acl: :class:`google.cloud.storage.acl.ACL`, or a compatible list.</span>
 <span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
 <span class="sd">                    current entries.</span>
@@ -525,6 +529,8 @@
 
 <div class="viewcode-block" id="ACL.save_predefined"><a class="viewcode-back" href="../../../../storage/acl.html#google.cloud.storage.acl.ACL.save_predefined">[docs]</a>    <span class="k">def</span> <span class="nf">save_predefined</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predefined</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket using a predefined ACL.</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        :type predefined: str</span>
 <span class="sd">        :param predefined: An identifier for a predefined ACL.  Must be one</span>
@@ -547,6 +553,8 @@
 
 <div class="viewcode-block" id="ACL.clear"><a class="viewcode-back" href="../../../../storage/acl.html#google.cloud.storage.acl.ACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all ACL entries.</span>
+
+<span class="sd">        If :attr:`user_project` is set, bills the API request to that project.</span>
 
 <span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
 <span class="sd">        will remove all the non-default rules.  In short, you&#39;ll still</span>
@@ -705,7 +713,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
