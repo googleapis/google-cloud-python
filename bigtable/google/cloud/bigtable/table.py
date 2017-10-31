@@ -113,7 +113,7 @@ class Table(object):
         .. warning::
 
            At most one of ``filter_`` and ``append`` can be used in a
-           :class:`.Row`.
+           :class:`~google.cloud.bigtable.row.Row`.
 
         :type row_key: bytes
         :param row_key: The key for the row being created.
@@ -126,7 +126,7 @@ class Table(object):
         :param append: (Optional) Flag to determine if the row should be used
                        for append mutations.
 
-        :rtype: :class:`.Row`
+        :rtype: :class:`~google.cloud.bigtable.row.Row`
         :returns: A row owned by this table.
         :raises: :class:`ValueError <exceptions.ValueError>` if both
                  ``filter_`` and ``append`` are used.
@@ -469,8 +469,9 @@ def _check_row_table_name(table_name, row):
     :type table_name: str
     :param table_name: The name of the table.
 
-    :type row: :class:`.Row`
-    :param row: An instance of :class:`.Row` subclasses.
+    :type row: :class:`~google.cloud.bigtable.row.Row`
+    :param row: An instance of :class:`~google.cloud.bigtable.row.Row`
+                subclasses.
 
     :raises: :exc:`~.table.TableMismatchError` if the row does not belong to
              the table.
@@ -484,8 +485,9 @@ def _check_row_table_name(table_name, row):
 def _check_row_type(row):
     """Checks that a row is an instance of :class:`.DirectRow`.
 
-    :type row: :class:`.Row`
-    :param row: An instance of :class:`.Row` subclasses.
+    :type row: :class:`~google.cloud.bigtable.row.Row`
+    :param row: An instance of :class:`~google.cloud.bigtable.row.Row`
+                subclasses.
 
     :raises: :class:`TypeError <exceptions.TypeError>` if the row is not an
              instance of DirectRow.
