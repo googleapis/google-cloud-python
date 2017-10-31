@@ -759,17 +759,17 @@ class TestRow(unittest.TestCase):
         from google.cloud.bigquery.table import Row
 
         VALUES = (1, 2, 3)
-        r = Row(VALUES, {'a': 0, 'b': 1, 'c': 2})
-        self.assertEqual(r.a, 1)
-        self.assertEqual(r[1], 2)
-        self.assertEqual(r['c'], 3)
-        self.assertEqual(len(r), 3)
-        self.assertEqual(r.values(), VALUES)
-        self.assertEqual(repr(r),
+        row = Row(VALUES, {'a': 0, 'b': 1, 'c': 2})
+        self.assertEqual(row.a, 1)
+        self.assertEqual(row[1], 2)
+        self.assertEqual(row['c'], 3)
+        self.assertEqual(len(row), 3)
+        self.assertEqual(row.values(), VALUES)
+        self.assertEqual(repr(row),
                          "Row((1, 2, 3), {'a': 0, 'b': 1, 'c': 2})")
-        self.assertFalse(r != r)
-        self.assertFalse(r == 3)
+        self.assertFalse(row != row)
+        self.assertFalse(row == 3)
         with self.assertRaises(AttributeError):
-            r.z
+            row.z
         with self.assertRaises(KeyError):
-            r['z']
+            row['z']

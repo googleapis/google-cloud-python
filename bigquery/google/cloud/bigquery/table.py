@@ -786,20 +786,20 @@ class Row(object):
         return self._xxx_values
 
     def __getattr__(self, name):
-        i = self._xxx_field_to_index.get(name)
-        if i is None:
-            raise AttributeError('no row field "%s"' % name)
-        return self._xxx_values[i]
+        value = self._xxx_field_to_index.get(name)
+        if value is None:
+            raise AttributeError('no row field {!r}'.format(name))
+        return self._xxx_values[value]
 
     def __len__(self):
         return len(self._xxx_values)
 
     def __getitem__(self, key):
         if isinstance(key, six.string_types):
-            i = self._xxx_field_to_index.get(key)
-            if i is None:
-                raise KeyError('no row field "%s"' % key)
-            key = i
+            value = self._xxx_field_to_index.get(key)
+            if value is None:
+                raise KeyError('no row field {!r}'.format(key))
+            key = value
         return self._xxx_values[key]
 
     def __eq__(self, other):
@@ -816,5 +816,5 @@ class Row(object):
         # sort field dict by value, for determinism
         items = sorted(self._xxx_field_to_index.items(),
                        key=operator.itemgetter(1))
-        f2i = '{' + ', '.join('%r: %d' % i for i in items) + '}'
+        f2i = '{' + ', '.join('%r: %d' % item for item in items) + '}'
         return 'Row({}, {})'.format(self._xxx_values, f2i)
