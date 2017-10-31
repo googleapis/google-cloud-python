@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ setup(
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     name='google-cloud-videointelligence',
-    version='0.27.2',
+    version='0.28.0',
     description='Python Client for Google Cloud Video Intelligence',
     long_description=readme,
     namespace_packages=[

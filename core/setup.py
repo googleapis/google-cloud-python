@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ EXTRAS_REQUIREMENTS = {
 
 setup(
     name='google-cloud-core',
-    version='0.28.0',
+    version='0.28.1.dev1',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[

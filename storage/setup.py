@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.28.0, < 0.29dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
     'google-auth >= 1.0.0',
     'google-resumable-media >= 0.3.1',
     'requests >= 2.18.0',
@@ -59,7 +60,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-storage',
-    version='1.5.0',
+    version='1.6.0',
     description='Python Client for Google Cloud Storage',
     long_description=README,
     namespace_packages=[

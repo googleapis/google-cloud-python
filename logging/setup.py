@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,12 +52,13 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
     'gapic-google-cloud-logging-v2 >= 0.91.0, < 0.92dev',
 ]
 
 setup(
     name='google-cloud-logging',
-    version='1.3.0',
+    version='1.4.0',
     description='Python Client for Stackdriver Logging',
     long_description=README,
     namespace_packages=[
