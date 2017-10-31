@@ -2182,7 +2182,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['data'], SENT)
 
     def test_create_rows_w_list_of_Rows(self):
-        from google.cloud.bigquery.table import Table, SchemaField, Row
+        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import Row
 
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_ID, self.TABLE_ID)
@@ -2719,7 +2721,9 @@ class TestClient(unittest.TestCase):
     def test_list_rows(self):
         import datetime
         from google.cloud._helpers import UTC
-        from google.cloud.bigquery.table import Table, SchemaField, Row
+        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery.table import Row
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_ID, self.TABLE_ID)
