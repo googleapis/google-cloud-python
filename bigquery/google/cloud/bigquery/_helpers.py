@@ -209,7 +209,6 @@ def _row_tuple_from_json(row, schema):
 
 def _rows_from_json(values, schema):
     """Convert JSON row data to rows with appropriate types."""
-    # TODO(alixh) remove circular import
     from google.cloud.bigquery import Row
 
     field_to_index = _field_to_index_mapping(schema)
@@ -447,7 +446,6 @@ def _item_to_row(iterator, resource):
     :rtype: :class:`~google.cloud.bigquery.table.Row`
     :returns: The next row in the page.
     """
-    # TODO(alixh) remove circular import
     from google.cloud.bigquery import Row
 
     return Row(_row_tuple_from_json(resource, iterator.schema),
