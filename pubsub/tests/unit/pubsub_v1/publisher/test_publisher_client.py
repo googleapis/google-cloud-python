@@ -20,7 +20,7 @@ import mock
 import pytest
 
 from google.auth import credentials
-from google.cloud.gapic.pubsub.v1 import publisher_client
+from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 

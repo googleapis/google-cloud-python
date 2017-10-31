@@ -23,10 +23,10 @@ import grpc
 import six
 
 from google.api_core import grpc_helpers
-from google.cloud.gapic.pubsub.v1 import publisher_client
 
 from google.cloud.pubsub_v1 import _gapic
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1.publisher.batch import thread
 
 
