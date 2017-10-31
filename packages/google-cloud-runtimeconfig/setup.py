@@ -57,7 +57,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-runtimeconfig',
-    version='0.28.0',
+    version='0.28.1.dev1',
     description='Python Client for Google Cloud RuntimeConfig',
     long_description=README,
     namespace_packages=[
