@@ -1,6 +1,12 @@
 Changelog
 =========
 
+v1.2.0
+------
+
+- Added ``google.auth.credentials.AnonymousCredentials``. (#206)
+- Updated the documentation to link to the Google Cloud Platform Python setup guide (#204)
+
 v1.1.1
 ------
 
