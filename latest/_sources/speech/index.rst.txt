@@ -302,3 +302,12 @@ API Reference
 
   gapic/api
   gapic/types
+
+Releases
+--------
+
+For a list of all ``google-cloud-speech`` releases:
+
+.. toctree::
+
+  releases

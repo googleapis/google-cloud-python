@@ -2,6 +2,7 @@
   :maxdepth: 2
   :hidden:
 
+  releases
   core/index
   bigquery/usage
   bigtable/usage

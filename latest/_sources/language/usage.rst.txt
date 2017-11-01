@@ -279,3 +279,9 @@ An API and type reference is provided for the v1.1 beta also:
   The client for the beta API is provided on a provisional basis. The API
   surface is subject to change, and it is possible that this client will be
   deprecated or removed after its features become GA.
+
+For a list of all ``google-cloud-language`` releases:
+
+.. toctree::
+
+  releases

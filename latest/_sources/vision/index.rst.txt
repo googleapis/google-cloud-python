@@ -131,3 +131,13 @@ API Reference
 
   gapic/v1/api
   gapic/v1/types
+
+********
+Releases
+********
+
+For a list of all ``google-cloud-vision`` releases:
+
+.. toctree::
+
+  releases

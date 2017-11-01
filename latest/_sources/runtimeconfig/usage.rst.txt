@@ -5,6 +5,7 @@ Runtimeconfig
   :maxdepth: 2
   :hidden:
 
+  releases
   client
   config
   variable

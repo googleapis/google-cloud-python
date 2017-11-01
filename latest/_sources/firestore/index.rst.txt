@@ -5,6 +5,7 @@ Firestore
   :maxdepth: 2
   :hidden:
 
+  releases
   constants
   client
   collection
