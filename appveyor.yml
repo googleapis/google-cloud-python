@@ -1,12 +1,8 @@
 version: 1.0.{build}.{branch}
 
-environment:
-  global:
-    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script intepreter
-    # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+build: off
 
+environment:
   matrix:
 
     # Pre-installed Python versions, which Appveyor may upgrade to
@@ -17,98 +13,58 @@ environment:
     # This is because it takes too long to serially go through six to eight
     # iterations.
 
-    # Python 2.7.11 is the latest Python 2.7 with a Windows installer
-    # Python 2.7.13 is the overall latest
-    # https://www.python.org/ftp/python/2.7.11/
     - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.11"
-      PYTHON_MAJMIN_VERSION: "2.7"
-      PYTHON_ARCH: "32"
       NOX_ENV: "unit_tests(python_version='2.7')"
 
-    # Python 3.5.1 is the latest Python 3.5 with a Windows installer
-    # Python 3.5.3 is the overall latest
-    # https://www.python.org/ftp/python/3.5.1/
     - PYTHON: "C:\\Python35-x64"
-      PYTHON_VERSION: "3.5.1"
-      PYTHON_MAJMIN_VERSION: "3.5"
-      PYTHON_ARCH: "64"
       NOX_ENV: "unit_tests(python_version='3.5')"
 
 install:
-  - ECHO "Filesystem root:"
-  - ps: "ls \"C:/\""
+  - cmd: echo "Filesystem root:"
+  - dir C:\
 
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+  - echo "Installed SDKs:"
+  - dir "C:\Program Files\Microsoft SDKs\Windows"
 
-  # Install Python (from the official .msi of http://python.org) and pip when
-  # not already installed.
-  - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
-
-  # Prepend newly installed Python to the PATH of this build (this cannot be
+  # Prepend "current" Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+
+  # https://stackoverflow.com/a/4509885/1068170
+  # Set `PYTHON_ARCH` (either 32 or 64)
+  - set PY_CMD=python -c "import platform; print(platform.architecture()[0][:2])"
+  - for /f "tokens=1 delims=" %%i in ('%PY_CMD%') do set PYTHON_ARCH=%%i
+  # Set `PYTHON_VERSION`
+  - set PY_CMD=python -c "import platform; print(platform.python_version())"
+  - for /f "tokens=1 delims=" %%i in ('%PY_CMD%') do set PYTHON_VERSION=%%i
 
   # Check that we have the expected version and architecture for Python
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+  - python appveyor\env_info.py
 
-  # Upgrade to the latest version of pip to avoid it displaying warnings
-  # about it being out of date.
-  - "pip install --disable-pip-version-check --user --upgrade pip"
+  # Upgrade to the latest version of pip.
+  - python -m pip install --upgrade pip setuptools
 
-  # Install the build dependencies of the project. If some dependencies contain
-  # compiled extensions and are not provided as pre-built wheel packages,
-  # pip will build them from source using the MSVC compiler matching the
-  # target Python version and architecture
-  - "%CMD_IN_ENV% pip install -r appveyor/requirements.txt"
-
-build_script:
-  # Build the compiled extension
-  - "%CMD_IN_ENV% python setup.py build"
+  # Install the build dependencies of the project (assumes all extensions
+  # are pure Python or have wheels, so they don't need to be built).
+  - python -m pip install -r appveyor\requirements.txt
 
 test_script:
-  - "%CMD_IN_ENV% pip list"
-
-  # AppVeyor gets confused by a nox.py file in the root, and tries to
-  # import from it instead of importing actual nox.
-  #
-  # This is an annoying problem, but we do not need to build docs here,
-  # so this is a hack-solution to get around it. I am okay with this in the
-  # short term because docs will move into their own packages soon, and this
-  # file will disappear completely.
-  - '%CMD_IN_ENV% del nox.py'
-
-  - '%CMD_IN_ENV% dir'
-  - '%CMD_IN_ENV% dir bigquery'
-
   # Run the project tests
-  - '%CMD_IN_ENV% nox -f bigquery\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f bigtable\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f core\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f datastore\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f dns\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f error_reporting\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f language\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f logging\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f monitoring\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f pubsub\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f resource_manager\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f runtimeconfig\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f spanner\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f speech\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f storage\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f translate\nox.py -s "%NOX_ENV%"'
-  - '%CMD_IN_ENV% nox -f vision\nox.py -s "%NOX_ENV%"'
-
-after_test:
-  # If tests are successful, create binary packages for the project.
-  - "%CMD_IN_ENV% python setup.py bdist_wininst"
-  - "%CMD_IN_ENV% python setup.py bdist_msi"
-  - ps: "ls dist"
-
-artifacts:
-  # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
+  - "%PYTHON%\\Scripts\\nox.exe -f bigquery\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f bigtable\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f core\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f datastore\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f dns\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f error_reporting\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f language\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f logging\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f monitoring\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f pubsub\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f resource_manager\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f runtimeconfig\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f spanner\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f speech\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f storage\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f translate\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f vision\\nox.py -s %NOX_ENV%"
