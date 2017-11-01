@@ -13,313 +13,253 @@
 # limitations under the License.
 """Unit tests."""
 
-import mock
-import unittest
-
-from google.gax import errors
+import pytest
 
 from google.cloud import language_v1beta2
 from google.cloud.language_v1beta2.proto import language_service_pb2
+
+
+class MultiCallableStub(object):
+    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
+
+    def __init__(self, method, channel_stub):
+        self.method = method
+        self.channel_stub = channel_stub
+
+    def __call__(self, request, timeout=None, metadata=None, credentials=None):
+        self.channel_stub.requests.append((self.method, request))
+
+        response = None
+        if self.channel_stub.responses:
+            response = self.channel_stub.responses.pop()
+
+        if isinstance(response, Exception):
+            raise response
+
+        if response:
+            return response
+
+
+class ChannelStub(object):
+    """Stub for the grpc.Channel interface."""
+
+    def __init__(self, responses=[]):
+        self.responses = responses
+        self.requests = []
+
+    def unary_unary(self,
+                    method,
+                    request_serializer=None,
+                    response_deserializer=None):
+        return MultiCallableStub(method, self)
 
 
 class CustomException(Exception):
     pass
 
 
-class TestLanguageServiceClient(unittest.TestCase):
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_sentiment(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
-        document = {}
-
-        # Mock response
+class TestLanguageServiceClient(object):
+    def test_analyze_sentiment(self):
+        # Setup Expected Response
         language = 'language-1613589672'
         expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeSentimentResponse(
             **expected_response)
-        grpc_stub.AnalyzeSentiment.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
+
+        # Setup Request
+        document = {}
 
         response = client.analyze_sentiment(document)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.AnalyzeSentiment.assert_called_once()
-        args, kwargs = grpc_stub.AnalyzeSentiment.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnalyzeSentimentRequest(
             document=document)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_sentiment_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_analyze_sentiment_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
 
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
+        # Setup request
         document = {}
 
-        # Mock exception response
-        grpc_stub.AnalyzeSentiment.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.analyze_sentiment(document)
 
-        self.assertRaises(errors.GaxError, client.analyze_sentiment, document)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_entities(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
-        document = {}
-
-        # Mock response
+    def test_analyze_entities(self):
+        # Setup Expected Response
         language = 'language-1613589672'
         expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeEntitiesResponse(
             **expected_response)
-        grpc_stub.AnalyzeEntities.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
+
+        # Setup Request
+        document = {}
 
         response = client.analyze_entities(document)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.AnalyzeEntities.assert_called_once()
-        args, kwargs = grpc_stub.AnalyzeEntities.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnalyzeEntitiesRequest(
             document=document)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_entities_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_analyze_entities_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
 
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
+        # Setup request
         document = {}
 
-        # Mock exception response
-        grpc_stub.AnalyzeEntities.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.analyze_entities(document)
 
-        self.assertRaises(errors.GaxError, client.analyze_entities, document)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_entity_sentiment(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
-        document = {}
-
-        # Mock response
+    def test_analyze_entity_sentiment(self):
+        # Setup Expected Response
         language = 'language-1613589672'
         expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeEntitySentimentResponse(
             **expected_response)
-        grpc_stub.AnalyzeEntitySentiment.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
+
+        # Setup Request
+        document = {}
 
         response = client.analyze_entity_sentiment(document)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.AnalyzeEntitySentiment.assert_called_once()
-        args, kwargs = grpc_stub.AnalyzeEntitySentiment.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnalyzeEntitySentimentRequest(
             document=document)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_entity_sentiment_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_analyze_entity_sentiment_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
 
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
+        # Setup request
         document = {}
 
-        # Mock exception response
-        grpc_stub.AnalyzeEntitySentiment.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.analyze_entity_sentiment(document)
 
-        self.assertRaises(errors.GaxError, client.analyze_entity_sentiment,
-                          document)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_syntax(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
-        document = {}
-
-        # Mock response
+    def test_analyze_syntax(self):
+        # Setup Expected Response
         language = 'language-1613589672'
         expected_response = {'language': language}
         expected_response = language_service_pb2.AnalyzeSyntaxResponse(
             **expected_response)
-        grpc_stub.AnalyzeSyntax.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
+
+        # Setup Request
+        document = {}
 
         response = client.analyze_syntax(document)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.AnalyzeSyntax.assert_called_once()
-        args, kwargs = grpc_stub.AnalyzeSyntax.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = language_service_pb2.AnalyzeSyntaxRequest(
             document=document)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_analyze_syntax_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_analyze_syntax_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
 
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
+        # Setup request
         document = {}
 
-        # Mock exception response
-        grpc_stub.AnalyzeSyntax.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.analyze_syntax(document)
 
-        self.assertRaises(errors.GaxError, client.analyze_syntax, document)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_classify_text(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
-        document = {}
-
-        # Mock response
+    def test_classify_text(self):
+        # Setup Expected Response
         expected_response = {}
         expected_response = language_service_pb2.ClassifyTextResponse(
             **expected_response)
-        grpc_stub.ClassifyText.return_value = expected_response
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
+
+        # Setup Request
+        document = {}
 
         response = client.classify_text(document)
-        self.assertEqual(expected_response, response)
+        assert expected_response == response
 
-        grpc_stub.ClassifyText.assert_called_once()
-        args, kwargs = grpc_stub.ClassifyText.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
+        assert len(channel.requests) == 1
         expected_request = language_service_pb2.ClassifyTextRequest(
             document=document)
-        self.assertEqual(expected_request, actual_request)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
 
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_classify_text_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
+    def test_classify_text_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
 
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
+        # Setup request
         document = {}
 
-        # Mock exception response
-        grpc_stub.ClassifyText.side_effect = CustomException()
+        with pytest.raises(CustomException):
+            client.classify_text(document)
 
-        self.assertRaises(errors.GaxError, client.classify_text, document)
-
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_annotate_text(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
-        document = {}
-        features = {}
-
-        # Mock response
+    def test_annotate_text(self):
+        # Setup Expected Response
         language = 'language-1613589672'
         expected_response = {'language': language}
         expected_response = language_service_pb2.AnnotateTextResponse(
             **expected_response)
-        grpc_stub.AnnotateText.return_value = expected_response
 
-        response = client.annotate_text(document, features)
-        self.assertEqual(expected_response, response)
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
 
-        grpc_stub.AnnotateText.assert_called_once()
-        args, kwargs = grpc_stub.AnnotateText.call_args
-        self.assertEqual(len(args), 2)
-        self.assertEqual(len(kwargs), 1)
-        self.assertIn('metadata', kwargs)
-        actual_request = args[0]
-
-        expected_request = language_service_pb2.AnnotateTextRequest(
-            document=document, features=features)
-        self.assertEqual(expected_request, actual_request)
-
-    @mock.patch('google.gax.config.API_ERRORS', (CustomException, ))
-    @mock.patch('google.gax.config.create_stub', spec=True)
-    def test_annotate_text_exception(self, mock_create_stub):
-        # Mock gRPC layer
-        grpc_stub = mock.Mock()
-        mock_create_stub.return_value = grpc_stub
-
-        client = language_v1beta2.LanguageServiceClient()
-
-        # Mock request
+        # Setup Request
         document = {}
         features = {}
 
-        # Mock exception response
-        grpc_stub.AnnotateText.side_effect = CustomException()
+        response = client.annotate_text(document, features)
+        assert expected_response == response
 
-        self.assertRaises(errors.GaxError, client.annotate_text, document,
-                          features)
+        assert len(channel.requests) == 1
+        expected_request = language_service_pb2.AnnotateTextRequest(
+            document=document, features=features)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_annotate_text_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = language_v1beta2.LanguageServiceClient(channel=channel)
+
+        # Setup request
+        document = {}
+        features = {}
+
+        with pytest.raises(CustomException):
+            client.annotate_text(document, features)
