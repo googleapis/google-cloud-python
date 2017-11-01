@@ -17,11 +17,11 @@ Quick Start
 In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
-2. `Enable the monitoring api.`_
+2. `Enable the trace API.`_
 3. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
-.. _Enable the trace api.:  https://cloud.google.com/trace
+.. _Enable the trace API.:  https://cloud.google.com/trace
 .. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/google-cloud-auth
 
 Installation
@@ -31,11 +31,11 @@ Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
 create isolated Python environments. The basic problem it addresses is one of
 dependencies and versions, and indirectly permissions.
 
-With `virtualenv`_, it's possible to install this library without needing system
-install permissions, and without clashing with the installed system
+With `virtualenv`_, it's possible to install this library without needing
+system install permissions, and without clashing with the installed system
 dependencies.
 
-.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+.. _virtualenv: https://virtualenv.pypa.io/en/latest/
 
 
 Mac/Linux
@@ -59,7 +59,9 @@ Windows
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install gapic-google-cloud-trace-v1
 
-Fore more information on setting up your Python development environment, such as installing ``pip`` and ``virtualenv`` on your system, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+For more information on setting up your Python development environment,
+such as installing ``pip`` and ``virtualenv`` on your system, please refer
+to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 .. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 
@@ -69,10 +71,12 @@ Preview
 TraceServiceClient
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: py
+.. code-block:: python
 
   from google.cloud.gapic.trace.v1 import trace_service_client
-  from google.gax import CallOptions, INITIAL_PAGE
+  from google.gax import CallOptions
+  from google.gax import INITIAL_PAGE
+
   client = trace_service_client.TraceServiceClient()
   project_id = ''
 
@@ -82,7 +86,8 @@ TraceServiceClient
       pass
 
   # Or iterate over results one page at a time
-  for page in client.list_traces(project_id, options=CallOptions(page_token=INITIAL_PAGE)):
+  options = CallOptions(page_token=INITIAL_PAGE)
+  for page in client.list_traces(project_id, options=options):
       for element in page:
           # process element
           pass
