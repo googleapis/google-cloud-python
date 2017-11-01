@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,11 +52,12 @@ SETUP_BASE = {
 
 REQUIREMENTS = [
     'google-cloud-core >= 0.28.0, < 0.29dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
 ]
 
 setup(
     name='google-cloud-monitoring',
-    version='0.27.0',
+    version='0.28.1.dev1',
     description='Python Client for Stackdriver Monitoring',
     long_description=README,
     namespace_packages=[

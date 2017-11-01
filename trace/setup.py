@@ -8,13 +8,14 @@ https://github.com/pypa/sampleproject
 from setuptools import setup, find_packages
 
 install_requires = [
-    'google-gax>=0.15.7, <0.16dev',
     'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
+    'google-gax >= 0.15.7, < 0.16dev',
 ]
 
 setup(
     name='google-cloud-trace',
-    version='0.15.5',
+    version='0.16.1.dev1',
     author='Google Inc',
     author_email='googleapis-packages@google.com',
     classifiers=[
