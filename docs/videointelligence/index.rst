@@ -45,12 +45,12 @@ or pass in ``credentials`` explicitly.
      >>> client = videointelligence.VideoIntelligenceServiceClient(
      ...     credentials=creds,
      ... )
-     
-     
+
+
 ******************
 Annotating a Video
 ******************
-        
+
 To annotate a video, just determine which annotation features you want, and point
 the API at your video:
 
@@ -74,16 +74,16 @@ API Reference
 *************
 
 .. warning::
-    
+
     The video intelligence API is currently in beta. While the ``v1beta2`` endpoint
     will continue to work for some time, when the GA version comes out, the client
     library will automatically move to it.
-    
+
     If you wish, you can pin to the beta version explicitly, and it will continue
     to be supported. If so, use the following import statement:
-    
+
     .. code-block:: python
-    
+
         from google.cloud import videointelligence_v1beta2
 
 This package includes clients for multiple versions of the Natural Language
@@ -97,7 +97,7 @@ version is released, it will become the default (as described in the warning abo
     gapic/v1beta2/types
 
 The previous beta release, spelled ``v1beta1``, is provided to continue to support
-code previously written against it. In order to use this, 
+code previously written against it. In order to use this,
 you will want to import from ``google.cloud.videointelligence_v1beta1`` in lieu of
 ``google.cloud.videointelligence_v1beta1``.
 
@@ -108,3 +108,9 @@ An API and type reference is provided the first beta also:
 
     gapic/v1beta1/api
     gapic/v1beta1/types
+
+For a list of all ``google-cloud-videointelligence`` releases:
+
+.. toctree::
+
+    releases

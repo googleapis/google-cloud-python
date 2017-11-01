@@ -5,6 +5,7 @@ Bigtable
   :maxdepth: 2
   :hidden:
 
+  releases
   client-intro
   client
   cluster
