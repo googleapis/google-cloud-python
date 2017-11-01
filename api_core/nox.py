@@ -19,15 +19,15 @@ import nox
 
 
 @nox.session
-@nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
-def unit_tests(session, python_version):
+@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+def unit(session, py):
     """Run the unit test suite."""
 
     # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(python_version)
+    session.interpreter = 'python{}'.format(py)
 
     # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'unit-' + python_version
+    session.virtualenv_dirname = 'unit-' + py
 
     # Install all test dependencies, then install this package in-place.
     session.install(
