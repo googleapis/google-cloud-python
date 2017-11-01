@@ -5,6 +5,7 @@ Datastore
   :maxdepth: 2
   :hidden:
 
+  releases
   client
   entities
   keys

@@ -2,6 +2,7 @@ Core
 ====
 
 .. toctree::
+    releases
     config
     auth
     client
