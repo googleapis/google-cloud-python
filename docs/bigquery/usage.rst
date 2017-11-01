@@ -5,6 +5,7 @@ BigQuery
   :maxdepth: 2
   :hidden:
 
+  releases
   reference
   dbapi
 

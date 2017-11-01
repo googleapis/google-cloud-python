@@ -5,6 +5,7 @@ Stackdriver Error Reporting
   :maxdepth: 2
   :hidden:
 
+  releases
   client
   util
 
