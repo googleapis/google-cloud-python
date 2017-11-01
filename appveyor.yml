@@ -14,10 +14,10 @@ environment:
     # iterations.
 
     - PYTHON: "C:\\Python27"
-      NOX_ENV: "unit_tests(python_version='2.7')"
+      NOX_ENV: "unit(py='2.7')"
 
     - PYTHON: "C:\\Python35-x64"
-      NOX_ENV: "unit_tests(python_version='3.5')"
+      NOX_ENV: "unit(py='3.5')"
 
 install:
   - cmd: echo "Filesystem root:"
