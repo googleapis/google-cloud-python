@@ -939,7 +939,7 @@ class Test_Bucket(unittest.TestCase):
         bucket.enable_logging(LOG_BUCKET)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
-        self.assertEqual(info['logObjectPrefix'], '')
+        self.assertEqual(info['logObjectPrefix'], bucket.name)
 
     def test_enable_logging(self):
         NAME = 'name'
