@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import unittest
 
 import mock
@@ -46,13 +47,11 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         from google.cloud.trace._gax import _traces_mapping_to_pb
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
-        from datetime import datetime
-
         trace_id = 'test_trace_id'
         span_id = 1234
         span_name = 'test_span_name'
-        start_time = datetime.utcnow()
-        end_time = datetime.utcnow()
+        start_time = datetime.datetime.utcnow()
+        end_time = datetime.datetime.utcnow()
 
         traces = {
             'traces': [
@@ -157,20 +156,20 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         return trace_pb
 
     def test_list_traces_no_paging(self):
+        from google.cloud._helpers import _rfc3339_to_datetime
+        from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.gapic.trace.v1 import trace_service_client
         from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
         from google.gax import INITIAL_PAGE
-
-        from datetime import datetime
 
         trace_id = 'test_trace_id'
         span_id = 1234
         span_name = 'test_span_name'
         span_kind = 'RPC_CLIENT'
         parent_span_id = 123
-        start_time = datetime.utcnow().isoformat() + 'Z'
-        end_time = datetime.utcnow().isoformat() + 'Z'
+        start_ts = datetime.datetime.utcnow()
+        end_ts = datetime.datetime.utcnow()
         labels = {
             '/http/status_code': '200',
             '/component': 'HTTP load balancer',
@@ -183,8 +182,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             trace_id,
             span_id,
             span_name,
-            start_time,
-            end_time,
+            start_ts.isoformat() + 'Z',
+            end_ts.isoformat() + 'Z',
             parent_span_id,
             labels)
 
@@ -213,9 +212,11 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertEqual(span['name'], span_name)
 
         self.assertEqual(
-            span['startTime'], start_time)
+            _rfc3339_to_datetime(span['startTime']),
+            start_ts.replace(tzinfo=UTC))
         self.assertEqual(
-            span['endTime'], end_time)
+            _rfc3339_to_datetime(span['endTime']),
+            end_ts.replace(tzinfo=UTC))
         self.assertEqual(span['kind'], span_kind)
         self.assertEqual(span['parentSpanId'], str(parent_span_id))
         self.assertEqual(span['labels'], labels)
@@ -232,19 +233,19 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertEqual(call_args['options'].page_token, INITIAL_PAGE)
 
     def test_list_traces_with_paging(self):
+        from google.cloud._helpers import _rfc3339_to_datetime
+        from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
         from google.cloud.gapic.trace.v1 import trace_service_client
         from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
-
-        from datetime import datetime
 
         trace_id = 'test_trace_id'
         span_id = 1234
         span_name = 'test_span_name'
         span_kind = 'RPC_CLIENT'
         parent_span_id = 123
-        start_time = datetime.utcnow().isoformat() + 'Z'
-        end_time = datetime.utcnow().isoformat() + 'Z'
+        start_ts = datetime.datetime.utcnow()
+        end_ts = datetime.datetime.utcnow()
         labels = {
             '/http/status_code': '200',
             '/component': 'HTTP load balancer',
@@ -258,8 +259,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             trace_id,
             span_id,
             span_name,
-            start_time,
-            end_time,
+            start_ts.isoformat() + 'Z',
+            end_ts.isoformat() + 'Z',
             parent_span_id,
             labels)
 
@@ -289,9 +290,11 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertEqual(span['name'], span_name)
 
         self.assertEqual(
-            span['startTime'], start_time)
+            _rfc3339_to_datetime(span['startTime']),
+            start_ts.replace(tzinfo=UTC))
         self.assertEqual(
-            span['endTime'], end_time)
+            _rfc3339_to_datetime(span['endTime']),
+            end_ts.replace(tzinfo=UTC))
         self.assertEqual(span['kind'], span_kind)
         self.assertEqual(span['parentSpanId'], str(parent_span_id))
         self.assertEqual(span['labels'], labels)
