@@ -51,12 +51,14 @@ install:
 
 test_script:
   # Run the project tests
+  - "%PYTHON%\\Scripts\\nox.exe -f api_core\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f bigquery\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f bigtable\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f core\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f datastore\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f dns\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f error_reporting\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f firestore\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f language\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f logging\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f monitoring\\nox.py -s %NOX_ENV%"
@@ -66,5 +68,7 @@ test_script:
   - "%PYTHON%\\Scripts\\nox.exe -f spanner\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f speech\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f storage\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f trace\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f translate\\nox.py -s %NOX_ENV%"
+  - "%PYTHON%\\Scripts\\nox.exe -f videointelligence\\nox.py -s %NOX_ENV%"
   - "%PYTHON%\\Scripts\\nox.exe -f vision\\nox.py -s %NOX_ENV%"
