@@ -1173,6 +1173,33 @@
           "error": false
         }
       ]
+    },
+    {
+      "name": "empty second qualifier",
+      "chunks": [
+        "row_key: \"RK\"\nfamily_name: \u003c\n  value: \"A\"\n\u003e\nqualifier: \u003c\n  value: \"C\"\n\u003e\ntimestamp_micros: 99\nvalue: \"value-VAL_1\"\ncommit_row: false\n",
+        "qualifier: \u003c\n  value: \"\"\n\u003e\ntimestamp_micros: 98\nvalue: \"value-VAL_2\"\ncommit_row: true\n"
+      ],
+      "results": [
+        {
+          "rk": "RK",
+          "fm": "A",
+          "qual": "C",
+          "ts": 99,
+          "value": "value-VAL_1",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "RK",
+          "fm": "A",
+          "qual": "",
+          "ts": 98,
+          "value": "value-VAL_2",
+          "label": "",
+          "error": false
+        }
+      ]
     }
   ]
 }
