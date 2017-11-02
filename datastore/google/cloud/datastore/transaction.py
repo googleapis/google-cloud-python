@@ -15,6 +15,7 @@
 """Create / interact with Google Cloud Datastore transactions."""
 
 from google.cloud.datastore.batch import Batch
+from google.cloud.datastore_v1.types import TransactionOptions
 
 
 class Transaction(Batch):
@@ -152,13 +153,22 @@ class Transaction(Batch):
 
     :type client: :class:`google.cloud.datastore.client.Client`
     :param client: the client used to connect to datastore.
+
+    :type read_only: bool
+    :param read_only: indicates the transaction is read only.
     """
 
     _status = None
 
-    def __init__(self, client):
+    def __init__(self, client, read_only=False):
         super(Transaction, self).__init__(client)
         self._id = None
+        if read_only:
+            options = TransactionOptions(
+                read_only=TransactionOptions.ReadOnly())
+        else:
+            options = TransactionOptions()
+        self._options = options
 
     @property
     def id(self):
@@ -234,3 +244,21 @@ class Transaction(Batch):
         finally:
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
+
+    def put(self, entity):
+        """Adds an entity to be committed.
+
+        Ensures the transaction is not marked readonly.
+        Please see documentation at
+        :meth:`~google.cloud.datastore.batch.Batch.put`
+
+        :type entity: :class:`~google.cloud.datastore.entity.Entity`
+        :param entity: the entity to be saved.
+
+        :raises: :class:`RuntimeError` if the transaction
+                 is marked ReadOnly
+        """
+        if self._options.HasField('read_only'):
+            raise RuntimeError("Transaction is read only")
+        else:
+            super(Transaction, self).put(entity)
