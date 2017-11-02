@@ -11,6 +11,12 @@
 - Bugfix: Distinguish between an unset column qualifier and an empty string
   column qualifier while parsing a `ReadRows` response (#4252)
 
+### Features added
+
+- Add a ``retry`` strategy that will be used for retry-able errors
+  in ``Table.mutate_rows``. This will be used for gRPC errors of type
+  ``ABORTED``, ``DEADLINE_EXCEEDED`` and ``SERVICE_UNAVAILABLE``. (#4256)
+
 PyPI: https://pypi.org/project/google-cloud-bigtable/0.28.1/
 
 ## 0.28.0
