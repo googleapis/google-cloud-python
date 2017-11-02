@@ -283,10 +283,14 @@ class PartialRowsData(object):
                 row = self._row = PartialRowData(chunk.row_key)
 
             if cell is None:
+                qualifier = None
+                if chunk.HasField('qualifier'):
+                    qualifier = chunk.qualifier.value
+
                 cell = self._cell = PartialCellData(
                     chunk.row_key,
                     chunk.family_name.value,
-                    chunk.qualifier.value,
+                    qualifier,
                     chunk.timestamp_micros,
                     chunk.labels,
                     chunk.value)
@@ -421,7 +425,8 @@ class PartialRowsData(object):
                 cell.row_key = previous.row_key
             if not cell.family_name:
                 cell.family_name = previous.family_name
-            if not cell.qualifier:
+            # NOTE: ``cell.qualifier`` **can** be empty string.
+            if cell.qualifier is None:
                 cell.qualifier = previous.qualifier
 
     def _save_current_row(self):
