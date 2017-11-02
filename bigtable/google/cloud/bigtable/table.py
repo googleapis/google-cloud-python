@@ -426,7 +426,7 @@ class _RetryableMutateRowsWorker(object):
                   sent. These will be in the same order as the ``rows``.
         """
         try:
-            retry(self.__class__._do_mutate_retryable_rows)(self)
+            retry(self._do_mutate_retryable_rows)()
         except (RetryError, ValueError) as err:
             # Upon timeout or sleep generator error, return responses_statuses
             pass
