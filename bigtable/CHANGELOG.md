@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## 0.28.1
+
+### Implementation Changes
+
+- Bugfix: Distinguish between an unset column qualifier and an empty string
+  column qualifier while parsing a `ReadRows` response (#4252)
+
+PyPI: https://pypi.org/project/google-cloud-bigtable/0.28.1/
+
 ## 0.28.0
 
 ### Documentation
