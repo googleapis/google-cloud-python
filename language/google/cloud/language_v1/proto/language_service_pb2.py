@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/language_v1/proto/language_service.proto',
   package='google.cloud.language.v1',
   syntax='proto3',
-  serialized_pb=_b('\n5google/cloud/language_v1/proto/language_service.proto\x12\x18google.cloud.language.v1\x1a\x1cgoogle/api/annotations.proto\"\xc3\x01\n\x08\x44ocument\x12\x35\n\x04type\x18\x01 \x01(\x0e\x32\'.google.cloud.language.v1.Document.Type\x12\x11\n\x07\x63ontent\x18\x02 \x01(\tH\x00\x12\x19\n\x0fgcs_content_uri\x18\x03 \x01(\tH\x00\x12\x10\n\x08language\x18\x04 \x01(\t\"6\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nPLAIN_TEXT\x10\x01\x12\x08\n\x04HTML\x10\x02\x42\x08\n\x06source\"t\n\x08Sentence\x12\x30\n\x04text\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.TextSpan\x12\x36\n\tsentiment\x18\x02 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\"\xbe\x03\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x33\n\x04type\x18\x02 \x01(\x0e\x32%.google.cloud.language.v1.Entity.Type\x12@\n\x08metadata\x18\x03 \x03(\x0b\x32..google.cloud.language.v1.Entity.MetadataEntry\x12\x10\n\x08salience\x18\x04 \x01(\x02\x12\x39\n\x08mentions\x18\x05 \x03(\x0b\x32\'.google.cloud.language.v1.EntityMention\x12\x36\n\tsentiment\x18\x06 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"y\n\x04Type\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06PERSON\x10\x01\x12\x0c\n\x08LOCATION\x10\x02\x12\x10\n\x0cORGANIZATION\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x12\x0f\n\x0bWORK_OF_ART\x10\x05\x12\x11\n\rCONSUMER_GOOD\x10\x06\x12\t\n\x05OTHER\x10\x07\"\xcb\x01\n\x05Token\x12\x30\n\x04text\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.TextSpan\x12>\n\x0epart_of_speech\x18\x02 \x01(\x0b\x32&.google.cloud.language.v1.PartOfSpeech\x12\x41\n\x0f\x64\x65pendency_edge\x18\x03 \x01(\x0b\x32(.google.cloud.language.v1.DependencyEdge\x12\r\n\x05lemma\x18\x04 \x01(\t\"-\n\tSentiment\x12\x11\n\tmagnitude\x18\x02 \x01(\x02\x12\r\n\x05score\x18\x03 \x01(\x02\"\xa3\x10\n\x0cPartOfSpeech\x12\x37\n\x03tag\x18\x01 \x01(\x0e\x32*.google.cloud.language.v1.PartOfSpeech.Tag\x12=\n\x06\x61spect\x18\x02 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Aspect\x12\x39\n\x04\x63\x61se\x18\x03 \x01(\x0e\x32+.google.cloud.language.v1.PartOfSpeech.Case\x12\x39\n\x04\x66orm\x18\x04 \x01(\x0e\x32+.google.cloud.language.v1.PartOfSpeech.Form\x12=\n\x06gender\x18\x05 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Gender\x12\x39\n\x04mood\x18\x06 \x01(\x0e\x32+.google.cloud.language.v1.PartOfSpeech.Mood\x12=\n\x06number\x18\x07 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Number\x12=\n\x06person\x18\x08 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Person\x12=\n\x06proper\x18\t \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Proper\x12G\n\x0breciprocity\x18\n \x01(\x0e\x32\x32.google.cloud.language.v1.PartOfSpeech.Reciprocity\x12;\n\x05tense\x18\x0b \x01(\x0e\x32,.google.cloud.language.v1.PartOfSpeech.Tense\x12;\n\x05voice\x18\x0c \x01(\x0e\x32,.google.cloud.language.v1.PartOfSpeech.Voice\"\x8d\x01\n\x03Tag\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x07\n\x03\x41\x44J\x10\x01\x12\x07\n\x03\x41\x44P\x10\x02\x12\x07\n\x03\x41\x44V\x10\x03\x12\x08\n\x04\x43ONJ\x10\x04\x12\x07\n\x03\x44\x45T\x10\x05\x12\x08\n\x04NOUN\x10\x06\x12\x07\n\x03NUM\x10\x07\x12\x08\n\x04PRON\x10\x08\x12\x07\n\x03PRT\x10\t\x12\t\n\x05PUNCT\x10\n\x12\x08\n\x04VERB\x10\x0b\x12\x05\n\x01X\x10\x0c\x12\t\n\x05\x41\x46\x46IX\x10\r\"O\n\x06\x41spect\x12\x12\n\x0e\x41SPECT_UNKNOWN\x10\x00\x12\x0e\n\nPERFECTIVE\x10\x01\x12\x10\n\x0cIMPERFECTIVE\x10\x02\x12\x0f\n\x0bPROGRESSIVE\x10\x03\"\xf8\x01\n\x04\x43\x61se\x12\x10\n\x0c\x43\x41SE_UNKNOWN\x10\x00\x12\x0e\n\nACCUSATIVE\x10\x01\x12\r\n\tADVERBIAL\x10\x02\x12\x11\n\rCOMPLEMENTIVE\x10\x03\x12\n\n\x06\x44\x41TIVE\x10\x04\x12\x0c\n\x08GENITIVE\x10\x05\x12\x10\n\x0cINSTRUMENTAL\x10\x06\x12\x0c\n\x08LOCATIVE\x10\x07\x12\x0e\n\nNOMINATIVE\x10\x08\x12\x0b\n\x07OBLIQUE\x10\t\x12\r\n\tPARTITIVE\x10\n\x12\x11\n\rPREPOSITIONAL\x10\x0b\x12\x12\n\x0eREFLEXIVE_CASE\x10\x0c\x12\x11\n\rRELATIVE_CASE\x10\r\x12\x0c\n\x08VOCATIVE\x10\x0e\"\xaf\x01\n\x04\x46orm\x12\x10\n\x0c\x46ORM_UNKNOWN\x10\x00\x12\x0c\n\x08\x41\x44NOMIAL\x10\x01\x12\r\n\tAUXILIARY\x10\x02\x12\x12\n\x0e\x43OMPLEMENTIZER\x10\x03\x12\x10\n\x0c\x46INAL_ENDING\x10\x04\x12\n\n\x06GERUND\x10\x05\x12\n\n\x06REALIS\x10\x06\x12\x0c\n\x08IRREALIS\x10\x07\x12\t\n\x05SHORT\x10\x08\x12\x08\n\x04LONG\x10\t\x12\t\n\x05ORDER\x10\n\x12\x0c\n\x08SPECIFIC\x10\x0b\"E\n\x06Gender\x12\x12\n\x0eGENDER_UNKNOWN\x10\x00\x12\x0c\n\x08\x46\x45MININE\x10\x01\x12\r\n\tMASCULINE\x10\x02\x12\n\n\x06NEUTER\x10\x03\"\x7f\n\x04Mood\x12\x10\n\x0cMOOD_UNKNOWN\x10\x00\x12\x14\n\x10\x43ONDITIONAL_MOOD\x10\x01\x12\x0e\n\nIMPERATIVE\x10\x02\x12\x0e\n\nINDICATIVE\x10\x03\x12\x11\n\rINTERROGATIVE\x10\x04\x12\x0b\n\x07JUSSIVE\x10\x05\x12\x0f\n\x0bSUBJUNCTIVE\x10\x06\"@\n\x06Number\x12\x12\n\x0eNUMBER_UNKNOWN\x10\x00\x12\x0c\n\x08SINGULAR\x10\x01\x12\n\n\x06PLURAL\x10\x02\x12\x08\n\x04\x44UAL\x10\x03\"T\n\x06Person\x12\x12\n\x0ePERSON_UNKNOWN\x10\x00\x12\t\n\x05\x46IRST\x10\x01\x12\n\n\x06SECOND\x10\x02\x12\t\n\x05THIRD\x10\x03\x12\x14\n\x10REFLEXIVE_PERSON\x10\x04\"8\n\x06Proper\x12\x12\n\x0ePROPER_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\x0e\n\nNOT_PROPER\x10\x02\"J\n\x0bReciprocity\x12\x17\n\x13RECIPROCITY_UNKNOWN\x10\x00\x12\x0e\n\nRECIPROCAL\x10\x01\x12\x12\n\x0eNON_RECIPROCAL\x10\x02\"s\n\x05Tense\x12\x11\n\rTENSE_UNKNOWN\x10\x00\x12\x15\n\x11\x43ONDITIONAL_TENSE\x10\x01\x12\n\n\x06\x46UTURE\x10\x02\x12\x08\n\x04PAST\x10\x03\x12\x0b\n\x07PRESENT\x10\x04\x12\r\n\tIMPERFECT\x10\x05\x12\x0e\n\nPLUPERFECT\x10\x06\"B\n\x05Voice\x12\x11\n\rVOICE_UNKNOWN\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\r\n\tCAUSATIVE\x10\x02\x12\x0b\n\x07PASSIVE\x10\x03\"\x95\x08\n\x0e\x44\x65pendencyEdge\x12\x18\n\x10head_token_index\x18\x01 \x01(\x05\x12=\n\x05label\x18\x02 \x01(\x0e\x32..google.cloud.language.v1.DependencyEdge.Label\"\xa9\x07\n\x05Label\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06\x41\x42\x42REV\x10\x01\x12\t\n\x05\x41\x43OMP\x10\x02\x12\t\n\x05\x41\x44VCL\x10\x03\x12\n\n\x06\x41\x44VMOD\x10\x04\x12\x08\n\x04\x41MOD\x10\x05\x12\t\n\x05\x41PPOS\x10\x06\x12\x08\n\x04\x41TTR\x10\x07\x12\x07\n\x03\x41UX\x10\x08\x12\x0b\n\x07\x41UXPASS\x10\t\x12\x06\n\x02\x43\x43\x10\n\x12\t\n\x05\x43\x43OMP\x10\x0b\x12\x08\n\x04\x43ONJ\x10\x0c\x12\t\n\x05\x43SUBJ\x10\r\x12\r\n\tCSUBJPASS\x10\x0e\x12\x07\n\x03\x44\x45P\x10\x0f\x12\x07\n\x03\x44\x45T\x10\x10\x12\r\n\tDISCOURSE\x10\x11\x12\x08\n\x04\x44OBJ\x10\x12\x12\x08\n\x04\x45XPL\x10\x13\x12\x0c\n\x08GOESWITH\x10\x14\x12\x08\n\x04IOBJ\x10\x15\x12\x08\n\x04MARK\x10\x16\x12\x07\n\x03MWE\x10\x17\x12\x07\n\x03MWV\x10\x18\x12\x07\n\x03NEG\x10\x19\x12\x06\n\x02NN\x10\x1a\x12\x0c\n\x08NPADVMOD\x10\x1b\x12\t\n\x05NSUBJ\x10\x1c\x12\r\n\tNSUBJPASS\x10\x1d\x12\x07\n\x03NUM\x10\x1e\x12\n\n\x06NUMBER\x10\x1f\x12\x05\n\x01P\x10 \x12\r\n\tPARATAXIS\x10!\x12\x0b\n\x07PARTMOD\x10\"\x12\t\n\x05PCOMP\x10#\x12\x08\n\x04POBJ\x10$\x12\x08\n\x04POSS\x10%\x12\x0b\n\x07POSTNEG\x10&\x12\x0b\n\x07PRECOMP\x10\'\x12\x0b\n\x07PRECONJ\x10(\x12\n\n\x06PREDET\x10)\x12\x08\n\x04PREF\x10*\x12\x08\n\x04PREP\x10+\x12\t\n\x05PRONL\x10,\x12\x07\n\x03PRT\x10-\x12\x06\n\x02PS\x10.\x12\x0c\n\x08QUANTMOD\x10/\x12\t\n\x05RCMOD\x10\x30\x12\x0c\n\x08RCMODREL\x10\x31\x12\t\n\x05RDROP\x10\x32\x12\x07\n\x03REF\x10\x33\x12\x0b\n\x07REMNANT\x10\x34\x12\x0e\n\nREPARANDUM\x10\x35\x12\x08\n\x04ROOT\x10\x36\x12\x08\n\x04SNUM\x10\x37\x12\x08\n\x04SUFF\x10\x38\x12\x08\n\x04TMOD\x10\x39\x12\t\n\x05TOPIC\x10:\x12\x08\n\x04VMOD\x10;\x12\x0c\n\x08VOCATIVE\x10<\x12\t\n\x05XCOMP\x10=\x12\n\n\x06SUFFIX\x10>\x12\t\n\x05TITLE\x10?\x12\x0c\n\x08\x41\x44VPHMOD\x10@\x12\x0b\n\x07\x41UXCAUS\x10\x41\x12\t\n\x05\x41UXVV\x10\x42\x12\t\n\x05\x44TMOD\x10\x43\x12\x0b\n\x07\x46OREIGN\x10\x44\x12\x06\n\x02KW\x10\x45\x12\x08\n\x04LIST\x10\x46\x12\x08\n\x04NOMC\x10G\x12\x0c\n\x08NOMCSUBJ\x10H\x12\x10\n\x0cNOMCSUBJPASS\x10I\x12\x08\n\x04NUMC\x10J\x12\x07\n\x03\x43OP\x10K\x12\x0e\n\nDISLOCATED\x10L\x12\x07\n\x03\x41SP\x10M\x12\x08\n\x04GMOD\x10N\x12\x08\n\x04GOBJ\x10O\x12\n\n\x06INFMOD\x10P\x12\x07\n\x03MES\x10Q\x12\t\n\x05NCOMP\x10R\"\xe7\x01\n\rEntityMention\x12\x30\n\x04text\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.TextSpan\x12:\n\x04type\x18\x02 \x01(\x0e\x32,.google.cloud.language.v1.EntityMention.Type\x12\x36\n\tsentiment\x18\x03 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\"0\n\x04Type\x12\x10\n\x0cTYPE_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\n\n\x06\x43OMMON\x10\x02\"1\n\x08TextSpan\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x14\n\x0c\x62\x65gin_offset\x18\x02 \x01(\x05\"\x8e\x01\n\x17\x41nalyzeSentimentRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"\xa4\x01\n\x18\x41nalyzeSentimentResponse\x12?\n\x12\x64ocument_sentiment\x18\x01 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\x12\x10\n\x08language\x18\x02 \x01(\t\x12\x35\n\tsentences\x18\x03 \x03(\x0b\x32\".google.cloud.language.v1.Sentence\"\x94\x01\n\x1d\x41nalyzeEntitySentimentRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"f\n\x1e\x41nalyzeEntitySentimentResponse\x12\x32\n\x08\x65ntities\x18\x01 \x03(\x0b\x32 .google.cloud.language.v1.Entity\x12\x10\n\x08language\x18\x02 \x01(\t\"\x8d\x01\n\x16\x41nalyzeEntitiesRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"_\n\x17\x41nalyzeEntitiesResponse\x12\x32\n\x08\x65ntities\x18\x01 \x03(\x0b\x32 .google.cloud.language.v1.Entity\x12\x10\n\x08language\x18\x02 \x01(\t\"\x8b\x01\n\x14\x41nalyzeSyntaxRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"\x91\x01\n\x15\x41nalyzeSyntaxResponse\x12\x35\n\tsentences\x18\x01 \x03(\x0b\x32\".google.cloud.language.v1.Sentence\x12/\n\x06tokens\x18\x02 \x03(\x0b\x32\x1f.google.cloud.language.v1.Token\x12\x10\n\x08language\x18\x03 \x01(\t\"\xd9\x02\n\x13\x41nnotateTextRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12H\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32\x36.google.cloud.language.v1.AnnotateTextRequest.Features\x12=\n\rencoding_type\x18\x03 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\x1a\x82\x01\n\x08\x46\x65\x61tures\x12\x16\n\x0e\x65xtract_syntax\x18\x01 \x01(\x08\x12\x18\n\x10\x65xtract_entities\x18\x02 \x01(\x08\x12\"\n\x1a\x65xtract_document_sentiment\x18\x03 \x01(\x08\x12 \n\x18\x65xtract_entity_sentiment\x18\x04 \x01(\x08\"\x85\x02\n\x14\x41nnotateTextResponse\x12\x35\n\tsentences\x18\x01 \x03(\x0b\x32\".google.cloud.language.v1.Sentence\x12/\n\x06tokens\x18\x02 \x03(\x0b\x32\x1f.google.cloud.language.v1.Token\x12\x32\n\x08\x65ntities\x18\x03 \x03(\x0b\x32 .google.cloud.language.v1.Entity\x12?\n\x12\x64ocument_sentiment\x18\x04 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\x12\x10\n\x08language\x18\x05 \x01(\t*8\n\x0c\x45ncodingType\x12\x08\n\x04NONE\x10\x00\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02\x12\t\n\x05UTF32\x10\x03\x32\xcc\x06\n\x0fLanguageService\x12\xa4\x01\n\x10\x41nalyzeSentiment\x12\x31.google.cloud.language.v1.AnalyzeSentimentRequest\x1a\x32.google.cloud.language.v1.AnalyzeSentimentResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/v1/documents:analyzeSentiment:\x01*\x12\xa0\x01\n\x0f\x41nalyzeEntities\x12\x30.google.cloud.language.v1.AnalyzeEntitiesRequest\x1a\x31.google.cloud.language.v1.AnalyzeEntitiesResponse\"(\x82\xd3\xe4\x93\x02\"\"\x1d/v1/documents:analyzeEntities:\x01*\x12\xbc\x01\n\x16\x41nalyzeEntitySentiment\x12\x37.google.cloud.language.v1.AnalyzeEntitySentimentRequest\x1a\x38.google.cloud.language.v1.AnalyzeEntitySentimentResponse\"/\x82\xd3\xe4\x93\x02)\"$/v1/documents:analyzeEntitySentiment:\x01*\x12\x98\x01\n\rAnalyzeSyntax\x12..google.cloud.language.v1.AnalyzeSyntaxRequest\x1a/.google.cloud.language.v1.AnalyzeSyntaxResponse\"&\x82\xd3\xe4\x93\x02 \"\x1b/v1/documents:analyzeSyntax:\x01*\x12\x94\x01\n\x0c\x41nnotateText\x12-.google.cloud.language.v1.AnnotateTextRequest\x1a..google.cloud.language.v1.AnnotateTextResponse\"%\x82\xd3\xe4\x93\x02\x1f\"\x1a/v1/documents:annotateText:\x01*Bx\n\x1c\x63om.google.cloud.language.v1B\x14LanguageServiceProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/language/v1;languageb\x06proto3')
+  serialized_pb=_b('\n5google/cloud/language_v1/proto/language_service.proto\x12\x18google.cloud.language.v1\x1a\x1cgoogle/api/annotations.proto\"\xc3\x01\n\x08\x44ocument\x12\x35\n\x04type\x18\x01 \x01(\x0e\x32\'.google.cloud.language.v1.Document.Type\x12\x11\n\x07\x63ontent\x18\x02 \x01(\tH\x00\x12\x19\n\x0fgcs_content_uri\x18\x03 \x01(\tH\x00\x12\x10\n\x08language\x18\x04 \x01(\t\"6\n\x04Type\x12\x14\n\x10TYPE_UNSPECIFIED\x10\x00\x12\x0e\n\nPLAIN_TEXT\x10\x01\x12\x08\n\x04HTML\x10\x02\x42\x08\n\x06source\"t\n\x08Sentence\x12\x30\n\x04text\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.TextSpan\x12\x36\n\tsentiment\x18\x02 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\"\xbe\x03\n\x06\x45ntity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x33\n\x04type\x18\x02 \x01(\x0e\x32%.google.cloud.language.v1.Entity.Type\x12@\n\x08metadata\x18\x03 \x03(\x0b\x32..google.cloud.language.v1.Entity.MetadataEntry\x12\x10\n\x08salience\x18\x04 \x01(\x02\x12\x39\n\x08mentions\x18\x05 \x03(\x0b\x32\'.google.cloud.language.v1.EntityMention\x12\x36\n\tsentiment\x18\x06 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"y\n\x04Type\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06PERSON\x10\x01\x12\x0c\n\x08LOCATION\x10\x02\x12\x10\n\x0cORGANIZATION\x10\x03\x12\t\n\x05\x45VENT\x10\x04\x12\x0f\n\x0bWORK_OF_ART\x10\x05\x12\x11\n\rCONSUMER_GOOD\x10\x06\x12\t\n\x05OTHER\x10\x07\"\xcb\x01\n\x05Token\x12\x30\n\x04text\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.TextSpan\x12>\n\x0epart_of_speech\x18\x02 \x01(\x0b\x32&.google.cloud.language.v1.PartOfSpeech\x12\x41\n\x0f\x64\x65pendency_edge\x18\x03 \x01(\x0b\x32(.google.cloud.language.v1.DependencyEdge\x12\r\n\x05lemma\x18\x04 \x01(\t\"-\n\tSentiment\x12\x11\n\tmagnitude\x18\x02 \x01(\x02\x12\r\n\x05score\x18\x03 \x01(\x02\"\xa3\x10\n\x0cPartOfSpeech\x12\x37\n\x03tag\x18\x01 \x01(\x0e\x32*.google.cloud.language.v1.PartOfSpeech.Tag\x12=\n\x06\x61spect\x18\x02 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Aspect\x12\x39\n\x04\x63\x61se\x18\x03 \x01(\x0e\x32+.google.cloud.language.v1.PartOfSpeech.Case\x12\x39\n\x04\x66orm\x18\x04 \x01(\x0e\x32+.google.cloud.language.v1.PartOfSpeech.Form\x12=\n\x06gender\x18\x05 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Gender\x12\x39\n\x04mood\x18\x06 \x01(\x0e\x32+.google.cloud.language.v1.PartOfSpeech.Mood\x12=\n\x06number\x18\x07 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Number\x12=\n\x06person\x18\x08 \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Person\x12=\n\x06proper\x18\t \x01(\x0e\x32-.google.cloud.language.v1.PartOfSpeech.Proper\x12G\n\x0breciprocity\x18\n \x01(\x0e\x32\x32.google.cloud.language.v1.PartOfSpeech.Reciprocity\x12;\n\x05tense\x18\x0b \x01(\x0e\x32,.google.cloud.language.v1.PartOfSpeech.Tense\x12;\n\x05voice\x18\x0c \x01(\x0e\x32,.google.cloud.language.v1.PartOfSpeech.Voice\"\x8d\x01\n\x03Tag\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x07\n\x03\x41\x44J\x10\x01\x12\x07\n\x03\x41\x44P\x10\x02\x12\x07\n\x03\x41\x44V\x10\x03\x12\x08\n\x04\x43ONJ\x10\x04\x12\x07\n\x03\x44\x45T\x10\x05\x12\x08\n\x04NOUN\x10\x06\x12\x07\n\x03NUM\x10\x07\x12\x08\n\x04PRON\x10\x08\x12\x07\n\x03PRT\x10\t\x12\t\n\x05PUNCT\x10\n\x12\x08\n\x04VERB\x10\x0b\x12\x05\n\x01X\x10\x0c\x12\t\n\x05\x41\x46\x46IX\x10\r\"O\n\x06\x41spect\x12\x12\n\x0e\x41SPECT_UNKNOWN\x10\x00\x12\x0e\n\nPERFECTIVE\x10\x01\x12\x10\n\x0cIMPERFECTIVE\x10\x02\x12\x0f\n\x0bPROGRESSIVE\x10\x03\"\xf8\x01\n\x04\x43\x61se\x12\x10\n\x0c\x43\x41SE_UNKNOWN\x10\x00\x12\x0e\n\nACCUSATIVE\x10\x01\x12\r\n\tADVERBIAL\x10\x02\x12\x11\n\rCOMPLEMENTIVE\x10\x03\x12\n\n\x06\x44\x41TIVE\x10\x04\x12\x0c\n\x08GENITIVE\x10\x05\x12\x10\n\x0cINSTRUMENTAL\x10\x06\x12\x0c\n\x08LOCATIVE\x10\x07\x12\x0e\n\nNOMINATIVE\x10\x08\x12\x0b\n\x07OBLIQUE\x10\t\x12\r\n\tPARTITIVE\x10\n\x12\x11\n\rPREPOSITIONAL\x10\x0b\x12\x12\n\x0eREFLEXIVE_CASE\x10\x0c\x12\x11\n\rRELATIVE_CASE\x10\r\x12\x0c\n\x08VOCATIVE\x10\x0e\"\xaf\x01\n\x04\x46orm\x12\x10\n\x0c\x46ORM_UNKNOWN\x10\x00\x12\x0c\n\x08\x41\x44NOMIAL\x10\x01\x12\r\n\tAUXILIARY\x10\x02\x12\x12\n\x0e\x43OMPLEMENTIZER\x10\x03\x12\x10\n\x0c\x46INAL_ENDING\x10\x04\x12\n\n\x06GERUND\x10\x05\x12\n\n\x06REALIS\x10\x06\x12\x0c\n\x08IRREALIS\x10\x07\x12\t\n\x05SHORT\x10\x08\x12\x08\n\x04LONG\x10\t\x12\t\n\x05ORDER\x10\n\x12\x0c\n\x08SPECIFIC\x10\x0b\"E\n\x06Gender\x12\x12\n\x0eGENDER_UNKNOWN\x10\x00\x12\x0c\n\x08\x46\x45MININE\x10\x01\x12\r\n\tMASCULINE\x10\x02\x12\n\n\x06NEUTER\x10\x03\"\x7f\n\x04Mood\x12\x10\n\x0cMOOD_UNKNOWN\x10\x00\x12\x14\n\x10\x43ONDITIONAL_MOOD\x10\x01\x12\x0e\n\nIMPERATIVE\x10\x02\x12\x0e\n\nINDICATIVE\x10\x03\x12\x11\n\rINTERROGATIVE\x10\x04\x12\x0b\n\x07JUSSIVE\x10\x05\x12\x0f\n\x0bSUBJUNCTIVE\x10\x06\"@\n\x06Number\x12\x12\n\x0eNUMBER_UNKNOWN\x10\x00\x12\x0c\n\x08SINGULAR\x10\x01\x12\n\n\x06PLURAL\x10\x02\x12\x08\n\x04\x44UAL\x10\x03\"T\n\x06Person\x12\x12\n\x0ePERSON_UNKNOWN\x10\x00\x12\t\n\x05\x46IRST\x10\x01\x12\n\n\x06SECOND\x10\x02\x12\t\n\x05THIRD\x10\x03\x12\x14\n\x10REFLEXIVE_PERSON\x10\x04\"8\n\x06Proper\x12\x12\n\x0ePROPER_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\x0e\n\nNOT_PROPER\x10\x02\"J\n\x0bReciprocity\x12\x17\n\x13RECIPROCITY_UNKNOWN\x10\x00\x12\x0e\n\nRECIPROCAL\x10\x01\x12\x12\n\x0eNON_RECIPROCAL\x10\x02\"s\n\x05Tense\x12\x11\n\rTENSE_UNKNOWN\x10\x00\x12\x15\n\x11\x43ONDITIONAL_TENSE\x10\x01\x12\n\n\x06\x46UTURE\x10\x02\x12\x08\n\x04PAST\x10\x03\x12\x0b\n\x07PRESENT\x10\x04\x12\r\n\tIMPERFECT\x10\x05\x12\x0e\n\nPLUPERFECT\x10\x06\"B\n\x05Voice\x12\x11\n\rVOICE_UNKNOWN\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\r\n\tCAUSATIVE\x10\x02\x12\x0b\n\x07PASSIVE\x10\x03\"\x95\x08\n\x0e\x44\x65pendencyEdge\x12\x18\n\x10head_token_index\x18\x01 \x01(\x05\x12=\n\x05label\x18\x02 \x01(\x0e\x32..google.cloud.language.v1.DependencyEdge.Label\"\xa9\x07\n\x05Label\x12\x0b\n\x07UNKNOWN\x10\x00\x12\n\n\x06\x41\x42\x42REV\x10\x01\x12\t\n\x05\x41\x43OMP\x10\x02\x12\t\n\x05\x41\x44VCL\x10\x03\x12\n\n\x06\x41\x44VMOD\x10\x04\x12\x08\n\x04\x41MOD\x10\x05\x12\t\n\x05\x41PPOS\x10\x06\x12\x08\n\x04\x41TTR\x10\x07\x12\x07\n\x03\x41UX\x10\x08\x12\x0b\n\x07\x41UXPASS\x10\t\x12\x06\n\x02\x43\x43\x10\n\x12\t\n\x05\x43\x43OMP\x10\x0b\x12\x08\n\x04\x43ONJ\x10\x0c\x12\t\n\x05\x43SUBJ\x10\r\x12\r\n\tCSUBJPASS\x10\x0e\x12\x07\n\x03\x44\x45P\x10\x0f\x12\x07\n\x03\x44\x45T\x10\x10\x12\r\n\tDISCOURSE\x10\x11\x12\x08\n\x04\x44OBJ\x10\x12\x12\x08\n\x04\x45XPL\x10\x13\x12\x0c\n\x08GOESWITH\x10\x14\x12\x08\n\x04IOBJ\x10\x15\x12\x08\n\x04MARK\x10\x16\x12\x07\n\x03MWE\x10\x17\x12\x07\n\x03MWV\x10\x18\x12\x07\n\x03NEG\x10\x19\x12\x06\n\x02NN\x10\x1a\x12\x0c\n\x08NPADVMOD\x10\x1b\x12\t\n\x05NSUBJ\x10\x1c\x12\r\n\tNSUBJPASS\x10\x1d\x12\x07\n\x03NUM\x10\x1e\x12\n\n\x06NUMBER\x10\x1f\x12\x05\n\x01P\x10 \x12\r\n\tPARATAXIS\x10!\x12\x0b\n\x07PARTMOD\x10\"\x12\t\n\x05PCOMP\x10#\x12\x08\n\x04POBJ\x10$\x12\x08\n\x04POSS\x10%\x12\x0b\n\x07POSTNEG\x10&\x12\x0b\n\x07PRECOMP\x10\'\x12\x0b\n\x07PRECONJ\x10(\x12\n\n\x06PREDET\x10)\x12\x08\n\x04PREF\x10*\x12\x08\n\x04PREP\x10+\x12\t\n\x05PRONL\x10,\x12\x07\n\x03PRT\x10-\x12\x06\n\x02PS\x10.\x12\x0c\n\x08QUANTMOD\x10/\x12\t\n\x05RCMOD\x10\x30\x12\x0c\n\x08RCMODREL\x10\x31\x12\t\n\x05RDROP\x10\x32\x12\x07\n\x03REF\x10\x33\x12\x0b\n\x07REMNANT\x10\x34\x12\x0e\n\nREPARANDUM\x10\x35\x12\x08\n\x04ROOT\x10\x36\x12\x08\n\x04SNUM\x10\x37\x12\x08\n\x04SUFF\x10\x38\x12\x08\n\x04TMOD\x10\x39\x12\t\n\x05TOPIC\x10:\x12\x08\n\x04VMOD\x10;\x12\x0c\n\x08VOCATIVE\x10<\x12\t\n\x05XCOMP\x10=\x12\n\n\x06SUFFIX\x10>\x12\t\n\x05TITLE\x10?\x12\x0c\n\x08\x41\x44VPHMOD\x10@\x12\x0b\n\x07\x41UXCAUS\x10\x41\x12\t\n\x05\x41UXVV\x10\x42\x12\t\n\x05\x44TMOD\x10\x43\x12\x0b\n\x07\x46OREIGN\x10\x44\x12\x06\n\x02KW\x10\x45\x12\x08\n\x04LIST\x10\x46\x12\x08\n\x04NOMC\x10G\x12\x0c\n\x08NOMCSUBJ\x10H\x12\x10\n\x0cNOMCSUBJPASS\x10I\x12\x08\n\x04NUMC\x10J\x12\x07\n\x03\x43OP\x10K\x12\x0e\n\nDISLOCATED\x10L\x12\x07\n\x03\x41SP\x10M\x12\x08\n\x04GMOD\x10N\x12\x08\n\x04GOBJ\x10O\x12\n\n\x06INFMOD\x10P\x12\x07\n\x03MES\x10Q\x12\t\n\x05NCOMP\x10R\"\xe7\x01\n\rEntityMention\x12\x30\n\x04text\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.TextSpan\x12:\n\x04type\x18\x02 \x01(\x0e\x32,.google.cloud.language.v1.EntityMention.Type\x12\x36\n\tsentiment\x18\x03 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\"0\n\x04Type\x12\x10\n\x0cTYPE_UNKNOWN\x10\x00\x12\n\n\x06PROPER\x10\x01\x12\n\n\x06\x43OMMON\x10\x02\"1\n\x08TextSpan\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\t\x12\x14\n\x0c\x62\x65gin_offset\x18\x02 \x01(\x05\":\n\x16\x43lassificationCategory\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\"\x8e\x01\n\x17\x41nalyzeSentimentRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"\xa4\x01\n\x18\x41nalyzeSentimentResponse\x12?\n\x12\x64ocument_sentiment\x18\x01 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\x12\x10\n\x08language\x18\x02 \x01(\t\x12\x35\n\tsentences\x18\x03 \x03(\x0b\x32\".google.cloud.language.v1.Sentence\"\x94\x01\n\x1d\x41nalyzeEntitySentimentRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"f\n\x1e\x41nalyzeEntitySentimentResponse\x12\x32\n\x08\x65ntities\x18\x01 \x03(\x0b\x32 .google.cloud.language.v1.Entity\x12\x10\n\x08language\x18\x02 \x01(\t\"\x8d\x01\n\x16\x41nalyzeEntitiesRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"_\n\x17\x41nalyzeEntitiesResponse\x12\x32\n\x08\x65ntities\x18\x01 \x03(\x0b\x32 .google.cloud.language.v1.Entity\x12\x10\n\x08language\x18\x02 \x01(\t\"\x8b\x01\n\x14\x41nalyzeSyntaxRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12=\n\rencoding_type\x18\x02 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\"\x91\x01\n\x15\x41nalyzeSyntaxResponse\x12\x35\n\tsentences\x18\x01 \x03(\x0b\x32\".google.cloud.language.v1.Sentence\x12/\n\x06tokens\x18\x02 \x03(\x0b\x32\x1f.google.cloud.language.v1.Token\x12\x10\n\x08language\x18\x03 \x01(\t\"K\n\x13\x43lassifyTextRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\"\\\n\x14\x43lassifyTextResponse\x12\x44\n\ncategories\x18\x01 \x03(\x0b\x32\x30.google.cloud.language.v1.ClassificationCategory\"\xf0\x02\n\x13\x41nnotateTextRequest\x12\x34\n\x08\x64ocument\x18\x01 \x01(\x0b\x32\".google.cloud.language.v1.Document\x12H\n\x08\x66\x65\x61tures\x18\x02 \x01(\x0b\x32\x36.google.cloud.language.v1.AnnotateTextRequest.Features\x12=\n\rencoding_type\x18\x03 \x01(\x0e\x32&.google.cloud.language.v1.EncodingType\x1a\x99\x01\n\x08\x46\x65\x61tures\x12\x16\n\x0e\x65xtract_syntax\x18\x01 \x01(\x08\x12\x18\n\x10\x65xtract_entities\x18\x02 \x01(\x08\x12\"\n\x1a\x65xtract_document_sentiment\x18\x03 \x01(\x08\x12 \n\x18\x65xtract_entity_sentiment\x18\x04 \x01(\x08\x12\x15\n\rclassify_text\x18\x06 \x01(\x08\"\xcb\x02\n\x14\x41nnotateTextResponse\x12\x35\n\tsentences\x18\x01 \x03(\x0b\x32\".google.cloud.language.v1.Sentence\x12/\n\x06tokens\x18\x02 \x03(\x0b\x32\x1f.google.cloud.language.v1.Token\x12\x32\n\x08\x65ntities\x18\x03 \x03(\x0b\x32 .google.cloud.language.v1.Entity\x12?\n\x12\x64ocument_sentiment\x18\x04 \x01(\x0b\x32#.google.cloud.language.v1.Sentiment\x12\x10\n\x08language\x18\x05 \x01(\t\x12\x44\n\ncategories\x18\x06 \x03(\x0b\x32\x30.google.cloud.language.v1.ClassificationCategory*8\n\x0c\x45ncodingType\x12\x08\n\x04NONE\x10\x00\x12\x08\n\x04UTF8\x10\x01\x12\t\n\x05UTF16\x10\x02\x12\t\n\x05UTF32\x10\x03\x32\xe3\x07\n\x0fLanguageService\x12\xa4\x01\n\x10\x41nalyzeSentiment\x12\x31.google.cloud.language.v1.AnalyzeSentimentRequest\x1a\x32.google.cloud.language.v1.AnalyzeSentimentResponse\")\x82\xd3\xe4\x93\x02#\"\x1e/v1/documents:analyzeSentiment:\x01*\x12\xa0\x01\n\x0f\x41nalyzeEntities\x12\x30.google.cloud.language.v1.AnalyzeEntitiesRequest\x1a\x31.google.cloud.language.v1.AnalyzeEntitiesResponse\"(\x82\xd3\xe4\x93\x02\"\"\x1d/v1/documents:analyzeEntities:\x01*\x12\xbc\x01\n\x16\x41nalyzeEntitySentiment\x12\x37.google.cloud.language.v1.AnalyzeEntitySentimentRequest\x1a\x38.google.cloud.language.v1.AnalyzeEntitySentimentResponse\"/\x82\xd3\xe4\x93\x02)\"$/v1/documents:analyzeEntitySentiment:\x01*\x12\x98\x01\n\rAnalyzeSyntax\x12..google.cloud.language.v1.AnalyzeSyntaxRequest\x1a/.google.cloud.language.v1.AnalyzeSyntaxResponse\"&\x82\xd3\xe4\x93\x02 \"\x1b/v1/documents:analyzeSyntax:\x01*\x12\x94\x01\n\x0c\x43lassifyText\x12-.google.cloud.language.v1.ClassifyTextRequest\x1a..google.cloud.language.v1.ClassifyTextResponse\"%\x82\xd3\xe4\x93\x02\x1f\"\x1a/v1/documents:classifyText:\x01*\x12\x94\x01\n\x0c\x41nnotateText\x12-.google.cloud.language.v1.AnnotateTextRequest\x1a..google.cloud.language.v1.AnnotateTextResponse\"%\x82\xd3\xe4\x93\x02\x1f\"\x1a/v1/documents:annotateText:\x01*Bx\n\x1c\x63om.google.cloud.language.v1B\x14LanguageServiceProtoP\x01Z@google.golang.org/genproto/googleapis/cloud/language/v1;languageb\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 
@@ -50,8 +50,8 @@ _ENCODINGTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=6260,
-  serialized_end=6316,
+  serialized_start=6584,
+  serialized_end=6640,
 )
 _sym_db.RegisterEnumDescriptor(_ENCODINGTYPE)
 
@@ -1534,6 +1534,44 @@ _TEXTSPAN = _descriptor.Descriptor(
 )
 
 
+_CLASSIFICATIONCATEGORY = _descriptor.Descriptor(
+  name='ClassificationCategory',
+  full_name='google.cloud.language.v1.ClassificationCategory',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='name', full_name='google.cloud.language.v1.ClassificationCategory.name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='confidence', full_name='google.cloud.language.v1.ClassificationCategory.confidence', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=4550,
+  serialized_end=4608,
+)
+
+
 _ANALYZESENTIMENTREQUEST = _descriptor.Descriptor(
   name='AnalyzeSentimentRequest',
   full_name='google.cloud.language.v1.AnalyzeSentimentRequest',
@@ -1567,8 +1605,8 @@ _ANALYZESENTIMENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4551,
-  serialized_end=4693,
+  serialized_start=4611,
+  serialized_end=4753,
 )
 
 
@@ -1612,8 +1650,8 @@ _ANALYZESENTIMENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4696,
-  serialized_end=4860,
+  serialized_start=4756,
+  serialized_end=4920,
 )
 
 
@@ -1650,8 +1688,8 @@ _ANALYZEENTITYSENTIMENTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4863,
-  serialized_end=5011,
+  serialized_start=4923,
+  serialized_end=5071,
 )
 
 
@@ -1688,8 +1726,8 @@ _ANALYZEENTITYSENTIMENTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5013,
-  serialized_end=5115,
+  serialized_start=5073,
+  serialized_end=5175,
 )
 
 
@@ -1726,8 +1764,8 @@ _ANALYZEENTITIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5118,
-  serialized_end=5259,
+  serialized_start=5178,
+  serialized_end=5319,
 )
 
 
@@ -1764,8 +1802,8 @@ _ANALYZEENTITIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5261,
-  serialized_end=5356,
+  serialized_start=5321,
+  serialized_end=5416,
 )
 
 
@@ -1802,8 +1840,8 @@ _ANALYZESYNTAXREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5359,
-  serialized_end=5498,
+  serialized_start=5419,
+  serialized_end=5558,
 )
 
 
@@ -1847,8 +1885,70 @@ _ANALYZESYNTAXRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5501,
-  serialized_end=5646,
+  serialized_start=5561,
+  serialized_end=5706,
+)
+
+
+_CLASSIFYTEXTREQUEST = _descriptor.Descriptor(
+  name='ClassifyTextRequest',
+  full_name='google.cloud.language.v1.ClassifyTextRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='document', full_name='google.cloud.language.v1.ClassifyTextRequest.document', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5708,
+  serialized_end=5783,
+)
+
+
+_CLASSIFYTEXTRESPONSE = _descriptor.Descriptor(
+  name='ClassifyTextResponse',
+  full_name='google.cloud.language.v1.ClassifyTextResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='categories', full_name='google.cloud.language.v1.ClassifyTextResponse.categories', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=5785,
+  serialized_end=5877,
 )
 
 
@@ -1887,6 +1987,13 @@ _ANNOTATETEXTREQUEST_FEATURES = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='classify_text', full_name='google.cloud.language.v1.AnnotateTextRequest.Features.classify_text', index=4,
+      number=6, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -1899,8 +2006,8 @@ _ANNOTATETEXTREQUEST_FEATURES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5864,
-  serialized_end=5994,
+  serialized_start=6095,
+  serialized_end=6248,
 )
 
 _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
@@ -1943,8 +2050,8 @@ _ANNOTATETEXTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5649,
-  serialized_end=5994,
+  serialized_start=5880,
+  serialized_end=6248,
 )
 
 
@@ -1990,6 +2097,13 @@ _ANNOTATETEXTRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='categories', full_name='google.cloud.language.v1.AnnotateTextResponse.categories', index=5,
+      number=6, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -2002,8 +2116,8 @@ _ANNOTATETEXTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5997,
-  serialized_end=6258,
+  serialized_start=6251,
+  serialized_end=6582,
 )
 
 _DOCUMENT.fields_by_name['type'].enum_type = _DOCUMENT_TYPE
@@ -2069,6 +2183,8 @@ _ANALYZESYNTAXREQUEST.fields_by_name['document'].message_type = _DOCUMENT
 _ANALYZESYNTAXREQUEST.fields_by_name['encoding_type'].enum_type = _ENCODINGTYPE
 _ANALYZESYNTAXRESPONSE.fields_by_name['sentences'].message_type = _SENTENCE
 _ANALYZESYNTAXRESPONSE.fields_by_name['tokens'].message_type = _TOKEN
+_CLASSIFYTEXTREQUEST.fields_by_name['document'].message_type = _DOCUMENT
+_CLASSIFYTEXTRESPONSE.fields_by_name['categories'].message_type = _CLASSIFICATIONCATEGORY
 _ANNOTATETEXTREQUEST_FEATURES.containing_type = _ANNOTATETEXTREQUEST
 _ANNOTATETEXTREQUEST.fields_by_name['document'].message_type = _DOCUMENT
 _ANNOTATETEXTREQUEST.fields_by_name['features'].message_type = _ANNOTATETEXTREQUEST_FEATURES
@@ -2077,6 +2193,7 @@ _ANNOTATETEXTRESPONSE.fields_by_name['sentences'].message_type = _SENTENCE
 _ANNOTATETEXTRESPONSE.fields_by_name['tokens'].message_type = _TOKEN
 _ANNOTATETEXTRESPONSE.fields_by_name['entities'].message_type = _ENTITY
 _ANNOTATETEXTRESPONSE.fields_by_name['document_sentiment'].message_type = _SENTIMENT
+_ANNOTATETEXTRESPONSE.fields_by_name['categories'].message_type = _CLASSIFICATIONCATEGORY
 DESCRIPTOR.message_types_by_name['Document'] = _DOCUMENT
 DESCRIPTOR.message_types_by_name['Sentence'] = _SENTENCE
 DESCRIPTOR.message_types_by_name['Entity'] = _ENTITY
@@ -2086,6 +2203,7 @@ DESCRIPTOR.message_types_by_name['PartOfSpeech'] = _PARTOFSPEECH
 DESCRIPTOR.message_types_by_name['DependencyEdge'] = _DEPENDENCYEDGE
 DESCRIPTOR.message_types_by_name['EntityMention'] = _ENTITYMENTION
 DESCRIPTOR.message_types_by_name['TextSpan'] = _TEXTSPAN
+DESCRIPTOR.message_types_by_name['ClassificationCategory'] = _CLASSIFICATIONCATEGORY
 DESCRIPTOR.message_types_by_name['AnalyzeSentimentRequest'] = _ANALYZESENTIMENTREQUEST
 DESCRIPTOR.message_types_by_name['AnalyzeSentimentResponse'] = _ANALYZESENTIMENTRESPONSE
 DESCRIPTOR.message_types_by_name['AnalyzeEntitySentimentRequest'] = _ANALYZEENTITYSENTIMENTREQUEST
@@ -2094,6 +2212,8 @@ DESCRIPTOR.message_types_by_name['AnalyzeEntitiesRequest'] = _ANALYZEENTITIESREQ
 DESCRIPTOR.message_types_by_name['AnalyzeEntitiesResponse'] = _ANALYZEENTITIESRESPONSE
 DESCRIPTOR.message_types_by_name['AnalyzeSyntaxRequest'] = _ANALYZESYNTAXREQUEST
 DESCRIPTOR.message_types_by_name['AnalyzeSyntaxResponse'] = _ANALYZESYNTAXRESPONSE
+DESCRIPTOR.message_types_by_name['ClassifyTextRequest'] = _CLASSIFYTEXTREQUEST
+DESCRIPTOR.message_types_by_name['ClassifyTextResponse'] = _CLASSIFYTEXTRESPONSE
 DESCRIPTOR.message_types_by_name['AnnotateTextRequest'] = _ANNOTATETEXTREQUEST
 DESCRIPTOR.message_types_by_name['AnnotateTextResponse'] = _ANNOTATETEXTRESPONSE
 DESCRIPTOR.enum_types_by_name['EncodingType'] = _ENCODINGTYPE
@@ -2353,6 +2473,25 @@ TextSpan = _reflection.GeneratedProtocolMessageType('TextSpan', (_message.Messag
   ))
 _sym_db.RegisterMessage(TextSpan)
 
+ClassificationCategory = _reflection.GeneratedProtocolMessageType('ClassificationCategory', (_message.Message,), dict(
+  DESCRIPTOR = _CLASSIFICATIONCATEGORY,
+  __module__ = 'google.cloud.language_v1.proto.language_service_pb2'
+  ,
+  __doc__ = """Represents a category returned from the text classifier.
+  
+  
+  Attributes:
+      name:
+          The name of the category representing the document.
+      confidence:
+          The classifier's confidence of the category. Number represents
+          how certain the classifier is that this category represents
+          the given text.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.language.v1.ClassificationCategory)
+  ))
+_sym_db.RegisterMessage(ClassificationCategory)
+
 AnalyzeSentimentRequest = _reflection.GeneratedProtocolMessageType('AnalyzeSentimentRequest', (_message.Message,), dict(
   DESCRIPTOR = _ANALYZESENTIMENTREQUEST,
   __module__ = 'google.cloud.language_v1.proto.language_service_pb2'
@@ -2508,6 +2647,36 @@ AnalyzeSyntaxResponse = _reflection.GeneratedProtocolMessageType('AnalyzeSyntaxR
   ))
 _sym_db.RegisterMessage(AnalyzeSyntaxResponse)
 
+ClassifyTextRequest = _reflection.GeneratedProtocolMessageType('ClassifyTextRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CLASSIFYTEXTREQUEST,
+  __module__ = 'google.cloud.language_v1.proto.language_service_pb2'
+  ,
+  __doc__ = """The document classification request message.
+  
+  
+  Attributes:
+      document:
+          Input document.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.language.v1.ClassifyTextRequest)
+  ))
+_sym_db.RegisterMessage(ClassifyTextRequest)
+
+ClassifyTextResponse = _reflection.GeneratedProtocolMessageType('ClassifyTextResponse', (_message.Message,), dict(
+  DESCRIPTOR = _CLASSIFYTEXTRESPONSE,
+  __module__ = 'google.cloud.language_v1.proto.language_service_pb2'
+  ,
+  __doc__ = """The document classification response message.
+  
+  
+  Attributes:
+      categories:
+          Categories representing the input document.
+  """,
+  # @@protoc_insertion_point(class_scope:google.cloud.language.v1.ClassifyTextResponse)
+  ))
+_sym_db.RegisterMessage(ClassifyTextResponse)
+
 AnnotateTextRequest = _reflection.GeneratedProtocolMessageType('AnnotateTextRequest', (_message.Message,), dict(
 
   Features = _reflection.GeneratedProtocolMessageType('Features', (_message.Message,), dict(
@@ -2517,6 +2686,19 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType('AnnotateTextRequ
     __doc__ = """All available features for sentiment, syntax, and semantic analysis.
     Setting each one to true will enable that specific analysis for the
     input.
+    
+    
+    Attributes:
+        extract_syntax:
+            Extract syntax information.
+        extract_entities:
+            Extract entities.
+        extract_document_sentiment:
+            Extract document-level sentiment.
+        extract_entity_sentiment:
+            Extract entities and their associated sentiment.
+        classify_text:
+            Classify the full document into categories.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.language.v1.AnnotateTextRequest.Features)
     ))
@@ -2529,14 +2711,6 @@ AnnotateTextRequest = _reflection.GeneratedProtocolMessageType('AnnotateTextRequ
   
   
   Attributes:
-      extract_syntax:
-          Extract syntax information.
-      extract_entities:
-          Extract entities.
-      extract_document_sentiment:
-          Extract document-level sentiment.
-      extract_entity_sentiment:
-          Extract entities and their associated sentiment.
       document:
           Input document.
       features:
@@ -2581,6 +2755,8 @@ AnnotateTextResponse = _reflection.GeneratedProtocolMessageType('AnnotateTextRes
           language specified in the request or, if not specified, the
           automatically-detected language. See [Document.language][googl
           e.cloud.language.v1.Document.language] field for more details.
+      categories:
+          Categories identified in the input document.
   """,
   # @@protoc_insertion_point(class_scope:google.cloud.language.v1.AnnotateTextResponse)
   ))
@@ -2591,66 +2767,6 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.cloud.language.v1B\024LanguageServiceProtoP\001Z@google.golang.org/genproto/googleapis/cloud/language/v1;language'))
 _ENTITY_METADATAENTRY.has_options = True
 _ENTITY_METADATAENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-
-_LANGUAGESERVICE = _descriptor.ServiceDescriptor(
-  name='LanguageService',
-  full_name='google.cloud.language.v1.LanguageService',
-  file=DESCRIPTOR,
-  index=0,
-  options=None,
-  serialized_start=6319,
-  serialized_end=7163,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='AnalyzeSentiment',
-    full_name='google.cloud.language.v1.LanguageService.AnalyzeSentiment',
-    index=0,
-    containing_service=None,
-    input_type=_ANALYZESENTIMENTREQUEST,
-    output_type=_ANALYZESENTIMENTRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002#\"\036/v1/documents:analyzeSentiment:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnalyzeEntities',
-    full_name='google.cloud.language.v1.LanguageService.AnalyzeEntities',
-    index=1,
-    containing_service=None,
-    input_type=_ANALYZEENTITIESREQUEST,
-    output_type=_ANALYZEENTITIESRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\"\"\035/v1/documents:analyzeEntities:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnalyzeEntitySentiment',
-    full_name='google.cloud.language.v1.LanguageService.AnalyzeEntitySentiment',
-    index=2,
-    containing_service=None,
-    input_type=_ANALYZEENTITYSENTIMENTREQUEST,
-    output_type=_ANALYZEENTITYSENTIMENTRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002)\"$/v1/documents:analyzeEntitySentiment:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnalyzeSyntax',
-    full_name='google.cloud.language.v1.LanguageService.AnalyzeSyntax',
-    index=3,
-    containing_service=None,
-    input_type=_ANALYZESYNTAXREQUEST,
-    output_type=_ANALYZESYNTAXRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002 \"\033/v1/documents:analyzeSyntax:\001*')),
-  ),
-  _descriptor.MethodDescriptor(
-    name='AnnotateText',
-    full_name='google.cloud.language.v1.LanguageService.AnnotateText',
-    index=4,
-    containing_service=None,
-    input_type=_ANNOTATETEXTREQUEST,
-    output_type=_ANNOTATETEXTRESPONSE,
-    options=_descriptor._ParseOptions(descriptor_pb2.MethodOptions(), _b('\202\323\344\223\002\037\"\032/v1/documents:annotateText:\001*')),
-  ),
-])
-_sym_db.RegisterServiceDescriptor(_LANGUAGESERVICE)
-
-DESCRIPTOR.services_by_name['LanguageService'] = _LANGUAGESERVICE
-
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
@@ -2691,6 +2807,11 @@ try:
           '/google.cloud.language.v1.LanguageService/AnalyzeSyntax',
           request_serializer=AnalyzeSyntaxRequest.SerializeToString,
           response_deserializer=AnalyzeSyntaxResponse.FromString,
+          )
+      self.ClassifyText = channel.unary_unary(
+          '/google.cloud.language.v1.LanguageService/ClassifyText',
+          request_serializer=ClassifyTextRequest.SerializeToString,
+          response_deserializer=ClassifyTextResponse.FromString,
           )
       self.AnnotateText = channel.unary_unary(
           '/google.cloud.language.v1.LanguageService/AnnotateText',
@@ -2737,6 +2858,13 @@ try:
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
 
+    def ClassifyText(self, request, context):
+      """Classifies a document into categories.
+      """
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
     def AnnotateText(self, request, context):
       """A convenience method that provides all the features that analyzeSentiment,
       analyzeEntities, and analyzeSyntax provide in one call.
@@ -2767,6 +2895,11 @@ try:
             servicer.AnalyzeSyntax,
             request_deserializer=AnalyzeSyntaxRequest.FromString,
             response_serializer=AnalyzeSyntaxResponse.SerializeToString,
+        ),
+        'ClassifyText': grpc.unary_unary_rpc_method_handler(
+            servicer.ClassifyText,
+            request_deserializer=ClassifyTextRequest.FromString,
+            response_serializer=ClassifyTextResponse.SerializeToString,
         ),
         'AnnotateText': grpc.unary_unary_rpc_method_handler(
             servicer.AnnotateText,
@@ -2807,6 +2940,10 @@ try:
       """Analyzes the syntax of the text and provides sentence boundaries and
       tokenization along with part of speech tags, dependency trees, and other
       properties.
+      """
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def ClassifyText(self, request, context):
+      """Classifies a document into categories.
       """
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def AnnotateText(self, request, context):
@@ -2850,6 +2987,11 @@ try:
       """
       raise NotImplementedError()
     AnalyzeSyntax.future = None
+    def ClassifyText(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      """Classifies a document into categories.
+      """
+      raise NotImplementedError()
+    ClassifyText.future = None
     def AnnotateText(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       """A convenience method that provides all the features that analyzeSentiment,
       analyzeEntities, and analyzeSyntax provide in one call.
@@ -2870,6 +3012,7 @@ try:
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentRequest.FromString,
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxRequest.FromString,
       ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextRequest.FromString,
+      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextRequest.FromString,
     }
     response_serializers = {
       ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): AnalyzeEntitiesResponse.SerializeToString,
@@ -2877,6 +3020,7 @@ try:
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentResponse.SerializeToString,
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxResponse.SerializeToString,
       ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextResponse.SerializeToString,
+      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextResponse.SerializeToString,
     }
     method_implementations = {
       ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): face_utilities.unary_unary_inline(servicer.AnalyzeEntities),
@@ -2884,6 +3028,7 @@ try:
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): face_utilities.unary_unary_inline(servicer.AnalyzeSentiment),
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): face_utilities.unary_unary_inline(servicer.AnalyzeSyntax),
       ('google.cloud.language.v1.LanguageService', 'AnnotateText'): face_utilities.unary_unary_inline(servicer.AnnotateText),
+      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): face_utilities.unary_unary_inline(servicer.ClassifyText),
     }
     server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
     return beta_implementations.server(method_implementations, options=server_options)
@@ -2901,6 +3046,7 @@ try:
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentRequest.SerializeToString,
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxRequest.SerializeToString,
       ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextRequest.SerializeToString,
+      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextRequest.SerializeToString,
     }
     response_deserializers = {
       ('google.cloud.language.v1.LanguageService', 'AnalyzeEntities'): AnalyzeEntitiesResponse.FromString,
@@ -2908,6 +3054,7 @@ try:
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSentiment'): AnalyzeSentimentResponse.FromString,
       ('google.cloud.language.v1.LanguageService', 'AnalyzeSyntax'): AnalyzeSyntaxResponse.FromString,
       ('google.cloud.language.v1.LanguageService', 'AnnotateText'): AnnotateTextResponse.FromString,
+      ('google.cloud.language.v1.LanguageService', 'ClassifyText'): ClassifyTextResponse.FromString,
     }
     cardinalities = {
       'AnalyzeEntities': cardinality.Cardinality.UNARY_UNARY,
@@ -2915,6 +3062,7 @@ try:
       'AnalyzeSentiment': cardinality.Cardinality.UNARY_UNARY,
       'AnalyzeSyntax': cardinality.Cardinality.UNARY_UNARY,
       'AnnotateText': cardinality.Cardinality.UNARY_UNARY,
+      'ClassifyText': cardinality.Cardinality.UNARY_UNARY,
     }
     stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
     return beta_implementations.dynamic_stub(channel, 'google.cloud.language.v1.LanguageService', cardinalities, options=stub_options)
