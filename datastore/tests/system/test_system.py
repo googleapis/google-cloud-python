@@ -442,6 +442,23 @@ class TestDatastoreTransaction(TestDatastore):
         self.case_entities_to_delete.append(retrieved_entity)
         self.assertEqual(retrieved_entity, entity)
 
+    # Expected Failure until backend is implemented
+    @unittest.expectedFailure
+    def test_readonly_put(self):
+        entity = datastore.Entity(key=Config.CLIENT.key('Company', 'Google'))
+        with self.assertRaises(RuntimeError):
+            with Config.CLIENT.transaction() as xact:
+                xact.put(entity)
+                
+    def test_readwrite_put(self):
+        entity = datastore.Entity(key=Config.CLIENT.key('Company', 'Google'))
+        with Config.CLIENT.transaction() as xact:
+            xact.put(entity)
+            self.case_entities_to_delete.append(entity)           
+        retrieved = Config.CLIENT.get(entity.key)
+        self.case_entities_to_delete.append(retrieved)        
+        self.assertEqual(retrieved, entity)
+        
     def test_transaction_via_explicit_begin_get_commit(self):
         # See
         # github.com/GoogleCloudPlatform/google-cloud-python/issues/1859
