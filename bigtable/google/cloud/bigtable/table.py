@@ -15,8 +15,6 @@
 """User-friendly container for Google Cloud Bigtable Table."""
 
 
-import six
-
 from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import from_grpc_status
