@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 import sys
 
-from google.gax.utils.messages import get_messages
+from google.api_core.protobuf_helpers import get_messages
 
 from google.api import http_pb2
 from google.cloud.language_v1.proto import language_service_pb2

@@ -21,4 +21,5 @@ from google.cloud.language_v1 import types
 __all__ = (
     'enums',
     'types',
-    'LanguageServiceClient', )
+    'LanguageServiceClient',
+)
