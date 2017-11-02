@@ -79,6 +79,23 @@ def test_wrap_method_with_custom_client_info():
     assert client_info.to_grpc_metadata() in metadata
 
 
+def test_wrap_method_with_custom_metadata():
+    method = mock.Mock(spec=['__call__'])
+
+    routing_header = (b'x-google-request-params', b'name=foo&book.read=True')
+
+    wrapped_method = google.api_core.gapic_v1.method.wrap_method(
+        method, metadata=[routing_header])
+
+    wrapped_method(1, 2, meep='moop')
+
+    method.assert_called_once_with(1, 2, meep='moop', metadata=mock.ANY)
+
+    # Check that the custom metadata was specified.
+    metadata = method.call_args[1]['metadata']
+    assert routing_header in metadata
+
+
 @mock.patch('time.sleep')
 def test_wrap_method_with_default_retry_and_timeout(unusued_sleep):
     method = mock.Mock(
