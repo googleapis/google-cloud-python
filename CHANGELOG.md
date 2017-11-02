@@ -4,6 +4,12 @@
 
 [1]: https://pypi.org/project/google-cloud/#history
 
+## 0.29.0
+
+Feature / bugfix release for the following package:
+
+- [`google-cloud-language==0.31.0`](https://pypi.org/project/google-cloud-language/0.31.0/)
+
 ## 0.28.0
 
 Packages newly added to the `google-cloud` umbrella package:
