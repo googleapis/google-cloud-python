@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.row_data &#8212; google-cloud 9247b99 documentation</title>
+    <title>google.cloud.bigtable.row_data &#8212; google-cloud 49e744c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '9247b99',
+        VERSION:     '49e744c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -325,10 +325,14 @@
                 <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="n">PartialRowData</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">qualifier</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;qualifier&#39;</span><span class="p">):</span>
+                    <span class="n">qualifier</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">qualifier</span><span class="o">.</span><span class="n">value</span>
+
                 <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="n">PartialCellData</span><span class="p">(</span>
                     <span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span>
                     <span class="n">chunk</span><span class="o">.</span><span class="n">family_name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">qualifier</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                    <span class="n">qualifier</span><span class="p">,</span>
                     <span class="n">chunk</span><span class="o">.</span><span class="n">timestamp_micros</span><span class="p">,</span>
                     <span class="n">chunk</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
                     <span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -463,7 +467,8 @@
                 <span class="n">cell</span><span class="o">.</span><span class="n">row_key</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">row_key</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">family_name</span><span class="p">:</span>
                 <span class="n">cell</span><span class="o">.</span><span class="n">family_name</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">family_name</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span><span class="p">:</span>
+            <span class="c1"># NOTE: ``cell.qualifier`` **can** be empty string.</span>
+            <span class="k">if</span> <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">qualifier</span>
 
     <span class="k">def</span> <span class="nf">_save_current_row</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

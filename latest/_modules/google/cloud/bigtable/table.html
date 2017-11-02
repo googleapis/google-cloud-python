@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.table &#8212; google-cloud 9247b99 documentation</title>
+    <title>google.cloud.bigtable.table &#8212; google-cloud 49e744c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '9247b99',
+        VERSION:     '49e744c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -59,6 +59,13 @@
 
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">RetryError</span>
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">Aborted</span>
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">DeadlineExceeded</span>
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">ServiceUnavailable</span>
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">from_grpc_status</span>
+<span class="kn">from</span> <span class="nn">google.api_core.retry</span> <span class="k">import</span> <span class="n">Retry</span>
+<span class="kn">from</span> <span class="nn">google.api_core.retry</span> <span class="k">import</span> <span class="n">if_exception_type</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable._generated</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_messages_v2_pb2</span><span class="p">)</span>
@@ -72,11 +79,21 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row</span> <span class="k">import</span> <span class="n">ConditionalRow</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row</span> <span class="k">import</span> <span class="n">DirectRow</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigtable.row_data</span> <span class="k">import</span> <span class="n">PartialRowsData</span>
+<span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">StatusCode</span>
 
 
 <span class="c1"># Maximum number of mutations in bulk (MutateRowsRequest message):</span>
 <span class="c1"># https://cloud.google.com/bigtable/docs/reference/data/rpc/google.bigtable.v2#google.bigtable.v2.MutateRowRequest</span>
 <span class="n">_MAX_BULK_MUTATIONS</span> <span class="o">=</span> <span class="mi">100000</span>
+
+<span class="n">DEFAULT_RETRY</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
+        <span class="n">predicate</span><span class="o">=</span><span class="n">if_exception_type</span><span class="p">((</span><span class="n">Aborted</span><span class="p">,</span>
+                                     <span class="n">DeadlineExceeded</span><span class="p">,</span>
+                                     <span class="n">ServiceUnavailable</span><span class="p">)),</span>
+        <span class="n">initial</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">maximum</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>
+        <span class="n">multiplier</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+        <span class="n">deadline</span><span class="o">=</span><span class="mf">60.0</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="TableMismatchError"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.TableMismatchError">[docs]</a><span class="k">class</span> <span class="nc">TableMismatchError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
@@ -338,34 +355,32 @@
         <span class="c1"># We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`</span>
         <span class="k">return</span> <span class="n">PartialRowsData</span><span class="p">(</span><span class="n">response_iterator</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.mutate_rows"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.mutate_rows">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.mutate_rows"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.mutate_rows">[docs]</a>    <span class="k">def</span> <span class="nf">mutate_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Mutates multiple rows in bulk.</span>
 
 <span class="sd">        The method tries to update all specified rows.</span>
 <span class="sd">        If some of the rows weren&#39;t updated, it would not remove mutations.</span>
 <span class="sd">        They can be applied to the row separately.</span>
 <span class="sd">        If row mutations finished successfully, they would be cleaned up.</span>
+<span class="sd">        Optionally specify a `retry` to re-attempt rows that return transient</span>
+<span class="sd">        errors, until all rows succeed or the deadline is reached.</span>
 
 <span class="sd">        :type rows: list</span>
 <span class="sd">        :param rows: List or other iterable of :class:`.DirectRow` instances.</span>
+
+<span class="sd">        :type retry: :class:`~google.api_core.retry.Retry`</span>
+<span class="sd">        :param retry: (Optional) Retry delay and deadline arguments. Can be</span>
+<span class="sd">                      specified using ``DEFAULT_RETRY.with_delay`` and/or</span>
+<span class="sd">                      ``DEFAULT_RETRY.with_deadline``.</span>
 
 <span class="sd">        :rtype: list</span>
 <span class="sd">        :returns: A list of response statuses (`google.rpc.status_pb2.Status`)</span>
 <span class="sd">                  corresponding to success or failure of each row mutation</span>
 <span class="sd">                  sent. These will be in the same order as the `rows`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutate_rows_request</span> <span class="o">=</span> <span class="n">_mutate_rows_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
-        <span class="n">responses</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">MutateRows</span><span class="p">(</span><span class="n">mutate_rows_request</span><span class="p">)</span>
-
-        <span class="n">responses_statuses</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mutate_rows_request</span><span class="o">.</span><span class="n">entries</span><span class="p">))]</span>
-        <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
-                <span class="n">responses_statuses</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">status</span>
-                <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">rows</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">responses_statuses</span></div>
+        <span class="n">retryable_mutate_rows</span> <span class="o">=</span> <span class="n">_RetryableMutateRowsWorker</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retryable_mutate_rows</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.sample_row_keys"><a class="viewcode-back" href="../../../../bigtable/table.html#google.cloud.bigtable.table.Table.sample_row_keys">[docs]</a>    <span class="k">def</span> <span class="nf">sample_row_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read a sample of row keys in the table.</span>
@@ -403,6 +418,98 @@
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="n">response_iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">SampleRowKeys</span><span class="p">(</span><span class="n">request_pb</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response_iterator</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_RetryableMutateRowsWorker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A callable worker that can retry to mutate rows with transient errors.</span>
+
+<span class="sd">    This class is a callable that can retry mutating rows that result in</span>
+<span class="sd">    transient errors. After all rows are successful or none of the rows</span>
+<span class="sd">    are retryable, any subsequent call on this callable will be a no-op.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># pylint: disable=unsubscriptable-object</span>
+    <span class="n">RETRY_CODES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">DEADLINE_EXCEEDED</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">table_name</span><span class="p">,</span> <span class="n">rows</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span> <span class="o">=</span> <span class="n">table_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="n">rows</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="kc">None</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">))]</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Attempt to mutate all rows and retry rows with transient errors.</span>
+
+<span class="sd">        Will retry the rows with transient errors until all rows succeed or</span>
+<span class="sd">        ``deadline`` specified in the `retry` is reached.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: A list of response statuses (`google.rpc.status_pb2.Status`)</span>
+<span class="sd">                  corresponding to success or failure of each row mutation</span>
+<span class="sd">                  sent. These will be in the same order as the ``rows``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">retry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">_do_mutate_retryable_rows</span><span class="p">)(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">RetryError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="c1"># Upon timeout or sleep generator error, return responses_statuses</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span>
+
+    <span class="k">def</span> <span class="nf">_is_retryable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>  <span class="c1"># pylint: disable=no-self-use</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">status</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                <span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="ow">in</span> <span class="n">_RetryableMutateRowsWorker</span><span class="o">.</span><span class="n">RETRY_CODES</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_do_mutate_retryable_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Mutate all the rows that are eligible for retry.</span>
+
+<span class="sd">        A row is eligible for retry if it has not been tried or if it resulted</span>
+<span class="sd">        in a transient error in a previous call.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :return: ``responses_statuses`` (`google.rpc.status_pb2.Status`)</span>
+<span class="sd">        :raises: :exc:`~google.api_core.exceptions.ServiceUnavailable` if any</span>
+<span class="sd">                 row returned a transient error. An artificial exception</span>
+<span class="sd">                 to work with ``DEFAULT_RETRY``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">retryable_rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index_into_all_rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">status</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_retryable</span><span class="p">(</span><span class="n">status</span><span class="p">):</span>
+                <span class="n">retryable_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">index_into_all_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">retryable_rows</span><span class="p">:</span>
+            <span class="c1"># All mutations are either successful or non-retryable now.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span>
+
+        <span class="n">mutate_rows_request</span> <span class="o">=</span> <span class="n">_mutate_rows_request</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="n">retryable_rows</span><span class="p">)</span>
+        <span class="n">responses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">MutateRows</span><span class="p">(</span>
+            <span class="n">mutate_rows_request</span><span class="p">)</span>
+
+        <span class="n">num_responses</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">num_retryable_responses</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+                <span class="n">num_responses</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">index_into_all_rows</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">status</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_retryable</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">status</span><span class="p">):</span>
+                    <span class="n">num_retryable_responses</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">retryable_rows</span><span class="p">)</span> <span class="o">==</span> <span class="n">num_responses</span>
+
+        <span class="k">if</span> <span class="n">num_retryable_responses</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">from_grpc_status</span><span class="p">(</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="p">,</span>
+                                   <span class="s1">&#39;MutateRows retryable error.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span>
 
 
 <span class="k">def</span> <span class="nf">_create_row_request</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">row_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>

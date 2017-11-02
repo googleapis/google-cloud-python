@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud 9247b99 documentation</title>
+    <title>Table &#8212; google-cloud 49e744c documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '9247b99',
+        VERSION:     '49e744c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -162,23 +162,33 @@ name from the column family ID.</td>
 
 <dl class="method">
 <dt id="google.cloud.bigtable.table.Table.mutate_rows">
-<code class="descname">mutate_rows</code><span class="sig-paren">(</span><em>rows</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.mutate_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.mutate_rows" title="Permalink to this definition">#</a></dt>
+<code class="descname">mutate_rows</code><span class="sig-paren">(</span><em>rows</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table.mutate_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table.mutate_rows" title="Permalink to this definition">#</a></dt>
 <dd><p>Mutates multiple rows in bulk.</p>
 <p>The method tries to update all specified rows.
 If some of the rows weren’t updated, it would not remove mutations.
 They can be applied to the row separately.
-If row mutations finished successfully, they would be cleaned up.</p>
+If row mutations finished successfully, they would be cleaned up.
+Optionally specify a <cite>retry</cite> to re-attempt rows that return transient
+errors, until all rows succeed or the deadline is reached.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List or other iterable of <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> instances.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List or other iterable of <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> instances.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">Retry</span></code></a>) – (Optional) Retry delay and deadline arguments. Can be
+specified using <code class="docutils literal"><span class="pre">DEFAULT_RETRY.with_delay</span></code> and/or
+<code class="docutils literal"><span class="pre">DEFAULT_RETRY.with_deadline</span></code>.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)">list</a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of response statuses (<cite>google.rpc.status_pb2.Status</cite>)
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of response statuses (<cite>google.rpc.status_pb2.Status</cite>)
 corresponding to success or failure of each row mutation
-sent. These will be in the same order as the <cite>rows</cite>.</td>
+sent. These will be in the same order as the <cite>rows</cite>.</p>
+</td>
 </tr>
 </tbody>
 </table>
