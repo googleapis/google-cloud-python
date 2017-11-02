@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Natural Language Client Types &#8212; google-cloud 30fb8f4 documentation</title>
+    <title>Natural Language Client Types &#8212; google-cloud 9247b99 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '30fb8f4',
+        VERSION:     '9247b99',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -220,30 +220,6 @@ e.cloud.language.v1.Document.language] field for more details.</p>
 <dd><p>The request message for the text annotation API, which can perform
 multiple analysis types (sentiment, entities, and syntax) in one call.</p>
 <dl class="attribute">
-<dt id="google.cloud.language_v1.types.AnnotateTextRequest.extract_syntax">
-<code class="descname">extract_syntax</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.extract_syntax" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract syntax information.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.language_v1.types.AnnotateTextRequest.extract_entities">
-<code class="descname">extract_entities</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.extract_entities" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract entities.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.language_v1.types.AnnotateTextRequest.extract_document_sentiment">
-<code class="descname">extract_document_sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.extract_document_sentiment" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract document-level sentiment.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.language_v1.types.AnnotateTextRequest.extract_entity_sentiment">
-<code class="descname">extract_entity_sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.extract_entity_sentiment" title="Permalink to this definition">#</a></dt>
-<dd><p>Extract entities and their associated sentiment.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.language_v1.types.AnnotateTextRequest.document">
 <code class="descname">document</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.document" title="Permalink to this definition">#</a></dt>
 <dd><p>Input document.</p>
@@ -267,6 +243,36 @@ multiple analysis types (sentiment, entities, and syntax) in one call.</p>
 <dd><p>All available features for sentiment, syntax, and semantic analysis.
 Setting each one to true will enable that specific analysis for the
 input.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_syntax">
+<code class="descname">extract_syntax</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_syntax" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract syntax information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_entities">
+<code class="descname">extract_entities</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_entities" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract entities.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_document_sentiment">
+<code class="descname">extract_document_sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_document_sentiment" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract document-level sentiment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_entity_sentiment">
+<code class="descname">extract_entity_sentiment</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.Features.extract_entity_sentiment" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract entities and their associated sentiment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextRequest.Features.classify_text">
+<code class="descname">classify_text</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextRequest.Features.classify_text" title="Permalink to this definition">#</a></dt>
+<dd><p>Classify the full document into categories.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -317,6 +323,56 @@ tract_document_sentiment].</p>
 language specified in the request or, if not specified, the
 automatically-detected language. See [Document.language][googl
 e.cloud.language.v1.Document.language] field for more details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.AnnotateTextResponse.categories">
+<code class="descname">categories</code><a class="headerlink" href="#google.cloud.language_v1.types.AnnotateTextResponse.categories" title="Permalink to this definition">#</a></dt>
+<dd><p>Categories identified in the input document.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.ClassificationCategory">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">ClassificationCategory</code><a class="headerlink" href="#google.cloud.language_v1.types.ClassificationCategory" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a category returned from the text classifier.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.ClassificationCategory.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.language_v1.types.ClassificationCategory.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the category representing the document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.ClassificationCategory.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.language_v1.types.ClassificationCategory.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>The classifier’s confidence of the category. Number represents
+how certain the classifier is that this category represents
+the given text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.ClassifyTextRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">ClassifyTextRequest</code><a class="headerlink" href="#google.cloud.language_v1.types.ClassifyTextRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The document classification request message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.ClassifyTextRequest.document">
+<code class="descname">document</code><a class="headerlink" href="#google.cloud.language_v1.types.ClassifyTextRequest.document" title="Permalink to this definition">#</a></dt>
+<dd><p>Input document.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.language_v1.types.ClassifyTextResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.language_v1.types.</code><code class="descname">ClassifyTextResponse</code><a class="headerlink" href="#google.cloud.language_v1.types.ClassifyTextResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The document classification response message.</p>
+<dl class="attribute">
+<dt id="google.cloud.language_v1.types.ClassifyTextResponse.categories">
+<code class="descname">categories</code><a class="headerlink" href="#google.cloud.language_v1.types.ClassifyTextResponse.categories" title="Permalink to this definition">#</a></dt>
+<dd><p>Categories representing the input document.</p>
 </dd></dl>
 
 </dd></dl>
