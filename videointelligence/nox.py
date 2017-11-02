@@ -18,6 +18,23 @@ import nox
 
 
 @nox.session
+def default(session):
+    """Default unit test session.
+
+    This is intended to be run **without** an interpreter set, so
+    that the current ``python`` (on the ``PATH``) or the version of
+    Python corresponding to the ``nox`` binary the ``PATH`` can
+    run the tests.
+    """
+    # Install all test dependencies, then install this package in-place.
+    session.install('mock', 'pytest', 'pytest-cov')
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run('py.test', '--quiet', 'tests/')
+
+
+@nox.session
 @nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
 def unit(session, py):
     """Run the unit test suite."""
@@ -28,12 +45,8 @@ def unit(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'unit-' + py
 
-    # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov')
-    session.install('-e', '.')
+    default(session)
 
-    # Run py.test against the unit tests.
-    session.run('py.test', '--quiet', 'tests/')
 
 @nox.session
 def lint_setup_py(session):
