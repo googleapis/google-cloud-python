@@ -26,6 +26,36 @@ LOCAL_DEPS = (
 
 
 @nox.session
+def default(session):
+    """Default unit test session.
+
+    This is intended to be run **without** an interpreter set, so
+    that the current ``python`` (on the ``PATH``) or the version of
+    Python corresponding to the ``nox`` binary the ``PATH`` can
+    run the tests.
+    """
+    # Install all test dependencies, then install this package in-place.
+    session.install(
+        'mock', 'pytest', 'pytest-cov',
+        'flask', 'webapp2', 'webob', 'django', *LOCAL_DEPS)
+    session.install('-e', '.')
+
+    # Run py.test against the unit tests.
+    session.run(
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud.logging',
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        '--cov-fail-under=97',
+        'tests/unit',
+        *session.posargs
+    )
+
+
+@nox.session
 @nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
 def unit(session, py):
     """Run the unit test suite."""
@@ -36,19 +66,7 @@ def unit(session, py):
     # Set the virtualenv dirname.
     session.virtualenv_dirname = 'unit-' + py
 
-    # Install all test dependencies, then install this package in-place.
-    session.install(
-        'mock', 'pytest', 'pytest-cov',
-        'flask', 'webapp2', 'webob', 'django', *LOCAL_DEPS)
-    session.install('-e', '.')
-
-    # Run py.test against the unit tests.
-    session.run(
-        'py.test', '--quiet',
-        '--cov=google.cloud.logging', '--cov=tests.unit', '--cov-append',
-        '--cov-config=.coveragerc', '--cov-report=', '--cov-fail-under=97',
-        'tests/unit', *session.posargs
-    )
+    default(session)
 
 
 @nox.session
