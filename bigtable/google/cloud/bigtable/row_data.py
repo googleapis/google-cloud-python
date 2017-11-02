@@ -283,10 +283,14 @@ class PartialRowsData(object):
                 row = self._row = PartialRowData(chunk.row_key)
 
             if cell is None:
+                qualifier = None
+                if chunk.HasField('qualifier'):
+                    qualifier = chunk.qualifier.value
+
                 cell = self._cell = PartialCellData(
                     chunk.row_key,
                     chunk.family_name.value,
-                    chunk.qualifier.value,
+                    qualifier,
                     chunk.timestamp_micros,
                     chunk.labels,
                     chunk.value)
