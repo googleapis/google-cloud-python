@@ -1024,8 +1024,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
         worker = self._make_worker(table._instance._client,
                 table.name, [row_1, row_2])
-        with self.assertRaises(AssertionError):
-            statuses = worker._do_mutate_retryable_rows()
+        with self.assertRaises(RuntimeError):
+            worker._do_mutate_retryable_rows()
 
 
 class Test__create_row_request(unittest.TestCase):

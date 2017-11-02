@@ -17,13 +17,13 @@
 
 import six
 
-from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import DeadlineExceeded
-from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import from_grpc_status
-from google.api_core.retry import Retry
+from google.api_core.exceptions import RetryError
+from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.retry import if_exception_type
+from google.api_core.retry import Retry
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
@@ -41,17 +41,27 @@ from grpc import StatusCode
 
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
-# https://cloud.google.com/bigtable/docs/reference/data/rpc/google.bigtable.v2#google.bigtable.v2.MutateRowRequest
+# (https://cloud.google.com/bigtable/docs/reference/data/rpc/
+#  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)
 _MAX_BULK_MUTATIONS = 100000
 
 DEFAULT_RETRY = Retry(
-        predicate=if_exception_type((Aborted,
-                                     DeadlineExceeded,
-                                     ServiceUnavailable)),
-        initial=1.0,
-        maximum=15.0,
-        multiplier=2.0,
-        deadline=60.0 * 2.0)
+    predicate=if_exception_type(
+        (
+            Aborted,
+            DeadlineExceeded,
+            ServiceUnavailable,
+        ),
+    ),
+    initial=1.0,
+    maximum=15.0,
+    multiplier=2.0,
+    deadline=120.0,  # 2 minutes
+)
+"""The default retry stategy to be used on retry-able errors.
+
+Used by :meth:`~google.cloud.bigtable.table.Table.mutate_rows`.
+"""
 
 
 class TableMismatchError(ValueError):
@@ -320,16 +330,22 @@ class Table(object):
         If some of the rows weren't updated, it would not remove mutations.
         They can be applied to the row separately.
         If row mutations finished successfully, they would be cleaned up.
-        Optionally specify a `retry` to re-attempt rows that return transient
-        errors, until all rows succeed or the deadline is reached.
+
+        Optionally, a ``retry`` strategy can be specified to re-attempt
+        mutations on rows that return transient errors. This method will retry
+        until all rows succeed or until the request deadline is reached. To
+        specify a ``retry`` strategy of "do-nothing", a deadline of ``0.0``
+        can be specified.
 
         :type rows: list
         :param rows: List or other iterable of :class:`.DirectRow` instances.
 
         :type retry: :class:`~google.api_core.retry.Retry`
-        :param retry: (Optional) Retry delay and deadline arguments. Can be
-                      specified using ``DEFAULT_RETRY.with_delay`` and/or
-                      ``DEFAULT_RETRY.with_deadline``.
+        :param retry:
+            (Optional) Retry delay and deadline arguments. To override, the
+            default value :attr:`DEFAULT_RETRY` can be used and modified with
+            the :meth:`~google.api_core.retry.Retry.with_delay` method or the
+            :meth:`~google.api_core.retry.Retry.with_deadline` method.
 
         :rtype: list
         :returns: A list of response statuses (`google.rpc.status_pb2.Status`)
@@ -392,13 +408,13 @@ class _RetryableMutateRowsWorker(object):
         StatusCode.ABORTED.value[0],
         StatusCode.UNAVAILABLE.value[0],
     )
+    # pylint: enable=unsubscriptable-object
 
     def __init__(self, client, table_name, rows):
         self.client = client
         self.table_name = table_name
         self.rows = rows
-        self.responses_statuses = [
-            None for _ in six.moves.xrange(len(self.rows))]
+        self.responses_statuses = [None] * len(self.rows)
 
     def __call__(self, retry=DEFAULT_RETRY):
         """Attempt to mutate all rows and retry rows with transient errors.
@@ -418,7 +434,8 @@ class _RetryableMutateRowsWorker(object):
             pass
         return self.responses_statuses
 
-    def _is_retryable(self, status):  # pylint: disable=no-self-use
+    @staticmethod
+    def _is_retryable(status):
         return (status is None or
                 status.code in _RetryableMutateRowsWorker.RETRY_CODES)
 
@@ -429,17 +446,23 @@ class _RetryableMutateRowsWorker(object):
         in a transient error in a previous call.
 
         :rtype: list
-        :return: ``responses_statuses`` (`google.rpc.status_pb2.Status`)
-        :raises: :exc:`~google.api_core.exceptions.ServiceUnavailable` if any
-                 row returned a transient error. An artificial exception
-                 to work with ``DEFAULT_RETRY``.
+        :return: The responses statuses, which is a list of
+                 :class:`~google.rpc.status_pb2.Status`.
+        :raises: One of the following:
+
+                 * :exc:`~google.api_core.exceptions.ServiceUnavailable` if any
+                   row returned a transient error. This is "artificial" in
+                   the sense that we intentionally raise the error because it
+                   will be caught by the retry strategy.
+                 * :exc:`RuntimeError` if the number of responses doesn't
+                   match the number of rows that were retried
         """
         retryable_rows = []
         index_into_all_rows = []
-        for i, status in enumerate(self.responses_statuses):
+        for index, status in enumerate(self.responses_statuses):
             if self._is_retryable(status):
-                retryable_rows.append(self.rows[i])
-                index_into_all_rows.append(i)
+                retryable_rows.append(self.rows[index])
+                index_into_all_rows.append(index)
 
         if not retryable_rows:
             # All mutations are either successful or non-retryable now.
@@ -462,11 +485,15 @@ class _RetryableMutateRowsWorker(object):
                 if entry.status.code == 0:
                     self.rows[index].clear()
 
-        assert len(retryable_rows) == num_responses
+        if len(retryable_rows) != num_responses:
+            raise RuntimeError(
+                'Unexpected the number of responses', num_responses,
+                'Expected', len(retryable_rows))
 
         if num_retryable_responses:
             raise from_grpc_status(StatusCode.UNAVAILABLE,
                                    'MutateRows retryable error.')
+
         return self.responses_statuses
 
 
