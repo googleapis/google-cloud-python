@@ -55,14 +55,7 @@ See: `Speech Asynchronous Recognize`_
     ...         sample_rate_hertz=44100,
     ...     ),
     ... )
-    >>> retry_count = 100
-    >>> while retry_count > 0 and not operation.complete:
-    ...     retry_count -= 1
-    ...     time.sleep(10)
-    ...     operation.poll()  # API call
-    >>> operation.complete
-    True
-    >>> for result in operation.results:
+    >>> for result in operation.results():
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
     ...         print(alternative.transcript)
