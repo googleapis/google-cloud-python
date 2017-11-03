@@ -551,16 +551,18 @@ class TestTable(unittest.TestCase):
 
 
 class Test__RetryableMutateRowsWorker(unittest.TestCase):
+    from grpc import StatusCode
+
     PROJECT_ID = 'project-id'
     INSTANCE_ID = 'instance-id'
     INSTANCE_NAME = ('projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID)
     TABLE_ID = 'table-id'
 
     # RPC Status Codes
-    SUCCESS = 0
-    RETRYABLE_1 = 4
-    RETRYABLE_2 = 10
-    NON_RETRYABLE = 1
+    SUCCESS = StatusCode.OK.value[0]
+    RETRYABLE_1 = StatusCode.DEADLINE_EXCEEDED.value[0]
+    RETRYABLE_2 = StatusCode.ABORTED.value[0]
+    NON_RETRYABLE = StatusCode.CANCELLED.value[0]
 
     @staticmethod
     def _get_target_class_for_worker():
