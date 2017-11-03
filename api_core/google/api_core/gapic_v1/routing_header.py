@@ -15,27 +15,14 @@
 """Helpers for handling routing header params."""
 
 
-try:
-    from urllib.parse import urlencode
-except ImportError:
-    def urlencode(params):
-        return '&'.join(['{}={}'.format(*pair) for pair in params])
+from six.moves.urllib.parse import urlencode
 
 ROUTING_METADATA_KEY = 'x-goog-header-params'
 
 
-def _to_url_string(x):
-    if not isinstance(x, bool):
-        return str(x)
-    elif x:
-        return '1'
-    else:
-        return '0'
-
-
 def to_routing_header(params):
     """Returns the routing header string that the params form"""
-    return urlencode([(k, _to_url_string(v)) for k, v in params])
+    return urlencode(params)
 
 
 def to_grpc_metadata(params):
