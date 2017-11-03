@@ -580,6 +580,17 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = [Status(code=code) for code in codes]
         return response
 
+    def _make_responses(self, codes):
+        import six
+        from google.cloud.bigtable._generated.bigtable_pb2 import (
+            MutateRowsResponse)
+        from google.rpc.status_pb2 import Status
+
+        entries = [MutateRowsResponse.Entry(
+            index=i, status=Status(code=codes[i]))
+            for i in six.moves.xrange(len(codes))]
+        return MutateRowsResponse(entries=entries)
+
     def test_callable_empty_rows(self):
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -618,22 +629,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_3 = DirectRow(row_key=b'row_key_3', table=table)
         row_3.set_cell('cf', b'col', b'value3')
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=4),
-                ),
-                MutateRowsResponse.Entry(
-                    index=2,
-                    status=Status(code=1),
-                ),
-            ],
-        )
+        response = self._make_responses([0, 4, 1])
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
@@ -678,31 +674,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_3 = DirectRow(row_key=b'row_key_3', table=table)
         row_3.set_cell('cf', b'col', b'value3')
 
-        response_1 = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=4),
-                ),
-                MutateRowsResponse.Entry(
-                    index=2,
-                    status=Status(code=1),
-                ),
-            ],
-        )
-
-        response_2 = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-            ],
-        )
+        response_1 = self._make_responses([0, 4, 1])
+        response_2 = self._make_responses([0])
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
@@ -747,18 +720,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_2 = DirectRow(row_key=b'row_key_2', table=table)
         row_2.set_cell('cf', b'col', b'value2')
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=4),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=4),
-                ),
-            ],
-        )
+        response = self._make_responses([4, 4])
 
         # Patch the stub used by the API method.
         client._data_stub = mock.MagicMock()
@@ -808,18 +770,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_2 = DirectRow(row_key=b'row_key_2', table=table)
         row_2.set_cell('cf', b'col', b'value2')
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=1),
-                ),
-            ],
-        )
+        response = self._make_responses([0, 1])
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
@@ -861,22 +812,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_3 = DirectRow(row_key=b'row_key_3', table=table)
         row_3.set_cell('cf', b'col', b'value3')
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=4),
-                ),
-                MutateRowsResponse.Entry(
-                    index=2,
-                    status=Status(code=1),
-                ),
-            ],
-        )
+        response = self._make_responses([0, 4, 1])
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
@@ -928,18 +864,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_4 = DirectRow(row_key=b'row_key_4', table=table)
         row_4.set_cell('cf', b'col', b'value4')
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=4),
-                ),
-            ],
-        )
+        response = self._make_responses([0, 4])
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
@@ -988,18 +913,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_4 = DirectRow(row_key=b'row_key_4', table=table)
         row_4.set_cell('cf', b'col', b'value4')
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=1),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=0),
-                ),
-            ],
-        )
+        response = self._make_responses([1, 0])
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
@@ -1068,14 +982,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_2 = DirectRow(row_key=b'row_key_2', table=table)
         row_2.set_cell('cf', b'col', b'value2')
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-            ],
-        )
+        response = self._make_responses([0])
 
         # Patch the stub used by the API method.
         client._data_stub = _FakeStub([response])
