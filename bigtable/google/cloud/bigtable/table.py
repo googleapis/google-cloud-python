@@ -425,11 +425,15 @@ class _RetryableMutateRowsWorker(object):
                   corresponding to success or failure of each row mutation
                   sent. These will be in the same order as the ``rows``.
         """
-        try:
-            retry(self._do_mutate_retryable_rows)()
-        except (RetryError, ValueError) as err:
-            # Upon timeout or sleep generator error, return responses_statuses
-            pass
+        if retry is None:
+            self._do_mutate_retryable_rows(silent=True)
+        else:
+            try:
+                retry(self._do_mutate_retryable_rows)()
+            except (RetryError, ValueError) as err:
+                # Upon timeout or sleep generator error,
+                # return responses_statuses
+                pass
         return self.responses_statuses
 
     @staticmethod
@@ -437,7 +441,7 @@ class _RetryableMutateRowsWorker(object):
         return (status is None or
                 status.code in _RetryableMutateRowsWorker.RETRY_CODES)
 
-    def _do_mutate_retryable_rows(self):
+    def _do_mutate_retryable_rows(self, silent=False):
         """Mutate all the rows that are eligible for retry.
 
         A row is eligible for retry if it has not been tried or if it resulted
@@ -488,7 +492,7 @@ class _RetryableMutateRowsWorker(object):
                 'Unexpected the number of responses', num_responses,
                 'Expected', len(retryable_rows))
 
-        if num_retryable_responses:
+        if not silent and num_retryable_responses:
             raise from_grpc_status(StatusCode.UNAVAILABLE,
                                    'MutateRows retryable error.')
 
