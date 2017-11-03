@@ -611,10 +611,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_callable_no_retry_strategy(self):
         from google.api_core.retry import Retry
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
-        from google.rpc.status_pb2 import Status
 
         # Setup:
         #   - Mutate 3 rows.
@@ -657,11 +654,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_callable_retry(self):
         from google.api_core.retry import Retry
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import DEFAULT_RETRY
-        from google.rpc.status_pb2 import Status
 
         # Setup:
         #   - Mutate 3 rows.
@@ -710,11 +704,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_callable_retry_timeout(self):
         from google.api_core.retry import Retry
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import DEFAULT_RETRY
-        from google.rpc.status_pb2 import Status
 
         # Setup:
         #   - Mutate 2 rows.
@@ -764,10 +755,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(len(statuses), 0)
 
     def test_do_mutate_retryable_rows(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
-        from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
         # Setup:
@@ -801,11 +789,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_retry(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import _BigtableRetryableError
-        from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
         # Setup:
@@ -849,11 +834,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_second_retry(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import _BigtableRetryableError
-        from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
         # Setup:
@@ -909,10 +891,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_second_try(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
-        from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
         # Setup:
@@ -962,10 +941,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_second_try_no_retryable(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
-        from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
         # Setup:
@@ -998,10 +974,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_mismatch_num_responses(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
-        from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
         client = _Client()
