@@ -19,11 +19,11 @@ from google.api_core.gapic_v1 import routing_header
 def test_to_routing_header():
     params = [('name', 'meep'), ('book.read', True)]
     value = routing_header.to_routing_header(params)
-    assert value == "name=meep&book.read=True"
+    assert value == "name=meep&book.read=1"
 
 
 def test_to_grpc_metadata():
     params = [('name', 'meep'), ('book.read', True)]
     metadata = routing_header.to_grpc_metadata(params)
     assert metadata == (
-        routing_header.METADATA_KEY, "name=meep&book.read=True")
+        routing_header.ROUTING_METADATA_KEY, "name=meep&book.read=1")

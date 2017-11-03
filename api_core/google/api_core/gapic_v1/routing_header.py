@@ -14,14 +14,30 @@
 
 """Helpers for handling routing header params."""
 
-METADATA_KEY = 'x-goog-header-params'
+
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    def urlencode(params):
+        return '&'.join(['{}={}'.format(*pair) for pair in params])
+
+ROUTING_METADATA_KEY = 'x-goog-header-params'
+
+
+def _to_url_string(x):
+    if not isinstance(x, bool):
+        return str(x)
+    elif x:
+        return '1'
+    else:
+        return '0'
 
 
 def to_routing_header(params):
     """Returns the routing header string that the params form"""
-    return "&".join(["{}={}".format(*pair) for pair in params])
+    return urlencode([(k, _to_url_string(v)) for k, v in params])
 
 
 def to_grpc_metadata(params):
     """Returns the gRPC metadata that the routing header params form"""
-    return (METADATA_KEY, to_routing_header(params))
+    return (ROUTING_METADATA_KEY, to_routing_header(params))
