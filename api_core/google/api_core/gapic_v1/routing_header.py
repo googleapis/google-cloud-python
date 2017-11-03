@@ -16,9 +16,11 @@
 
 METADATA_KEY = 'x-goog-header-params'
 
+
 def to_routing_header(params):
     """Returns the routing header string that the params form"""
     return "&".join(["{}={}".format(*pair) for pair in params])
+
 
 def to_grpc_metadata(params):
     """Returns the gRPC metadata that the routing header params form"""
