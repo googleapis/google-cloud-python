@@ -659,6 +659,18 @@ transmitted in chunks until completion:
    True
 """
 
+import pkg_resources
+
+try:
+    pkg_resources.require('requests >= 2.18.0')
+except pkg_resources.ResolutionError as caught_exc:  # pragma: NO COVER
+    import six
+    new_exc = ImportError(
+        '``requests >= 2.18.0`` is required by the '
+        '``google.resumable_media.requests`` subpackage.\n'
+        'It can be installed via\n'
+        '    pip install google-resumable-media[requests].')
+    six.raise_from(new_exc, caught_exc)
 
 from google.resumable_media.requests.download import ChunkedDownload
 from google.resumable_media.requests.download import Download
