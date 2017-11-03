@@ -751,3 +751,25 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
         self.assertEqual(
             self._call_fut(MAPPING, table.schema),
             ('Phred Phlyntstone', 32, ['red', 'green'], None))
+
+
+class TestRow(unittest.TestCase):
+
+    def test_row(self):
+        from google.cloud.bigquery.table import Row
+
+        VALUES = (1, 2, 3)
+        row = Row(VALUES, {'a': 0, 'b': 1, 'c': 2})
+        self.assertEqual(row.a, 1)
+        self.assertEqual(row[1], 2)
+        self.assertEqual(row['c'], 3)
+        self.assertEqual(len(row), 3)
+        self.assertEqual(row.values(), VALUES)
+        self.assertEqual(repr(row),
+                         "Row((1, 2, 3), {'a': 0, 'b': 1, 'c': 2})")
+        self.assertFalse(row != row)
+        self.assertFalse(row == 3)
+        with self.assertRaises(AttributeError):
+            row.z
+        with self.assertRaises(KeyError):
+            row['z']

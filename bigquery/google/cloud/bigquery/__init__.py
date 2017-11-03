@@ -51,6 +51,7 @@ from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import Row
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
 from google.cloud.bigquery.external_config import BigtableColumnFamily
@@ -74,6 +75,7 @@ __all__ = [
     # Tables
     'Table',
     'TableReference',
+    'Row',
     'CopyJob',
     'CopyJobConfig',
     'ExtractJob',
