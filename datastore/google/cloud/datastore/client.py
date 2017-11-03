@@ -15,23 +15,23 @@
 
 import os
 
-from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
-
 from google.cloud._helpers import _LocalStack
-from google.cloud._helpers import (
-    _determine_default_project as _base_default_project)
-from google.cloud.client import ClientWithProject
-from google.cloud.environment_vars import DISABLE_GRPC
-from google.cloud.environment_vars import GCD_DATASET
-from google.cloud.environment_vars import GCD_HOST
+from google.cloud._helpers import (_determine_default_project as
+                                   _default_project)
 
-from google.cloud.datastore._http import HTTPDatastoreAPI
+from google.cloud.client import ClientWithProject
+
 from google.cloud.datastore import helpers
+from google.cloud.datastore._http import HTTPDatastoreAPI
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
+from google.cloud.environment_vars import DISABLE_GRPC
+from google.cloud.environment_vars import GCD_DATASET
+from google.cloud.environment_vars import GCD_HOST
+
 try:
     from google.cloud.datastore._gax import make_datastore_api
     _HAVE_GRPC = True
@@ -74,7 +74,7 @@ def _determine_default_project(project=None):
         project = _get_gcd_project()
 
     if project is None:
-        project = _base_default_project(project=project)
+        project = _default_project(project=project)
 
     return project
 
@@ -131,7 +131,7 @@ def _extended_lookup(datastore_api, project, key_pbs,
     results = []
 
     loop_num = 0
-    read_options = _get_read_options(eventual, transaction_id)
+    read_options = helpers.get_read_options(eventual, transaction_id)
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
         lookup_response = datastore_api.lookup(
@@ -279,7 +279,8 @@ class Client(ClientWithProject):
         if isinstance(transaction, Transaction):
             return transaction
 
-    def get(self, key, missing=None, deferred=None, transaction=None):
+    def get(self, key, missing=None, deferred=None,
+            transaction=None, eventual=False):
         """Retrieve an entity from a single key (if it exists).
 
         .. note::
@@ -305,15 +306,27 @@ class Client(ClientWithProject):
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
+        :type eventual: bool
+        :param eventual: (Optional) Defaults to strongly consistent (False).
+                                    Setting True will use eventual consistency,
+                                    but cannot be used inside a transaction or
+                                    will raise ValueError.
+
         :rtype: :class:`google.cloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
+
+        :raises: :class:`ValueError` if eventual is True and in a transaction.
         """
-        entities = self.get_multi(keys=[key], missing=missing,
-                                  deferred=deferred, transaction=transaction)
+        entities = self.get_multi(keys=[key],
+                                  missing=missing,
+                                  deferred=deferred,
+                                  transaction=transaction,
+                                  eventual=eventual)
         if entities:
             return entities[0]
 
-    def get_multi(self, keys, missing=None, deferred=None, transaction=None):
+    def get_multi(self, keys, missing=None, deferred=None,
+                  transaction=None, eventual=False):
         """Retrieve entities, along with their attributes.
 
         :type keys: list of :class:`google.cloud.datastore.key.Key`
@@ -334,10 +347,17 @@ class Client(ClientWithProject):
         :param transaction: (Optional) Transaction to use for read consistency.
                             If not passed, uses current transaction, if set.
 
+        :type eventual: bool
+        :param eventual: (Optional) Defaults to strongly consistent (False).
+                                    Setting True will use eventual consistency,
+                                    but cannot be used inside a transaction or
+                                    will raise ValueError.
+
         :rtype: list of :class:`google.cloud.datastore.entity.Entity`
         :returns: The requested entities.
         :raises: :class:`ValueError` if one or more of ``keys`` has a project
                  which does not match our project.
+        :raises: :class:`ValueError` if eventual is True and in a transaction.
         """
         if not keys:
             return []
@@ -353,7 +373,8 @@ class Client(ClientWithProject):
         entity_pbs = _extended_lookup(
             datastore_api=self._datastore_api,
             project=self.project,
-            key_pbs=[k.to_protobuf() for k in keys],
+            key_pbs=[key.to_protobuf() for key in keys],
+            eventual=eventual,
             missing=missing,
             deferred=deferred,
             transaction_id=transaction and transaction.id,
@@ -581,34 +602,3 @@ class Client(ClientWithProject):
         if 'namespace' not in kwargs:
             kwargs['namespace'] = self.namespace
         return Query(self, **kwargs)
-
-
-def _get_read_options(eventual, transaction_id):
-    """Validate rules for read options, and assign to the request.
-
-    Helper method for ``lookup()`` and ``run_query``.
-
-    :type eventual: bool
-    :param eventual: Flag indicating if ``EVENTUAL`` or ``STRONG``
-                     consistency should be used.
-
-    :type transaction_id: bytes
-    :param transaction_id: A transaction identifier (may be null).
-
-    :rtype: :class:`.datastore_pb2.ReadOptions`
-    :returns: The read options corresponding to the inputs.
-    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the
-             ``transaction_id`` is not ``None``.
-    """
-    if transaction_id is None:
-        if eventual:
-            return _datastore_pb2.ReadOptions(
-                read_consistency=_datastore_pb2.ReadOptions.EVENTUAL)
-        else:
-            return _datastore_pb2.ReadOptions()
-    else:
-        if eventual:
-            raise ValueError('eventual must be False when in a transaction')
-        else:
-            return _datastore_pb2.ReadOptions(
-                transaction=transaction_id)

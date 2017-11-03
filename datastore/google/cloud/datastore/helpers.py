@@ -19,16 +19,16 @@ The non-private functions are part of the API.
 
 import datetime
 import itertools
-
-from google.protobuf import struct_pb2
-from google.type import latlng_pb2
 import six
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud.datastore_v1.proto import entity_pb2 as _entity_pb2
+from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
+
+from google.protobuf import struct_pb2
+from google.type import latlng_pb2
 
 
 def _get_meaning(value_pb, is_list=False):
@@ -204,7 +204,7 @@ def entity_to_protobuf(entity):
     :rtype: :class:`.entity_pb2.Entity`
     :returns: The protobuf representing the entity.
     """
-    entity_pb = _entity_pb2.Entity()
+    entity_pb = entity_pb2.Entity()
     if entity.key is not None:
         key_pb = entity.key.to_protobuf()
         entity_pb.key.CopyFrom(key_pb)
@@ -231,6 +231,37 @@ def entity_to_protobuf(entity):
                                     is_list=value_is_list)
 
     return entity_pb
+
+
+def get_read_options(eventual, transaction_id):
+    """Validate rules for read options, and assign to the request.
+
+    Helper method for ``lookup()`` and ``run_query``.
+
+    :type eventual: bool
+    :param eventual: Flag indicating if ``EVENTUAL`` or ``STRONG``
+                     consistency should be used.
+
+    :type transaction_id: bytes
+    :param transaction_id: A transaction identifier (may be null).
+
+    :rtype: :class:`.datastore_pb2.ReadOptions`
+    :returns: The read options corresponding to the inputs.
+    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the
+             ``transaction_id`` is not ``None``.
+    """
+    if transaction_id is None:
+        if eventual:
+            return _datastore_pb2.ReadOptions(
+                read_consistency=_datastore_pb2.ReadOptions.EVENTUAL)
+        else:
+            return _datastore_pb2.ReadOptions()
+    else:
+        if eventual:
+            raise ValueError('eventual must be False when in a transaction')
+        else:
+            return _datastore_pb2.ReadOptions(
+                transaction=transaction_id)
 
 
 def key_from_protobuf(pb):

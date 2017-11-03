@@ -85,7 +85,7 @@ class Test__determine_default_project(unittest.TestCase):
         patch = mock.patch.multiple(
             'google.cloud.datastore.client',
             _get_gcd_project=gcd_mock,
-            _base_default_project=fallback_mock)
+            _default_project=fallback_mock)
         with patch:
             returned_project = self._call_fut(project_called)
 
@@ -138,7 +138,7 @@ class TestClient(unittest.TestCase):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
-            'google.cloud.datastore.client._base_default_project',
+            'google.cloud.datastore.client._default_project',
             return_value=None)
         with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
@@ -1036,9 +1036,9 @@ class TestClient(unittest.TestCase):
 class Test__get_read_options(unittest.TestCase):
 
     def _call_fut(self, eventual, transaction_id):
-        from google.cloud.datastore.client import _get_read_options
+        from google.cloud.datastore.helpers import get_read_options
 
-        return _get_read_options(eventual, transaction_id)
+        return get_read_options(eventual, transaction_id)
 
     def test_eventual_w_transaction(self):
         with self.assertRaises(ValueError):
