@@ -834,10 +834,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_retry(self):
-        from google.api_core.exceptions import ServiceUnavailable
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import _BigtableRetryableError
         from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
@@ -884,7 +884,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         worker = self._make_worker(table._instance._client,
                 table.name, [row_1, row_2, row_3])
 
-        with self.assertRaises(ServiceUnavailable):
+        with self.assertRaises(_BigtableRetryableError):
             worker._do_mutate_retryable_rows()
 
         statuses = worker.responses_statuses
@@ -894,10 +894,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_second_retry(self):
-        from google.api_core.exceptions import ServiceUnavailable
         from google.cloud.bigtable._generated.bigtable_pb2 import (
             MutateRowsResponse)
         from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import _BigtableRetryableError
         from google.rpc.status_pb2 import Status
         from tests.unit._testing import _FakeStub
 
@@ -949,7 +949,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         worker.responses_statuses = self._make_responses_statuses(
                 [0, 4, 1, 10])
 
-        with self.assertRaises(ServiceUnavailable):
+        with self.assertRaises(_BigtableRetryableError):
             worker._do_mutate_retryable_rows()
 
         statuses = worker.responses_statuses
