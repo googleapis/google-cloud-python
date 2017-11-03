@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core.gapic_v1 import config
-from google.api_core.gapic_v1 import method
+
 from google.api_core.gapic_v1 import routing_header
 
-__all__ = [
-    'config',
-    'method',
-    'routing_header',
-]
+def test_to_routing_header():
+    params = [('name', 'meep'), ('book.read', True)]
+    value = routing_header.to_routing_header(params)
+    assert value == "name=meep&book.read=True"
+
+def test_to_grpc_metadata():
+    params = [('name', 'meep'), ('book.read', True)]
+    metadata = routing_header.to_grpc_metadata(params)
+    assert metadata == (routing_header.METADATA_KEY, "name=meep&book.read=True")

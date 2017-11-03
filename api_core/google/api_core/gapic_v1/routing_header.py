@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core.gapic_v1 import config
-from google.api_core.gapic_v1 import method
-from google.api_core.gapic_v1 import routing_header
+"""Helpers for handling routing header params."""
 
-__all__ = [
-    'config',
-    'method',
-    'routing_header',
-]
+METADATA_KEY = 'x-goog-header-params'
+
+def to_routing_header(params):
+    """Returns the routing header string that the params form"""
+    return "&".join(["{}={}".format(*pair) for pair in params])
+
+def to_grpc_metadata(params):
+    """Returns the gRPC metadata that the routing header params form"""
+    return (METADATA_KEY, to_routing_header(params))
