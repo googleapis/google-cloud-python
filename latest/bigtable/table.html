@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Table &#8212; google-cloud 09897f3 documentation</title>
+    <title>Table &#8212; google-cloud e12372d documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '09897f3',
+        VERSION:     'e12372d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -44,6 +44,13 @@
   <div class="section" id="module-google.cloud.bigtable.table">
 <span id="table"></span><h1>Table<a class="headerlink" href="#module-google.cloud.bigtable.table" title="Permalink to this headline">#</a></h1>
 <p>User-friendly container for Google Cloud Bigtable Table.</p>
+<dl class="data">
+<dt id="google.cloud.bigtable.table.DEFAULT_RETRY">
+<code class="descclassname">google.cloud.bigtable.table.</code><code class="descname">DEFAULT_RETRY</code><em class="property"> = &lt;google.api_core.retry.Retry object&gt;</em><a class="headerlink" href="#google.cloud.bigtable.table.DEFAULT_RETRY" title="Permalink to this definition">#</a></dt>
+<dd><p>The default retry stategy to be used on retry-able errors.</p>
+<p>Used by <a class="reference internal" href="#google.cloud.bigtable.table.Table.mutate_rows" title="google.cloud.bigtable.table.Table.mutate_rows"><code class="xref py py-meth docutils literal"><span class="pre">mutate_rows()</span></code></a>.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.bigtable.table.Table">
 <em class="property">class </em><code class="descclassname">google.cloud.bigtable.table.</code><code class="descname">Table</code><span class="sig-paren">(</span><em>table_id</em>, <em>instance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigtable/table.html#Table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigtable.table.Table" title="Permalink to this definition">#</a></dt>
@@ -167,18 +174,22 @@ name from the column family ID.</td>
 <p>The method tries to update all specified rows.
 If some of the rows weren’t updated, it would not remove mutations.
 They can be applied to the row separately.
-If row mutations finished successfully, they would be cleaned up.
-Optionally specify a <cite>retry</cite> to re-attempt rows that return transient
-errors, until all rows succeed or the deadline is reached.</p>
+If row mutations finished successfully, they would be cleaned up.</p>
+<p>Optionally, a <code class="docutils literal"><span class="pre">retry</span></code> strategy can be specified to re-attempt
+mutations on rows that return transient errors. This method will retry
+until all rows succeed or until the request deadline is reached. To
+specify a <code class="docutils literal"><span class="pre">retry</span></code> strategy of “do-nothing”, a deadline of <code class="docutils literal"><span class="pre">0.0</span></code>
+can be specified.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a>) – List or other iterable of <a class="reference internal" href="row.html#google.cloud.bigtable.row.DirectRow" title="google.cloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> instances.</li>
-<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">Retry</span></code></a>) – (Optional) Retry delay and deadline arguments. Can be
-specified using <code class="docutils literal"><span class="pre">DEFAULT_RETRY.with_delay</span></code> and/or
-<code class="docutils literal"><span class="pre">DEFAULT_RETRY.with_deadline</span></code>.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">Retry</span></code></a>) – (Optional) Retry delay and deadline arguments. To override, the
+default value <a class="reference internal" href="#google.cloud.bigtable.table.DEFAULT_RETRY" title="google.cloud.bigtable.table.DEFAULT_RETRY"><code class="xref py py-attr docutils literal"><span class="pre">DEFAULT_RETRY</span></code></a> can be used and modified with
+the <a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry.with_delay" title="google.api_core.retry.Retry.with_delay"><code class="xref py py-meth docutils literal"><span class="pre">with_delay()</span></code></a> method or the
+<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry.with_deadline" title="google.api_core.retry.Retry.with_deadline"><code class="xref py py-meth docutils literal"><span class="pre">with_deadline()</span></code></a> method.</li>
 </ul>
 </td>
 </tr>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.retry &#8212; google-cloud 09897f3 documentation</title>
+    <title>google.api_core.retry &#8212; google-cloud e12372d documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '09897f3',
+        VERSION:     'e12372d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -117,7 +117,7 @@
 <span class="n">_DEFAULT_DEADLINE</span> <span class="o">=</span> <span class="mf">60.0</span> <span class="o">*</span> <span class="mf">2.0</span>  <span class="c1"># seconds</span>
 
 
-<div class="viewcode-block" id="if_exception_type"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.if_exception_type">[docs]</a><span class="k">def</span> <span class="nf">if_exception_type</span><span class="p">(</span><span class="o">*</span><span class="n">exception_types</span><span class="p">):</span>
+<div class="viewcode-block" id="if_exception_type"><a class="viewcode-back" href="../../../core/retry.html#google.cloud.bigtable.table.if_exception_type">[docs]</a><span class="k">def</span> <span class="nf">if_exception_type</span><span class="p">(</span><span class="o">*</span><span class="n">exception_types</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Creates a predicate to check if the exception is of a given type.</span>
 
 <span class="sd">    Args:</span>
@@ -153,7 +153,7 @@
 <span class="c1"># pylint: enable=invalid-name</span>
 
 
-<div class="viewcode-block" id="exponential_sleep_generator"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.exponential_sleep_generator">[docs]</a><span class="k">def</span> <span class="nf">exponential_sleep_generator</span><span class="p">(</span>
+<div class="viewcode-block" id="exponential_sleep_generator"><a class="viewcode-back" href="../../../core/retry.html#google.cloud.bigtable.table.exponential_sleep_generator">[docs]</a><span class="k">def</span> <span class="nf">exponential_sleep_generator</span><span class="p">(</span>
         <span class="n">initial</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="n">_DEFAULT_DELAY_MULTIPLIER</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generates sleep intervals based on the exponential back-off algorithm.</span>
 
@@ -179,7 +179,7 @@
         <span class="n">delay</span> <span class="o">=</span> <span class="n">delay</span> <span class="o">*</span> <span class="n">multiplier</span></div>
 
 
-<div class="viewcode-block" id="retry_target"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.retry_target">[docs]</a><span class="k">def</span> <span class="nf">retry_target</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">sleep_generator</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="retry_target"><a class="viewcode-back" href="../../../core/retry.html#google.cloud.bigtable.table.retry_target">[docs]</a><span class="k">def</span> <span class="nf">retry_target</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">predicate</span><span class="p">,</span> <span class="n">sleep_generator</span><span class="p">,</span> <span class="n">deadline</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Call a function and retry if it fails.</span>
 
 <span class="sd">    This is the lowest-level retry helper. Generally, you&#39;ll use the</span>
@@ -243,7 +243,7 @@
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Sleep generator stopped yielding sleep values.&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Retry"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry">[docs]</a><span class="nd">@six</span><span class="o">.</span><span class="n">python_2_unicode_compatible</span>
+<div class="viewcode-block" id="Retry"><a class="viewcode-back" href="../../../core/retry.html#google.cloud.bigtable.table.Retry">[docs]</a><span class="nd">@six</span><span class="o">.</span><span class="n">python_2_unicode_compatible</span>
 <span class="k">class</span> <span class="nc">Retry</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exponential retry decorator.</span>
 
@@ -304,7 +304,7 @@
 
         <span class="k">return</span> <span class="n">retry_wrapped_func</span>
 
-<div class="viewcode-block" id="Retry.with_deadline"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry.with_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">with_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
+<div class="viewcode-block" id="Retry.with_deadline"><a class="viewcode-back" href="../../../core/retry.html#google.cloud.bigtable.table.Retry.with_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">with_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deadline</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a copy of this retry with the given deadline.</span>
 
 <span class="sd">        Args:</span>
@@ -320,7 +320,7 @@
             <span class="n">multiplier</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span>
             <span class="n">deadline</span><span class="o">=</span><span class="n">deadline</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Retry.with_predicate"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry.with_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">with_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
+<div class="viewcode-block" id="Retry.with_predicate"><a class="viewcode-back" href="../../../core/retry.html#google.cloud.bigtable.table.Retry.with_predicate">[docs]</a>    <span class="k">def</span> <span class="nf">with_predicate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a copy of this retry with the given predicate.</span>
 
 <span class="sd">        Args:</span>
@@ -337,7 +337,7 @@
             <span class="n">multiplier</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_multiplier</span><span class="p">,</span>
             <span class="n">deadline</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_deadline</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Retry.with_delay"><a class="viewcode-back" href="../../../core/retry.html#google.api_core.retry.Retry.with_delay">[docs]</a>    <span class="k">def</span> <span class="nf">with_delay</span><span class="p">(</span>
+<div class="viewcode-block" id="Retry.with_delay"><a class="viewcode-back" href="../../../core/retry.html#google.cloud.bigtable.table.Retry.with_delay">[docs]</a>    <span class="k">def</span> <span class="nf">with_delay</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a copy of this retry with the given delay options.</span>
 
