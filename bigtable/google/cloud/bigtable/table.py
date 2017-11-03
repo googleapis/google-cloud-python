@@ -486,7 +486,7 @@ class _RetryableMutateRowsWorker(object):
 
         if len(retryable_rows) != num_responses:
             raise RuntimeError(
-                'Unexpected the number of responses', num_responses,
+                'Unexpected number of responses', num_responses,
                 'Expected', len(retryable_rows))
 
         if num_retryable_responses:
