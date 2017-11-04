@@ -54,8 +54,8 @@ See: `Speech Asynchronous Recognize`_
     ...         sample_rate_hertz=44100,
     ...     ),
     ... )
-    >>> opresult = operation.result()
-    >>> for result in opresult.results:
+    >>> op_result = operation.result()
+    >>> for result in op_result.results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
     ...         print(alternative.transcript)
