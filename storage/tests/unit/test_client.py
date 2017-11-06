@@ -68,11 +68,24 @@ class TestClient(unittest.TestCase):
         CREDENTIALS = _make_credentials()
 
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._connection.credentials, CREDENTIALS)
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
+
+    def test_create_anonymous_client(self):
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.storage._http import Connection
+
+        klass = self._get_target_class()
+        client = klass.create_anonymous_client()
+
+        self.assertIsNone(client.project)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIsInstance(
+            client._connection.credentials, AnonymousCredentials)
 
     def test__push_batch_and__pop_batch(self):
         from google.cloud.storage.batch import Batch

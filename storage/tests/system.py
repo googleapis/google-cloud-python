@@ -952,3 +952,15 @@ class TestStorageNotificationCRUD(unittest.TestCase):
             self.assertEqual(notifications[0].topic_name, self.TOPIC_NAME)
         finally:
             notification.delete()
+
+
+class TestAnonymousClient(unittest.TestCase):
+
+    PUBLIC_BUCKET = 'gcp-public-data-landsat'
+
+    def test_access_to_public_bucket(self):
+        anonymous = storage.Client.create_anonymous_client()
+        bucket = anonymous.bucket(self.PUBLIC_BUCKET)
+        blob, = bucket.list_blobs(max_results=1)
+        with tempfile.TemporaryFile() as stream:
+            blob.download_to_file(stream)
