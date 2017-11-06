@@ -15,7 +15,7 @@
 
 import os
 
-from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
 
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import (

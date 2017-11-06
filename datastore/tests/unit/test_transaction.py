@@ -63,7 +63,7 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         id_ = 678
@@ -153,7 +153,7 @@ class TestTransaction(unittest.TestCase):
         ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_commit_no_partial_keys(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         id_ = 1002930
@@ -170,7 +170,7 @@ class TestTransaction(unittest.TestCase):
         ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_commit_w_partial_keys(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         kind = 'KIND'
@@ -193,7 +193,7 @@ class TestTransaction(unittest.TestCase):
         ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_context_manager_no_raise(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         id_ = 912830
@@ -333,7 +333,7 @@ def _make_options(*args, **kwargs):
     return TransactionOptions(*args, **kwargs)
 
 def _make_key(kind, id_, project):
-    from google.cloud.proto.datastore.v1 import entity_pb2
+    from google.cloud.datastore_v1.proto import entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
@@ -390,7 +390,7 @@ class _NoCommitBatch(object):
 
 
 def _make_commit_response(*keys):
-    from google.cloud.proto.datastore.v1 import datastore_pb2
+    from google.cloud.datastore_v1.proto import datastore_pb2
 
     mutation_results = [
         datastore_pb2.MutationResult(key=key) for key in keys]

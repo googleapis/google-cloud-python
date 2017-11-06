@@ -24,7 +24,7 @@ def _make_credentials():
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
-    from google.cloud.proto.datastore.v1 import entity_pb2
+    from google.cloud.datastore_v1.proto import entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
@@ -338,7 +338,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
         creds = _make_credentials()
@@ -355,8 +355,8 @@ class TestClient(unittest.TestCase):
             self.PROJECT, read_options, [key.to_protobuf()])
 
     def test_get_multi_miss_w_missing(self):
-        from google.cloud.proto.datastore.v1 import entity_pb2
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -411,7 +411,7 @@ class TestClient(unittest.TestCase):
                           [key], deferred=deferred)
 
     def test_get_multi_miss_w_deferred(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
         key = Key('Kind', 1234, project=self.PROJECT)
@@ -435,8 +435,8 @@ class TestClient(unittest.TestCase):
             self.PROJECT, read_options, [key_pb])
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
         from google.cloud.datastore.entity import Entity
         from google.cloud.datastore.key import Key
 
@@ -484,7 +484,7 @@ class TestClient(unittest.TestCase):
             self.PROJECT, read_options, [key1_pb, key2_pb])
 
     def test_get_multi_hit(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
         kind = 'Kind'
@@ -517,7 +517,7 @@ class TestClient(unittest.TestCase):
             self.PROJECT, read_options, [key.to_protobuf()])
 
     def test_get_multi_hit_w_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
         txn_id = b'123'
@@ -553,7 +553,7 @@ class TestClient(unittest.TestCase):
             self.PROJECT, read_options, [key.to_protobuf()])
 
     def test_get_multi_hit_multiple_keys_same_project(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.key import Key
 
         kind = 'Kind'
@@ -668,7 +668,7 @@ class TestClient(unittest.TestCase):
         self.assertRaises(ValueError, client.put_multi, Entity())
 
     def test_put_multi_no_batch_w_partial_key(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.helpers import _property_tuples
 
         entity = _Entity(foo=u'bar')
@@ -750,7 +750,7 @@ class TestClient(unittest.TestCase):
         client._datastore_api_internal.commit.assert_not_called()
 
     def test_delete_multi_no_batch(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         key = _Key(self.PROJECT)
 
@@ -1022,7 +1022,7 @@ class Test__get_read_options(unittest.TestCase):
             self._call_fut(True, b'123')
 
     def test_eventual_wo_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         read_options = self._call_fut(True, None)
         expected = datastore_pb2.ReadOptions(
@@ -1030,7 +1030,7 @@ class Test__get_read_options(unittest.TestCase):
         self.assertEqual(read_options, expected)
 
     def test_default_w_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         txn_id = b'123abc-easy-as'
         read_options = self._call_fut(False, txn_id)
@@ -1038,7 +1038,7 @@ class Test__get_read_options(unittest.TestCase):
         self.assertEqual(read_options, expected)
 
     def test_default_wo_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         read_options = self._call_fut(False, None)
         expected = datastore_pb2.ReadOptions()
@@ -1103,7 +1103,7 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
 
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
@@ -1153,7 +1153,7 @@ def _mutated_pb(test_case, mutation_pb_list, mutation_type):
 
 
 def _make_key(id_):
-    from google.cloud.proto.datastore.v1 import entity_pb2
+    from google.cloud.datastore_v1.proto import entity_pb2
 
     key = entity_pb2.Key()
     elem = key.path.add()
@@ -1162,7 +1162,7 @@ def _make_key(id_):
 
 
 def _make_commit_response(*keys):
-    from google.cloud.proto.datastore.v1 import datastore_pb2
+    from google.cloud.datastore_v1.proto import datastore_pb2
 
     mutation_results = [
         datastore_pb2.MutationResult(key=key) for key in keys]
