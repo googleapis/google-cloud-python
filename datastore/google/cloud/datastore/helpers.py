@@ -252,15 +252,15 @@ def get_read_options(eventual, transaction_id):
     """
     if transaction_id is None:
         if eventual:
-            return _datastore_pb2.ReadOptions(
-                read_consistency=_datastore_pb2.ReadOptions.EVENTUAL)
+            return datastore_pb2.ReadOptions(
+                read_consistency=datastore_pb2.ReadOptions.EVENTUAL)
         else:
-            return _datastore_pb2.ReadOptions()
+            return datastore_pb2.ReadOptions()
     else:
         if eventual:
             raise ValueError('eventual must be False when in a transaction')
         else:
-            return _datastore_pb2.ReadOptions(
+            return datastore_pb2.ReadOptions(
                 transaction=transaction_id)
 
 

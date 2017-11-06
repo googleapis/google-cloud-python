@@ -85,7 +85,7 @@ class Test__determine_default_project(unittest.TestCase):
         patch = mock.patch.multiple(
             'google.cloud.datastore.client',
             _get_gcd_project=gcd_mock,
-            _default_project=fallback_mock)
+            _base_default_project=fallback_mock)
         with patch:
             returned_project = self._call_fut(project_called)
 
@@ -138,7 +138,7 @@ class TestClient(unittest.TestCase):
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
-            'google.cloud.datastore.client._default_project',
+            'google.cloud.datastore.client._base_default_project',
             return_value=None)
         with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
@@ -1031,41 +1031,6 @@ class TestClient(unittest.TestCase):
             self.assertIs(query, mock_klass.return_value)
             mock_klass.assert_called_once_with(
                 client, project=self.PROJECT, namespace=namespace2, kind=kind)
-
-
-class Test__get_read_options(unittest.TestCase):
-
-    def _call_fut(self, eventual, transaction_id):
-        from google.cloud.datastore.helpers import get_read_options
-
-        return get_read_options(eventual, transaction_id)
-
-    def test_eventual_w_transaction(self):
-        with self.assertRaises(ValueError):
-            self._call_fut(True, b'123')
-
-    def test_eventual_wo_transaction(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
-
-        read_options = self._call_fut(True, None)
-        expected = datastore_pb2.ReadOptions(
-            read_consistency=datastore_pb2.ReadOptions.EVENTUAL)
-        self.assertEqual(read_options, expected)
-
-    def test_default_w_transaction(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
-
-        txn_id = b'123abc-easy-as'
-        read_options = self._call_fut(False, txn_id)
-        expected = datastore_pb2.ReadOptions(transaction=txn_id)
-        self.assertEqual(read_options, expected)
-
-    def test_default_wo_transaction(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
-
-        read_options = self._call_fut(False, None)
-        expected = datastore_pb2.ReadOptions()
-        self.assertEqual(read_options, expected)
 
 
 class _NoCommitBatch(object):

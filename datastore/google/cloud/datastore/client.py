@@ -17,10 +17,8 @@ import os
 
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import (_determine_default_project as
-                                   _default_project)
-
+                                   _base_default_project)
 from google.cloud.client import ClientWithProject
-
 from google.cloud.datastore import helpers
 from google.cloud.datastore._http import HTTPDatastoreAPI
 from google.cloud.datastore.batch import Batch
@@ -74,7 +72,7 @@ def _determine_default_project(project=None):
         project = _get_gcd_project()
 
     if project is None:
-        project = _default_project(project=project)
+        project = _base_default_project(project=project)
 
     return project
 
@@ -308,9 +306,8 @@ class Client(ClientWithProject):
 
         :type eventual: bool
         :param eventual: (Optional) Defaults to strongly consistent (False).
-                                    Setting True will use eventual consistency,
-                                    but cannot be used inside a transaction or
-                                    will raise ValueError.
+                         Setting True will use eventual consistency, but cannot
+                         be used inside a transaction or will raise ValueError.
 
         :rtype: :class:`google.cloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
