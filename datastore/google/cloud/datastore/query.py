@@ -19,9 +19,9 @@ import base64
 from google.api_core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
 
-from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
-from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
-from google.cloud.proto.datastore.v1 import query_pb2 as _query_pb2
+from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore_v1.proto import entity_pb2 as _entity_pb2
+from google.cloud.datastore_v1.proto import query_pb2 as _query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
 
