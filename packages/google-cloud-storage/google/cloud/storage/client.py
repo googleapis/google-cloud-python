@@ -15,6 +15,8 @@
 """Client for interacting with the Google Cloud Storage API."""
 
 
+from google.auth.credentials import AnonymousCredentials
+
 from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
@@ -59,6 +61,22 @@ class Client(ClientWithProject):
                                      _http=_http)
         self._connection = Connection(self)
         self._batch_stack = _LocalStack()
+
+    @classmethod
+    def create_anonymous_client(cls):
+        """Factory: return client with anonymous credentials.
+
+        .. note::
+
+           Such a client has only limited access to "public" buckets:
+           listing their contents and downloading their blobs.
+
+        :rtype: :class:`google.cloud.storage.client.Client`
+        :returns: Instance w/ anonymous credentials and no project.
+        """
+        client = cls(project='<none>', credentials=AnonymousCredentials())
+        client.project = None
+        return client
 
     @property
     def _connection(self):
