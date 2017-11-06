@@ -94,16 +94,17 @@ class _GapicCallable(object):
         timeout (google.api_core.timeout.Timeout): The default timeout
             for the callable. If ``None``, this callable will not specify
             a timeout argument to the low-level RPC method by default.
-        user_agent_metadata (Tuple[str, str]): The user agent metadata key and
-            value to provide to the RPC method. If ``None``, no additional
-            metadata will be passed to the RPC method.
+        metadata (Sequence[Tuple[str, str]]): Additional metadata that is
+            provided to the RPC method on every invocation. This is merged with
+            any metadata specified during invocation. If ``None``, no
+            additional metadata will be passed to the RPC method.
     """
 
-    def __init__(self, target, retry, timeout, user_agent_metadata=None):
+    def __init__(self, target, retry, timeout, metadata=None):
         self._target = target
         self._retry = retry
         self._timeout = timeout
-        self._user_agent_metadata = user_agent_metadata
+        self._metadata = metadata
 
     def __call__(self, *args, **kwargs):
         """Invoke the low-level RPC with retry, timeout, and metadata."""
@@ -126,9 +127,9 @@ class _GapicCallable(object):
         wrapped_func = _apply_decorators(self._target, [retry, timeout_])
 
         # Add the user agent metadata to the call.
-        if self._user_agent_metadata is not None:
-            metadata = kwargs.get('metadata', [])
-            metadata.append(self._user_agent_metadata)
+        if self._metadata is not None:
+            metadata = list(kwargs.get('metadata', []))
+            metadata.extend(self._metadata)
             kwargs['metadata'] = metadata
 
         return wrapped_func(*args, **kwargs)
@@ -219,11 +220,11 @@ def wrap_method(
     func = grpc_helpers.wrap_errors(func)
 
     if client_info is not None:
-        user_agent_metadata = client_info.to_grpc_metadata()
+        user_agent_metadata = [client_info.to_grpc_metadata()]
     else:
         user_agent_metadata = None
 
     return general_helpers.wraps(func)(
         _GapicCallable(
             func, default_retry, default_timeout,
-            user_agent_metadata=user_agent_metadata))
+            metadata=user_agent_metadata))
