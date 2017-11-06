@@ -794,7 +794,8 @@ def get_transform_pb(document_path, transform_paths):
                     field_path=field_path,
                     set_to_server_value=REQUEST_TIME_ENUM,
                 )
-                for field_path in transform_paths
+                # Sort transform_paths so test comparision works.
+                for field_path in sorted(transform_paths)
             ],
         ),
     )
