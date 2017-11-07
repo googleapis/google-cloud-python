@@ -206,7 +206,7 @@ class TestDataset(unittest.TestCase):
         self.DS_FULL_ID = '%s:%s' % (self.PROJECT, self.DS_ID)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
 
-    def _makeResource(self):
+    def _make_resource(self):
         self._setUpConstants()
         USER_EMAIL = 'phred@example.com'
         GROUP_EMAIL = 'group-name@lists.example.com'
@@ -422,7 +422,7 @@ class TestDataset(unittest.TestCase):
         self._verify_resource_properties(dataset, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         klass = self._get_target_class()
         dataset = klass.from_api_repr(RESOURCE)
         self._verify_resource_properties(dataset, RESOURCE)
