@@ -114,7 +114,7 @@ class _Base(object):
 
         return TableReference(self.DS_REF, table_id)
 
-    def _makeResource(self, started=False, ended=False):
+    def _make_resource(self, started=False, ended=False):
         self._setUpConstants()
         resource = {
             'configuration': {
@@ -219,8 +219,8 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.OUTPUT_BYTES = 23456
         self.OUTPUT_ROWS = 345
 
-    def _makeResource(self, started=False, ended=False):
-        resource = super(TestLoadJob, self)._makeResource(
+    def _make_resource(self, started=False, ended=False):
+        resource = super(TestLoadJob, self)._make_resource(
             started, ended)
         config = resource['configuration']['load']
         config['sourceUris'] = [self.SOURCE1]
@@ -374,13 +374,13 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_done(self):
         client = _make_client(project=self.PROJECT)
-        resource = self._makeResource(ended=True)
+        resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
         self.assertTrue(job.done())
 
     def test_result(self):
         client = _make_client(project=self.PROJECT)
-        resource = self._makeResource(ended=True)
+        resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
 
         result = job.result()
@@ -388,7 +388,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         self.assertIs(result, job)
 
     def test_result_invokes_begin(self):
-        begun_resource = self._makeResource()
+        begun_resource = self._make_resource()
         done_resource = copy.deepcopy(begun_resource)
         done_resource['status'] = {'state': 'DONE'}
         connection = _Connection(begun_resource, done_resource)
@@ -537,7 +537,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_w_properties(self):
         client = _make_client(project=self.PROJECT)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         load_config = RESOURCE['configuration']['load']
         load_config['createDisposition'] = 'CREATE_IF_NEEDED'
         klass = self._get_target_class()
@@ -557,7 +557,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -595,7 +595,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_begin_w_autodetect(self):
         path = '/projects/{}/jobs'.format(self.PROJECT)
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['configuration']['load']['autodetect'] = True
         # Ensure None for missing server-set props
         del resource['statistics']['creationTime']
@@ -639,7 +639,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.schema import SchemaField
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource(ended=True)
+        RESOURCE = self._make_resource(ended=True)
         LOAD_CONFIGURATION = {
             'sourceUris': [self.SOURCE1],
             'destinationTable': {
@@ -743,7 +743,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         table = _Table()
@@ -759,7 +759,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_reload_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn1 = _Connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
@@ -778,7 +778,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_cancel_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource(ended=True)
+        RESOURCE = self._make_resource(ended=True)
         RESPONSE = {'job': RESOURCE}
         conn = _Connection(RESPONSE)
         client = _make_client(project=self.PROJECT, connection=conn)
@@ -795,7 +795,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
     def test_cancel_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s/cancel' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource(ended=True)
+        RESOURCE = self._make_resource(ended=True)
         RESPONSE = {'job': RESOURCE}
         conn1 = _Connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
@@ -825,8 +825,8 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         return CopyJob
 
-    def _makeResource(self, started=False, ended=False):
-        resource = super(TestCopyJob, self)._makeResource(
+    def _make_resource(self, started=False, ended=False):
+        resource = super(TestCopyJob, self)._make_resource(
             started, ended)
         config = resource['configuration']['copy']
         config['sourceTables'] = [{
@@ -997,7 +997,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_w_properties(self):
         client = _make_client(project=self.PROJECT)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         copy_config = RESOURCE['configuration']['copy']
         copy_config['createDisposition'] = 'CREATE_IF_NEEDED'
         klass = self._get_target_class()
@@ -1007,7 +1007,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -1050,7 +1050,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource(ended=True)
+        RESOURCE = self._make_resource(ended=True)
         COPY_CONFIGURATION = {
             'sourceTables': [{
                 'projectId': self.PROJECT,
@@ -1134,7 +1134,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source = self._table_ref(self.SOURCE_TABLE)
@@ -1151,7 +1151,7 @@ class TestCopyJob(unittest.TestCase, _Base):
 
     def test_reload_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn1 = _Connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
@@ -1181,8 +1181,8 @@ class TestExtractJob(unittest.TestCase, _Base):
 
         return ExtractJob
 
-    def _makeResource(self, started=False, ended=False):
-        resource = super(TestExtractJob, self)._makeResource(
+    def _make_resource(self, started=False, ended=False):
+        resource = super(TestExtractJob, self)._make_resource(
             started, ended)
         config = resource['configuration']['extract']
         config['sourceTable'] = {
@@ -1316,7 +1316,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_w_properties(self):
         client = _make_client(project=self.PROJECT)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         extract_config = RESOURCE['configuration']['extract']
         extract_config['compression'] = 'GZIP'
         klass = self._get_target_class()
@@ -1326,7 +1326,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_begin_w_bound_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -1366,7 +1366,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_begin_w_alternate_client(self):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource(ended=True)
+        RESOURCE = self._make_resource(ended=True)
         EXTRACT_CONFIGURATION = {
             'sourceTable': {
                 'projectId': self.PROJECT,
@@ -1450,7 +1450,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_reload_w_bound_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         source_dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -1468,7 +1468,7 @@ class TestExtractJob(unittest.TestCase, _Base):
 
     def test_reload_w_alternate_client(self):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn1 = _Connection()
         client1 = _make_client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
@@ -1562,8 +1562,8 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         return QueryJob
 
-    def _makeResource(self, started=False, ended=False):
-        resource = super(TestQueryJob, self)._makeResource(
+    def _make_resource(self, started=False, ended=False):
+        resource = super(TestQueryJob, self)._make_resource(
             started, ended)
         config = resource['configuration']['query']
         config['query'] = self.QUERY
@@ -1788,7 +1788,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_from_api_repr_w_properties(self):
         client = _make_client(project=self.PROJECT)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         query_config = RESOURCE['configuration']['query']
         query_config['createDisposition'] = 'CREATE_IF_NEEDED'
         query_config['writeDisposition'] = 'WRITE_TRUNCATE'
@@ -1816,7 +1816,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     def test_done(self):
         client = _make_client(project=self.PROJECT)
-        resource = self._makeResource(ended=True)
+        resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
         self.assertTrue(job.done())
 
@@ -2137,7 +2137,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         }
         connection = _Connection(query_resource, query_resource)
         client = _make_client(self.PROJECT, connection=connection)
-        resource = self._makeResource(ended=True)
+        resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
 
         result = job.result()
@@ -2145,7 +2145,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(list(result), [])
 
     def test_result_invokes_begins(self):
-        begun_resource = self._makeResource()
+        begun_resource = self._make_resource()
         incomplete_resource = {
             'jobComplete': False,
             'jobReference': {
@@ -2172,7 +2172,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(reload_request['method'], 'GET')
 
     def test_result_w_timeout(self):
-        begun_resource = self._makeResource()
+        begun_resource = self._make_resource()
         query_resource = {
             'jobComplete': True,
             'jobReference': {
@@ -2229,7 +2229,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         DS_ID = 'DATASET'
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -2277,7 +2277,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
         TABLE = 'TABLE'
         DS_ID = 'DATASET'
-        RESOURCE = self._makeResource(ended=True)
+        RESOURCE = self._make_resource(ended=True)
         QUERY_CONFIGURATION = {
             'query': self.QUERY,
             'allowLargeResults': True,
@@ -2351,7 +2351,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         RESOURCE_URI = 'gs://some-bucket/js/lib.js'
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -2405,7 +2405,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         query_parameters = [ScalarQueryParameter('foo', 'INT64', 123)]
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -2461,7 +2461,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
         query_parameters = [ScalarQueryParameter.positional('INT64', 123)]
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -2517,7 +2517,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.external_config import BigtableColumnFamily
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -2601,7 +2601,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.job import QueryJobConfig
 
         PATH = '/projects/%s/jobs' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
         del RESOURCE['etag']
@@ -2675,7 +2675,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         DS_ID = 'DATASET'
         DEST_TABLE = 'dest_table'
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _make_client(project=self.PROJECT, connection=conn)
         dataset_ref = DatasetReference(self.PROJECT, DS_ID)
@@ -2698,7 +2698,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         PATH = '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_ID)
         DS_ID = 'DATASET'
         DEST_TABLE = 'dest_table'
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         q_config = RESOURCE['configuration']['query']
         q_config['destinationTable'] = {
             'projectId': self.PROJECT,
