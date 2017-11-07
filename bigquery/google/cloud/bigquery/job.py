@@ -1949,6 +1949,15 @@ class QueryJob(_AsyncJob):
         return self._client.list_rows(dest_table, selected_fields=schema,
                                       retry=retry)
 
+    def to_dataframe(self):
+        import pandas as pd
+
+        iterator = self.result()
+        column_headers = [field.name for field in iterator.schema]
+        rows = [row.values() for row in iterator]
+
+        return pd.DataFrame(rows, columns=column_headers)
+
     def __iter__(self):
         return iter(self.result())
 

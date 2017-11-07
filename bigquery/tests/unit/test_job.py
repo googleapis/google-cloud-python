@@ -2720,6 +2720,70 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_to_dataframe(self):
+        import pandas as pd
+
+        begun_resource = self._makeResource()
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'schema': {
+                'fields': [
+                    {'name': 'name', 'type': 'STRING', 'mode': 'NULLABLE'},
+                    {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE'},
+                ],
+            },
+            'rows': [
+                {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+                {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+                {'f': [{'v': 'Wylma Phlyntstone'}, {'v': '29'}]},
+                {'f': [{'v': 'Bhettye Rhubble'}, {'v': '27'}]},
+            ],
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(
+            begun_resource, query_resource, done_resource, query_resource)
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        df = job.to_dataframe()
+
+        self.assertIsInstance(df, pd.DataFrame)
+        self.assertEqual(len(df), 4)
+        self.assertEqual(list(df), ['name', 'age'])
+
+    def test_to_dataframe_w_empty_results(self):
+        import pandas as pd
+
+        begun_resource = self._makeResource()
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'schema': {
+                'fields': [
+                    {'name': 'name', 'type': 'STRING', 'mode': 'NULLABLE'},
+                    {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE'},
+                ],
+            },
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(
+            begun_resource, query_resource, done_resource, query_resource)
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        df = job.to_dataframe()
+
+        self.assertIsInstance(df, pd.DataFrame)
+        self.assertEqual(len(df), 0)
+        self.assertEqual(list(df), ['name', 'age'])
+
     def test_iter(self):
         import types
 
