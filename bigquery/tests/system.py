@@ -1244,23 +1244,6 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
 
-    def test_query_to_dataframe(self):
-        import pandas as pd
-
-        query = """
-            SELECT corpus AS title, COUNT(*) AS unique_words
-            FROM `bigquery-public-data.samples.shakespeare`
-            GROUP BY title
-            ORDER BY unique_words DESC
-            LIMIT 10"""
-
-        query_job = Config.CLIENT.query(query)
-        df = query_job.to_dataframe()
-
-        self.assertIsInstance(df, pd.DataFrame)
-        self.assertEqual(list(df), ['title', 'unique_words'])
-        self.assertEqual(len(df), 10)
-
     def test_query_table_def(self):
         gs_url = self._write_csv_to_storage(
             'bq_external_test' + unique_resource_id(), 'person_ages.csv',
