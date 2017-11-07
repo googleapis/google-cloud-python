@@ -261,7 +261,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
         return _parse_schema_resource(resource)
 
-    def _makeResource(self):
+    def _make_resource(self):
         return {
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
@@ -270,12 +270,12 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
         }
 
     def test__parse_schema_resource_defaults(self):
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         schema = self._call_fut(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
     def test__parse_schema_resource_subfields(self):
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         RESOURCE['schema']['fields'].append(
             {'name': 'phone',
              'type': 'RECORD',
@@ -290,7 +290,7 @@ class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
         self._verifySchema(schema, RESOURCE)
 
     def test__parse_schema_resource_fields_without_mode(self):
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         RESOURCE['schema']['fields'].append(
             {'name': 'phone',
              'type': 'STRING'})

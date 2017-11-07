@@ -987,7 +987,7 @@ class TestQueryResults(unittest.TestCase):
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
 
-    def _makeResource(self):
+    def _make_resource(self):
         return {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1013,7 +1013,7 @@ class TestQueryResults(unittest.TestCase):
             self.assertEqual(query.schema, ())
 
     def test_ctor_defaults(self):
-        query = self._make_one(self._makeResource())
+        query = self._make_one(self._make_resource())
         self.assertIsNone(query.cache_hit)
         self.assertIsNone(query.complete)
         self.assertIsNone(query.errors)
@@ -1025,34 +1025,34 @@ class TestQueryResults(unittest.TestCase):
         self.assertIsNone(query.total_bytes_processed)
 
     def test_cache_hit_missing(self):
-        query = self._make_one(self._makeResource())
+        query = self._make_one(self._make_resource())
         self.assertIsNone(query.cache_hit)
 
     def test_cache_hit_present(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['cacheHit'] = True
         query = self._make_one(resource)
         self.assertTrue(query.cache_hit)
 
     def test_complete_missing(self):
-        query = self._make_one(self._makeResource())
+        query = self._make_one(self._make_resource())
         self.assertIsNone(query.complete)
 
     def test_complete_present(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['jobComplete'] = True
         query = self._make_one(resource)
         self.assertTrue(query.complete)
 
     def test_errors_missing(self):
-        query = self._make_one(self._makeResource())
+        query = self._make_one(self._make_resource())
         self.assertIsNone(query.errors)
 
     def test_errors_present(self):
         ERRORS = [
             {'reason': 'testing'},
         ]
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['errors'] = ERRORS
         query = self._make_one(resource)
         self.assertEqual(query.errors, ERRORS)
@@ -1067,69 +1067,69 @@ class TestQueryResults(unittest.TestCase):
             self._make_one(resource)
 
     def test_job_id_present(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['jobReference']['jobId'] = 'custom-job'
         query = self._make_one(resource)
         self.assertEqual(query.job_id, 'custom-job')
 
     def test_page_token_missing(self):
-        query = self._make_one(self._makeResource())
+        query = self._make_one(self._make_resource())
         self.assertIsNone(query.page_token)
 
     def test_page_token_present(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['pageToken'] = 'TOKEN'
         query = self._make_one(resource)
         self.assertEqual(query.page_token, 'TOKEN')
 
     def test_total_rows_present_integer(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['totalRows'] = 42
         query = self._make_one(resource)
         self.assertEqual(query.total_rows, 42)
 
     def test_total_rows_present_string(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['totalRows'] = '42'
         query = self._make_one(resource)
         self.assertEqual(query.total_rows, 42)
 
     def test_total_bytes_processed_missing(self):
-        query = self._make_one(self._makeResource())
+        query = self._make_one(self._make_resource())
         self.assertIsNone(query.total_bytes_processed)
 
     def test_total_bytes_processed_present_integer(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['totalBytesProcessed'] = 123456
         query = self._make_one(resource)
         self.assertEqual(query.total_bytes_processed, 123456)
 
     def test_total_bytes_processed_present_string(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['totalBytesProcessed'] = '123456'
         query = self._make_one(resource)
         self.assertEqual(query.total_bytes_processed, 123456)
 
     def test_num_dml_affected_rows_missing(self):
-        query = self._make_one(self._makeResource())
+        query = self._make_one(self._make_resource())
         self.assertIsNone(query.num_dml_affected_rows)
 
     def test_num_dml_affected_rows_present_integer(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['numDmlAffectedRows'] = 123456
         query = self._make_one(resource)
         self.assertEqual(query.num_dml_affected_rows, 123456)
 
     def test_num_dml_affected_rows_present_string(self):
-        resource = self._makeResource()
+        resource = self._make_resource()
         resource['numDmlAffectedRows'] = '123456'
         query = self._make_one(resource)
         self.assertEqual(query.num_dml_affected_rows, 123456)
 
     def test_schema(self):
-        query = self._make_one(self._makeResource())
-        self._verifySchema(query, self._makeResource())
-        resource = self._makeResource()
+        query = self._make_one(self._make_resource())
+        self._verifySchema(query, self._make_resource())
+        resource = self._make_resource()
         resource['schema'] = {
             'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQURED'},
