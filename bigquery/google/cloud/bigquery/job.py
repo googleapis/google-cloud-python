@@ -1950,6 +1950,14 @@ class QueryJob(_AsyncJob):
                                       retry=retry)
 
     def to_dataframe(self):
+        """Create a pandas DataFrame from the query results.
+
+        :rtype: ``pandas.DataFrame``
+        :returns: A ``pandas.DataFrame`` object populated with row data
+                  and column headers from the query results. The column
+                  headers are derived from the destination table's
+                  schema.
+        """
         import pandas as pd
 
         iterator = self.result()
