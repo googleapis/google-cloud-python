@@ -177,7 +177,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.NUM_EST_BYTES = 1234
         self.NUM_EST_ROWS = 23
 
-    def _makeResource(self):
+    def _make_resource(self):
         self._setUpConstants()
         return {
             'creationTime': self.WHEN_TS * 1000,
@@ -576,7 +576,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _millis
 
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         RESOURCE['view'] = {'query': 'select fullname, age from person_ages'}
         RESOURCE['type'] = 'VIEW'
         RESOURCE['location'] = 'EU'
