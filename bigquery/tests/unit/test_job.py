@@ -2723,7 +2723,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_to_dataframe(self):
         import pandas as pd
 
-        begun_resource = self._makeResource()
+        begun_resource = self._make_resource()
         query_resource = {
             'jobComplete': True,
             'jobReference': {
@@ -2758,7 +2758,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_to_dataframe_w_empty_results(self):
         import pandas as pd
 
-        begun_resource = self._makeResource()
+        begun_resource = self._make_resource()
         query_resource = {
             'jobComplete': True,
             'jobReference': {
