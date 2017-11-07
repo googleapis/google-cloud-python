@@ -35,7 +35,7 @@ class TestChanges(unittest.TestCase):
 
         self.WHEN = _NOW().replace(tzinfo=UTC)
 
-    def _makeResource(self):
+    def _make_resource(self):
         from google.cloud._helpers import _datetime_to_rfc3339
 
         when_str = _datetime_to_rfc3339(self.WHEN)
@@ -98,7 +98,7 @@ class TestChanges(unittest.TestCase):
 
     def test_from_api_repr_missing_additions_deletions(self):
         self._setUpConstants()
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         del RESOURCE['additions']
         del RESOURCE['deletions']
         zone = _Zone()
@@ -110,7 +110,7 @@ class TestChanges(unittest.TestCase):
 
     def test_from_api_repr(self):
         self._setUpConstants()
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         zone = _Zone()
         klass = self._get_target_class()
 
@@ -166,7 +166,7 @@ class TestChanges(unittest.TestCase):
 
     def test_create_wo_additions_or_deletions(self):
         self._setUpConstants()
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = _Zone(client)
@@ -181,7 +181,7 @@ class TestChanges(unittest.TestCase):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
 
         self._setUpConstants()
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         PATH = 'projects/%s/managedZones/%s/changes' % (
             self.PROJECT, self.ZONE_NAME)
         conn = _Connection(RESOURCE)
@@ -210,7 +210,7 @@ class TestChanges(unittest.TestCase):
         from google.cloud.dns.resource_record_set import ResourceRecordSet
 
         self._setUpConstants()
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         PATH = 'projects/%s/managedZones/%s/changes' % (
             self.PROJECT, self.ZONE_NAME)
         conn1 = _Connection()
@@ -280,7 +280,7 @@ class TestChanges(unittest.TestCase):
         PATH = 'projects/%s/managedZones/%s/changes/%s' % (
             self.PROJECT, self.ZONE_NAME, self.CHANGES_NAME)
         self._setUpConstants()
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = _Zone(client)
@@ -299,7 +299,7 @@ class TestChanges(unittest.TestCase):
         PATH = 'projects/%s/managedZones/%s/changes/%s' % (
             self.PROJECT, self.ZONE_NAME, self.CHANGES_NAME)
         self._setUpConstants()
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
