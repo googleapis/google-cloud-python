@@ -467,7 +467,7 @@ class TestIterator(unittest.TestCase):
         entity_pbs = [
             _make_entity('World', 1234, 'PROJECT'),
         ]
-        cursor_as_bytes = b''
+        cursor_as_bytes = b'\x9ai\xe7'
         skipped_results = 44
         more_results_enum = query_pb2.QueryResultBatch.NO_MORE_RESULTS
         response_pb = _make_query_response(
