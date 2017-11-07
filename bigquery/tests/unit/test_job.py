@@ -16,6 +16,10 @@ import copy
 
 from six.moves import http_client
 import unittest
+try:
+    import pandas
+except ImportError:
+    pandas = None
 
 from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
@@ -2720,9 +2724,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
     def test_to_dataframe(self):
-        import pandas as pd
-
         begun_resource = self._make_resource()
         query_resource = {
             'jobComplete': True,
@@ -2751,13 +2754,12 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         df = job.to_dataframe()
 
-        self.assertIsInstance(df, pd.DataFrame)
-        self.assertEqual(len(df), 4)
-        self.assertEqual(list(df), ['name', 'age'])
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 4)  # verify the number of rows
+        self.assertEqual(list(df), ['name', 'age'])  # verify the column names
 
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
     def test_to_dataframe_w_empty_results(self):
-        import pandas as pd
-
         begun_resource = self._make_resource()
         query_resource = {
             'jobComplete': True,
@@ -2780,9 +2782,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_ID, self.QUERY, client)
         df = job.to_dataframe()
 
-        self.assertIsInstance(df, pd.DataFrame)
-        self.assertEqual(len(df), 0)
-        self.assertEqual(list(df), ['name', 'age'])
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 0)  # verify the number of rows
+        self.assertEqual(list(df), ['name', 'age'])  # verify the column names
 
     def test_iter(self):
         import types
