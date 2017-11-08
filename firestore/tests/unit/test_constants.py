@@ -12,20 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Helpful constants to use for Google Cloud Firestore."""
+import unittest
 
 
-class sentinel(object):
-    """Class for sentinel values, so they print nicely."""
+class TestSentinel(unittest.TestCase):
 
-    def __init__(self, name):
-        self._name = name
+    def test_str(self):
+        from google.cloud.firestore_v1beta1 import DELETE_FIELD
+        from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
 
-    def __str__(self):
-        return self._name
-
-DELETE_FIELD = sentinel('DELETE_FIELD')  # Sentinel object.
-"""Sentinel value used to delete a field in a document."""
-
-SERVER_TIMESTAMP = sentinel('SERVER_TIMESTAMP')  # Sentinel object.
-"""Sentinel value: set a document field to the server timestamp."""
+        self.assertEqual(str(DELETE_FIELD), 'DELETE_FIELD')
+        self.assertEqual(str(SERVER_TIMESTAMP), 'SERVER_TIMESTAMP')
