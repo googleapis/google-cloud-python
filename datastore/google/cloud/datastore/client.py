@@ -135,7 +135,10 @@ def _extended_lookup(datastore_api, project, key_pbs,
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
         lookup_response = datastore_api.lookup(
-            project, read_options, key_pbs)
+            project_id=project,
+            read_options=read_options,
+            keys=key_pbs,
+        )
 
         # Accumulate the new results.
         results.extend(result.entity for result in lookup_response.found)
