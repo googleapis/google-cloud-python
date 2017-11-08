@@ -79,7 +79,7 @@ from google.auth import credentials
 from google.auth import jwt
 from google.oauth2 import _client
 
-_DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in sections
+_DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 
 
 class Credentials(credentials.Signing,

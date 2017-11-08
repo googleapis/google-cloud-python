@@ -16,7 +16,6 @@ import pytest
 
 from google.auth import exceptions
 import google.auth.transport._http_client
-
 from tests.transport import compliance
 
 
