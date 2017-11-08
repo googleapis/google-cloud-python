@@ -51,7 +51,7 @@ or pass in ``credentials`` explicitly.
 Documents
 *********
 
-The Google Natural Language API has five supported methods
+The Google Natural Language API has the following supported methods:
 
 - `analyzeEntities`_
 - `analyzeSentiment`_
@@ -117,6 +117,7 @@ to content stored in `Google Cloud Storage`_.
 .. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment
 .. _analyzeEntitySentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntitySentiment
 .. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText
+.. _classifyText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/classifyText
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
 ****************
