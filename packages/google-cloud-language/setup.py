@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -60,7 +60,7 @@ EXTRAS_REQUIRE = {
 
 setup(
     name='google-cloud-language',
-    version='0.31.1.dev1',
+    version='1.0.0',
     description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[
