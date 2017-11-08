@@ -51,12 +51,13 @@ or pass in ``credentials`` explicitly.
 Documents
 *********
 
-The Google Natural Language API has three supported methods
+The Google Natural Language API has the following supported methods:
 
 - `analyzeEntities`_
 - `analyzeSentiment`_
 - `analyzeEntitySentiment`_
 - `annotateText`_
+- `classifyText`_
 
 and each method uses a :class:`~.language_v1.types.Document` for representing
 text.
@@ -116,6 +117,7 @@ to content stored in `Google Cloud Storage`_.
 .. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment
 .. _analyzeEntitySentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntitySentiment
 .. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText
+.. _classifyText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/classifyText
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
 ****************

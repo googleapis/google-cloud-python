@@ -19,6 +19,7 @@
 * ``0.29.0`` (`PyPI <https://pypi.org/project/google-cloud-language/0.29.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/language-0.29.0>`__)
 * ``0.30.0`` (`PyPI <https://pypi.org/project/google-cloud-language/0.30.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/language-0.30.0>`__)
 * ``0.31.0`` (`PyPI <https://pypi.org/project/google-cloud-language/0.31.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/language-0.31.0>`__)
+* ``1.0.0`` (`PyPI <https://pypi.org/project/google-cloud-language/1.0.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/language-1.0.0>`__)
 
 ******************************************
 ``google-cloud-natural-language`` Releases
