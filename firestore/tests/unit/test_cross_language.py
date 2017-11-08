@@ -41,10 +41,8 @@ class TestCrossLanguage(unittest.TestCase):
                 self.run_write_test(test_proto, desc)
 
     def run_write_test(self, test_proto, desc):
-        from google.cloud.firestore_v1beta1 import Client
         from google.cloud.firestore_v1beta1.proto import firestore_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
-        import google.auth.credentials
 
         # Create a minimal fake GAPIC with a dummy result.
         firestore_api = mock.Mock(spec=['commit'])
@@ -52,28 +50,22 @@ class TestCrossLanguage(unittest.TestCase):
             write_results=[write_pb2.WriteResult()],
         )
         firestore_api.commit.return_value = commit_response
-        # Attach the fake GAPIC to a real client.
-        client = Client(credentials=mock.Mock(
-            spec=google.auth.credentials.Credentials))
-        client._firestore_api_internal = firestore_api
 
         kind = test_proto.WhichOneof("test")
         call = None
         if kind == "create":
             tp = test_proto.create
-            if not tp.is_error:
-                return
-            doc = self.setup(client, tp)
+            client, doc = self.setup(firestore_api, tp)
             data = convert_data(json.loads(tp.json_data))
             call = lambda: doc.create(data)
         elif kind == "set":
             tp = test_proto.set
-            doc = self.setup(client, tp)
+            client, doc = self.setup(firestore_api, tp)
             data = convert_data(json.loads(tp.json_data))
             # TODO: call doc.set.
         elif kind == "update":
             tp = test_proto.update
-            doc = self.setup(client, tp)
+            client, doc = self.setup(firestore_api, tp)
             data = convert_data(json.loads(tp.json_data))
             if tp.HasField("precondition"):
                 option = convert_precondition(tp.precondition)
@@ -87,7 +79,7 @@ class TestCrossLanguage(unittest.TestCase):
         else:
             assert kind == "delete"
             tp = test_proto.delete
-            doc = self.setup(client, tp)
+            client, doc = self.setup(firestore_api, tp)
             if tp.HasField("precondition"):
                 option = convert_precondition(tp.precondition)
             else:
@@ -110,13 +102,19 @@ class TestCrossLanguage(unittest.TestCase):
                 options=client._call_options)
 
 
-    def setup(self, client, proto):
+    def setup(self, firestore_api, proto):
+        from google.cloud.firestore_v1beta1 import Client
         from google.cloud.firestore_v1beta1.client import DEFAULT_DATABASE
+        import google.auth.credentials
 
         _, project, _, database, _, doc_path = proto.doc_ref_path.split('/', 5)
         self.assertEqual(database, DEFAULT_DATABASE)
-        client.project = project
-        return client.document(doc_path)
+
+        # Attach the fake GAPIC to a real client.
+        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        client = Client(project=project, credentials=credentials)
+        client._firestore_api_internal = firestore_api
+        return client, client.document(doc_path)
 
 
 def convert_data(v):
