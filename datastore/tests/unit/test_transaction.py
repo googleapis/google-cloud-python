@@ -15,7 +15,30 @@
 import unittest
 
 import mock
+from google.cloud.datastore.transaction import TransactionOptions
 
+class TestTransactionOptions(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        return TransactionOptions
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_readonly(self):
+        options = self._make_one(readonly=True)
+        self.assertTrue(isinstance(options.mode, TransactionOptions.ReadOnly))
+
+    def test_readwrite(self):
+        options = self._make_one()
+        self.assertTrue(isinstance(options.mode, TransactionOptions.ReadWrite))
+
+    def test_previous_transaction(self):
+        previous_transaction = 234
+        options = self._make_one(previous_transaction=previous_transaction)
+        self.assertEqual(options.mode.previous_transaction,
+                         previous_transaction)
 
 class TestTransaction(unittest.TestCase):
 
@@ -40,7 +63,7 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         id_ = 678
@@ -130,7 +153,7 @@ class TestTransaction(unittest.TestCase):
         ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_commit_no_partial_keys(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         id_ = 1002930
@@ -147,7 +170,7 @@ class TestTransaction(unittest.TestCase):
         ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_commit_w_partial_keys(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         kind = 'KIND'
@@ -170,7 +193,7 @@ class TestTransaction(unittest.TestCase):
         ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_context_manager_no_raise(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         id_ = 912830
@@ -212,9 +235,105 @@ class TestTransaction(unittest.TestCase):
         self.assertIsNone(xact.id)
         self.assertEqual(ds_api.begin_transaction.call_count, 1)
 
+    def test_default(self):
+        project = 'PROJECT'
+        id_ = 850302
+        ds_api = _make_datastore_api(xact=id_)
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client)
+        self.assertTrue(isinstance(xact.options, TransactionOptions))
+        
+    def test_readonly(self):
+        project = 'PROJECT'
+        id_ = 850302
+        ds_api = _make_datastore_api(xact=id_)
+        client = _Client(project, datastore_api=ds_api)
+        options = _make_options(readonly=True)
+        xact = self._make_one(client, options=options)
+        xact.begin()        
+        begin = ds_api.begin_transaction
+        begin.assert_called_once()
+        self.assertEqual(begin.call_count, 1)
+
+    def test_readwrite(self):
+        project = 'PROJECT'
+        id_ = 850304
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        options = _make_options(readonly=True)
+        xact = self._make_one(client, options=options)
+        xact.begin()        
+        begin = ds_api.begin_transaction        
+        begin.assert_called_once()
+        self.assertEqual(begin.call_count, 1)
+
+    def test_previous_tid(self):
+        project = 'PROJECT'
+        id_ = 943243
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        options = _make_options(previous_transaction=321)
+        xact = self._make_one(client, options=options)
+        xact.begin()        
+        begin = ds_api.begin_transaction
+        begin.assert_called_once()
+        self.assertEqual(begin.call_count, 1)
+
+    def test_readonly_tid_fail(self):
+        project = 'PROJECT'
+        id_ = 94325
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        with self.assertRaises(ValueError):
+            options = TransactionOptions(readonly=True,
+                                         previous_transaction=321)
+
+    def test_put_readonly(self):
+        project = 'PROJECT'
+        id_ = 943243
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        options = _make_options(readonly=True)
+        entity = _Entity()
+        xact = self._make_one(client, options=options)
+        xact.begin()
+        with self.assertRaises(RuntimeError):
+            xact.put(entity)
+            
+    def test_put_readwrite(self):
+        project = 'PROJECT'
+        id_ = 943243
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        options = _make_options(readonly=False, previous_transaction=321)
+        entity = _Entity()
+        xact = self._make_one(client, options=options)
+        xact.begin()
+        xact.put(entity)
+        mutated_entity = _mutated_pb(self, xact.mutations, 'insert')
+        self.assertEqual(mutated_entity.key, entity.key.to_protobuf())
+
+
+def _assert_num_mutations(test_case, mutation_pb_list, num_mutations):
+    test_case.assertEqual(len(mutation_pb_list), num_mutations)
+        
+def _mutated_pb(test_case, mutation_pb_list, mutation_type):
+    # Make sure there is only one mutation.
+    _assert_num_mutations(test_case, mutation_pb_list, 1)
+
+    # We grab the only mutation.
+    mutated_pb = mutation_pb_list[0]
+    # Then check if it is the correct type.
+    test_case.assertEqual(mutated_pb.WhichOneof('operation'),
+                          mutation_type)
+
+    return getattr(mutated_pb, mutation_type)
+
+def _make_options(*args, **kwargs):
+    return TransactionOptions(*args, **kwargs)
 
 def _make_key(kind, id_, project):
-    from google.cloud.proto.datastore.v1 import entity_pb2
+    from google.cloud.datastore_v1.proto import entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
@@ -271,7 +390,7 @@ class _NoCommitBatch(object):
 
 
 def _make_commit_response(*keys):
-    from google.cloud.proto.datastore.v1 import datastore_pb2
+    from google.cloud.datastore_v1.proto import datastore_pb2
 
     mutation_results = [
         datastore_pb2.MutationResult(key=key) for key in keys]
@@ -281,7 +400,6 @@ def _make_commit_response(*keys):
 def _make_datastore_api(*keys, **kwargs):
     commit_method = mock.Mock(
         return_value=_make_commit_response(*keys), spec=[])
-
     xact_id = kwargs.pop('xact_id', 123)
     txn_pb = mock.Mock(
         transaction=xact_id, spec=['transaction'])

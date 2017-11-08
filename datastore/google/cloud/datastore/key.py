@@ -18,7 +18,7 @@ import base64
 import copy
 import six
 
-from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
+from google.cloud.datastore_v1.proto import entity_pb2 as _entity_pb2
 
 from google.cloud._helpers import _to_bytes
 from google.cloud.datastore import _app_engine_key_pb2

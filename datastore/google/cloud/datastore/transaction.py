@@ -17,6 +17,48 @@
 from google.cloud.datastore.batch import Batch
 
 
+class TransactionOptions(object):
+    """Options for Transactions
+
+    TransactionOptions stores the mode to indicate whether it is ReadOnly or
+    ReadWrite.  In the case of ReadWrite an optional parameter allows the
+    previous transaction id to be stored.
+
+    :type readonly: `boolean`
+    :param readonly: indicates whether the transaction is readonly (True) or
+                     readwrite (False)
+
+    :type previous_transaction: `bytes`
+    :param previous_transaction: The transaction identifier of the transaction
+                                 being retried.
+
+    """
+
+    class ReadWrite(object):
+        """ Indicates the transaction allow both reads and writes
+
+        :type previous_transaction: `bytes`
+        :param previous_transaction: The transaction identifier of the
+                                     transaction being retried.
+        """
+
+        def __init__(self, previous_transaction):
+            self.previous_transaction = previous_transaction
+
+    class ReadOnly(object):
+        """ Indicates the transaction allow only reads """
+        pass
+
+    def __init__(self, readonly=False, previous_transaction=None):
+        if readonly and previous_transaction is not None:
+            raise ValueError("Previous Transaction ID can only be "
+                             "supplied for readwrite")
+        if readonly:
+            self.mode = self.ReadOnly()
+        else:
+            self.mode = self.ReadWrite(previous_transaction)
+
+
 class Transaction(Batch):
     """An abstraction representing datastore Transactions.
 
@@ -152,13 +194,19 @@ class Transaction(Batch):
 
     :type client: :class:`google.cloud.datastore.client.Client`
     :param client: the client used to connect to datastore.
+
+    :type options: `google.cloud.datastore.transaction.TransactionOptions`
+    :param options: the transaction options used for this transaction.
     """
 
     _status = None
 
-    def __init__(self, client):
+    def __init__(self, client, options=None):
         super(Transaction, self).__init__(client)
         self._id = None
+        if options is None:
+            options = TransactionOptions()
+        self.options = options
 
     @property
     def id(self):
@@ -234,3 +282,36 @@ class Transaction(Batch):
         finally:
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
+
+    def put(self, entity):
+        """Remember an entity's state to be saved during :meth:`commit`.
+
+        .. note::
+           Any existing properties for the entity will be replaced by those
+           currently set on this instance.  Already-stored properties which do
+           not correspond to keys set on this instance will be removed from
+           the datastore.
+
+        .. note::
+           Property values which are "text" ('unicode' in Python2, 'str' in
+           Python3) map to 'string_value' in the datastore;  values which are
+           "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
+
+        When an entity has a partial key, calling :meth:`commit` sends it as
+        an ``insert`` mutation and the key is completed. On return,
+        the key for the ``entity`` passed in is updated to match the key ID
+        assigned by the server.
+
+        :type entity: :class:`google.cloud.datastore.entity.Entity`
+        :param entity: the entity to be saved.
+
+        :raises: :class:`RuntimeError` if the transaction
+                 is marked ReadOnly
+                 :class:`ValueError` if the batch is not in
+                 progress, if entity has no key assigned, or if the key's
+                 ``project`` does not match ours.
+        """
+        if isinstance(self.options.mode, self.options.ReadWrite):
+            super(Transaction, self).put(entity)
+        else:
+            raise RuntimeError("Transaction is read only")
