@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.api_core.gapic_v1 import config
 from google.api_core.gapic_v1 import client_info
+from google.api_core.gapic_v1 import config
 from google.api_core.gapic_v1 import method
 
 __all__ = [
-    'config',
     'client_info',
+    'config',
     'method',
 ]
