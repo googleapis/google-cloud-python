@@ -12,8 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Helpers for handling routing header params."""
+"""Helpers for constructing routing headers.
 
+These headers are used by Google infrastructure to determine how to route
+requests, especially for services that are regional.
+
+Generally, these headers are specified as gRPC metadata.
+"""
 
 from six.moves.urllib.parse import urlencode
 
@@ -21,10 +26,28 @@ ROUTING_METADATA_KEY = 'x-goog-header-params'
 
 
 def to_routing_header(params):
-    """Returns the routing header string that the params form"""
+    """Returns a routing header string for the given request parameters.
+
+    Args:
+        params (Mapping[str, Any]): A dictionary containing the request
+            parameters used for routing.
+
+    Returns:
+        str: The routing header string.
+    """
     return urlencode(params)
 
 
 def to_grpc_metadata(params):
-    """Returns the gRPC metadata that the routing header params form"""
+    """Returns the gRPC metadata containing the routing headers for the given
+    request parameters.
+
+    Args:
+        params (Mapping[str, Any]): A dictionary containing the request
+            parameters used for routing.
+
+    Returns:
+        Tuple(str, str): The gRPC metadata containing the routing header key
+            and value.
+    """
     return (ROUTING_METADATA_KEY, to_routing_header(params))
