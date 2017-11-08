@@ -18,6 +18,7 @@ Google Cloud Python Client
 The following client libraries have **GA** support:
 
 -  `Google Cloud Datastore`_ (`Datastore README`_)
+-  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
@@ -29,11 +30,16 @@ of critical security issues) or with an extensive deprecation period.
 Issues and requests against GA libraries are addressed with the highest
 priority.
 
+.. note::
+
+    Sub-components of GA libraries explicitly marked as beta in the
+    import path (e.g. ``google.cloud.language_v1beta2``) should be considered
+    to be beta.
+
 The following client libraries have **beta** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
--  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)

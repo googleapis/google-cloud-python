@@ -51,12 +51,13 @@ or pass in ``credentials`` explicitly.
 Documents
 *********
 
-The Google Natural Language API has three supported methods
+The Google Natural Language API has five supported methods
 
 - `analyzeEntities`_
 - `analyzeSentiment`_
 - `analyzeEntitySentiment`_
 - `annotateText`_
+- `classifyText`_
 
 and each method uses a :class:`~.language_v1.types.Document` for representing
 text.
