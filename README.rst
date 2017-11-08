@@ -15,6 +15,11 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
+.. note::
+
+    These libraries currently do not run on Google App Engine Standard.
+    We are actively working on adding this support.
+
 The following client libraries have **GA** support:
 
 -  `Google Cloud Datastore`_ (`Datastore README`_)
