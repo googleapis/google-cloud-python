@@ -866,7 +866,8 @@ def pbs_for_update(client, document_path, field_updates, option):
             name=document_path,
             fields=encode_dict(update_values),
         ),
-        update_mask=common_pb2.DocumentMask(field_paths=field_paths),
+        # Sort field_paths just for comparison in tests.
+        update_mask=common_pb2.DocumentMask(field_paths=sorted(field_paths)),
     )
     # Due to the default, we don't have to check if ``None``.
     option.modify_write(update_pb)
