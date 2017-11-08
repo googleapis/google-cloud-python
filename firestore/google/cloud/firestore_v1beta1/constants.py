@@ -24,6 +24,13 @@ class sentinel(object):
     def __str__(self):
         return self._name
 
+    def __eq__(self, other):
+        raise NotImplementedError('use "is" to compare sentinels')
+
+    def __ne__(self, other):
+        raise NotImplementedError('use "is" to compare sentinels')
+
+
 DELETE_FIELD = sentinel('DELETE_FIELD')  # Sentinel object.
 """Sentinel value used to delete a field in a document."""
 

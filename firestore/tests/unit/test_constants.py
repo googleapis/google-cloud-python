@@ -23,3 +23,11 @@ class TestSentinel(unittest.TestCase):
 
         self.assertEqual(str(DELETE_FIELD), 'DELETE_FIELD')
         self.assertEqual(str(SERVER_TIMESTAMP), 'SERVER_TIMESTAMP')
+
+    def test_eq(self):
+        from google.cloud.firestore_v1beta1 import SERVER_TIMESTAMP
+
+        with self.assertRaises(NotImplementedError):
+            SERVER_TIMESTAMP == SERVER_TIMESTAMP
+        with self.assertRaises(NotImplementedError):
+            SERVER_TIMESTAMP != SERVER_TIMESTAMP
