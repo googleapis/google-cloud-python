@@ -274,12 +274,10 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         # We want to make sure the operation completes.
         operation.result(30)  # raises on failure / timeout.
 
-        name_attr = operator.attrgetter('name')
-        expected = sorted([temp_db, self._db], key=name_attr)
-
-        databases = list(Config.INSTANCE.list_databases())
-        found = sorted(databases, key=name_attr)
-        self.assertEqual(found, expected)
+        database_ids = [
+            database.database_id
+            for database in Config.INSTANCE.list_databases()]
+        self.assertIn(temp_db_id, database_ids)
 
     def test_update_database_ddl(self):
         pool = BurstyPool()
