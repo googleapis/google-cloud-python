@@ -167,10 +167,10 @@ class Client(ClientWithProject):
        >>> client = datastore.Client()
 
     :type project: str
-    :param project: (optional) The project to pass to proxied API methods.
+    :param project: (Optional) The project to pass to proxied API methods.
 
     :type namespace: str
-    :param namespace: (optional) namespace to pass to proxied API methods.
+    :param namespace: (Optional) namespace to pass to proxied API methods.
 
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
@@ -346,9 +346,8 @@ class Client(ClientWithProject):
 
         :type eventual: bool
         :param eventual: (Optional) Defaults to strongly consistent (False).
-                                    Setting True will use eventual consistency,
-                                    but cannot be used inside a transaction or
-                                    will raise ValueError.
+                         Setting True will use eventual consistency, but cannot
+                         be used inside a transaction or will raise ValueError.
 
         :rtype: list of :class:`google.cloud.datastore.entity.Entity`
         :returns: The requested entities.
