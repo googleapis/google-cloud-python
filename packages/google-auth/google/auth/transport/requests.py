@@ -18,12 +18,14 @@ from __future__ import absolute_import
 
 import logging
 
+import six
 try:
     import requests
-except ImportError:  # pragma: NO COVER
-    raise ImportError(
+except ImportError as caught_exc:  # pragma: NO COVER
+    new_exc = ImportError(
         'The requests library is not installed, please install the requests '
         'package to use the requests transport.')
+    six.raise_from(new_exc, caught_exc)
 import requests.exceptions
 
 from google.auth import exceptions
@@ -111,8 +113,9 @@ class Request(transport.Request):
                 method, url, data=body, headers=headers, timeout=timeout,
                 **kwargs)
             return _Response(response)
-        except requests.exceptions.RequestException as exc:
-            raise exceptions.TransportError(exc)
+        except requests.exceptions.RequestException as caught_exc:
+            new_exc = exceptions.TransportError()
+            six.raise_from(new_exc, caught_exc)
 
 
 class AuthorizedSession(requests.Session):

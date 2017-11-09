@@ -26,6 +26,7 @@ For more information about the token endpoint, see
 import datetime
 import json
 
+import six
 from six.moves import http_client
 from six.moves import urllib
 
@@ -144,9 +145,10 @@ def jwt_grant(request, token_uri, assertion):
 
     try:
         access_token = response_data['access_token']
-    except KeyError:
-        raise exceptions.RefreshError(
+    except KeyError as caught_exc:
+        new_exc = exceptions.RefreshError(
             'No access token in response.', response_data)
+        six.raise_from(new_exc, caught_exc)
 
     expiry = _parse_expiry(response_data)
 
@@ -190,9 +192,10 @@ def refresh_grant(request, token_uri, refresh_token, client_id, client_secret):
 
     try:
         access_token = response_data['access_token']
-    except KeyError:
-        raise exceptions.RefreshError(
+    except KeyError as caught_exc:
+        new_exc = exceptions.RefreshError(
             'No access token in response.', response_data)
+        six.raise_from(new_exc, caught_exc)
 
     refresh_token = response_data.get('refresh_token', refresh_token)
     expiry = _parse_expiry(response_data)

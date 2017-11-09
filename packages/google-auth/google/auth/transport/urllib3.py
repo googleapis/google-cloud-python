@@ -30,12 +30,14 @@ try:
 except ImportError:  # pragma: NO COVER
     certifi = None
 
+import six
 try:
     import urllib3
-except ImportError:  # pragma: NO COVER
-    raise ImportError(
+except ImportError as caught_exc:  # pragma: NO COVER
+    new_exc = ImportError(
         'The urllib3 library is not installed, please install the urllib3 '
         'package to use the urllib3 transport.')
+    six.raise_from(new_exc, caught_exc)
 import urllib3.exceptions
 
 from google.auth import exceptions
@@ -126,8 +128,9 @@ class Request(transport.Request):
             response = self.http.request(
                 method, url, body=body, headers=headers, **kwargs)
             return _Response(response)
-        except urllib3.exceptions.HTTPError as exc:
-            raise exceptions.TransportError(exc)
+        except urllib3.exceptions.HTTPError as caught_exc:
+            new_exc = exceptions.TransportError()
+            six.raise_from(new_exc, caught_exc)
 
 
 def _make_default_http():

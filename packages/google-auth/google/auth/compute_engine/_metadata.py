@@ -22,6 +22,7 @@ import json
 import logging
 import os
 
+import six
 from six.moves import http_client
 from six.moves.urllib import parse as urlparse
 
@@ -118,10 +119,11 @@ def get(request, path, root=_METADATA_ROOT, recursive=False):
         if response.headers['content-type'] == 'application/json':
             try:
                 return json.loads(content)
-            except ValueError:
-                raise exceptions.TransportError(
+            except ValueError as caught_exc:
+                new_exc = exceptions.TransportError(
                     'Received invalid JSON from the Google Compute Engine'
                     'metadata service: {:.20}'.format(content))
+                six.raise_from(new_exc, caught_exc)
         else:
             return content
     else:

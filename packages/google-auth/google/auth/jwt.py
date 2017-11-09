@@ -47,6 +47,7 @@ import datetime
 import json
 
 import cachetools
+import six
 from six.moves import urllib
 
 from google.auth import _helpers
@@ -101,8 +102,9 @@ def _decode_jwt_segment(encoded_section):
     section_bytes = _helpers.padded_urlsafe_b64decode(encoded_section)
     try:
         return json.loads(section_bytes.decode('utf-8'))
-    except ValueError:
-        raise ValueError('Can\'t parse segment: {0}'.format(section_bytes))
+    except ValueError as caught_exc:
+        new_exc = ValueError('Can\'t parse segment: {0}'.format(section_bytes))
+        six.raise_from(new_exc, caught_exc)
 
 
 def _unverified_decode(token):
