@@ -255,7 +255,9 @@ class BackgroundThreadTransport(Transport):
                  batch_size=_DEFAULT_MAX_BATCH_SIZE):
         self.client = client
         logger = self.client.logger(name)
-        self.worker = _Worker(logger)
+        self.worker = _Worker(logger,
+                              grace_period=grace_period,
+                              max_batch_size=batch_size)
         self.worker.start()
 
     def send(self, record, message, resource=None, labels=None):
