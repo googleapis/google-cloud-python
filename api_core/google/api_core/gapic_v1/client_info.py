@@ -14,8 +14,8 @@
 
 """Helpers for providing client information.
 
-Client information is used send information about the calling client, such as
-the library and Python version, to API services.
+Client information is used to send information about the calling client,
+such as the library and Python version, to API services.
 """
 
 import platform
