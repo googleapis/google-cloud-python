@@ -1036,24 +1036,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(None,), (19,)],
         )
 
-        # Find -inf
-        self._check_sql_results(
-            snapshot,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
-            params={'pos_inf': float('+inf')},
-            param_types={'pos_inf': Type(code=FLOAT64)},
-            expected=[(107,)],
-        )
-
-        # Find +inf
-        self._check_sql_results(
-            snapshot,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
-            params={'neg_inf': float('-inf')},
-            param_types={'neg_inf': Type(code=FLOAT64)},
-            expected=[(207,)],
-        )
-
         self._check_sql_results(
             snapshot,
             sql='SELECT description FROM all_types WHERE eye_d = @my_id',
@@ -1124,6 +1106,39 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             param_types={'v': Type(code=STRING)},
             expected=[(None,)],
             order=False,
+        )
+
+    def test_execute_sql_w_query_param_transfinite(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
+
+        # Find -inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
+            params={'pos_inf': float('+inf')},
+            param_types={'pos_inf': Type(code=FLOAT64)},
+            expected=[(107,)],
+        )
+
+        # Find +inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
+            params={'neg_inf': float('-inf')},
+            param_types={'neg_inf': Type(code=FLOAT64)},
+            expected=[(207,)],
         )
 
         rows = list(snapshot.execute_sql(
