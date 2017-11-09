@@ -19,6 +19,9 @@ The non-private functions are part of the API.
 
 import datetime
 import itertools
+
+from google.protobuf import struct_pb2
+from google.type import latlng_pb2
 import six
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -27,9 +30,6 @@ from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
-
-from google.protobuf import struct_pb2
-from google.type import latlng_pb2
 
 
 def _get_meaning(value_pb, is_list=False):
