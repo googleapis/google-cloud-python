@@ -42,7 +42,6 @@ See: `Speech Asynchronous Recognize`_
 
 .. code-block:: python
 
-    >>> import time
     >>> from google.cloud import speech
     >>> client = speech.SpeechClient()
     >>> operation = client.long_running_recognize(
@@ -55,14 +54,8 @@ See: `Speech Asynchronous Recognize`_
     ...         sample_rate_hertz=44100,
     ...     ),
     ... )
-    >>> retry_count = 100
-    >>> while retry_count > 0 and not operation.complete:
-    ...     retry_count -= 1
-    ...     time.sleep(10)
-    ...     operation.poll()  # API call
-    >>> operation.complete
-    True
-    >>> for result in operation.results:
+    >>> op_result = operation.result()
+    >>> for result in op_result.results:
     ...     for alternative in result.alternatives:
     ...         print('=' * 20)
     ...         print(alternative.transcript)
