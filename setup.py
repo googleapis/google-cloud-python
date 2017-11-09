@@ -74,7 +74,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud',
-    version='0.30.0',
+    version='0.30.1.dev1',
     description='API Client library for Google Cloud',
     long_description=README,
     install_requires=REQUIREMENTS,
