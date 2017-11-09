@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
 import time
 import unittest
+import wave
 
 import six
 
@@ -245,3 +247,37 @@ class TestSpeechClient(unittest.TestCase):
             for results in self._make_streaming_request(
                     file_obj, single_utterance=False):
                 self._check_results(results.alternatives)
+
+    def test_long_running_recognize(self):
+        content = None
+        repetitions = 5
+        with open(AUDIO_FILE, 'rb') as in_stream:
+            in_wavfile = wave.open(in_stream)
+            params = in_wavfile.getparams()
+            frames = in_wavfile.readframes(in_wavfile.getnframes())
+
+        with io.BytesIO() as out_stream:
+            out_wavfile = wave.open(out_stream, 'w')
+            out_wavfile.setparams(params)
+            for _ in range(repetitions):
+                out_wavfile.writeframes(frames)
+                content = out_stream.getvalue()
+
+        client = speech.SpeechClient()
+
+        operation = client.long_running_recognize(
+            config=speech.types.RecognitionConfig(
+                encoding='LINEAR16',
+                language_code='en-US',
+            ),
+            audio=speech.types.RecognitionAudio(content=content)
+        )
+
+        op_result = operation.result()
+        wav_transcription = 'hello thank you for using google cloud platform'
+        expected = ' '.join([wav_transcription] * repetitions)
+        self.assertGreater(len(op_result.results), 0)
+        for result in op_result.results:
+            self.assertGreater(len(result.alternatives), 0)
+            for alternative in result.alternatives:
+                self.assertEqual(alternative.transcript.lower(), expected)
