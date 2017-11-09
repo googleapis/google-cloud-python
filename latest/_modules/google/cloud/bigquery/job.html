@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud e12372d documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -732,7 +732,7 @@
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris</span>
 <span class="sd">        for supported URI formats. Pass None for jobs that load from a file.</span>
 
-<span class="sd">    :type destination: :class:`google.cloud.bigquery.TableReference`</span>
+<span class="sd">    :type destination: :class:`google.cloud.bigquery.table.TableReference`</span>
 <span class="sd">    :param destination: reference to table into which data is to be loaded.</span>
 
 <span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
@@ -1001,10 +1001,10 @@
 <span class="sd">    :type job_id: str</span>
 <span class="sd">    :param job_id: the job&#39;s ID, within the project belonging to ``client``.</span>
 
-<span class="sd">    :type sources: list of :class:`google.cloud.bigquery.TableReference`</span>
+<span class="sd">    :type sources: list of :class:`google.cloud.bigquery.table.TableReference`</span>
 <span class="sd">    :param sources: Table into which data is to be loaded.</span>
 
-<span class="sd">    :type destination: :class:`google.cloud.bigquery.TableReference`</span>
+<span class="sd">    :type destination: :class:`google.cloud.bigquery.table.TableReference`</span>
 <span class="sd">    :param destination: Table into which data is to be loaded.</span>
 
 <span class="sd">    :type client: :class:`google.cloud.bigquery.client.Client`</span>
@@ -1176,7 +1176,7 @@
 <span class="sd">    :type job_id: str</span>
 <span class="sd">    :param job_id: the job&#39;s ID</span>
 
-<span class="sd">    :type source: :class:`google.cloud.bigquery.TableReference`</span>
+<span class="sd">    :type source: :class:`google.cloud.bigquery.table.TableReference`</span>
 <span class="sd">    :param source: Table into which data is to be loaded.</span>
 
 <span class="sd">    :type destination_uris: list of string</span>
@@ -1973,11 +1973,11 @@
 
 <span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
-<span class="sd">            Iterator of row data :class:`tuple`s. During each page, the</span>
-<span class="sd">            iterator will have the ``total_rows`` attribute set, which counts</span>
-<span class="sd">            the total number of rows **in the result set** (this is distinct</span>
-<span class="sd">            from the total number of rows in the current page:</span>
-<span class="sd">            ``iterator.page.num_items``).</span>
+<span class="sd">            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.</span>
+<span class="sd">            During each page, the iterator will have the ``total_rows``</span>
+<span class="sd">            attribute set, which counts the total number of rows **in the</span>
+<span class="sd">            result set** (this is distinct from the total number of rows in</span>
+<span class="sd">            the current page: ``iterator.page.num_items``).</span>
 
 <span class="sd">        :raises:</span>
 <span class="sd">            :class:`~google.cloud.exceptions.GoogleCloudError` if the job</span>

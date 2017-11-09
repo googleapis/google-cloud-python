@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud e12372d documentation</title>
+    <title>API Reference &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -702,9 +702,10 @@ row to read.</li>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of row data <code class="xref py py-class docutils literal"><span class="pre">tuple`s.</span> <span class="pre">During</span> <span class="pre">each</span> <span class="pre">page,</span> <span class="pre">the</span>
-<span class="pre">iterator</span> <span class="pre">will</span> <span class="pre">have</span> <span class="pre">the</span> <span class="pre">``total_rows`</span></code> attribute set,
-which counts the total number of rows <strong>in the table</strong>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of row data
+<a class="reference internal" href="#google.cloud.bigquery.table.Row" title="google.cloud.bigquery.table.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a>-s. During each
+page, the iterator will have the <code class="docutils literal"><span class="pre">total_rows</span></code> attribute
+set, which counts the total number of rows <strong>in the table</strong>
 (this is distinct from the total number of rows in the
 current page: <code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</p>
 </td>
@@ -849,11 +850,11 @@ before raising a <a class="reference external" href="https://docs.python.org/3/l
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of row data <code class="xref py py-class docutils literal"><span class="pre">tuple`s.</span> <span class="pre">During</span> <span class="pre">each</span> <span class="pre">page,</span> <span class="pre">the</span>
-<span class="pre">iterator</span> <span class="pre">will</span> <span class="pre">have</span> <span class="pre">the</span> <span class="pre">``total_rows`</span></code> attribute set, which counts
-the total number of rows <strong>in the result set</strong> (this is distinct
-from the total number of rows in the current page:
-<code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of row data <a class="reference internal" href="#google.cloud.bigquery.table.Row" title="google.cloud.bigquery.table.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a>-s.
+During each page, the iterator will have the <code class="docutils literal"><span class="pre">total_rows</span></code>
+attribute set, which counts the total number of rows <strong>in the
+result set</strong> (this is distinct from the total number of rows in
+the current page: <code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a> if the
@@ -991,8 +992,8 @@ is already defined.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the job’s ID, within the project belonging to <code class="docutils literal"><span class="pre">client</span></code>.</li>
-<li><strong>sources</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.TableReference</span></code>) – Table into which data is to be loaded.</li>
-<li><strong>destination</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.TableReference</span></code>) – Table into which data is to be loaded.</li>
+<li><strong>sources</strong> (list of <a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.TableReference</span></code></a>) – Table into which data is to be loaded.</li>
+<li><strong>destination</strong> (<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.TableReference</span></code></a>) – Table into which data is to be loaded.</li>
 <li><strong>client</strong> (<a class="reference internal" href="#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the dataset (which requires a project).</li>
 <li><strong>job_config</strong> (<a class="reference internal" href="#google.cloud.bigquery.job.CopyJobConfig" title="google.cloud.bigquery.job.CopyJobConfig"><code class="xref py py-class docutils literal"><span class="pre">CopyJobConfig</span></code></a>) – (Optional) Extra configuration options for the copy job.</li>
@@ -1132,7 +1133,7 @@ returned from the API.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the job’s ID</li>
-<li><strong>source</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.TableReference</span></code>) – Table into which data is to be loaded.</li>
+<li><strong>source</strong> (<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.TableReference</span></code></a>) – Table into which data is to be loaded.</li>
 <li><strong>destination_uris</strong> (<em>list of string</em>) – URIs describing where the extracted data will be written in Cloud
 Storage, using the format <code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.client.Client</span></code></a>) – A client which holds credentials and project configuration.</li>
@@ -1303,7 +1304,7 @@ returned from the API.</td>
 <li><strong>source_uris</strong> (sequence of string or <code class="docutils literal"><span class="pre">NoneType</span></code>) – URIs of one or more data files to be loaded.  See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.sourceUris</a>
 for supported URI formats. Pass None for jobs that load from a file.</li>
-<li><strong>destination</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.TableReference</span></code>) – reference to table into which data is to be loaded.</li>
+<li><strong>destination</strong> (<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.TableReference</span></code></a>) – reference to table into which data is to be loaded.</li>
 <li><strong>client</strong> (<a class="reference internal" href="#google.cloud.bigquery.client.Client" title="google.cloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the dataset (which requires a project).</li>
 </ul>
@@ -1904,11 +1905,11 @@ a <a class="reference external" href="https://docs.python.org/3/library/concurre
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of row data <code class="xref py py-class docutils literal"><span class="pre">tuple`s.</span> <span class="pre">During</span> <span class="pre">each</span> <span class="pre">page,</span> <span class="pre">the</span>
-<span class="pre">iterator</span> <span class="pre">will</span> <span class="pre">have</span> <span class="pre">the</span> <span class="pre">``total_rows`</span></code> attribute set, which counts
-the total number of rows <strong>in the result set</strong> (this is distinct
-from the total number of rows in the current page:
-<code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of row data <a class="reference internal" href="#google.cloud.bigquery.table.Row" title="google.cloud.bigquery.table.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a>-s.
+During each page, the iterator will have the <code class="docutils literal"><span class="pre">total_rows</span></code>
+attribute set, which counts the total number of rows <strong>in the
+result set</strong> (this is distinct from the total number of rows in
+the current page: <code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">GoogleCloudError</span></code> if the job
@@ -2344,7 +2345,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'view', 'groupByEmail', 'userByEmail', 'domain', 'specialGroup'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'domain', 'userByEmail', 'view', 'specialGroup'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -2718,7 +2719,28 @@ a label, set its value to <code class="docutils literal"><span class="pre">None<
 
 </dd></dl>
 
-<span class="target" id="module-google.cloud.bigquery.table"></span><p>Define API Datasets.</p>
+<span class="target" id="module-google.cloud.bigquery.table"></span><p>Define API Tables.</p>
+<dl class="class">
+<dt id="google.cloud.bigquery.table.Row">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.table.</code><code class="descname">Row</code><span class="sig-paren">(</span><em>values</em>, <em>field_to_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Row" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A BigQuery row.</p>
+<p>Values can be accessed by position (index), by key like a dict,
+or as properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a>) – the row values</li>
+<li><strong>field_to_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – a mapping from schema field names to indexes</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="class">
 <dt id="google.cloud.bigquery.table.StreamingBuffer">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.table.</code><code class="descname">StreamingBuffer</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#StreamingBuffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.StreamingBuffer" title="Permalink to this definition">#</a></dt>
@@ -2877,7 +2899,7 @@ a label, set its value to <code class="docutils literal"><span class="pre">None<
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – table resource representation returned from the API</li>
-<li><strong>dataset</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.Dataset</span></code>) – The dataset containing the table.</li>
+<li><strong>dataset</strong> (<a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.Dataset</span></code></a>) – The dataset containing the table.</li>
 </ul>
 </td>
 </tr>
@@ -3169,7 +3191,7 @@ If this table is not a view, None is returned.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset_ref</strong> (<code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.DatasetReference</span></code>) – a pointer to the dataset</li>
+<li><strong>dataset_ref</strong> (<a class="reference internal" href="#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.dataset.DatasetReference</span></code></a>) – a pointer to the dataset</li>
 <li><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the ID of the table</li>
 </ul>
 </td>

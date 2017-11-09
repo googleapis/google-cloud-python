@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud e12372d documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -1214,11 +1214,11 @@
 
 <span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
 <span class="sd">        :returns:</span>
-<span class="sd">            Iterator of row data :class:`tuple`s. During each page, the</span>
-<span class="sd">            iterator will have the ``total_rows`` attribute set, which counts</span>
-<span class="sd">            the total number of rows **in the result set** (this is distinct</span>
-<span class="sd">            from the total number of rows in the current page:</span>
-<span class="sd">            ``iterator.page.num_items``).</span>
+<span class="sd">            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.</span>
+<span class="sd">            During each page, the iterator will have the ``total_rows``</span>
+<span class="sd">            attribute set, which counts the total number of rows **in the</span>
+<span class="sd">            result set** (this is distinct from the total number of rows in</span>
+<span class="sd">            the current page: ``iterator.page.num_items``).</span>
 
 <span class="sd">        :raises:</span>
 <span class="sd">            :class:`~google.api_core.exceptions.GoogleAPICallError` if the</span>
@@ -1284,9 +1284,10 @@
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
 
 <span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of row data :class:`tuple`s. During each page, the</span>
-<span class="sd">                  iterator will have the ``total_rows`` attribute set,</span>
-<span class="sd">                  which counts the total number of rows **in the table**</span>
+<span class="sd">        :returns: Iterator of row data</span>
+<span class="sd">                  :class:`~google.cloud.bigquery.table.Row`-s. During each</span>
+<span class="sd">                  page, the iterator will have the ``total_rows`` attribute</span>
+<span class="sd">                  set, which counts the total number of rows **in the table**</span>
 <span class="sd">                  (this is distinct from the total number of rows in the</span>
 <span class="sd">                  current page: ``iterator.page.num_items``).</span>
 

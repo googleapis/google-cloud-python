@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Helpers &#8212; google-cloud e12372d documentation</title>
+    <title>Helpers &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -113,6 +113,36 @@ Protobuf API.</p>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">entity_pb2.Entity</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The protobuf representing the entity.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.cloud.datastore.helpers.get_read_options">
+<code class="descclassname">google.cloud.datastore.helpers.</code><code class="descname">get_read_options</code><span class="sig-paren">(</span><em>eventual</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/helpers.html#get_read_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.helpers.get_read_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Validate rules for read options, and assign to the request.</p>
+<p>Helper method for <code class="docutils literal"><span class="pre">lookup()</span></code> and <code class="docutils literal"><span class="pre">run_query</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Flag indicating if <code class="docutils literal"><span class="pre">EVENTUAL</span></code> or <code class="docutils literal"><span class="pre">STRONG</span></code>
+consistency should be used.</li>
+<li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – A transaction identifier (may be null).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">datastore_pb2.ReadOptions</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The read options corresponding to the inputs.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if <code class="docutils literal"><span class="pre">eventual</span></code> is <code class="docutils literal"><span class="pre">True</span></code> and the
+<code class="docutils literal"><span class="pre">transaction_id</span></code> is not <code class="docutils literal"><span class="pre">None</span></code>.</p>
+</td>
 </tr>
 </tbody>
 </table>

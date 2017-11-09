@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Queries &#8212; google-cloud e12372d documentation</title>
+    <title>Queries &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,7 +46,7 @@
 <p>Create / interact with Google Cloud Datastore queries.</p>
 <dl class="class">
 <dt id="google.cloud.datastore.query.Iterator">
-<em class="property">class </em><code class="descclassname">google.cloud.datastore.query.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>query</em>, <em>client</em>, <em>limit=None</em>, <em>offset=None</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Iterator" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.datastore.query.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>query</em>, <em>client</em>, <em>limit=None</em>, <em>offset=None</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em>, <em>eventual=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Iterator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.page_iterator.Iterator</span></code></a></p>
 <p>Represent the state of a given execution of a Query.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -64,6 +64,10 @@ a results set).</li>
 query results.</li>
 <li><strong>end_cursor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) Cursor to end paging through
 query results.</li>
+<li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
+Setting True will use eventual consistency,
+but cannot be used inside a transaction or
+will raise ValueError.</li>
 </ul>
 </td>
 </tr>
@@ -187,7 +191,7 @@ passes an invalid value (a key is required).</p>
 
 <dl class="method">
 <dt id="google.cloud.datastore.query.Query.fetch">
-<code class="descname">fetch</code><span class="sig-paren">(</span><em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
+<code class="descname">fetch</code><span class="sig-paren">(</span><em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em>, <em>client=None</em>, <em>eventual=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
 <dd><p>Execute the Query; return an iterator for the matching entities.</p>
 <p>For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">datastore</span>
@@ -209,8 +213,12 @@ passes an invalid value (a key is required).</p>
 <li><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) offset passed through to the iterator.</li>
 <li><strong>start_cursor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) cursor passed through to the iterator.</li>
 <li><strong>end_cursor</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – (Optional) cursor passed through to the iterator.</li>
-<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – client used to connect to datastore.
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.datastore.client.Client" title="google.cloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.client.Client</span></code></a>) – (Optional) client used to connect to datastore.
 If not supplied, uses the query’s value.</li>
+<li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
+Setting True will use eventual consistency,
+but cannot be used inside a transaction or
+will raise ValueError.</li>
 </ul>
 </td>
 </tr>

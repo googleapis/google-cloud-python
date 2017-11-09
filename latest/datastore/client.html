@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Datastore Client &#8212; google-cloud e12372d documentation</title>
+    <title>Datastore Client &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -194,7 +194,7 @@ multiple keys in a commit request.</p>
 
 <dl class="method">
 <dt id="google.cloud.datastore.client.Client.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>transaction=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.client.Client.get" title="Permalink to this definition">#</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>transaction=None</em>, <em>eventual=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.client.Client.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve an entity from a single key (if it exists).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -215,13 +215,19 @@ into it.</li>
 by the backend as “deferred” will be copied into it.</li>
 <li><strong>transaction</strong> (<a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
 If not passed, uses current transaction, if set.</li>
+<li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
+Setting True will use eventual consistency, but cannot
+be used inside a transaction or will raise ValueError.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="entities.html#google.cloud.datastore.entity.Entity" title="google.cloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.entity.Entity</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested entity if it exists.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The requested entity if it exists.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if eventual is True and in a transaction.</p>
 </td>
 </tr>
 </tbody>
@@ -230,7 +236,7 @@ If not passed, uses current transaction, if set.</li>
 
 <dl class="method">
 <dt id="google.cloud.datastore.client.Client.get_multi">
-<code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>transaction=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.client.Client.get_multi" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>transaction=None</em>, <em>eventual=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.client.Client.get_multi" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve entities, along with their attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -246,6 +252,10 @@ by the backend as “deferred” will be copied into it.
 If the list is not empty, an error will occur.</li>
 <li><strong>transaction</strong> (<a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
 If not passed, uses current transaction, if set.</li>
+<li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
+Setting True will use eventual consistency,
+but cannot be used inside a transaction or
+will raise ValueError.</li>
 </ul>
 </td>
 </tr>
@@ -255,8 +265,11 @@ If not passed, uses current transaction, if set.</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The requested entities.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if one or more of <code class="docutils literal"><span class="pre">keys</span></code> has a project
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if one or more of <code class="docutils literal"><span class="pre">keys</span></code> has a project
 which does not match our project.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if eventual is True and in a transaction.</p>
 </td>
 </tr>
 </tbody>

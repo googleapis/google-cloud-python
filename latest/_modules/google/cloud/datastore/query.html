@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.query &#8212; google-cloud e12372d documentation</title>
+    <title>google.cloud.datastore.query &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -61,19 +61,18 @@
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_ensure_tuple_or_list</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">query_pb2</span> <span class="k">as</span> <span class="n">_query_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.datastore_v1.proto</span> <span class="k">import</span> <span class="n">entity_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.datastore_v1.proto</span> <span class="k">import</span> <span class="n">query_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore</span> <span class="k">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.key</span> <span class="k">import</span> <span class="n">Key</span>
 
 
-<span class="n">_NOT_FINISHED</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NOT_FINISHED</span>
+<span class="n">_NOT_FINISHED</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NOT_FINISHED</span>
 
 <span class="n">_FINISHED</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">_query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NO_MORE_RESULTS</span><span class="p">,</span>
-    <span class="n">_query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_LIMIT</span><span class="p">,</span>
-    <span class="n">_query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_CURSOR</span><span class="p">,</span>
+    <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NO_MORE_RESULTS</span><span class="p">,</span>
+    <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_LIMIT</span><span class="p">,</span>
+    <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_CURSOR</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -123,11 +122,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">OPERATORS</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;&lt;=&#39;</span><span class="p">:</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN_OR_EQUAL</span><span class="p">,</span>
-        <span class="s1">&#39;&gt;=&#39;</span><span class="p">:</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN_OR_EQUAL</span><span class="p">,</span>
-        <span class="s1">&#39;&lt;&#39;</span><span class="p">:</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN</span><span class="p">,</span>
-        <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN</span><span class="p">,</span>
-        <span class="s1">&#39;=&#39;</span><span class="p">:</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;=&#39;</span><span class="p">:</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN_OR_EQUAL</span><span class="p">,</span>
+        <span class="s1">&#39;&gt;=&#39;</span><span class="p">:</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN_OR_EQUAL</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;&#39;</span><span class="p">:</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN</span><span class="p">,</span>
+        <span class="s1">&#39;&gt;&#39;</span><span class="p">:</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN</span><span class="p">,</span>
+        <span class="s1">&#39;=&#39;</span><span class="p">:</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="sd">&quot;&quot;&quot;Mapping of operator strings and their protobuf equivalents.&quot;&quot;&quot;</span>
 
@@ -373,7 +372,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_distinct_on</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Query.fetch"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.query.Query.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-              <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+              <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute the Query; return an iterator for the matching entities.</span>
 
 <span class="sd">        For example::</span>
@@ -400,8 +399,14 @@
 <span class="sd">        :param end_cursor: (Optional) cursor passed through to the iterator.</span>
 
 <span class="sd">        :type client: :class:`google.cloud.datastore.client.Client`</span>
-<span class="sd">        :param client: client used to connect to datastore.</span>
+<span class="sd">        :param client: (Optional) client used to connect to datastore.</span>
 <span class="sd">                       If not supplied, uses the query&#39;s value.</span>
+
+<span class="sd">        :type eventual: bool</span>
+<span class="sd">        :param eventual: (Optional) Defaults to strongly consistent (False).</span>
+<span class="sd">                                    Setting True will use eventual consistency,</span>
+<span class="sd">                                    but cannot be used inside a transaction or</span>
+<span class="sd">                                    will raise ValueError.</span>
 
 <span class="sd">        :rtype: :class:`Iterator`</span>
 <span class="sd">        :returns: The iterator for the query.</span>
@@ -409,9 +414,13 @@
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 
-        <span class="k">return</span> <span class="n">Iterator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
-            <span class="n">start_cursor</span><span class="o">=</span><span class="n">start_cursor</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="n">end_cursor</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">client</span><span class="p">,</span>
+                        <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+                        <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">,</span>
+                        <span class="n">start_cursor</span><span class="o">=</span><span class="n">start_cursor</span><span class="p">,</span>
+                        <span class="n">end_cursor</span><span class="o">=</span><span class="n">end_cursor</span><span class="p">,</span>
+                        <span class="n">eventual</span><span class="o">=</span><span class="n">eventual</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../../datastore/queries.html#google.cloud.datastore.query.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">Iterator</span><span class="p">):</span>
@@ -438,18 +447,25 @@
 <span class="sd">    :type end_cursor: bytes</span>
 <span class="sd">    :param end_cursor: (Optional) Cursor to end paging through</span>
 <span class="sd">                       query results.</span>
+
+<span class="sd">    :type eventual: bool</span>
+<span class="sd">    :param eventual: (Optional) Defaults to strongly consistent (False).</span>
+<span class="sd">                                Setting True will use eventual consistency,</span>
+<span class="sd">                                but cannot be used inside a transaction or</span>
+<span class="sd">                                will raise ValueError.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">next_page_token</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">start_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                 <span class="n">start_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Iterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_entity</span><span class="p">,</span>
             <span class="n">page_token</span><span class="o">=</span><span class="n">start_cursor</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_cursor</span> <span class="o">=</span> <span class="n">end_cursor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eventual</span> <span class="o">=</span> <span class="n">eventual</span>
         <span class="c1"># The attributes below will change over the life of the iterator.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_more_results</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_skipped_results</span> <span class="o">=</span> <span class="mi">0</span>
@@ -525,12 +541,12 @@
         <span class="n">query_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_protobuf</span><span class="p">()</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">current_transaction</span>
         <span class="k">if</span> <span class="n">transaction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">read_options</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">()</span>
+            <span class="n">transaction_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">read_options</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">(</span>
-                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">read_options</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_read_options</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eventual</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
 
-        <span class="n">partition_id</span> <span class="o">=</span> <span class="n">_entity_pb2</span><span class="o">.</span><span class="n">PartitionId</span><span class="p">(</span>
+        <span class="n">partition_id</span> <span class="o">=</span> <span class="n">entity_pb2</span><span class="o">.</span><span class="n">PartitionId</span><span class="p">(</span>
             <span class="n">project_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
             <span class="n">namespace_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
         <span class="n">response_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_datastore_api</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
@@ -554,7 +570,7 @@
 <span class="sd">              it does not contain &quot;in-flight&quot; fields for ongoing query</span>
 <span class="sd">              executions (cursors, offset, limit).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pb</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">Query</span><span class="p">()</span>
+    <span class="n">pb</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">Query</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">projection_name</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">projection</span><span class="p">:</span>
         <span class="n">pb</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">projection_name</span>
@@ -563,7 +579,7 @@
         <span class="n">pb</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">kind</span>
 
     <span class="n">composite_filter</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">composite_filter</span>
-    <span class="n">composite_filter</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">CompositeFilter</span><span class="o">.</span><span class="n">AND</span>
+    <span class="n">composite_filter</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">CompositeFilter</span><span class="o">.</span><span class="n">AND</span>
 
     <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="p">:</span>
         <span class="n">ancestor_pb</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
@@ -571,7 +587,7 @@
         <span class="c1"># Filter on __key__ HAS_ANCESTOR == ancestor.</span>
         <span class="n">ancestor_filter</span> <span class="o">=</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property_filter</span>
         <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;__key__&#39;</span>
-        <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">HAS_ANCESTOR</span>
+        <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">HAS_ANCESTOR</span>
         <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">ancestor_pb</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>

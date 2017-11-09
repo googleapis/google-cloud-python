@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud e12372d documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -54,11 +54,12 @@
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Define API Datasets.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Define API Tables.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">operator</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
 
@@ -81,7 +82,7 @@
 <span class="sd">    See</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables</span>
 
-<span class="sd">    :type dataset_ref: :class:`google.cloud.bigquery.DatasetReference`</span>
+<span class="sd">    :type dataset_ref: :class:`google.cloud.bigquery.dataset.DatasetReference`</span>
 <span class="sd">    :param dataset_ref: a pointer to the dataset</span>
 
 <span class="sd">    :type table_id: str</span>
@@ -650,7 +651,7 @@
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: table resource representation returned from the API</span>
 
-<span class="sd">        :type dataset: :class:`google.cloud.bigquery.Dataset`</span>
+<span class="sd">        :type dataset: :class:`google.cloud.bigquery.dataset.Dataset`</span>
 <span class="sd">        :param dataset: The dataset containing the table.</span>
 
 <span class="sd">        :rtype: :class:`google.cloud.bigquery.table.Table`</span>
@@ -801,6 +802,64 @@
         <span class="c1"># time is in milliseconds since the epoch.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">oldest_entry_time</span> <span class="o">=</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span>
             <span class="mf">1000.0</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;oldestEntryTime&#39;</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="Row"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.Row">[docs]</a><span class="k">class</span> <span class="nc">Row</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A BigQuery row.</span>
+
+<span class="sd">    Values can be accessed by position (index), by key like a dict,</span>
+<span class="sd">    or as properties.</span>
+
+<span class="sd">    :type values: tuple</span>
+<span class="sd">    :param values:  the row values</span>
+
+<span class="sd">    :type field_to_index: dict</span>
+<span class="sd">    :param field_to_index:  a mapping from schema field names to indexes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Choose unusual field names to try to avoid conflict with schema fields.</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_xxx_values&#39;</span><span class="p">,</span> <span class="s1">&#39;_xxx_field_to_index&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">field_to_index</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">=</span> <span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">=</span> <span class="n">field_to_index</span>
+
+    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;no row field </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;no row field </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Row</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># sort field dict by value, for determinism</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+                       <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">f2i</span> <span class="o">=</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1">: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;Row(</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">,</span> <span class="n">f2i</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

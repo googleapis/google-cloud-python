@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.table &#8212; google-cloud e12372d documentation</title>
+    <title>google.cloud.bigtable.table &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,11 +57,7 @@
 <span class="sd">&quot;&quot;&quot;User-friendly container for Google Cloud Bigtable Table.&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">Aborted</span>
-<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">DeadlineExceeded</span>
-<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">from_grpc_status</span>
 <span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">RetryError</span>
-<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">ServiceUnavailable</span>
 <span class="kn">from</span> <span class="nn">google.api_core.retry</span> <span class="k">import</span> <span class="n">if_exception_type</span>
 <span class="kn">from</span> <span class="nn">google.api_core.retry</span> <span class="k">import</span> <span class="n">Retry</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
@@ -85,14 +81,13 @@
 <span class="c1">#  google.bigtable.v2#google.bigtable.v2.MutateRowRequest)</span>
 <span class="n">_MAX_BULK_MUTATIONS</span> <span class="o">=</span> <span class="mi">100000</span>
 
+
+<span class="k">class</span> <span class="nc">_BigtableRetryableError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retry-able error expected by the default retry strategy.&quot;&quot;&quot;</span>
+
+
 <span class="n">DEFAULT_RETRY</span> <span class="o">=</span> <span class="n">Retry</span><span class="p">(</span>
-    <span class="n">predicate</span><span class="o">=</span><span class="n">if_exception_type</span><span class="p">(</span>
-        <span class="p">(</span>
-            <span class="n">Aborted</span><span class="p">,</span>
-            <span class="n">DeadlineExceeded</span><span class="p">,</span>
-            <span class="n">ServiceUnavailable</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">),</span>
+    <span class="n">predicate</span><span class="o">=</span><span class="n">if_exception_type</span><span class="p">(</span><span class="n">_BigtableRetryableError</span><span class="p">),</span>
     <span class="n">initial</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
     <span class="n">maximum</span><span class="o">=</span><span class="mf">15.0</span><span class="p">,</span>
     <span class="n">multiplier</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
@@ -180,7 +175,7 @@
 <span class="sd">        .. warning::</span>
 
 <span class="sd">           At most one of ``filter_`` and ``append`` can be used in a</span>
-<span class="sd">           :class:`.Row`.</span>
+<span class="sd">           :class:`~google.cloud.bigtable.row.Row`.</span>
 
 <span class="sd">        :type row_key: bytes</span>
 <span class="sd">        :param row_key: The key for the row being created.</span>
@@ -193,7 +188,7 @@
 <span class="sd">        :param append: (Optional) Flag to determine if the row should be used</span>
 <span class="sd">                       for append mutations.</span>
 
-<span class="sd">        :rtype: :class:`.Row`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.bigtable.row.Row`</span>
 <span class="sd">        :returns: A row owned by this table.</span>
 <span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both</span>
 <span class="sd">                 ``filter_`` and ``append`` are used.</span>
@@ -467,11 +462,19 @@
 <span class="sd">                  corresponding to success or failure of each row mutation</span>
 <span class="sd">                  sent. These will be in the same order as the ``rows``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mutate_rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_mutate_retryable_rows</span>
+        <span class="k">if</span> <span class="n">retry</span><span class="p">:</span>
+            <span class="n">mutate_rows</span> <span class="o">=</span> <span class="n">retry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_do_mutate_retryable_rows</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">retry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_do_mutate_retryable_rows</span><span class="p">)()</span>
-        <span class="k">except</span> <span class="p">(</span><span class="n">RetryError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="c1"># Upon timeout or sleep generator error, return responses_statuses</span>
+            <span class="n">mutate_rows</span><span class="p">()</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">_BigtableRetryableError</span><span class="p">,</span> <span class="n">RetryError</span><span class="p">)</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="c1"># - _BigtableRetryableError raised when no retry strategy is used</span>
+            <span class="c1">#   and a retryable error on a mutation occurred.</span>
+            <span class="c1"># - RetryError raised when retry deadline is reached.</span>
+            <span class="c1"># In both cases, just return current `responses_statuses`.</span>
             <span class="k">pass</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span>
 
     <span class="nd">@staticmethod</span>
@@ -490,10 +493,8 @@
 <span class="sd">                 :class:`~google.rpc.status_pb2.Status`.</span>
 <span class="sd">        :raises: One of the following:</span>
 
-<span class="sd">                 * :exc:`~google.api_core.exceptions.ServiceUnavailable` if any</span>
-<span class="sd">                   row returned a transient error. This is &quot;artificial&quot; in</span>
-<span class="sd">                   the sense that we intentionally raise the error because it</span>
-<span class="sd">                   will be caught by the retry strategy.</span>
+<span class="sd">                 * :exc:`~.table._BigtableRetryableError` if any</span>
+<span class="sd">                   row returned a transient error.</span>
 <span class="sd">                 * :exc:`RuntimeError` if the number of responses doesn&#39;t</span>
 <span class="sd">                   match the number of rows that were retried</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -527,12 +528,11 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">retryable_rows</span><span class="p">)</span> <span class="o">!=</span> <span class="n">num_responses</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="s1">&#39;Unexpected the number of responses&#39;</span><span class="p">,</span> <span class="n">num_responses</span><span class="p">,</span>
+                <span class="s1">&#39;Unexpected number of responses&#39;</span><span class="p">,</span> <span class="n">num_responses</span><span class="p">,</span>
                 <span class="s1">&#39;Expected&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">retryable_rows</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">num_retryable_responses</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">from_grpc_status</span><span class="p">(</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">UNAVAILABLE</span><span class="p">,</span>
-                                   <span class="s1">&#39;MutateRows retryable error.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">_BigtableRetryableError</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">responses_statuses</span>
 
@@ -643,8 +643,9 @@
 <span class="sd">    :type table_name: str</span>
 <span class="sd">    :param table_name: The name of the table.</span>
 
-<span class="sd">    :type row: :class:`.Row`</span>
-<span class="sd">    :param row: An instance of :class:`.Row` subclasses.</span>
+<span class="sd">    :type row: :class:`~google.cloud.bigtable.row.Row`</span>
+<span class="sd">    :param row: An instance of :class:`~google.cloud.bigtable.row.Row`</span>
+<span class="sd">                subclasses.</span>
 
 <span class="sd">    :raises: :exc:`~.table.TableMismatchError` if the row does not belong to</span>
 <span class="sd">             the table.</span>
@@ -658,8 +659,9 @@
 <span class="k">def</span> <span class="nf">_check_row_type</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Checks that a row is an instance of :class:`.DirectRow`.</span>
 
-<span class="sd">    :type row: :class:`.Row`</span>
-<span class="sd">    :param row: An instance of :class:`.Row` subclasses.</span>
+<span class="sd">    :type row: :class:`~google.cloud.bigtable.row.Row`</span>
+<span class="sd">    :param row: An instance of :class:`~google.cloud.bigtable.row.Row`</span>
+<span class="sd">                subclasses.</span>
 
 <span class="sd">    :raises: :class:`TypeError &lt;exceptions.TypeError&gt;` if the row is not an</span>
 <span class="sd">             instance of DirectRow.</span>

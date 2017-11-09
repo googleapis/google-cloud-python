@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.helpers &#8212; google-cloud e12372d documentation</title>
+    <title>google.cloud.datastore.helpers &#8212; google-cloud 988e2c2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'e12372d',
+        VERSION:     '988e2c2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -61,16 +61,17 @@
 
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
-
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">struct_pb2</span>
-<span class="kn">from</span> <span class="nn">google.type</span> <span class="k">import</span> <span class="n">latlng_pb2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_pb_timestamp</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_pb_timestamp_to_datetime</span>
-<span class="kn">from</span> <span class="nn">google.cloud.proto.datastore.v1</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.datastore_v1.proto</span> <span class="k">import</span> <span class="n">datastore_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.datastore_v1.proto</span> <span class="k">import</span> <span class="n">entity_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.entity</span> <span class="k">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.key</span> <span class="k">import</span> <span class="n">Key</span>
+
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">struct_pb2</span>
+<span class="kn">from</span> <span class="nn">google.type</span> <span class="k">import</span> <span class="n">latlng_pb2</span>
 
 
 <span class="k">def</span> <span class="nf">_get_meaning</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -246,7 +247,7 @@
 <span class="sd">    :rtype: :class:`.entity_pb2.Entity`</span>
 <span class="sd">    :returns: The protobuf representing the entity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">entity_pb</span> <span class="o">=</span> <span class="n">_entity_pb2</span><span class="o">.</span><span class="n">Entity</span><span class="p">()</span>
+    <span class="n">entity_pb</span> <span class="o">=</span> <span class="n">entity_pb2</span><span class="o">.</span><span class="n">Entity</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
         <span class="n">entity_pb</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
@@ -273,6 +274,37 @@
                                     <span class="n">is_list</span><span class="o">=</span><span class="n">value_is_list</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">entity_pb</span></div>
+
+
+<div class="viewcode-block" id="get_read_options"><a class="viewcode-back" href="../../../../datastore/helpers.html#google.cloud.datastore.helpers.get_read_options">[docs]</a><span class="k">def</span> <span class="nf">get_read_options</span><span class="p">(</span><span class="n">eventual</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Validate rules for read options, and assign to the request.</span>
+
+<span class="sd">    Helper method for ``lookup()`` and ``run_query``.</span>
+
+<span class="sd">    :type eventual: bool</span>
+<span class="sd">    :param eventual: Flag indicating if ``EVENTUAL`` or ``STRONG``</span>
+<span class="sd">                     consistency should be used.</span>
+
+<span class="sd">    :type transaction_id: bytes</span>
+<span class="sd">    :param transaction_id: A transaction identifier (may be null).</span>
+
+<span class="sd">    :rtype: :class:`.datastore_pb2.ReadOptions`</span>
+<span class="sd">    :returns: The read options corresponding to the inputs.</span>
+<span class="sd">    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the</span>
+<span class="sd">             ``transaction_id`` is not ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">transaction_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">eventual</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">(</span>
+                <span class="n">read_consistency</span><span class="o">=</span><span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="o">.</span><span class="n">EVENTUAL</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">eventual</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;eventual must be False when in a transaction&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datastore_pb2</span><span class="o">.</span><span class="n">ReadOptions</span><span class="p">(</span>
+                <span class="n">transaction</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="key_from_protobuf"><a class="viewcode-back" href="../../../../datastore/helpers.html#google.cloud.datastore.helpers.key_from_protobuf">[docs]</a><span class="k">def</span> <span class="nf">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="p">):</span>
