@@ -20,10 +20,13 @@ import six
 try:
     import grpc
 except ImportError as caught_exc:  # pragma: NO COVER
-    new_exc = ImportError(
-        'gRPC is not installed, please install the grpcio package to use the '
-        'gRPC transport.')
-    six.raise_from(new_exc, caught_exc)
+    six.raise_from(
+        ImportError(
+            'gRPC is not installed, please install the grpcio package '
+            'to use the gRPC transport.'
+        ),
+        caught_exc,
+    )
 
 
 class AuthMetadataPlugin(grpc.AuthMetadataPlugin):

@@ -21,19 +21,20 @@
 
 from __future__ import absolute_import
 
+import six
+
 from google.auth import _helpers
 import google.auth.app_engine
 import google.oauth2.credentials
 import google.oauth2.service_account
 
-import six
 try:
     import oauth2client.client
     import oauth2client.contrib.gce
     import oauth2client.service_account
 except ImportError as caught_exc:
-    new_exc = ImportError('oauth2client is not installed.')
-    six.raise_from(new_exc, caught_exc)
+    six.raise_from(
+        ImportError('oauth2client is not installed.'), caught_exc)
 
 try:
     import oauth2client.contrib.appengine

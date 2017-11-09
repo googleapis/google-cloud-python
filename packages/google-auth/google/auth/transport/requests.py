@@ -18,15 +18,19 @@ from __future__ import absolute_import
 
 import logging
 
-import six
 try:
     import requests
 except ImportError as caught_exc:  # pragma: NO COVER
-    new_exc = ImportError(
-        'The requests library is not installed, please install the requests '
-        'package to use the requests transport.')
-    six.raise_from(new_exc, caught_exc)
-import requests.exceptions
+    import six
+    six.raise_from(
+        ImportError(
+            'The requests library is not installed, please install the '
+            'requests package to use the requests transport.'
+        ),
+        caught_exc,
+    )
+import requests.exceptions  # pylint: disable=ungrouped-imports
+import six  # pylint: disable=ungrouped-imports
 
 from google.auth import exceptions
 from google.auth import transport

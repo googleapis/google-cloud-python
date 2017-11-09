@@ -30,15 +30,19 @@ try:
 except ImportError:  # pragma: NO COVER
     certifi = None
 
-import six
 try:
     import urllib3
 except ImportError as caught_exc:  # pragma: NO COVER
-    new_exc = ImportError(
-        'The urllib3 library is not installed, please install the urllib3 '
-        'package to use the urllib3 transport.')
-    six.raise_from(new_exc, caught_exc)
-import urllib3.exceptions
+    import six
+    six.raise_from(
+        ImportError(
+            'The urllib3 library is not installed, please install the '
+            'urllib3 package to use the urllib3 transport.'
+        ),
+        caught_exc,
+    )
+import six
+import urllib3.exceptions  # pylint: disable=ungrouped-imports
 
 from google.auth import exceptions
 from google.auth import transport

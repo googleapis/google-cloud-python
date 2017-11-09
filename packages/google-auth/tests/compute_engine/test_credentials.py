@@ -75,7 +75,7 @@ class TestCredentials(object):
     def test_refresh_error(self, get):
         get.side_effect = exceptions.TransportError('http error')
 
-        with pytest.raises(exceptions.RefreshError) as excinfo:
+        with pytest.raises(exceptions.RefreshError):
             self.credentials.refresh(None)
 
     @mock.patch('google.auth.compute_engine._metadata.get', autospec=True)
