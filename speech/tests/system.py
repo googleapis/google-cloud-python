@@ -249,9 +249,8 @@ class TestSpeechClient(unittest.TestCase):
                 self._check_results(results.alternatives)
 
     def test_long_running_recognize(self):
-
         content = None
-        reps = 5
+        repetitions = 5
         with open(AUDIO_FILE, 'rb') as in_stream:
             in_wavfile = wave.open(in_stream)
             params = in_wavfile.getparams()
@@ -260,7 +259,7 @@ class TestSpeechClient(unittest.TestCase):
         with io.BytesIO() as out_stream:
             out_wavfile = wave.open(out_stream, 'w')
             out_wavfile.setparams(params)
-            for rep in range(reps):
+            for _ in range(repetitions):
                 out_wavfile.writeframes(frames)
                 content = out_stream.getvalue()
 
@@ -274,14 +273,11 @@ class TestSpeechClient(unittest.TestCase):
             audio=speech.types.RecognitionAudio(content=content)
         )
 
-        try:
-            op_result = operation.result()
-        except GaxError:
-            self.fail()
+        op_result = operation.result()
+        wav_transcription = "hello thank you for using google cloud platform "
         self.assertGreater(len(op_result.results), 0)
         for result in op_result.results:
             self.assertGreater(len(result.alternatives), 0)
             for alternative in result.alternatives:
                 self.assertEqual(alternative.transcript.lower(),
-                                 ("hello thank you for using google cloud "
-                                  "platform " *reps)[:-1])
+                                 (wav_transcription * repetitions)[:-1])
