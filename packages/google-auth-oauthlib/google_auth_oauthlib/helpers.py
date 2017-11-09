@@ -21,6 +21,7 @@ Typically, you'll want to use the higher-level helpers in
 .. _requests-oauthlib: http://requests-oauthlib.readthedocs.io/en/stable/
 """
 
+import datetime
 import json
 
 import google.oauth2.credentials
@@ -128,10 +129,13 @@ def credentials_from_session(session, client_config=None):
             'There is no access token for this session, did you call '
             'fetch_token?')
 
-    return google.oauth2.credentials.Credentials(
+    credentials = google.oauth2.credentials.Credentials(
         session.token['access_token'],
         refresh_token=session.token.get('refresh_token'),
         token_uri=client_config.get('token_uri'),
         client_id=client_config.get('client_id'),
         client_secret=client_config.get('client_secret'),
         scopes=session.scope)
+    credentials.expiry = datetime.datetime.fromtimestamp(
+        session.token['expires_at'])
+    return credentials

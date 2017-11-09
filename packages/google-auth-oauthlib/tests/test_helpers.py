@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import json
 import os
 
@@ -73,13 +74,15 @@ def session():
 def test_credentials_from_session(session):
     session.token = {
         'access_token': mock.sentinel.access_token,
-        'refresh_token': mock.sentinel.refresh_token
+        'refresh_token': mock.sentinel.refresh_token,
+        'expires_at': 643969200.0
     }
 
     credentials = helpers.credentials_from_session(
         session, CLIENT_SECRETS_INFO['web'])
 
     assert credentials.token == mock.sentinel.access_token
+    assert credentials.expiry == datetime.datetime(1990, 5, 29, 8, 20, 0)
     assert credentials._refresh_token == mock.sentinel.refresh_token
     assert credentials._client_id == CLIENT_SECRETS_INFO['web']['client_id']
     assert (credentials._client_secret ==

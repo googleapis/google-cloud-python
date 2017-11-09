@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import concurrent.futures
+import datetime
 from functools import partial
 import json
 import os
@@ -133,12 +134,14 @@ class TestFlow(object):
     def test_credentials(self, instance):
         instance.oauth2session.token = {
             'access_token': mock.sentinel.access_token,
-            'refresh_token': mock.sentinel.refresh_token
+            'refresh_token': mock.sentinel.refresh_token,
+            'expires_at': 643969200.0
         }
 
         credentials = instance.credentials
 
         assert credentials.token == mock.sentinel.access_token
+        assert credentials.expiry == datetime.datetime(1990, 5, 29, 8, 20, 0)
         assert credentials._refresh_token == mock.sentinel.refresh_token
         assert (credentials._client_id ==
                 CLIENT_SECRETS_INFO['web']['client_id'])
@@ -150,7 +153,8 @@ class TestFlow(object):
     def test_authorized_session(self, instance):
         instance.oauth2session.token = {
             'access_token': mock.sentinel.access_token,
-            'refresh_token': mock.sentinel.refresh_token
+            'refresh_token': mock.sentinel.refresh_token,
+            'expires_at': 643969200.0
         }
 
         session = instance.authorized_session()
@@ -172,7 +176,8 @@ class TestInstalledAppFlow(object):
         def set_token(*args, **kwargs):
             instance.oauth2session.token = {
                 'access_token': mock.sentinel.access_token,
-                'refresh_token': mock.sentinel.refresh_token
+                'refresh_token': mock.sentinel.refresh_token,
+                'expires_at': 643969200.0
             }
 
         fetch_token_patch = mock.patch.object(
