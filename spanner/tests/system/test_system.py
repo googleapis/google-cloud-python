@@ -243,7 +243,8 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         pool = BurstyPool()
         cls._db = Config.INSTANCE.database(
             cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
-        cls._db.create()
+        operation = cls._db.create()
+        operation.result(30)  # raises on failure / timeout.
 
     @classmethod
     def tearDownClass(cls):
@@ -259,12 +260,13 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
     def test_list_databases(self):
         # Since `Config.INSTANCE` is newly created in `setUpModule`, the
         # database created in `setUpClass` here will be the only one.
-        databases = list(Config.INSTANCE.list_databases())
-        self.assertEqual(databases, [self._db])
+        database_names = [
+            database.name for database in Config.INSTANCE.list_databases()]
+        self.assertTrue(self._db.name in database_names)
 
     def test_create_database(self):
         pool = BurstyPool()
-        temp_db_id = 'temp-db'  # test w/ hyphen
+        temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         operation = temp_db.create()
         self.to_delete.append(temp_db)
