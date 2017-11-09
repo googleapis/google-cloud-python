@@ -16,13 +16,17 @@
 
 from __future__ import absolute_import
 
+import six
 try:
     import grpc
-except ImportError:  # pragma: NO COVER
-    raise ImportError(
-        'gRPC is not installed, please install the grpcio package to use the '
-        'gRPC transport.')
-import six
+except ImportError as caught_exc:  # pragma: NO COVER
+    six.raise_from(
+        ImportError(
+            'gRPC is not installed, please install the grpcio package '
+            'to use the gRPC transport.'
+        ),
+        caught_exc,
+    )
 
 
 class AuthMetadataPlugin(grpc.AuthMetadataPlugin):

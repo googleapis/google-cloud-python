@@ -19,6 +19,8 @@ Engine using the Compute Engine metadata server.
 
 """
 
+import six
+
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth.compute_engine import _metadata
@@ -89,8 +91,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
             self.token, self.expiry = _metadata.get_service_account_token(
                 request,
                 service_account=self._service_account_email)
-        except exceptions.TransportError as exc:
-            raise exceptions.RefreshError(exc)
+        except exceptions.TransportError as caught_exc:
+            new_exc = exceptions.RefreshError(caught_exc)
+            six.raise_from(new_exc, caught_exc)
 
     @property
     def service_account_email(self):

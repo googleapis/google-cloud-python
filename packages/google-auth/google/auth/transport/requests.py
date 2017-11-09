@@ -20,11 +20,17 @@ import logging
 
 try:
     import requests
-except ImportError:  # pragma: NO COVER
-    raise ImportError(
-        'The requests library is not installed, please install the requests '
-        'package to use the requests transport.')
-import requests.exceptions
+except ImportError as caught_exc:  # pragma: NO COVER
+    import six
+    six.raise_from(
+        ImportError(
+            'The requests library is not installed, please install the '
+            'requests package to use the requests transport.'
+        ),
+        caught_exc,
+    )
+import requests.exceptions  # pylint: disable=ungrouped-imports
+import six  # pylint: disable=ungrouped-imports
 
 from google.auth import exceptions
 from google.auth import transport
@@ -111,8 +117,9 @@ class Request(transport.Request):
                 method, url, data=body, headers=headers, timeout=timeout,
                 **kwargs)
             return _Response(response)
-        except requests.exceptions.RequestException as exc:
-            raise exceptions.TransportError(exc)
+        except requests.exceptions.RequestException as caught_exc:
+            new_exc = exceptions.TransportError(caught_exc)
+            six.raise_from(new_exc, caught_exc)
 
 
 class AuthorizedSession(requests.Session):

@@ -22,6 +22,8 @@ import json
 import logging
 import os
 
+import six
+
 from google.auth import environment_vars
 from google.auth import exceptions
 import google.auth.transport._http_client
@@ -67,9 +69,11 @@ def _load_credentials_from_file(filename):
     with io.open(filename, 'r') as file_obj:
         try:
             info = json.load(file_obj)
-        except ValueError as exc:
-            raise exceptions.DefaultCredentialsError(
-                'File {} is not a valid json file.'.format(filename), exc)
+        except ValueError as caught_exc:
+            new_exc = exceptions.DefaultCredentialsError(
+                'File {} is not a valid json file.'.format(filename),
+                caught_exc)
+            six.raise_from(new_exc, caught_exc)
 
     # The type key should indicate that the file is either a service account
     # credentials file or an authorized user credentials file.
@@ -80,10 +84,11 @@ def _load_credentials_from_file(filename):
 
         try:
             credentials = _cloud_sdk.load_authorized_user_credentials(info)
-        except ValueError as exc:
-            raise exceptions.DefaultCredentialsError(
-                'Failed to load authorized user credentials from {}'.format(
-                    filename), exc)
+        except ValueError as caught_exc:
+            msg = 'Failed to load authorized user credentials from {}'.format(
+                filename)
+            new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
+            six.raise_from(new_exc, caught_exc)
         # Authorized user credentials do not contain the project ID.
         return credentials, None
 
@@ -93,10 +98,11 @@ def _load_credentials_from_file(filename):
         try:
             credentials = (
                 service_account.Credentials.from_service_account_info(info))
-        except ValueError as exc:
-            raise exceptions.DefaultCredentialsError(
-                'Failed to load service account credentials from {}'.format(
-                    filename), exc)
+        except ValueError as caught_exc:
+            msg = 'Failed to load service account credentials from {}'.format(
+                filename)
+            new_exc = exceptions.DefaultCredentialsError(msg, caught_exc)
+            six.raise_from(new_exc, caught_exc)
         return credentials, info.get('project_id')
 
     else:
