@@ -92,7 +92,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
                 request,
                 service_account=self._service_account_email)
         except exceptions.TransportError as caught_exc:
-            new_exc = exceptions.RefreshError()
+            new_exc = exceptions.RefreshError(caught_exc)
             six.raise_from(new_exc, caught_exc)
 
     @property

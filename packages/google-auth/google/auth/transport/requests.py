@@ -118,7 +118,7 @@ class Request(transport.Request):
                 **kwargs)
             return _Response(response)
         except requests.exceptions.RequestException as caught_exc:
-            new_exc = exceptions.TransportError()
+            new_exc = exceptions.TransportError(caught_exc)
             six.raise_from(new_exc, caught_exc)
 
 

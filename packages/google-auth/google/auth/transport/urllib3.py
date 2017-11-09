@@ -133,7 +133,7 @@ class Request(transport.Request):
                 method, url, body=body, headers=headers, **kwargs)
             return _Response(response)
         except urllib3.exceptions.HTTPError as caught_exc:
-            new_exc = exceptions.TransportError()
+            new_exc = exceptions.TransportError(caught_exc)
             six.raise_from(new_exc, caught_exc)
 
 

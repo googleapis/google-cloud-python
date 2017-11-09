@@ -106,7 +106,7 @@ class Request(transport.Request):
             return Response(response)
 
         except (http_client.HTTPException, socket.error) as caught_exc:
-            new_exc = exceptions.TransportError()
+            new_exc = exceptions.TransportError(caught_exc)
             six.raise_from(new_exc, caught_exc)
 
         finally:

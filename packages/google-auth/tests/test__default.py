@@ -85,6 +85,7 @@ def test__load_credentials_from_file_authorized_user_bad_format(tmpdir):
         _default._load_credentials_from_file(str(filename))
 
     assert excinfo.match(r'Failed to load authorized user')
+    assert excinfo.match(r'missing fields')
 
 
 def test__load_credentials_from_file_service_account():
@@ -102,6 +103,7 @@ def test__load_credentials_from_file_service_account_bad_format(tmpdir):
         _default._load_credentials_from_file(str(filename))
 
     assert excinfo.match(r'Failed to load service account')
+    assert excinfo.match(r'missing fields')
 
 
 @mock.patch.dict(os.environ, {}, clear=True)
