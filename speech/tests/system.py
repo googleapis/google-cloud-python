@@ -274,10 +274,10 @@ class TestSpeechClient(unittest.TestCase):
         )
 
         op_result = operation.result()
-        wav_transcription = "hello thank you for using google cloud platform "
+        wav_transcription = "hello thank you for using google cloud platform"
         self.assertGreater(len(op_result.results), 0)
         for result in op_result.results:
             self.assertGreater(len(result.alternatives), 0)
             for alternative in result.alternatives:
-                self.assertEqual(alternative.transcript.lower(),
-                                 (wav_transcription * repetitions)[:-1])
+                expected = " ".join([wav_transcription] * repetitions)
+                self.assertEqual(alternative.transcript.lower(), expected)
