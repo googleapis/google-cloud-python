@@ -399,9 +399,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
         ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
         ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([3, None, 9], False, None, None, float('-inf'), 207, None, None),
-        ([], False, None, None, float('nan'), 1207, None, None),
-        ([], False, None, None, OTHER_NAN, 2000, None, NANO_TIME),
+        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
+        ([], False, None, None, float('nan'), 1207, u'owl', None),
+        ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
     )
 
     @classmethod
@@ -932,8 +932,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 
-    def _check_sql_results(self, snapshot, sql, params, param_types, expected):
-        if 'ORDER' not in sql:
+    def _check_sql_results(
+            self, snapshot, sql, params, param_types, expected, order=True):
+        if order and 'ORDER' not in sql:
             sql += ' ORDER BY eye_d'
         rows = list(snapshot.execute_sql(
             sql, params=params, param_types=param_types))
@@ -1019,6 +1020,14 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         self._check_sql_results(
             snapshot,
+            sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
+            params={'hwhen': self.SOME_TIME},
+            param_types={'hwhen': Type(code=TIMESTAMP)},
+            expected=[(19,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
             sql=('SELECT eye_d FROM all_types WHERE approx_value >= @lower'
                  ' AND approx_value < @upper '),
             params={'lower': 0.0, 'upper': 1.0},
@@ -1069,8 +1078,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(19,)],
         )
 
-        # NaNs cannot be searched for by equality.
-
         self._check_sql_results(
             snapshot,
             sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
@@ -1079,15 +1086,57 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(19,)],
         )
 
-        array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+        int_array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+
         self._check_sql_results(
             snapshot,
             sql=('SELECT description FROM all_types '
                  'WHERE eye_d in UNNEST(@my_list)'),
             params={'my_list': [19, 99]},
-            param_types={'my_list': array_type},
+            param_types={'my_list': int_array_type},
             expected=[(u'dog',), (u'cat',)],
         )
+
+        str_array_type = Type(code=ARRAY, array_element_type=Type(code=STRING))
+
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT eye_d FROM all_types '
+                 'WHERE description in UNNEST(@my_list)'),
+            params={'my_list': []},
+            param_types={'my_list': str_array_type},
+            expected=[],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT eye_d FROM all_types '
+                 'WHERE description in UNNEST(@my_list)'),
+            params={'my_list': [u'dog', u'cat']},
+            param_types={'my_list': str_array_type},
+            expected=[(19,), (99,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=STRING)},
+            expected=[(None,)],
+            order=False,
+        )
+
+        rows = list(snapshot.execute_sql(
+            'SELECT'
+            ' [CAST("-inf" AS FLOAT64),'
+            ' CAST("+inf" AS FLOAT64),'
+            ' CAST("NaN" AS FLOAT64)]'))
+        self.assertEqual(len(rows), 1)
+        float_array, = rows[0]
+        self.assertEqual(float_array[0], float('-inf'))
+        self.assertEqual(float_array[1], float('+inf'))
+        # NaNs cannot be searched for by equality.
+        self.assertTrue(math.isnan(float_array[2]))
 
 
 class TestStreamingChunking(unittest.TestCase, _TestData):
