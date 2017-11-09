@@ -23,6 +23,7 @@ import six
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _pb_timestamp_to_datetime
+from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key

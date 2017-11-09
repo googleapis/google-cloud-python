@@ -510,7 +510,7 @@ class Test__get_read_options(unittest.TestCase):
             self._call_fut(True, b'123')
 
     def test_eventual_wo_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         read_options = self._call_fut(True, None)
         expected = datastore_pb2.ReadOptions(
@@ -518,7 +518,7 @@ class Test__get_read_options(unittest.TestCase):
         self.assertEqual(read_options, expected)
 
     def test_default_w_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         txn_id = b'123abc-easy-as'
         read_options = self._call_fut(False, txn_id)
@@ -526,7 +526,7 @@ class Test__get_read_options(unittest.TestCase):
         self.assertEqual(read_options, expected)
 
     def test_default_wo_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         read_options = self._call_fut(False, None)
         expected = datastore_pb2.ReadOptions()
