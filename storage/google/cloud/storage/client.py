@@ -26,10 +26,13 @@ from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 
 
+_marker = object()
+
+
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
-    :type project: str
+    :type project: str or None
     :param project: the project which the client acts on behalf of. Will be
                     passed when creating a topic.  If not passed,
                     falls back to the default inferred from the environment.
@@ -55,10 +58,19 @@ class Client(ClientWithProject):
              'https://www.googleapis.com/auth/devstorage.read_write')
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
-    def __init__(self, project=None, credentials=None, _http=None):
+    def __init__(self, project=_marker, credentials=None, _http=None):
         self._base_connection = None
+        if project is None:
+            no_project = True
+            project = '<none>'
+        else:
+            no_project = False
+        if project is _marker:
+            project = None
         super(Client, self).__init__(project=project, credentials=credentials,
                                      _http=_http)
+        if no_project:
+            self.project = None
         self._connection = Connection(self)
         self._batch_stack = _LocalStack()
 

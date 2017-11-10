@@ -75,6 +75,38 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
 
+    def test_ctor_wo_project(self):
+        from google.cloud.storage._http import Connection
+
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _make_credentials()
+
+        ddp_patch = mock.patch(
+            'google.cloud.client._determine_default_project',
+            return_value=PROJECT)
+
+        with ddp_patch:
+            client = self._make_one(credentials=CREDENTIALS)
+
+        self.assertEqual(client.project, PROJECT)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, CREDENTIALS)
+        self.assertIsNone(client.current_batch)
+        self.assertEqual(list(client._batch_stack), [])
+
+    def test_ctor_w_project_explicit_none(self):
+        from google.cloud.storage._http import Connection
+
+        CREDENTIALS = _make_credentials()
+
+        client = self._make_one(project=None, credentials=CREDENTIALS)
+
+        self.assertIsNone(client.project)
+        self.assertIsInstance(client._connection, Connection)
+        self.assertIs(client._connection.credentials, CREDENTIALS)
+        self.assertIsNone(client.current_batch)
+        self.assertEqual(list(client._batch_stack), [])
+
     def test_create_anonymous_client(self):
         from google.auth.credentials import AnonymousCredentials
         from google.cloud.storage._http import Connection
