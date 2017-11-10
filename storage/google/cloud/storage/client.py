@@ -260,7 +260,7 @@ class Client(ClientWithProject):
         return bucket
 
     def list_buckets(self, max_results=None, page_token=None, prefix=None,
-                     projection='noAcl', fields=None):
+                     projection='noAcl', fields=None, project=None):
         """Get all buckets in the project associated to the client.
 
         This will not populate the list of blobs available in each
@@ -296,11 +296,24 @@ class Client(ClientWithProject):
             response with just the next page token and the language of each
             bucket returned: 'items/id,nextPageToken'
 
+        :type project: str
+        :param project: (Optional) the project whose buckets are to be listed.
+                        If not passed, uses the project set on the client.
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :raises ValueError: if both ``project`` is ``None`` and the client's
+                            project is also ``None``.
         :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`
                   belonging to this project.
         """
-        extra_params = {'project': self.project}
+        if project is None:
+            project = self.project
+
+        if project is None:
+            raise ValueError(
+                "Client project not set:  pass an explicit project.")
+
+        extra_params = {'project': project}
 
         if prefix is not None:
             extra_params['prefix'] = prefix

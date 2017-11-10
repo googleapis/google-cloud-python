@@ -369,6 +369,13 @@ class TestClient(unittest.TestCase):
         json_sent = http.request.call_args_list[0][1]['data']
         self.assertEqual(sent, json.loads(json_sent))
 
+    def test_list_buckets_wo_project(self):
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=None, credentials=CREDENTIALS)
+
+        with self.assertRaises(ValueError):
+            client.list_buckets()
+
     def test_list_buckets_empty(self):
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlparse
@@ -398,6 +405,41 @@ class TestClient(unittest.TestCase):
 
         expected_query = {
             'project': [PROJECT],
+            'projection': ['noAcl'],
+        }
+        uri_parts = urlparse(requested_url)
+        self.assertEqual(parse_qs(uri_parts.query), expected_query)
+
+    def test_list_buckets_explicit_project(self):
+        from six.moves.urllib.parse import parse_qs
+        from six.moves.urllib.parse import urlparse
+
+        PROJECT = 'PROJECT'
+        OTHER_PROJECT = 'OTHER_PROJECT'
+        CREDENTIALS = _make_credentials()
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+
+        http = _make_requests_session([_make_json_response({})])
+        client._http_internal = http
+
+        buckets = list(client.list_buckets(project=OTHER_PROJECT))
+
+        self.assertEqual(len(buckets), 0)
+
+        http.request.assert_called_once_with(
+            method='GET', url=mock.ANY, data=mock.ANY, headers=mock.ANY)
+
+        requested_url = http.request.mock_calls[0][2]['url']
+        expected_base_url = '/'.join([
+            client._connection.API_BASE_URL,
+            'storage',
+            client._connection.API_VERSION,
+            'b',
+        ])
+        self.assertTrue(requested_url.startswith(expected_base_url))
+
+        expected_query = {
+            'project': [OTHER_PROJECT],
             'projection': ['noAcl'],
         }
         uri_parts = urlparse(requested_url)
