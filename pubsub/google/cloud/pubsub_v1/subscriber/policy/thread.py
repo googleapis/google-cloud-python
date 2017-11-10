@@ -159,8 +159,12 @@ class Policy(base.BasePolicy):
         if getattr(exception, 'code', lambda: None)() == deadline_exceeded:
             return
 
-        # Set any other exception on the future.
-        self._future.set_exception(exception)
+        if self._future.done():
+            # Simply trigger the future.
+            self._future._trigger()
+        else:
+            # Set any other exception on the future.
+            self._future.set_exception(exception)
 
     def on_response(self, response):
         """Process all received Pub/Sub messages.
