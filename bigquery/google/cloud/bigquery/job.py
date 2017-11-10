@@ -21,7 +21,7 @@ import six
 from six.moves import http_client
 try:
     import pandas
-except ImportError:
+except ImportError:  # pragma: NO COVER
     pandas = None
 
 import google.api_core.future.polling
@@ -1965,7 +1965,7 @@ class QueryJob(_AsyncJob):
             ValueError: If the `pandas` library cannot be imported.
 
         """
-        if pandas is None:
+        if pandas is None:  # pragma: NO COVER
             raise ValueError('The pandas library is not installed, please '
                              'install pandas to use the to_dataframe() '
                              'function.')

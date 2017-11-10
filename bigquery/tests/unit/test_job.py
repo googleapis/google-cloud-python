@@ -18,7 +18,7 @@ from six.moves import http_client
 import unittest
 try:
     import pandas
-except ImportError:
+except ImportError:  # pragma: NO COVER
     pandas = None
 
 from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
