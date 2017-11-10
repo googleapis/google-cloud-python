@@ -76,6 +76,11 @@ class BucketNotification(object):
 
         if topic_project is None:
             topic_project = bucket.client.project
+
+        if topic_project is None:
+            raise ValueError(
+                "Client project not set:  pass an explicit topic_project.")
+
         self._topic_project = topic_project
 
         self._properties = {}
