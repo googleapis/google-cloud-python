@@ -1956,14 +1956,14 @@ class QueryJob(_AsyncJob):
     def to_dataframe(self):
         """Create a pandas DataFrame from the query results.
 
-        :rtype: ``pandas.DataFrame``
-        :returns: A ``pandas.DataFrame`` object populated with row data
-                  and column headers from the query results. The column
-                  headers are derived from the destination table's
-                  schema.
+        Returns:
+            A :class:`~pandas.DataFrame` populated with row data and column
+            headers from the query results. The column headers are derived
+            from the destination table's schema.
 
-        :raises: :exc:`ValueError` if the ``pandas`` library cannot be
-                 imported.
+        Raises:
+            ValueError: If the `pandas` library cannot be imported.
+
         """
         if pandas is None:
             raise ValueError('The pandas library is not installed, please '
