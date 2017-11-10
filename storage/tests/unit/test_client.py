@@ -318,6 +318,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.exceptions import Conflict
 
         PROJECT = 'PROJECT'
+        OTHER_PROJECT = 'OTHER_PROJECT'
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
@@ -326,7 +327,7 @@ class TestClient(unittest.TestCase):
             client._connection.API_BASE_URL,
             'storage',
             client._connection.API_VERSION,
-            'b?project=%s' % (PROJECT,),
+            'b?project=%s' % (OTHER_PROJECT,),
         ])
         data = {'error': {'message': 'Conflict'}}
         sent = {'name': BUCKET_NAME}
@@ -334,7 +335,9 @@ class TestClient(unittest.TestCase):
             _make_json_response(data, status=http_client.CONFLICT)])
         client._http_internal = http
 
-        self.assertRaises(Conflict, client.create_bucket, BUCKET_NAME)
+        with self.assertRaises(Conflict):
+            client.create_bucket(BUCKET_NAME, project=OTHER_PROJECT)
+
         http.request.assert_called_once_with(
             method='POST', url=URI, data=mock.ANY, headers=mock.ANY)
         json_sent = http.request.call_args_list[0][1]['data']
