@@ -19,6 +19,10 @@ import threading
 
 import six
 from six.moves import http_client
+try:
+    import pandas
+except ImportError:
+    pandas = None
 
 import google.api_core.future.polling
 from google.cloud import exceptions
@@ -1957,14 +1961,20 @@ class QueryJob(_AsyncJob):
                   and column headers from the query results. The column
                   headers are derived from the destination table's
                   schema.
+
+        :raises: :exc:`ValueError` if the ``pandas`` library cannot be
+                 imported.
         """
-        import pandas as pd
+        if pandas is None:
+            raise ValueError('The pandas library is not installed, please '
+                             'install pandas to use the to_dataframe() '
+                             'function.')
 
-        iterator = self.result()
-        column_headers = [field.name for field in iterator.schema]
-        rows = [row.values() for row in iterator]
+        query_results = self.result()
+        column_headers = [field.name for field in query_results.schema]
+        rows = [row.values() for row in query_results]
 
-        return pd.DataFrame(rows, columns=column_headers)
+        return pandas.DataFrame(rows, columns=column_headers)
 
     def __iter__(self):
         return iter(self.result())
