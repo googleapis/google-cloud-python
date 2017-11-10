@@ -15,14 +15,24 @@
 from __future__ import absolute_import
 import sys
 
-from google.cloud.proto.devtools.cloudtrace.v1 import trace_pb2
-from google.gax.utils.messages import get_messages
+from google.api_core.protobuf_helpers import get_messages
 
+from google.api import http_pb2
+from google.cloud.trace_v1.proto import trace_pb2
+from google.protobuf import descriptor_pb2
+from google.protobuf import empty_pb2
+from google.protobuf import timestamp_pb2
 
 names = []
-for name, message in get_messages(trace_pb2).items():
-    setattr(sys.modules[__name__], name, message)
-    names.append(name)
-
+for module in (
+        http_pb2,
+        trace_pb2,
+        descriptor_pb2,
+        empty_pb2,
+        timestamp_pb2, ):
+    for name, message in get_messages(module).items():
+        message.__module__ = 'google.cloud.trace_v1.types'
+        setattr(sys.modules[__name__], name, message)
+        names.append(name)
 
 __all__ = tuple(sorted(names))
