@@ -75,6 +75,7 @@ def test_credentials_from_session(session):
     session.token = {
         'access_token': mock.sentinel.access_token,
         'refresh_token': mock.sentinel.refresh_token,
+        'id_token': mock.sentinel.id_token,
         'expires_at': 643969200.0
     }
 
@@ -84,6 +85,7 @@ def test_credentials_from_session(session):
     assert credentials.token == mock.sentinel.access_token
     assert credentials.expiry == datetime.datetime(1990, 5, 29, 8, 20, 0)
     assert credentials._refresh_token == mock.sentinel.refresh_token
+    assert credentials.id_token == mock.sentinel.id_token
     assert credentials._client_id == CLIENT_SECRETS_INFO['web']['client_id']
     assert (credentials._client_secret ==
             CLIENT_SECRETS_INFO['web']['client_secret'])

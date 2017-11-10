@@ -132,6 +132,7 @@ def credentials_from_session(session, client_config=None):
     credentials = google.oauth2.credentials.Credentials(
         session.token['access_token'],
         refresh_token=session.token.get('refresh_token'),
+        id_token=session.token.get('id_token'),
         token_uri=client_config.get('token_uri'),
         client_id=client_config.get('client_id'),
         client_secret=client_config.get('client_secret'),
