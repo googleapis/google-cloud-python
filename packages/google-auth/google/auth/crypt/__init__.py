@@ -29,7 +29,7 @@ If you're going to verify many messages with the same certificate, you can use
 To sign messages use :class:`RSASigner` with a private key::
 
     private_key = open('private_key.pem').read()
-    signer = crypt.RSASigner(private_key)
+    signer = crypt.RSASigner.from_string(private_key)
     signature = signer.sign(message)
 """
 
