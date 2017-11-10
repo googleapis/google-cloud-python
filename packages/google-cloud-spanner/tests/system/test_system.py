@@ -450,6 +450,30 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
 
+    def test_batch_insert_then_read_string_array_of_string(self):
+        TABLE = 'string_plus_array_of_string'
+        COLUMNS = ['id', 'name', 'tags']
+        ROWDATA = [
+            (0, None, None),
+            (1, 'phred', ['yabba', 'dabba', 'do']),
+            (2, 'bharney', []),
+            (3, 'wylma', ['oh', None, 'phred']),
+        ]
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(TABLE, self.ALL)
+            batch.insert(TABLE, COLUMNS, ROWDATA)
+
+        snapshot = session.snapshot(read_timestamp=batch.committed)
+        rows = list(snapshot.read(TABLE, COLUMNS, self.ALL))
+        self._check_row_data(rows, expected=ROWDATA)
+
     def test_batch_insert_then_read_all_datatypes(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
