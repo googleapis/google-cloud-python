@@ -26,9 +26,10 @@ from google.cloud.datastore.key import Key
 
 
 _NOT_FINISHED = query_pb2.QueryResultBatch.NOT_FINISHED
+_NO_MORE_RESULTS = query_pb2.QueryResultBatch.NO_MORE_RESULTS
 
 _FINISHED = (
-    query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+    _NO_MORE_RESULTS,
     query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
     query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_CURSOR,
 )
@@ -470,7 +471,7 @@ class Iterator(page_iterator.Iterator):
         """
         self._skipped_results = response_pb.batch.skipped_results
 
-        if response_pb.batch.end_cursor == b'':  # Empty-value for bytes.
+        if response_pb.batch.more_results == _NO_MORE_RESULTS:
             self.next_page_token = None
         else:
             self.next_page_token = base64.urlsafe_b64encode(
