@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def test_lookup(self):
-        from google.cloud.gapic.datastore.v1 import datastore_client
+        from google.cloud.datastore_v1.gapic import datastore_client
 
         patch1 = mock.patch.object(
             datastore_client.DatastoreClient, '__init__',
@@ -115,7 +115,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
                     mock_catch_rendezvous.assert_called_once_with()
 
     def test_run_query(self):
-        from google.cloud.gapic.datastore.v1 import datastore_client
+        from google.cloud.datastore_v1.gapic import datastore_client
 
         patch1 = mock.patch.object(
             datastore_client.DatastoreClient, '__init__',
@@ -136,7 +136,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
                     mock_catch_rendezvous.assert_called_once_with()
 
     def test_begin_transaction(self):
-        from google.cloud.gapic.datastore.v1 import datastore_client
+        from google.cloud.datastore_v1.gapic import datastore_client
 
         patch1 = mock.patch.object(
             datastore_client.DatastoreClient, '__init__',
@@ -158,7 +158,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
                     mock_catch_rendezvous.assert_called_once_with()
 
     def test_commit(self):
-        from google.cloud.gapic.datastore.v1 import datastore_client
+        from google.cloud.datastore_v1.gapic import datastore_client
 
         patch1 = mock.patch.object(
             datastore_client.DatastoreClient, '__init__',
@@ -178,7 +178,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
                     mock_catch_rendezvous.assert_called_once_with()
 
     def test_rollback(self):
-        from google.cloud.gapic.datastore.v1 import datastore_client
+        from google.cloud.datastore_v1.gapic import datastore_client
 
         patch1 = mock.patch.object(
             datastore_client.DatastoreClient, '__init__',
@@ -199,7 +199,7 @@ class TestGAPICDatastoreAPI(unittest.TestCase):
                     mock_catch_rendezvous.assert_called_once_with()
 
     def test_allocate_ids(self):
-        from google.cloud.gapic.datastore.v1 import datastore_client
+        from google.cloud.datastore_v1.gapic import datastore_client
 
         patch1 = mock.patch.object(
             datastore_client.DatastoreClient, '__init__',
@@ -236,7 +236,7 @@ class Test_make_datastore_api(unittest.TestCase):
     @mock.patch('google.cloud.datastore._gax.make_secure_channel',
                 return_value=mock.sentinel.channel)
     def test_live_api(self, make_chan, mock_klass):
-        from google.cloud.gapic.datastore.v1 import datastore_client
+        from google.cloud.datastore_v1.gapic import datastore_client
         from google.cloud._http import DEFAULT_USER_AGENT
         from google.cloud.datastore import __version__
 
@@ -252,8 +252,9 @@ class Test_make_datastore_api(unittest.TestCase):
         make_chan.assert_called_once_with(
             mock.sentinel.credentials, DEFAULT_USER_AGENT, host)
         mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, lib_name='gccl',
-            lib_version=__version__)
+            channel=mock.sentinel.channel,
+            client_info=mock.ANY,
+        )
 
     @mock.patch(
         'google.cloud.datastore._gax.GAPICDatastoreAPI',
@@ -274,5 +275,6 @@ class Test_make_datastore_api(unittest.TestCase):
 
         make_chan.assert_called_once_with(host)
         mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, lib_name='gccl',
-            lib_version=__version__)
+            channel=mock.sentinel.channel,
+            client_info=mock.ANY,
+        )

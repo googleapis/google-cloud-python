@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2016 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class TestInstance(unittest.TestCase):
     DATABASE_NAME = '%s/databases/%s' % (INSTANCE_NAME, DATABASE_ID)
 
     def _getTargetClass(self):
-        from google.cloud.spanner.instance import Instance
+        from google.cloud.spanner_v1.instance import Instance
 
         return Instance
 
@@ -45,7 +45,7 @@ class TestInstance(unittest.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
+        from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 
         client = object()
         instance = self._make_one(self.INSTANCE_ID, client)
@@ -85,7 +85,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance, new_instance)
 
     def test__update_from_pb_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         display_name = 'display_name'
@@ -99,7 +99,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, display_name)
 
     def test__update_from_pb_no_display_name(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         instance_pb = admin_v1_pb2.Instance()
@@ -110,7 +110,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.display_name, None)
 
     def test_from_pb_bad_instance_name(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         instance_name = 'INCORRECT_FORMAT'
@@ -121,7 +121,7 @@ class TestInstance(unittest.TestCase):
             klass.from_pb(instance_pb, None)
 
     def test_from_pb_project_mistmatch(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         ALT_PROJECT = 'ALT_PROJECT'
@@ -136,7 +136,7 @@ class TestInstance(unittest.TestCase):
             klass.from_pb(instance_pb, client)
 
     def test_from_pb_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         client = _Client(project=self.PROJECT)
@@ -283,7 +283,7 @@ class TestInstance(unittest.TestCase):
                          [('google-cloud-resource-prefix', instance.name)])
 
     def test_exists_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         client = _Client(self.PROJECT)
@@ -338,7 +338,7 @@ class TestInstance(unittest.TestCase):
                          [('google-cloud-resource-prefix', instance.name)])
 
     def test_reload_success(self):
-        from google.cloud.proto.spanner.admin.instance.v1 import (
+        from google.cloud.spanner_admin_instance_v1.proto import (
             spanner_instance_admin_pb2 as admin_v1_pb2)
 
         client = _Client(self.PROJECT)
@@ -365,7 +365,7 @@ class TestInstance(unittest.TestCase):
 
     def test_update_grpc_error(self):
         from google.gax.errors import GaxError
-        from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
+        from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
@@ -388,7 +388,7 @@ class TestInstance(unittest.TestCase):
 
     def test_update_not_found(self):
         from google.cloud.exceptions import NotFound
-        from google.cloud.spanner.instance import DEFAULT_NODE_COUNT
+        from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 
         client = _Client(self.PROJECT)
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
@@ -481,8 +481,8 @@ class TestInstance(unittest.TestCase):
                          [('google-cloud-resource-prefix', instance.name)])
 
     def test_database_factory_defaults(self):
-        from google.cloud.spanner.database import Database
-        from google.cloud.spanner.pool import BurstyPool
+        from google.cloud.spanner_v1.database import Database
+        from google.cloud.spanner_v1.pool import BurstyPool
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
@@ -499,7 +499,7 @@ class TestInstance(unittest.TestCase):
         self.assertIs(pool._database, database)
 
     def test_database_factory_explicit(self):
-        from google.cloud.spanner.database import Database
+        from google.cloud.spanner_v1.database import Database
         from tests._fixtures import DDL_STATEMENTS
 
         client = _Client(self.PROJECT)
@@ -520,7 +520,7 @@ class TestInstance(unittest.TestCase):
     def test_list_databases_wo_paging(self):
         from google.cloud._testing import _GAXPageIterator
         from google.gax import INITIAL_PAGE
-        from google.cloud.spanner.database import Database
+        from google.cloud.spanner_v1.database import Database
 
         NEXT_TOKEN = 'TOKEN'
         database_pb = _DatabasePB(name=self.DATABASE_NAME)
@@ -549,7 +549,7 @@ class TestInstance(unittest.TestCase):
 
     def test_list_databases_w_paging(self):
         from google.cloud._testing import _GAXPageIterator
-        from google.cloud.spanner.database import Database
+        from google.cloud.spanner_v1.database import Database
 
         SIZE = 15
         TOKEN = 'TOKEN'

@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2016 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,23 +21,26 @@ import threading
 import time
 import unittest
 
-from google.cloud.proto.spanner.v1.type_pb2 import ARRAY
-from google.cloud.proto.spanner.v1.type_pb2 import BOOL
-from google.cloud.proto.spanner.v1.type_pb2 import BYTES
-from google.cloud.proto.spanner.v1.type_pb2 import DATE
-from google.cloud.proto.spanner.v1.type_pb2 import FLOAT64
-from google.cloud.proto.spanner.v1.type_pb2 import INT64
-from google.cloud.proto.spanner.v1.type_pb2 import STRING
-from google.cloud.proto.spanner.v1.type_pb2 import TIMESTAMP
-from google.cloud.proto.spanner.v1.type_pb2 import Type
+from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
+from google.cloud.spanner_v1.proto.type_pb2 import BOOL
+from google.cloud.spanner_v1.proto.type_pb2 import BYTES
+from google.cloud.spanner_v1.proto.type_pb2 import DATE
+from google.cloud.spanner_v1.proto.type_pb2 import FLOAT64
+from google.cloud.spanner_v1.proto.type_pb2 import INT64
+from google.cloud.spanner_v1.proto.type_pb2 import STRING
+from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
+from google.cloud.spanner_v1.proto.type_pb2 import Type
+from google.gax.grpc import exc_to_code
+from google.gax import errors
+from grpc import StatusCode
 
 from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous
-from google.cloud.spanner._helpers import TimestampWithNanoseconds
-from google.cloud.spanner.client import Client
-from google.cloud.spanner.keyset import KeyRange
-from google.cloud.spanner.keyset import KeySet
-from google.cloud.spanner.pool import BurstyPool
+from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
+from google.cloud.spanner import Client
+from google.cloud.spanner import KeyRange
+from google.cloud.spanner import KeySet
+from google.cloud.spanner import BurstyPool
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
@@ -46,8 +49,7 @@ from test_utils.system import unique_resource_id
 from tests._fixtures import DDL_STATEMENTS
 
 
-IS_CIRCLE = os.getenv('CIRCLECI') == 'true'
-CREATE_INSTANCE = IS_CIRCLE or os.getenv(
+CREATE_INSTANCE = os.getenv(
     'GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE') is not None
 
 if CREATE_INSTANCE:
@@ -55,7 +57,6 @@ if CREATE_INSTANCE:
 else:
     INSTANCE_ID = os.environ.get('GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE',
                                  'google-cloud-python-systest')
-DATABASE_ID = 'test_database'
 EXISTING_INSTANCES = []
 COUNTERS_TABLE = 'counters'
 COUNTERS_COLUMNS = ('name', 'value')
@@ -74,7 +75,6 @@ class Config(object):
 
 def _retry_on_unavailable(exc):
     """Retry only errors whose status code is 'UNAVAILABLE'."""
-    from grpc import StatusCode
     return exc.code() == StatusCode.UNAVAILABLE
 
 
@@ -236,13 +236,15 @@ class _TestData(object):
 
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
+    DATABASE_NAME = 'test_database' + unique_resource_id('_')
 
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool()
         cls._db = Config.INSTANCE.database(
-            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
-        cls._db.create()
+            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
+        operation = cls._db.create()
+        operation.result(30)  # raises on failure / timeout.
 
     @classmethod
     def tearDownClass(cls):
@@ -258,12 +260,13 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
     def test_list_databases(self):
         # Since `Config.INSTANCE` is newly created in `setUpModule`, the
         # database created in `setUpClass` here will be the only one.
-        databases = list(Config.INSTANCE.list_databases())
-        self.assertEqual(databases, [self._db])
+        database_names = [
+            database.name for database in Config.INSTANCE.list_databases()]
+        self.assertTrue(self._db.name in database_names)
 
     def test_create_database(self):
         pool = BurstyPool()
-        temp_db_id = 'temp-db'  # test w/ hyphen
+        temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         operation = temp_db.create()
         self.to_delete.append(temp_db)
@@ -271,12 +274,10 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         # We want to make sure the operation completes.
         operation.result(30)  # raises on failure / timeout.
 
-        name_attr = operator.attrgetter('name')
-        expected = sorted([temp_db, self._db], key=name_attr)
-
-        databases = list(Config.INSTANCE.list_databases())
-        found = sorted(databases, key=name_attr)
-        self.assertEqual(found, expected)
+        database_ids = [
+            database.database_id
+            for database in Config.INSTANCE.list_databases()]
+        self.assertIn(temp_db_id, database_ids)
 
     def test_update_database_ddl(self):
         pool = BurstyPool()
@@ -348,8 +349,34 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             rows = list(after.execute_sql(self.SQL))
         self._check_row_data(rows)
 
+    def test_db_run_in_transaction_twice_4181(self):
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        with self._db.batch() as batch:
+            batch.delete(COUNTERS_TABLE, self.ALL)
+
+        def _unit_of_work(transaction, name):
+            transaction.insert(COUNTERS_TABLE, COUNTERS_COLUMNS, [[name, 0]])
+
+        self._db.run_in_transaction(_unit_of_work, name='id_1')
+
+        with self.assertRaises(errors.RetryError) as expected:
+            self._db.run_in_transaction(_unit_of_work, name='id_1')
+
+        self.assertEqual(
+            exc_to_code(expected.exception.cause), StatusCode.ALREADY_EXISTS)
+
+        self._db.run_in_transaction(_unit_of_work, name='id_2')
+
+        with self._db.snapshot() as after:
+            rows = list(after.read(
+                COUNTERS_TABLE, COUNTERS_COLUMNS, self.ALL))
+        self.assertEqual(len(rows), 2)
+
 
 class TestSessionAPI(unittest.TestCase, _TestData):
+    DATABASE_NAME = 'test_sessions' + unique_resource_id('_')
     ALL_TYPES_TABLE = 'all_types'
     ALL_TYPES_COLUMNS = (
         'list_goes_on',
@@ -372,16 +399,16 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
         ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
         ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([3, None, 9], False, None, None, float('-inf'), 207, None, None),
-        ([], False, None, None, float('nan'), 1207, None, None),
-        ([], False, None, None, OTHER_NAN, 2000, None, NANO_TIME),
+        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
+        ([], False, None, None, float('nan'), 1207, u'owl', None),
+        ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
     )
 
     @classmethod
     def setUpClass(cls):
         pool = BurstyPool()
         cls._db = Config.INSTANCE.database(
-            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool)
+            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
         operation = cls._db.create()
         operation.result(30)  # raises on failure / timeout.
 
@@ -422,6 +449,30 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         snapshot = session.snapshot(read_timestamp=batch.committed)
         rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows)
+
+    def test_batch_insert_then_read_string_array_of_string(self):
+        TABLE = 'string_plus_array_of_string'
+        COLUMNS = ['id', 'name', 'tags']
+        ROWDATA = [
+            (0, None, None),
+            (1, 'phred', ['yabba', 'dabba', 'do']),
+            (2, 'bharney', []),
+            (3, 'wylma', ['oh', None, 'phred']),
+        ]
+        retry = RetryInstanceState(_has_all_ddl)
+        retry(self._db.reload)()
+
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(TABLE, self.ALL)
+            batch.insert(TABLE, COLUMNS, ROWDATA)
+
+        snapshot = session.snapshot(read_timestamp=batch.committed)
+        rows = list(snapshot.read(TABLE, COLUMNS, self.ALL))
+        self._check_row_data(rows, expected=ROWDATA)
 
     def test_batch_insert_then_read_all_datatypes(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -493,7 +544,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         raise CustomException()
 
     @RetryErrors(exception=GrpcRendezvous)
-    def test_transaction_read_and_insert_then_execption(self):
+    def test_transaction_read_and_insert_then_exception(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -905,8 +956,9 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 
-    def _check_sql_results(self, snapshot, sql, params, param_types, expected):
-        if 'ORDER' not in sql:
+    def _check_sql_results(
+            self, snapshot, sql, params, param_types, expected, order=True):
+        if order and 'ORDER' not in sql:
             sql += ' ORDER BY eye_d'
         rows = list(snapshot.execute_sql(
             sql, params=params, param_types=param_types))
@@ -992,30 +1044,20 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         self._check_sql_results(
             snapshot,
+            sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
+            params={'hwhen': self.SOME_TIME},
+            param_types={'hwhen': Type(code=TIMESTAMP)},
+            expected=[(19,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
             sql=('SELECT eye_d FROM all_types WHERE approx_value >= @lower'
                  ' AND approx_value < @upper '),
             params={'lower': 0.0, 'upper': 1.0},
             param_types={
                 'lower': Type(code=FLOAT64), 'upper': Type(code=FLOAT64)},
             expected=[(None,), (19,)],
-        )
-
-        # Find -inf
-        self._check_sql_results(
-            snapshot,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
-            params={'pos_inf': float('+inf')},
-            param_types={'pos_inf': Type(code=FLOAT64)},
-            expected=[(107,)],
-        )
-
-        # Find +inf
-        self._check_sql_results(
-            snapshot,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
-            params={'neg_inf': float('-inf')},
-            param_types={'neg_inf': Type(code=FLOAT64)},
-            expected=[(207,)],
         )
 
         self._check_sql_results(
@@ -1042,8 +1084,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(19,)],
         )
 
-        # NaNs cannot be searched for by equality.
-
         self._check_sql_results(
             snapshot,
             sql='SELECT eye_d FROM all_types WHERE exactly_hwhen = @hwhen',
@@ -1052,15 +1092,90 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(19,)],
         )
 
-        array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+        int_array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+
         self._check_sql_results(
             snapshot,
             sql=('SELECT description FROM all_types '
                  'WHERE eye_d in UNNEST(@my_list)'),
             params={'my_list': [19, 99]},
-            param_types={'my_list': array_type},
+            param_types={'my_list': int_array_type},
             expected=[(u'dog',), (u'cat',)],
         )
+
+        str_array_type = Type(code=ARRAY, array_element_type=Type(code=STRING))
+
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT eye_d FROM all_types '
+                 'WHERE description in UNNEST(@my_list)'),
+            params={'my_list': []},
+            param_types={'my_list': str_array_type},
+            expected=[],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql=('SELECT eye_d FROM all_types '
+                 'WHERE description in UNNEST(@my_list)'),
+            params={'my_list': [u'dog', u'cat']},
+            param_types={'my_list': str_array_type},
+            expected=[(19,), (99,)],
+        )
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT @v',
+            params={'v': None},
+            param_types={'v': Type(code=STRING)},
+            expected=[(None,)],
+            order=False,
+        )
+
+    def test_execute_sql_w_query_param_transfinite(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
+
+        # Find -inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
+            params={'pos_inf': float('+inf')},
+            param_types={'pos_inf': Type(code=FLOAT64)},
+            expected=[(107,)],
+        )
+
+        # Find +inf
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
+            params={'neg_inf': float('-inf')},
+            param_types={'neg_inf': Type(code=FLOAT64)},
+            expected=[(207,)],
+        )
+
+        rows = list(snapshot.execute_sql(
+            'SELECT'
+            ' [CAST("-inf" AS FLOAT64),'
+            ' CAST("+inf" AS FLOAT64),'
+            ' CAST("NaN" AS FLOAT64)]'))
+        self.assertEqual(len(rows), 1)
+        float_array, = rows[0]
+        self.assertEqual(float_array[0], float('-inf'))
+        self.assertEqual(float_array[1], float('+inf'))
+        # NaNs cannot be searched for by equality.
+        self.assertTrue(math.isnan(float_array[2]))
 
 
 class TestStreamingChunking(unittest.TestCase, _TestData):

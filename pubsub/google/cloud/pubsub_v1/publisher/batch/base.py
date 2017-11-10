@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 from __future__ import absolute_import
 
 import abc
-import enum
 
 import six
 
@@ -129,7 +128,7 @@ class Batch(object):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.batch.mp.Future: An object conforming to the
+            ~google.api_core.future.Future: An object conforming to the
                 :class:`concurrent.futures.Future` interface.
         """
         raise NotImplementedError

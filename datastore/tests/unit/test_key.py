@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc.
+# Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -332,7 +332,7 @@ class TestKey(unittest.TestCase):
         self.assertRaises(ValueError, key.completed_key, 5678)
 
     def test_to_protobuf_defaults(self):
-        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
 
         _KIND = 'KIND'
         key = self._make_one(_KIND, project=self._DEFAULT_PROJECT)

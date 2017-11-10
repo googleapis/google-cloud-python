@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ TAG_RE = re.compile(r"""
 # As of this writing, the only "real" dependency is that of error_reporting
 # (on logging), the rest are just system test dependencies.
 PKG_DEPENDENCIES = {
+    'core': {'api_core'},
     'bigquery': {'storage'},
     'error_reporting': {'logging'},
     'language': {'storage'},
@@ -173,7 +174,7 @@ def get_changed_packages(file_list):
 
         # If there is a change in core, short-circuit now and return
         # everything.
-        if package == 'core':
+        if package in ('api_core', 'core'):
             return all_packages
 
         # Add the package, as well as any dependencies this package has.

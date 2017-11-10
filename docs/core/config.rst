@@ -58,3 +58,11 @@ using the ``gcloud`` CLI tool to change the configuration.
 .. code-block:: bash
 
     $ gcloud config set project my-new-default-project
+
+
+Environment Variables
+=====================
+
+.. automodule:: google.cloud.environment_vars
+  :members:
+  :show-inheritance:

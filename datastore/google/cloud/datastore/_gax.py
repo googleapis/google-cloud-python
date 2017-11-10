@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@
 import contextlib
 import sys
 
-from google.cloud.gapic.datastore.v1 import datastore_client
+from google.api_core.gapic_v1 import client_info
+from google.cloud.datastore_v1.gapic import datastore_client
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.gax.utils import metrics
@@ -231,4 +232,9 @@ def make_datastore_api(client):
         channel = insecure_channel(host)
 
     return GAPICDatastoreAPI(
-        channel=channel, lib_name='gccl', lib_version=__version__)
+        channel=channel,
+        client_info=client_info.ClientInfo(
+            client_library_version=__version__,
+            gapic_version=__version__,
+        ),
+    )

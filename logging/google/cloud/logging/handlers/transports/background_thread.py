@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ Uses a background worker to log to Stackdriver Logging asynchronously.
 from __future__ import print_function
 
 import atexit
-import copy
 import logging
 import threading
 
@@ -254,11 +253,11 @@ class BackgroundThreadTransport(Transport):
 
     def __init__(self, client, name, grace_period=_DEFAULT_GRACE_PERIOD,
                  batch_size=_DEFAULT_MAX_BATCH_SIZE):
-        http = copy.deepcopy(client._http)
-        self.client = client.__class__(
-            client.project, client._credentials, http)
+        self.client = client
         logger = self.client.logger(name)
-        self.worker = _Worker(logger)
+        self.worker = _Worker(logger,
+                              grace_period=grace_period,
+                              max_batch_size=batch_size)
         self.worker.start()
 
     def send(self, record, message, resource=None, labels=None):

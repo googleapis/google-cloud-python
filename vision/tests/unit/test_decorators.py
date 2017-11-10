@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,14 @@ import mock
 
 from google.auth.credentials import Credentials
 from google.cloud import vision
+from google.cloud import vision_helpers
 
 
 class DecoratorTests(unittest.TestCase):
     def test_noop_without_enums(self):
         class A(object):
             pass
-        APrime = vision.decorators.add_single_feature_methods(A)
+        APrime = vision_helpers.decorators.add_single_feature_methods(A)
 
         # It should be the same class object.
         assert A is APrime
@@ -42,7 +43,7 @@ class DecoratorTests(unittest.TestCase):
         assert not hasattr(A, 'face_detection')
 
         # Add the detection methods.
-        APrime = vision.decorators.add_single_feature_methods(A)
+        APrime = vision_helpers.decorators.add_single_feature_methods(A)
         assert A is APrime
 
         # There should be detection methods now.

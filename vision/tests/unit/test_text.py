@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class TestTextAnnotatin(unittest.TestCase):
         self.assertEqual(text_annotation.text, annotation['text'])
 
     def test_text_annotation_from_pb(self):
-        from google.cloud.proto.vision.v1 import text_annotation_pb2
+        from google.cloud.vision_v1.proto import text_annotation_pb2
 
         page = text_annotation_pb2.Page(width=8, height=11)
         text = 'some detected text'

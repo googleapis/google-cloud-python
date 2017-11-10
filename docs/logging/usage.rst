@@ -5,6 +5,7 @@ Stackdriver Logging
   :maxdepth: 2
   :hidden:
 
+  releases
   client
   logger
   entries

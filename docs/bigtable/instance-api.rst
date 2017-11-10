@@ -34,7 +34,7 @@ To create an :class:`Instance <google.cloud.bigtable.instance.Instance>` object:
 
 You can also use :meth:`Client.instance` to create a local wrapper for
 instances that have already been created with the API, or through the web
-conole:
+console:
 
 .. code:: python
 

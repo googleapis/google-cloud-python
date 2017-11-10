@@ -5,6 +5,7 @@ Translation
   :maxdepth: 2
   :hidden:
 
+  releases
   client
 
 With `Google Cloud Translation`_, you can dynamically translate text

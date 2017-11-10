@@ -1,5 +1,8 @@
 [run]
 branch = True
+omit =
+  google/cloud/vision_v1/gapic/*.py
+  google/cloud/vision_v1/proto/*.py
 
 [report]
 fail_under = 100

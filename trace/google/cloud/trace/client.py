@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,10 @@ class Client(ClientWithProject):
                         client. If not passed, falls back to the default
                         inferred from the environment.
     """
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',
+             'https://www.googleapis.com/auth/trace.append',)
+    """The scopes required for authenticating as a Trace consumer."""
+
     _trace_api = None
 
     def __init__(self, project=None, credentials=None):
@@ -144,7 +148,7 @@ class Client(ClientWithProject):
                            passed, the API will return the first page of
                            entries.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Traces that match the specified filter conditions.
         """
         if project_id is None:

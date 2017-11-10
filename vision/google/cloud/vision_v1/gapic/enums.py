@@ -1,0 +1,195 @@
+# Copyright 2017, Google LLC All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""Wrappers for protocol buffer enum types."""
+
+
+class Likelihood(object):
+    """
+    A bucketized representation of likelihood, which is intended to give clients
+    highly stable results across model upgrades.
+
+    Attributes:
+      UNKNOWN (int): Unknown likelihood.
+      VERY_UNLIKELY (int): It is very unlikely that the image belongs to the specified vertical.
+      UNLIKELY (int): It is unlikely that the image belongs to the specified vertical.
+      POSSIBLE (int): It is possible that the image belongs to the specified vertical.
+      LIKELY (int): It is likely that the image belongs to the specified vertical.
+      VERY_LIKELY (int): It is very likely that the image belongs to the specified vertical.
+    """
+    UNKNOWN = 0
+    VERY_UNLIKELY = 1
+    UNLIKELY = 2
+    POSSIBLE = 3
+    LIKELY = 4
+    VERY_LIKELY = 5
+
+
+class TextAnnotation(object):
+    class DetectedBreak(object):
+        class BreakType(object):
+            """
+            Enum to denote the type of break found. New line, space etc.
+
+            Attributes:
+              UNKNOWN (int): Unknown break label type.
+              SPACE (int): Regular space.
+              SURE_SPACE (int): Sure space (very wide).
+              EOL_SURE_SPACE (int): Line-wrapping break.
+              HYPHEN (int): End-line hyphen that is not present in text; does
+              LINE_BREAK (int): not co-occur with SPACE, LEADER_SPACE, or
+              LINE_BREAK.
+              Line break that ends a paragraph.
+            """
+            UNKNOWN = 0
+            SPACE = 1
+            SURE_SPACE = 2
+            EOL_SURE_SPACE = 3
+            HYPHEN = 4
+            LINE_BREAK = 5
+
+
+class Block(object):
+    class BlockType(object):
+        """
+        Type of a block (text, image etc) as identified by OCR.
+
+        Attributes:
+          UNKNOWN (int): Unknown block type.
+          TEXT (int): Regular text block.
+          TABLE (int): Table block.
+          PICTURE (int): Image block.
+          RULER (int): Horizontal/vertical line box.
+          BARCODE (int): Barcode block.
+        """
+        UNKNOWN = 0
+        TEXT = 1
+        TABLE = 2
+        PICTURE = 3
+        RULER = 4
+        BARCODE = 5
+
+
+class Feature(object):
+    class Type(object):
+        """
+        Type of image feature.
+
+        Attributes:
+          TYPE_UNSPECIFIED (int): Unspecified feature type.
+          FACE_DETECTION (int): Run face detection.
+          LANDMARK_DETECTION (int): Run landmark detection.
+          LOGO_DETECTION (int): Run logo detection.
+          LABEL_DETECTION (int): Run label detection.
+          TEXT_DETECTION (int): Run OCR.
+          DOCUMENT_TEXT_DETECTION (int): Run dense text document OCR. Takes precedence when both
+          DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
+          SAFE_SEARCH_DETECTION (int): Run computer vision models to compute image safe-search properties.
+          IMAGE_PROPERTIES (int): Compute a set of image properties, such as the image's dominant colors.
+          CROP_HINTS (int): Run crop hints.
+          WEB_DETECTION (int): Run web detection.
+        """
+        TYPE_UNSPECIFIED = 0
+        FACE_DETECTION = 1
+        LANDMARK_DETECTION = 2
+        LOGO_DETECTION = 3
+        LABEL_DETECTION = 4
+        TEXT_DETECTION = 5
+        DOCUMENT_TEXT_DETECTION = 11
+        SAFE_SEARCH_DETECTION = 6
+        IMAGE_PROPERTIES = 7
+        CROP_HINTS = 9
+        WEB_DETECTION = 10
+
+
+class FaceAnnotation(object):
+    class Landmark(object):
+        class Type(object):
+            """
+            Face landmark (feature) type.
+            Left and right are defined from the vantage of the viewer of the image
+            without considering mirror projections typical of photos. So, ``LEFT_EYE``,
+            typically, is the person's right eye.
+
+            Attributes:
+              UNKNOWN_LANDMARK (int): Unknown face landmark detected. Should not be filled.
+              LEFT_EYE (int): Left eye.
+              RIGHT_EYE (int): Right eye.
+              LEFT_OF_LEFT_EYEBROW (int): Left of left eyebrow.
+              RIGHT_OF_LEFT_EYEBROW (int): Right of left eyebrow.
+              LEFT_OF_RIGHT_EYEBROW (int): Left of right eyebrow.
+              RIGHT_OF_RIGHT_EYEBROW (int): Right of right eyebrow.
+              MIDPOINT_BETWEEN_EYES (int): Midpoint between eyes.
+              NOSE_TIP (int): Nose tip.
+              UPPER_LIP (int): Upper lip.
+              LOWER_LIP (int): Lower lip.
+              MOUTH_LEFT (int): Mouth left.
+              MOUTH_RIGHT (int): Mouth right.
+              MOUTH_CENTER (int): Mouth center.
+              NOSE_BOTTOM_RIGHT (int): Nose, bottom right.
+              NOSE_BOTTOM_LEFT (int): Nose, bottom left.
+              NOSE_BOTTOM_CENTER (int): Nose, bottom center.
+              LEFT_EYE_TOP_BOUNDARY (int): Left eye, top boundary.
+              LEFT_EYE_RIGHT_CORNER (int): Left eye, right corner.
+              LEFT_EYE_BOTTOM_BOUNDARY (int): Left eye, bottom boundary.
+              LEFT_EYE_LEFT_CORNER (int): Left eye, left corner.
+              RIGHT_EYE_TOP_BOUNDARY (int): Right eye, top boundary.
+              RIGHT_EYE_RIGHT_CORNER (int): Right eye, right corner.
+              RIGHT_EYE_BOTTOM_BOUNDARY (int): Right eye, bottom boundary.
+              RIGHT_EYE_LEFT_CORNER (int): Right eye, left corner.
+              LEFT_EYEBROW_UPPER_MIDPOINT (int): Left eyebrow, upper midpoint.
+              RIGHT_EYEBROW_UPPER_MIDPOINT (int): Right eyebrow, upper midpoint.
+              LEFT_EAR_TRAGION (int): Left ear tragion.
+              RIGHT_EAR_TRAGION (int): Right ear tragion.
+              LEFT_EYE_PUPIL (int): Left eye pupil.
+              RIGHT_EYE_PUPIL (int): Right eye pupil.
+              FOREHEAD_GLABELLA (int): Forehead glabella.
+              CHIN_GNATHION (int): Chin gnathion.
+              CHIN_LEFT_GONION (int): Chin left gonion.
+              CHIN_RIGHT_GONION (int): Chin right gonion.
+            """
+            UNKNOWN_LANDMARK = 0
+            LEFT_EYE = 1
+            RIGHT_EYE = 2
+            LEFT_OF_LEFT_EYEBROW = 3
+            RIGHT_OF_LEFT_EYEBROW = 4
+            LEFT_OF_RIGHT_EYEBROW = 5
+            RIGHT_OF_RIGHT_EYEBROW = 6
+            MIDPOINT_BETWEEN_EYES = 7
+            NOSE_TIP = 8
+            UPPER_LIP = 9
+            LOWER_LIP = 10
+            MOUTH_LEFT = 11
+            MOUTH_RIGHT = 12
+            MOUTH_CENTER = 13
+            NOSE_BOTTOM_RIGHT = 14
+            NOSE_BOTTOM_LEFT = 15
+            NOSE_BOTTOM_CENTER = 16
+            LEFT_EYE_TOP_BOUNDARY = 17
+            LEFT_EYE_RIGHT_CORNER = 18
+            LEFT_EYE_BOTTOM_BOUNDARY = 19
+            LEFT_EYE_LEFT_CORNER = 20
+            RIGHT_EYE_TOP_BOUNDARY = 21
+            RIGHT_EYE_RIGHT_CORNER = 22
+            RIGHT_EYE_BOTTOM_BOUNDARY = 23
+            RIGHT_EYE_LEFT_CORNER = 24
+            LEFT_EYEBROW_UPPER_MIDPOINT = 25
+            RIGHT_EYEBROW_UPPER_MIDPOINT = 26
+            LEFT_EAR_TRAGION = 27
+            RIGHT_EAR_TRAGION = 28
+            LEFT_EYE_PUPIL = 29
+            RIGHT_EYE_PUPIL = 30
+            FOREHEAD_GLABELLA = 31
+            CHIN_GNATHION = 32
+            CHIN_LEFT_GONION = 33
+            CHIN_RIGHT_GONION = 34

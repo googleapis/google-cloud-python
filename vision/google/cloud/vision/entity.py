@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ class EntityAnnotation(object):
     def from_pb(cls, response):
         """Factory: construct entity from Vision gRPC response.
 
-        :type response: :class:`~google.cloud.proto.vision.v1.\
+        :type response: :class:`~google.cloud.vision_v1.proto.\
                         image_annotator_pb2.AnnotateImageResponse`
         :param response: gRPC response from Vision API with entity data.
 

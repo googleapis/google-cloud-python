@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber import message
+from google.cloud.pubsub_v1.subscriber.futures import Future
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -56,6 +57,18 @@ def test_close():
         policy.close()
         stop_consuming.assert_called_once_with()
     assert 'callback request worker' not in policy._consumer.helper_threads
+
+
+def test_close_with_future():
+    policy = create_policy()
+    policy._future = Future(policy=policy)
+    consumer = policy._consumer
+    with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
+        future = policy.future
+        policy.close()
+        stop_consuming.assert_called_once_with()
+    assert policy.future != future
+    assert future.result() is None
 
 
 @mock.patch.object(_helper_threads.HelperThreadRegistry, 'start')
@@ -86,16 +99,25 @@ def test_on_exception_deadline_exceeded():
 
 def test_on_exception_other():
     policy = create_policy()
+    policy._future = Future(policy=policy)
     exc = TypeError('wahhhhhh')
     with pytest.raises(TypeError):
         policy.on_exception(exc)
+        policy.future.result()
 
 
 def test_on_response():
     callback = mock.Mock(spec=())
 
+    # Create mock ThreadPoolExecutor, pass into create_policy(), and verify
+    # that both executor.submit() and future.add_done_callback are called
+    # twice.
+    future = mock.Mock()
+    attrs = {'submit.return_value': future}
+    executor = mock.Mock(**attrs)
+
     # Set up the policy.
-    policy = create_policy()
+    policy = create_policy(executor=executor)
     policy._callback = callback
 
     # Set up the messages to send.
@@ -112,9 +134,25 @@ def test_on_response():
         ],
     )
 
-    # Actually run the method and prove that the callback was
-    # called in the expected way.
+    # Actually run the method and prove that executor.submit and
+    # future.add_done_callback were called in the expected way.
     policy.on_response(response)
-    assert callback.call_count == 2
-    for call in callback.mock_calls:
-        assert isinstance(call[1][0], message.Message)
+
+    submit_calls = [m for m in executor.method_calls if m[0] == 'submit']
+    assert len(submit_calls) == 2
+    for call in submit_calls:
+        assert call[1][0] == callback
+        assert isinstance(call[1][1], message.Message)
+
+    add_done_callback_calls = [
+        m for m in future.method_calls if m[0] == 'add_done_callback']
+    assert len(add_done_callback_calls) == 2
+    for call in add_done_callback_calls:
+        assert call[1][0] == thread._callback_completed
+
+
+def test__callback_completed():
+    future = mock.Mock()
+    thread._callback_completed(future)
+    result_calls = [m for m in future.method_calls if m[0] == 'result']
+    assert len(result_calls) == 1

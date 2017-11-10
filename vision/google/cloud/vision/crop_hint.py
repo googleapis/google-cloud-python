@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ class CropHint(object):
     def from_pb(cls, response):
         """Factory: construct ``CropHint`` from Vision gRPC response.
 
-        :type response: :class:`google.cloud.proto.vision.v1.\
+        :type response: :class:`google.cloud.vision_v1.proto.\
                         image_annotator_pb2.CropHint`
         :param response: gRPC response from Vision API with entity data.
 

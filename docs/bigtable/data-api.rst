@@ -41,7 +41,7 @@ methods.
   :class:`DirectRow <google.cloud.bigtable.row.DirectRow>` class
   handles direct mutations.
 * The **conditional** way is via `CheckAndMutateRow`_. This method
-  first checks if some filter is matched in a a given row, then
+  first checks if some filter is matched in a given row, then
   applies one of two sets of mutations, depending on if a match
   occurred or not. (These mutation sets are called the "true
   mutations" and "false mutations".) The

@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc.
+# Copyright 2015 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -88,7 +88,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(project.labels, labels)
 
     def test_list_projects_return_type(self):
-        from google.api.core import page_iterator
+        from google.api_core import page_iterator
 
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)
@@ -227,7 +227,7 @@ class TestClient(unittest.TestCase):
         })
 
     def test_page_empty_response(self):
-        from google.api.core import page_iterator
+        from google.api_core import page_iterator
 
         credentials = _make_credentials()
         client = self._make_one(credentials=credentials)

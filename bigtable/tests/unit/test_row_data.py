@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -334,7 +334,7 @@ class TestPartialRowsData(unittest.TestCase):
         prd._copy_from_previous(cell)
         self.assertEqual(cell.row_key, '')
         self.assertEqual(cell.family_name, u'')
-        self.assertEqual(cell.qualifier, b'')
+        self.assertIsNone(cell.qualifier)
         self.assertEqual(cell.timestamp_micros, 0)
         self.assertEqual(cell.labels, [])
 
@@ -635,6 +635,8 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     def test_empty_cell_chunk(self):
         self._match_results('empty cell chunk')
 
+    def test_empty_second_qualifier(self):
+        self._match_results('empty second qualifier')
 
 def _flatten_cells(prd):
     # Match results format from JSON testcases.
@@ -678,7 +680,7 @@ class _PartialCellData(object):
 
     row_key = ''
     family_name = u''
-    qualifier = b''
+    qualifier = None
     timestamp_micros = 0
 
     def __init__(self, **kw):

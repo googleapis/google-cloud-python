@@ -10,10 +10,8 @@
 core/*                    @dhermes
 test_utils/*              @dhermes
 
-# Jon Wayne Parrott is the author of the new google.api.core library.
-# NOTE: This trumps the previous core/* directive, since the last match is
-#       what matters.
-core/google/api/core/*    @jonparrott
+# Jon Wayne Parrott is the author of the new google.api_core library.
+api_core/*                @jonparrott
 
 # Tres Seaver and Tim Swast share responsibility for BigQuery.
 bigquery/*                @tswast @tseaver

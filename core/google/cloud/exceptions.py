@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc.
+# Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 # Avoid the grpc and google.cloud.grpc collision.
 from __future__ import absolute_import
 
-from google.api.core import exceptions
+from google.api_core import exceptions
 
 try:
     from grpc._channel import _Rendezvous

@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -224,7 +224,7 @@ class Batch(base.Batch):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~.pubsub_v1.publisher.futures.Future: An object conforming to
+            ~google.api_core.future.Future: An object conforming to
                 the :class:`concurrent.futures.Future` interface.
         """
         # Coerce the type, just in case.
@@ -237,6 +237,8 @@ class Batch(base.Batch):
 
         # Store the actual message in the batch's message queue.
         self._messages.append(message)
+        if len(self._messages) >= self.settings.max_messages:
+            self.commit()
 
         # Return a Future. That future needs to be aware of the status
         # of this batch.

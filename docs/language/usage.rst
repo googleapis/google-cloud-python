@@ -11,7 +11,7 @@ customer conversations happening in a call center or a messaging
 app. You can analyze text uploaded in your request or integrate
 with your document storage on Google Cloud Storage.
 
-.. _Google Natural Language: https://cloud.google.com/natural-language/docs/getting-started
+.. _Google Natural Language: https://cloud.google.com/natural-language/docs/quickstart-client-libraries
 
 
 ********************************
@@ -51,11 +51,13 @@ or pass in ``credentials`` explicitly.
 Documents
 *********
 
-The Google Natural Language API has three supported methods
+The Google Natural Language API has the following supported methods:
 
 - `analyzeEntities`_
 - `analyzeSentiment`_
+- `analyzeEntitySentiment`_
 - `annotateText`_
+- `classifyText`_
 
 and each method uses a :class:`~.language_v1.types.Document` for representing
 text.
@@ -111,9 +113,11 @@ to content stored in `Google Cloud Storage`_.
      ...     type=language.enums.HTML,
      ... )
 
-.. _analyzeEntities: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeEntities
-.. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/analyzeSentiment
-.. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1beta1/documents/annotateText
+.. _analyzeEntities: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntities
+.. _analyzeSentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeSentiment
+.. _analyzeEntitySentiment: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/analyzeEntitySentiment
+.. _annotateText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/annotateText
+.. _classifyText: https://cloud.google.com/natural-language/docs/reference/rest/v1/documents/classifyText
 .. _Google Cloud Storage: https://cloud.google.com/storage/
 
 ****************
@@ -129,7 +133,7 @@ returns a :class:`~.language_v1.types.AnalyzeEntitiesResponse`.
      >>> document = language.types.Document(
      ...     content='Michelangelo Caravaggio, Italian painter, is '
      ...             'known for "The Calling of Saint Matthew".',
-     ...     type=language.enums.Type.PLAIN_TEXT,
+     ...     type=language.enums.Document.Type.PLAIN_TEXT,
      ... )
      >>> response = client.analyze_entities(
      ...     document=document,
@@ -197,6 +201,45 @@ analyzes the sentiment of the provided text. This method returns a
   want ``UTF32``.
 
 
+************************
+Analyze Entity Sentiment
+************************
+
+The :meth:`~.language_v1.LanguageServiceClient.analyze_entity_sentiment`
+method is effectively the amalgamation of
+:meth:`~.language_v1.LanguageServiceClient.analyze_entities` and
+:meth:`~.language_v1.LanguageServiceClient.analyze_sentiment`.
+This method returns a
+:class:`~.language_v1.types.AnalyzeEntitySentimentResponse`.
+
+.. code-block:: python
+
+    >>> document = language.types.Document(
+    ...     content='Mona said that jogging is very fun.',
+    ...     type='PLAIN_TEXT',
+    ... )
+    >>> response = client.analyze_sentiment(
+    ...     document=document,
+    ...     encoding_type='UTF32',
+    ... )
+    >>> entities = response.entities
+    >>> entities[0].name
+    'Mona'
+    >>> entities[1].name
+    'jogging'
+    >>> entities[1].sentiment.magnitude
+    0.8
+    >>> entities[1].sentiment.score
+    0.8
+
+.. note::
+
+    It is recommended to send an ``encoding_type`` argument to Natural
+    Language methods, so they provide useful offsets for the data they return.
+    While the correct value varies by environment, in Python you *usually*
+    want ``UTF32``.
+
+
 *************
 Annotate Text
 *************
@@ -238,3 +281,9 @@ An API and type reference is provided for the v1.1 beta also:
   The client for the beta API is provided on a provisional basis. The API
   surface is subject to change, and it is possible that this client will be
   deprecated or removed after its features become GA.
+
+For a list of all ``google-cloud-language`` releases:
+
+.. toctree::
+
+  releases

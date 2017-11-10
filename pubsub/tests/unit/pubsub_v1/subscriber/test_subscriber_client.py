@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,18 @@ def create_client():
 def test_init():
     client = create_client()
     assert client._policy_class is thread.Policy
+
+
+def test_init_emulator(monkeypatch):
+    monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/baz/bacon/')
+    client = create_client()
+
+    # Establish that a gRPC request would attempt to hit the emulator host.
+    #
+    # Sadly, there seems to be no good way to do this without poking at
+    # the private API of gRPC.
+    channel = client.api.subscriber_stub.Pull._channel
+    assert channel.target().decode('utf8') == '/baz/bacon/'
 
 
 def test_subscribe():

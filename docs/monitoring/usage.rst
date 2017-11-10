@@ -5,6 +5,7 @@ Stackdriver Monitoring
   :maxdepth: 2
   :hidden:
 
+  releases
   client
   metric
   resource
@@ -26,8 +27,8 @@ Essential concepts:
   resource has a *resource type* and a set of *resource labels* —
   key-value pairs — that identify the particular resource.
 - A **metric** further identifies the particular kind of data that
-  is being collected. It has a *metric type* and a set of *metric
-  labels* that, when combined with the resource labels, identify
+  is being collected. It has a *metric type* and a set of
+  *metric labels* that, when combined with the resource labels, identify
   a particular time series.
 - A **time series** is a collection of data points associated with
   points or intervals in time.

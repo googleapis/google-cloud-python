@@ -3,8 +3,13 @@ Python Client for Cloud Spanner
 
     Python idiomatic client for `Cloud Spanner`_.
 
-.. _Cloud Spanner: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/usage.html
+.. _Cloud Spanner: https://cloud.google.com/spanner/
 
+|pypi| |versions|
+
+-  `Documentation`_
+
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/usage.html
 
 Quick Start
 -----------
@@ -12,6 +17,12 @@ Quick Start
 .. code-block:: console
 
     $ pip install --upgrade google-cloud-spanner
+
+For more information on setting up your Python development environment,
+such as installing ``pip`` and ``virtualenv`` on your system, please refer
+to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+
+.. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 
 
 Authentication
@@ -23,7 +34,7 @@ learn more. You may also find the `authentication document`_ shared by all
 the ``google-cloud-*`` libraries to be helpful.
 
 .. _Authentication section: https://google-cloud-python.readthedocs.io/en/latest/core/auth.html
-.. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
+.. _authentication document: https://github.com/GoogleCloudPlatform/google-cloud-common/tree/master/authentication
 
 
 Using the API
@@ -148,3 +159,8 @@ See the ``google-cloud-python`` API `Cloud Spanner documentation`_ to learn how
 to connect to Cloud Spanner using this Client Library.
 
 .. _Cloud Spanner documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/spanner/usage.html
+
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-spanner.svg
+   :target: https://pypi.org/project/google-cloud-spanner/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-spanner.svg
+   :target: https://pypi.org/project/google-cloud-spanner/

@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,18 @@
 
 """This module is used to configure gcp-devrel-py-tools run-pylint."""
 
+import copy
+
+from gcp_devrel.tools import pylint
+
 # Library configuration
 
 # library_additions = {}
-# library_replacements = {}
+# Ignore generated code
+library_replacements = copy.deepcopy(pylint.DEFAULT_LIBRARY_RC_REPLACEMENTS)
+library_replacements['MASTER']['ignore'].append('spanner_v1')
+library_replacements['MASTER']['ignore'].append('spanner_admin_instance_v1')
+library_replacements['MASTER']['ignore'].append('spanner_admin_database_v1')
 
 # Test configuration
 

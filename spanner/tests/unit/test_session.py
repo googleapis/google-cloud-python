@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc. All rights reserved.
+# Copyright 2016 Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ class TestSession(unittest.TestCase):
     SESSION_NAME = DATABASE_NAME + '/sessions/' + SESSION_ID
 
     def _getTargetClass(self):
-        from google.cloud.spanner.session import Session
+        from google.cloud.spanner_v1.session import Session
 
         return Session
 
@@ -214,7 +214,7 @@ class TestSession(unittest.TestCase):
             session.snapshot()
 
     def test_snapshot_created(self):
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -228,7 +228,7 @@ class TestSession(unittest.TestCase):
         self.assertFalse(snapshot._multi_use)
 
     def test_snapshot_created_w_multi_use(self):
-        from google.cloud.spanner.snapshot import Snapshot
+        from google.cloud.spanner_v1.snapshot import Snapshot
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -242,7 +242,7 @@ class TestSession(unittest.TestCase):
         self.assertTrue(snapshot._multi_use)
 
     def test_read_not_created(self):
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -255,9 +255,9 @@ class TestSession(unittest.TestCase):
             session.read(TABLE_NAME, COLUMNS, KEYSET)
 
     def test_read(self):
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
-        from google.cloud.spanner.keyset import KeySet
+        from google.cloud.spanner_v1.keyset import KeySet
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -265,7 +265,6 @@ class TestSession(unittest.TestCase):
         KEYSET = KeySet(keys=KEYS)
         INDEX = 'email-address-index'
         LIMIT = 20
-        TOKEN = b'DEADBEEF'
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
         session._session_id = 'DEADBEEF'
@@ -279,28 +278,26 @@ class TestSession(unittest.TestCase):
                 self._session = session
                 self._kwargs = kwargs.copy()
 
-            def read(self, table, columns, keyset, index='', limit=0,
-                     resume_token=b''):
+            def read(self, table, columns, keyset, index='', limit=0):
                 _read_with.append(
-                    (table, columns, keyset, index, limit, resume_token))
+                    (table, columns, keyset, index, limit))
                 return expected
 
         with _Monkey(MUT, Snapshot=_Snapshot):
             found = session.read(
                 TABLE_NAME, COLUMNS, KEYSET,
-                index=INDEX, limit=LIMIT, resume_token=TOKEN)
+                index=INDEX, limit=LIMIT)
 
         self.assertIs(found, expected)
 
         self.assertEqual(len(_read_with), 1)
-        (table, columns, key_set, index, limit, resume_token) = _read_with[0]
+        (table, columns, key_set, index, limit) = _read_with[0]
 
         self.assertEqual(table, TABLE_NAME)
         self.assertEqual(columns, COLUMNS)
         self.assertEqual(key_set, KEYSET)
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
-        self.assertEqual(resume_token, TOKEN)
 
     def test_execute_sql_not_created(self):
         SQL = 'SELECT first_name, age FROM citizens'
@@ -311,7 +308,7 @@ class TestSession(unittest.TestCase):
             session.execute_sql(SQL)
 
     def test_execute_sql_defaults(self):
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         SQL = 'SELECT first_name, age FROM citizens'
@@ -330,25 +327,23 @@ class TestSession(unittest.TestCase):
                 self._kwargs = kwargs.copy()
 
             def execute_sql(
-                    self, sql, params=None, param_types=None, query_mode=None,
-                    resume_token=None):
+                    self, sql, params=None, param_types=None, query_mode=None):
                 _executed_sql_with.append(
-                    (sql, params, param_types, query_mode, resume_token))
+                    (sql, params, param_types, query_mode))
                 return expected
 
         with _Monkey(MUT, Snapshot=_Snapshot):
-            found = session.execute_sql(SQL, resume_token=TOKEN)
+            found = session.execute_sql(SQL)
 
         self.assertIs(found, expected)
 
         self.assertEqual(len(_executed_sql_with), 1)
-        sql, params, param_types, query_mode, token = _executed_sql_with[0]
+        sql, params, param_types, query_mode = _executed_sql_with[0]
 
         self.assertEqual(sql, SQL)
         self.assertEqual(params, None)
         self.assertEqual(param_types, None)
         self.assertEqual(query_mode, None)
-        self.assertEqual(token, TOKEN)
 
     def test_batch_not_created(self):
         database = _Database(self.DATABASE_NAME)
@@ -358,7 +353,7 @@ class TestSession(unittest.TestCase):
             session.batch()
 
     def test_batch_created(self):
-        from google.cloud.spanner.batch import Batch
+        from google.cloud.spanner_v1.batch import Batch
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -377,7 +372,7 @@ class TestSession(unittest.TestCase):
             session.transaction()
 
     def test_transaction_created(self):
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         database = _Database(self.DATABASE_NAME)
         session = self._make_one(database)
@@ -400,46 +395,10 @@ class TestSession(unittest.TestCase):
         self.assertIs(session._transaction, another)
         self.assertTrue(existing._rolled_back)
 
-    def test_retry_transaction_w_commit_error_txn_already_begun(self):
-        from google.gax.errors import GaxError
-        from google.cloud.spanner.transaction import Transaction
-
-        TABLE_NAME = 'citizens'
-        COLUMNS = ['email', 'first_name', 'last_name', 'age']
-        VALUES = [
-            ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
-            ['bharney@example.com', 'Bharney', 'Rhubble', 31],
-        ]
-        gax_api = _SpannerApi(
-            _commit_error=True,
-        )
-        database = _Database(self.DATABASE_NAME)
-        database.spanner_api = gax_api
-        session = self._make_one(database)
-        session._session_id = 'DEADBEEF'
-        begun_txn = session._transaction = Transaction(session)
-        begun_txn._transaction_id = b'FACEDACE'
-
-        called_with = []
-
-        def unit_of_work(txn, *args, **kw):
-            called_with.append((txn, args, kw))
-            txn.insert(TABLE_NAME, COLUMNS, VALUES)
-
-        with self.assertRaises(GaxError):
-            session.run_in_transaction(unit_of_work)
-
-        self.assertEqual(len(called_with), 1)
-        txn, args, kw = called_with[0]
-        self.assertIs(txn, begun_txn)
-        self.assertEqual(txn.committed, None)
-        self.assertEqual(args, ())
-        self.assertEqual(kw, {})
-
-    def test_run_in_transaction_callback_raises_abort(self):
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+    def test_run_in_transaction_callback_raises_non_gax_error(self):
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -471,6 +430,7 @@ class TestSession(unittest.TestCase):
         with self.assertRaises(Testing):
             session.run_in_transaction(unit_of_work)
 
+        self.assertIsNone(session._transaction)
         self.assertEqual(len(called_with), 1)
         txn, args, kw = called_with[0]
         self.assertIsInstance(txn, Transaction)
@@ -479,14 +439,59 @@ class TestSession(unittest.TestCase):
         self.assertEqual(args, ())
         self.assertEqual(kw, {})
 
+    def test_run_in_transaction_callback_raises_gax_error_non_abort(self):
+        from google.gax.errors import GaxError
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
+            Transaction as TransactionPB)
+        from google.cloud.spanner_v1.transaction import Transaction
+
+        TABLE_NAME = 'citizens'
+        COLUMNS = ['email', 'first_name', 'last_name', 'age']
+        VALUES = [
+            ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+            ['bharney@example.com', 'Bharney', 'Rhubble', 31],
+        ]
+        TRANSACTION_ID = b'FACEDACE'
+        transaction_pb = TransactionPB(id=TRANSACTION_ID)
+        gax_api = _SpannerApi(
+            _begin_transaction_response=transaction_pb,
+            _rollback_response=None,
+        )
+        database = _Database(self.DATABASE_NAME)
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = 'DEADBEEF'
+
+        called_with = []
+
+        class Testing(GaxError):
+            pass
+
+        def unit_of_work(txn, *args, **kw):
+            called_with.append((txn, args, kw))
+            txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            raise Testing('testing')
+
+        with self.assertRaises(Testing):
+            session.run_in_transaction(unit_of_work)
+
+        self.assertIsNone(session._transaction)
+        self.assertEqual(len(called_with), 1)
+        txn, args, kw = called_with[0]
+        self.assertIsInstance(txn, Transaction)
+        self.assertIsNone(txn.committed)
+        self.assertFalse(txn._rolled_back)
+        self.assertEqual(args, ())
+        self.assertEqual(kw, {})
+
     def test_run_in_transaction_w_args_w_kwargs_wo_abort(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -526,14 +531,51 @@ class TestSession(unittest.TestCase):
         self.assertEqual(args, ('abc',))
         self.assertEqual(kw, {'some_arg': 'def'})
 
+    def test_run_in_transaction_w_commit_error(self):
+        from google.gax.errors import GaxError
+        from google.cloud.spanner_v1.transaction import Transaction
+
+        TABLE_NAME = 'citizens'
+        COLUMNS = ['email', 'first_name', 'last_name', 'age']
+        VALUES = [
+            ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+            ['bharney@example.com', 'Bharney', 'Rhubble', 31],
+        ]
+        gax_api = _SpannerApi(
+            _commit_error=True,
+        )
+        database = _Database(self.DATABASE_NAME)
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = 'DEADBEEF'
+        begun_txn = session._transaction = Transaction(session)
+        begun_txn._transaction_id = b'FACEDACE'
+
+        called_with = []
+
+        def unit_of_work(txn, *args, **kw):
+            called_with.append((txn, args, kw))
+            txn.insert(TABLE_NAME, COLUMNS, VALUES)
+
+        with self.assertRaises(GaxError):
+            session.run_in_transaction(unit_of_work)
+
+        self.assertIsNone(session._transaction)
+        self.assertEqual(len(called_with), 1)
+        txn, args, kw = called_with[0]
+        self.assertIs(txn, begun_txn)
+        self.assertEqual(txn.committed, None)
+        self.assertEqual(args, ())
+        self.assertEqual(kw, {})
+
     def test_run_in_transaction_w_abort_no_retry_metadata(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -575,13 +617,13 @@ class TestSession(unittest.TestCase):
 
     def test_run_in_transaction_w_abort_w_retry_metadata(self):
         import datetime
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1.transaction import Transaction
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         TABLE_NAME = 'citizens'
@@ -636,13 +678,13 @@ class TestSession(unittest.TestCase):
         import datetime
         from google.gax.errors import GaxError
         from grpc import StatusCode
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1.transaction import Transaction
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         TABLE_NAME = 'citizens'
@@ -702,13 +744,13 @@ class TestSession(unittest.TestCase):
         from google.gax.errors import GaxError
         from google.gax.grpc import exc_to_code
         from grpc import StatusCode
-        from google.cloud.proto.spanner.v1.spanner_pb2 import CommitResponse
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner.transaction import Transaction
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1.transaction import Transaction
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
         TABLE_NAME = 'citizens'
@@ -759,14 +801,14 @@ class TestSession(unittest.TestCase):
         self.assertEqual(kw, {'some_arg': 'def'})
 
     def test_run_in_transaction_w_timeout(self):
-        from google.cloud.spanner import session as MUT
+        from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
         from google.gax.errors import GaxError
         from google.gax.grpc import exc_to_code
-        from google.cloud.proto.spanner.v1.transaction_pb2 import (
+        from google.cloud.spanner_v1.proto.transaction_pb2 import (
             Transaction as TransactionPB)
         from grpc import StatusCode
-        from google.cloud.spanner.transaction import Transaction
+        from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = 'citizens'
         COLUMNS = ['email', 'first_name', 'last_name', 'age']

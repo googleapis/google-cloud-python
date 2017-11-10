@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,4 +15,7 @@
 from google.cloud.trace.client import Client
 
 
-__all__ = ['Client']
+__all__ = ['Client', 'SCOPE']
+
+
+SCOPE = Client.SCOPE

@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc.
+# Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 
 import base64
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
 
-from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
-from google.cloud.proto.datastore.v1 import entity_pb2 as _entity_pb2
-from google.cloud.proto.datastore.v1 import query_pb2 as _query_pb2
+from google.cloud.datastore_v1.proto import entity_pb2
+from google.cloud.datastore_v1.proto import query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
 
 
-_NOT_FINISHED = _query_pb2.QueryResultBatch.NOT_FINISHED
+_NOT_FINISHED = query_pb2.QueryResultBatch.NOT_FINISHED
+_NO_MORE_RESULTS = query_pb2.QueryResultBatch.NO_MORE_RESULTS
 
 _FINISHED = (
-    _query_pb2.QueryResultBatch.NO_MORE_RESULTS,
-    _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
-    _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_CURSOR,
+    _NO_MORE_RESULTS,
+    query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+    query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_CURSOR,
 )
 
 
@@ -81,11 +81,11 @@ class Query(object):
     """
 
     OPERATORS = {
-        '<=': _query_pb2.PropertyFilter.LESS_THAN_OR_EQUAL,
-        '>=': _query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
-        '<': _query_pb2.PropertyFilter.LESS_THAN,
-        '>': _query_pb2.PropertyFilter.GREATER_THAN,
-        '=': _query_pb2.PropertyFilter.EQUAL,
+        '<=': query_pb2.PropertyFilter.LESS_THAN_OR_EQUAL,
+        '>=': query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
+        '<': query_pb2.PropertyFilter.LESS_THAN,
+        '>': query_pb2.PropertyFilter.GREATER_THAN,
+        '=': query_pb2.PropertyFilter.EQUAL,
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
@@ -331,7 +331,7 @@ class Query(object):
         self._distinct_on[:] = value
 
     def fetch(self, limit=None, offset=0, start_cursor=None, end_cursor=None,
-              client=None):
+              client=None, eventual=False):
         """Execute the Query; return an iterator for the matching entities.
 
         For example::
@@ -358,8 +358,14 @@ class Query(object):
         :param end_cursor: (Optional) cursor passed through to the iterator.
 
         :type client: :class:`google.cloud.datastore.client.Client`
-        :param client: client used to connect to datastore.
+        :param client: (Optional) client used to connect to datastore.
                        If not supplied, uses the query's value.
+
+        :type eventual: bool
+        :param eventual: (Optional) Defaults to strongly consistent (False).
+                                    Setting True will use eventual consistency,
+                                    but cannot be used inside a transaction or
+                                    will raise ValueError.
 
         :rtype: :class:`Iterator`
         :returns: The iterator for the query.
@@ -367,9 +373,13 @@ class Query(object):
         if client is None:
             client = self._client
 
-        return Iterator(
-            self, client, limit=limit, offset=offset,
-            start_cursor=start_cursor, end_cursor=end_cursor)
+        return Iterator(self,
+                        client,
+                        limit=limit,
+                        offset=offset,
+                        start_cursor=start_cursor,
+                        end_cursor=end_cursor,
+                        eventual=eventual)
 
 
 class Iterator(page_iterator.Iterator):
@@ -396,18 +406,25 @@ class Iterator(page_iterator.Iterator):
     :type end_cursor: bytes
     :param end_cursor: (Optional) Cursor to end paging through
                        query results.
+
+    :type eventual: bool
+    :param eventual: (Optional) Defaults to strongly consistent (False).
+                                Setting True will use eventual consistency,
+                                but cannot be used inside a transaction or
+                                will raise ValueError.
     """
 
     next_page_token = None
 
     def __init__(self, query, client, limit=None, offset=None,
-                 start_cursor=None, end_cursor=None):
+                 start_cursor=None, end_cursor=None, eventual=False):
         super(Iterator, self).__init__(
             client=client, item_to_value=_item_to_entity,
             page_token=start_cursor, max_results=limit)
         self._query = query
         self._offset = offset
         self._end_cursor = end_cursor
+        self._eventual = eventual
         # The attributes below will change over the life of the iterator.
         self._more_results = True
         self._skipped_results = 0
@@ -454,7 +471,7 @@ class Iterator(page_iterator.Iterator):
         """
         self._skipped_results = response_pb.batch.skipped_results
 
-        if response_pb.batch.end_cursor == b'':  # Empty-value for bytes.
+        if response_pb.batch.more_results == _NO_MORE_RESULTS:
             self.next_page_token = None
         else:
             self.next_page_token = base64.urlsafe_b64encode(
@@ -483,12 +500,12 @@ class Iterator(page_iterator.Iterator):
         query_pb = self._build_protobuf()
         transaction = self.client.current_transaction
         if transaction is None:
-            read_options = _datastore_pb2.ReadOptions()
+            transaction_id = None
         else:
-            read_options = _datastore_pb2.ReadOptions(
-                transaction=transaction.id)
+            transaction_id = transaction.id
+        read_options = helpers.get_read_options(self._eventual, transaction_id)
 
-        partition_id = _entity_pb2.PartitionId(
+        partition_id = entity_pb2.PartitionId(
             project_id=self._query.project,
             namespace_id=self._query.namespace)
         response_pb = self.client._datastore_api.run_query(
@@ -512,7 +529,7 @@ def _pb_from_query(query):
               it does not contain "in-flight" fields for ongoing query
               executions (cursors, offset, limit).
     """
-    pb = _query_pb2.Query()
+    pb = query_pb2.Query()
 
     for projection_name in query.projection:
         pb.projection.add().property.name = projection_name
@@ -521,7 +538,7 @@ def _pb_from_query(query):
         pb.kind.add().name = query.kind
 
     composite_filter = pb.filter.composite_filter
-    composite_filter.op = _query_pb2.CompositeFilter.AND
+    composite_filter.op = query_pb2.CompositeFilter.AND
 
     if query.ancestor:
         ancestor_pb = query.ancestor.to_protobuf()
@@ -529,7 +546,7 @@ def _pb_from_query(query):
         # Filter on __key__ HAS_ANCESTOR == ancestor.
         ancestor_filter = composite_filter.filters.add().property_filter
         ancestor_filter.property.name = '__key__'
-        ancestor_filter.op = _query_pb2.PropertyFilter.HAS_ANCESTOR
+        ancestor_filter.op = query_pb2.PropertyFilter.HAS_ANCESTOR
         ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
 
     for property_name, operator, value in query.filters:
@@ -570,7 +587,7 @@ def _pb_from_query(query):
 def _item_to_entity(iterator, entity_pb):
     """Convert a raw protobuf entity to the native object.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type entity_pb:

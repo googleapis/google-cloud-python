@@ -5,6 +5,7 @@ Storage
   :maxdepth: 2
   :hidden:
 
+  releases
   blobs
   buckets
   acl

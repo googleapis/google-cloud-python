@@ -63,7 +63,7 @@ messages to it
     ...     project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
     ...     topic='MY_TOPIC_NAME',  # Set this to something appropriate.
     ... )
-    >>> publisher.create_topic()
+    >>> publisher.create_topic(topic)  # raises conflict if topic exists
     >>> publisher.publish(topic, b'My first message!', spam='eggs')
 
 To learn more, consult the :doc:`publishing documentation <publisher/index>`.
@@ -90,9 +90,9 @@ the topic, and subscribe to that.
     ...     project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
     ...     sub='MY_SUBSCRIPTION_NAME',  # Set this to something appropriate.
     ... )
-    >>> subscription = subscriber.create_subscription(topic, subscription)
+    >>> subscription = subscriber.create_subscription(subscription_name, topic)
 
-The subscription is opened asychronously, and messages are processed by
+The subscription is opened asynchronously, and messages are processed by
 use of a callback.
 
 .. code-block:: python
@@ -100,7 +100,14 @@ use of a callback.
     >>> def callback(message):
     ...     print(message.data)
     ...     message.ack()
-    >>> subscription.open(callback)
+    >>> future = subscription.open(callback)
+
+You can use the future to block the main thread, and raise any exceptions
+that originate asychronously.
+
+.. code-block:: python
+
+    >>> future.result()
 
 To learn more, consult the :doc:`subscriber documentation <subscriber/index>`.
 
@@ -115,3 +122,4 @@ Learn More
   publisher/index
   subscriber/index
   types
+  releases

@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc.
+# Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import json
 
 import six
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
@@ -35,12 +35,14 @@ from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
 from google.cloud.storage.blob import _get_encryption_headers
+from google.cloud.storage.notification import BucketNotification
+from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
 
 def _blobs_page_start(iterator, page, response):
     """Grab prefixes after a :class:`~google.cloud.iterator.Page` started.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type page: :class:`~google.cloud.api.core.page_iterator.Page`
@@ -61,7 +63,7 @@ def _item_to_blob(iterator, item):
         This assumes that the ``bucket`` attribute has been
         added to the iterator after being created.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type item: dict
@@ -76,6 +78,26 @@ def _item_to_blob(iterator, item):
     return blob
 
 
+def _item_to_notification(iterator, item):
+    """Convert a JSON blob to the native object.
+
+    .. note::
+
+        This assumes that the ``bucket`` attribute has been
+        added to the iterator after being created.
+
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+    :param iterator: The iterator that has retrieved the item.
+
+    :type item: dict
+    :param item: An item to be converted to a blob.
+
+    :rtype: :class:`.BucketNotification`
+    :returns: The next notification being iterated.
+    """
+    return BucketNotification.from_api_repr(item, bucket=iterator.bucket)
+
+
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
@@ -86,6 +108,10 @@ class Bucket(_PropertyMixin):
     :type name: str
     :param name: The name of the bucket. Bucket names must start and end with a
                  number or letter.
+
+    :type user_project: str
+    :param user_project: (Optional) the project ID to be billed for API
+                         requests made via this instance.
     """
 
     _MAX_OBJECTS_FOR_ITERATION = 256
@@ -109,13 +135,14 @@ class Bucket(_PropertyMixin):
     https://cloud.google.com/storage/docs/storage-classes
     """
 
-    def __init__(self, client, name=None):
+    def __init__(self, client, name=None, user_project=None):
         name = _validate_name(name)
         super(Bucket, self).__init__(name=name)
         self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
         self._label_removals = set()
+        self._user_project = user_project
 
     def __repr__(self):
         return '<Bucket: %s>' % (self.name,)
@@ -133,6 +160,16 @@ class Bucket(_PropertyMixin):
         """
         self._label_removals.clear()
         return super(Bucket, self)._set_properties(value)
+
+    @property
+    def user_project(self):
+        """Project ID to be billed for API requests made via this bucket.
+
+        If unset, API requests are billed to the bucket owner.
+
+        :rtype: str
+        """
+        return self._user_project
 
     def blob(self, blob_name, chunk_size=None, encryption_key=None):
         """Factory constructor for blob object.
@@ -159,8 +196,31 @@ class Bucket(_PropertyMixin):
         return Blob(name=blob_name, bucket=self, chunk_size=chunk_size,
                     encryption_key=encryption_key)
 
+    def notification(self, topic_name,
+                     topic_project=None,
+                     custom_attributes=None,
+                     event_types=None,
+                     blob_name_prefix=None,
+                     payload_format=NONE_PAYLOAD_FORMAT):
+        """Factory:  create a notification resource for the bucket.
+
+        See: :class:`.BucketNotification` for parameters.
+
+        :rtype: :class:`.BucketNotification`
+        """
+        return BucketNotification(
+            self, topic_name,
+            topic_project=topic_project,
+            custom_attributes=custom_attributes,
+            event_types=event_types,
+            blob_name_prefix=blob_name_prefix,
+            payload_format=payload_format,
+        )
+
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -171,10 +231,14 @@ class Bucket(_PropertyMixin):
         :returns: True if the bucket exists in Cloud Storage.
         """
         client = self._require_client(client)
+        # We only need the status code (200 or not) so we seek to
+        # minimize the returned payload.
+        query_params = {'fields': 'name'}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         try:
-            # We only need the status code (200 or not) so we seek to
-            # minimize the returned payload.
-            query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client._connection.api_request(
@@ -195,11 +259,16 @@ class Bucket(_PropertyMixin):
 
         This implements "storage.buckets.insert".
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
         """
+        if self.user_project is not None:
+            raise ValueError("Cannot create bucket with 'user_project' set.")
+
         client = self._require_client(client)
         query_params = {'project': client.project}
         properties = {key: self._properties[key] for key in self._changes}
@@ -213,6 +282,8 @@ class Bucket(_PropertyMixin):
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -269,6 +340,8 @@ class Bucket(_PropertyMixin):
           :start-after: [START get_blob]
           :end-before: [END get_blob]
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type blob_name: str
         :param blob_name: The name of the blob to retrieve.
 
@@ -291,13 +364,21 @@ class Bucket(_PropertyMixin):
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
         blob = Blob(bucket=self, name=blob_name, encryption_key=encryption_key,
                     **kwargs)
         try:
             headers = _get_encryption_headers(encryption_key)
             response = client._connection.api_request(
-                method='GET', path=blob.path, _target_object=blob,
-                headers=headers)
+                method='GET',
+                path=blob.path,
+                query_params=query_params,
+                headers=headers,
+                _target_object=blob,
+            )
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
@@ -311,6 +392,8 @@ class Bucket(_PropertyMixin):
                    delimiter=None, versions=None,
                    projection='noAcl', fields=None, client=None):
         """Return an iterator used to find blobs in the bucket.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type max_results: int
         :param max_results: (Optional) Maximum number of blobs to return.
@@ -347,11 +430,11 @@ class Bucket(_PropertyMixin):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
-        extra_params = {}
+        extra_params = {'projection': projection}
 
         if prefix is not None:
             extra_params['prefix'] = prefix
@@ -362,10 +445,11 @@ class Bucket(_PropertyMixin):
         if versions is not None:
             extra_params['versions'] = versions
 
-        extra_params['projection'] = projection
-
         if fields is not None:
             extra_params['fields'] = fields
+
+        if self.user_project is not None:
+            extra_params['userProject'] = self.user_project
 
         client = self._require_client(client)
         path = self.path + '/o'
@@ -380,6 +464,32 @@ class Bucket(_PropertyMixin):
             page_start=_blobs_page_start)
         iterator.bucket = self
         iterator.prefixes = set()
+        return iterator
+
+    def list_notifications(self, client=None):
+        """List Pub / Sub notifications for this bucket.
+
+        See:
+        https://cloud.google.com/storage/docs/json_api/v1/notifications/list
+
+        If :attr:`user_project` is set, bills the API request to that project.
+
+        :type client: :class:`~google.cloud.storage.client.Client` or
+                      ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: list of :class:`.BucketNotification`
+        :returns: notification instances
+        """
+        client = self._require_client(client)
+        path = self.path + '/notificationConfigs'
+        iterator = page_iterator.HTTPIterator(
+            client=client,
+            api_request=client._connection.api_request,
+            path=path,
+            item_to_value=_item_to_notification)
+        iterator.bucket = self
         return iterator
 
     def delete(self, force=False, client=None):
@@ -399,6 +509,8 @@ class Bucket(_PropertyMixin):
         is to prevent accidental bucket deletion and to prevent extremely long
         runtime of this method.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type force: bool
         :param force: If True, empties the bucket's objects then deletes it.
 
@@ -411,6 +523,11 @@ class Bucket(_PropertyMixin):
                  contains more than 256 objects / blobs.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if force:
             blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
@@ -432,7 +549,10 @@ class Bucket(_PropertyMixin):
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE', path=self.path, _target_object=None)
+            method='DELETE',
+            path=self.path,
+            query_params=query_params,
+            _target_object=None)
 
     def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
@@ -445,6 +565,8 @@ class Bucket(_PropertyMixin):
         .. literalinclude:: snippets.py
           :start-after: [START delete_blob]
           :end-before: [END delete_blob]
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type blob_name: str
         :param blob_name: A blob name to delete.
@@ -464,17 +586,27 @@ class Bucket(_PropertyMixin):
 
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client._connection.api_request(
-            method='DELETE', path=blob_path, _target_object=None)
+            method='DELETE',
+            path=blob_path,
+            query_params=query_params,
+            _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
 
         Uses :meth:`delete_blob` to delete each individual blob.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type blobs: list
         :param blobs: A list of :class:`~google.cloud.storage.blob.Blob`-s or
@@ -509,6 +641,8 @@ class Bucket(_PropertyMixin):
                   client=None, preserve_acl=True):
         """Copy the given blob to the given bucket, optionally with a new name.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be copied.
 
@@ -532,19 +666,33 @@ class Bucket(_PropertyMixin):
         :returns: The new Blob.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         if new_name is None:
             new_name = blob.name
+
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
         copy_result = client._connection.api_request(
-            method='POST', path=api_path, _target_object=new_blob)
+            method='POST',
+            path=api_path,
+            query_params=query_params,
+            _target_object=new_blob,
+            )
+
         if not preserve_acl:
             new_blob.acl.save(acl={}, client=client)
+
         new_blob._set_properties(copy_result)
         return new_blob
 
     def rename_blob(self, blob, new_name, client=None):
         """Rename the given blob using copy and delete operations.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         Effectively, copies blob to the same bucket with a new name, then
         deletes the blob.
@@ -897,9 +1045,39 @@ class Bucket(_PropertyMixin):
         details.
 
         :type value: convertible to boolean
-        :param value: should versioning be anabled for the bucket?
+        :param value: should versioning be enabled for the bucket?
         """
         self._patch_property('versioning', {'enabled': bool(value)})
+
+    @property
+    def requester_pays(self):
+        """Does the requester pay for API requests for this bucket?
+
+        .. note::
+
+           No public docs exist yet for the "requester pays" feature.
+
+        :setter: Update whether requester pays for this bucket.
+        :getter: Query whether requester pays for this bucket.
+
+        :rtype: bool
+        :returns: True if requester pays for API requests for the bucket,
+                  else False.
+        """
+        versioning = self._properties.get('billing', {})
+        return versioning.get('requesterPays', False)
+
+    @requester_pays.setter
+    def requester_pays(self, value):
+        """Update whether requester pays for API requests for this bucket.
+
+        See  https://cloud.google.com/storage/docs/<DOCS-MISSING> for
+        details.
+
+        :type value: convertible to boolean
+        :param value: should requester pay for API requests for the bucket?
+        """
+        self._patch_property('billing', {'requesterPays': bool(value)})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
@@ -956,6 +1134,8 @@ class Bucket(_PropertyMixin):
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -966,9 +1146,15 @@ class Bucket(_PropertyMixin):
                   the ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         info = client._connection.api_request(
             method='GET',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             _target_object=None)
         return Policy.from_api_repr(info)
 
@@ -977,6 +1163,8 @@ class Bucket(_PropertyMixin):
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type policy: :class:`google.cloud.iam.Policy`
         :param policy: policy instance used to update bucket's IAM policy.
@@ -991,11 +1179,17 @@ class Bucket(_PropertyMixin):
                   the ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         resource = policy.to_api_repr()
         resource['resourceId'] = self.path
         info = client._connection.api_request(
             method='PUT',
             path='%s/iam' % (self.path,),
+            query_params=query_params,
             data=resource,
             _target_object=None)
         return Policy.from_api_repr(info)
@@ -1005,6 +1199,8 @@ class Bucket(_PropertyMixin):
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/testIamPermissions
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type permissions: list of string
         :param permissions: the permissions to check
@@ -1019,12 +1215,16 @@ class Bucket(_PropertyMixin):
                   request.
         """
         client = self._require_client(client)
-        query = {'permissions': permissions}
+        query_params = {'permissions': permissions}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = '%s/iam/testPermissions' % (self.path,)
         resp = client._connection.api_request(
             method='GET',
             path=path,
-            query_params=query)
+            query_params=query_params)
         return resp.get('permissions', [])
 
     def make_public(self, recursive=False, future=False, client=None):

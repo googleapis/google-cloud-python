@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 from __future__ import absolute_import
 
-from google.cloud.videointelligence_v1beta1 import enums
-from google.cloud.videointelligence_v1beta1 import types
-from google.cloud.videointelligence_v1beta1 import (
+from google.cloud.videointelligence_v1beta2 import enums
+from google.cloud.videointelligence_v1beta2 import types
+from google.cloud.videointelligence_v1beta2 import (
     VideoIntelligenceServiceClient,
 )
 

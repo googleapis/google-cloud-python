@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,30 +29,11 @@ def docs(session):
 
     # Install Sphinx and also all of the google-cloud-* packages.
     session.chdir(os.path.realpath(os.path.dirname(__file__)))
-    session.install('Sphinx >= 1.6.3', 'sphinx_rtd_theme')
-    session.install(
-        'core/',
-        'storage/',
-        'bigquery/',
-        'bigtable/',
-        'datastore/',
-        'dns/',
-        'language/',
-        'logging/',
-        'error_reporting/',
-        'monitoring/',
-        'pubsub/',
-        'resource_manager/',
-        'runtimeconfig/',
-        'spanner/',
-        'speech/',
-        'trace/',
-        'translate/',
-        'vision/',
-    )
+    session.install('-r', os.path.join('docs', 'requirements.txt'))
 
     # Build the docs!
-    session.run('bash', './test_utils/scripts/update_docs.sh')
+    session.run(
+        'bash', os.path.join('.', 'test_utils', 'scripts', 'update_docs.sh'))
 
 
 @nox.session

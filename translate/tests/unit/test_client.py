@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -249,7 +249,7 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
         query_params = [
             ('target', 'en'),
@@ -278,7 +278,7 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
         query_params = [
             ('target', 'en'),
@@ -313,7 +313,7 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
         query_params = [
             ('target', 'en'),
@@ -350,7 +350,7 @@ class TestClient(unittest.TestCase):
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '')
         query_params = [
             ('target', target_language),

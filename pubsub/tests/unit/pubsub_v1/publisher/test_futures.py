@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,10 @@ def test_cancelled():
 
 
 def test_running():
-    assert Future().running() is True
+    future = Future()
+    assert future.running() is True
+    future.set_result('foobar')
+    assert future.running() is False
 
 
 def test_done():

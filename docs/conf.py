@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -122,7 +122,6 @@ html_theme_options = {
     'github_user': 'GoogleCloudPlatform',
     'github_repo': 'google-cloud-python',
     'github_banner': True,
-    'travis_button': True,
     'font_family': "'Roboto', Georgia, sans",
     'head_font_family': "'Roboto', Georgia, serif",
     'code_font_family': "'Roboto Mono', 'Consolas', monospace",
@@ -298,7 +297,7 @@ autoclass_content = 'both'
 intersphinx_mapping = {
     'google-auth': ('https://google-auth.readthedocs.io/en/stable', None),
     'google-gax': ('https://gax-python.readthedocs.io/en/latest/', None),
-    'grpc': ('http://www.grpc.io/grpc/python/', None),
+    'grpc': ('https://grpc.io/grpc/python/', None),
     'requests': ('http://docs.python-requests.org/en/master/', None),
     'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
     'python': ('https://docs.python.org/3', None),

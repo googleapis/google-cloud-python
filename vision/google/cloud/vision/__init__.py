@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,7 +34,10 @@ from pkg_resources import get_distribution
 __version__ = get_distribution('google-cloud-vision').version
 
 from google.cloud.vision.client import Client
-from google.cloud.vision_v1 import *  # noqa
+
+from google.cloud.vision_v1 import enums
+from google.cloud.vision_v1 import ImageAnnotatorClient
+from google.cloud.vision_v1 import types
 
 
 __all__ = (

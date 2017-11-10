@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ class BoundsBase(object):
     def from_pb(cls, vertices):
         """Factory: construct BoundsBase instance from a protobuf response.
 
-        :type vertices: :class:`~google.cloud.proto.vision.v1.\
+        :type vertices: :class:`~google.cloud.vision_v1.proto.\
                                  geometry_pb2.BoundingPoly`
         :param vertices: List of vertices.
 

@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc.
+# Copyright 2015 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ class TestManagedZone(unittest.TestCase):
             year, month, day, hour, minute, seconds, micros, tzinfo=UTC)
         self.ZONE_ID = 12345
 
-    def _makeResource(self):
+    def _make_resource(self):
         self._setUpConstants()
         return {
             'name': self.ZONE_NAME,
@@ -153,7 +153,7 @@ class TestManagedZone(unittest.TestCase):
     def test_from_api_repr_w_properties(self):
         self._setUpConstants()
         client = _Client(self.PROJECT)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         klass = self._get_target_class()
         zone = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(zone._client, client)
@@ -211,7 +211,7 @@ class TestManagedZone(unittest.TestCase):
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/managedZones' % self.PROJECT
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = self._make_one(self.ZONE_NAME, self.DNS_NAME, client)
@@ -234,7 +234,7 @@ class TestManagedZone(unittest.TestCase):
         PATH = 'projects/%s/managedZones' % self.PROJECT
         DESCRIPTION = 'DESCRIPTION'
         NAME_SERVER_SET = 'NAME_SERVER_SET'
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         RESOURCE['nameServerSet'] = NAME_SERVER_SET
         RESOURCE['description'] = DESCRIPTION
         conn1 = _Connection()
@@ -293,7 +293,7 @@ class TestManagedZone(unittest.TestCase):
         # In the wild, the resource returned from 'zone.create' sometimes
         # lacks 'creationTime' / 'lastModifiedTime'
         PATH = 'projects/%s/managedZones' % (self.PROJECT,)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         del RESOURCE['creationTime']
         del RESOURCE['id']
         del RESOURCE['nameServers']
@@ -349,7 +349,7 @@ class TestManagedZone(unittest.TestCase):
 
     def test_reload_w_bound_client(self):
         PATH = 'projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         zone = self._make_one(self.ZONE_NAME, client=client)
@@ -366,7 +366,7 @@ class TestManagedZone(unittest.TestCase):
 
     def test_reload_w_alternate_client(self):
         PATH = 'projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME)
-        RESOURCE = self._makeResource()
+        RESOURCE = self._make_resource()
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)

@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 from base64 import b64encode
 
-from google.cloud.proto.vision.v1 import image_annotator_pb2
+from google.cloud.vision_v1.proto import image_annotator_pb2
 
 from google.cloud.vision._gax import _to_gapic_image
 from google.cloud._helpers import _to_bytes
@@ -120,7 +120,7 @@ class Image(object):
         """Helper for pre-made requests.
 
         :type requests_pb: list
-        :param requests_pb: List of :class:`google.cloud.proto.vision.v1.\
+        :param requests_pb: List of :class:`google.cloud.vision_v1.proto.\
                             image_annotator_pb2.AnnotateImageRequest`
 
         :rtype: :class:`~google.cloud.vision.annotations.Annotations`

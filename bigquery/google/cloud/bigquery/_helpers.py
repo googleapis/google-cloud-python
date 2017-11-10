@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc.
+# Copyright 2015 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 """Shared helper functions for BigQuery API classes."""
 
 import base64
-from collections import OrderedDict
 import datetime
 
+from google.api_core import retry
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
@@ -68,6 +68,39 @@ def _timestamp_from_json(value, field):
     if _not_null(value, field):
         # value will be a float in seconds, to microsecond precision, in UTC.
         return _datetime_from_microseconds(1e6 * float(value))
+
+
+def _timestamp_query_param_from_json(value, field):
+    """Coerce 'value' to a datetime, if set or not nullable.
+
+    Args:
+        value (str): The timestamp.
+        field (.SchemaField): The field corresponding to the value.
+
+    Returns:
+        Optional[datetime.datetime]: The parsed datetime object from
+        ``value`` if the ``field`` is not null (otherwise it is
+        :data:`None`).
+    """
+    if _not_null(value, field):
+        # Canonical formats for timestamps in BigQuery are flexible. See:
+        # g.co/cloud/bigquery/docs/reference/standard-sql/data-types#timestamp-type
+        # The separator between the date and time can be 'T' or ' '.
+        value = value.replace(' ', 'T', 1)
+        # The UTC timezone may be formatted as Z or +00:00.
+        value = value.replace('Z', '')
+        value = value.replace('+00:00', '')
+
+        if '.' in value:
+            # YYYY-MM-DDTHH:MM:SS.ffffff
+            return datetime.datetime.strptime(
+                value, _RFC3339_MICROS_NO_ZULU).replace(tzinfo=UTC)
+        else:
+            # YYYY-MM-DDTHH:MM:SS
+            return datetime.datetime.strptime(
+                value, _RFC3339_NO_FRACTION).replace(tzinfo=UTC)
+    else:
+        return None
 
 
 def _datetime_from_json(value, field):
@@ -138,8 +171,16 @@ _CELLDATA_FROM_JSON = {
     'RECORD': _record_from_json,
 }
 
+_QUERY_PARAMS_FROM_JSON = dict(_CELLDATA_FROM_JSON)
+_QUERY_PARAMS_FROM_JSON['TIMESTAMP'] = _timestamp_query_param_from_json
 
-def _row_from_json(row, schema):
+
+def _field_to_index_mapping(schema):
+    """Create a mapping from schema field name to index of field."""
+    return {f.name: i for i, f in enumerate(schema)}
+
+
+def _row_tuple_from_json(row, schema):
     """Convert JSON row data to row with appropriate types.
 
     Note:  ``row['f']`` and ``schema`` are presumed to be of the same length.
@@ -166,9 +207,13 @@ def _row_from_json(row, schema):
     return tuple(row_data)
 
 
-def _rows_from_json(rows, schema):
+def _rows_from_json(values, schema):
     """Convert JSON row data to rows with appropriate types."""
-    return [_row_from_json(row, schema) for row in rows]
+    from google.cloud.bigquery import Row
+
+    field_to_index = _field_to_index_mapping(schema)
+    return [Row(_row_tuple_from_json(r, schema), field_to_index)
+            for r in values]
 
 
 def _int_to_json(value):
@@ -263,51 +308,64 @@ _SCALAR_VALUE_TO_JSON_PARAM = _SCALAR_VALUE_TO_JSON_ROW.copy()
 _SCALAR_VALUE_TO_JSON_PARAM['TIMESTAMP'] = _timestamp_to_json_parameter
 
 
-class _ConfigurationProperty(object):
+def _snake_to_camel_case(value):
+    """Convert snake case string to camel case."""
+    words = value.split('_')
+    return words[0] + ''.join(map(str.capitalize, words[1:]))
+
+
+class _ApiResourceProperty(object):
     """Base property implementation.
 
-    Values will be stored on a `_configuration` helper attribute of the
+    Values will be stored on a `_properties` helper attribute of the
     property's job instance.
 
     :type name: str
     :param name:  name of the property
+
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
     """
 
-    def __init__(self, name):
+    def __init__(self, name, resource_name):
         self.name = name
-        self._backing_name = '_%s' % (self.name,)
+        self.resource_name = resource_name
 
     def __get__(self, instance, owner):
-        """Descriptor protocal:  accesstor"""
+        """Descriptor protocol:  accessor"""
         if instance is None:
             return self
-        return getattr(instance._configuration, self._backing_name)
+        return instance._properties.get(self.resource_name)
 
     def _validate(self, value):
         """Subclasses override to impose validation policy."""
         pass
 
     def __set__(self, instance, value):
-        """Descriptor protocal:  mutator"""
+        """Descriptor protocol:  mutator"""
         self._validate(value)
-        setattr(instance._configuration, self._backing_name, value)
+        instance._properties[self.resource_name] = value
 
     def __delete__(self, instance):
-        """Descriptor protocal:  deleter"""
-        delattr(instance._configuration, self._backing_name)
+        """Descriptor protocol:  deleter"""
+        del instance._properties[self.resource_name]
 
 
-class _TypedProperty(_ConfigurationProperty):
+class _TypedApiResourceProperty(_ApiResourceProperty):
     """Property implementation:  validates based on value type.
 
     :type name: str
     :param name:  name of the property
 
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
+
     :type property_type: type or sequence of types
     :param property_type: type to be validated
     """
-    def __init__(self, name, property_type):
-        super(_TypedProperty, self).__init__(name)
+    def __init__(self, name, resource_name, property_type):
+        super(_TypedApiResourceProperty, self).__init__(
+            name, resource_name)
         self.property_type = property_type
 
     def _validate(self, value):
@@ -315,380 +373,59 @@ class _TypedProperty(_ConfigurationProperty):
 
         :raises: ValueError on a type mismatch.
         """
+        if value is None:
+            return
         if not isinstance(value, self.property_type):
             raise ValueError('Required type: %s' % (self.property_type,))
 
 
-class _EnumProperty(_ConfigurationProperty):
-    """Pseudo-enumeration class.
+class _ListApiResourceProperty(_ApiResourceProperty):
+    """Property implementation:  validates based on value type.
 
     :type name: str
-    :param name:  name of the property.
+    :param name:  name of the property
+
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
+
+    :type property_type: type or sequence of types
+    :param property_type: type to be validated
     """
-
-
-class UDFResource(object):
-    """Describe a single user-defined function (UDF) resource.
-
-    :type udf_type: str
-    :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
-
-    :type value: str
-    :param value: the inline code or resource URI.
-
-    See
-    https://cloud.google.com/bigquery/user-defined-functions#api
-    """
-    def __init__(self, udf_type, value):
-        self.udf_type = udf_type
-        self.value = value
-
-    def __eq__(self, other):
-        if not isinstance(other, UDFResource):
-            return NotImplemented
-        return(
-            self.udf_type == other.udf_type and
-            self.value == other.value)
-
-    def __ne__(self, other):
-        return not self == other
-
-
-class UDFResourcesProperty(object):
-    """Custom property type, holding :class:`UDFResource` instances."""
+    def __init__(self, name, resource_name, property_type):
+        super(_ListApiResourceProperty, self).__init__(
+            name, resource_name)
+        self.property_type = property_type
 
     def __get__(self, instance, owner):
         """Descriptor protocol:  accessor"""
         if instance is None:
             return self
-        return list(instance._udf_resources)
+        return instance._properties.get(self.resource_name, [])
 
-    def __set__(self, instance, value):
-        """Descriptor protocol:  mutator"""
-        if not all(isinstance(u, UDFResource) for u in value):
-            raise ValueError("udf items must be UDFResource")
-        instance._udf_resources = tuple(value)
+    def _validate(self, value):
+        """Ensure that 'value' is of the appropriate type.
 
-
-class AbstractQueryParameter(object):
-    """Base class for named / positional query parameters.
-    """
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct parameter from JSON resource.
-
-        :type resource: dict
-        :param resource: JSON mapping of parameter
-
-        :rtype: :class:`ScalarQueryParameter`
+        :raises: ValueError on a type mismatch.
         """
-        raise NotImplementedError
-
-    def to_api_repr(self):
-        """Construct JSON API representation for the parameter.
-
-        :rtype: dict
-        """
-        raise NotImplementedError
-
-
-class ScalarQueryParameter(AbstractQueryParameter):
-    """Named / positional query parameters for scalar values.
-
-    :type name: str or None
-    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 parameter can only be addressed via position (``?``).
-
-    :type type_: str
-    :param type_: name of parameter type.  One of 'STRING', 'INT64',
-                  'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
-
-    :type value: str, int, float, bool, :class:`datetime.datetime`, or
-                 :class:`datetime.date`.
-    :param value: the scalar parameter value.
-    """
-    def __init__(self, name, type_, value):
-        self.name = name
-        self.type_ = type_
-        self.value = value
-
-    @classmethod
-    def positional(cls, type_, value):
-        """Factory for positional paramater.
-
-        :type type_: str
-        :param type_:
-            name of parameter type.  One of 'STRING', 'INT64',
-            'FLOAT64', 'BOOL', 'TIMESTAMP', 'DATETIME', or 'DATE'.
-
-        :type value: str, int, float, bool, :class:`datetime.datetime`, or
-                     :class:`datetime.date`.
-        :param value: the scalar parameter value.
-
-        :rtype: :class:`ScalarQueryParameter`
-        :returns: instance without name
-        """
-        return cls(None, type_, value)
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct parameter from JSON resource.
-
-        :type resource: dict
-        :param resource: JSON mapping of parameter
-
-        :rtype: :class:`ScalarQueryParameter`
-        :returns: instance
-        """
-        name = resource.get('name')
-        type_ = resource['parameterType']['type']
-        value = resource['parameterValue']['value']
-        converted = _CELLDATA_FROM_JSON[type_](value, None)
-        return cls(name, type_, converted)
-
-    def to_api_repr(self):
-        """Construct JSON API representation for the parameter.
-
-        :rtype: dict
-        :returns: JSON mapping
-        """
-        value = self.value
-        converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.type_)
-        if converter is not None:
-            value = converter(value)
-        resource = {
-            'parameterType': {
-                'type': self.type_,
-            },
-            'parameterValue': {
-                'value': value,
-            },
-        }
-        if self.name is not None:
-            resource['name'] = self.name
-        return resource
-
-
-class ArrayQueryParameter(AbstractQueryParameter):
-    """Named / positional query parameters for array values.
-
-    :type name: str or None
-    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 parameter can only be addressed via position (``?``).
-
-    :type array_type: str
-    :param array_type:
-        name of type of array elements.  One of `'STRING'`, `'INT64'`,
-        `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
-
-    :type values: list of appropriate scalar type.
-    :param values: the parameter array values.
-    """
-    def __init__(self, name, array_type, values):
-        self.name = name
-        self.array_type = array_type
-        self.values = values
-
-    @classmethod
-    def positional(cls, array_type, values):
-        """Factory for positional parameters.
-
-        :type array_type: str
-        :param array_type:
-            name of type of array elements.  One of `'STRING'`, `'INT64'`,
-            `'FLOAT64'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
-
-        :type values: list of appropriate scalar type
-        :param values: the parameter array values.
-
-        :rtype: :class:`ArrayQueryParameter`
-        :returns: instance without name
-        """
-        return cls(None, array_type, values)
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct parameter from JSON resource.
-
-        :type resource: dict
-        :param resource: JSON mapping of parameter
-
-        :rtype: :class:`ArrayQueryParameter`
-        :returns: instance
-        """
-        name = resource.get('name')
-        array_type = resource['parameterType']['arrayType']['type']
-        values = [
-            value['value']
-            for value
-            in resource['parameterValue']['arrayValues']]
-        converted = [
-            _CELLDATA_FROM_JSON[array_type](value, None) for value in values]
-        return cls(name, array_type, converted)
-
-    def to_api_repr(self):
-        """Construct JSON API representation for the parameter.
-
-        :rtype: dict
-        :returns: JSON mapping
-        """
-        values = self.values
-        if self.array_type == 'RECORD':
-            reprs = [value.to_api_repr() for value in values]
-            a_type = reprs[0]['parameterType']
-            a_values = [repr_['parameterValue'] for repr_ in reprs]
-        else:
-            a_type = {'type': self.array_type}
-            converter = _SCALAR_VALUE_TO_JSON_PARAM.get(self.array_type)
-            if converter is not None:
-                values = [converter(value) for value in values]
-            a_values = [{'value': value} for value in values]
-        resource = {
-            'parameterType': {
-                'type': 'ARRAY',
-                'arrayType': a_type,
-            },
-            'parameterValue': {
-                'arrayValues': a_values,
-            },
-        }
-        if self.name is not None:
-            resource['name'] = self.name
-        return resource
-
-
-class StructQueryParameter(AbstractQueryParameter):
-    """Named / positional query parameters for struct values.
-
-    :type name: str or None
-    :param name: Parameter name, used via ``@foo`` syntax.  If None, the
-                 parameter can only be addressed via position (``?``).
-
-    :type sub_params: tuple of :class:`ScalarQueryParameter`
-    :param sub_params: the sub-parameters for the struct
-    """
-    def __init__(self, name, *sub_params):
-        self.name = name
-        types = self.struct_types = OrderedDict()
-        values = self.struct_values = {}
-        for sub in sub_params:
-            if isinstance(sub, self.__class__):
-                types[sub.name] = 'STRUCT'
-                values[sub.name] = sub
-            elif isinstance(sub, ArrayQueryParameter):
-                types[sub.name] = 'ARRAY'
-                values[sub.name] = sub
-            else:
-                types[sub.name] = sub.type_
-                values[sub.name] = sub.value
-
-    @classmethod
-    def positional(cls, *sub_params):
-        """Factory for positional parameters.
-
-        :type sub_params: tuple of :class:`ScalarQueryParameter`
-        :param sub_params: the sub-parameters for the struct
-
-        :rtype: :class:`StructQueryParameter`
-        :returns: instance without name
-        """
-        return cls(None, *sub_params)
-
-    @classmethod
-    def from_api_repr(cls, resource):
-        """Factory: construct parameter from JSON resource.
-
-        :type resource: dict
-        :param resource: JSON mapping of parameter
-
-        :rtype: :class:`StructQueryParameter`
-        :returns: instance
-        """
-        name = resource.get('name')
-        instance = cls(name)
-        types = instance.struct_types
-        for item in resource['parameterType']['structTypes']:
-            types[item['name']] = item['type']['type']
-        struct_values = resource['parameterValue']['structValues']
-        for key, value in struct_values.items():
-            type_ = types[key]
-            value = value['value']
-            converted = _CELLDATA_FROM_JSON[type_](value, None)
-            instance.struct_values[key] = converted
-        return instance
-
-    def to_api_repr(self):
-        """Construct JSON API representation for the parameter.
-
-        :rtype: dict
-        :returns: JSON mapping
-        """
-        s_types = {}
-        values = {}
-        for name, value in self.struct_values.items():
-            type_ = self.struct_types[name]
-            if type_ in ('STRUCT', 'ARRAY'):
-                repr_ = value.to_api_repr()
-                s_types[name] = {'name': name, 'type': repr_['parameterType']}
-                values[name] = repr_['parameterValue']
-            else:
-                s_types[name] = {'name': name, 'type': {'type': type_}}
-                converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_)
-                if converter is not None:
-                    value = converter(value)
-                values[name] = {'value': value}
-
-        resource = {
-            'parameterType': {
-                'type': 'STRUCT',
-                'structTypes': [s_types[key] for key in self.struct_types],
-            },
-            'parameterValue': {
-                'structValues': values,
-            },
-        }
-        if self.name is not None:
-            resource['name'] = self.name
-        return resource
-
-
-class QueryParametersProperty(object):
-    """Custom property type, holding query parameter instances."""
-
-    def __get__(self, instance, owner):
-        """Descriptor protocol:  accessor
-
-        :type instance: :class:`QueryParametersProperty`
-        :param instance: instance owning the property (None if accessed via
-                         the class).
-
-        :type owner: type
-        :param owner: the class owning the property.
-
-        :rtype: list of instances of classes derived from
-                :class:`AbstractQueryParameter`.
-        :returns: the descriptor, if accessed via the class, or the instance's
-                  query parameters.
-        """
-        if instance is None:
-            return self
-        return list(instance._query_parameters)
-
-    def __set__(self, instance, value):
-        """Descriptor protocol:  mutator
-
-        :type instance: :class:`QueryParametersProperty`
-        :param instance: instance owning the property (None if accessed via
-                         the class).
-
-        :type value: list of instances of classes derived from
-                     :class:`AbstractQueryParameter`.
-        :param value: new query parameters for the instance.
-        """
-        if not all(isinstance(u, AbstractQueryParameter) for u in value):
+        if value is None:
+            raise ValueError((
+                'Required type: list of {}. '
+                'To unset, use del or set to empty list').format(
+                    self.property_type,))
+        if not all(isinstance(item, self.property_type) for item in value):
             raise ValueError(
-                "query parameters must be derived from AbstractQueryParameter")
-        instance._query_parameters = tuple(value)
+                'Required type: list of %s' % (self.property_type,))
+
+
+class _EnumApiResourceProperty(_ApiResourceProperty):
+    """Pseudo-enumeration class.
+
+    :type name: str
+    :param name:  name of the property.
+
+    :type resource_name: str
+    :param resource_name:  name of the property in the resource dictionary
+    """
 
 
 def _item_to_row(iterator, resource):
@@ -700,26 +437,29 @@ def _item_to_row(iterator, resource):
         added to the iterator after being created, which
         should be done by the caller.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type resource: dict
     :param resource: An item to be converted to a row.
 
-    :rtype: tuple
+    :rtype: :class:`~google.cloud.bigquery.table.Row`
     :returns: The next row in the page.
     """
-    return _row_from_json(resource, iterator.schema)
+    from google.cloud.bigquery import Row
+
+    return Row(_row_tuple_from_json(resource, iterator.schema),
+               iterator._field_to_index)
 
 
 # pylint: disable=unused-argument
 def _rows_page_start(iterator, page, response):
     """Grab total rows when :class:`~google.cloud.iterator.Page` starts.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type page: :class:`~google.cloud.iterator.Page`
+    :type page: :class:`~google.api_core.page_iterator.Page`
     :param page: The page that was just created.
 
     :type response: dict
@@ -730,3 +470,36 @@ def _rows_page_start(iterator, page, response):
         total_rows = int(total_rows)
     iterator.total_rows = total_rows
 # pylint: enable=unused-argument
+
+
+def _should_retry(exc):
+    """Predicate for determining when to retry.
+
+    We retry if and only if the 'reason' is 'backendError'
+    or 'rateLimitExceeded'.
+    """
+    if not hasattr(exc, 'errors'):
+        return False
+    if len(exc.errors) == 0:
+        return False
+    reason = exc.errors[0]['reason']
+    return reason == 'backendError' or reason == 'rateLimitExceeded'
+
+
+DEFAULT_RETRY = retry.Retry(predicate=_should_retry)
+"""The default retry object.
+
+Any method with a ``retry`` parameter will be retried automatically,
+with reasonable defaults. To disable retry, pass ``retry=None``.
+To modify the default retry behavior, call a ``with_XXX`` method
+on ``DEFAULT_RETRY``. For example, to change the deadline to 30 seconds,
+pass ``retry=bigquery.DEFAULT_RETRY.with_deadline(30)``.
+"""
+
+
+def _int_or_none(value):
+    """Helper: deserialize int value from JSON string."""
+    if isinstance(value, int):
+        return value
+    if value is not None:
+        return int(value)

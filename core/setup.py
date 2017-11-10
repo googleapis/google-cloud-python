@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,27 +51,21 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'googleapis-common-protos >= 1.3.4',
-    'protobuf >= 3.0.0',
-    'google-auth >= 0.4.0, < 2.0.0dev',
-    'requests >= 2.18.0, < 3.0.0dev',
-    'setuptools >= 34.0.0',
-    'six >= 1.10.0',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
 ]
 
 EXTRAS_REQUIREMENTS = {
-    ':python_version<"3.2"': ['futures >= 3.0.0'],
+    'grpc': ['grpcio >= 1.7.0'],
 }
 
 setup(
     name='google-cloud-core',
-    version='0.27.1',
+    version='0.28.1.dev1',
     description='API Client library for Google Cloud: Core Helpers',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.api',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,

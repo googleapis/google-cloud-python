@@ -1,7 +1,7 @@
 Session API
 ===========
 
-.. automodule:: google.cloud.spanner.session
+.. automodule:: google.cloud.spanner_v1.session
   :members:
   :show-inheritance:
 
@@ -9,7 +9,7 @@ Session API
 Session Pools API
 =================
 
-.. automodule:: google.cloud.spanner.pool
+.. automodule:: google.cloud.spanner_v1.pool
   :members:
   :show-inheritance:
 

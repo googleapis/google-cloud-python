@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc.
+# Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -198,6 +198,7 @@ class ACL(object):
     # as properties).
     reload_path = None
     save_path = None
+    user_project = None
 
     def __init__(self):
         self.entities = {}
@@ -398,6 +399,8 @@ class ACL(object):
     def reload(self, client=None):
         """Reload the ACL data from Cloud Storage.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -405,10 +408,18 @@ class ACL(object):
         """
         path = self.reload_path
         client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
 
         self.entities.clear()
 
-        found = client._connection.api_request(method='GET', path=path)
+        found = client._connection.api_request(
+            method='GET',
+            path=path,
+            query_params=query_params,
+        )
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
@@ -435,8 +446,12 @@ class ACL(object):
             acl = []
             query_params[self._PREDEFINED_QUERY_PARAM] = predefined
 
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
+
         path = self.save_path
         client = self._require_client(client)
+
         result = client._connection.api_request(
             method='PATCH',
             path=path,
@@ -449,6 +464,8 @@ class ACL(object):
 
     def save(self, acl=None, client=None):
         """Save this ACL for the current bucket.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type acl: :class:`google.cloud.storage.acl.ACL`, or a compatible list.
         :param acl: The ACL object to save.  If left blank, this will save
@@ -471,6 +488,8 @@ class ACL(object):
     def save_predefined(self, predefined, client=None):
         """Save this ACL for the current bucket using a predefined ACL.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type predefined: str
         :param predefined: An identifier for a predefined ACL.  Must be one
                            of the keys in :attr:`PREDEFINED_JSON_ACLS`
@@ -492,6 +511,8 @@ class ACL(object):
 
     def clear(self, client=None):
         """Remove all ACL entries.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         Note that this won't actually remove *ALL* the rules, but it
         will remove all the non-default rules.  In short, you'll still
@@ -532,6 +553,11 @@ class BucketACL(ACL):
         """Compute the path for PATCH API requests for this ACL."""
         return self.bucket.path
 
+    @property
+    def user_project(self):
+        """Compute the user project charged for API requests for this ACL."""
+        return self.bucket.user_project
+
 
 class DefaultObjectACL(BucketACL):
     """A class representing the default object ACL for a bucket."""
@@ -565,3 +591,8 @@ class ObjectACL(ACL):
     def save_path(self):
         """Compute the path for PATCH API requests for this ACL."""
         return self.blob.path
+
+    @property
+    def user_project(self):
+        """Compute the user project charged for API requests for this ACL."""
+        return self.blob.user_project

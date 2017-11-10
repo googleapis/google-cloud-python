@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ class SafeSearchAnnotation(object):
                  violence_likelihood):
         self._adult_likelihood = adult_likelihood
         self._spoof_likelihood = spoof_likelihood
-        self._medical_likeliehood = medical_likelihood
+        self._medical_likelihood = medical_likelihood
         self._violence_likelihood = violence_likelihood
 
     @classmethod
@@ -66,7 +66,7 @@ class SafeSearchAnnotation(object):
     def from_pb(cls, image):
         """Factory: construct SafeSearchAnnotation from Vision API response.
 
-        :type image: :class:`~google.cloud.proto.vision.v1.\
+        :type image: :class:`~google.cloud.vision_v1.proto.\
                       image_annotator_pb2.SafeSearchAnnotation`
         :param image: Protobuf response from Vision API with safe search data.
 
@@ -104,7 +104,7 @@ class SafeSearchAnnotation(object):
         :rtype: :class:`~google.cloud.vision.likelihood.Likelihood`
         :returns: The ``Likelihood`` that the image is medical in origin.
         """
-        return self._medical_likeliehood
+        return self._medical_likelihood
 
     @property
     def violence(self):

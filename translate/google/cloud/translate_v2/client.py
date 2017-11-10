@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -231,7 +231,7 @@ class Client(BaseClient):
             query_params.append(('model', model))
 
         response = self._connection.api_request(
-            method='GET', path='', query_params=query_params)
+            method='POST', path='', query_params=query_params)
 
         translations = response.get('data', {}).get('translations', ())
         if len(values) != len(translations):

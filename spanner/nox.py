@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,20 +19,21 @@ import os
 import nox
 
 
-LOCAL_DEPS = ('../core/',)
+LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
+    os.path.join('..', 'core'),
+)
 
 
 @nox.session
-@nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
-def unit_tests(session, python_version):
-    """Run the unit test suite."""
+def default(session):
+    """Default unit test session.
 
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(python_version)
-
-    # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'unit-' + python_version
-
+    This is intended to be run **without** an interpreter set, so
+    that the current ``python`` (on the ``PATH``) or the version of
+    Python corresponding to the ``nox`` binary the ``PATH`` can
+    run the tests.
+    """
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
@@ -42,6 +43,7 @@ def unit_tests(session, python_version):
         'py.test',
         '--quiet',
         '--cov=google.cloud.spanner',
+        '--cov=google.cloud.spanner_v1',
         '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
@@ -53,8 +55,22 @@ def unit_tests(session, python_version):
 
 
 @nox.session
-@nox.parametrize('python_version', ['2.7', '3.6'])
-def system_tests(session, python_version):
+@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+def unit(session, py):
+    """Run the unit test suite."""
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-' + py
+
+    default(session)
+
+
+@nox.session
+@nox.parametrize('py', ['2.7', '3.6'])
+def system(session, py):
     """Run the system test suite."""
 
     # Sanity check: Only run system tests if the environment variable is set.
@@ -62,19 +78,19 @@ def system_tests(session, python_version):
         session.skip('Credentials must be set via environment variable.')
 
     # Run the system tests against latest Python 2 and Python 3 only.
-    session.interpreter = 'python{}'.format(python_version)
+    session.interpreter = 'python{}'.format(py)
 
     # Set the virtualenv dirname.
-    session.virtualenv_dirname = 'sys-' + python_version
+    session.virtualenv_dirname = 'sys-' + py
 
     # Install all test dependencies, then install this package into the
-    # virutalenv's dist-packages.
+    # virtualenv's dist-packages.
     session.install('mock', 'pytest', *LOCAL_DEPS)
     session.install('../test_utils/')
-    session.install('.')
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system')
+    session.run('py.test', '--quiet', 'tests/system', *session.posargs)
 
 
 @nox.session

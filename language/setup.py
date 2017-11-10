@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -51,9 +51,8 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.27.0, < 0.28dev',
-    'google-gax >= 0.15.14, < 0.16dev',
-    'googleapis-common-protos[grpc] >= 1.5.2, < 2.0dev',
+    'google-api-core[grpc] >= 0.1.1, < 0.2.0dev',
+    'google-auth >= 1.0.2, < 2.0dev',
 ]
 EXTRAS_REQUIRE = {
     ':python_version<"3.4"': ['enum34'],
@@ -61,16 +60,12 @@ EXTRAS_REQUIRE = {
 
 setup(
     name='google-cloud-language',
-    version='0.28.0',
+    version='1.0.1.dev1',
     description='Python Client for Google Cloud Natural Language',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.cloud.gapic',
-        'google.cloud.gapic.language',
-        'google.cloud.proto',
-        'google.cloud.proto.language',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,

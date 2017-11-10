@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,6 +75,22 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.flush()
 
         transport.worker.flush.assert_called()
+
+    def test_worker(self):
+        client = _Client(self.PROJECT)
+        name = 'python_logger'        
+        batch_size = 30
+        grace_period = 20.
+        transport, worker = self._make_one(client,
+                                           name,
+                                           grace_period=grace_period,
+                                           batch_size=batch_size)
+        worker_grace_period = worker.call_args[1]['grace_period']  # **kwargs.
+        worker_batch_size = worker.call_args[1]['max_batch_size']
+        self.assertEqual(worker_grace_period,
+                         grace_period)
+        self.assertEqual(worker_batch_size,
+                         batch_size)
 
 
 class Test_Worker(unittest.TestCase):

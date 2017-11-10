@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc.
+# Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ from google.rpc import status_pb2
 
 from google.cloud import _http as connection_module
 from google.cloud import exceptions
-from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
 
 from google.cloud.datastore import __version__
 

@@ -1,5 +1,5 @@
-Database Admin API
-==================
+Database Admin
+==============
 
 After creating a :class:`~google.cloud.spanner.instance.Instance`, you can
 interact with individual databases for that instance.
@@ -8,12 +8,16 @@ interact with individual databases for that instance.
 List Databases
 --------------
 
-To list of all existing databases for an instance, use its
+To iterate over all existing databases for an instance, use its
 :meth:`~google.cloud.spanner.instance.Instance.list_databases` method:
 
 .. code:: python
 
-    databases, token = instance.list_databases()
+    for database in instance.list_databases():
+        # `database` is a `Database` object.
+
+This method yields :class:`~.spanner_admin_database_v1.types.Database`
+objects.
 
 
 Database Factory
@@ -49,9 +53,9 @@ trigger its creation on the server:
 .. note::
 
     Creating an instance triggers a "long-running operation" and
-    returns an :class:`google.cloud.spanner.database.Operation`
-    object.  See :ref:`check-on-current-database-operation` for polling
-    to find out if the operation is completed.
+    returns an :class:`~concurrent.futures.Future`-like object. Use
+    the :meth:`~concurrent.futures.Future.result` method to wait for
+    and inspect the result.
 
 
 Update an existing Database
@@ -96,26 +100,13 @@ Check on Current Database Operation
 The :meth:`~google.cloud.spanner.database.Database.create` and
 :meth:`~google.cloud.spanner.database.Database.update` methods of instance
 object trigger long-running operations on the server, and return instances
-of the :class:`~google.cloud.spanner.database.Operation` class.
-
-You can check if a long-running operation has finished
-by using its :meth:`~google.cloud.spanner.database.Operation.finished`
-method:
+conforming to the :class:`~.concurrent.futures.Future` class.
 
 .. code:: python
 
     >>> operation = instance.create()
-    >>> operation.finished()
-    True
+    >>> operation.result()
 
-.. note::
-
-    Once an :class:`~google.cloud.spanner.instance.Operation` object
-    has returned :data:`True` from its
-    :meth:`~google.cloud.spanner.instance.Operation.finished` method, the
-    object should not be re-used. Subsequent calls to
-    :meth:`~google.cloud.spanner.instance.Operation.finished`
-    will result in an :exc`ValueError` being raised.
 
 Non-Admin Database Usage
 ========================
@@ -220,12 +211,15 @@ constructor:
 
 .. code-block:: python
 
-   from google.cloud.spanner import Client
-   from google.cloud.spanner import FixedSizePool
-   client = Client()
-   instance = client.instance(INSTANCE_NAME)
-   pool = FixedSizePool(size=10, default_timeout=5)
-   database = instanc.database(DATABASE_NAME, pool=pool)
+    from google.cloud import spanner
+
+    # Instantiate the Spanner client, and get the appropriate instance.
+    client = spanner.Client()
+    instance = client.instance(INSTANCE_NAME)
+
+    # Create a database with a pool of a fixed size.
+    pool = spanner.FixedSizePool(size=10, default_timeout=5)
+    database = instance.database(DATABASE_NAME, pool=pool)
 
 Note that creating a database with a pool may presume that its database
 already exists, as it may need to pre-create sessions (rather than creating

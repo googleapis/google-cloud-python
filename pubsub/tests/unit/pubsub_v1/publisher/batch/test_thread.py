@@ -1,4 +1,4 @@
-# Copyright 2017, Google Inc. All rights reserved.
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -187,6 +187,27 @@ def test_publish():
     # messages.
     assert batch.size == sum([m.ByteSize() for m in messages])
     assert batch.size > 0  # I do not always trust protobuf.
+
+
+def test_publish_max_messages():
+    batch = create_batch(max_messages=4)
+    messages = (
+        types.PubsubMessage(data=b'foobarbaz'),
+        types.PubsubMessage(data=b'spameggs'),
+        types.PubsubMessage(data=b'1335020400'),
+    )
+
+    # Publish each of the messages, which should save them to the batch.
+    with mock.patch.object(batch, 'commit') as commit:
+        for message in messages:
+            batch.publish(message)
+
+        # Commit should not yet have been called.
+        assert commit.call_count == 0
+
+        # When a fourth message is published, commit should be called.
+        batch.publish(types.PubsubMessage(data=b'last one'))
+        commit.assert_called_once_with()
 
 
 def test_publish_dict():

@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc.
+# Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ def _validate_name(name):
 
 
 class _PropertyMixin(object):
-    """Abstract mixin for cloud storage classes with associated propertties.
+    """Abstract mixin for cloud storage classes with associated properties.
 
     Non-abstract subclasses should implement:
       - client
@@ -67,6 +67,11 @@ class _PropertyMixin(object):
         """Abstract getter for the object client."""
         raise NotImplementedError
 
+    @property
+    def user_project(self):
+        """Abstract getter for the object user_project."""
+        raise NotImplementedError
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -85,6 +90,8 @@ class _PropertyMixin(object):
     def reload(self, client=None):
         """Reload properties from Cloud Storage.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -94,6 +101,8 @@ class _PropertyMixin(object):
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
         api_response = client._connection.api_request(
             method='GET', path=self.path, query_params=query_params,
             _target_object=self)
@@ -132,6 +141,8 @@ class _PropertyMixin(object):
 
         Updates the ``_properties`` with the response from the backend.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -140,13 +151,16 @@ class _PropertyMixin(object):
         client = self._require_client(client)
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
+        query_params = {'projection': 'full'}
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
         update_properties = {key: self._properties[key]
                              for key in self._changes}
 
         # Make the API call.
         api_response = client._connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
-            query_params={'projection': 'full'}, _target_object=self)
+            query_params=query_params, _target_object=self)
         self._set_properties(api_response)
 
     def update(self, client=None):
@@ -154,15 +168,20 @@ class _PropertyMixin(object):
 
         Updates the ``_properties`` with the response from the backend.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current object.
         """
         client = self._require_client(client)
+        query_params = {'projection': 'full'}
+        if self.user_project is not None:
+            query_params['userProject'] = self.user_project
         api_response = client._connection.api_request(
             method='PUT', path=self.path, data=self._properties,
-            query_params={'projection': 'full'}, _target_object=self)
+            query_params=query_params, _target_object=self)
         self._set_properties(api_response)
 
 

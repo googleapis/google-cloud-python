@@ -1,5 +1,8 @@
 [run]
 branch = True
+omit =
+  */gapic/*
+  */proto/*
 
 [report]
 fail_under = 100

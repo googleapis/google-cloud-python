@@ -102,8 +102,8 @@ We use `nox`_ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
 
-    $ nox -f datastore/nox.py -s "unit_tests(python_version='2.7')"
-    $ nox -f datastore/nox.py -s "unit_tests(python_version='3.4')"
+    $ nox -f datastore/nox.py -s "unit(py='2.7')"
+    $ nox -f datastore/nox.py -s "unit(py='3.4')"
     $ ...
 
   .. note::
@@ -118,7 +118,7 @@ We use `nox`_ to instrument our tests.
 
     $ export GIT_ROOT=$(pwd)
     $ cd ${GIT_ROOT}/datastore/
-    $ nox -s "unit_tests(python_version='3.6')"
+    $ nox -s "unit(py='3.6')"
 
 .. nox: https://pypi.org/project/nox-automation/
 
@@ -184,8 +184,8 @@ Running System Tests
 
 - To run system tests for a given package, you can execute::
 
-   $ nox -f datastore/nox.py -s "system_tests(python_version='3.6')"
-   $ nox -f datastore/nox.py -s "system_tests(python_version='2.7')"
+   $ nox -f datastore/nox.py -s "system(py='3.6')"
+   $ nox -f datastore/nox.py -s "system(py='2.7')"
 
   .. note::
 

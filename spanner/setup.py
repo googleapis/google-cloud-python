@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ SETUP_BASE = {
     'include_package_data': True,
     'zip_safe': False,
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -51,16 +51,17 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core >= 0.27.0, < 0.28dev',
-    'grpcio >= 1.2.0, < 2.0dev',
-    'gapic-google-cloud-spanner-v1 >= 0.15.0, < 0.16dev',
-    'gapic-google-cloud-spanner-admin-database-v1 >= 0.15.0, < 0.16dev',
-    'gapic-google-cloud-spanner-admin-instance-v1 >= 0.15.0, < 0.16dev',
+    'google-auth >= 1.1.0',
+    'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
+    'google-api-core >= 0.1.1, < 0.2.0dev',
+    'google-gax >= 0.15.15, < 0.16dev',
+    'grpc-google-iam-v1 >= 0.11.4, < 0.12dev',
+    'requests >= 2.18.4, < 3.0dev',
 ]
 
 setup(
     name='google-cloud-spanner',
-    version='0.27.0',
+    version='0.29.1.dev1',
     description='Python Client for Cloud Spanner',
     long_description=README,
     namespace_packages=[

@@ -1,4 +1,4 @@
-# Copyright 2016 Google Inc.
+# Copyright 2016 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 from enum import Enum
 
-from google.cloud.proto.vision.v1 import image_annotator_pb2
+from google.cloud.vision_v1.proto import image_annotator_pb2
 
 
 def _get_pb_likelihood(likelihood):
