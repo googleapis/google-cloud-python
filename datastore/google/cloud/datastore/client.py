@@ -580,8 +580,8 @@ class Client(ClientWithProject):
             >>>
             >>> first_page = next(pages)
             >>> first_page_entities = list(first_page)
-            >>> query_iter.next_page_token
-            b'...'
+            >>> query_iter.next_page_token is None
+            True
 
         :type kwargs: dict
         :param kwargs: Parameters for initializing and instance of
