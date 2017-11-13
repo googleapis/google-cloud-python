@@ -1235,6 +1235,13 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in iterator]
         self.assertEqual(row_tuples, [(1,)])
 
+    def test_query_iter(self):
+        import types
+        query_job = Config.CLIENT.query('SELECT 1')
+        self.assertIsInstance(iter(query_job), types.GeneratorType)
+        row_tuples = [r.values() for r in query_job]
+        self.assertEqual(row_tuples, [(1,)])
+
     def test_query_table_def(self):
         gs_url = self._write_csv_to_storage(
             'bq_external_test' + unique_resource_id(), 'person_ages.csv',
