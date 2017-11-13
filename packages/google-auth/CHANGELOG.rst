@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v1.2.1
+------
+
+- Excluded compiled Python files in source distributions. (#215)
+- Updated docs for creating RSASigner from string. (#213)
+- Use ``six.raise_from`` wherever possible. (#212)
+- Fixed a typo in a comment ``seconds`` not ``sections``. (#210)
+
 v1.2.0
 ------
 
