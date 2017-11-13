@@ -155,7 +155,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -186,7 +186,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -217,7 +217,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -251,7 +251,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -285,7 +285,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb1, key_pb2])
+        response = ds_api.lookup(
+            project, [key_pb1, key_pb2], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -320,7 +321,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb1, key_pb2])
+        response = ds_api.lookup(
+            project, [key_pb1, key_pb2], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -354,7 +356,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb1, key_pb2])
+        response = ds_api.lookup(
+            project, [key_pb1, key_pb2], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)

@@ -352,9 +352,9 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            project_id=self.PROJECT,
+            self.PROJECT,
+            [key.to_protobuf()],
             read_options=read_options,
-            keys=[key.to_protobuf()],
         )
 
     def test_get_multi_miss_w_missing(self):
@@ -389,9 +389,9 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            project_id=self.PROJECT,
+            self.PROJECT,
+            [key_pb],
             read_options=read_options,
-            keys=[key_pb],
         )
 
     def test_get_multi_w_missing_non_empty(self):
@@ -438,9 +438,9 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            project_id=self.PROJECT,
+            self.PROJECT,
+            [key_pb],
             read_options=read_options,
-            keys=[key_pb],
         )
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
@@ -488,14 +488,14 @@ class TestClient(unittest.TestCase):
         self.assertEqual(ds_api.lookup.call_count, 2)
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_any_call(
-            project_id=self.PROJECT,
+            self.PROJECT,
+            [key2_pb],
             read_options=read_options,
-            keys=[key2_pb],
         )
         ds_api.lookup.assert_any_call(
-            project_id=self.PROJECT,
+            self.PROJECT,
+            [key1_pb, key2_pb],
             read_options=read_options,
-            keys=[key1_pb, key2_pb],
         )
 
     def test_get_multi_hit(self):
@@ -529,8 +529,8 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            keys=[key.to_protobuf()],
-            project_id=self.PROJECT,
+            self.PROJECT,
+            [key.to_protobuf()],
             read_options=read_options,
         )
 
@@ -568,8 +568,8 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions(transaction=txn_id)
         ds_api.lookup.assert_called_once_with(
-            project_id=self.PROJECT,
-            keys=[key.to_protobuf()],
+            self.PROJECT,
+            [key.to_protobuf()],
             read_options=read_options,
         )
 
@@ -605,9 +605,9 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            project_id=self.PROJECT,
+            self.PROJECT,
+            [key1.to_protobuf(), key2.to_protobuf()],
             read_options=read_options,
-            keys=[key1.to_protobuf(), key2.to_protobuf()],
         )
 
     def test_get_multi_hit_multiple_keys_different_project(self):
