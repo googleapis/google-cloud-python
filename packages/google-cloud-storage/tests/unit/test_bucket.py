@@ -239,6 +239,33 @@ class Test_Bucket(unittest.TestCase):
         with self.assertRaises(ValueError):
             bucket.create()
 
+    def test_create_w_missing_client_project(self):
+        BUCKET_NAME = 'bucket-name'
+        USER_PROJECT = 'user-project-123'
+        connection = _Connection()
+        client = _Client(connection, project=None)
+        bucket = self._make_one(client, BUCKET_NAME)
+
+        with self.assertRaises(ValueError):
+            bucket.create()
+
+    def test_create_w_explicit_project(self):
+        PROJECT = 'PROJECT'
+        BUCKET_NAME = 'bucket-name'
+        OTHER_PROJECT = 'other-project-123'
+        DATA = {'name': BUCKET_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._make_one(client, BUCKET_NAME)
+
+        bucket.create(project=OTHER_PROJECT)
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['query_params'], {'project': OTHER_PROJECT})
+        self.assertEqual(kw['data'], DATA)
+
     def test_create_hit(self):
         PROJECT = 'PROJECT'
         BUCKET_NAME = 'bucket-name'

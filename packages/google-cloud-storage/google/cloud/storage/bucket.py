@@ -251,7 +251,7 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, client=None):
+    def create(self, client=None, project=None):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -265,12 +265,28 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
+
+        :type project: str
+        :param project: (Optional) the project under which the  bucket is to
+                        be created.  If not passed, uses the project set on
+                        the client.
+        :raises ValueError: if :attr:`user_project` is set.
+        :raises ValueError: if ``project`` is None and client's
+                            :attr:`project` is also None.
         """
         if self.user_project is not None:
             raise ValueError("Cannot create bucket with 'user_project' set.")
 
         client = self._require_client(client)
-        query_params = {'project': client.project}
+
+        if project is None:
+            project = client.project
+
+        if project is None:
+            raise ValueError(
+                "Client project not set:  pass an explicit project.")
+
+        query_params = {'project': project}
         properties = {key: self._properties[key] for key in self._changes}
         properties['name'] = self.name
         api_response = client._connection.api_request(

@@ -74,6 +74,13 @@ class TestBucketNotification(unittest.TestCase):
          bucket.user_project = user_project
          return bucket
 
+    def test_ctor_w_missing_project(self):
+        client = self._make_client(project=None)
+        bucket = self._make_bucket(client)
+
+        with self.assertRaises(ValueError):
+            self._make_one(bucket, self.TOPIC_NAME)
+
     def test_ctor_defaults(self):
         from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
