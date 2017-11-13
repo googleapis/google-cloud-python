@@ -2786,6 +2786,15 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(len(df), 0)  # verify the number of rows
         self.assertEqual(list(df), ['name', 'age'])  # verify the column names
 
+    @mock.patch('google.cloud.bigquery.job.pandas', new=None)
+    def test_to_dataframe_error_if_pandas_is_none(self):
+        connection = _Connection({})
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        with self.assertRaises(ValueError):
+            df = job.to_dataframe()
+
     def test_iter(self):
         import types
 

@@ -1965,7 +1965,7 @@ class QueryJob(_AsyncJob):
             ValueError: If the `pandas` library cannot be imported.
 
         """
-        if pandas is None:  # pragma: NO COVER
+        if pandas is None:
             raise ValueError('The pandas library is not installed, please '
                              'install pandas to use the to_dataframe() '
                              'function.')
