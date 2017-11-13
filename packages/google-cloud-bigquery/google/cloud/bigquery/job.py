@@ -1949,6 +1949,9 @@ class QueryJob(_AsyncJob):
         return self._client.list_rows(dest_table, selected_fields=schema,
                                       retry=retry)
 
+    def __iter__(self):
+        return iter(self.result())
+
 
 class QueryPlanEntryStep(object):
     """Map a single step in a query plan entry.
