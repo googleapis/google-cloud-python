@@ -2793,7 +2793,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         job = self._make_one(self.JOB_ID, self.QUERY, client)
 
         with self.assertRaises(ValueError):
-            df = job.to_dataframe()
+            job.to_dataframe()
 
     def test_iter(self):
         import types
