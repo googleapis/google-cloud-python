@@ -2723,7 +2723,7 @@ class TestQueryJob(unittest.TestCase, _Base):
     def test_iter(self):
         import types
 
-        begun_resource = self._makeResource()
+        begun_resource = self._make_resource()
         query_resource = {
             'jobComplete': True,
             'jobReference': {
