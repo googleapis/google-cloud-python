@@ -2720,6 +2720,25 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_iter(self):
+        import types
+
+        begun_resource = self._makeResource()
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(begun_resource, query_resource, done_resource)
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        self.assertIsInstance(iter(job), types.GeneratorType)
+
 
 class TestQueryPlanEntryStep(unittest.TestCase, _Base):
     KIND = 'KIND'
