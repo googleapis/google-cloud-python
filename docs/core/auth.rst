@@ -40,6 +40,12 @@ Overview
     .. code-block:: bash
 
         $ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/keyfile.json"
+    
+   sometimes you might need to configure your key as such:
+    .. code-block:: bash
+        $ mkdir ~/.config/gcloud
+        $ mv ~/.config/gcloud/keyfile.json ~/.config/gcloud/application_default_credentials.json
+        
 
 .. _service account: https://cloud.google.com/storage/docs/authentication#generating-a-private-key
 
