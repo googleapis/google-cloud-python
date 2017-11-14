@@ -86,6 +86,130 @@ class TestGeoPoint(unittest.TestCase):
         self.assertIs(geo_pt1.__ne__(geo_pt2), NotImplemented)
 
 
+class TestFieldPath(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
+        return FieldPath
+
+    def _make_one(self, *args, **kwargs):
+        klass = self._get_target_class()
+        return klass(*args, **kwargs)
+
+    def test_none_fails(self):
+        with self.assertRaises(ValueError):
+            field_path = self._make_one('a', None, 'b')
+
+    def test_integer_fails(self):
+        with self.assertRaises(ValueError):
+            field_path = self._make_one('a', 3, 'b')
+
+    def test_iterable_fails(self):
+        with self.assertRaises(ValueError):
+            field_path = self._make_one('a', ['a'], 'b')
+
+    def test_invalid_chars_in_constructor(self):
+        parts = '~*/[].'
+        for part in parts:
+            field_path = self._make_one(part)
+            self.assertEqual(field_path.parts, (part, ))
+
+    def test_component(self):
+        field_path = self._make_one('a..b')
+        self.assertEquals(field_path.parts, ('a..b',))
+
+    def test_constructor_iterable(self):
+        field_path = self._make_one('a', 'b', 'c')
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_to_api_repr_a(self):
+        parts = 'a'
+        field_path = self._make_one(parts)
+        self.assertEqual('a', field_path.to_api_repr())
+
+    def test_to_api_repr_tick(self):
+        parts = '`'
+        field_path = self._make_one(parts)
+        self.assertEqual('`\``', field_path.to_api_repr())
+
+    def test_to_api_repr_slash(self):
+        parts = '\\'
+        field_path = self._make_one(parts)
+        self.assertEqual(r'`\\`', field_path.to_api_repr())
+
+    def test_to_api_repr_double_slash(self):
+        parts = r'\\'
+        field_path = self._make_one(parts)
+        self.assertEqual(r'`\\\\`', field_path.to_api_repr())
+
+    def test_to_api_repr_underscore_valid(self):
+        parts = '_33132'
+        field_path = self._make_one(parts)
+        self.assertEqual('_33132', field_path.to_api_repr())
+
+    def test_to_api_repr_number_invalid(self):
+        parts = '03'
+        field_path = self._make_one(parts)
+        self.assertEqual('`03`', field_path.to_api_repr())
+
+    def test_to_api_repr_valid_part(self):
+        parts = 'a0332432'
+        field_path = self._make_one(parts)
+        self.assertEqual('a0332432', field_path.to_api_repr())
+
+    def test_to_api_repr_chain(self):
+        parts = 'a', '`', '\\', '_3', '03', 'a03', '\\\\'
+        field_path = self._make_one(*parts)
+        self.assertEqual(r'a.`\``.`\\`._3.`03`.a03.`\\\\`',
+                         field_path.to_api_repr())
+
+    def test_from_string(self):
+        field_path = self._get_target_class().from_string('a.b.c')
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))
+
+    def test_list_splat(self):
+        parts = ['a', 'b', 'c']
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))        
+
+    def test_tuple_splat(self):
+        parts = ('a', 'b', 'c')
+        field_path = self._make_one(*parts)
+        self.assertEqual(field_path.parts, ('a', 'b', 'c'))        
+
+    def test_invalid_chars_from_string_fails(self):
+        parts = '~*/[].'
+        for part in parts:
+            with self.assertRaises(ValueError):
+                field_path = self._get_target_class().from_string(part)
+
+    def test_list_fails(self):
+        parts = ['a', 'b', 'c']
+        with self.assertRaises(ValueError):
+            field_path = self._make_one(parts)            
+
+    def test_tuple_fails(self):
+        parts = ('a', 'b', 'c')
+        with self.assertRaises(ValueError):        
+            field_path = self._make_one(parts)
+
+    def test_key(self):
+        parts = 'a'
+        field_path = self._make_one('a321', 'b456')
+        field_path_same = self._get_target_class().from_string('a321.b456')
+        field_path_different = self._make_one('a321', 'b457')
+        keys = {field_path: '',
+                field_path_same: '',
+                field_path_different: ''
+        }
+        for key in keys:
+            if key == field_path_different:
+                self.assertNotEqual(key, field_path)
+            else:
+                self.assertEqual(key, field_path)
+
+
 class TestFieldPathHelper(unittest.TestCase):
 
     @staticmethod

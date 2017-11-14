@@ -116,6 +116,57 @@ class GeoPoint(object):
             return not equality_val
 
 
+class FieldPath(object):
+    """ Field Path object for client use.
+
+    Args:
+        parts: (one or more strings)
+            Indicating path of the key to be used.
+    """
+    pattern = re.compile(r'[A-Za-z_][A-Za-z_0-9]*')
+
+    def __init__(self, *parts):
+        for part in parts:
+            if not isinstance(part, str):
+                raise ValueError("One or more components is not a string")
+        self.parts = tuple(parts)
+
+    @classmethod
+    def from_string(cls, string):
+        """ Creates a FieldPath with a string representation.
+
+        Returns:
+            A :class: `FieldPath` instance with the string as path.
+        """
+        invalid_characters = '~*/[]'
+        string = string.split('.')
+        for part in string:
+            if not part or part in invalid_characters:
+                raise ValueError("Invalid characters or no string present")
+        return FieldPath(*string)
+
+    def to_api_repr(self):
+        """ Returns string representation of the FieldPath
+
+        Returns: string representation of the path stored within
+        """
+        ans = []
+        for part in self.parts:
+            match = re.match(self.pattern, part)
+            if match:
+                ans.append(part)
+            else:
+                replaced = part.replace('\\', '\\\\').replace('`', '\\`')
+                ans.append('`' + replaced + '`')
+        return '.'.join(ans)
+
+    def __hash__(self):
+        return hash(self.to_api_repr())
+
+    def __eq__(self, other):
+        return self.parts == other.parts
+
+
 class FieldPathHelper(object):
     """Helper to convert field names and paths for usage in a request.
 
