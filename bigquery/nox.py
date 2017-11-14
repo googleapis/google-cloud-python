@@ -89,7 +89,7 @@ def system(session, py):
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
-    session.install('-e', '.')
+    session.install('-e', '.[pandas]')
 
     # Run py.test against the system tests.
     session.run(

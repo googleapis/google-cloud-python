@@ -19,10 +19,6 @@ import threading
 
 import six
 from six.moves import http_client
-try:
-    import pandas
-except ImportError:  # pragma: NO COVER
-    pandas = None
 
 import google.api_core.future.polling
 from google.cloud import exceptions
@@ -1952,29 +1948,6 @@ class QueryJob(_AsyncJob):
         dest_table = self.destination
         return self._client.list_rows(dest_table, selected_fields=schema,
                                       retry=retry)
-
-    def to_dataframe(self):
-        """Create a pandas DataFrame from the query results.
-
-        Returns:
-            A :class:`~pandas.DataFrame` populated with row data and column
-            headers from the query results. The column headers are derived
-            from the destination table's schema.
-
-        Raises:
-            ValueError: If the `pandas` library cannot be imported.
-
-        """
-        if pandas is None:
-            raise ValueError('The pandas library is not installed, please '
-                             'install pandas to use the to_dataframe() '
-                             'function.')
-
-        query_results = self.result()
-        column_headers = [field.name for field in query_results.schema]
-        rows = [row.values() for row in query_results]
-
-        return pandas.DataFrame(rows, columns=column_headers)
 
     def __iter__(self):
         return iter(self.result())

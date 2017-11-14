@@ -15,6 +15,11 @@
 import unittest
 
 import mock
+import six
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
 
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -864,3 +869,143 @@ class TestRow(unittest.TestCase):
             row.z
         with self.assertRaises(KeyError):
             row['z']
+
+
+class TestRowIterator(unittest.TestCase):
+
+    def test_constructor(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery._helpers import _item_to_row
+        from google.cloud.bigquery._helpers import _rows_page_start
+
+        client = mock.sentinel.client
+        api_request = mock.sentinel.api_request
+        path = '/foo'
+        iterator = RowIterator(client, api_request, path)
+
+        self.assertFalse(iterator._started)
+        self.assertIs(iterator.client, client)
+        self.assertEqual(iterator.path, path)
+        self.assertIs(iterator._item_to_value, _item_to_row)
+        self.assertEqual(iterator._items_key, 'rows')
+        self.assertIsNone(iterator.max_results)
+        self.assertEqual(iterator.extra_params, {})
+        self.assertEqual(iterator._page_start, _rows_page_start)
+        # Changing attributes.
+        self.assertEqual(iterator.page_number, 0)
+        self.assertIsNone(iterator.next_page_token)
+        self.assertEqual(iterator.num_results, 0)
+
+    def test_iterate(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery._helpers import _field_to_index_mapping
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        rows = [
+            {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+            {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path=path)
+        row_iterator._schema = schema
+        row_iterator._field_to_index = _field_to_index_mapping(schema)
+        self.assertEqual(row_iterator.num_results, 0)
+
+        rows_iter = iter(row_iterator)
+
+        val1 = six.next(rows_iter)
+        print(val1)
+        self.assertEqual(val1.name, 'Phred Phlyntstone')
+        self.assertEqual(row_iterator.num_results, 1)
+
+        val2 = six.next(rows_iter)
+        self.assertEqual(val2.name, 'Bharney Rhubble')
+        self.assertEqual(row_iterator.num_results, 2)
+
+        with self.assertRaises(StopIteration):
+            six.next(rows_iter)
+
+        api_request.assert_called_once_with(
+            method='GET', path=path, query_params={})
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery._helpers import _field_to_index_mapping
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        rows = [
+            {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+            {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+            {'f': [{'v': 'Wylma Phlyntstone'}, {'v': '29'}]},
+            {'f': [{'v': 'Bhettye Rhubble'}, {'v': '27'}]},
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path=path)
+        row_iterator._schema = schema
+        row_iterator._field_to_index = _field_to_index_mapping(schema)
+
+        df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 4)  # verify the number of rows
+        self.assertEqual(list(df), ['name', 'age'])  # verify the column names
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe_w_empty_results(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery._helpers import _field_to_index_mapping
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': []})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path=path)
+        row_iterator._schema = schema
+        row_iterator._field_to_index = _field_to_index_mapping(schema)
+
+        df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 0)  # verify the number of rows
+        self.assertEqual(list(df), ['name', 'age'])  # verify the column names
+
+    @mock.patch('google.cloud.bigquery.table.pandas', new=None)
+    def test_to_dataframe_error_if_pandas_is_none(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery._helpers import _field_to_index_mapping
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        rows = [
+            {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+            {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path=path)
+        row_iterator._schema = schema
+        row_iterator._field_to_index = _field_to_index_mapping(schema)
+
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe()

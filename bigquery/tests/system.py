@@ -24,6 +24,10 @@ import unittest
 import uuid
 
 import six
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
 
 from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
@@ -1243,6 +1247,22 @@ class TestBigQuery(unittest.TestCase):
         self.assertIsInstance(iter(query_job), types.GeneratorType)
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_query_results_to_dataframe(self):
+        PUBLIC = 'bigquery-public-data'
+        DATASET_ID = 'samples'
+        TABLE_NAME = 'natality'
+        LIMIT = 1000
+        SQL = 'SELECT year, weight_pounds from `{}.{}.{}` LIMIT {}'.format(
+            PUBLIC, DATASET_ID, TABLE_NAME, LIMIT)
+
+        df = Config.CLIENT.query(SQL).result().to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), LIMIT)  # verify the number of rows
+        self.assertEqual(
+            list(df), ['year', 'weight_pounds'])  # verify the column names
 
     def test_query_table_def(self):
         gs_url = self._write_csv_to_storage(
