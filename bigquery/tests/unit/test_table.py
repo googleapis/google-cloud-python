@@ -765,6 +765,9 @@ class TestRow(unittest.TestCase):
         self.assertEqual(row['c'], 3)
         self.assertEqual(len(row), 3)
         self.assertEqual(row.values(), VALUES)
+        self.assertEqual(row.keys(), ['a', 'b', 'c'])
+        self.assertEqual(row.items(), [('a', 1), ('b', 2), ('c', 3)])
+        self.assertEqual(row.dict(), {'a': 1, 'b': 2, 'c': 3})
         self.assertEqual(repr(row),
                          "Row((1, 2, 3), {'a': 0, 'b': 1, 'c': 2})")
         self.assertFalse(row != row)
