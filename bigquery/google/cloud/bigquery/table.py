@@ -790,15 +790,15 @@ class Row(object):
 
     def items(self):
         return [
-            (k, self._xxx_values[i]) 
-            for k, i 
+            (k, self._xxx_values[i])
+            for k, i
             in self._xxx_field_to_index.items()
         ]
 
     def dict(self):
         return {
-            k: self._xxx_values[i] 
-            for k, i 
+            k: self._xxx_values[i]
+            for k, i
             in self._xxx_field_to_index.items()
         }
 
