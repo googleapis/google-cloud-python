@@ -791,8 +791,8 @@ class Row(object):
         >>> Row(('a', 'b'), {'x': 0, 'y': 1}).keys()
         ['x', 'y']
         """
-        keys = self._xxx_field_to_index.keys()
-        return keys
+        for k in self._xxx_field_to_index.keys():
+            yield k
 
     def items(self):
         """
@@ -800,12 +800,8 @@ class Row(object):
         >>> Row(('a', 'b'), {'x': 0, 'y': 1}).items()
         [('x', 'a'), ('y', 'b')]
         """
-        items = [
-            (k, self._xxx_values[i])
-            for k, i
-            in self._xxx_field_to_index.items()
-        ]
-        return items
+        for k, i in self._xxx_field_to_index.items():
+            yield k, self._xxx_values[i]
 
     def dict(self):
         """
