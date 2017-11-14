@@ -785,6 +785,15 @@ class Row(object):
     def values(self):
         return self._xxx_values
 
+    def keys(self):
+        return self._xxx_field_to_index.keys()
+    
+    def items(self):
+        return [(k, self._xxx_values[i]) for k, i in self._xxx_field_to_index.items()]
+    
+    def dict(self):
+        return {k: self._xxx_values[i] for k, i in self._xxx_field_to_index.items()}
+    
     def __getattr__(self, name):
         value = self._xxx_field_to_index.get(name)
         if value is None:
