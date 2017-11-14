@@ -1,0 +1,180 @@
+---
+version: 2.0
+workflows:
+  version: 2
+  tests:
+    jobs:
+      - 'python 2.7':
+          filters:
+            tags:
+              only: /.*/
+      - 'python 3.4':
+          filters:
+            tags:
+              only: /.*/
+      - 'python 3.5':
+          filters:
+            tags:
+              only: /.*/
+      - 'python 3.6':
+          filters:
+            tags:
+              only: /.*/
+      - lint:
+          requires:
+            - python 2.7
+            - python 3.4
+            - python 3.5
+            - python 3.6
+          filters:
+            tags:
+              only: /.*/
+      - docs:
+          requires:
+            - python 2.7
+            - python 3.4
+            - python 3.5
+            - python 3.6
+          filters:
+            tags:
+              only: /.*/
+      - sample_tests:
+          requires:
+            - lint
+            - docs
+          filters:
+            branches:
+              only:
+                - master
+                - repo-preparation
+            tags:
+              only: /^v[\d.]+$/
+      - publish:
+          requires:
+            - sample_tests
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v[\d.]+$/
+
+jobs:
+  'python 2.7':
+    docker:
+      - image: python:2.7
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: pip install nox-automation codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s "unit_tests(python_version='2.7')"
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  'python 3.4':
+    docker:
+      - image: python:3.4
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: pip install nox-automation codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s "unit_tests(python_version='3.4')"
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  'python 3.5':
+    docker:
+      - image: python:3.5
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: pip install nox-automation codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s "unit_tests(python_version='3.5')"
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  'python 3.6':
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install nox and codecov.
+          command: pip install nox-automation codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s "unit_tests(python_version='3.6')"
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+
+  lint:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install nox-automation
+      - run:
+          name: Run linting.
+          command: nox -s lint_setup_py
+
+  docs:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Build documentation.
+          command: echo "nox -s docs"
+
+  sample_tests:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install nox.
+          command: pip install nox-automation
+      - run:
+          name: Decrypt credentials.
+          command: |
+            openssl aes-256-cbc -d -in .circleci/key.json.enc \
+                -out .circleci/key.json \
+                -k "${SYSTEM_TESTS_ENCRYPTION_KEY}"
+      - run:
+          name: Run sample tests.
+          command: nox -s sample_tests
+          environment:
+            GCLOUD_PROJECT: precise-truck-742
+            GOOGLE_APPLICATION_CREDENTIALS: /var/dialogflow/.circleci/key.json
+      - run:
+          name: Remove unencrypted key.
+          command: rm .circleci/key.json
+          when: always
+    working_directory: /var/dialogflow/
+
+  publish:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Set PyPI authentication.
+          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+      - run:
+         name: Publish the module to PyPI.
+         command: python setup.py sdist upload

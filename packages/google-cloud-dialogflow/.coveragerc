@@ -1,0 +1,13 @@
+[run]
+branch = True
+omit =
+  */proto/*
+
+[report]
+fail_under = 90
+show_missing = True
+exclude_lines =
+    # Re-enable the standard pragma
+    pragma: NO COVER
+    # Ignore debug-only repr
+    def __repr__
