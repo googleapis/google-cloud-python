@@ -456,13 +456,16 @@ class TestFieldPathHelper(unittest.TestCase):
             helper.unpacked_field_paths, {'x': {'y': {'z': helper.PATH_END}}})
 
     def test_parse(self):
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
         # "Cheat" and use OrderedDict-s so that iteritems() is deterministic.
         field_updates = collections.OrderedDict((
             ('a.b.c', 10),
             ('d', None),
             ('e.f1', [u'no', b'yes']),
             ('e.f2', 4.5),
+            (FieldPath.from_string('e.f3').to_api_repr(), (3, 1)),
             ('g', {'key': True}),
+            (FieldPath('h', 'i').to_api_repr(), '3'),
         ))
         helper = self._make_one(field_updates)
         update_values, field_paths = helper.parse()
@@ -477,8 +480,12 @@ class TestFieldPathHelper(unittest.TestCase):
             'e': {
                 'f1': field_updates['e.f1'],
                 'f2': field_updates['e.f2'],
+                'f3': field_updates['e.f3']
             },
             'g': field_updates['g'],
+            'h': {
+                'i': field_updates['h.i']
+            },
         }
         self.assertEqual(update_values, expected_updates)
         self.assertEqual(field_paths, list(field_updates.keys()))
@@ -519,6 +526,25 @@ class TestFieldPathHelper(unittest.TestCase):
         self.assertEqual(
             update_values, {'a': {'b': field_updates[field_path]}})
         self.assertEqual(field_paths, [field_path])
+
+    def test_conflict_same_paths(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+        field_path_string = 'a.b'
+        field_path_class = _helpers.FieldPath('a', 'b')
+        field_updates = {field_path_string: '',
+                         field_path_class: ''}
+        with self.assertRaises(ValueError):
+            self._get_target_class().to_field_paths(field_updates)
+
+    def test_conflict_same_field_paths(self):
+        from google.cloud.firestore_v1beta1 import _helpers
+        field_path_from_string = _helpers.FieldPath.from_string('a.b')
+        field_path_class = _helpers.FieldPath('a', 'b')
+        # User error in this case
+        field_updates = {field_path_from_string: '',
+                         field_path_class: ''}
+        self.assertEqual(field_path_from_string, field_path_class)
+        self.assertEqual(len(field_updates), 1)
 
 
 class Test_verify_path(unittest.TestCase):
@@ -982,6 +1008,7 @@ class Test_decode_dict(unittest.TestCase):
             ArrayValue)
         from google.cloud.firestore_v1beta1.proto.document_pb2 import MapValue
         from google.cloud._helpers import UTC
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
 
         dt_seconds = 1394037350
         dt_nanos = 667285000
@@ -1009,6 +1036,8 @@ class Test_decode_dict(unittest.TestCase):
                 'fred': _value_pb(string_value=u'zap'),
                 'thud': _value_pb(boolean_value=False),
             })),
+            FieldPath('a', 'b', 'c').to_api_repr():
+            _value_pb(boolean_value=False)
         }
         expected = {
             'foo': None,
@@ -1026,6 +1055,7 @@ class Test_decode_dict(unittest.TestCase):
                 'fred': u'zap',
                 'thud': False,
             },
+            'a.b.c': False
         }
         self.assertEqual(self._call_fut(value_fields), expected)
 
@@ -1052,6 +1082,12 @@ class Test_parse_field_path(unittest.TestCase):
 
     def test_it(self):
         self.assertEqual(self._call_fut('a.b.c'), ['a', 'b', 'c'])
+
+    def test_api_repr(self):
+        from google.cloud.firestore_v1beta1._helpers import FieldPath
+        self.assertEqual(
+            self._call_fut(FieldPath('a', 'b', 'c').to_api_repr()),
+            ['a', 'b', 'c'])
 
 
 class Test_get_nested_value(unittest.TestCase):

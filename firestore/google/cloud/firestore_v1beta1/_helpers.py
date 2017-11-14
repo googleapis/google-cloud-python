@@ -362,6 +362,8 @@ class FieldPathHelper(object):
             * The list of field paths to send (for updates and deletes).
         """
         for key, value in six.iteritems(self.field_updates):
+            if isinstance(key, FieldPath):
+                key = key.to_api_repr()
             self.add_value_at_field_path(key, value)
 
         return self.update_values, self.field_paths
