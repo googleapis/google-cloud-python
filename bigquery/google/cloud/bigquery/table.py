@@ -786,21 +786,24 @@ class Row(object):
         return self._xxx_values
 
     def keys(self):
-        return self._xxx_field_to_index.keys()
+        keys = self._xxx_field_to_index.keys()
+        return keys
 
     def items(self):
-        return [
+        items = [
             (k, self._xxx_values[i])
             for k, i
             in self._xxx_field_to_index.items()
         ]
+        return items
 
     def dict(self):
-        return {
+        data = {
             k: self._xxx_values[i]
             for k, i
             in self._xxx_field_to_index.items()
         }
+        return data
 
     def __getattr__(self, name):
         value = self._xxx_field_to_index.get(name)
