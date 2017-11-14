@@ -786,10 +786,20 @@ class Row(object):
         return self._xxx_values
 
     def keys(self):
+        """
+        Return keys as of a dict:
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).keys()
+        ['x', 'y']
+        """
         keys = self._xxx_field_to_index.keys()
         return keys
 
     def items(self):
+        """
+        Return items as of a dict:
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).items()
+        [('x', 'a'), ('y', 'b')]
+        """
         items = [
             (k, self._xxx_values[i])
             for k, i
@@ -798,6 +808,11 @@ class Row(object):
         return items
 
     def dict(self):
+        """
+        Return row as a dict object:
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).dict()
+        {'x': 'a', 'y': 'b'}
+        """
         data = {
             k: self._xxx_values[i]
             for k, i
