@@ -1150,19 +1150,19 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         # Find -inf
         self._check_sql_results(
             snapshot,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
-            params={'pos_inf': float('+inf')},
-            param_types={'pos_inf': Type(code=FLOAT64)},
-            expected=[(107,)],
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
+            params={'neg_inf': float('-inf')},
+            param_types={'neg_inf': Type(code=FLOAT64)},
+            expected=[(207,)],
         )
 
         # Find +inf
         self._check_sql_results(
             snapshot,
-            sql='SELECT eye_d FROM all_types WHERE approx_value = @neg_inf',
-            params={'neg_inf': float('-inf')},
-            param_types={'neg_inf': Type(code=FLOAT64)},
-            expected=[(207,)],
+            sql='SELECT eye_d FROM all_types WHERE approx_value = @pos_inf',
+            params={'pos_inf': float('+inf')},
+            param_types={'pos_inf': Type(code=FLOAT64)},
+            expected=[(107,)],
         )
 
         rows = list(snapshot.execute_sql(
