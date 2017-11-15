@@ -1,0 +1,9 @@
+# Don't build any extra formats, HTML and JSON will
+# always be built by default.
+formats:
+  - none
+
+python:
+  pip_install: true
+  setup_py_install: false
+  version: 3.5
