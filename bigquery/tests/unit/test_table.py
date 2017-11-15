@@ -986,6 +986,52 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(df), 0)  # verify the number of rows
         self.assertEqual(list(df), ['name', 'age'])  # verify the column names
 
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe_w_various_types(self):
+        import datetime
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+        from google.cloud.bigquery._helpers import _field_to_index_mapping
+
+        schema = [
+            SchemaField('start_timestamp', 'TIMESTAMP'),
+            SchemaField('seconds', 'INT64'),
+            SchemaField('miles', 'FLOAT64'),
+            SchemaField('payment_type', 'STRING'),
+            SchemaField('complete', 'BOOL'),
+            SchemaField('date', 'DATE'),
+        ]
+        row_data = [
+            [None, None, None, None, None, None],
+            ['1.4338368E9', '420', '1.1', 'Cash', 'true', '1999-12-01'],
+            ['1.3878117E9', '2580', '17.7', 'Cash', 'false', '1953-06-14'],
+            ['1.3855653E9', '2280', '4.4', 'Credit', 'true', '1981-11-04'],
+        ]
+        rows = [{'f': [{'v': field} for field in row]} for row in row_data]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path=path)
+        row_iterator._schema = schema
+        row_iterator._field_to_index = _field_to_index_mapping(schema)
+
+        df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 4)  # verify the number of rows
+        exp_columns = [field.name for field in schema]
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+
+        for index, row in df.iterrows():
+            if index == 0:
+                self.assertTrue(row.isnull().all())
+            else:
+                self.assertIsInstance(row.start_timestamp, pandas.Timestamp)
+                self.assertIsInstance(row.seconds, float)
+                self.assertIsInstance(row.payment_type, str)
+                self.assertIsInstance(row.complete, bool)
+                self.assertIsInstance(row.date, datetime.date)
+
     @mock.patch('google.cloud.bigquery.table.pandas', new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
         from google.cloud.bigquery.table import RowIterator
