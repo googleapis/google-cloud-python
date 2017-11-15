@@ -267,6 +267,10 @@ class PartialRowsData(object):
 
         self._last_scanned_row_key = response.last_scanned_row_key
 
+        if hasattr(self._response_iterator, 'responses_for_row'):
+            if (self._response_iterator.responses_for_row == 1):
+                self._clear_accumulated_row()
+
         row = self._row
         cell = self._cell
 
@@ -300,6 +304,10 @@ class PartialRowsData(object):
 
             if chunk.commit_row:
                 self._save_current_row()
+                if hasattr(self._response_iterator, 'set_start_key'):
+                    self._response_iterator.set_start_key(chunk.row_key)
+                if hasattr(self._response_iterator, 'clear_responses_for_row'):
+                    self._response_iterator.clear_responses_for_row()
                 row = cell = None
                 continue
 
@@ -344,6 +352,11 @@ class PartialRowsData(object):
         _raise_if(chunk.commit_row and chunk.value_size > 0)
         # No negative value_size (inferred as a general constraint).
         _raise_if(chunk.value_size < 0)
+
+    def _clear_accumulated_row(self):
+        self._row = None
+        self._cell = None
+        self._previous_cell = None
 
     def _validate_chunk_new_row(self, chunk):
         """Helper for :meth:`_validate_chunk`."""
