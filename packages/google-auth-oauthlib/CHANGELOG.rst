@@ -1,3 +1,10 @@
+v0.2.0
+------
+
+* Populate id_token into credentials from oauth2session (#20)
+* Carry token expiry from oauth2session into Credentials object (#18) (#19)
+* Accept redirect_uri as arg to flow creating classmethods. (#17)
+
 v0.1.1
 ------
 
