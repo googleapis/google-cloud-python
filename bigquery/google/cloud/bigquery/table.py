@@ -33,6 +33,7 @@ from google.cloud._helpers import _millis_from_datetime
 from google.cloud.bigquery._helpers import _item_to_row
 from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _snake_to_camel_case
+from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -1049,15 +1050,15 @@ class RowIterator(HTTPIterator):
     .. autoattribute:: pages
     """
 
-    def __init__(self, client, api_request, path, page_token=None,
+    def __init__(self, client, api_request, path, schema, page_token=None,
                  max_results=None, extra_params=None):
         super(RowIterator, self).__init__(
             client, api_request, path, item_to_value=_item_to_row,
             items_key='rows', page_token=page_token, max_results=max_results,
             extra_params=extra_params, page_start=_rows_page_start,
             next_token='pageToken')
-        self._schema = ()
-        self._field_to_index = None
+        self._schema = schema
+        self._field_to_index = _field_to_index_mapping(schema)
         self._total_rows = None
 
     @property

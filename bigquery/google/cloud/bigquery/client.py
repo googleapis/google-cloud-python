@@ -33,7 +33,6 @@ from google.cloud.client import ClientWithProject
 
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -1211,11 +1210,10 @@ class Client(ClientWithProject):
             client=self,
             api_request=functools.partial(self._call_api, retry),
             path='%s/data' % (table.path,),
+            schema=schema,
             page_token=page_token,
             max_results=max_results,
             extra_params=params)
-        row_iterator._schema = schema
-        row_iterator._field_to_index = _field_to_index_mapping(schema)
         return row_iterator
 
     def list_partitions(self, table, retry=DEFAULT_RETRY):

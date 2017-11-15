@@ -881,7 +881,8 @@ class TestRowIterator(unittest.TestCase):
         client = mock.sentinel.client
         api_request = mock.sentinel.api_request
         path = '/foo'
-        iterator = RowIterator(client, api_request, path)
+        schema = []
+        iterator = RowIterator(client, api_request, path, schema)
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
@@ -899,7 +900,6 @@ class TestRowIterator(unittest.TestCase):
     def test_iterate(self):
         from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
-        from google.cloud.bigquery._helpers import _field_to_index_mapping
 
         schema = [
             SchemaField('name', 'STRING', mode='REQUIRED'),
@@ -912,9 +912,7 @@ class TestRowIterator(unittest.TestCase):
         path = '/foo'
         api_request = mock.Mock(return_value={'rows': rows})
         row_iterator = RowIterator(
-            mock.sentinel.client, api_request, path=path)
-        row_iterator._schema = schema
-        row_iterator._field_to_index = _field_to_index_mapping(schema)
+            mock.sentinel.client, api_request, path, schema)
         self.assertEqual(row_iterator.num_results, 0)
 
         rows_iter = iter(row_iterator)
@@ -938,7 +936,6 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe(self):
         from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
-        from google.cloud.bigquery._helpers import _field_to_index_mapping
 
         schema = [
             SchemaField('name', 'STRING', mode='REQUIRED'),
@@ -953,9 +950,7 @@ class TestRowIterator(unittest.TestCase):
         path = '/foo'
         api_request = mock.Mock(return_value={'rows': rows})
         row_iterator = RowIterator(
-            mock.sentinel.client, api_request, path=path)
-        row_iterator._schema = schema
-        row_iterator._field_to_index = _field_to_index_mapping(schema)
+            mock.sentinel.client, api_request, path, schema)
 
         df = row_iterator.to_dataframe()
 
@@ -967,7 +962,6 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_w_empty_results(self):
         from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
-        from google.cloud.bigquery._helpers import _field_to_index_mapping
 
         schema = [
             SchemaField('name', 'STRING', mode='REQUIRED'),
@@ -976,9 +970,7 @@ class TestRowIterator(unittest.TestCase):
         path = '/foo'
         api_request = mock.Mock(return_value={'rows': []})
         row_iterator = RowIterator(
-            mock.sentinel.client, api_request, path=path)
-        row_iterator._schema = schema
-        row_iterator._field_to_index = _field_to_index_mapping(schema)
+            mock.sentinel.client, api_request, path, schema)
 
         df = row_iterator.to_dataframe()
 
@@ -991,7 +983,6 @@ class TestRowIterator(unittest.TestCase):
         import datetime
         from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
-        from google.cloud.bigquery._helpers import _field_to_index_mapping
 
         schema = [
             SchemaField('start_timestamp', 'TIMESTAMP'),
@@ -1011,9 +1002,7 @@ class TestRowIterator(unittest.TestCase):
         path = '/foo'
         api_request = mock.Mock(return_value={'rows': rows})
         row_iterator = RowIterator(
-            mock.sentinel.client, api_request, path=path)
-        row_iterator._schema = schema
-        row_iterator._field_to_index = _field_to_index_mapping(schema)
+            mock.sentinel.client, api_request, path, schema)
 
         df = row_iterator.to_dataframe()
 
@@ -1036,7 +1025,6 @@ class TestRowIterator(unittest.TestCase):
     def test_to_dataframe_error_if_pandas_is_none(self):
         from google.cloud.bigquery.table import RowIterator
         from google.cloud.bigquery.table import SchemaField
-        from google.cloud.bigquery._helpers import _field_to_index_mapping
 
         schema = [
             SchemaField('name', 'STRING', mode='REQUIRED'),
@@ -1049,9 +1037,7 @@ class TestRowIterator(unittest.TestCase):
         path = '/foo'
         api_request = mock.Mock(return_value={'rows': rows})
         row_iterator = RowIterator(
-            mock.sentinel.client, api_request, path=path)
-        row_iterator._schema = schema
-        row_iterator._field_to_index = _field_to_index_mapping(schema)
+            mock.sentinel.client, api_request, path, schema)
 
         with self.assertRaises(ValueError):
             row_iterator.to_dataframe()
