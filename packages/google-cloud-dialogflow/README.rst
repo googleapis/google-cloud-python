@@ -9,7 +9,7 @@ Dialogflow: Python Client
 developers to design and integrate conversational user interfaces int
 mobile apps, web applications, devices, and bots.
 
-* `Dialogflow Enterprise Python Client API Reference <https://cloud.google.com/dialogflow-enterprise>`_
+* `Dialogflow Python Client API Reference <http://dialogflow-python-client-v2.readthedocs.io/en/latest/>`_
 * `Dialogflow Standard Edition Documentation <https://www.dialogflow.com>`_
 * `Dialogflow Enterprise Edition Documentation <https://cloud.google.com/dialogflow-enterprise/docs>`_
 
@@ -46,6 +46,12 @@ Installation
 
     We highly recommend that you install this library in a
     `virtualenv <https://virtualenv.pypa.io/en/latest/>`_.
+
+
+Usage
+-----
+
+View `usage documentation <http://dialogflow-python-client-v2.readthedocs.io/en/latest/?#using-dialogflow>`_ on Read the Docs.
 
 
 Versioning
