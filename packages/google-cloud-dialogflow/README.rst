@@ -19,11 +19,9 @@ Google APIs Client Libraries, in
 
 .. _Dialogflow: https://dialogflow.com/
 
-Quickstart
-----------
 
 Before you begin
-~~~~~~~~~~~~~~~~
+----------------
 
 #. Select or create a Cloud Platform `project`_.
 #. `Enable billing`_ for your project.
@@ -38,7 +36,7 @@ Before you begin
 
 
 Installation
-~~~~~~~~~~~~
+------------
 
 .. code-block:: shell
 
@@ -51,7 +49,7 @@ Installation
 
 
 Versioning
-~~~~~~~~~~
+----------
 
 This library follows `Semantic Versioning <http://semver.org/>`_.
 
@@ -63,12 +61,12 @@ against beta libraries with a high priority.
 More Information: `Google Cloud Platform Launch Stages <https://cloud.google.com/terms/launch-stages>`_
 
 Contributing
-~~~~~~~~~~~~
+------------
 
 Contributions welcome! See the `Contributing Guide <https://github.com/googleapis/python-dialogflow/blob/master/.github/CONTRIBUTING.rst>`_.
 
 License
-~~~~~~~
+-------
 
 Apache Version 2.0
 

@@ -49,8 +49,8 @@ class AgentsClient(object):
     Manages conversational agents.
 
 
-    Refer to `documentation <https://dialogflow.com/docs/agents>`_ for more details
-    # about agents.
+    Refer to `agents documentation <https://dialogflow.com/docs/agents>`_ for
+    more details about agents.
 
     Standard methods.
     """

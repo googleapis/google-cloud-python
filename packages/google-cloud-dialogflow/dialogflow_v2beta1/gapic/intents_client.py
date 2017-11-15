@@ -53,8 +53,8 @@ class IntentsClient(object):
     Manages agent intents.
 
 
-    Refer to `documentation <https://dialogflow.com/docs/intents>`_ for more
-    # details about agent intents.
+    Refer to `intents documentation <https://dialogflow.com/docs/intents>`_ for
+    more details about agent intents.
 
     Standard methods.
     """

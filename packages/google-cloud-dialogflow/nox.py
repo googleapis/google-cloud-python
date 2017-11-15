@@ -59,6 +59,19 @@ def lint_setup_py(session):
 
 
 @nox.session
+def docs(session):
+    """Build the docs."""
+
+    session.install('sphinx', 'sphinx_rtd_theme')
+    session.install('.')
+
+    # Build the docs!
+    session.run('rm', '-rf', 'docs/_build/')
+    session.run('sphinx-build', '-W', '-b', 'html', '-d',
+                'docs/_build/doctrees', 'docs/', 'docs/_build/html/')
+
+
+@nox.session
 def cover(session):
     """Run the final coverage report.
 

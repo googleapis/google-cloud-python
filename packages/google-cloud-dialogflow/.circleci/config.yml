@@ -138,8 +138,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install nox.
+          command: pip install nox-automation
+      - run:
           name: Build documentation.
-          command: echo "nox -s docs"
+          command: nox -s docs
 
   sample_tests:
     docker:
