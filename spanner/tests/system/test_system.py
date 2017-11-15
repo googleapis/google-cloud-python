@@ -388,20 +388,23 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         'description',
         'exactly_hwhen',
     )
-    SOME_DATE = datetime.date(2011, 1, 17)
+    DATE1 = datetime.date(2011, 1, 17)
     SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
     NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
-    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
-    BYTES_1 = b'Ymlu'
-    BYTES_2 = b'Ym9vdHM='
+    BYTES1 = b'Ymlu'
+    BYTES2 = b'Ym9vdHM='
+    POS_INF = float('inf')
+    NEG_INF = float('-inf')
+    NAN1 = float('nan')
+    NAN2, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
     ALL_TYPES_ROWDATA = (
-        ([], False, None, None, 0.0, None, None, None),
-        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
-        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
-        ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
-        ([], False, None, None, float('nan'), 1207, u'owl', None),
-        ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
+        ([]          , False, None  , None , 0.0    , None, None  , None),
+        ([1]         , True , BYTES1, DATE1, 0.0    , 19  , u'dog', SOME_TIME),
+        ([5, 10]     , True , BYTES1, None , 1.25   , 99  , u'cat', None),
+        ([]          , False, BYTES2, None , POS_INF, 107 , u'man', None),
+        ([3, None, 9], False, None  , None , NEG_INF, 207 , u'bat', None),
+        ([]          , False, None  , None , NAN1   , 1207, u'owl', None),
+        ([]          , False, None  , None , NAN2   , 2000, u'pig', NANO_TIME),
     )
 
     @classmethod
@@ -1029,7 +1032,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_sql_results(
             snapshot,
             sql='SELECT eye_d FROM all_types WHERE raw_data = @bytes_1',
-            params={'bytes_1': self.BYTES_1},
+            params={'bytes_1': self.BYTES1},
             param_types={'bytes_1': Type(code=BYTES)},
             expected=[(19,), (99,)],
         )
@@ -1037,7 +1040,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_sql_results(
             snapshot,
             sql='SELECT eye_d FROM all_types WHERE hwhen = @hwhen',
-            params={'hwhen': self.SOME_DATE},
+            params={'hwhen': self.DATE1},
             param_types={'hwhen': Type(code=DATE)},
             expected=[(19,)],
         )
