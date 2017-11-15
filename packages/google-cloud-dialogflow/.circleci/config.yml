@@ -174,7 +174,10 @@ jobs:
       - checkout
       - run:
           name: Set PyPI authentication.
-          command: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          command: |
+            echo "[server-login]" > ~/.pypirc
+            echo "username:dialogflow-pkgmgr" >> ~/.pypirc
+            echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
       - run:
          name: Publish the module to PyPI.
          command: python setup.py sdist upload
