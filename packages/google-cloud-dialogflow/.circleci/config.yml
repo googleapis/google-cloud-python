@@ -179,7 +179,7 @@ jobs:
           name: Set PyPI authentication.
           command: |
             echo "[server-login]" > ~/.pypirc
-            echo "username:dialogflow-pkgmgr" >> ~/.pypirc
+            echo "username:${PYPI_USERNAME}" >> ~/.pypirc
             echo "password:${PYPI_PASSWORD}" >> ~/.pypirc
       - run:
          name: Publish the module to PyPI.
