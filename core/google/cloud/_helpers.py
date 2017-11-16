@@ -618,7 +618,7 @@ def make_insecure_stub(stub_class, host, port=None):
     return stub_class(channel)
 
 
-try:  # pragma: NO COVER
+try:
     from pytz import UTC  # pylint: disable=unused-import,wrong-import-order
 except ImportError:  # pragma: NO COVER
     UTC = _UTC()  # Singleton instance to be used throughout.

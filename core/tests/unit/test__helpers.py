@@ -65,7 +65,7 @@ class Test__UTC(unittest.TestCase):
             import pytz
         except ImportError:  # pragma: NO COVER
             self.assertIsInstance(MUT.UTC, klass)
-        else:  # pragma: NO COVER
+        else:
             self.assertIs(MUT.UTC, pytz.UTC)
 
     def test_dst(self):
