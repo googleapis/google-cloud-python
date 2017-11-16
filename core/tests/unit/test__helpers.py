@@ -63,10 +63,10 @@ class Test__UTC(unittest.TestCase):
         klass = self._get_target_class()
         try:
             import pytz
-        except ImportError:
+        except ImportError:  # pragma: NO COVER
             self.assertIsInstance(MUT.UTC, klass)
-        else:
-            self.assertIs(MUT.UTC, pytz.UTC)  # pragma: NO COVER
+        else:  # pragma: NO COVER
+            self.assertIs(MUT.UTC, pytz.UTC)
 
     def test_dst(self):
         import datetime
