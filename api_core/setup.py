@@ -56,6 +56,9 @@ REQUIREMENTS = [
     'requests >= 2.18.0, < 3.0.0dev',
     'setuptools >= 34.0.0',
     'six >= 1.10.0',
+    # pytz does not adhere to semver and uses a year.month based scheme.
+    # Any valid version of pytz should work for us.
+    'pytz',
 ]
 
 EXTRAS_REQUIREMENTS = {
