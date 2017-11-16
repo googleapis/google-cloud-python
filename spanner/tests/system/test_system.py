@@ -744,6 +744,20 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(results_iter)
         self.assertEqual(rows, [expected[row]])
 
+    def test_empty_read_with_single_keys_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        keyset = [["Non", "Existent"]]
+        results_iter = session.read(self.TABLE,
+                                    columns,
+                                    KeySet(keys=keyset),
+                                    index='name'
+        )
+        rows = list(results_iter)
+        self.assertEqual(rows, [])
+
     def test_snapshot_read_w_various_staleness(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
