@@ -21,7 +21,7 @@ Examples:
   python detect_intent_texts.py --project-id PROJECT_ID \
   --session-id SESSION_ID \
   "hello" "book a meeting room" "Mountain View"
-  python detect_intent_text.py --project-id PROJECT_ID \
+  python detect_intent_texts.py --project-id PROJECT_ID \
   --session-id SESSION_ID \
   "tomorrow" "10 AM" "2 hours" "10 people" "A" "yes"
 """

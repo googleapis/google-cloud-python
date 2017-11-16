@@ -57,7 +57,7 @@ View the `source code <detect_intent_texts.py>`__.
 	Examples:
 	  python detect_intent_texts.py -h
 	  python detect_intent_texts.py --project-id PROJECT_ID   --session-id SESSION_ID   "hello" "book a meeting room" "Mountain View"
-	  python detect_intent_text.py --project-id PROJECT_ID   --session-id SESSION_ID   "tomorrow" "10 AM" "2 hours" "10 people" "A" "yes"
+	  python detect_intent_texts.py --project-id PROJECT_ID   --session-id SESSION_ID   "tomorrow" "10 AM" "2 hours" "10 people" "A" "yes"
 
 	positional arguments:
 	  texts                 Text inputs.
