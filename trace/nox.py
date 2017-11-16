@@ -26,13 +26,14 @@ LOCAL_DEPS = (
 
 
 @nox.session
-@nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
-def unit_tests(session, python_version):
-    """Run the unit test suite."""
+def default(session):
+    """Default unit test session.
 
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(python_version)
-
+    This is intended to be run **without** an interpreter set, so
+    that the current ``python`` (on the ``PATH``) or the version of
+    Python corresponding to the ``nox`` binary the ``PATH`` can
+    run the tests.
+    """
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
@@ -49,6 +50,20 @@ def unit_tests(session, python_version):
         os.path.join('tests', 'unit'),
         *session.posargs
     )
+
+
+@nox.session
+@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+def unit(session, py):
+    """Run the unit test suite."""
+
+    # Run unit tests against all supported versions of Python.
+    session.interpreter = 'python{}'.format(py)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'unit-' + py
+
+    default(session)
 
 
 @nox.session

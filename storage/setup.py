@@ -53,14 +53,14 @@ SETUP_BASE = {
 REQUIREMENTS = [
     'google-cloud-core >= 0.28.0, < 0.29dev',
     'google-api-core >= 0.1.1, < 0.2.0dev',
-    'google-auth >= 1.0.0',
+    'google-auth >= 1.2.0',
     'google-resumable-media >= 0.3.1',
     'requests >= 2.18.0',
 ]
 
 setup(
     name='google-cloud-storage',
-    version='1.6.0',
+    version='1.6.1.dev1',
     description='Python Client for Google Cloud Storage',
     long_description=README,
     namespace_packages=[

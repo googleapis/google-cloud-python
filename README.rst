@@ -15,9 +15,15 @@ Google Cloud Python Client
 .. _API Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/
 .. _Read The Docs Documentation: https://google-cloud-python.readthedocs.io/en/latest/
 
+.. note::
+
+    These libraries currently do not run on Google App Engine Standard.
+    We are actively working on adding this support.
+
 The following client libraries have **GA** support:
 
 -  `Google Cloud Datastore`_ (`Datastore README`_)
+-  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Storage`_ (`Storage README`_)
 -  `Google Cloud Translation`_ (`Translation README`_)
 -  `Stackdriver Logging`_ (`Logging README`_)
@@ -29,11 +35,16 @@ of critical security issues) or with an extensive deprecation period.
 Issues and requests against GA libraries are addressed with the highest
 priority.
 
+.. note::
+
+    Sub-components of GA libraries explicitly marked as beta in the
+    import path (e.g. ``google.cloud.language_v1beta2``) should be considered
+    to be beta.
+
 The following client libraries have **beta** support:
 
 -  `Google BigQuery`_ (`BigQuery README`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_)
--  `Google Cloud Natural Language`_ (`Natural Language README`_)
 -  `Google Cloud Pub/Sub`_ (`Pub/Sub README`_)
 -  `Google Cloud Spanner`_ (`Spanner README`_)
 -  `Google Cloud Speech`_ (`Speech README`_)
@@ -111,7 +122,9 @@ Quick Start
 
     $ pip install --upgrade google-cloud
 
-Fore more information on setting up your Python development environment, such as installing ``pip`` on your system, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+For more information on setting up your Python development environment,
+such as installing ``pip`` and ``virtualenv`` on your system, please refer
+to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 .. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 

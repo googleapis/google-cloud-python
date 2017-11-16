@@ -57,7 +57,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-resource-manager',
-    version='0.28.0',
+    version='0.28.1.dev1',
     description='Python Client for Google Cloud Resource Manager',
     long_description=README,
     namespace_packages=[

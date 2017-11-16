@@ -11,6 +11,11 @@ Python Client for Google Cloud Natural Language
 
 .. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/language/usage.html
 
+.. note::
+
+    This library currently does not run on Google App Engine Standard.
+    We are actively working on adding this support.
+
 Quick Start
 -----------
 
@@ -20,7 +25,9 @@ Quick Start
     $ # OR
     $ pip install --upgrade google-cloud-natural-language
 
- Fore more information on setting up your Python development environment, such as installing ``pip`` and on your system, please refer to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
+For more information on setting up your Python development environment,
+such as installing ``pip`` and on your system, please refer to
+`Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 .. _Python Development Environment Setup Guide: https://cloud.google.com/python/setup
 

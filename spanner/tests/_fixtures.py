@@ -42,6 +42,11 @@ CREATE TABLE counters (
     name STRING(1024),
     value INT64 )
     PRIMARY KEY (name);
+CREATE TABLE string_plus_array_of_string (
+    id INT64,
+    name STRING(16),
+    tags ARRAY<STRING(16)> )
+    PRIMARY KEY (id);
 """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]

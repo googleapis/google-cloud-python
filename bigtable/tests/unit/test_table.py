@@ -452,48 +452,29 @@ class TestTable(unittest.TestCase):
             self._read_row_helper(chunks, None)
 
     def test_mutate_rows(self):
-        from google.cloud.bigtable._generated.bigtable_pb2 import (
-            MutateRowsResponse)
-        from google.cloud.bigtable.row import DirectRow
         from google.rpc.status_pb2 import Status
-        from tests.unit._testing import _FakeStub
 
-        client = _Client()
-        instance = _Instance(self.INSTANCE_NAME, client=client)
+        instance = mock.MagicMock()
         table = self._make_one(self.TABLE_ID, instance)
 
-        row_1 = DirectRow(row_key=b'row_key', table=table)
-        row_1.set_cell('cf', b'col', b'value1')
-        row_2 = DirectRow(row_key=b'row_key_2', table=table)
-        row_2.set_cell('cf', b'col', b'value2')
+        response = [Status(code=0), Status(code=1)]
 
-        response = MutateRowsResponse(
-            entries=[
-                MutateRowsResponse.Entry(
-                    index=0,
-                    status=Status(code=0),
-                ),
-                MutateRowsResponse.Entry(
-                    index=1,
-                    status=Status(code=1),
-                ),
-            ],
-        )
-
-        # Patch the stub used by the API method.
-        client._data_stub = _FakeStub([response])
-        statuses = table.mutate_rows([row_1, row_2])
+        mock_worker = mock.Mock(return_value=response)
+        with mock.patch(
+                'google.cloud.bigtable.table._RetryableMutateRowsWorker',
+                new=mock.MagicMock(return_value=mock_worker)):
+            statuses = table.mutate_rows([mock.MagicMock(), mock.MagicMock()])
         result = [status.code for status in statuses]
         expected_result = [0, 1]
 
         self.assertEqual(result, expected_result)
 
-
     def test_read_rows(self):
         from google.cloud._testing import _Monkey
         from tests.unit._testing import _FakeStub
         from google.cloud.bigtable.row_data import PartialRowsData
-        from google.cloud.bigtable import table as MUT
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -513,10 +494,266 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._data_stub = stub = _FakeStub(response_iterator)
 
-        # Create expected_result.
-        expected_result = PartialRowsData(response_iterator)
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Perform the method and check the result.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit)
 
-        # Perform the method and check the result.
+        self.assertIsInstance(result._response_iterator, ReadRowsIterator)
+        self.assertEqual(result._response_iterator.client, client)
+        self.assertEqual(stub.method_calls, [(
+            'ReadRows',
+            (request_pb,),
+            {},
+        )])
+        created_kwargs = {
+            'start_key': start_key,
+            'end_inclusive': False,
+            'end_key': end_key,
+            'filter_': filter_obj,
+            'limit': limit,
+            'start_key_closed': True,
+        }
+        self.assertEqual(mock_created, [(table.name, created_kwargs)])
+
+    def test_read_rows_one_chunk(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _FakeStub
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.cloud.bigtable.row_data import Cell
+        from google.cloud.bigtable.row_data import PartialRowsData
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create response_iterator
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        response_pb = _ReadRowsResponsePB(chunks=[chunk])
+        response_iterator = iter([response_pb])
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_iterator)
+
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Perform the method and check the result.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit)
+            result.consume_all()
+
+    def test_read_rows_retry_timeout(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _CustomFakeStub
+        from google.cloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.gax import BackoffSettings
+        from google.gax.errors import RetryError
+        from grpc import StatusCode, RpcError
+        import time
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create a slow response iterator to cause a timeout
+        class MockTimeoutError(RpcError):
+            def code(self):
+                return StatusCode.DEADLINE_EXCEEDED
+
+        class MockTimeoutIterator(object):
+            def next(self):
+                return self.__next__()
+            def __next__(self):
+                raise MockTimeoutError()
+
+        client._data_stub = stub = _CustomFakeStub(MockTimeoutIterator())
+
+        # Set to timeout before RPC completes
+        test_backoff_settings = BackoffSettings(
+            initial_retry_delay_millis=10,
+            retry_delay_multiplier=0.3,
+            max_retry_delay_millis=30000,
+            initial_rpc_timeout_millis=1000,
+            rpc_timeout_multiplier=1.0,
+            max_rpc_timeout_millis=25 * 60 * 1000,
+            total_timeout_millis=1000
+        )
+
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Verify that a RetryError is thrown on read.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit, backoff_settings=test_backoff_settings)
+            with self.assertRaises(RetryError):
+                result.consume_next()
+
+    def test_read_rows_mid_row_timeout_retry(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _CustomFakeStub
+        from google.cloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.gax import BackoffSettings
+        from google.gax.errors import RetryError
+        from grpc import StatusCode, RpcError
+        import time
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create an iterator that throws an idempotent exception
+        class MockTimeoutError(RpcError):
+            def code(self):
+                return StatusCode.DEADLINE_EXCEEDED
+
+        first_chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+        )
+        first_response = _ReadRowsResponsePB(chunks = [first_chunk])
+
+        second_chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        second_response = _ReadRowsResponsePB(chunks = [second_chunk])
+
+        class MidRowTimeoutIterator(object):
+            def __init__(self):
+                self.invocation_count = 0
+            def next(self):
+                return self.__next__()
+            def __next__(self):
+                self.invocation_count += 1
+                if (self.invocation_count == 1):
+                    return first_response
+                elif (self.invocation_count == 2):
+                    raise MockTimeoutError()
+                elif (self.invocation_count == 3):
+                    return first_response
+                elif (self.invocation_count == 4):
+                    return second_response
+                else:
+                    raise StopIteration
+
+        client._data_stub = stub = _CustomFakeStub(MidRowTimeoutIterator())
+
+        # Set to timeout before RPC completes
+        test_backoff_settings = BackoffSettings(
+            initial_retry_delay_millis=10,
+            retry_delay_multiplier=1,
+            max_retry_delay_millis=30000,
+            initial_rpc_timeout_millis=1000,
+            rpc_timeout_multiplier=1.0,
+            max_rpc_timeout_millis=25 * 60 * 1000,
+            total_timeout_millis=1000
+        )
+
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            # Verify that a RetryError is thrown on read.
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                limit=limit, backoff_settings=test_backoff_settings)
+            result.consume_all()
+
+            cells = result.rows[self.ROW_KEY].cells[self.FAMILY_NAME][self.QUALIFIER]
+            self.assertEquals(len(cells), 2)
+
+    def test_read_rows_non_idempotent_error_throws(self):
+        from google.cloud._testing import _Monkey
+        from tests.unit._testing import _CustomFakeStub
+        from google.cloud.bigtable.row_data import PartialRowsData
+        from google.cloud.bigtable import retry as MUT
+        from google.cloud.bigtable.retry import ReadRowsIterator
+        from google.gax import BackoffSettings
+        from google.gax.errors import RetryError
+        from grpc import StatusCode, RpcError
+        import time
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create response iterator that raises a non-idempotent exception
+        class MockNonIdempotentError(RpcError):
+            def code(self):
+                return StatusCode.RESOURCE_EXHAUSTED
+
+        class MockNonIdempotentIterator(object):
+            def next(self):
+                return self.__next__()
+            def __next__(self):
+                raise MockNonIdempotentError()
+
+        client._data_stub = stub = _CustomFakeStub(MockNonIdempotentIterator())
+
         start_key = b'start-key'
         end_key = b'end-key'
         filter_obj = object()
@@ -525,21 +762,8 @@ class TestTable(unittest.TestCase):
             result = table.read_rows(
                 start_key=start_key, end_key=end_key, filter_=filter_obj,
                 limit=limit)
-
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ReadRows',
-            (request_pb,),
-            {},
-        )])
-        created_kwargs = {
-            'start_key': start_key,
-            'end_key': end_key,
-            'filter_': filter_obj,
-            'limit': limit,
-            'end_inclusive': False,
-        }
-        self.assertEqual(mock_created, [(table.name, created_kwargs)])
+            with self.assertRaises(MockNonIdempotentError):
+                result.consume_next()
 
     def test_sample_row_keys(self):
         from tests.unit._testing import _FakeStub
@@ -570,15 +794,464 @@ class TestTable(unittest.TestCase):
         )])
 
 
+class Test__RetryableMutateRowsWorker(unittest.TestCase):
+    from grpc import StatusCode
+
+    PROJECT_ID = 'project-id'
+    INSTANCE_ID = 'instance-id'
+    INSTANCE_NAME = ('projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID)
+    TABLE_ID = 'table-id'
+
+    # RPC Status Codes
+    SUCCESS = StatusCode.OK.value[0]
+    RETRYABLE_1 = StatusCode.DEADLINE_EXCEEDED.value[0]
+    RETRYABLE_2 = StatusCode.ABORTED.value[0]
+    NON_RETRYABLE = StatusCode.CANCELLED.value[0]
+
+    @staticmethod
+    def _get_target_class_for_worker():
+        from google.cloud.bigtable.table import _RetryableMutateRowsWorker
+
+        return _RetryableMutateRowsWorker
+
+    def _make_worker(self, *args, **kwargs):
+        return self._get_target_class_for_worker()(*args, **kwargs)
+
+    @staticmethod
+    def _get_target_class_for_table():
+        from google.cloud.bigtable.table import Table
+
+        return Table
+
+    def _make_table(self, *args, **kwargs):
+        return self._get_target_class_for_table()(*args, **kwargs)
+
+    def _make_responses_statuses(self, codes):
+        from google.rpc.status_pb2 import Status
+
+        response = [Status(code=code) for code in codes]
+        return response
+
+    def _make_responses(self, codes):
+        import six
+        from google.cloud.bigtable._generated.bigtable_pb2 import (
+            MutateRowsResponse)
+        from google.rpc.status_pb2 import Status
+
+        entries = [MutateRowsResponse.Entry(
+            index=i, status=Status(code=codes[i]))
+            for i in six.moves.xrange(len(codes))]
+        return MutateRowsResponse(entries=entries)
+
+    def test_callable_empty_rows(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        worker = self._make_worker(table._instance._client, table.name, [])
+        statuses = worker()
+
+        self.assertEqual(len(statuses), 0)
+
+    def test_callable_no_retry_strategy(self):
+        from google.api_core.retry import Retry
+        from google.cloud.bigtable.row import DirectRow
+
+        # Setup:
+        #   - Mutate 3 rows.
+        # Action:
+        #   - Attempt to mutate the rows w/o any retry strategy.
+        # Expectation:
+        #   - Since no retry, should return statuses as they come back.
+        #   - Even if there are retryable errors, no retry attempt is made.
+        #   - State of responses_statuses should be
+        #       [success, retryable, non-retryable]
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+        row_3 = DirectRow(row_key=b'row_key_3', table=table)
+        row_3.set_cell('cf', b'col', b'value3')
+
+        response = self._make_responses([
+            self.SUCCESS,
+            self.RETRYABLE_1,
+            self.NON_RETRYABLE])
+
+        # Patch the stub used by the API method.
+        client._data_stub = mock.MagicMock()
+        client._data_stub.MutateRows.return_value = [response]
+
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
+        statuses = worker(retry=None)
+
+        result = [status.code for status in statuses]
+        expected_result = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
+
+        client._data_stub.MutateRows.assert_called_once()
+        self.assertEqual(result, expected_result)
+
+    def test_callable_retry(self):
+        from google.api_core.retry import Retry
+        from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import DEFAULT_RETRY
+
+        # Setup:
+        #   - Mutate 3 rows.
+        # Action:
+        #   - Initial attempt will mutate all 3 rows.
+        # Expectation:
+        #   - First attempt will result in one retryable error.
+        #   - Second attempt will result in success for the retry-ed row.
+        #   - Check MutateRows is called twice.
+        #   - State of responses_statuses should be
+        #       [success, success, non-retryable]
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+        row_3 = DirectRow(row_key=b'row_key_3', table=table)
+        row_3.set_cell('cf', b'col', b'value3')
+
+        response_1 = self._make_responses([
+            self.SUCCESS,
+            self.RETRYABLE_1,
+            self.NON_RETRYABLE])
+        response_2 = self._make_responses([self.SUCCESS])
+
+        # Patch the stub used by the API method.
+        client._data_stub = mock.MagicMock()
+        client._data_stub.MutateRows.side_effect = [[response_1], [response_2]]
+
+        retry = DEFAULT_RETRY.with_delay(initial=0.1)
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
+        statuses = worker(retry=retry)
+
+        result = [status.code for status in statuses]
+        expected_result = [self.SUCCESS, self.SUCCESS, self.NON_RETRYABLE]
+
+        client._data_stub.MutateRows.assert_has_calls([
+            mock.call(mock.ANY),
+            mock.call(mock.ANY)])
+        self.assertEqual(client._data_stub.MutateRows.call_count, 2)
+        self.assertEqual(result, expected_result)
+
+    def test_callable_retry_timeout(self):
+        from google.api_core.retry import Retry
+        from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import DEFAULT_RETRY
+
+        # Setup:
+        #   - Mutate 2 rows.
+        # Action:
+        #   - Initial attempt will mutate all 2 rows.
+        # Expectation:
+        #   - Both rows always return retryable errors.
+        #   - google.api_core.Retry should keep retrying.
+        #   - Check MutateRows is called multiple times.
+        #   - By the time deadline is reached, statuses should be
+        #       [retryable, retryable]
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+
+        response = self._make_responses([self.RETRYABLE_1, self.RETRYABLE_1])
+
+        # Patch the stub used by the API method.
+        client._data_stub = mock.MagicMock()
+        client._data_stub.MutateRows.return_value = [response]
+
+        retry = DEFAULT_RETRY.with_delay(
+                initial=0.1, maximum=0.2, multiplier=2.0).with_deadline(0.5)
+        worker = self._make_worker(client, table.name, [row_1, row_2])
+        statuses = worker(retry=retry)
+
+        result = [status.code for status in statuses]
+        expected_result = [self.RETRYABLE_1, self.RETRYABLE_1]
+
+        self.assertTrue(client._data_stub.MutateRows.call_count > 1)
+        self.assertEqual(result, expected_result)
+
+    def test_do_mutate_retryable_rows_empty_rows(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        worker = self._make_worker(table._instance._client, table.name, [])
+        statuses = worker._do_mutate_retryable_rows()
+
+        self.assertEqual(len(statuses), 0)
+
+    def test_do_mutate_retryable_rows(self):
+        from google.cloud.bigtable.row import DirectRow
+        from tests.unit._testing import _FakeStub
+
+        # Setup:
+        #   - Mutate 2 rows.
+        # Action:
+        #   - Initial attempt will mutate all 2 rows.
+        # Expectation:
+        #   - Expect [success, non-retryable]
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+
+        response = self._make_responses([self.SUCCESS, self.NON_RETRYABLE])
+
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub([response])
+
+        worker = self._make_worker(table._instance._client,
+                table.name, [row_1, row_2])
+        statuses = worker._do_mutate_retryable_rows()
+
+        result = [status.code for status in statuses]
+        expected_result = [self.SUCCESS, self.NON_RETRYABLE]
+
+        self.assertEqual(result, expected_result)
+
+    def test_do_mutate_retryable_rows_retry(self):
+        from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import _BigtableRetryableError
+        from tests.unit._testing import _FakeStub
+
+        # Setup:
+        #   - Mutate 3 rows.
+        # Action:
+        #   - Initial attempt will mutate all 3 rows.
+        # Expectation:
+        #   - Second row returns retryable error code, so expect a raise.
+        #   - State of responses_statuses should be
+        #       [success, retryable, non-retryable]
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+        row_3 = DirectRow(row_key=b'row_key_3', table=table)
+        row_3.set_cell('cf', b'col', b'value3')
+
+        response = self._make_responses([
+            self.SUCCESS,
+            self.RETRYABLE_1,
+            self.NON_RETRYABLE])
+
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub([response])
+
+        worker = self._make_worker(table._instance._client,
+                table.name, [row_1, row_2, row_3])
+
+        with self.assertRaises(_BigtableRetryableError):
+            worker._do_mutate_retryable_rows()
+
+        statuses = worker.responses_statuses
+        result = [status.code for status in statuses]
+        expected_result = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
+
+        self.assertEqual(result, expected_result)
+
+    def test_do_mutate_retryable_rows_second_retry(self):
+        from google.cloud.bigtable.row import DirectRow
+        from google.cloud.bigtable.table import _BigtableRetryableError
+        from tests.unit._testing import _FakeStub
+
+        # Setup:
+        #   - Mutate 4 rows.
+        #   - First try results:
+        #       [success, retryable, non-retryable, retryable]
+        # Action:
+        #   - Second try should re-attempt the 'retryable' rows.
+        # Expectation:
+        #   - After second try:
+        #       [success, success, non-retryable, retryable]
+        #   - One of the rows tried second time returns retryable error code,
+        #     so expect a raise.
+        #   - Exception contains response whose index should be '3' even though
+        #     only two rows were retried.
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+        row_3 = DirectRow(row_key=b'row_key_3', table=table)
+        row_3.set_cell('cf', b'col', b'value3')
+        row_4 = DirectRow(row_key=b'row_key_4', table=table)
+        row_4.set_cell('cf', b'col', b'value4')
+
+        response = self._make_responses([self.SUCCESS, self.RETRYABLE_1])
+
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub([response])
+
+        worker = self._make_worker(table._instance._client,
+                table.name, [row_1, row_2, row_3, row_4])
+        worker.responses_statuses = self._make_responses_statuses([
+            self.SUCCESS,
+            self.RETRYABLE_1,
+            self.NON_RETRYABLE,
+            self.RETRYABLE_2])
+
+        with self.assertRaises(_BigtableRetryableError):
+            worker._do_mutate_retryable_rows()
+
+        statuses = worker.responses_statuses
+        result = [status.code for status in statuses]
+        expected_result = [self.SUCCESS,
+                           self.SUCCESS,
+                           self.NON_RETRYABLE,
+                           self.RETRYABLE_1]
+
+        self.assertEqual(result, expected_result)
+
+    def test_do_mutate_retryable_rows_second_try(self):
+        from google.cloud.bigtable.row import DirectRow
+        from tests.unit._testing import _FakeStub
+
+        # Setup:
+        #   - Mutate 4 rows.
+        #   - First try results:
+        #       [success, retryable, non-retryable, retryable]
+        # Action:
+        #   - Second try should re-attempt the 'retryable' rows.
+        # Expectation:
+        #   - After second try:
+        #       [success, non-retryable, non-retryable, success]
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+        row_3 = DirectRow(row_key=b'row_key_3', table=table)
+        row_3.set_cell('cf', b'col', b'value3')
+        row_4 = DirectRow(row_key=b'row_key_4', table=table)
+        row_4.set_cell('cf', b'col', b'value4')
+
+        response = self._make_responses([self.NON_RETRYABLE, self.SUCCESS])
+
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub([response])
+
+        worker = self._make_worker(table._instance._client,
+                table.name, [row_1, row_2, row_3, row_4])
+        worker.responses_statuses = self._make_responses_statuses([
+            self.SUCCESS,
+            self.RETRYABLE_1,
+            self.NON_RETRYABLE,
+            self.RETRYABLE_2])
+
+        statuses = worker._do_mutate_retryable_rows()
+
+        result = [status.code for status in statuses]
+        expected_result = [self.SUCCESS,
+                           self.NON_RETRYABLE,
+                           self.NON_RETRYABLE,
+                           self.SUCCESS]
+
+        self.assertEqual(result, expected_result)
+
+    def test_do_mutate_retryable_rows_second_try_no_retryable(self):
+        from google.cloud.bigtable.row import DirectRow
+        from tests.unit._testing import _FakeStub
+
+        # Setup:
+        #   - Mutate 2 rows.
+        #   - First try results: [success, non-retryable]
+        # Action:
+        #   - Second try has no row to retry.
+        # Expectation:
+        #   - After second try: [success, non-retryable]
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+
+        worker = self._make_worker(table._instance._client,
+                table.name, [row_1, row_2])
+        worker.responses_statuses = self._make_responses_statuses(
+                [self.SUCCESS, self.NON_RETRYABLE])
+
+        statuses = worker._do_mutate_retryable_rows()
+
+        result = [status.code for status in statuses]
+        expected_result = [self.SUCCESS, self.NON_RETRYABLE]
+
+        self.assertEqual(result, expected_result)
+
+    def test_do_mutate_retryable_rows_mismatch_num_responses(self):
+        from google.cloud.bigtable.row import DirectRow
+        from tests.unit._testing import _FakeStub
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_table(self.TABLE_ID, instance)
+
+        row_1 = DirectRow(row_key=b'row_key', table=table)
+        row_1.set_cell('cf', b'col', b'value1')
+        row_2 = DirectRow(row_key=b'row_key_2', table=table)
+        row_2.set_cell('cf', b'col', b'value2')
+
+        response = self._make_responses([self.SUCCESS])
+
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub([response])
+
+        worker = self._make_worker(table._instance._client,
+                table.name, [row_1, row_2])
+        with self.assertRaises(RuntimeError):
+            worker._do_mutate_retryable_rows()
+
+
 class Test__create_row_request(unittest.TestCase):
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
-                  filter_=None, limit=None, end_inclusive=False):
-        from google.cloud.bigtable.table import _create_row_request
+                  filter_=None, limit=None, start_key_closed=True,
+                  end_inclusive=False):
+        from google.cloud.bigtable.retry import _create_row_request
 
         return _create_row_request(
             table_name, row_key=row_key, start_key=start_key, end_key=end_key,
-            filter_=filter_, limit=limit, end_inclusive=end_inclusive)
+            start_key_closed=start_key_closed, filter_=filter_,
+            limit=limit, end_inclusive=end_inclusive)
 
     def test_table_name_only(self):
         table_name = 'table_name'
@@ -601,12 +1274,21 @@ class Test__create_row_request(unittest.TestCase):
         expected_result.rows.row_keys.append(row_key)
         self.assertEqual(result, expected_result)
 
-    def test_row_range_start_key(self):
+    def test_row_range_start_key_closed(self):
         table_name = 'table_name'
         start_key = b'start_key'
         result = self._call_fut(table_name, start_key=start_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
         expected_result.rows.row_ranges.add(start_key_closed=start_key)
+        self.assertEqual(result, expected_result)
+
+    def test_row_range_start_key_open(self):
+        table_name = 'table_name'
+        start_key = b'start_key'
+        result = self._call_fut(table_name, start_key=start_key,
+            start_key_closed=False)
+        expected_result = _ReadRowsRequestPB(table_name=table_name)
+        expected_result.rows.row_ranges.add(start_key_open=start_key)
         self.assertEqual(result, expected_result)
 
     def test_row_range_end_key(self):

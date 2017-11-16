@@ -91,7 +91,7 @@ class Test__rpc(unittest.TestCase):
         return _rpc(*args, **kwargs)
 
     def test_it(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         http = object()
         project = 'projectOK'
@@ -128,7 +128,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
     @staticmethod
     def _make_query_pb(kind):
-        from google.cloud.proto.datastore.v1 import query_pb2
+        from google.cloud.datastore_v1.proto import query_pb2
 
         return query_pb2.Query(
             kind=[query_pb2.KindExpression(name=kind)],
@@ -140,7 +140,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertIs(ds_api.client, client)
 
     def test_lookup_single_key_empty_response(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         key_pb = _make_key_pb(project)
@@ -155,7 +155,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -170,7 +170,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_lookup_single_key_empty_response_w_eventual(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         key_pb = _make_key_pb(project)
@@ -186,7 +186,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -201,7 +201,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         transaction = b'TRANSACTION'
@@ -217,7 +217,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -232,8 +232,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_lookup_single_key_nonempty_response(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import entity_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
 
         project = 'PROJECT'
         key_pb = _make_key_pb(project)
@@ -251,7 +251,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb])
+        response = ds_api.lookup(project, [key_pb], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -269,7 +269,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_lookup_multiple_keys_empty_response(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         key_pb1 = _make_key_pb(project)
@@ -285,7 +285,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb1, key_pb2])
+        response = ds_api.lookup(
+            project, [key_pb1, key_pb2], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -300,7 +301,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_lookup_multiple_keys_w_missing(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         key_pb1 = _make_key_pb(project)
@@ -320,7 +321,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb1, key_pb2])
+        response = ds_api.lookup(
+            project, [key_pb1, key_pb2], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -336,7 +338,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_lookup_multiple_keys_w_deferred(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         key_pb1 = _make_key_pb(project)
@@ -354,7 +356,8 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, read_options, [key_pb1, key_pb2])
+        response = ds_api.lookup(
+            project, [key_pb1, key_pb2], read_options=read_options)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb)
@@ -369,9 +372,9 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_run_query_w_eventual_no_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import entity_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.proto import query_pb2
 
         project = 'PROJECT'
         kind = 'Nonesuch'
@@ -410,9 +413,9 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_run_query_wo_eventual_w_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import entity_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.proto import query_pb2
 
         project = 'PROJECT'
         kind = 'Nonesuch'
@@ -451,9 +454,9 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_run_query_wo_namespace_empty_result(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import entity_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.proto import query_pb2
 
         project = 'PROJECT'
         kind = 'Nonesuch'
@@ -491,9 +494,9 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.read_options, read_options)
 
     def test_run_query_w_namespace_nonempty_result(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
-        from google.cloud.proto.datastore.v1 import entity_pb2
-        from google.cloud.proto.datastore.v1 import query_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.proto import query_pb2
 
         project = 'PROJECT'
         kind = 'Kind'
@@ -533,7 +536,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.query, query_pb)
 
     def test_begin_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         transaction = b'TRANSACTION'
@@ -561,7 +564,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.project_id, u'')
 
     def test_commit_wo_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
         project = 'PROJECT'
@@ -596,7 +599,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_commit_w_transaction(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
         from google.cloud.datastore.helpers import _new_value_pb
 
         project = 'PROJECT'
@@ -631,7 +634,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
     def test_rollback_ok(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         transaction = b'xact'
@@ -656,7 +659,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(request.transaction, transaction)
 
     def test_allocate_ids_empty(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         rsp_pb = datastore_pb2.AllocateIdsResponse()
@@ -681,7 +684,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         self.assertEqual(list(request.keys), [])
 
     def test_allocate_ids_non_empty(self):
-        from google.cloud.proto.datastore.v1 import datastore_pb2
+        from google.cloud.datastore_v1.proto import datastore_pb2
 
         project = 'PROJECT'
         before_key_pbs = [

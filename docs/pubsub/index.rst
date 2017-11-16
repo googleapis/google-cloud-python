@@ -122,3 +122,4 @@ Learn More
   publisher/index
   subscriber/index
   types
+  releases

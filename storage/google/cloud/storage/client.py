@@ -15,6 +15,8 @@
 """Client for interacting with the Google Cloud Storage API."""
 
 
+from google.auth.credentials import AnonymousCredentials
+
 from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
@@ -24,10 +26,13 @@ from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket
 
 
+_marker = object()
+
+
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
-    :type project: str
+    :type project: str or None
     :param project: the project which the client acts on behalf of. Will be
                     passed when creating a topic.  If not passed,
                     falls back to the default inferred from the environment.
@@ -53,12 +58,37 @@ class Client(ClientWithProject):
              'https://www.googleapis.com/auth/devstorage.read_write')
     """The scopes required for authenticating as a Cloud Storage consumer."""
 
-    def __init__(self, project=None, credentials=None, _http=None):
+    def __init__(self, project=_marker, credentials=None, _http=None):
         self._base_connection = None
+        if project is None:
+            no_project = True
+            project = '<none>'
+        else:
+            no_project = False
+        if project is _marker:
+            project = None
         super(Client, self).__init__(project=project, credentials=credentials,
                                      _http=_http)
+        if no_project:
+            self.project = None
         self._connection = Connection(self)
         self._batch_stack = _LocalStack()
+
+    @classmethod
+    def create_anonymous_client(cls):
+        """Factory: return client with anonymous credentials.
+
+        .. note::
+
+           Such a client has only limited access to "public" buckets:
+           listing their contents and downloading their blobs.
+
+        :rtype: :class:`google.cloud.storage.client.Client`
+        :returns: Instance w/ anonymous credentials and no project.
+        """
+        client = cls(project='<none>', credentials=AnonymousCredentials())
+        client.project = None
+        return client
 
     @property
     def _connection(self):
@@ -198,7 +228,7 @@ class Client(ClientWithProject):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket_name, requester_pays=None):
+    def create_bucket(self, bucket_name, requester_pays=None, project=None):
         """Create a new bucket.
 
         For example:
@@ -220,17 +250,22 @@ class Client(ClientWithProject):
             (Optional) Whether requester pays for API requests for this
             bucket and its blobs.
 
+        :type project: str
+        :param project: (Optional) the project under which the  bucket is to
+                        be created.  If not passed, uses the project set on
+                        the client.
+
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         """
         bucket = Bucket(self, name=bucket_name)
         if requester_pays is not None:
             bucket.requester_pays = requester_pays
-        bucket.create(client=self)
+        bucket.create(client=self, project=project)
         return bucket
 
     def list_buckets(self, max_results=None, page_token=None, prefix=None,
-                     projection='noAcl', fields=None):
+                     projection='noAcl', fields=None, project=None):
         """Get all buckets in the project associated to the client.
 
         This will not populate the list of blobs available in each
@@ -266,11 +301,24 @@ class Client(ClientWithProject):
             response with just the next page token and the language of each
             bucket returned: 'items/id,nextPageToken'
 
+        :type project: str
+        :param project: (Optional) the project whose buckets are to be listed.
+                        If not passed, uses the project set on the client.
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :raises ValueError: if both ``project`` is ``None`` and the client's
+                            project is also ``None``.
         :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`
                   belonging to this project.
         """
-        extra_params = {'project': self.project}
+        if project is None:
+            project = self.project
+
+        if project is None:
+            raise ValueError(
+                "Client project not set:  pass an explicit project.")
+
+        extra_params = {'project': project}
 
         if prefix is not None:
             extra_params['prefix'] = prefix

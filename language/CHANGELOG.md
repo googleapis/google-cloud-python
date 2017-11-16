@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## 1.0.0
+
+[![release level](https://img.shields.io/badge/release%20level-general%20availability%20%28GA%29-brightgreen.svg?style&#x3D;flat)](https://cloud.google.com/terms/launch-stages)
+
+### Features
+
+##### General Availability
+
+The `google-cloud-language` package is now supported at the **general availability** quality level. This means it is stable; the code and API surface will not change in backwards-incompatible ways unless absolutely necessary (e.g. because of critical security issues) or with an extensive deprecation period.
+
+One exception to this: We will remove beta endpoints (as a semver-minor update) at whatever point the underlying endpoints go away.
+
+## 0.31.0
+
+### Release Candidate
+
+  * This update is considered a final "release candidate", and
+    the `google-cloud-language` package is preparing for a GA release
+    in the near future.
+
+### :warning: Breaking Changes!
+
+  * Some rarely-used arguments to the `LanguageServiceClient` constructor
+    have been removed (in favor of a subclass or a custom gRPC channel).
+    It is unlikely that you used these, but if you did, then this update
+    will represent a breaking change.
+      * The removed arguments are: `client_config`, `lib_name`, `lib_version`
+        `metrics_headers`, `ssl_credentials`, and `scopes`.
+
+### Features
+
+  * Added the `classify_text` method on the primary (`v1`) endpoint. (#4283)
+
 ## 0.30.0
 
 ### Documentation

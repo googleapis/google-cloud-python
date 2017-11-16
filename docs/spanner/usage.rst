@@ -16,6 +16,7 @@ workloads.
   :titlesonly:
   :hidden:
 
+  releases
   instance-usage
   database-usage
   batch-usage

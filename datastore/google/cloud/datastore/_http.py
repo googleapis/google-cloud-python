@@ -18,7 +18,7 @@ from google.rpc import status_pb2
 
 from google.cloud import _http as connection_module
 from google.cloud import exceptions
-from google.cloud.proto.datastore.v1 import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
 
 from google.cloud.datastore import __version__
 
@@ -148,48 +148,47 @@ class HTTPDatastoreAPI(object):
     def __init__(self, client):
         self.client = client
 
-    def lookup(self, project, read_options, key_pbs):
+    def lookup(self, project_id, keys, read_options=None):
         """Perform a ``lookup`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+        :type project_id: str
+        :param project_id: The project to connect to. This is
+                           usually your project name in the cloud console.
+
+        :type keys: List[.entity_pb2.Key]
+        :param keys: The keys to retrieve from the datastore.
 
         :type read_options: :class:`.datastore_pb2.ReadOptions`
-        :param read_options: The options for this lookup. Contains a
+        :param read_options: (Optional) The options for this lookup. Contains
                              either the transaction for the read or
                              ``STRONG`` or ``EVENTUAL`` read consistency.
-
-        :type key_pbs: list of
-                       :class:`.entity_pb2.Key`
-        :param key_pbs: The keys to retrieve from the datastore.
 
         :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.LookupRequest(
-            project_id=project,
+            project_id=project_id,
             read_options=read_options,
-            keys=key_pbs,
+            keys=keys,
         )
-        return _rpc(self.client._http, project, 'lookup',
+        return _rpc(self.client._http, project_id, 'lookup',
                     self.client._base_url,
                     request_pb, _datastore_pb2.LookupResponse)
 
-    def run_query(self, project, partition_id, read_options,
+    def run_query(self, project_id, partition_id, read_options=None,
                   query=None, gql_query=None):
         """Perform a ``runQuery`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+        :type project_id: str
+        :param project_id: The project to connect to. This is
+                           usually your project name in the cloud console.
 
         :type partition_id: :class:`.entity_pb2.PartitionId`
         :param partition_id: Partition ID corresponding to an optional
                              namespace and project ID.
 
         :type read_options: :class:`.datastore_pb2.ReadOptions`
-        :param read_options: The options for this query. Contains a
+        :param read_options: (Optional) The options for this query. Contains
                              either the transaction for the read or
                              ``STRONG`` or ``EVENTUAL`` read consistency.
 
@@ -205,37 +204,40 @@ class HTTPDatastoreAPI(object):
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.RunQueryRequest(
-            project_id=project,
+            project_id=project_id,
             partition_id=partition_id,
             read_options=read_options,
             query=query,
             gql_query=gql_query,
         )
-        return _rpc(self.client._http, project, 'runQuery',
+        return _rpc(self.client._http, project_id, 'runQuery',
                     self.client._base_url,
                     request_pb, _datastore_pb2.RunQueryResponse)
 
-    def begin_transaction(self, project):
+    def begin_transaction(self, project_id, transaction_options=None):
         """Perform a ``beginTransaction`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+        :type project_id: str
+        :param project_id: The project to connect to. This is
+                           usually your project name in the cloud console.
+
+        :type transaction_options: ~.datastore_v1.types.TransactionOptions
+        :param transaction_options: (Optional) Options for a new transaction.
 
         :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.BeginTransactionRequest()
-        return _rpc(self.client._http, project, 'beginTransaction',
+        return _rpc(self.client._http, project_id, 'beginTransaction',
                     self.client._base_url,
                     request_pb, _datastore_pb2.BeginTransactionResponse)
 
-    def commit(self, project, mode, mutations, transaction=None):
+    def commit(self, project_id, mode, mutations, transaction=None):
         """Perform a ``commit`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+        :type project_id: str
+        :param project_id: The project to connect to. This is
+                           usually your project name in the cloud console.
 
         :type mode: :class:`.gapic.datastore.v1.enums.CommitRequest.Mode`
         :param mode: The type of commit to perform. Expected to be one of
@@ -254,51 +256,51 @@ class HTTPDatastoreAPI(object):
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.CommitRequest(
-            project_id=project,
+            project_id=project_id,
             mode=mode,
             transaction=transaction,
             mutations=mutations,
         )
-        return _rpc(self.client._http, project, 'commit',
+        return _rpc(self.client._http, project_id, 'commit',
                     self.client._base_url,
                     request_pb, _datastore_pb2.CommitResponse)
 
-    def rollback(self, project, transaction_id):
+    def rollback(self, project_id, transaction):
         """Perform a ``rollback`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+        :type project_id: str
+        :param project_id: The project to connect to. This is
+                           usually your project name in the cloud console.
 
-        :type transaction_id: bytes
-        :param transaction_id: The transaction ID to rollback.
+        :type transaction: bytes
+        :param transaction: The transaction ID to rollback.
 
         :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
         request_pb = _datastore_pb2.RollbackRequest(
-            project_id=project,
-            transaction=transaction_id,
+            project_id=project_id,
+            transaction=transaction,
         )
         # Response is empty (i.e. no fields) but we return it anyway.
-        return _rpc(self.client._http, project, 'rollback',
+        return _rpc(self.client._http, project_id, 'rollback',
                     self.client._base_url,
                     request_pb, _datastore_pb2.RollbackResponse)
 
-    def allocate_ids(self, project, key_pbs):
+    def allocate_ids(self, project_id, keys):
         """Perform an ``allocateIds`` request.
 
-        :type project: str
-        :param project: The project to connect to. This is
-                        usually your project name in the cloud console.
+        :type project_id: str
+        :param project_id: The project to connect to. This is
+                           usually your project name in the cloud console.
 
-        :type key_pbs: list of :class:`.entity_pb2.Key`
-        :param key_pbs: The keys for which the backend should allocate IDs.
+        :type keys: List[.entity_pb2.Key]
+        :param keys: The keys for which the backend should allocate IDs.
 
         :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.AllocateIdsRequest(keys=key_pbs)
-        return _rpc(self.client._http, project, 'allocateIds',
+        request_pb = _datastore_pb2.AllocateIdsRequest(keys=keys)
+        return _rpc(self.client._http, project_id, 'allocateIds',
                     self.client._base_url,
                     request_pb, _datastore_pb2.AllocateIdsResponse)

@@ -15,7 +15,7 @@ install_requires = [
 
 setup(
     name='google-cloud-trace',
-    version='0.16.0',
+    version='0.16.1.dev1',
     author='Google Inc',
     author_email='googleapis-packages@google.com',
     classifiers=[

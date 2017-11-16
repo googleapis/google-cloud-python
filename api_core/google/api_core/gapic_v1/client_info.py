@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client information
+"""Helpers for providing client information.
 
-This module is used by client libraries to send information about the calling
-client to services.
+Client information is used to send information about the calling client,
+such as the library and Python version, to API services.
 """
 
 import platform
