@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -119,7 +119,8 @@ class VideoIntelligenceServiceClient(object):
             video_intelligence_service_client_config.config,
             client_config,
             config.STATUS_CODE_NAMES,
-            metrics_headers=metrics_headers, )
+            metrics_headers=metrics_headers,
+        )
         self.video_intelligence_service_stub = config.create_stub(
             video_intelligence_pb2.VideoIntelligenceServiceStub,
             channel=channel,
@@ -136,7 +137,8 @@ class VideoIntelligenceServiceClient(object):
             ssl_credentials=ssl_credentials,
             scopes=scopes,
             client_config=client_config,
-            metrics_headers=metrics_headers, )
+            metrics_headers=metrics_headers,
+        )
 
         self._annotate_video = api_callable.create_api_call(
             self.video_intelligence_service_stub.AnnotateVideo,
@@ -144,9 +146,9 @@ class VideoIntelligenceServiceClient(object):
 
     # Service calls
     def annotate_video(self,
-                       input_uri,
-                       features,
+                       input_uri=None,
                        input_content=None,
+                       features=None,
                        video_context=None,
                        output_uri=None,
                        location_id=None,
@@ -159,14 +161,10 @@ class VideoIntelligenceServiceClient(object):
 
         Example:
             >>> from google.cloud import videointelligence_v1beta2
-            >>> from google.cloud.videointelligence_v1beta2 import enums
             >>>
             >>> client = videointelligence_v1beta2.VideoIntelligenceServiceClient()
             >>>
-            >>> input_uri = ''
-            >>> features = []
-            >>>
-            >>> response = client.annotate_video(input_uri, features)
+            >>> response = client.annotate_video()
             >>>
             >>> def callback(operation_future):
             ...     # Handle result.
@@ -188,9 +186,10 @@ class VideoIntelligenceServiceClient(object):
                 multiple videos. Supported wildcards: '*' to match 0 or more characters;
                 '?' to match 1 character. If unset, the input video should be embedded
                 in the request as ``input_content``. If set, ``input_content`` should be unset.
+            input_content (bytes): The video data bytes.
+                If unset, the input video(s) should be specified via ``input_uri``.
+                If set, ``input_uri`` should be unset.
             features (list[~google.cloud.videointelligence_v1beta2.types.Feature]): Requested video annotation features.
-            input_content (bytes): The video data bytes. Encoding: base64. If unset, the input video(s)
-                should be specified via ``input_uri``. If set, ``input_uri`` should be unset.
             video_context (Union[dict, ~google.cloud.videointelligence_v1beta2.types.VideoContext]): Additional video context and/or feature-specific parameters.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.videointelligence_v1beta2.types.VideoContext`
@@ -215,8 +214,8 @@ class VideoIntelligenceServiceClient(object):
         """
         request = video_intelligence_pb2.AnnotateVideoRequest(
             input_uri=input_uri,
-            features=features,
             input_content=input_content,
+            features=features,
             video_context=video_context,
             output_uri=output_uri,
             location_id=location_id)

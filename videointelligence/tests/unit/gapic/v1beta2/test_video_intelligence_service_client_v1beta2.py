@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,10 +37,6 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
 
         client = videointelligence_v1beta2.VideoIntelligenceServiceClient()
 
-        # Mock request
-        input_uri = 'inputUri1707300727'
-        features = []
-
         # Mock response
         expected_response = {}
         expected_response = video_intelligence_pb2.AnnotateVideoResponse(
@@ -50,7 +46,7 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
         operation.response.Pack(expected_response)
         grpc_stub.AnnotateVideo.return_value = operation
 
-        response = client.annotate_video(input_uri, features)
+        response = client.annotate_video()
         self.assertEqual(expected_response, response.result())
 
         grpc_stub.AnnotateVideo.assert_called_once()
@@ -60,8 +56,7 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
         self.assertIn('metadata', kwargs)
         actual_request = args[0]
 
-        expected_request = video_intelligence_pb2.AnnotateVideoRequest(
-            input_uri=input_uri, features=features)
+        expected_request = video_intelligence_pb2.AnnotateVideoRequest()
         self.assertEqual(expected_request, actual_request)
 
     @mock.patch('google.gax.config.create_stub', spec=True)
@@ -72,10 +67,6 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
 
         client = videointelligence_v1beta2.VideoIntelligenceServiceClient()
 
-        # Mock request
-        input_uri = 'inputUri1707300727'
-        features = []
-
         # Mock exception response
         error = status_pb2.Status()
         operation = operations_pb2.Operation(
@@ -83,5 +74,5 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
         operation.error.CopyFrom(error)
         grpc_stub.AnnotateVideo.return_value = operation
 
-        response = client.annotate_video(input_uri, features)
+        response = client.annotate_video()
         self.assertEqual(error, response.exception())

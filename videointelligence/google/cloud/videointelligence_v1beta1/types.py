@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,8 @@ for module in (
         descriptor_pb2,
         empty_pb2,
         timestamp_pb2,
-        status_pb2, ):
+        status_pb2,
+):
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.videointelligence_v1beta1.types'
         setattr(sys.modules[__name__], name, message)

@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ from google.gax import errors
 from google.rpc import status_pb2
 
 from google.cloud import videointelligence_v1beta1
+from google.cloud.videointelligence_v1beta1 import enums
 from google.cloud.videointelligence_v1beta1.proto import video_intelligence_pb2
 from google.longrunning import operations_pb2
 
@@ -38,8 +39,9 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
         client = videointelligence_v1beta1.VideoIntelligenceServiceClient()
 
         # Mock request
-        input_uri = 'inputUri1707300727'
-        features = []
+        input_uri = 'gs://demomaker/cat.mp4'
+        features_element = enums.Feature.LABEL_DETECTION
+        features = [features_element]
 
         # Mock response
         expected_response = {}
@@ -73,8 +75,9 @@ class TestVideoIntelligenceServiceClient(unittest.TestCase):
         client = videointelligence_v1beta1.VideoIntelligenceServiceClient()
 
         # Mock request
-        input_uri = 'inputUri1707300727'
-        features = []
+        input_uri = 'gs://demomaker/cat.mp4'
+        features_element = enums.Feature.LABEL_DETECTION
+        features = [features_element]
 
         # Mock exception response
         error = status_pb2.Status()

@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017, Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -119,7 +119,8 @@ class VideoIntelligenceServiceClient(object):
             video_intelligence_service_client_config.config,
             client_config,
             config.STATUS_CODE_NAMES,
-            metrics_headers=metrics_headers, )
+            metrics_headers=metrics_headers,
+        )
         self.video_intelligence_service_stub = config.create_stub(
             video_intelligence_pb2.VideoIntelligenceServiceStub,
             channel=channel,
@@ -136,7 +137,8 @@ class VideoIntelligenceServiceClient(object):
             ssl_credentials=ssl_credentials,
             scopes=scopes,
             client_config=client_config,
-            metrics_headers=metrics_headers, )
+            metrics_headers=metrics_headers,
+        )
 
         self._annotate_video = api_callable.create_api_call(
             self.video_intelligence_service_stub.AnnotateVideo,
@@ -163,8 +165,9 @@ class VideoIntelligenceServiceClient(object):
             >>>
             >>> client = videointelligence_v1beta1.VideoIntelligenceServiceClient()
             >>>
-            >>> input_uri = ''
-            >>> features = []
+            >>> input_uri = 'gs://demomaker/cat.mp4'
+            >>> features_element = enums.Feature.LABEL_DETECTION
+            >>> features = [features_element]
             >>>
             >>> response = client.annotate_video(input_uri, features)
             >>>
