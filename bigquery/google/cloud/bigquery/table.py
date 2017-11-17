@@ -789,7 +789,8 @@ class Row(object):
         Returns:
             Sequence[object]: A sequence of length ``len(row)``.
         """
-        return copy.deepcopy(self._xxx_values)
+        for value in self._xxx_values:
+            yield copy.deepcopy(value)
 
     def keys(self):
         """Return the keys for using a row as a dict.
