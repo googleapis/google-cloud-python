@@ -824,7 +824,7 @@ class Row(object):
         index = self._xxx_field_to_index.get(key)
         if index is None:
             return default
-        return values[index]
+        return self._xxx_values[index]
 
     def __getattr__(self, name):
         value = self._xxx_field_to_index.get(name)
