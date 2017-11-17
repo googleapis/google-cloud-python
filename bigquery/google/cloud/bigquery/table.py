@@ -791,8 +791,8 @@ class Row(object):
         >>> Row(('a', 'b'), {'x': 0, 'y': 1}).keys()
         ['x', 'y']
         """
-        for k in self._xxx_field_to_index.keys():
-            yield k
+        keys = self._xxx_field_to_index.keys()
+        return keys
 
     def items(self):
         """
@@ -800,21 +800,31 @@ class Row(object):
         >>> Row(('a', 'b'), {'x': 0, 'y': 1}).items()
         [('x', 'a'), ('y', 'b')]
         """
-        for k, i in self._xxx_field_to_index.items():
-            yield k, self._xxx_values[i]
-
-    def dict(self):
-        """
-        Return row as a dict object:
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).dict()
-        {'x': 'a', 'y': 'b'}
-        """
-        data = {
-            k: self._xxx_values[i]
+        items = [
+            (k, self._xxx_values[i])
             for k, i
             in self._xxx_field_to_index.items()
-        }
-        return data
+        ]
+        return items
+
+    def get(self, key, default = None):
+        """
+        Return value under specified key
+        Defaults to None or specified default
+        if key does not exist:
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
+        'a'
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
+        None
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
+        ''
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
+        ''
+        """
+        index = self._xxx_field_to_index.get(key)
+        if index is None:
+            return default
+        return values[index]
 
     def __getattr__(self, name):
         value = self._xxx_field_to_index.get(name)
