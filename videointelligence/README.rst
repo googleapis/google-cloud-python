@@ -3,7 +3,7 @@ Python Client for Google Cloud Video Intelligence
 
     Python idiomatic client for `Google Cloud Video Intelligence`_
 
-.. _Google Cloud Video Intelligence: https://cloud.google.com/videointelligence/
+.. _Google Cloud Video Intelligence: https://cloud.google.com/video-intelligence/
 
 |pypi| |versions|
 
