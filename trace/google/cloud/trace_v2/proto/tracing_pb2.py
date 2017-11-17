@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.devtools.cloudtrace_v2.proto import trace_pb2 as google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2
+from google.cloud.trace_v2.proto import trace_pb2 as google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
@@ -76,8 +76,8 @@ BatchWriteSpansRequest = _reflection.GeneratedProtocolMessageType('BatchWriteSpa
   __module__ = 'google.devtools.cloudtrace_v2.proto.tracing_pb2'
   ,
   __doc__ = """The request message for the ``BatchWriteSpans`` method.
-  
-  
+
+
   Attributes:
       name:
           Required. Name of the project where the spans belong. The
