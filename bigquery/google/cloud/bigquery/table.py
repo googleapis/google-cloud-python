@@ -713,6 +713,137 @@ class Table(object):
         return resource
 
 
+class TableListItem(object):
+    """Read-only table resource object with a subset of table properties.
+
+    See
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
+
+    Args:
+        resource (dict): A table resource object from a table list response.
+    """
+
+    def __init__(self, resource):
+        self._properties = resource
+
+    @property
+    def project(self):
+        """The project ID of the project this table belongs to.
+
+        Returns:
+            str: the project ID of the table.
+        """
+        return self._properties.get('tableReference', {}).get('projectId')
+
+    @property
+    def dataset_id(self):
+        """The dataset ID of the dataset this table belongs to.
+
+        Returns:
+            str: the dataset ID of the table.
+        """
+        return self._properties.get('tableReference', {}).get('datasetId')
+
+    @property
+    def table_id(self):
+        """The table ID.
+
+        Returns:
+            str: the table ID.
+        """
+        return self._properties.get('tableReference', {}).get('tableId')
+
+    @property
+    def reference(self):
+        """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
+        this table.
+
+        Returns:
+            google.cloud.bigquery.table.TableReference: pointer to this table
+        """
+        from google.cloud.bigquery import dataset
+
+        dataset_ref = dataset.DatasetReference(self.project, self.dataset_id)
+        return TableReference(dataset_ref, self.table_id)
+
+    @property
+    def labels(self):
+        """Labels for the table.
+
+        This method always returns a dict. To change a table's labels,
+        modify the dict, then call ``Client.update_table``. To delete a
+        label, set its value to ``None`` before updating.
+
+        Returns:
+            Map[str, str]: A dictionary of the the table's labels
+        """
+        return self._properties.get('labels', {})
+
+    @property
+    def full_table_id(self):
+        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+
+        Returns:
+            str: The fully-qualified ID of the table
+        """
+        return self._properties.get('id')
+
+    @property
+    def table_type(self):
+        """The type of the table.
+
+        Possible values are "TABLE", "VIEW", or "EXTERNAL".
+
+        Returns:
+            str: The kind of table
+        """
+        return self._properties.get('type')
+
+    @property
+    def partitioning_type(self):
+        """Time partitioning of the table.
+
+        Returns:
+            str:
+                Type of partitioning if the table is partitioned, None
+                otherwise.
+        """
+        return self._properties.get('timePartitioning', {}).get('type')
+
+    @property
+    def partition_expiration(self):
+        """Expiration time in ms for a partition
+
+        Returns:
+            int: The time in ms for partition expiration
+        """
+        return int(
+            self._properties.get('timePartitioning', {}).get('expirationMs'))
+
+    @property
+    def friendly_name(self):
+        """Title of the table.
+
+        Returns:
+            str: The name as set by the user, or None (the default)
+        """
+        return self._properties.get('friendlyName')
+
+    @property
+    def view_use_legacy_sql(self):
+        """Specifies whether to execute the view with Legacy or Standard SQL.
+
+        If this table is not a view, None is returned.
+
+        Returns:
+            bool: True if the view is using legacy SQL, or None if not a view
+        """
+        view = self._properties.get('view', {})
+        if self.table_type == 'VIEW':
+            # The server-side default for useLegacySql is True.
+            return view.get('useLegacySql', True)
+
+
 def _row_from_mapping(mapping, schema):
     """Convert a mapping to a row tuple using the schema.
 

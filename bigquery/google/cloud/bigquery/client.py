@@ -38,6 +38,7 @@ from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
+from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _row_from_mapping
 from google.cloud.bigquery.job import CopyJob
@@ -405,8 +406,9 @@ class Client(ClientWithProject):
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`
-                  contained within the current dataset.
+        :returns:
+            Iterator of :class:`~google.cloud.bigquery.table.TableListItem`
+            contained within the current dataset.
         """
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
@@ -1367,7 +1369,7 @@ def _item_to_table(iterator, resource):
     :rtype: :class:`~google.cloud.bigquery.table.Table`
     :returns: The next table in the page.
     """
-    return Table.from_api_repr(resource)
+    return TableListItem(resource)
 
 
 def _make_job_id(job_id, prefix=None):
