@@ -36,7 +36,7 @@ from google.cloud.videointelligence_v1.gapic import video_intelligence_service_c
 from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-videointelligence', ).version
+    'google-cloud-video-intelligence', ).version
 
 
 class VideoIntelligenceServiceClient(object):

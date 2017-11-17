@@ -37,7 +37,8 @@ for module in (
         duration_pb2,
         empty_pb2,
         timestamp_pb2,
-        status_pb2, ):
+        status_pb2,
+):
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.videointelligence_v1.types'
         setattr(sys.modules[__name__], name, message)
