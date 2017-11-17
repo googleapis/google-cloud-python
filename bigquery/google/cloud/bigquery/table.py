@@ -224,6 +224,20 @@ class Table(object):
         return self._table_id
 
     @property
+    def reference(self):
+        """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
+        this table.
+
+        Returns:
+            google.cloud.bigquery.table.TableReference:
+                A pointer to this table
+        """
+        from google.cloud.bigquery import dataset
+
+        dataset_ref = dataset.DatasetReference(self.project, self.dataset_id)
+        return TableReference(dataset_ref, self.table_id)
+
+    @property
     def path(self):
         """URL path for the table's APIs.
 
