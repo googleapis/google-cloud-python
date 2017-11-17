@@ -766,7 +766,8 @@ class TestRow(unittest.TestCase):
         self.assertEqual(len(row), 3)
         self.assertEqual(row.values(), VALUES)
         self.assertEqual(set(row.keys()), set({'a': 1, 'b': 2, 'c': 3}.keys()))
-        self.assertEqual(set(row.items()), set({'a': 1, 'b': 2, 'c': 3}.items()))
+        self.assertEqual(set(row.items()),
+                         set({'a': 1, 'b': 2, 'c': 3}.items()))
         self.assertEqual(row.get('a'), 1)
         self.assertEqual(row.get('d'), None)
         self.assertEqual(row.get('d', ''), '')
