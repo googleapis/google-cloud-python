@@ -23,7 +23,7 @@ from google.cloud.vision_v1p1beta1.gapic import image_annotator_client as iac
 
 
 @add_single_feature_methods
-class ImageAnnotatorClient(iac.ImageAnnotatorClient):
+class ImageAnnotatorClient(VisionHelpers, iac.ImageAnnotatorClient):
     __doc__ = image_annotator_client.ImageAnnotatorClient.__doc__
     enums = enums
 
