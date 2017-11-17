@@ -219,20 +219,23 @@ class _TestData(object):
         else:
             self.assertEqual(value.microsecond * 1000, nano_value.nanosecond)
 
-    def _check_row_data(self, row_data, expected=None):
+    def _check_rows_data(self, rows_data, expected=None):
         if expected is None:
             expected = self.ROW_DATA
 
+        self.assertEqual(len(rows_data), len(expected))
+        for row, expected in zip(rows_data, expected):
+            self._check_row_data(row, expected)
+
+    def _check_row_data(self, row_data, expected):
         self.assertEqual(len(row_data), len(expected))
-        for found, expected in zip(row_data, expected):
-            self.assertEqual(len(found), len(expected))
-            for found_cell, expected_cell in zip(found, expected):
-                if isinstance(found_cell, TimestampWithNanoseconds):
-                    self._assert_timestamp(expected_cell, found_cell)
-                elif isinstance(found_cell, float) and math.isnan(found_cell):
-                    self.assertTrue(math.isnan(expected_cell))
-                else:
-                    self.assertEqual(found_cell, expected_cell)
+        for found_cell, expected_cell in zip(row_data, expected):
+            if isinstance(found_cell, TimestampWithNanoseconds):
+                self._assert_timestamp(expected_cell, found_cell)
+            elif isinstance(found_cell, float) and math.isnan(found_cell):
+                self.assertTrue(math.isnan(expected_cell))
+            else:
+                self.assertEqual(found_cell, expected_cell)
 
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
@@ -309,7 +312,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         with self._db.snapshot(read_timestamp=batch.committed) as snapshot:
             from_snap = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
 
-        self._check_row_data(from_snap)
+        self._check_rows_data(from_snap)
 
     def test_db_run_in_transaction_then_snapshot_execute_sql(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -329,7 +332,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         with self._db.snapshot() as after:
             rows = list(after.execute_sql(self.SQL))
-        self._check_row_data(rows)
+        self._check_rows_data(rows)
 
     def test_db_run_in_transaction_twice(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -347,7 +350,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         with self._db.snapshot() as after:
             rows = list(after.execute_sql(self.SQL))
-        self._check_row_data(rows)
+        self._check_rows_data(rows)
 
     def test_db_run_in_transaction_twice_4181(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -448,7 +451,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         snapshot = session.snapshot(read_timestamp=batch.committed)
         rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
-        self._check_row_data(rows)
+        self._check_rows_data(rows)
 
     def test_batch_insert_then_read_string_array_of_string(self):
         TABLE = 'string_plus_array_of_string'
@@ -472,7 +475,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         snapshot = session.snapshot(read_timestamp=batch.committed)
         rows = list(snapshot.read(TABLE, COLUMNS, self.ALL))
-        self._check_row_data(rows, expected=ROWDATA)
+        self._check_rows_data(rows, expected=ROWDATA)
 
     def test_batch_insert_then_read_all_datatypes(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -492,7 +495,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         snapshot = session.snapshot(read_timestamp=batch.committed)
         rows = list(snapshot.read(
             self.ALL_TYPES_TABLE, self.ALL_TYPES_COLUMNS, self.ALL))
-        self._check_row_data(rows, expected=self.ALL_TYPES_ROWDATA)
+        self._check_rows_data(rows, expected=self.ALL_TYPES_ROWDATA)
 
     def test_batch_insert_or_update_then_query(self):
         retry = RetryInstanceState(_has_all_ddl)
@@ -507,7 +510,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         snapshot = session.snapshot(read_timestamp=batch.committed)
         rows = list(snapshot.execute_sql(self.SQL))
-        self._check_row_data(rows)
+        self._check_rows_data(rows)
 
     @RetryErrors(exception=GrpcRendezvous)
     def test_transaction_read_and_insert_then_rollback(self):
@@ -586,7 +589,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self.assertEqual(rows, [])
 
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
-        self._check_row_data(rows)
+        self._check_rows_data(rows)
 
     def _transaction_concurrency_helper(self, unit_of_work, pkey):
         INITIAL_VALUE = 123
@@ -709,7 +712,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             ]
 
     def _set_up_table(self, row_count, db=None):
-
         if db is None:
             db = self._db
             retry = RetryInstanceState(_has_all_ddl)
@@ -875,7 +877,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         expected = list(reversed(
             [(row[0], row[2]) for row in self._row_data(ROW_COUNT)]))
-        self._check_row_data(rows, expected)
+        self._check_rows_data(rows, expected)
 
     def test_read_w_single_key(self):
         ROW_COUNT = 40
@@ -985,7 +987,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             sql += ' ORDER BY eye_d'
         rows = list(snapshot.execute_sql(
             sql, params=params, param_types=param_types))
-        self._check_row_data(rows, expected=expected)
+        self._check_rows_data(rows, expected=expected)
 
     def test_multiuse_snapshot_execute_sql_isolation_strong(self):
         ROW_COUNT = 40
