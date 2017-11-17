@@ -1250,19 +1250,25 @@ class TestBigQuery(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
     def test_query_results_to_dataframe(self):
-        PUBLIC = 'bigquery-public-data'
-        DATASET_ID = 'samples'
-        TABLE_NAME = 'natality'
-        LIMIT = 1000
-        SQL = 'SELECT year, weight_pounds from `{}.{}.{}` LIMIT {}'.format(
-            PUBLIC, DATASET_ID, TABLE_NAME, LIMIT)
+        QUERY = """
+            SELECT id, author, time_ts, dead
+            from `bigquery-public-data.hacker_news.comments`
+            LIMIT 10
+        """
 
-        df = Config.CLIENT.query(SQL).result().to_dataframe()
+        df = Config.CLIENT.query(QUERY).result().to_dataframe()
 
         self.assertIsInstance(df, pandas.DataFrame)
-        self.assertEqual(len(df), LIMIT)  # verify the number of rows
-        self.assertEqual(
-            list(df), ['year', 'weight_pounds'])  # verify the column names
+        self.assertEqual(len(df), 10)  # verify the number of rows
+        column_names = ['id', 'author', 'time_ts', 'dead']
+        self.assertEqual(list(df), column_names)  # verify the column names
+        exp_datatypes = {'id': int, 'author': str,
+                         'time_ts': pandas.Timestamp, 'dead': bool}
+        for index, row in df.iterrows():
+            for col in column_names:
+                # all the schema fields are nullable, so None is acceptable
+                if not row[col] is None:
+                    self.assertIsInstance(row[col], exp_datatypes[col])
 
     def test_query_table_def(self):
         gs_url = self._write_csv_to_storage(
