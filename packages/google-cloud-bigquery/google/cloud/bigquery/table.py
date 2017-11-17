@@ -785,6 +785,47 @@ class Row(object):
     def values(self):
         return self._xxx_values
 
+    def keys(self):
+        """
+        Return keys as of a dict:
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).keys()
+        ['x', 'y']
+        """
+        keys = self._xxx_field_to_index.keys()
+        return keys
+
+    def items(self):
+        """
+        Return items as of a dict:
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).items()
+        [('x', 'a'), ('y', 'b')]
+        """
+        items = [
+            (k, self._xxx_values[i])
+            for k, i
+            in self._xxx_field_to_index.items()
+        ]
+        return items
+
+    def get(self, key, default=None):
+        """
+        Return value under specified key
+        Defaults to None or specified default
+        if key does not exist:
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
+        'a'
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
+        None
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
+        ''
+        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
+        ''
+        """
+        index = self._xxx_field_to_index.get(key)
+        if index is None:
+            return default
+        return self._xxx_values[index]
+
     def __getattr__(self, name):
         value = self._xxx_field_to_index.get(name)
         if value is None:
