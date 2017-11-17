@@ -807,7 +807,7 @@ class Row(object):
         ]
         return items
 
-    def get(self, key, default = None):
+    def get(self, key, default=None):
         """
         Return value under specified key
         Defaults to None or specified default
