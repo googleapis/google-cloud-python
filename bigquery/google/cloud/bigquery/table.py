@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import copy
 import datetime
 import operator
 
@@ -783,43 +784,73 @@ class Row(object):
         self._xxx_field_to_index = field_to_index
 
     def values(self):
-        return self._xxx_values
+        """Return the values included in this row.
+
+        Returns:
+            Sequence[object]: A sequence of length ``len(row)``.
+        """
+        for value in self._xxx_values:
+            yield copy.deepcopy(value)
 
     def keys(self):
+        """Return the keys for using a row as a dict.
+
+        Returns:
+            Sequence[str]: The keys corresponding to the columns of a row
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).keys())
+            ['x', 'y']
         """
-        Return keys as of a dict:
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).keys()
-        ['x', 'y']
-        """
-        keys = self._xxx_field_to_index.keys()
-        return keys
+        return six.iterkeys(self._xxx_field_to_index)
 
     def items(self):
+        """Return items as ``(key, value)`` pairs.
+
+        Returns:
+            Sequence[Tuple[str, object]]:
+                The ``(key, value)`` pairs representing this row.
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).items())
+            [('x', 'a'), ('y', 'b')]
         """
-        Return items as of a dict:
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).items()
-        [('x', 'a'), ('y', 'b')]
-        """
-        items = [
-            (k, self._xxx_values[i])
-            for k, i
-            in self._xxx_field_to_index.items()
-        ]
-        return items
+        for key, index in six.iteritems(self._xxx_field_to_index):
+            yield (key, copy.deepcopy(self._xxx_values[index]))
 
     def get(self, key, default=None):
-        """
-        Return value under specified key
-        Defaults to None or specified default
-        if key does not exist:
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
-        'a'
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
-        None
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
-        ''
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
-        ''
+        """Return a value for key, with a default value if it does not exist.
+
+        Args:
+            key (str): The key of the column to access
+            default (object):
+                The default value to use if the key does not exist. (Defaults
+                to :data:`None`.)
+
+        Returns:
+            object:
+                The value associated with the provided key, or a default value.
+
+        Examples:
+            When the key exists, the value associated with it is returned.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
+            'a'
+
+            The default value is ``None`` when the key does not exist.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
+            None
+
+            The default value can be overrided with the ``default`` parameter.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
+            ''
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
+            ''
         """
         index = self._xxx_field_to_index.get(key)
         if index is None:
