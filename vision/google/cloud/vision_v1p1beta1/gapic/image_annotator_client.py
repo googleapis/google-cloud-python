@@ -14,13 +14,13 @@
 #
 # EDITING INSTRUCTIONS
 # This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/cloud/vision/v1/image_annotator.proto,
+# https://github.com/google/googleapis/blob/master/google/cloud/vision/v1p1beta1/image_annotator.proto,
 # and updates to that file get reflected here through a refresh process.
 # For the short term, the refresh process will only be runnable by Google engineers.
 #
 # The only allowed edits are to method and file documentation. A 3-way
 # merge preserves those additions if the generated source changes.
-"""Accesses the google.cloud.vision.v1 ImageAnnotator API."""
+"""Accesses the google.cloud.vision.v1p1beta1 ImageAnnotator API."""
 
 import pkg_resources
 
@@ -29,9 +29,9 @@ import google.api_core.gapic_v1.config
 import google.api_core.gapic_v1.method
 import google.api_core.grpc_helpers
 
-from google.cloud.vision_v1.gapic import enums
-from google.cloud.vision_v1.gapic import image_annotator_client_config
-from google.cloud.vision_v1.proto import image_annotator_pb2
+from google.cloud.vision_v1p1beta1.gapic import enums
+from google.cloud.vision_v1p1beta1.gapic import image_annotator_client_config
+from google.cloud.vision_v1p1beta1.proto import image_annotator_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-vision', ).version
@@ -56,7 +56,7 @@ class ImageAnnotatorClient(object):
 
     # The name of the interface for this client. This is the key used to find
     # method configuration in the client_config dictionary
-    _INTERFACE_NAME = ('google.cloud.vision.v1.ImageAnnotator')
+    _INTERFACE_NAME = ('google.cloud.vision.v1p1beta1.ImageAnnotator')
 
     def __init__(self,
                  channel=None,
@@ -123,18 +123,18 @@ class ImageAnnotatorClient(object):
         Run image detection and annotation for a batch of images.
 
         Example:
-            >>> from google.cloud import vision_v1
+            >>> from google.cloud import vision_v1p1beta1
             >>>
-            >>> client = vision_v1.ImageAnnotatorClient()
+            >>> client = vision_v1p1beta1.ImageAnnotatorClient()
             >>>
             >>> requests = []
             >>>
             >>> response = client.batch_annotate_images(requests)
 
         Args:
-            requests (list[Union[dict, ~google.cloud.vision_v1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
+            requests (list[Union[dict, ~google.cloud.vision_v1p1beta1.types.AnnotateImageRequest]]): Individual image annotation requests for this batch.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.vision_v1.types.AnnotateImageRequest`
+                message :class:`~google.cloud.vision_v1p1beta1.types.AnnotateImageRequest`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -143,7 +143,7 @@ class ImageAnnotatorClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.vision_v1.types.BatchAnnotateImagesResponse` instance.
+            A :class:`~google.cloud.vision_v1p1beta1.types.BatchAnnotateImagesResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
