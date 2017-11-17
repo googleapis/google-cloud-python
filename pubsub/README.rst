@@ -9,7 +9,7 @@ Python Client for Google Cloud Pub / Sub
 
 -  `Documentation`_
 
-.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/usage.html
+.. _Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/pubsub/
 
 Quick Start
 -----------
