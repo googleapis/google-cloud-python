@@ -15,8 +15,8 @@
 """GAX Wrapper for interacting with the Stackdriver Trace API."""
 
 from google.api_core import page_iterator
-from google.cloud.gapic.trace.v1 import trace_service_client
-from google.cloud.proto.devtools.cloudtrace.v1 import trace_pb2
+from google.cloud.trace_v1.gapic import trace_service_client
+from google.cloud.trace_v1.proto import trace_pb2
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.cloud._helpers import make_secure_channel
@@ -33,7 +33,7 @@ class _TraceAPI(object):
     cloudtrace.v1
 
     :type gax_api:
-        :class:`~google.cloud.gapic.trace.v1.trace_service_client.
+        :class:`~google.cloud.trace_v1.gapic.trace_service_client.
                TraceServiceClient`
     :param gax_api: API object used to make GAX requests.
 
@@ -99,7 +99,7 @@ class _TraceAPI(object):
         :param project_id: ID of the Cloud project where the trace data is
                            stored.
 
-        :type view: :class:`google.cloud.gapic.trace.v1.enums.
+        :type view: :class:`google.cloud.trace_v1.gapic.enums.
                            ListTracesRequest.ViewType`
         :param view: (Optional) Type of data returned for traces in the list.
                      Default is ``MINIMAL``.
@@ -154,7 +154,7 @@ class _TraceAPI(object):
 def _parse_trace_pb(trace_pb):
     """Parse a ``Trace`` protobuf to a dictionary.
 
-    :type trace_pb: :class:`google.cloud.proto.devtools.cloudtrace.v1.
+    :type trace_pb: :class:`google.cloud.trace_v1.proto.
                             trace_pb2.Trace`
     :param trace_pb: A trace protobuf instance.
 
@@ -173,7 +173,7 @@ def _item_to_mapping(iterator, trace_pb):
     :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
-    :type trace_pb: :class:`google.cloud.proto.devtools.cloudtrace.v1.
+    :type trace_pb: :class:`google.cloud.trace_v1.proto.
                             trace_pb2.Trace`
     :param trace_pb: A trace protobuf instance.
     """
@@ -206,7 +206,7 @@ def _traces_mapping_to_pb(traces_mapping):
     :type traces_mapping: dict
     :param traces_mapping: A trace mapping.
 
-    :rtype: class:`google.cloud.proto.devtools.cloudtrace.v1.trace_pb2.Traces`
+    :rtype: class:`google.cloud.trace_v1.proto.trace_pb2.Traces`
     :returns: The converted protobuf type traces.
     """
     traces_pb = trace_pb2.Traces()

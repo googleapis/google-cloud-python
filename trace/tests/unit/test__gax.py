@@ -41,8 +41,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertIs(api.client, client)
 
     def test_patch_traces(self):
-        from google.cloud.gapic.trace.v1 import trace_service_client
-        from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
+        from google.cloud.trace_v1.gapic import trace_service_client
+        from google.cloud.trace_v1.proto.trace_pb2 import (
             TraceSpan, Trace, Traces)
         from google.cloud.trace._gax import _traces_mapping_to_pb
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -103,7 +103,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertIsInstance(span, TraceSpan)
 
     def test_get_trace(self):
-        from google.cloud.gapic.trace.v1 import trace_service_client
+        from google.cloud.trace_v1.gapic import trace_service_client
 
         trace_id = 'test_trace_id'
 
@@ -159,8 +159,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         from google.cloud._helpers import _rfc3339_to_datetime
         from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
-        from google.cloud.gapic.trace.v1 import trace_service_client
-        from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.cloud.trace_v1.gapic import trace_service_client
+        from google.cloud.trace_v1.gapic.enums import ListTracesRequest as Enum
         from google.gax import INITIAL_PAGE
 
         trace_id = 'test_trace_id'
@@ -236,8 +236,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         from google.cloud._helpers import _rfc3339_to_datetime
         from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
-        from google.cloud.gapic.trace.v1 import trace_service_client
-        from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.cloud.trace_v1.gapic import trace_service_client
+        from google.cloud.trace_v1.gapic.enums import ListTracesRequest as Enum
 
         trace_id = 'test_trace_id'
         span_id = 1234
@@ -320,7 +320,7 @@ class Test__parse_trace_pb(unittest.TestCase):
         return _parse_trace_pb(*args, **kwargs)
 
     def test_registered_type(self):
-        from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
+        from google.cloud.trace_v1.proto.trace_pb2 import (
             TraceSpan, Trace)
         from google.protobuf.timestamp_pb2 import Timestamp
 

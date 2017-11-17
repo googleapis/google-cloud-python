@@ -39,7 +39,7 @@ from google.protobuf import wrappers_pb2
 from google.rpc import status_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-cloudtrace', ).version
+    'google-cloud-trace', ).version
 
 
 class TraceServiceClient(object):
