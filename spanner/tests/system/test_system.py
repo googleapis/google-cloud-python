@@ -201,6 +201,52 @@ class _TestData(object):
     )
     ALL = KeySet(all_=True)
     SQL = 'SELECT * FROM contacts ORDER BY contact_id'
+    DATABASE_NAME = 'test_sessions' + unique_resource_id('_')
+    ALL_TYPES = (BOOL, BYTES, DATE, FLOAT64, INT64, STRING, TIMESTAMP)
+    ALL_TYPES_TABLE = 'all_types'
+    ALL_TYPES_COLUMNS = (
+        'list_goes_on',
+        'are_you_sure',
+        'raw_data',
+        'hwhen',
+        'approx_value',
+        'eye_d',
+        'description',
+        'exactly_hwhen',
+    )
+    SOME_DATE = datetime.date(2011, 1, 17)
+    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
+    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
+    BYTES_1 = b'Ymlu'
+    BYTES_2 = b'Ym9vdHM='
+    ALL_TYPES_ROWDATA = (
+        ([], False, None, None, 0.0, None, None, None),
+        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
+        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
+        ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
+        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
+        ([], False, None, None, float('nan'), 1207, u'owl', None),
+        ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
+    )
+
+    @staticmethod
+    def _row_data(max_index):
+        for index in range(max_index):
+            yield [
+                index,
+                'First%09d' % (index,),
+                'Last%09d' % (max_index - index),
+                'test-%09d@example.com' % (index,),
+            ]
+
+    def _check_sql_results(
+            self, snapshot, sql, params, param_types, expected, order=True):
+        if order and 'ORDER' not in sql:
+            sql += ' ORDER BY eye_d'
+        rows = list(snapshot.execute_sql(
+            sql, params=params, param_types=param_types))
+        self._check_row_data(rows, expected=expected)
 
     def _assert_timestamp(self, value, nano_value):
         self.assertIsInstance(value, datetime.datetime)
@@ -234,6 +280,24 @@ class _TestData(object):
                 else:
                     self.assertEqual(found_cell, expected_cell)
 
+    def _set_up_table(self, row_count, db=None):
+        if db is None:
+            db = self._db
+            retry = RetryInstanceState(_has_all_ddl)
+            retry(db.reload)()
+
+        session = db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        def _unit_of_work(transaction, test):
+            transaction.delete(test.TABLE, test.ALL)
+            transaction.insert(
+                test.TABLE, test.COLUMNS, test._row_data(row_count))
+
+        committed = session.run_in_transaction(_unit_of_work, test=self)
+
+        return session, committed
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
     DATABASE_NAME = 'test_database' + unique_resource_id('_')
@@ -376,33 +440,6 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
 
 class TestSessionAPI(unittest.TestCase, _TestData):
-    DATABASE_NAME = 'test_sessions' + unique_resource_id('_')
-    ALL_TYPES_TABLE = 'all_types'
-    ALL_TYPES_COLUMNS = (
-        'list_goes_on',
-        'are_you_sure',
-        'raw_data',
-        'hwhen',
-        'approx_value',
-        'eye_d',
-        'description',
-        'exactly_hwhen',
-    )
-    SOME_DATE = datetime.date(2011, 1, 17)
-    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
-    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
-    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
-    BYTES_1 = b'Ymlu'
-    BYTES_2 = b'Ym9vdHM='
-    ALL_TYPES_ROWDATA = (
-        ([], False, None, None, 0.0, None, None, None),
-        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
-        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
-        ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
-        ([], False, None, None, float('nan'), 1207, u'owl', None),
-        ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
-    )
 
     @classmethod
     def setUpClass(cls):
@@ -698,36 +735,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(
             rows, expected=[[trigger.KEY1, 1], [trigger.KEY2, 1]])
 
-    @staticmethod
-    def _row_data(max_index):
-        for index in range(max_index):
-            yield [
-                index,
-                'First%09d' % (index,),
-                'Last%09d' % (max_index - index),
-                'test-%09d@example.com' % (index,),
-            ]
-
-    def _set_up_table(self, row_count, db=None):
-
-        if db is None:
-            db = self._db
-            retry = RetryInstanceState(_has_all_ddl)
-            retry(db.reload)()
-
-        session = db.session()
-        session.create()
-        self.to_delete.append(session)
-
-        def _unit_of_work(transaction, test):
-            transaction.delete(test.TABLE, test.ALL)
-            transaction.insert(
-                test.TABLE, test.COLUMNS, test._row_data(row_count))
-
-        committed = session.run_in_transaction(_unit_of_work, test=self)
-
-        return session, committed
-
     def test_snapshot_read_w_various_staleness(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
@@ -956,14 +963,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 
-    def _check_sql_results(
-            self, snapshot, sql, params, param_types, expected, order=True):
-        if order and 'ORDER' not in sql:
-            sql += ' ORDER BY eye_d'
-        rows = list(snapshot.execute_sql(
-            sql, params=params, param_types=param_types))
-        self._check_row_data(rows, expected=expected)
-
     def test_multiuse_snapshot_execute_sql_isolation_strong(self):
         ROW_COUNT = 40
         SQL = 'SELECT * FROM {}'.format(self.TABLE)
@@ -1000,7 +999,28 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 [[['a', 1], ['b', 2]]],
             ])
 
-    def test_execute_sql_w_query_param(self):
+class TestQueryParams(unittest.TestCase, _TestData):
+
+    @classmethod
+    def setUpClass(cls):
+        pool = BurstyPool()
+        cls._db = Config.INSTANCE.database(
+            cls.DATABASE_NAME, ddl_statements=DDL_STATEMENTS, pool=pool)
+        operation = cls._db.create()
+        operation.result(30)  # raises on failure / timeout.
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._db.drop()
+
+    def setUp(self):
+        self.to_delete = []
+
+    def tearDown(self):
+        for doomed in self.to_delete:
+            doomed.delete()
+
+    def test_none(self):
         session = self._db.session()
         session.create()
         self.to_delete.append(session)
@@ -1015,8 +1035,32 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         snapshot = session.snapshot(
             read_timestamp=batch.committed, multi_use=True)
 
+        for index in range(7):
+            self._check_sql_results(
+                snapshot,
+                sql=('SELECT list_goes_on FROM all_types WHERE %s = @val'
+                     % self.ALL_TYPES_COLUMNS[index + 1]),
+                params={'val': None},
+                param_types={'val': Type(code=self.ALL_TYPES[index])},
+                expected=[],
+            )
+
+    def test_execute_sql_w_query_param(self):
         # Cannot equality-test array values.  See below for a test w/
         # array of IDs.
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
 
         self._check_sql_results(
             snapshot,
@@ -1066,14 +1110,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             params={'my_id': 19},
             param_types={'my_id': Type(code=INT64)},
             expected=[(u'dog',)],
-        )
-
-        self._check_sql_results(
-            snapshot,
-            sql='SELECT description FROM all_types WHERE eye_d = @my_id',
-            params={'my_id': None},
-            param_types={'my_id': Type(code=INT64)},
-            expected=[],
         )
 
         self._check_sql_results(
