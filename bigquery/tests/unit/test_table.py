@@ -817,9 +817,6 @@ class TestTableListItem(unittest.TestCase):
                 'tableId': table_id,
             },
             'type': 'VIEW',
-            'view': {
-                'useLegacySql': False,
-            },
         }
 
         table = self._make_one(resource)
@@ -833,7 +830,8 @@ class TestTableListItem(unittest.TestCase):
         self.assertEqual(table.reference.dataset_id, dataset_id)
         self.assertEqual(table.reference.table_id, table_id)
         self.assertEqual(table.table_type, 'VIEW')
-        self.assertFalse(table.view_use_legacy_sql)
+        # Server default for useLegacySql is True.
+        self.assertTrue(table.view_use_legacy_sql)
 
 
 class TestRow(unittest.TestCase):

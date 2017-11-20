@@ -34,6 +34,25 @@ _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
 _MARKER = object()
 
 
+def _view_use_legacy_sql_getter(table):
+    """Specifies whether to execute the view with Legacy or Standard SQL.
+
+    If this table is not a view, None is returned.
+
+    Returns:
+        bool: True if the view is using legacy SQL, or None if not a view
+    """
+    view = table._properties.get('view')
+    if view is not None:
+        # The server-side default for useLegacySql is True.
+        return view.get('useLegacySql', True)
+    # In some cases, such as in a table list no view object is present, but the
+    # resource still represents a view. Use the type as a fallback.
+    if table.table_type == 'VIEW':
+        # The server-side default for useLegacySql is True.
+        return True
+
+
 class TableReference(object):
     """TableReferences are pointers to tables.
 
@@ -531,23 +550,7 @@ class Table(object):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
 
-    @property
-    def view_use_legacy_sql(self):
-        """Specifies whether to execute the view with Legacy or Standard SQL.
-
-        The default is False for views (use Standard SQL).
-        If this table is not a view, None is returned.
-
-        :rtype: bool or ``NoneType``
-        :returns: The boolean for view.useLegacySql, or None if not a view.
-        """
-        view = self._properties.get('view')
-        if view is not None:
-            # useLegacySql is never missing from the view dict if this table
-            # was created client-side, because the view_query setter populates
-            # it. So a missing or None can only come from the server, whose
-            # default is True.
-            return view.get('useLegacySql', True)
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
     @view_use_legacy_sql.setter
     def view_use_legacy_sql(self, value):
@@ -829,19 +832,7 @@ class TableListItem(object):
         """
         return self._properties.get('friendlyName')
 
-    @property
-    def view_use_legacy_sql(self):
-        """Specifies whether to execute the view with Legacy or Standard SQL.
-
-        If this table is not a view, None is returned.
-
-        Returns:
-            bool: True if the view is using legacy SQL, or None if not a view
-        """
-        view = self._properties.get('view', {})
-        if self.table_type == 'VIEW':
-            # The server-side default for useLegacySql is True.
-            return view.get('useLegacySql', True)
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
 
 def _row_from_mapping(mapping, schema):
