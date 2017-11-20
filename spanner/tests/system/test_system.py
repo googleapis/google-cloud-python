@@ -1132,6 +1132,54 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             order=False,
         )
 
+    def test_execute_sql_select_1(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
+
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT 1 FROM all_types',
+            params={},
+            param_types={},
+            expected=[(1,)] * len(self.ALL_TYPES_ROWDATA),
+        )
+
+    def test_execute_sql_invalid_query(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        with session.batch() as batch:
+            batch.delete(self.ALL_TYPES_TABLE, self.ALL)
+            batch.insert(
+                self.ALL_TYPES_TABLE,
+                self.ALL_TYPES_COLUMNS,
+                self.ALL_TYPES_ROWDATA)
+
+        snapshot = session.snapshot(
+            read_timestamp=batch.committed, multi_use=True)
+
+        with self.assertRaisesRegexp(GrpcRendezvous,
+                                     '.*INVALID_ARGUMENT.*'):
+            self._check_sql_results(
+                snapshot,
+                sql='SELECT 1* FROM all_types',
+                params={},
+                param_types={},
+                expected=[()],
+            )
+
     def test_execute_sql_w_query_param_transfinite(self):
         session = self._db.session()
         session.create()
