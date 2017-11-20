@@ -31,27 +31,28 @@ from google.resumable_media.requests import ResumableUpload
 from google.api_core import page_iterator
 from google.api_core.exceptions import GoogleAPICallError
 from google.api_core.exceptions import NotFound
-
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
+
+from google.cloud.bigquery._helpers import DEFAULT_RETRY
+from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
+from google.cloud.bigquery._helpers import _field_to_index_mapping
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
+from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery.table import Table, _TABLE_HAS_NO_SCHEMA
-from google.cloud.bigquery.table import TableListItem
-from google.cloud.bigquery.table import TableReference
-from google.cloud.bigquery.table import _row_from_mapping
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob, QueryJobConfig
 from google.cloud.bigquery.query import QueryResults
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
-from google.cloud.bigquery._helpers import _field_to_index_mapping
-from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery._helpers import DEFAULT_RETRY
-from google.cloud.bigquery._helpers import _snake_to_camel_case
+from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableListItem
+from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
+from google.cloud.bigquery.table import _row_from_mapping
 
 
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
