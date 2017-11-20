@@ -717,13 +717,21 @@ class Table(object):
 
 
 class TableListItem(object):
-    """Read-only table resource object with a subset of table properties.
+    """A read-only table resource from a list operation.
 
-    See
-    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
+    For performance reasons, the BigQuery API only includes some of the table
+    properties when listing tables. Notably,
+    :attr:`google.cloud.bigquery.table.Table.schema` and
+    :attr:`google.cloud.bigquery.table.Table.num_rows` are missing.
+
+    For a full list of the properties that the BigQuery API returns, see the
+    `REST documentation for tables.list
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list>`.
+
 
     Args:
-        resource (dict): A table resource object from a table list response.
+        resource (dict):
+            A table-like resource object from a table list response.
     """
 
     def __init__(self, resource):
