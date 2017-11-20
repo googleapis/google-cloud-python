@@ -127,26 +127,23 @@ class FieldPath(object):
 
     def __init__(self, *parts):
         for part in parts:
-            try:
-                string = basestring
-            except NameError:
-                string = str
-            if not isinstance(part, string):
+            if not isinstance(part, six.string_types):
                 raise ValueError("One or more components is not a string.")
         self.parts = tuple(parts)
 
     @staticmethod
     def from_string(string):
-        """ Creates a FieldPath from an unicode string representation.
+        """ Creates a FieldPath from a unicode string representation.
 
         Args:
             :type string: str
-            :param string: An unicode string which cannot contain
+            :param string: A unicode string which cannot contain
                            `~*/[]` characters, cannot exceed 1500 bytes,
                            and cannot be empty.
 
         Returns:
-            A :class: `FieldPath` instance with the string as path.
+            A :class: `FieldPath` instance with the string split on "."
+            as arguments to `FieldPath`.
         """
         invalid_characters = '~*/[]'
         string = string.split('.')
