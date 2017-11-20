@@ -553,6 +553,22 @@ def test_delete_table(client, to_delete):
     # [END delete_table]
 
 
+def test_client_simple_query(client):
+    """Run a simple query."""
+
+    # [START client_simple_query]
+    QUERY = (
+        'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
+        'WHERE state = "TX" '
+        'LIMIT 100')
+    query_job = client.query(QUERY)
+
+    for row in query_job:  # API request
+        # Row values can be accessed by field name or index
+        assert row[0] == row.name == row['name']
+    # [END client_simple_query]
+
+
 def test_client_query(client):
     """Run a query"""
 
@@ -603,23 +619,6 @@ def test_client_query_w_param(client):
     assert row[0] == row.name == row['name']
     assert row.state == 'TX'
     # [END client_query_w_param]
-
-
-def test_client_query_rows(client):
-    """Run a simple query."""
-
-    # [START client_query_rows]
-    QUERY = (
-        'SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` '
-        'WHERE state = "TX" '
-        'LIMIT 100')
-    TIMEOUT = 30  # in seconds
-    rows = list(client.query_rows(QUERY, timeout=TIMEOUT))  # API request
-
-    assert len(rows) == 100
-    row = rows[0]
-    assert row[0] == row.name == row['name']
-    # [END client_query_rows]
 
 
 def test_client_list_jobs(client):
