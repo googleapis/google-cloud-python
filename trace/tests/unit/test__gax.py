@@ -41,8 +41,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertIs(api.client, client)
 
     def test_patch_traces(self):
-        from google.cloud.gapic.trace.v1 import trace_service_client
-        from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
+        from google.cloud.trace_v1.gapic import trace_service_client
+        from google.cloud.trace_v1.proto.trace_pb2 import (
             TraceSpan, Trace, Traces)
         from google.cloud.trace._gax import _traces_mapping_to_pb
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -103,7 +103,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         self.assertIsInstance(span, TraceSpan)
 
     def test_get_trace(self):
-        from google.cloud.gapic.trace.v1 import trace_service_client
+        from google.cloud.trace_v1.gapic import trace_service_client
 
         trace_id = 'test_trace_id'
 
@@ -159,8 +159,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         from google.cloud._helpers import _rfc3339_to_datetime
         from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
-        from google.cloud.gapic.trace.v1 import trace_service_client
-        from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.cloud.trace_v1.gapic import trace_service_client
+        from google.cloud.trace_v1.gapic.enums import ListTracesRequest as Enum
         from google.gax import INITIAL_PAGE
 
         trace_id = 'test_trace_id'
@@ -236,8 +236,8 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         from google.cloud._helpers import _rfc3339_to_datetime
         from google.cloud._helpers import UTC
         from google.cloud._testing import _GAXPageIterator
-        from google.cloud.gapic.trace.v1 import trace_service_client
-        from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.cloud.trace_v1.gapic import trace_service_client
+        from google.cloud.trace_v1.gapic.enums import ListTracesRequest as Enum
 
         trace_id = 'test_trace_id'
         span_id = 1234
@@ -320,7 +320,7 @@ class Test__parse_trace_pb(unittest.TestCase):
         return _parse_trace_pb(*args, **kwargs)
 
     def test_registered_type(self):
-        from google.cloud.proto.devtools.cloudtrace.v1.trace_pb2 import (
+        from google.cloud.trace_v1.proto.trace_pb2 import (
             TraceSpan, Trace)
         from google.protobuf.timestamp_pb2 import Timestamp
 
@@ -388,42 +388,24 @@ class Test_make_gax_trace_api(unittest.TestCase):
 
         credentials = object()
         client = mock.Mock(_credentials=credentials, spec=['_credentials'])
-        channels = []
-        channel_args = []
         generated_api_kwargs = []
-        channel_obj = object()
         generated = object()
 
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
-        def generated_api(channel=None, **kwargs):
-            channels.append(channel)
+        def generated_api(**kwargs):
             generated_api_kwargs.append(kwargs)
             return generated
 
         host = 'foo.apis.invalid'
         generated_api.SERVICE_ADDRESS = host
 
-        patch_channel = mock.patch(
-            'google.cloud.trace._gax.make_secure_channel',
-            new=make_channel)
-
         patch_api = mock.patch(
             'google.cloud.trace._gax.trace_service_client.TraceServiceClient',
             new=generated_api)
 
         with patch_api:
-            with patch_channel:
-                trace_api = self._call_fut(client)
-
-        self.assertEqual(channels, [channel_obj])
-        self.assertEqual(channel_args,
-                         [(credentials, DEFAULT_USER_AGENT, host)])
+            trace_api = self._call_fut(client)
 
         self.assertEqual(len(generated_api_kwargs), 1)
-        self.assertEqual(generated_api_kwargs[0]['lib_name'], 'gccl')
 
         self.assertIsInstance(trace_api, _TraceAPI)
         self.assertIs(trace_api._gax_api, generated)

@@ -116,7 +116,7 @@ class Client(ClientWithProject):
         :param project_id: (Optional) ID of the Cloud project where the trace
                            data is stored.
 
-        :type view: :class:`google.cloud.gapic.trace.v1.enums.
+        :type view: :class:`google.cloud.trace_v1.gapic.enums.
                             ListTracesRequest.ViewType`
         :param view: (Optional) Type of data returned for traces in the list.
                      Default is ``MINIMAL``.

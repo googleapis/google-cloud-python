@@ -12,14 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from google.cloud.gapic.trace.v1.trace_service_client import TraceServiceClient
-from google.cloud.gapic.trace.v1 import enums
+from __future__ import absolute_import
 
 from google.cloud.trace_v1 import types
+from google.cloud.trace_v1.gapic import enums
+from google.cloud.trace_v1.gapic import trace_service_client
+
+
+class TraceServiceClient(trace_service_client.TraceServiceClient):
+    __doc__ = trace_service_client.TraceServiceClient.__doc__
+    enums = enums
 
 
 __all__ = (
     'enums',
-    'TraceServiceClient',
     'types',
-)
+    'TraceServiceClient', )
