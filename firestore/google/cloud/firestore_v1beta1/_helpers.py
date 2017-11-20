@@ -123,17 +123,27 @@ class FieldPath(object):
         parts: (one or more strings)
             Indicating path of the key to be used.
     """
-    pattern = re.compile(r'[A-Za-z_][A-Za-z_0-9]*')
+    simple_field_name = re.compile(r'[A-Za-z_][A-Za-z_0-9]*')
 
     def __init__(self, *parts):
         for part in parts:
-            if not isinstance(part, str):
-                raise ValueError("One or more components is not a string")
+            try:
+                string = basestring
+            except NameError:
+                string = str
+            if not isinstance(part, string):
+                raise ValueError("One or more components is not a string.")
         self.parts = tuple(parts)
 
-    @classmethod
-    def from_string(cls, string):
-        """ Creates a FieldPath with a string representation.
+    @staticmethod
+    def from_string(string):
+        """ Creates a FieldPath from an unicode string representation.
+
+        Args:
+            :type string: str
+            :param string: An unicode string which cannot contain
+                           `~*/[]` characters, cannot exceed 1500 bytes,
+                           and cannot be empty.
 
         Returns:
             A :class: `FieldPath` instance with the string as path.
@@ -142,17 +152,20 @@ class FieldPath(object):
         string = string.split('.')
         for part in string:
             if not part or part in invalid_characters:
-                raise ValueError("Invalid characters or no string present")
+                raise ValueError("No string or invalid characters in string.")
         return FieldPath(*string)
 
     def to_api_repr(self):
-        """ Returns string representation of the FieldPath
+        """ Returns quoted string representation of the FieldPath
 
-        Returns: string representation of the path stored within
+        Returns: :rtype: str
+            Quoted string representation of the path stored
+            within this FieldPath conforming to the Firestore API
+            specification
         """
         ans = []
         for part in self.parts:
-            match = re.match(self.pattern, part)
+            match = re.match(self.simple_field_name, part)
             if match:
                 ans.append(part)
             else:
@@ -164,7 +177,9 @@ class FieldPath(object):
         return hash(self.to_api_repr())
 
     def __eq__(self, other):
-        return self.parts == other.parts
+        if isinstance(other, FieldPath):
+            return self.parts == other.parts
+        return NotImplemented
 
 
 class FieldPathHelper(object):
