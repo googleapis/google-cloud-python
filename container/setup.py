@@ -21,7 +21,7 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 
 setup(
     name='google-cloud-container',
-    version='0.15.4',
+    version='0.1.0',
     author='Google Inc',
     author_email='googleapis-packages@google.com',
     classifiers=[
@@ -44,5 +44,5 @@ setup(
     install_requires=install_requires,
     license='Apache 2.0',
     packages=find_packages(),
-    namespace_packages=['google'],
+    namespace_packages=['google', 'google.cloud'],
     url='https://github.com/googleapis/googleapis')
