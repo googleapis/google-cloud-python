@@ -721,8 +721,8 @@ class TableListItem(object):
 
     For performance reasons, the BigQuery API only includes some of the table
     properties when listing tables. Notably,
-    :attr:`google.cloud.bigquery.table.Table.schema` and
-    :attr:`google.cloud.bigquery.table.Table.num_rows` are missing.
+    :attr:`~google.cloud.bigquery.table.Table.schema` and
+    :attr:`~google.cloud.bigquery.table.Table.num_rows` are missing.
 
     For a full list of the properties that the BigQuery API returns, see the
     `REST documentation for tables.list
