@@ -96,7 +96,7 @@ def _create_single_feature_method(feature, enum):
     feature_value = {'type': enum.__dict__[feature]}
 
     # Define the function to be returned.
-    def inner(self, image, options=None, **kwargs):
+    def inner(self, image, retry=None, timeout=None, **kwargs):
         """Return a single feature annotation for the given image.
 
         Intended for use with functools.partial, to create the particular
@@ -107,7 +107,7 @@ def _create_single_feature_method(feature, enum):
             features=[feature_value],
             **kwargs
         )
-        return self.annotate_image(request, options=options)
+        return self.annotate_image(request, retry=retry, timeout=timeout)
 
     # Set the appropriate function metadata.
     inner.__name__ = fx_name
