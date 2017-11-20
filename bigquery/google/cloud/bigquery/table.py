@@ -726,7 +726,7 @@ class TableListItem(object):
 
     For a full list of the properties that the BigQuery API returns, see the
     `REST documentation for tables.list
-    <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list>`.
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list>`_.
 
 
     Args:
