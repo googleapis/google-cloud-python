@@ -34,6 +34,25 @@ _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
 _MARKER = object()
 
 
+def _view_use_legacy_sql_getter(table):
+    """Specifies whether to execute the view with Legacy or Standard SQL.
+
+    If this table is not a view, None is returned.
+
+    Returns:
+        bool: True if the view is using legacy SQL, or None if not a view
+    """
+    view = table._properties.get('view')
+    if view is not None:
+        # The server-side default for useLegacySql is True.
+        return view.get('useLegacySql', True)
+    # In some cases, such as in a table list no view object is present, but the
+    # resource still represents a view. Use the type as a fallback.
+    if table.table_type == 'VIEW':
+        # The server-side default for useLegacySql is True.
+        return True
+
+
 class TableReference(object):
     """TableReferences are pointers to tables.
 
@@ -531,23 +550,7 @@ class Table(object):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
 
-    @property
-    def view_use_legacy_sql(self):
-        """Specifies whether to execute the view with Legacy or Standard SQL.
-
-        The default is False for views (use Standard SQL).
-        If this table is not a view, None is returned.
-
-        :rtype: bool or ``NoneType``
-        :returns: The boolean for view.useLegacySql, or None if not a view.
-        """
-        view = self._properties.get('view')
-        if view is not None:
-            # useLegacySql is never missing from the view dict if this table
-            # was created client-side, because the view_query setter populates
-            # it. So a missing or None can only come from the server, whose
-            # default is True.
-            return view.get('useLegacySql', True)
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
     @view_use_legacy_sql.setter
     def view_use_legacy_sql(self, value):
@@ -711,6 +714,133 @@ class Table(object):
                 api_field = _snake_to_camel_case(f)
                 resource[api_field] = getattr(self, f)
         return resource
+
+
+class TableListItem(object):
+    """A read-only table resource from a list operation.
+
+    For performance reasons, the BigQuery API only includes some of the table
+    properties when listing tables. Notably,
+    :attr:`~google.cloud.bigquery.table.Table.schema` and
+    :attr:`~google.cloud.bigquery.table.Table.num_rows` are missing.
+
+    For a full list of the properties that the BigQuery API returns, see the
+    `REST documentation for tables.list
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list>`_.
+
+
+    Args:
+        resource (dict):
+            A table-like resource object from a table list response.
+    """
+
+    def __init__(self, resource):
+        self._properties = resource
+
+    @property
+    def project(self):
+        """The project ID of the project this table belongs to.
+
+        Returns:
+            str: the project ID of the table.
+        """
+        return self._properties.get('tableReference', {}).get('projectId')
+
+    @property
+    def dataset_id(self):
+        """The dataset ID of the dataset this table belongs to.
+
+        Returns:
+            str: the dataset ID of the table.
+        """
+        return self._properties.get('tableReference', {}).get('datasetId')
+
+    @property
+    def table_id(self):
+        """The table ID.
+
+        Returns:
+            str: the table ID.
+        """
+        return self._properties.get('tableReference', {}).get('tableId')
+
+    @property
+    def reference(self):
+        """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
+        this table.
+
+        Returns:
+            google.cloud.bigquery.table.TableReference: pointer to this table
+        """
+        from google.cloud.bigquery import dataset
+
+        dataset_ref = dataset.DatasetReference(self.project, self.dataset_id)
+        return TableReference(dataset_ref, self.table_id)
+
+    @property
+    def labels(self):
+        """Labels for the table.
+
+        This method always returns a dict. To change a table's labels,
+        modify the dict, then call ``Client.update_table``. To delete a
+        label, set its value to ``None`` before updating.
+
+        Returns:
+            Map[str, str]: A dictionary of the the table's labels
+        """
+        return self._properties.get('labels', {})
+
+    @property
+    def full_table_id(self):
+        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+
+        Returns:
+            str: The fully-qualified ID of the table
+        """
+        return self._properties.get('id')
+
+    @property
+    def table_type(self):
+        """The type of the table.
+
+        Possible values are "TABLE", "VIEW", or "EXTERNAL".
+
+        Returns:
+            str: The kind of table
+        """
+        return self._properties.get('type')
+
+    @property
+    def partitioning_type(self):
+        """Time partitioning of the table.
+
+        Returns:
+            str:
+                Type of partitioning if the table is partitioned, None
+                otherwise.
+        """
+        return self._properties.get('timePartitioning', {}).get('type')
+
+    @property
+    def partition_expiration(self):
+        """Expiration time in ms for a partition
+
+        Returns:
+            int: The time in ms for partition expiration
+        """
+        return int(
+            self._properties.get('timePartitioning', {}).get('expirationMs'))
+
+    @property
+    def friendly_name(self):
+        """Title of the table.
+
+        Returns:
+            str: The name as set by the user, or None (the default)
+        """
+        return self._properties.get('friendlyName')
+
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
 
 def _row_from_mapping(mapping, schema):

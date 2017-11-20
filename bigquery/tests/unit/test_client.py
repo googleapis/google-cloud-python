@@ -1002,7 +1002,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_dataset_tables_defaults(self):
-        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TableListItem
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
@@ -1039,7 +1039,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertIsInstance(found, Table)
+            self.assertIsInstance(found, TableListItem)
             self.assertEqual(found.full_table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertEqual(token, TOKEN)
@@ -1050,7 +1050,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_dataset_tables_explicit(self):
-        from google.cloud.bigquery.table import Table
+        from google.cloud.bigquery.table import TableListItem
 
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
@@ -1087,7 +1087,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(tables), len(DATA['tables']))
         for found, expected in zip(tables, DATA['tables']):
-            self.assertIsInstance(found, Table)
+            self.assertIsInstance(found, TableListItem)
             self.assertEqual(found.full_table_id, expected['id'])
             self.assertEqual(found.table_type, expected['type'])
         self.assertIsNone(token)
