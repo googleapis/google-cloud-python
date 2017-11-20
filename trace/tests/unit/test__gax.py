@@ -388,42 +388,24 @@ class Test_make_gax_trace_api(unittest.TestCase):
 
         credentials = object()
         client = mock.Mock(_credentials=credentials, spec=['_credentials'])
-        channels = []
-        channel_args = []
         generated_api_kwargs = []
-        channel_obj = object()
         generated = object()
 
-        def make_channel(*args):
-            channel_args.append(args)
-            return channel_obj
-
-        def generated_api(channel=None, **kwargs):
-            channels.append(channel)
+        def generated_api(**kwargs):
             generated_api_kwargs.append(kwargs)
             return generated
 
         host = 'foo.apis.invalid'
         generated_api.SERVICE_ADDRESS = host
 
-        patch_channel = mock.patch(
-            'google.cloud.trace._gax.make_secure_channel',
-            new=make_channel)
-
         patch_api = mock.patch(
             'google.cloud.trace._gax.trace_service_client.TraceServiceClient',
             new=generated_api)
 
         with patch_api:
-            with patch_channel:
-                trace_api = self._call_fut(client)
-
-        self.assertEqual(channels, [channel_obj])
-        self.assertEqual(channel_args,
-                         [(credentials, DEFAULT_USER_AGENT, host)])
+            trace_api = self._call_fut(client)
 
         self.assertEqual(len(generated_api_kwargs), 1)
-        self.assertEqual(generated_api_kwargs[0]['lib_name'], 'gccl')
 
         self.assertIsInstance(trace_api, _TraceAPI)
         self.assertIs(trace_api._gax_api, generated)

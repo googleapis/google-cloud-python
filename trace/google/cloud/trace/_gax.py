@@ -19,8 +19,6 @@ from google.cloud.trace_v1.gapic import trace_service_client
 from google.cloud.trace_v1.proto import trace_pb2
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
-from google.cloud._helpers import make_secure_channel
-from google.cloud._http import DEFAULT_USER_AGENT
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 
@@ -190,13 +188,7 @@ def make_gax_trace_api(client):
     :rtype: :class:`~google.cloud.trace._gax._TraceAPI`
     :returns: A Trace API instance with the proper configurations.
     """
-    channel = make_secure_channel(
-        client._credentials,
-        DEFAULT_USER_AGENT,
-        trace_service_client.TraceServiceClient.SERVICE_ADDRESS)
-    generated = trace_service_client.TraceServiceClient(
-        channel=channel,
-        lib_name='gccl')
+    generated = trace_service_client.TraceServiceClient()
     return _TraceAPI(generated, client)
 
 
