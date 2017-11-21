@@ -845,12 +845,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         temp_db = Config.INSTANCE.database(
             'test_read_w_index', ddl_statements=DDL_STATEMENTS + EXTRA_DDL,
             pool=pool)
-        operation = temp_db.create()
+        if not temp_db.exists():
+            operation = temp_db.create()
+            # We want to make sure the operation completes.
+            operation.result(30)  # raises on failure / timeout.
         self.to_delete.append(_DatabaseDropper(temp_db))
-
-        # We want to make sure the operation completes.
-        operation.result(30)  # raises on failure / timeout.
-
         session, committed = self._set_up_table(ROW_COUNT, db=temp_db)
 
         snapshot = session.snapshot(read_timestamp=committed)
