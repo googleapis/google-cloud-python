@@ -293,6 +293,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.table_id, self.TABLE_NAME)
         self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.dataset_id, self.DS_ID)
+        self.assertEqual(table.reference.table_id, self.TABLE_NAME)
+        self.assertEqual(table.reference.project, self.PROJECT)
+        self.assertEqual(table.reference.dataset_id, self.DS_ID)
         self.assertEqual(
             table.path,
             '/projects/%s/datasets/%s/tables/%s' % (

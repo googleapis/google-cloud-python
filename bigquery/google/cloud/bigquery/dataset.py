@@ -280,6 +280,17 @@ class Dataset(object):
         return self._properties.get('id')
 
     @property
+    def reference(self):
+        """A :class:`~google.cloud.bigquery.dataset.DatasetReference` pointing to
+        this dataset.
+
+        Returns:
+            google.cloud.bigquery.dataset.DatasetReference:
+                A pointer to this dataset
+        """
+        return DatasetReference(self.project, self.dataset_id)
+
+    @property
     def etag(self):
         """ETag for the dataset resource.
 
