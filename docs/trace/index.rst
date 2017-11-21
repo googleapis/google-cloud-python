@@ -21,7 +21,7 @@ APIs
 
 .. autosummary::
 
-   google.cloud.gapic.trace.v1.trace_service_client
+   google.cloud.trace_v1.gapic.trace_service_client
 
 
 Contents
