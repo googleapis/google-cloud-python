@@ -34,6 +34,19 @@ _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
 _MARKER = object()
 
 
+def _reference_getter(table):
+    """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
+    this table.
+
+    Returns:
+        google.cloud.bigquery.table.TableReference: pointer to this table
+    """
+    from google.cloud.bigquery import dataset
+
+    dataset_ref = dataset.DatasetReference(table.project, table.dataset_id)
+    return TableReference(dataset_ref, table.table_id)
+
+
 def _view_use_legacy_sql_getter(table):
     """Specifies whether to execute the view with Legacy or Standard SQL.
 
@@ -223,19 +236,7 @@ class Table(object):
         """
         return self._table_id
 
-    @property
-    def reference(self):
-        """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
-        this table.
-
-        Returns:
-            google.cloud.bigquery.table.TableReference:
-                A pointer to this table
-        """
-        from google.cloud.bigquery import dataset
-
-        dataset_ref = dataset.DatasetReference(self.project, self.dataset_id)
-        return TableReference(dataset_ref, self.table_id)
+    reference = property(_reference_getter)
 
     @property
     def path(self):
@@ -778,18 +779,7 @@ class TableListItem(object):
         """
         return self._properties.get('tableReference', {}).get('tableId')
 
-    @property
-    def reference(self):
-        """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
-        this table.
-
-        Returns:
-            google.cloud.bigquery.table.TableReference: pointer to this table
-        """
-        from google.cloud.bigquery import dataset
-
-        dataset_ref = dataset.DatasetReference(self.project, self.dataset_id)
-        return TableReference(dataset_ref, self.table_id)
+    reference = property(_reference_getter)
 
     @property
     def labels(self):
