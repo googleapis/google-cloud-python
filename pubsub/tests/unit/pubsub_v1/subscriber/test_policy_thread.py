@@ -15,16 +15,14 @@
 from __future__ import absolute_import
 
 from concurrent import futures
-import queue
 import threading
 
-import grpc
-
-import mock
-
-import pytest
-
 from google.auth import credentials
+import grpc
+import mock
+import pytest
+from six.moves import queue
+
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
