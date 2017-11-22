@@ -202,6 +202,35 @@ class _TestData(object):
     ALL = KeySet(all_=True)
     SQL = 'SELECT * FROM contacts ORDER BY contact_id'
 
+    DATABASE_NAME = 'test_sessions' + unique_resource_id('_')
+    ALL_TYPES_TABLE = 'all_types'
+    ALL_TYPES_COLUMNS = (
+        'list_goes_on',
+        'are_you_sure',
+        'raw_data',
+        'hwhen',
+        'approx_value',
+        'eye_d',
+        'description',
+        'exactly_hwhen',
+    )
+    SOME_DATE = datetime.date(2011, 1, 17)
+    OTHER_DATE = datetime.date(2012, 2, 28)
+    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
+    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
+    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
+    BYTES_1 = b'Ymlu'
+    BYTES_2 = b'Ym9vdHM='
+    ALL_TYPES_ROWDATA = (
+        ([], False, None, None, 0.0, None, None, None),
+        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
+        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
+        ([4], False, BYTES_2, None, float('inf'), 107, u'frog', None),
+        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
+        ([5], False, None, OTHER_DATE, float('nan'), 1207, u'owl', None),
+        ([6], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
+    )
+
     def _assert_timestamp(self, value, nano_value):
         self.assertIsInstance(value, datetime.datetime)
         self.assertIsNone(value.tzinfo)
@@ -222,7 +251,6 @@ class _TestData(object):
     def _check_row_data(self, row_data, expected=None):
         if expected is None:
             expected = self.ROW_DATA
-
         self.assertEqual(len(row_data), len(expected))
         for found, expected in zip(row_data, expected):
             self.assertEqual(len(found), len(expected))
@@ -233,6 +261,45 @@ class _TestData(object):
                     self.assertTrue(math.isnan(expected_cell))
                 else:
                     self.assertEqual(found_cell, expected_cell)
+
+    def _array_types_data(self):
+        int_array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+        str_array_type = Type(code=ARRAY, array_element_type=Type(code=STRING))
+        bool_array_type = Type(code=ARRAY, array_element_type=Type(code=BOOL))
+        float_array_type = Type(code=ARRAY,
+                                array_element_type=Type(code=FLOAT64))
+        bytes_array_type = Type(code=ARRAY,
+                                array_element_type=Type(code=BYTES))
+        date_array_type = Type(code=ARRAY, array_element_type=Type(code=DATE))
+        timestamp_array_type = Type(code=ARRAY,
+                                    array_element_type=Type(code=TIMESTAMP))
+
+        array_types = (bool_array_type,
+                       bytes_array_type,
+                       date_array_type,
+                       float_array_type,
+                       int_array_type,
+                       str_array_type,
+                       timestamp_array_type)
+
+        lists = ([True, True],
+                 [self.BYTES_1, self.BYTES_2],
+                 [self.SOME_DATE, self.OTHER_DATE],
+                 [1.25, float('-inf')],
+                 [19, 99],
+                 [u'dog', u'cat'],
+                 [self.SOME_TIME, self.NANO_TIME],
+        )
+
+        expected = ([[[1]], [[5, 10]]],
+                    [[[1]], [[5, 10]], [[4, ]]],
+                    [[[1]], [[5]]],
+                    [[[5, 10]], [[3, None, 9]]],
+                    [[[1, ]], [[5, 10]]],
+                    [[[1, ]], [[5, 10]]],
+                    [[[1, ]], [[6, ]]]
+        )
+        return (array_types, lists, expected)
 
 
 class TestDatabaseAPI(unittest.TestCase, _TestData):
@@ -376,33 +443,6 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
 
 class TestSessionAPI(unittest.TestCase, _TestData):
-    DATABASE_NAME = 'test_sessions' + unique_resource_id('_')
-    ALL_TYPES_TABLE = 'all_types'
-    ALL_TYPES_COLUMNS = (
-        'list_goes_on',
-        'are_you_sure',
-        'raw_data',
-        'hwhen',
-        'approx_value',
-        'eye_d',
-        'description',
-        'exactly_hwhen',
-    )
-    SOME_DATE = datetime.date(2011, 1, 17)
-    SOME_TIME = datetime.datetime(1989, 1, 17, 17, 59, 12, 345612)
-    NANO_TIME = TimestampWithNanoseconds(1995, 8, 31, nanosecond=987654321)
-    OTHER_NAN, = struct.unpack('<d', b'\x01\x00\x01\x00\x00\x00\xf8\xff')
-    BYTES_1 = b'Ymlu'
-    BYTES_2 = b'Ym9vdHM='
-    ALL_TYPES_ROWDATA = (
-        ([], False, None, None, 0.0, None, None, None),
-        ([1], True, BYTES_1, SOME_DATE, 0.0, 19, u'dog', SOME_TIME),
-        ([5, 10], True, BYTES_1, None, 1.25, 99, u'cat', None),
-        ([], False, BYTES_2, None, float('inf'), 107, u'frog', None),
-        ([3, None, 9], False, None, None, float('-inf'), 207, u'bat', None),
-        ([], False, None, None, float('nan'), 1207, u'owl', None),
-        ([], False, None, None, OTHER_NAN, 2000, u'virus', NANO_TIME),
-    )
 
     @classmethod
     def setUpClass(cls):
@@ -664,7 +704,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self._query_w_concurrent_update, PKEY)
 
     def test_transaction_read_w_abort(self):
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -1092,36 +1131,42 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(19,)],
         )
 
-        int_array_type = Type(code=ARRAY, array_element_type=Type(code=INT64))
+        array_types, lists, expected = self._array_types_data()
+        columns = self.ALL_TYPES_COLUMNS[1:]
 
-        self._check_sql_results(
-            snapshot,
-            sql=('SELECT description FROM all_types '
-                 'WHERE eye_d in UNNEST(@my_list)'),
-            params={'my_list': [19, 99]},
-            param_types={'my_list': int_array_type},
-            expected=[(u'dog',), (u'cat',)],
-        )
+        for index, array_type in enumerate(array_types):
+            self._check_sql_results(
+                snapshot,
+                sql=('SELECT list_goes_on FROM all_types '
+                     'WHERE %s in UNNEST(@my_list)' %
+                     columns[index]
+                ),
+                params={'my_list': lists[index]},
+                param_types={'my_list': array_type},
+                expected=expected[index]
+            )
 
-        str_array_type = Type(code=ARRAY, array_element_type=Type(code=STRING))
+            self._check_sql_results(
+                snapshot,
+                sql=('SELECT description FROM all_types '
+                     'WHERE %s in UNNEST(@my_list)'
+                     % columns[index]
+                ),
+                params={'my_list': []},
+                param_types={'my_list': array_type},
+                expected=[],
+            )
 
-        self._check_sql_results(
-            snapshot,
-            sql=('SELECT eye_d FROM all_types '
-                 'WHERE description in UNNEST(@my_list)'),
-            params={'my_list': []},
-            param_types={'my_list': str_array_type},
-            expected=[],
-        )
-
-        self._check_sql_results(
-            snapshot,
-            sql=('SELECT eye_d FROM all_types '
-                 'WHERE description in UNNEST(@my_list)'),
-            params={'my_list': [u'dog', u'cat']},
-            param_types={'my_list': str_array_type},
-            expected=[(19,), (99,)],
-        )
+            self._check_sql_results(
+                snapshot,
+                sql=('SELECT description FROM all_types '
+                     'WHERE %s in UNNEST(@my_list)'
+                     % columns[index]
+                ),
+                params={'my_list': None},
+                param_types={'my_list': array_type},
+                expected=[],
+            )
 
         self._check_sql_results(
             snapshot,
