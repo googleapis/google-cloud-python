@@ -281,7 +281,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     def test_update_database_ddl(self):
         pool = BurstyPool()
-        temp_db_id = 'temp_db'
+        temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         create_op = temp_db.create()
         self.to_delete.append(temp_db)
@@ -843,7 +843,8 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         ]
         pool = BurstyPool()
         temp_db = Config.INSTANCE.database(
-            'test_read_w_index', ddl_statements=DDL_STATEMENTS + EXTRA_DDL,
+            'temp_db' + unique_resource_id('_'),
+            ddl_statements=DDL_STATEMENTS + EXTRA_DDL,
             pool=pool)
         operation = temp_db.create()
         self.to_delete.append(_DatabaseDropper(temp_db))
