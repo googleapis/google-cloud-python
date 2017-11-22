@@ -12,48 +12,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""GAX Wrapper for interacting with the Stackdriver Trace API."""
+"""Client for interacting with the Stackdriver Trace API."""
 
-from google.api_core import page_iterator
-from google.api_core.gapic_v1 import method
-from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud.trace_v2.gapic import trace_service_client
-from google.cloud.trace_v2.proto import trace_pb2
-from google.gax import CallOptions
-from google.gax import INITIAL_PAGE
-from google.protobuf.json_format import MessageToDict
-from google.protobuf.json_format import ParseDict
-from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
-from google.protobuf import wrappers_pb2 as \
-    google_dot_protobuf_dot_wrappers__pb2
+from google.cloud.trace.v2._gax import make_gax_trace_api
+from google.cloud.client import ClientWithProject
 
 
-class _TraceAPI(object):
+class Client(ClientWithProject):
     """
-    Wrapper to help mapping trace-related APIs.
+    Client to bundle configuration needed for API requests.
 
-    See
-    https://cloud.google.com/trace/docs/reference/v2/rpc/google.devtools.
-    cloudtrace.v2
-    
     Args:
-        gax_api (:class:`~google.cloud.trace_v2.gapic.trace_service_client.
-            TraceServiceClient`): Required. API object used to make GAX
-            requests.
-
-        client (:class:`~google.cloud.trace_v2.client.Client`): Required. The
-            client that owns this API object.
+        project (str): The project which the client acts on behalf of.
+            If not passed, falls back to the default inferred from
+            the environment.
+        credentials (Optional[:class:`~google.auth.credentials.Credentials`]):
+            The OAuth2 Credentials to use for this client. If not passed,
+            falls back to the default inferred from the environment.
     """
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',
+             'https://www.googleapis.com/auth/trace.append',)
+    """The scopes required for authenticating as a Trace consumer."""
 
-    def __init__(self, gax_api, client):
-        self._gax_api = gax_api
-        self.client = client
+    _trace_api = None
+
+    def __init__(self, project=None, credentials=None):
+        super(Client, self).__init__(
+            project=project, credentials=credentials)
+
+    @property
+    def trace_api(self):
+        """
+        Helper for trace-related API calls.
+
+        See
+        https://cloud.google.com/trace/docs/reference/v2/rpc/google.devtools.
+        cloudtrace.v2
+        """
+        self._trace_api = make_gax_trace_api(self)
+        return self._trace_api
 
     def batch_write_spans(self,
                           name,
                           spans,
-                          retry=method.DEFAULT,
-                          timeout=method.DEFAULT):
+                          retry=None,
+                          timeout=None):
         """
         Sends new spans to Stackdriver Trace or updates existing traces. If the
         name of a trace that you send matches that of an existing trace, new
@@ -61,13 +64,25 @@ class _TraceAPI(object):
         results undefined behavior. If the name does not match, a new trace is
         created with given set of spans.
 
+        Example:
+            >>> from google.cloud import trace_v2
+            >>>
+            >>> client = trace_v2.Client()
+            >>>
+            >>> name = 'projects/[PROJECT_ID]'
+            >>> spans = {'spans': [{'endTime': '2017-11-21T23:50:58.890768Z',
+                                    'spanId': [SPAN_ID],
+                                    'startTime': '2017-11-21T23:50:58.890763Z',
+                                    'name': 'projects/[PROJECT_ID]/traces/
+                                            [TRACE_ID]/spans/[SPAN_ID]',
+                                    'displayName': {'value': 'sample span'}}]}
+            >>>
+            >>> client.batch_write_spans(name, spans)
+
         Args:
-            name (str): Required. Name of the project where the spans belong.
+            name (str): Optional. Name of the project where the spans belong.
                 The format is ``projects/PROJECT_ID``.
-            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): A
-                collection of spans. If a dict is provided, it must be of the
-                same form as the protobuf message
-                :class:`~google.cloud.trace_v2.types.Span`
+            spans (dict): A collection of spans.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -82,15 +97,9 @@ class _TraceAPI(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        spans_pb_list = []
-
-        for span_mapping in spans['spans']:
-            span_pb = _dict_mapping_to_pb(span_mapping, 'Span')
-            spans_pb_list.append(span_pb)
-
-        self._gax_api.batch_write_spans(
+        self.trace_api.batch_write_spans(
             name=name,
-            spans=spans_pb_list,
+            spans=spans,
             retry=retry,
             timeout=timeout)
 
@@ -108,18 +117,19 @@ class _TraceAPI(object):
                     status=None,
                     same_process_as_parent_span=None,
                     child_span_count=None,
-                    retry=method.DEFAULT,
-                    timeout=method.DEFAULT):
+                    retry=None,
+                    timeout=None):
         """
         Creates a new Span.
 
         Example:
             >>> from google.cloud import trace_v2
             >>>
-            >>> client = trace_v2.TraceServiceClient()
+            >>> client = trace_v2.Client()
             >>>
-            >>> name = client.span_path('[PROJECT]', '[TRACE]', '[SPAN]')
-            >>> span_id = ''
+            >>> name = 'projects/{project}/traces/{trace_id}/spans/{span_id}'.
+                       format('[PROJECT]', '[TRACE_ID]', '[SPAN_ID]')
+            >>> span_id = '[SPAN_ID]'
             >>> display_name = {}
             >>> start_time = {}
             >>> end_time = {}
@@ -200,36 +210,7 @@ class _TraceAPI(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        # Convert the dict type parameters to protobuf
-        display_name = _dict_mapping_to_pb(
-            display_name, 'TruncatableString')
-        start_time = _datetime_to_pb_timestamp(start_time)
-        end_time = _datetime_to_pb_timestamp(end_time)
-
-        if attributes is not None:
-            attributes = _span_attrs_to_pb(attributes, 'Attributes')
-
-        if stack_trace is not None:
-            stack_trace = _dict_mapping_to_pb(stack_trace, 'Stacktrace')
-
-        if time_events is not None:
-            time_events = _span_attrs_to_pb(time_events, 'TimeEvents')
-
-        if links is not None:
-            links = _span_attrs_to_pb(links, 'Links')
-
-        if status is not None:
-            status = _status_mapping_to_pb(status)
-
-        if same_process_as_parent_span is not None:
-            same_process_as_parent_span = _value_to_pb(
-                same_process_as_parent_span, 'BoolValue')
-
-        if child_span_count is not None:
-            child_span_count = _value_to_pb(
-                child_span_count, 'Int32Value')
-
-        return self._gax_api.create_span(
+        return self.trace_api.create_span(
             name=name,
             span_id=span_id,
             display_name=display_name,
@@ -243,83 +224,3 @@ class _TraceAPI(object):
             status=status,
             same_process_as_parent_span=same_process_as_parent_span,
             child_span_count=child_span_count)
-
-
-def _dict_mapping_to_pb(mapping, proto_type):
-    """
-    Convert a dict to protobuf.
-
-    Args:
-        mapping (dict): A dict that needs to be converted to protobuf.
-        proto_type (str): The type of the Protobuf.
-
-    Returns:
-        An instance of the specified protobuf.
-    """
-    converted_pb = getattr(trace_pb2, proto_type)()
-    ParseDict(mapping, converted_pb)
-    return converted_pb
-
-
-def _span_attrs_to_pb(span_attr, proto_type):
-    """
-    Convert a span attribute dict to protobuf, including Links, Attributes,
-    TimeEvents.
-
-    Args:
-        span_attr (dict): A dict that needs to be converted to protobuf.
-        proto_type (str): The type of the Protobuf.
-
-    Returns:
-        An instance of the specified protobuf.
-    """
-    attr_pb = getattr(trace_pb2.Span, proto_type)()
-    ParseDict(span_attr, attr_pb)
-    return attr_pb
-
-
-def _status_mapping_to_pb(status):
-    """
-    Convert a status dict to protobuf.
-
-    Args:
-        status (dict): A status that needs to be converted to protobuf.
-
-    Returns:
-        An instance of the specified protobuf.
-    """
-    status_pb = google_dot_rpc_dot_status__pb2.Status()
-    ParseDict(status, status_pb)
-    return status_pb
-
-
-def _value_to_pb(value, proto_type):
-    """
-    Convert a value to protobuf. e.g. BoolValue, Int32Value.
-
-    Args:
-        value (dict): A dict that needs to be converted to protobuf.
-        proto_type (str): The type of the Protobuf.
-
-    Returns:
-        An instance of the specified protobuf.
-    """
-    data_type_pb = getattr(google_dot_protobuf_dot_wrappers__pb2, proto_type)()
-    ParseDict(value, data_type_pb)
-    return data_type_pb
-
-
-def make_gax_trace_api(client):
-    """
-    Create an instance of the GAX Trace API.
-    
-    Args:
-        client (:class:`~google.cloud.trace_v2.client.Client`): The client
-            that holds configuration details.
-    
-    Returns:
-        A :class:`~google.cloud.trace_v2._gax._TraceAPI` instance with the
-        proper configurations.
-    """
-    generated = trace_service_client.TraceServiceClient()
-    return _TraceAPI(generated, client)
