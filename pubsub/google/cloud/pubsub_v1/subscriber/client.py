@@ -27,7 +27,7 @@ from google.cloud.pubsub_v1.gapic import subscriber_client
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
-__VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
+__version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 
 @_gapic.add_methods(subscriber_client.SubscriberClient,

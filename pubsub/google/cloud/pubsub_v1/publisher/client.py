@@ -30,7 +30,7 @@ from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1.publisher.batch import thread
 
 
-__VERSION__ = pkg_resources.get_distribution('google-cloud-pubsub').version
+__version__ = pkg_resources.get_distribution('google-cloud-pubsub').version
 
 
 @_gapic.add_methods(publisher_client.PublisherClient, blacklist=('publish',))
