@@ -460,3 +460,60 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(table.table_id, 'table_id')
         self.assertEqual(table.dataset_id, self.DS_ID)
         self.assertEqual(table.project, self.PROJECT)
+
+
+class TestDatasetListItem(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.dataset import DatasetListItem
+
+        return DatasetListItem
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        project = 'test-project'
+        dataset_id = 'test_dataset'
+        resource = {
+            'kind': 'bigquery#dataset',
+            'id': '{}:{}'.format(project, dataset_id),
+            'datasetReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+            },
+            'friendlyName': 'Data of the Test',
+            'labels': {
+                'some-stuff': 'this-is-a-label',
+            },
+        }
+
+        dataset = self._make_one(resource)
+        self.assertEqual(dataset.project, project)
+        self.assertEqual(dataset.dataset_id, dataset_id)
+        self.assertEqual(
+            dataset.full_dataset_id,
+            '{}:{}'.format(project, dataset_id))
+        self.assertEqual(dataset.reference.project, project)
+        self.assertEqual(dataset.reference.dataset_id, dataset_id)
+        self.assertEqual(dataset.friendly_name, 'Data of the Test')
+        self.assertEqual(dataset.labels['some-stuff'], 'this-is-a-label')
+
+    def test_table(self):
+        from google.cloud.bigquery.table import TableReference
+
+        project = 'test-project'
+        dataset_id = 'test_dataset'
+        resource = {
+            'datasetReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+            },
+        }
+        dataset = self._make_one(resource)
+        table = dataset.table('table_id')
+        self.assertIsInstance(table, TableReference)
+        self.assertEqual(table.table_id, 'table_id')
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.project, project)
