@@ -28,4 +28,3 @@ __all__ = (
     'enums',
     'types',
     'TraceServiceClient',)
-
