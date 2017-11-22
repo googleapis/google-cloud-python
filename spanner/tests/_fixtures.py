@@ -47,6 +47,36 @@ CREATE TABLE string_plus_array_of_string (
     name STRING(16),
     tags ARRAY<STRING(16)> )
     PRIMARY KEY (id);
+CREATE TABLE bool_plus_array_of_bool (
+    id INT64,
+    name BOOL,
+    tags ARRAY<BOOL> )
+    PRIMARY KEY (id);
+CREATE TABLE bytes_plus_array_of_bytes (
+    id INT64,
+    name BYTES(16),
+    tags ARRAY<BYTES(16)> )
+    PRIMARY KEY (id);
+CREATE TABLE date_plus_array_of_date (
+    id INT64,
+    name DATE,
+    tags ARRAY<DATE> )
+    PRIMARY KEY (id);
+CREATE TABLE float_plus_array_of_float (
+    id INT64,
+    name FLOAT64,
+    tags ARRAY<FLOAT64> )
+    PRIMARY KEY (id);
+CREATE TABLE int_plus_array_of_int (
+    id INT64,
+    name INT64,
+    tags ARRAY<INT64> )
+    PRIMARY KEY (id);
+CREATE TABLE time_plus_array_of_time (
+    id INT64,
+    name TIMESTAMP,
+    tags ARRAY<TIMESTAMP> )
+    PRIMARY KEY (id);
 """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(';') if stmt.strip()]
