@@ -117,8 +117,9 @@ example of this.
 """
 
 import logging
-import queue
 import threading
+
+from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 

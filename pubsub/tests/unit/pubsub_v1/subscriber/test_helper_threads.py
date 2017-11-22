@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import queue
 import threading
 
 import mock
+from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 
