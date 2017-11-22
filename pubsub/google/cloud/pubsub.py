@@ -21,4 +21,5 @@ from google.cloud.pubsub_v1 import types
 __all__ = (
     'types',
     'PublisherClient',
-    'SubscriberClient', )
+    'SubscriberClient',
+)

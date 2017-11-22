@@ -38,8 +38,9 @@ from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
 
+
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-pubsub', ).version
+    'google-cloud-pubsub').version
 
 
 class PublisherClient(object):

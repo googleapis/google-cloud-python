@@ -15,19 +15,20 @@
 from __future__ import absolute_import
 
 from google.cloud.pubsub_v1 import types
-from google.cloud.pubsub_v1.gapic import publisher_client
-from google.cloud.pubsub_v1.gapic import subscriber_client
+from google.cloud.pubsub_v1 import publisher
+from google.cloud.pubsub_v1 import subscriber
 
 
-class PublisherClient(publisher_client.PublisherClient):
-    __doc__ = publisher_client.PublisherClient.__doc__
+class PublisherClient(publisher.Client):
+    __doc__ = publisher.Client.__doc__
 
 
-class SubscriberClient(subscriber_client.SubscriberClient):
-    __doc__ = subscriber_client.SubscriberClient.__doc__
+class SubscriberClient(subscriber.Client):
+    __doc__ = subscriber.Client.__doc__
 
 
 __all__ = (
     'types',
     'PublisherClient',
-    'SubscriberClient', )
+    'SubscriberClient',
+)

@@ -15,7 +15,7 @@
 
 import pytest
 
-from google.cloud import pubsub_v1
+from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1.proto import pubsub_pb2
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
@@ -71,7 +71,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         name = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -87,7 +87,7 @@ class TestPublisherClient(object):
     def test_create_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         name = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -103,7 +103,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         topic = {}
@@ -121,7 +121,7 @@ class TestPublisherClient(object):
     def test_update_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         topic = {}
@@ -139,7 +139,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -159,7 +159,7 @@ class TestPublisherClient(object):
     def test_publish_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -178,7 +178,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -194,7 +194,7 @@ class TestPublisherClient(object):
     def test_get_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -215,7 +215,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         project = client.project_path('[PROJECT]')
@@ -233,7 +233,7 @@ class TestPublisherClient(object):
 
     def test_list_topics_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         project = client.project_path('[PROJECT]')
@@ -256,7 +256,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -275,7 +275,7 @@ class TestPublisherClient(object):
 
     def test_list_topic_subscriptions_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -286,7 +286,7 @@ class TestPublisherClient(object):
 
     def test_delete_topic(self):
         channel = ChannelStub()
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -301,7 +301,7 @@ class TestPublisherClient(object):
     def test_delete_topic_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         topic = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -318,7 +318,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         resource = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -336,7 +336,7 @@ class TestPublisherClient(object):
     def test_set_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         resource = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -354,7 +354,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         resource = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -371,7 +371,7 @@ class TestPublisherClient(object):
     def test_get_iam_policy_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         resource = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -387,7 +387,7 @@ class TestPublisherClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup Request
         resource = client.topic_path('[PROJECT]', '[TOPIC]')
@@ -405,7 +405,7 @@ class TestPublisherClient(object):
     def test_test_iam_permissions_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = pubsub_v1.PublisherClient(channel=channel)
+        client = publisher_client.PublisherClient(channel=channel)
 
         # Setup request
         resource = client.topic_path('[PROJECT]', '[TOPIC]')
