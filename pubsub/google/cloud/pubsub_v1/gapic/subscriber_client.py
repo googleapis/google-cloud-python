@@ -911,16 +911,14 @@ class SubscriberClient(object):
                 Format is ``projects/{project}/snapshots/{snap}``.
             subscription (str): The subscription whose backlog the snapshot retains.
                 Specifically, the created snapshot is guaranteed to retain:
-                 (a) The existing backlog on the subscription. More precisely, this is
-                ::
 
-                     defined as the messages in the subscription's backlog that are
-                     unacknowledged upon the successful completion of the
-                     `CreateSnapshot` request; as well as:
-                 (b) Any messages published to the subscription's topic following the
-                ::
+                * The existing backlog on the subscription. More precisely, this is
+                  defined as the messages in the subscription's backlog that are
+                  unacknowledged upon the successful completion of the
+                  `CreateSnapshot` request; as well as:
+                * Any messages published to the subscription's topic following the
+                  successful completion of the CreateSnapshot request.
 
-                     successful completion of the CreateSnapshot request.
                 Format is ``projects/{project}/subscriptions/{sub}``.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
