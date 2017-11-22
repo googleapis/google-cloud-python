@@ -12,13 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import queue
-
-import mock
-
-import pytest
-
 from google.auth import credentials
+import mock
+import pytest
+from six.moves import queue
+
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer

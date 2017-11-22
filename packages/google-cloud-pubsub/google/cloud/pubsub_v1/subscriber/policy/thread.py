@@ -15,11 +15,11 @@
 from __future__ import absolute_import
 
 from concurrent import futures
-from queue import Queue
 import logging
 import threading
 
 import grpc
+from six.moves import queue as queue_mod
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
@@ -69,7 +69,7 @@ class Policy(base.BasePolicy):
 
         # Create a queue for keeping track of shared state.
         if queue is None:
-            queue = Queue()
+            queue = queue_mod.Queue()
         self._request_queue = queue
 
         # Call the superclass constructor.

@@ -6,6 +6,9 @@ source =
   tests.unit
 
 [report]
+omit =
+  */gapic/*
+  */proto/*
 show_missing = True
 
 exclude_lines =
