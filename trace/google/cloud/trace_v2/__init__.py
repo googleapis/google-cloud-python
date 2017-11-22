@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 from google.cloud.trace_v2 import types
+from google.cloud.trace_v2.client import Client
 from google.cloud.trace_v2.gapic import enums
 from google.cloud.trace_v2.gapic import trace_service_client
 
@@ -27,4 +28,8 @@ class TraceServiceClient(trace_service_client.TraceServiceClient):
 __all__ = (
     'enums',
     'types',
-    'TraceServiceClient', )
+    'TraceServiceClient',
+    'Client',
+    'SCOPE',)
+
+SCOPE = Client.SCOPE
