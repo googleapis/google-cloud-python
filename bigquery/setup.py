@@ -59,7 +59,7 @@ REQUIREMENTS = [
 ]
 
 EXTRAS_REQUIREMENTS = {
-    'pandas': ['pandas >= 0.3.0'],
+    'pandas': ['pandas >= 0.17.1'],
 }
 
 setup(

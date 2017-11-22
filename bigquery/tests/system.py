@@ -1448,6 +1448,7 @@ class TestBigQuery(unittest.TestCase):
     def _fetch_dataframe(self, query):
         return Config.CLIENT.query(query).result().to_dataframe()
 
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
     def test_nested_table_to_dataframe(self):
         SF = bigquery.SchemaField
         schema = [
