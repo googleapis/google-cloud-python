@@ -664,7 +664,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             self._query_w_concurrent_update, PKEY)
 
     def test_transaction_read_w_abort(self):
-
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
@@ -1000,6 +999,36 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 [[['a', 1], ['b', 2]]],
             ])
 
+    def test_execute_sql_invalid_table(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        snapshot = session.snapshot()
+        error = "StatusCode.INVALID_ARGUMENT, Table not found"
+        with self.assertRaisesRegexp(GrpcRendezvous, error):
+            self._check_sql_results(
+                snapshot,
+                sql=('SELECT eye_d FROM all_type'),
+                params={},
+                param_types={},
+                expected=[],
+            )
+
+    def test_execute_sql_invalid_column(self):
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        snapshot = session.snapshot()
+        error = "StatusCode.INVALID_ARGUMENT, Unrecognized name"
+        with self.assertRaisesRegexp(GrpcRendezvous, error):
+            self._check_sql_results(
+                snapshot,
+                sql=('SELECT abc FROM all_types'),
+                params={},
+                param_types={},
+                expected=[],
+            )
+
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
         session.create()
@@ -1017,7 +1046,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         # Cannot equality-test array values.  See below for a test w/
         # array of IDs.
-
         self._check_sql_results(
             snapshot,
             sql='SELECT eye_d FROM all_types WHERE are_you_sure = @sure',
