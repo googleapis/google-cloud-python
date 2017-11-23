@@ -17,8 +17,10 @@ from __future__ import absolute_import
 from concurrent import futures
 import threading
 
+from google.api_core import exceptions
 from google.auth import credentials
 import grpc
+import grpc._channel
 import mock
 import pytest
 from six.moves import queue
@@ -89,9 +91,26 @@ def test_on_callback_request():
 
 
 def test_on_exception_deadline_exceeded():
+    # Also traverses the raw gRPC exception path.
     policy = create_policy()
-    exc = mock.Mock(spec=('code',))
-    exc.code.return_value = grpc.StatusCode.DEADLINE_EXCEEDED
+
+    trailing = None
+    status_code = grpc.StatusCode.DEADLINE_EXCEEDED
+    details = 'Bad thing happened. Time out, go sit in the corner.'
+    exc_state = grpc._channel._RPCState(
+        (), None, trailing, status_code, details)
+    exc = grpc._channel._Rendezvous(exc_state, None, None, None)
+
+    assert policy.on_exception(exc) is None
+
+
+def test_on_exception_unavailable():
+    # Also traverses the ``api_core`` exception path.
+    policy = create_policy()
+
+    details = 'UNAVAILABLE. Service taking nap.'
+    exc = exceptions.ServiceUnavailable(details)
+
     assert policy.on_exception(exc) is None
 
 
