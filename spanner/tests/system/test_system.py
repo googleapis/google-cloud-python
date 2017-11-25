@@ -1000,6 +1000,27 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 [[['a', 1], ['b', 2]]],
             ])
 
+    def test_execute_sql_returning_empty_array_of_struct(self):
+        SQL = (
+            "SELECT ARRAY(SELECT AS STRUCT C1, C2 "
+            "FROM (SELECT 2 AS C1) X "
+            "JOIN (SELECT 1 AS C2) Y "
+            "ON X.C1 = Y.C2 "
+            "ORDER BY C1 ASC)"
+        )
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        snapshot = session.snapshot()
+        self._check_sql_results(
+            snapshot,
+            sql=SQL,
+            params=None,
+            param_types=None,
+            expected=[
+                [[]],
+            ])
+
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
         session.create()
