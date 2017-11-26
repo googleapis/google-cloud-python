@@ -567,6 +567,30 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(snapshot.read(table[index], columns, self.ALL))
             self._check_row_data(rows, expected=rowdata[index])
 
+    def test_batch_insert_then_read_random_bytes(self):
+        import random
+        import string
+        random.seed(0)
+        table = 'bytes_plus_array_of_bytes'
+        columns = ('id', 'name', 'tags')
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        column_length = 16
+        for index in range(column_length):
+            data = []
+            for rand in range(4):
+                letters = [random.choice(string.ascii_lowercase)
+                           for i in range(index)]
+                words = ''.join(letters)
+                data.append(words.encode('base64').strip())
+            rowdata = ((1, data[0], [data[1], data[2], data[3]]),)
+            with session.batch() as batch:
+                batch.delete(table, self.ALL)
+                batch.insert(table, columns, rowdata)
+            rows = list(session.read(table, columns, self.ALL))
+            self._check_row_data(rows, expected=rowdata)
+
     def test_batch_insert_then_read_all_datatypes(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
