@@ -21,6 +21,8 @@ import threading
 import time
 import unittest
 
+from six.moves import range
+
 from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
 from google.cloud.spanner_v1.proto.type_pb2 import BOOL
 from google.cloud.spanner_v1.proto.type_pb2 import BYTES
@@ -551,7 +553,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         table, times, dates, columns, rowdata = (
             self._test_batch_insert_then_read_arrays_data()
         )
-        
+
         for index in range(len(table)):
             session = self._db.session()
             session.create()
