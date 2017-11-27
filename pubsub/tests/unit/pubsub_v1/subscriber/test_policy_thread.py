@@ -99,9 +99,31 @@ def test_on_exception_other():
     policy = create_policy()
     policy._future = Future(policy=policy)
     exc = TypeError('wahhhhhh')
+    assert policy.on_exception(exc) is None
     with pytest.raises(TypeError):
-        policy.on_exception(exc)
         policy.future.result()
+
+
+def test_on_exception_already_set():
+    policy = create_policy()
+    future = Future(policy=policy)
+    fut_callback = mock.Mock(spec=())
+    future.add_done_callback(fut_callback)
+    policy._future = future
+
+    exc1 = RuntimeError('first')
+    assert policy.on_exception(exc1) is None
+    call = mock.call(future)
+    assert fut_callback.mock_calls == [call]
+
+    exc2 = RuntimeError('second')
+    assert policy.on_exception(exc2) is None
+    assert fut_callback.mock_calls == [call, call]
+
+    with pytest.raises(RuntimeError) as exc_info:
+        policy.future.result()
+    assert exc_info.value is exc1
+    assert exc_info.value is not exc2
 
 
 def test_on_response():
