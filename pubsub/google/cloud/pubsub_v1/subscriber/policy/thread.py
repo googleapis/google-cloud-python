@@ -21,7 +21,6 @@ import threading
 import grpc
 from six.moves import queue as queue_mod
 
-from google.api_core import exceptions
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber.futures import Future
@@ -29,16 +28,12 @@ from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
 
 
-_LOGGER = logging.getLogger(__name__)
-_IDEMPOTENT_RETRY_CODES = (
-    grpc.StatusCode.DEADLINE_EXCEEDED,
-    grpc.StatusCode.UNAVAILABLE,
-)
+logger = logging.getLogger(__name__)
 
 
 def _callback_completed(future):
     """Simple callback that just logs a `Future`'s result."""
-    _LOGGER.debug('Result: %s', future.result())
+    logger.debug('Result: %s', future.result())
 
 
 class Policy(base.BasePolicy):
@@ -85,7 +80,7 @@ class Policy(base.BasePolicy):
         )
 
         # Also maintain a request queue and an executor.
-        _LOGGER.debug('Creating callback requests thread (not starting).')
+        logger.debug('Creating callback requests thread (not starting).')
         if executor is None:
             executor = futures.ThreadPoolExecutor(max_workers=10)
         self._executor = executor
@@ -127,7 +122,7 @@ class Policy(base.BasePolicy):
         self._future = Future(policy=self)
 
         # Start the thread to pass the requests.
-        _LOGGER.debug('Starting callback requests worker.')
+        logger.debug('Starting callback requests worker.')
         self._callback = callback
         self._consumer.helper_threads.start(
             'callback requests worker',
@@ -140,7 +135,7 @@ class Policy(base.BasePolicy):
 
         # Spawn a helper thread that maintains all of the leases for
         # this policy.
-        _LOGGER.debug('Spawning lease maintenance worker.')
+        logger.debug('Spawning lease maintenance worker.')
         self._leaser = threading.Thread(target=self.maintain_leases)
         self._leaser.daemon = True
         self._leaser.start()
@@ -158,16 +153,9 @@ class Policy(base.BasePolicy):
 
         This will cause the stream to exit loudly.
         """
-        if isinstance(exception, exceptions.GoogleAPICallError):
-            code = exception.grpc_status_code
-        else:
-            code = getattr(exception, 'code', None)
-            if callable(code):
-                code = code()
-
-        # If this is in the list of idempotent exceptions DEADLINE_EXCEEDED,
-        # then we want to retry. That entails just returning None.
-        if code in _IDEMPOTENT_RETRY_CODES:
+        # If this is in the list of idempotent exceptions, then we want to
+        # retry. That entails just returning None.
+        if isinstance(exception, self._IDEMPOTENT_RETRIES):
             return
 
         # Set any other exception on the future.
@@ -179,8 +167,8 @@ class Policy(base.BasePolicy):
         For each message, schedule a callback with the executor.
         """
         for msg in response.received_messages:
-            _LOGGER.debug('New message received from Pub/Sub: %r', msg)
-            _LOGGER.debug(self._callback)
+            logger.debug('New message received from Pub/Sub: %r', msg)
+            logger.debug(self._callback)
             message = Message(msg.message, msg.ack_id, self._request_queue)
             future = self._executor.submit(self._callback, message)
             future.add_done_callback(_callback_completed)

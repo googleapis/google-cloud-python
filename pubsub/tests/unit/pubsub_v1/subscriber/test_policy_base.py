@@ -14,11 +14,15 @@
 
 import time
 
+from google.api_core import exceptions
+from google.auth import credentials
+import grpc
 import mock
 
-from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import subscriber_client_config
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -26,6 +30,23 @@ def create_policy(flow_control=types.FlowControl()):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
     return thread.Policy(client, 'sub_name_d', flow_control=flow_control)
+
+
+def test_idempotent_retry_codes():
+    # Make sure the config matches our hard-coded tuple of exceptions.
+    interfaces = subscriber_client_config.config['interfaces']
+    retry_codes = interfaces['google.pubsub.v1.Subscriber']['retry_codes']
+    idempotent = retry_codes['idempotent']
+
+    status_codes = tuple(
+        getattr(grpc.StatusCode, name, None)
+        for name in idempotent
+    )
+    expected = tuple(
+        exceptions.exception_class_for_grpc_status(status_code)
+        for status_code in status_codes
+    )
+    assert base.BasePolicy._IDEMPOTENT_RETRIES == expected
 
 
 def test_ack_deadline():
