@@ -530,7 +530,7 @@ class GbqConnector(object):
     def run_query(self, query, **kwargs):
         try:
             from googleapiclient.errors import HttpError
-        except:
+        except ImportError:
             from apiclient.errors import HttpError
         from google.auth.exceptions import RefreshError
 
@@ -663,7 +663,7 @@ class GbqConnector(object):
     def load_data(self, dataframe, dataset_id, table_id, chunksize):
         try:
             from googleapiclient.errors import HttpError
-        except:
+        except ImportError:
             from apiclient.errors import HttpError
 
         job_id = uuid.uuid4().hex
@@ -737,7 +737,7 @@ class GbqConnector(object):
 
         try:
             from googleapiclient.errors import HttpError
-        except:
+        except ImportError:
             from apiclient.errors import HttpError
 
         try:
@@ -1162,7 +1162,7 @@ class _Table(GbqConnector):
                  private_key=None):
         try:
             from googleapiclient.errors import HttpError
-        except:
+        except ImportError:
             from apiclient.errors import HttpError
         self.http_error = HttpError
         self.dataset_id = dataset_id
@@ -1261,7 +1261,7 @@ class _Dataset(GbqConnector):
                  private_key=None):
         try:
             from googleapiclient.errors import HttpError
-        except:
+        except ImportError:
             from apiclient.errors import HttpError
         self.http_error = HttpError
         super(_Dataset, self).__init__(project_id, reauth, verbose,
