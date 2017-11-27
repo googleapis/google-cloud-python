@@ -73,7 +73,7 @@ def to_delete(client):
 
 
 def _millis():
-    return time.time() * 1000
+    return int(time.time() * 1000)
 
 
 class _CloseOnDelete(object):
@@ -99,7 +99,7 @@ def test_client_list_datasets(client):
 
 def test_create_dataset(client, to_delete):
     """Create a dataset."""
-    DATASET_ID = 'create_dataset_%d' % (_millis(),)
+    DATASET_ID = 'create_dataset_{}'.format(_millis())
 
     # [START create_dataset]
     # DATASET_ID = 'dataset_ids_are_strings'
@@ -114,7 +114,7 @@ def test_create_dataset(client, to_delete):
 
 def test_get_dataset(client, to_delete):
     """Reload a dataset's metadata."""
-    DATASET_ID = 'get_dataset_%d' % (_millis(),)
+    DATASET_ID = 'get_dataset_{}'.format(_millis())
     dataset_ref = client.dataset(DATASET_ID)
     dataset = bigquery.Dataset(dataset_ref)
     dataset.description = ORIGINAL_DESCRIPTION
@@ -132,7 +132,7 @@ def test_get_dataset(client, to_delete):
 
 def test_update_dataset_simple(client, to_delete):
     """Update a dataset's metadata."""
-    DATASET_ID = 'update_dataset_simple_%d' % (_millis(),)
+    DATASET_ID = 'update_dataset_simple_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset.description = ORIGINAL_DESCRIPTION
     client.create_dataset(dataset)
@@ -150,7 +150,7 @@ def test_update_dataset_simple(client, to_delete):
 
 def test_update_dataset_multiple_properties(client, to_delete):
     """Update a dataset's metadata."""
-    DATASET_ID = 'update_dataset_multiple_properties_%d' % (_millis(),)
+    DATASET_ID = 'update_dataset_multiple_properties_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset.description = ORIGINAL_DESCRIPTION
     dataset = client.create_dataset(dataset)
@@ -159,30 +159,46 @@ def test_update_dataset_multiple_properties(client, to_delete):
     # [START update_dataset_multiple_properties]
     assert dataset.description == ORIGINAL_DESCRIPTION
     assert dataset.default_table_expiration_ms is None
-    entry = bigquery.AccessEntry(
-        role='READER', entity_type='domain', entity_id='example.com')
-    assert entry not in dataset.access_entries
     ONE_DAY_MS = 24 * 60 * 60 * 1000  # in milliseconds
     dataset.description = UPDATED_DESCRIPTION
     dataset.default_table_expiration_ms = ONE_DAY_MS
-    entries = list(dataset.access_entries)
-    entries.append(entry)
-    dataset.access_entries = entries
 
     dataset = client.update_dataset(
         dataset,
-        ['description', 'default_table_expiration_ms', 'access_entries']
+        ['description', 'default_table_expiration_ms']
     )  # API request
 
     assert dataset.description == UPDATED_DESCRIPTION
     assert dataset.default_table_expiration_ms == ONE_DAY_MS
-    assert entry in dataset.access_entries
     # [END update_dataset_multiple_properties]
+
+
+def test_update_dataset_access(client, to_delete):
+    """Update a dataset's metadata."""
+    DATASET_ID = 'update_dataset_access_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_update_dataset_access]
+    entry = bigquery.AccessEntry(
+        role='READER',
+        entity_type='userByEmail',
+        entity_id='sample.bigquery.dev@gmail.com')
+    assert entry not in dataset.access_entries
+    entries = list(dataset.access_entries)
+    entries.append(entry)
+    dataset.access_entries = entries
+
+    dataset = client.update_dataset(dataset, ['access_entries'])  # API request
+
+    assert entry in dataset.access_entries
+    # [END bigquery_update_dataset_access]
 
 
 def test_delete_dataset(client):
     """Delete a dataset."""
-    DATASET_ID = 'delete_dataset_%d' % (_millis(),)
+    DATASET_ID = 'delete_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     client.create_dataset(dataset)
 
@@ -198,7 +214,7 @@ def test_delete_dataset(client):
 
 def test_list_dataset_tables(client, to_delete):
     """List tables within a dataset."""
-    DATASET_ID = 'list_dataset_tables_dataset_%d' % (_millis(),)
+    DATASET_ID = 'list_dataset_tables_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -222,7 +238,7 @@ def test_list_dataset_tables(client, to_delete):
 
 def test_create_table(client, to_delete):
     """Create a table."""
-    DATASET_ID = 'create_table_dataset_%d' % (_millis(),)
+    DATASET_ID = 'create_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -244,8 +260,8 @@ def test_create_table(client, to_delete):
 
 def test_get_table(client, to_delete):
     """Reload a table's metadata."""
-    DATASET_ID = 'get_table_dataset_%d' % (_millis(),)
-    TABLE_ID = 'get_table_table_%d' % (_millis(),)
+    DATASET_ID = 'get_table_dataset_{}'.format(_millis())
+    TABLE_ID = 'get_table_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -265,8 +281,8 @@ def test_get_table(client, to_delete):
 
 def test_update_table_simple(client, to_delete):
     """Patch a table's metadata."""
-    DATASET_ID = 'update_table_simple_dataset_%d' % (_millis(),)
-    TABLE_ID = 'update_table_simple_table_%d' % (_millis(),)
+    DATASET_ID = 'update_table_simple_dataset_{}'.format(_millis())
+    TABLE_ID = 'update_table_simple_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset.description = ORIGINAL_DESCRIPTION
     client.create_dataset(dataset)
@@ -289,8 +305,9 @@ def test_update_table_simple(client, to_delete):
 
 def test_update_table_multiple_properties(client, to_delete):
     """Update a table's metadata."""
-    DATASET_ID = 'update_table_multiple_properties_dataset_%d' % (_millis(),)
-    TABLE_ID = 'update_table_multiple_properties_table_%d' % (_millis(),)
+    DATASET_ID = 'update_table_multiple_properties_dataset_{}'.format(
+        _millis())
+    TABLE_ID = 'update_table_multiple_properties_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset.description = ORIGINAL_DESCRIPTION
     client.create_dataset(dataset)
@@ -324,8 +341,8 @@ def test_update_table_multiple_properties(client, to_delete):
 
 def test_table_create_rows(client, to_delete):
     """Insert / fetch table data."""
-    DATASET_ID = 'table_create_rows_dataset_%d' % (_millis(),)
-    TABLE_ID = 'table_create_rows_table_%d' % (_millis(),)
+    DATASET_ID = 'table_create_rows_dataset_{}'.format(_millis())
+    TABLE_ID = 'table_create_rows_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -348,8 +365,8 @@ def test_table_create_rows(client, to_delete):
 
 def test_load_table_from_file(client, to_delete):
     """Upload table data from a CSV file."""
-    DATASET_ID = 'table_upload_from_file_dataset_%d' % (_millis(),)
-    TABLE_ID = 'table_upload_from_file_table_%d' % (_millis(),)
+    DATASET_ID = 'table_upload_from_file_dataset_{}'.format(_millis())
+    TABLE_ID = 'table_upload_from_file_table_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -409,12 +426,12 @@ def test_load_table_from_uri(client, to_delete):
         ('Bhettye Rhubble', 27),
     ]
     HEADER_ROW = ('Full Name', 'Age')
-    bucket_name = 'gs_bq_load_test_%d' % (_millis(),)
+    bucket_name = 'gs_bq_load_test_{}'.format(_millis())
     blob_name = 'person_ages.csv'
     bucket, blob = _write_csv_to_storage(
         bucket_name, blob_name, HEADER_ROW, ROWS)
     to_delete.extend((blob, bucket))
-    DATASET_ID = 'delete_table_dataset_%d' % (_millis(),)
+    DATASET_ID = 'delete_table_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -476,7 +493,7 @@ def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
 
 
 def test_copy_table(client, to_delete):
-    DATASET_ID = 'copy_table_dataset_%d' % (_millis(),)
+    DATASET_ID = 'copy_table_dataset_{}'.format(_millis())
     # [START copy_table]
     source_dataset = bigquery.DatasetReference(
         'bigquery-public-data', 'samples')
@@ -501,7 +518,7 @@ def test_copy_table(client, to_delete):
 
 
 def test_extract_table(client, to_delete):
-    DATASET_ID = 'export_data_dataset_%d' % (_millis(),)
+    DATASET_ID = 'export_data_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     client.create_dataset(dataset)
     to_delete.append(dataset)
@@ -511,7 +528,7 @@ def test_extract_table(client, to_delete):
     to_delete.insert(0, table)
     client.create_rows(table, ROWS)
 
-    bucket_name = 'extract_person_ages_job_%d' % (_millis(),)
+    bucket_name = 'extract_person_ages_job_{}'.format(_millis())
     # [START extract_table]
     from google.cloud.storage import Client as StorageClient
 
@@ -534,8 +551,8 @@ def test_extract_table(client, to_delete):
 
 def test_delete_table(client, to_delete):
     """Delete a table."""
-    DATASET_ID = 'delete_table_dataset_%d' % (_millis(),)
-    TABLE_ID = 'delete_table_table_%d' % (_millis(),)
+    DATASET_ID = 'delete_table_dataset_{}'.format(_millis())
+    TABLE_ID = 'delete_table_table_{}'.format(_millis())
     dataset_ref = client.dataset(DATASET_ID)
     dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
     to_delete.append(dataset)
