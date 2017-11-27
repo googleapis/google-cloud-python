@@ -15,18 +15,19 @@
 from __future__ import absolute_import
 import os
 
+from google.auth import credentials
 import mock
 
 import pytest
 
-from google.auth import credentials
 from google.cloud.pubsub_v1.gapic import publisher_client
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 
 
 def test_init():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
     # A plain client should have an `api` (the underlying GAPIC) and a
     # batch settings object, which should have the defaults.
@@ -38,7 +39,8 @@ def test_init():
 
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/foo/bar/')
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
     # Establish that a gRPC request would attempt to hit the emulator host.
     #
@@ -50,7 +52,8 @@ def test_init_emulator(monkeypatch):
 
 def test_batch_accepting():
     """Establish that an existing batch is returned if it accepts messages."""
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     message = types.PubsubMessage(data=b'foo')
 
     # At first, there are no batches, so this should return a new batch
@@ -67,7 +70,8 @@ def test_batch_accepting():
 
 
 def test_batch_without_autocreate():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     message = types.PubsubMessage(data=b'foo')
 
     # If `create=False` is sent, then when the batch is not found, None
@@ -79,7 +83,8 @@ def test_batch_without_autocreate():
 
 
 def test_publish():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
     # Use a mock in lieu of the actual batch class; set the mock up to claim
     # indiscriminately that it accepts all messages.
@@ -107,7 +112,8 @@ def test_publish():
 
 
 def test_publish_data_not_bytestring_error():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     with pytest.raises(TypeError):
         client.publish('topic_name', u'This is a text string.')
     with pytest.raises(TypeError):
@@ -115,7 +121,8 @@ def test_publish_data_not_bytestring_error():
 
 
 def test_publish_attrs_bytestring():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
 
     # Use a mock in lieu of the actual batch class; set the mock up to claim
     # indiscriminately that it accepts all messages.
@@ -133,13 +140,15 @@ def test_publish_attrs_bytestring():
 
 
 def test_publish_attrs_type_error():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     with pytest.raises(TypeError):
         client.publish('topic_name', b'foo', answer=42)
 
 
 def test_gapic_instance_method():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     with mock.patch.object(client.api, '_create_topic', autospec=True) as ct:
         client.create_topic('projects/foo/topics/bar')
         assert ct.call_count == 1
@@ -148,6 +157,7 @@ def test_gapic_instance_method():
 
 
 def test_gapic_class_method():
-    client = publisher.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
     answer = client.topic_path('foo', 'bar')
     assert answer == 'projects/foo/topics/bar'
