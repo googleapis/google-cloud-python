@@ -567,6 +567,23 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             rows = list(snapshot.read(table[index], columns, self.ALL))
             self._check_row_data(rows, expected=rowdata[index])
 
+    def test_invalid_type(self):
+        table = 'counters'
+        columns = ('name', 'value')
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        wrong = ((0, ''),)
+        right = (('', 0),)
+        error = "StatusCode.FAILED_PRECONDITION, Invalid value for column"
+        with session.batch() as batch:
+            batch.delete(table, self.ALL)
+            batch.insert(table, columns, right)
+        with self.assertRaisesRegexp(errors.RetryError, error):
+            with session.batch() as batch:
+                batch.delete(table, self.ALL)
+                batch.insert(table, columns, wrong)
+
     def test_batch_insert_then_read_random_bytes(self):
         import random
         import string
