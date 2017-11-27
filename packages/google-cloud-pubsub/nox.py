@@ -47,7 +47,8 @@ def default(session):
         '--cov=google.cloud.pubsub',
         '--cov=google.cloud.pubsub_v1',
         '--cov-config=.coveragerc',
-        'tests/unit',
+        os.path.join('tests', 'unit'),
+        *session.posargs
     )
 
 
