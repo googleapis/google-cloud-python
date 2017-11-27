@@ -110,6 +110,12 @@ Update multiple properties in a dataset's metadata:
    :start-after: [START update_dataset_multiple_properties]
    :end-before: [END update_dataset_multiple_properties]
 
+Modify user permissions on a dataset:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_update_dataset_access]
+   :end-before: [END bigquery_update_dataset_access]
+
 Delete a dataset:
 
 .. literalinclude:: snippets.py
