@@ -778,53 +778,6 @@ class TestClient(unittest.TestCase):
         req = conn._requested[1]
         self.assertEqual(req['headers']['If-Match'], 'etag')
 
-    def test_update_table_w_deprecated_properties_arg(self):
-        from google.cloud.bigquery.table import Table
-
-        path = 'projects/%s/datasets/%s/tables/%s' % (
-            self.PROJECT, self.DS_ID, self.TABLE_ID)
-        description = 'description'
-        resource = {
-            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_ID),
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'etag': 'etag',
-            'description': description,
-        }
-        creds = _make_credentials()
-        client = self._make_one(project=self.PROJECT, credentials=creds)
-        conn = client._connection = _Connection(resource, resource)
-        table = Table(self.TABLE_REF)
-        table.description = description
-
-        updated_table = client.update_table(
-            table, properties=['description'])
-
-        sent = {
-            'tableReference': {
-                'projectId': self.PROJECT,
-                'datasetId': self.DS_ID,
-                'tableId': self.TABLE_ID
-            },
-            'description': description,
-        }
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'PATCH')
-        self.assertEqual(req['data'], sent)
-        self.assertEqual(req['path'], '/' + path)
-        self.assertIsNone(req['headers'])
-        self.assertEqual(updated_table.description, table.description)
-
-        # ETag becomes If-Match header.
-        table._properties['etag'] = 'etag'
-        client.update_table(table, [])
-        req = conn._requested[1]
-        self.assertEqual(req['headers']['If-Match'], 'etag')
-
     def test_update_table_only_use_legacy_sql(self):
         from google.cloud.bigquery.table import Table
 

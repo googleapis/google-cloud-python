@@ -354,8 +354,7 @@ class Client(ClientWithProject):
             retry, method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response)
 
-    def update_table(
-            self, table, fields=None, properties=None, retry=DEFAULT_RETRY):
+    def update_table(self, table, fields, retry=DEFAULT_RETRY):
         """Change some fields of a table.
 
         Use ``fields`` to specify which fields to update. At least one field
@@ -373,8 +372,6 @@ class Client(ClientWithProject):
             fields (Sequence[str]):
                 The fields of ``table`` to change, spelled as the Table
                 properties (e.g. "friendly_name").
-            properties (Sequence[str]):
-                Deprecated alias for ``fields`` argument.
             retry (google.api_core.retry.Retry):
                 (Optional) A description of how to retry the API call.
 
@@ -383,13 +380,6 @@ class Client(ClientWithProject):
                 The :class:``~google.cloud.bigquery.table.Table`` returned
                 from the API call to update the table.
         """
-        if properties is not None:
-            warnings.warn(
-                ('properties argument to update_table is deprecated. '
-                 'Use fields instead.'),
-                DeprecationWarning)
-            fields = properties
-
         partial = table._build_resource(fields)
         if table.etag is not None:
             headers = {'If-Match': table.etag}
