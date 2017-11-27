@@ -110,8 +110,8 @@ def test_on_exception_other():
     policy = create_policy()
     policy._future = Future(policy=policy)
     exc = TypeError('wahhhhhh')
+    assert policy.on_exception(exc) is None
     with pytest.raises(TypeError):
-        policy.on_exception(exc)
         policy.future.result()
 
 
