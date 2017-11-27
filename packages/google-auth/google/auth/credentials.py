@@ -173,7 +173,7 @@ class ReadOnlyScoped(object):
 
         if credentials.requires_scopes:
             # Scoping is required.
-            credentials = credentials.create_scoped(['one', 'two'])
+            credentials = credentials.with_scopes(scopes=['one', 'two'])
 
     Credentials that require scopes must either be constructed with scopes::
 
