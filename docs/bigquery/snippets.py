@@ -159,25 +159,41 @@ def test_update_dataset_multiple_properties(client, to_delete):
     # [START update_dataset_multiple_properties]
     assert dataset.description == ORIGINAL_DESCRIPTION
     assert dataset.default_table_expiration_ms is None
-    entry = bigquery.AccessEntry(
-        role='READER', entity_type='domain', entity_id='example.com')
-    assert entry not in dataset.access_entries
     ONE_DAY_MS = 24 * 60 * 60 * 1000  # in milliseconds
     dataset.description = UPDATED_DESCRIPTION
     dataset.default_table_expiration_ms = ONE_DAY_MS
-    entries = list(dataset.access_entries)
-    entries.append(entry)
-    dataset.access_entries = entries
 
     dataset = client.update_dataset(
         dataset,
-        ['description', 'default_table_expiration_ms', 'access_entries']
+        ['description', 'default_table_expiration_ms']
     )  # API request
 
     assert dataset.description == UPDATED_DESCRIPTION
     assert dataset.default_table_expiration_ms == ONE_DAY_MS
-    assert entry in dataset.access_entries
     # [END update_dataset_multiple_properties]
+
+
+def test_update_dataset_access(client, to_delete):
+    """Update a dataset's metadata."""
+    DATASET_ID = 'update_dataset_access_%d' % (_millis(),)
+    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_update_dataset_access]
+    entry = bigquery.AccessEntry(
+        role='READER',
+        entity_type='userByEmail',
+        entity_id='sample.bigquery.dev@gmail.com')
+    assert entry not in dataset.access_entries
+    entries = list(dataset.access_entries)
+    entries.append(entry)
+    dataset.access_entries = entries
+
+    dataset = client.update_dataset(dataset, ['access_entries']) # API request
+
+    assert entry in dataset.access_entries
+    # [END bigquery_update_dataset_access]
 
 
 def test_delete_dataset(client):
