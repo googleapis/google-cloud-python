@@ -59,7 +59,7 @@ REQUIREMENTS = [
 
 setup(
     name='google-cloud-pubsub',
-    version='0.29.1',
+    version='0.29.2.dev',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[
