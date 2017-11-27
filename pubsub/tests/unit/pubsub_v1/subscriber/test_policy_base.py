@@ -46,7 +46,7 @@ def test_idempotent_retry_codes():
         exceptions.exception_class_for_grpc_status(status_code)
         for status_code in status_codes
     )
-    assert base.BasePolicy._IDEMPOTENT_RETRIES == expected
+    assert base.BasePolicy._RETRYABLE_STREAM_ERRORS == expected
 
 
 def test_ack_deadline():

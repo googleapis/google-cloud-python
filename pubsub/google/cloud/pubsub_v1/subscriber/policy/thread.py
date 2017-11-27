@@ -155,7 +155,7 @@ class Policy(base.BasePolicy):
         """
         # If this is in the list of idempotent exceptions, then we want to
         # retry. That entails just returning None.
-        if isinstance(exception, self._IDEMPOTENT_RETRIES):
+        if isinstance(exception, self._RETRYABLE_STREAM_ERRORS):
             return
 
         # Set any other exception on the future.

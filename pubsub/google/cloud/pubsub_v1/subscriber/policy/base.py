@@ -66,7 +66,7 @@ class BasePolicy(object):
     """
 
     _managed_ack_ids = None
-    _IDEMPOTENT_RETRIES = (
+    _RETRYABLE_STREAM_ERRORS = (
         exceptions.DeadlineExceeded,
         exceptions.ServiceUnavailable,
     )
