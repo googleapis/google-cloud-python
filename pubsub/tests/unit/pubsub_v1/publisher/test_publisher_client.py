@@ -39,8 +39,9 @@ def test_init():
 
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/foo/bar/')
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = publisher.Client(credentials=creds)
+    # NOTE: When the emulator host is set, a custom channel will be used, so
+    #       no credentials (mock ot otherwise) can be passed in.
+    client = publisher.Client()
 
     # Establish that a gRPC request would attempt to hit the emulator host.
     #
