@@ -145,7 +145,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.trace.v2._gax import _TraceAPI
+        from google.cloud.trace._gax import _TraceAPI
 
         return _TraceAPI
 
@@ -159,7 +159,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
     def test_batch_write_spans(self):
         from google.cloud.trace_v2.gapic import trace_service_client
         from google.cloud.trace_v2.proto.trace_pb2 import Span
-        from google.cloud.trace.v2._gax import _dict_mapping_to_pb
+        from google.cloud.trace._gax import _dict_mapping_to_pb
 
         spans = {
             'spans': [
@@ -199,7 +199,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     def test_create_span_default(self):
         from google.cloud.trace_v2.gapic import trace_service_client
-        from google.cloud.trace.v2._gax import _dict_mapping_to_pb
+        from google.cloud.trace._gax import _dict_mapping_to_pb
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
         gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
@@ -233,7 +233,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     def test_create_span_explicit(self):
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.trace.v2._gax import (
+        from google.cloud.trace._gax import (
             _dict_mapping_to_pb,
             _span_attrs_to_pb,
             _status_mapping_to_pb,
@@ -290,12 +290,12 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 class Test_make_gax_trace_api(unittest.TestCase):
 
     def _call_fut(self, client):
-        from google.cloud.trace.v2._gax import make_gax_trace_api
+        from google.cloud.trace._gax import make_gax_trace_api
 
         return make_gax_trace_api(client)
 
     def test_it(self):
-        from google.cloud.trace.v2._gax import _TraceAPI
+        from google.cloud.trace._gax import _TraceAPI
         from google.cloud._http import DEFAULT_USER_AGENT
 
         credentials = object()
@@ -311,7 +311,7 @@ class Test_make_gax_trace_api(unittest.TestCase):
         generated_api.SERVICE_ADDRESS = host
 
         patch_api = mock.patch(
-            'google.cloud.trace.v2._gax.trace_service_client.TraceServiceClient',
+            'google.cloud.trace._gax.trace_service_client.TraceServiceClient',
             new=generated_api)
 
         with patch_api:

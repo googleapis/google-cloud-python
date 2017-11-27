@@ -1,4 +1,4 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,24 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-
-from google.cloud.trace_v2 import types
-from google.cloud.trace.v2.client import Client
-from google.cloud.trace_v2.gapic import enums
-from google.cloud.trace_v2.gapic import trace_service_client
+from google.cloud.trace.v1.client import Client
 
 
-class TraceServiceClient(trace_service_client.TraceServiceClient):
-    __doc__ = trace_service_client.TraceServiceClient.__doc__
-    enums = enums
+__all__ = ['Client', 'SCOPE']
 
-
-__all__ = (
-    'enums',
-    'types',
-    'TraceServiceClient',
-    'Client',
-    'SCOPE',)
 
 SCOPE = Client.SCOPE
