@@ -183,7 +183,8 @@ class Client(ClientWithProject):
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
-            Iterator of :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
+            Iterator of
+            :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
             associated with the client's project.
         """
         extra_params = {}
