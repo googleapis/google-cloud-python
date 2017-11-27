@@ -153,10 +153,9 @@ class Policy(base.BasePolicy):
 
         This will cause the stream to exit loudly.
         """
-        # If this is DEADLINE_EXCEEDED, then we want to retry.
-        # That entails just returning None.
-        deadline_exceeded = grpc.StatusCode.DEADLINE_EXCEEDED
-        if getattr(exception, 'code', lambda: None)() == deadline_exceeded:
+        # If this is in the list of idempotent exceptions, then we want to
+        # retry. That entails just returning None.
+        if isinstance(exception, self._RETRYABLE_STREAM_ERRORS):
             return
 
         # Set any other exception on the future.

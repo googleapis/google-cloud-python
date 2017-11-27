@@ -21,6 +21,7 @@ import logging
 import random
 import time
 
+from google.api_core import exceptions
 import six
 
 from google.cloud.pubsub_v1 import types
@@ -65,6 +66,10 @@ class BasePolicy(object):
     """
 
     _managed_ack_ids = None
+    _RETRYABLE_STREAM_ERRORS = (
+        exceptions.DeadlineExceeded,
+        exceptions.ServiceUnavailable,
+    )
 
     def __init__(self, client, subscription,
                  flow_control=types.FlowControl(), histogram_data=None):
