@@ -20,7 +20,6 @@ import collections
 import functools
 import os
 import uuid
-import warnings
 
 import six
 
@@ -314,7 +313,7 @@ class Client(ClientWithProject):
         If ``dataset.etag`` is not ``None``, the update will only
         succeed if the dataset on the server has the same ETag. Thus
         reading a dataset with ``get_dataset``, changing its fields,
-        and then passing it ``update_dataset`` will ensure that the changes
+        and then passing it to ``update_dataset`` will ensure that the changes
         will only be saved if no modifications to the dataset occurred
         since the read.
 
@@ -363,7 +362,7 @@ class Client(ClientWithProject):
 
         If ``table.etag`` is not ``None``, the update will only succeed if
         the table on the server has the same ETag. Thus reading a table with
-        ``get_table``, changing its fields, and then passing it
+        ``get_table``, changing its fields, and then passing it to
         ``update_table`` will ensure that the changes will only be saved if
         no modifications to the table occurred since the read.
 
@@ -377,8 +376,7 @@ class Client(ClientWithProject):
 
         Returns:
             google.cloud.bigquery.table.Table:
-                The :class:``~google.cloud.bigquery.table.Table`` returned
-                from the API call to update the table.
+                The table resource returned from the API call.
         """
         partial = table._build_resource(fields)
         if table.etag is not None:
