@@ -20,6 +20,7 @@ import collections
 import functools
 import os
 import uuid
+import warnings
 
 import six
 
@@ -353,23 +354,43 @@ class Client(ClientWithProject):
             retry, method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response)
 
-    def update_table(self, table, properties, retry=DEFAULT_RETRY):
-        """API call:  update table properties via a PUT request
+    def update_table(
+            self, table, fields=None, properties=None, retry=DEFAULT_RETRY):
+        """Change some fields of a table.
 
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None``
+        in ``table``, it will be deleted.
 
-        :type table:
-            :class:`google.cloud.bigquery.table.Table`
-        :param table_ref: the table to update.
+        If ``table.etag`` is not ``None``, the update will only succeed if
+        the table on the server has the same ETag. Thus reading a table with
+        ``get_table``, changing its fields, and then passing it
+        ``update_table`` will ensure that the changes will only be saved if
+        no modifications to the table occurred since the read.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        Args:
+            table (google.cloud.bigquery.table.Table): The table to update.
+            fields (Sequence[str]):
+                The fields of ``table`` to change, spelled as the Table
+                properties (e.g. "friendly_name").
+            properties (Sequence[str]):
+                Deprecated alias for ``fields`` argument.
+            retry (google.api_core.retry.Retry):
+                (Optional) A description of how to retry the API call.
 
-        :rtype: :class:`google.cloud.bigquery.table.Table`
-        :returns: a ``Table`` instance
+        Returns:
+            google.cloud.bigquery.table.Table:
+                The :class:``~google.cloud.bigquery.table.Table`` returned
+                from the API call to update the table.
         """
-        partial = table._build_resource(properties)
+        if properties is not None:
+            warnings.warn(
+                ('properties argument to update_table is deprecated. '
+                 'Use fields instead.'),
+                DeprecationWarning)
+            fields = properties
+
+        partial = table._build_resource(fields)
         if table.etag is not None:
             headers = {'If-Match': table.etag}
         else:
