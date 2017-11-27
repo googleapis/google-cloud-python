@@ -12,20 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.auth import credentials
 import mock
 
-from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
 def test_init():
-    client = subscriber.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
     assert client._policy_class is thread.Policy
 
 
 def test_init_emulator(monkeypatch):
     monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/baz/bacon/')
+    # NOTE: When the emulator host is set, a custom channel will be used, so
+    #       no credentials (mock ot otherwise) can be passed in.
     client = subscriber.Client()
 
     # Establish that a gRPC request would attempt to hit the emulator host.
@@ -37,13 +40,15 @@ def test_init_emulator(monkeypatch):
 
 
 def test_subscribe():
-    client = subscriber.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
     subscription = client.subscribe('sub_name_a')
     assert isinstance(subscription, thread.Policy)
 
 
 def test_subscribe_with_callback():
-    client = subscriber.Client()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
     callback = mock.Mock()
     with mock.patch.object(thread.Policy, 'open') as open_:
         subscription = client.subscribe('sub_name_b', callback)
