@@ -176,9 +176,9 @@ class Policy(base.BasePolicy):
         """Handle the exception.
 
         If the exception is one of the retryable exceptions, this will signal
-        to the consumer thread that is should remain active.
+        to the consumer thread that it should remain active.
 
-        This will cause the stream to exit.
+        This will cause the stream to exit when it returns :data:`False`.
 
         Returns:
             bool: Indicates if the caller should remain active or shut down.
