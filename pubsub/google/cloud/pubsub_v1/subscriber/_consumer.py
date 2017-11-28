@@ -243,10 +243,7 @@ class Consumer(object):
             except KeyboardInterrupt:
                 self.stop_consuming()
             except Exception as exc:
-                try:
-                    self.active = self._policy.on_exception(exc)
-                except:
-                    self.active = False
+                self.active = self._policy.on_exception(exc)
 
     def start_consuming(self):
         """Start consuming the stream."""

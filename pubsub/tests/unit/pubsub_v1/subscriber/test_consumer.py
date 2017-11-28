@@ -91,19 +91,15 @@ def test_blocking_consume_keyboard_interrupt():
 
 class OnException(object):
 
-    def __init__(self, exiting_event, success=True):
+    def __init__(self, exiting_event):
         self.exiting_event = exiting_event
-        self.success = success
 
     def __call__(self, exception):
         self.exiting_event.set()
-        if self.success:
-            return False
-        else:
-            raise RuntimeError('Failed to handle exception.')
+        return False
 
 
-def test_blocking_consume_exception_normal_handling():
+def test_blocking_consume_on_exception():
     policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
     policy.call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
     exc = TypeError('Bad things!')
@@ -111,25 +107,6 @@ def test_blocking_consume_exception_normal_handling():
 
     consumer = _consumer.Consumer(policy=policy)
     policy.on_exception.side_effect = OnException(consumer._exiting)
-
-    # Establish that we get responses until we are sent the exiting event.
-    consumer._blocking_consume()
-
-    # Check mocks.
-    policy.call_rpc.assert_called_once()
-    policy.on_response.assert_called_once_with(mock.sentinel.A)
-    policy.on_exception.assert_called_once_with(exc)
-
-
-def test_blocking_consume_exception_handling_fails():
-    policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
-    policy.call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
-    exc = NameError('It fails and it propagates.')
-    policy.on_response.side_effect = exc
-
-    consumer = _consumer.Consumer(policy=policy)
-    policy.on_exception.side_effect = OnException(
-        consumer._exiting, success=False)
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
