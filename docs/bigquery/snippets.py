@@ -435,15 +435,16 @@ def test_load_table_from_uri(client, to_delete):
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     client.create_dataset(dataset)
     to_delete.append(dataset)
-
-    # [START load_table_from_uri]
-    table_ref = dataset.table('person_ages')
+    table_ref = dataset.table('my_table')
     table = bigquery.Table(table_ref)
     table.schema = [
         bigquery.SchemaField('full_name', 'STRING', mode='required'),
         bigquery.SchemaField('age', 'INTEGER', mode='required')
     ]
-    client.create_table(table)  # API request
+    client.create_table(table)
+
+    # [START load_table_from_uri]
+    table_ref = dataset.table('my_table')
     GS_URL = 'gs://{}/{}'.format(bucket_name, blob_name)
     job_id_prefix = "my_job"
     job_config = bigquery.LoadJobConfig()
