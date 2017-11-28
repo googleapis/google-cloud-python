@@ -182,8 +182,12 @@ class Policy(base.BasePolicy):
         if isinstance(exception, self._RETRYABLE_STREAM_ERRORS):
             return
 
-        # Set any other exception on the future.
-        self._future.set_exception(exception)
+        if self._future.done():
+            # Simply trigger the future.
+            self._future._trigger()
+        else:
+            # Set any other exception on the future.
+            self._future.set_exception(exception)
 
     def on_response(self, response):
         """Process all received Pub/Sub messages.
