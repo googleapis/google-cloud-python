@@ -202,7 +202,7 @@ class Consumer(object):
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
         initial_request = self._policy.get_initial_request(ack_queue=True)
-        _LOGGER.debug('Sending initial request:\n%s', initial_request)
+        _LOGGER.debug('Sending initial request:\n%r', initial_request)
         yield initial_request
 
         # Now yield each of the items on the request queue, and block if there
@@ -213,7 +213,7 @@ class Consumer(object):
                 _LOGGER.debug('Request generator signaled to stop.')
                 break
 
-            _LOGGER.debug('Sending request:\n%s', request)
+            _LOGGER.debug('Sending request:\n%r', request)
             yield request
 
     def _blocking_consume(self):
@@ -231,7 +231,7 @@ class Consumer(object):
             response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
-                    _LOGGER.debug('Received response:\n%s', response)
+                    _LOGGER.debug('Received response:\n%r', response)
                     self._policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
