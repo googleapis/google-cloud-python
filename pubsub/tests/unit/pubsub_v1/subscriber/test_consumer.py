@@ -91,12 +91,16 @@ def test_blocking_consume_keyboard_interrupt():
 
 class OnException(object):
 
-    def __init__(self, exiting_event):
+    def __init__(self, exiting_event, acceptable=None):
         self.exiting_event = exiting_event
+        self.acceptable = acceptable
 
     def __call__(self, exception):
-        self.exiting_event.set()
-        return False
+        if exception is self.acceptable:
+            return True
+        else:
+            self.exiting_event.set()
+            return False
 
 
 def test_blocking_consume_on_exception():
@@ -115,6 +119,31 @@ def test_blocking_consume_on_exception():
     policy.call_rpc.assert_called_once()
     policy.on_response.assert_called_once_with(mock.sentinel.A)
     policy.on_exception.assert_called_once_with(exc)
+
+
+def test_blocking_consume_two_exceptions():
+    policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
+    policy.call_rpc.side_effect = (
+        (mock.sentinel.A,),
+        (mock.sentinel.B,),
+    )
+    exc1 = NameError('Oh noes.')
+    exc2 = ValueError('Something grumble.')
+    policy.on_response.side_effect = (exc1, exc2)
+
+    consumer = _consumer.Consumer(policy=policy)
+    policy.on_exception.side_effect = OnException(
+        consumer._exiting, acceptable=exc1)
+
+    # Establish that we get responses until we are sent the exiting event.
+    consumer._blocking_consume()
+
+    # Check mocks.
+    assert policy.call_rpc.call_count == 2
+    policy.on_response.assert_has_calls(
+        [mock.call(mock.sentinel.A), mock.call(mock.sentinel.B)])
+    policy.on_exception.assert_has_calls(
+        [mock.call(exc1), mock.call(exc2)])
 
 
 def test_start_consuming():
