@@ -244,10 +244,9 @@ class Consumer(object):
                 self.stop_consuming()
             except Exception as exc:
                 try:
-                    self._policy.on_exception(exc)
+                    self.active = self._policy.on_exception(exc)
                 except:
                     self.active = False
-                    raise
 
     def start_consuming(self):
         """Start consuming the stream."""
