@@ -32,8 +32,32 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def _callback_completed(future):
-    """Simple callback that just logs a `Future`'s result."""
+    """Simple callback that just logs a future's result.
+
+    Used on completion of processing a message received by a
+    subscriber.
+
+    Args:
+        future (concurrent.futures.Future): A future returned
+            from :meth:`~concurrent.futures.Executor.submit`.
+    """
     _LOGGER.debug('Result: %s', future.result())
+
+
+def _do_nothing_callback(message):
+    """Default callback for messages received by subscriber.
+
+    Does nothing with the message and returns :data:`None`.
+
+    Args:
+        message (~google.cloud.pubsub_v1.subscriber.message.Message): A
+            protobuf message returned by the backend and parsed into
+            our high level message type.
+
+    Returns:
+        NoneType: Always.
+    """
+    return None
 
 
 class Policy(base.BasePolicy):
@@ -62,7 +86,7 @@ class Policy(base.BasePolicy):
                 ``executor``.
         """
         # Default the callback to a no-op; it is provided by `.open`.
-        self._callback = lambda message: None
+        self._callback = _do_nothing_callback
 
         # Default the future to None; it is provided by `.open`.
         self._future = None
@@ -97,7 +121,7 @@ class Policy(base.BasePolicy):
 
         # The subscription is closing cleanly; resolve the future if it is not
         # resolved already.
-        if self._future and not self._future.done():
+        if self._future is not None and not self._future.done():
             self._future.set_result(None)
         self._future = None
 
@@ -167,7 +191,7 @@ class Policy(base.BasePolicy):
         For each message, schedule a callback with the executor.
         """
         for msg in response.received_messages:
-            _LOGGER.debug('New message received from Pub/Sub: %r', msg)
+            _LOGGER.debug('New message received from Pub/Sub:\n%r', msg)
             _LOGGER.debug(self._callback)
             message = Message(msg.message, msg.ack_id, self._request_queue)
             future = self._executor.submit(self._callback, message)

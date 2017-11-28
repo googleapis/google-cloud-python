@@ -307,7 +307,7 @@ class BasePolicy(object):
             in an appropriate form of subprocess.
         """
         while True:
-            # Sanity check: Should this infinitely loop quit?
+            # Sanity check: Should this infinite loop quit?
             if not self._consumer.active:
                 return
 
