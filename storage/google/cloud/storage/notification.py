@@ -28,7 +28,7 @@ JSON_API_V1_PAYLOAD_FORMAT = 'JSON_API_V1'
 NONE_PAYLOAD_FORMAT = 'NONE'
 
 _TOPIC_REF_FMT = '//pubsub.googleapis.com/projects/{}/topics/{}'
-_PROJECT_PATTERN = r'(?P<project>[a-z]+-[a-z]+-\d+)'
+_PROJECT_PATTERN = r'(?P<project>[a-z]+-[a-z]+\d+)'
 _TOPIC_NAME_PATTERN = r'(?P<name>[A-Za-z](\w|[-_.~+%])+)'
 _TOPIC_REF_PATTERN = _TOPIC_REF_FMT.format(
     _PROJECT_PATTERN, _TOPIC_NAME_PATTERN)
