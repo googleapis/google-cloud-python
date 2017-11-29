@@ -106,7 +106,10 @@ class Policy(base.BasePolicy):
 
         # Also maintain a request queue and an executor.
         if executor is None:
-            executor = futures.ThreadPoolExecutor(max_workers=10)
+            executor = futures.ThreadPoolExecutor(
+                max_workers=10,
+                thread_name_prefix='ThreadPoolExecutor-SubscriberPolicy',
+            )
         self._executor = executor
         _LOGGER.debug('Creating callback requests thread (not starting).')
         self._callback_requests = _helper_threads.QueueCallbackThread(
