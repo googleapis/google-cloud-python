@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import queue
-
-import mock
-
-import pytest
+import types as base_types
 
 from google.auth import credentials
+import mock
+import pytest
+from six.moves import queue
+
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _consumer
@@ -89,18 +89,61 @@ def test_blocking_consume_keyboard_interrupt():
             on_res.assert_called_once_with(consumer._policy, mock.sentinel.A)
 
 
-@mock.patch.object(thread.Policy, 'call_rpc', autospec=True)
-@mock.patch.object(thread.Policy, 'on_response', autospec=True)
-@mock.patch.object(thread.Policy, 'on_exception', autospec=True)
-def test_blocking_consume_exception_reraise(on_exc, on_res, call_rpc):
-    consumer = create_consumer()
+class OnException(object):
+
+    def __init__(self, exiting_event, acceptable=None):
+        self.exiting_event = exiting_event
+        self.acceptable = acceptable
+
+    def __call__(self, exception):
+        if exception is self.acceptable:
+            return True
+        else:
+            self.exiting_event.set()
+            return False
+
+
+def test_blocking_consume_on_exception():
+    policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
+    policy.call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
+    exc = TypeError('Bad things!')
+    policy.on_response.side_effect = exc
+
+    consumer = _consumer.Consumer(policy=policy)
+    policy.on_exception.side_effect = OnException(consumer._exiting)
 
     # Establish that we get responses until we are sent the exiting event.
-    call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
-    on_res.side_effect = TypeError('Bad things!')
-    on_exc.side_effect = on_res.side_effect
-    with pytest.raises(TypeError):
-        consumer._blocking_consume()
+    consumer._blocking_consume()
+
+    # Check mocks.
+    policy.call_rpc.assert_called_once()
+    policy.on_response.assert_called_once_with(mock.sentinel.A)
+    policy.on_exception.assert_called_once_with(exc)
+
+
+def test_blocking_consume_two_exceptions():
+    policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
+    policy.call_rpc.side_effect = (
+        (mock.sentinel.A,),
+        (mock.sentinel.B,),
+    )
+    exc1 = NameError('Oh noes.')
+    exc2 = ValueError('Something grumble.')
+    policy.on_response.side_effect = (exc1, exc2)
+
+    consumer = _consumer.Consumer(policy=policy)
+    policy.on_exception.side_effect = OnException(
+        consumer._exiting, acceptable=exc1)
+
+    # Establish that we get responses until we are sent the exiting event.
+    consumer._blocking_consume()
+
+    # Check mocks.
+    assert policy.call_rpc.call_count == 2
+    policy.on_response.assert_has_calls(
+        [mock.call(mock.sentinel.A), mock.call(mock.sentinel.B)])
+    policy.on_exception.assert_has_calls(
+        [mock.call(exc1), mock.call(exc2)])
 
 
 def test_start_consuming():
@@ -111,7 +154,7 @@ def test_start_consuming():
         assert consumer._exiting.is_set() is False
         assert consumer.active is True
         start.assert_called_once_with(
-            'consume bidirectional stream',
+            'ConsumeBidirectionalStream',
             consumer._request_queue,
             consumer._blocking_consume,
         )

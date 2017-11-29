@@ -28,4 +28,5 @@ class VideoIntelligenceServiceClient(
 __all__ = (
     'enums',
     'types',
-    'VideoIntelligenceServiceClient', )
+    'VideoIntelligenceServiceClient',
+)

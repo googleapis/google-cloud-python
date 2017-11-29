@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud/#history
 
+## 0.31.0
+
+Feature / bugfix release for the following packages:
+
+  *  [`google-cloud-pubsub==0.29.1`](https://pypi.org/project/google-cloud-pubsub/0.29.1/)
+  *  [`google-cloud-videointelligence==1.0.0`](https://pypi.org/project/google-cloud-videointelligence/1.0.0/)
+
 ## 0.30.0
 
 Feature / bugfix release for the following package:

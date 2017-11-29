@@ -40,10 +40,5 @@ setup(
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.cloud.gapic',
-        'google.cloud.gapic.trace',
-        'google.cloud.proto',
-        'google.cloud.proto.devtools',
-        'google.cloud.proto.devtools.cloudtrace',
     ],
     url='https://github.com/googleapis/googleapis')

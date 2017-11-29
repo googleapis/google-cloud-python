@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+import copy
 import datetime
 import operator
 
@@ -32,6 +33,38 @@ from google.cloud.bigquery.external_config import ExternalConfig
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
 _MARKER = object()
+
+
+def _reference_getter(table):
+    """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
+    this table.
+
+    Returns:
+        google.cloud.bigquery.table.TableReference: pointer to this table
+    """
+    from google.cloud.bigquery import dataset
+
+    dataset_ref = dataset.DatasetReference(table.project, table.dataset_id)
+    return TableReference(dataset_ref, table.table_id)
+
+
+def _view_use_legacy_sql_getter(table):
+    """Specifies whether to execute the view with Legacy or Standard SQL.
+
+    If this table is not a view, None is returned.
+
+    Returns:
+        bool: True if the view is using legacy SQL, or None if not a view
+    """
+    view = table._properties.get('view')
+    if view is not None:
+        # The server-side default for useLegacySql is True.
+        return view.get('useLegacySql', True)
+    # In some cases, such as in a table list no view object is present, but the
+    # resource still represents a view. Use the type as a fallback.
+    if table.table_type == 'VIEW':
+        # The server-side default for useLegacySql is True.
+        return True
 
 
 class TableReference(object):
@@ -203,6 +236,8 @@ class Table(object):
         :returns: the table ID.
         """
         return self._table_id
+
+    reference = property(_reference_getter)
 
     @property
     def path(self):
@@ -531,23 +566,7 @@ class Table(object):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
 
-    @property
-    def view_use_legacy_sql(self):
-        """Specifies whether to execute the view with Legacy or Standard SQL.
-
-        The default is False for views (use Standard SQL).
-        If this table is not a view, None is returned.
-
-        :rtype: bool or ``NoneType``
-        :returns: The boolean for view.useLegacySql, or None if not a view.
-        """
-        view = self._properties.get('view')
-        if view is not None:
-            # useLegacySql is never missing from the view dict if this table
-            # was created client-side, because the view_query setter populates
-            # it. So a missing or None can only come from the server, whose
-            # default is True.
-            return view.get('useLegacySql', True)
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
     @view_use_legacy_sql.setter
     def view_use_legacy_sql(self, value):
@@ -713,6 +732,122 @@ class Table(object):
         return resource
 
 
+class TableListItem(object):
+    """A read-only table resource from a list operation.
+
+    For performance reasons, the BigQuery API only includes some of the table
+    properties when listing tables. Notably,
+    :attr:`~google.cloud.bigquery.table.Table.schema` and
+    :attr:`~google.cloud.bigquery.table.Table.num_rows` are missing.
+
+    For a full list of the properties that the BigQuery API returns, see the
+    `REST documentation for tables.list
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list>`_.
+
+
+    Args:
+        resource (dict):
+            A table-like resource object from a table list response.
+    """
+
+    def __init__(self, resource):
+        self._properties = resource
+
+    @property
+    def project(self):
+        """The project ID of the project this table belongs to.
+
+        Returns:
+            str: the project ID of the table.
+        """
+        return self._properties.get('tableReference', {}).get('projectId')
+
+    @property
+    def dataset_id(self):
+        """The dataset ID of the dataset this table belongs to.
+
+        Returns:
+            str: the dataset ID of the table.
+        """
+        return self._properties.get('tableReference', {}).get('datasetId')
+
+    @property
+    def table_id(self):
+        """The table ID.
+
+        Returns:
+            str: the table ID.
+        """
+        return self._properties.get('tableReference', {}).get('tableId')
+
+    reference = property(_reference_getter)
+
+    @property
+    def labels(self):
+        """Labels for the table.
+
+        This method always returns a dict. To change a table's labels,
+        modify the dict, then call ``Client.update_table``. To delete a
+        label, set its value to ``None`` before updating.
+
+        Returns:
+            Map[str, str]: A dictionary of the the table's labels
+        """
+        return self._properties.get('labels', {})
+
+    @property
+    def full_table_id(self):
+        """ID for the table, in the form ``project_id:dataset_id:table_id``.
+
+        Returns:
+            str: The fully-qualified ID of the table
+        """
+        return self._properties.get('id')
+
+    @property
+    def table_type(self):
+        """The type of the table.
+
+        Possible values are "TABLE", "VIEW", or "EXTERNAL".
+
+        Returns:
+            str: The kind of table
+        """
+        return self._properties.get('type')
+
+    @property
+    def partitioning_type(self):
+        """Time partitioning of the table.
+
+        Returns:
+            str:
+                Type of partitioning if the table is partitioned, None
+                otherwise.
+        """
+        return self._properties.get('timePartitioning', {}).get('type')
+
+    @property
+    def partition_expiration(self):
+        """Expiration time in ms for a partition
+
+        Returns:
+            int: The time in ms for partition expiration
+        """
+        return int(
+            self._properties.get('timePartitioning', {}).get('expirationMs'))
+
+    @property
+    def friendly_name(self):
+        """Title of the table.
+
+        Returns:
+            str: The name as set by the user, or None (the default)
+        """
+        return self._properties.get('friendlyName')
+
+    view_use_legacy_sql = property(_view_use_legacy_sql_getter)
+
+
 def _row_from_mapping(mapping, schema):
     """Convert a mapping to a row tuple using the schema.
 
@@ -783,7 +918,77 @@ class Row(object):
         self._xxx_field_to_index = field_to_index
 
     def values(self):
-        return self._xxx_values
+        """Return the values included in this row.
+
+        Returns:
+            Sequence[object]: A sequence of length ``len(row)``.
+        """
+        return copy.deepcopy(self._xxx_values)
+
+    def keys(self):
+        """Return the keys for using a row as a dict.
+
+        Returns:
+            Sequence[str]: The keys corresponding to the columns of a row
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).keys())
+            ['x', 'y']
+        """
+        return six.iterkeys(self._xxx_field_to_index)
+
+    def items(self):
+        """Return items as ``(key, value)`` pairs.
+
+        Returns:
+            Sequence[Tuple[str, object]]:
+                The ``(key, value)`` pairs representing this row.
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).items())
+            [('x', 'a'), ('y', 'b')]
+        """
+        for key, index in six.iteritems(self._xxx_field_to_index):
+            yield (key, copy.deepcopy(self._xxx_values[index]))
+
+    def get(self, key, default=None):
+        """Return a value for key, with a default value if it does not exist.
+
+        Args:
+            key (str): The key of the column to access
+            default (object):
+                The default value to use if the key does not exist. (Defaults
+                to :data:`None`.)
+
+        Returns:
+            object:
+                The value associated with the provided key, or a default value.
+
+        Examples:
+            When the key exists, the value associated with it is returned.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
+            'a'
+
+            The default value is ``None`` when the key does not exist.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
+            None
+
+            The default value can be overrided with the ``default`` parameter.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
+            ''
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
+            ''
+        """
+        index = self._xxx_field_to_index.get(key)
+        if index is None:
+            return default
+        return self._xxx_values[index]
 
     def __getattr__(self, name):
         value = self._xxx_field_to_index.get(name)

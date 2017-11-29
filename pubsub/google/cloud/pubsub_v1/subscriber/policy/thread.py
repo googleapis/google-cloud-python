@@ -15,11 +15,11 @@
 from __future__ import absolute_import
 
 from concurrent import futures
-from queue import Queue
 import logging
 import threading
 
 import grpc
+from six.moves import queue as queue_mod
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
@@ -28,12 +28,36 @@ from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.message import Message
 
 
-logger = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 def _callback_completed(future):
-    """Simple callback that just logs a `Future`'s result."""
-    logger.debug('Result: %s', future.result())
+    """Simple callback that just logs a future's result.
+
+    Used on completion of processing a message received by a
+    subscriber.
+
+    Args:
+        future (concurrent.futures.Future): A future returned
+            from :meth:`~concurrent.futures.Executor.submit`.
+    """
+    _LOGGER.debug('Result: %s', future.result())
+
+
+def _do_nothing_callback(message):
+    """Default callback for messages received by subscriber.
+
+    Does nothing with the message and returns :data:`None`.
+
+    Args:
+        message (~google.cloud.pubsub_v1.subscriber.message.Message): A
+            protobuf message returned by the backend and parsed into
+            our high level message type.
+
+    Returns:
+        NoneType: Always.
+    """
+    return None
 
 
 class Policy(base.BasePolicy):
@@ -62,14 +86,14 @@ class Policy(base.BasePolicy):
                 ``executor``.
         """
         # Default the callback to a no-op; it is provided by `.open`.
-        self._callback = lambda message: None
+        self._callback = _do_nothing_callback
 
         # Default the future to None; it is provided by `.open`.
         self._future = None
 
         # Create a queue for keeping track of shared state.
         if queue is None:
-            queue = Queue()
+            queue = queue_mod.Queue()
         self._request_queue = queue
 
         # Call the superclass constructor.
@@ -80,7 +104,7 @@ class Policy(base.BasePolicy):
         )
 
         # Also maintain a request queue and an executor.
-        logger.debug('Creating callback requests thread (not starting).')
+        _LOGGER.debug('Creating callback requests thread (not starting).')
         if executor is None:
             executor = futures.ThreadPoolExecutor(max_workers=10)
         self._executor = executor
@@ -97,7 +121,7 @@ class Policy(base.BasePolicy):
 
         # The subscription is closing cleanly; resolve the future if it is not
         # resolved already.
-        if self._future and not self._future.done():
+        if self._future is not None and not self._future.done():
             self._future.set_result(None)
         self._future = None
 
@@ -122,10 +146,10 @@ class Policy(base.BasePolicy):
         self._future = Future(policy=self)
 
         # Start the thread to pass the requests.
-        logger.debug('Starting callback requests worker.')
+        _LOGGER.debug('Starting callback requests worker.')
         self._callback = callback
         self._consumer.helper_threads.start(
-            'callback requests worker',
+            'CallbackRequestsWorker',
             self._request_queue,
             self._callback_requests,
         )
@@ -135,8 +159,11 @@ class Policy(base.BasePolicy):
 
         # Spawn a helper thread that maintains all of the leases for
         # this policy.
-        logger.debug('Spawning lease maintenance worker.')
-        self._leaser = threading.Thread(target=self.maintain_leases)
+        _LOGGER.debug('Spawning lease maintenance worker.')
+        self._leaser = threading.Thread(
+            name='Thread-LeaseMaintenance',
+            target=self.maintain_leases,
+        )
         self._leaser.daemon = True
         self._leaser.start()
 
@@ -149,18 +176,26 @@ class Policy(base.BasePolicy):
         getattr(self, action)(**kwargs)
 
     def on_exception(self, exception):
-        """Bubble the exception.
+        """Handle the exception.
 
-        This will cause the stream to exit loudly.
+        If the exception is one of the retryable exceptions, this will signal
+        to the consumer thread that it should remain active.
+
+        This will cause the stream to exit when it returns :data:`False`.
+
+        Returns:
+            bool: Indicates if the caller should remain active or shut down.
+            Will be :data:`True` if the ``exception`` is "acceptable", i.e.
+            in a list of retryable / idempotent exceptions.
         """
-        # If this is DEADLINE_EXCEEDED, then we want to retry.
-        # That entails just returning None.
-        deadline_exceeded = grpc.StatusCode.DEADLINE_EXCEEDED
-        if getattr(exception, 'code', lambda: None)() == deadline_exceeded:
-            return
+        # If this is in the list of idempotent exceptions, then we want to
+        # retry. That entails just returning None.
+        if isinstance(exception, self._RETRYABLE_STREAM_ERRORS):
+            return True
 
         # Set any other exception on the future.
         self._future.set_exception(exception)
+        return False
 
     def on_response(self, response):
         """Process all received Pub/Sub messages.
@@ -168,8 +203,8 @@ class Policy(base.BasePolicy):
         For each message, schedule a callback with the executor.
         """
         for msg in response.received_messages:
-            logger.debug('New message received from Pub/Sub: %r', msg)
-            logger.debug(self._callback)
+            _LOGGER.debug('New message received from Pub/Sub:\n%r', msg)
+            _LOGGER.debug(self._callback)
             message = Message(msg.message, msg.ack_id, self._request_queue)
             future = self._executor.submit(self._callback, message)
             future.add_done_callback(_callback_completed)
