@@ -309,6 +309,7 @@ class BasePolicy(object):
         while True:
             # Sanity check: Should this infinite loop quit?
             if not self._consumer.active:
+                _LOGGER.debug('Consumer inactive, ending lease maintenance.')
                 return
 
             # Determine the appropriate duration for the lease. This is
