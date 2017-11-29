@@ -37,6 +37,7 @@ class Message(object):
         publish_time (datetime): The time that this message was originally
             published.
     """
+
     def __init__(self, message, ack_id, request_queue):
         """Construct the Message.
 
@@ -128,11 +129,16 @@ class Message(object):
             receive any given message more than once.
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
-        self._request_queue.put(('ack', {
-            'ack_id': self._ack_id,
-            'byte_size': self.size,
-            'time_to_ack': time_to_ack,
-        }))
+        self._request_queue.put(
+            (
+                'ack',
+                {
+                    'ack_id': self._ack_id,
+                    'byte_size': self.size,
+                    'time_to_ack': time_to_ack,
+                },
+            ),
+        )
 
     def drop(self):
         """Release the message from lease management.
@@ -147,10 +153,15 @@ class Message(object):
             both call this one. You probably do not want to call this method
             directly.
         """
-        self._request_queue.put(('drop', {
-            'ack_id': self._ack_id,
-            'byte_size': self.size,
-        }))
+        self._request_queue.put(
+            (
+                'drop',
+                {
+                    'ack_id': self._ack_id,
+                    'byte_size': self.size,
+                },
+            ),
+        )
 
     def lease(self):
         """Inform the policy to lease this message continually.
@@ -159,10 +170,15 @@ class Message(object):
             This method is called by the constructor, and you should never
             need to call it manually.
         """
-        self._request_queue.put(('lease', {
-            'ack_id': self._ack_id,
-            'byte_size': self.size,
-        }))
+        self._request_queue.put(
+            (
+                'lease',
+                {
+                    'ack_id': self._ack_id,
+                    'byte_size': self.size,
+                },
+            ),
+        )
 
     def modify_ack_deadline(self, seconds):
         """Set the deadline for acknowledgement to the given value.
@@ -182,17 +198,27 @@ class Message(object):
                 to. This should be between 0 and 600. Due to network latency,
                 values below 10 are advised against.
         """
-        self._request_queue.put(('modify_ack_deadline', {
-            'ack_id': self._ack_id,
-            'seconds': seconds,
-        }))
+        self._request_queue.put(
+            (
+                'modify_ack_deadline',
+                {
+                    'ack_id': self._ack_id,
+                    'seconds': seconds,
+                },
+            ),
+        )
 
     def nack(self):
         """Decline to acknowldge the given message.
 
         This will cause the message to be re-delivered to the subscription.
         """
-        self._request_queue.put(('nack', {
-            'ack_id': self._ack_id,
-            'byte_size': self.size,
-        }))
+        self._request_queue.put(
+            (
+                'nack',
+                {
+                    'ack_id': self._ack_id,
+                    'byte_size': self.size,
+                },
+            ),
+        )

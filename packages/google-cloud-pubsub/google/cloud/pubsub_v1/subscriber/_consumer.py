@@ -123,7 +123,9 @@ from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 
+
 _LOGGER = logging.getLogger(__name__)
+_BIDIRECTIONAL_CONSUMER_NAME = 'ConsumeBidirectionalStream'
 
 
 class Consumer(object):
@@ -250,7 +252,7 @@ class Consumer(object):
         self.active = True
         self._exiting.clear()
         self.helper_threads.start(
-            'ConsumeBidirectionalStream',
+            _BIDIRECTIONAL_CONSUMER_NAME,
             self._request_queue,
             self._blocking_consume,
         )
