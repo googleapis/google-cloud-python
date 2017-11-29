@@ -376,8 +376,11 @@ class BasePolicy(object):
         """Called when a gRPC exception occurs.
 
         If this method does nothing, then the stream is re-started. If this
-        raises an exception, it will stop the consumer thread.
-        This is executed on the response consumer helper thread.
+        raises an exception, it will stop the consumer thread. This is
+        executed on the response consumer helper thread.
+
+        Implementations should return :data:`True` if they want the consumer
+        thread to remain active, otherwise they should return :data:`False`.
 
         Args:
             exception (Exception): The exception raised by the RPC.

@@ -94,7 +94,7 @@ def test_on_exception_deadline_exceeded():
     details = 'Bad thing happened. Time out, go sit in the corner.'
     exc = exceptions.DeadlineExceeded(details)
 
-    assert policy.on_exception(exc) is None
+    assert policy.on_exception(exc) is True
 
 
 def test_on_exception_unavailable():
@@ -103,14 +103,14 @@ def test_on_exception_unavailable():
     details = 'UNAVAILABLE. Service taking nap.'
     exc = exceptions.ServiceUnavailable(details)
 
-    assert policy.on_exception(exc) is None
+    assert policy.on_exception(exc) is True
 
 
 def test_on_exception_other():
     policy = create_policy()
     policy._future = Future(policy=policy)
     exc = TypeError('wahhhhhh')
-    assert policy.on_exception(exc) is None
+    assert policy.on_exception(exc) is False
     with pytest.raises(TypeError):
         policy.future.result()
 

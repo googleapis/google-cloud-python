@@ -39,16 +39,19 @@ class Future(futures.Future):
 
         .. note::
 
-            A ``False`` value here does not necessarily mean that the
+            A :data:`False` value here does not necessarily mean that the
             subscription is closed; it merely means that _this_ future is
             not the future applicable to it.
 
             Since futures have a single result (or exception) and there is
-            not a concept of resetting them, a closing re-opening of a
+            not a concept of resetting them, a closing / re-opening of a
             subscription will therefore return a new future.
 
         Returns:
-            bool: ``True`` if this subscription is opened with this future,
-                ``False`` otherwise.
+            bool: :data:`True` if this subscription is opened with this
+            future, :data:`False` otherwise.
         """
-        return self._policy.future is self
+        if self._policy.future is not self:
+            return False
+
+        return super(Future, self).running()

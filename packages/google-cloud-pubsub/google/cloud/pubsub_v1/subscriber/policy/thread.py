@@ -176,17 +176,26 @@ class Policy(base.BasePolicy):
         getattr(self, action)(**kwargs)
 
     def on_exception(self, exception):
-        """Bubble the exception.
+        """Handle the exception.
 
-        This will cause the stream to exit loudly.
+        If the exception is one of the retryable exceptions, this will signal
+        to the consumer thread that it should remain active.
+
+        This will cause the stream to exit when it returns :data:`False`.
+
+        Returns:
+            bool: Indicates if the caller should remain active or shut down.
+            Will be :data:`True` if the ``exception`` is "acceptable", i.e.
+            in a list of retryable / idempotent exceptions.
         """
         # If this is in the list of idempotent exceptions, then we want to
         # retry. That entails just returning None.
         if isinstance(exception, self._RETRYABLE_STREAM_ERRORS):
-            return
+            return True
 
         # Set any other exception on the future.
         self._future.set_exception(exception)
+        return False
 
     def on_response(self, response):
         """Process all received Pub/Sub messages.
