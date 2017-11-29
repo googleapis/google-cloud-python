@@ -78,7 +78,10 @@ class Batch(base.Batch):
         self._thread = None
         self._commit_lock = threading.Lock()
         if autocommit and self._settings.max_latency < float('inf'):
-            self._thread = threading.Thread(target=self.monitor)
+            self._thread = threading.Thread(
+                name='Thread-MonitorBatchPublisher',
+                target=self.monitor,
+            )
             self._thread.start()
 
     @property
@@ -140,7 +143,10 @@ class Batch(base.Batch):
         self._status = 'in-flight'
 
         # Start a new thread to actually handle the commit.
-        commit_thread = threading.Thread(target=self._commit)
+        commit_thread = threading.Thread(
+            name='Thread-CommitBatchPublisher',
+            target=self._commit,
+        )
         commit_thread.start()
 
     def _commit(self):
