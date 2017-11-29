@@ -29,7 +29,7 @@ setup(
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     name='google-cloud-videointelligence',
-    version='0.28.1.dev1',
+    version='1.0.0',
     description='Python Client for Google Cloud Video Intelligence',
     long_description=readme,
     namespace_packages=[
@@ -50,7 +50,7 @@ setup(
     zip_safe=False,
     scripts=[],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
