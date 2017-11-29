@@ -63,10 +63,10 @@ class Test__UTC(unittest.TestCase):
         klass = self._get_target_class()
         try:
             import pytz
-        except ImportError:
+        except ImportError:  # pragma: NO COVER
             self.assertIsInstance(MUT.UTC, klass)
         else:
-            self.assertIs(MUT.UTC, pytz.UTC)  # pragma: NO COVER
+            self.assertIs(MUT.UTC, pytz.UTC)
 
     def test_dst(self):
         import datetime
@@ -77,10 +77,20 @@ class Test__UTC(unittest.TestCase):
     def test_fromutc(self):
         import datetime
 
-        naive_epoch = datetime.datetime.utcfromtimestamp(0)
+        naive_epoch = datetime.datetime(
+            1970, 1, 1, 0, 0, 1, tzinfo=None)
         self.assertIsNone(naive_epoch.tzinfo)
         tz = self._make_one()
         epoch = tz.fromutc(naive_epoch)
+        self.assertEqual(epoch.tzinfo, tz)
+
+    def test_fromutc_with_tz(self):
+        import datetime
+
+        tz = self._make_one()
+        epoch_with_tz = datetime.datetime(
+            1970, 1, 1, 0, 0, 1, tzinfo=tz)
+        epoch = tz.fromutc(epoch_with_tz)
         self.assertEqual(epoch.tzinfo, tz)
 
     def test_tzname(self):

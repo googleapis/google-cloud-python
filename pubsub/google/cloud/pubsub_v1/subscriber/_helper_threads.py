@@ -64,7 +64,8 @@ class HelperThreadRegistry(object):
         thread = threading.Thread(
             name='Consumer helper: {}'.format(name),
             target=target,
-            *args, **kwargs
+            *args,
+            **kwargs
         )
         thread.daemon = True
         thread.start()

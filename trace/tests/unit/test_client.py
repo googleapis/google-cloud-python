@@ -188,7 +188,7 @@ class TestClient(unittest.TestCase):
 
     def test_list_traces_explicit(self):
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.gapic.trace.v1.enums import ListTracesRequest as Enum
+        from google.cloud.trace_v1.gapic.enums import ListTracesRequest as Enum
         from google.cloud.trace._gax import _TraceAPI
 
         from datetime import datetime

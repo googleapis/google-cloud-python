@@ -293,6 +293,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.table_id, self.TABLE_NAME)
         self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.dataset_id, self.DS_ID)
+        self.assertEqual(table.reference.table_id, self.TABLE_NAME)
+        self.assertEqual(table.reference.project, self.PROJECT)
+        self.assertEqual(table.reference.dataset_id, self.DS_ID)
         self.assertEqual(
             table.path,
             '/projects/%s/datasets/%s/tables/%s' % (
@@ -753,6 +756,87 @@ class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
             ('Phred Phlyntstone', 32, ['red', 'green'], None))
 
 
+class TestTableListItem(unittest.TestCase):
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.table import TableListItem
+
+        return TableListItem
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        project = 'test-project'
+        dataset_id = 'test_dataset'
+        table_id = 'coffee_table'
+        resource = {
+            'kind': 'bigquery#table',
+            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id,
+            },
+            'friendlyName': 'Mahogany Coffee Table',
+            'type': 'TABLE',
+            'timePartitioning': {
+                'type': 'DAY',
+                'expirationMs': '10000',
+            },
+            'labels': {
+                'some-stuff': 'this-is-a-label',
+            },
+        }
+
+        table = self._make_one(resource)
+        self.assertEqual(table.project, project)
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(
+            table.full_table_id,
+            '{}:{}:{}'.format(project, dataset_id, table_id))
+        self.assertEqual(table.reference.project, project)
+        self.assertEqual(table.reference.dataset_id, dataset_id)
+        self.assertEqual(table.reference.table_id, table_id)
+        self.assertEqual(table.friendly_name, 'Mahogany Coffee Table')
+        self.assertEqual(table.table_type, 'TABLE')
+        self.assertEqual(table.partitioning_type, 'DAY')
+        self.assertEqual(table.partition_expiration, 10000)
+        self.assertEqual(table.labels['some-stuff'], 'this-is-a-label')
+        self.assertIsNone(table.view_use_legacy_sql)
+
+    def test_ctor_view(self):
+        project = 'test-project'
+        dataset_id = 'test_dataset'
+        table_id = 'just_looking'
+        resource = {
+            'kind': 'bigquery#table',
+            'id': '{}:{}:{}'.format(project, dataset_id, table_id),
+            'tableReference': {
+                'projectId': project,
+                'datasetId': dataset_id,
+                'tableId': table_id,
+            },
+            'type': 'VIEW',
+        }
+
+        table = self._make_one(resource)
+        self.assertEqual(table.project, project)
+        self.assertEqual(table.dataset_id, dataset_id)
+        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(
+            table.full_table_id,
+            '{}:{}:{}'.format(project, dataset_id, table_id))
+        self.assertEqual(table.reference.project, project)
+        self.assertEqual(table.reference.dataset_id, dataset_id)
+        self.assertEqual(table.reference.table_id, table_id)
+        self.assertEqual(table.table_type, 'VIEW')
+        # Server default for useLegacySql is True.
+        self.assertTrue(table.view_use_legacy_sql)
+
+
 class TestRow(unittest.TestCase):
 
     def test_row(self):
@@ -765,6 +849,13 @@ class TestRow(unittest.TestCase):
         self.assertEqual(row['c'], 3)
         self.assertEqual(len(row), 3)
         self.assertEqual(row.values(), VALUES)
+        self.assertEqual(set(row.keys()), set({'a': 1, 'b': 2, 'c': 3}.keys()))
+        self.assertEqual(set(row.items()),
+                         set({'a': 1, 'b': 2, 'c': 3}.items()))
+        self.assertEqual(row.get('a'), 1)
+        self.assertEqual(row.get('d'), None)
+        self.assertEqual(row.get('d', ''), '')
+        self.assertEqual(row.get('d', default=''), '')
         self.assertEqual(repr(row),
                          "Row((1, 2, 3), {'a': 0, 'b': 1, 'c': 2})")
         self.assertFalse(row != row)

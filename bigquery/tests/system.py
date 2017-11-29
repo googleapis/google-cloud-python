@@ -673,7 +673,7 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
-    def test_query_rows_w_legacy_sql_types(self):
+    def test_query_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
@@ -706,7 +706,7 @@ class TestBigQuery(unittest.TestCase):
         for example in examples:
             job_config = bigquery.QueryJobConfig()
             job_config.use_legacy_sql = True
-            rows = list(Config.CLIENT.query_rows(
+            rows = list(Config.CLIENT.query(
                 example['sql'], job_config=job_config))
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]), 1)
@@ -806,26 +806,28 @@ class TestBigQuery(unittest.TestCase):
             },
         ]
 
-    def test_query_rows_w_standard_sql_types(self):
+    def test_query_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
         for example in examples:
-            rows = list(Config.CLIENT.query_rows(example['sql']))
+            rows = list(Config.CLIENT.query(example['sql']))
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]), 1)
             self.assertEqual(rows[0][0], example['expected'])
 
-    def test_query_rows_w_failed_query(self):
+    def test_query_w_failed_query(self):
         from google.api_core.exceptions import BadRequest
 
         with self.assertRaises(BadRequest):
-            Config.CLIENT.query_rows('invalid syntax;')
+            Config.CLIENT.query('invalid syntax;').result()
 
-    def test_query_rows_w_timeout(self):
+    def test_query_w_timeout(self):
+        query_job = Config.CLIENT.query(
+            'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
+            job_id_prefix='test_query_w_timeout_')
+
         with self.assertRaises(concurrent.futures.TimeoutError):
-            Config.CLIENT.query_rows(
-                'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
-                job_id_prefix='test_query_rows_w_timeout_',
-                timeout=1)  # 1 second is much too short for this query.
+            # 1 second is much too short for this query.
+            query_job.result(timeout=1)
 
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
@@ -1224,9 +1226,9 @@ class TestBigQuery(unittest.TestCase):
         SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
             PUBLIC, DATASET_ID, TABLE_NAME, LIMIT)
 
-        iterator = Config.CLIENT.query_rows(SQL)
+        query_job = Config.CLIENT.query(SQL)
 
-        rows = list(iterator)
+        rows = list(query_job)
         self.assertEqual(len(rows), LIMIT)
 
     def test_query_future(self):
@@ -1256,7 +1258,7 @@ class TestBigQuery(unittest.TestCase):
         job_config.table_definitions = {table_id: ec}
         sql = 'SELECT * FROM %s' % table_id
 
-        got_rows = Config.CLIENT.query_rows(sql, job_config=job_config)
+        got_rows = Config.CLIENT.query(sql, job_config=job_config)
 
         row_tuples = [r.values() for r in got_rows]
         by_age = operator.itemgetter(1)
@@ -1280,7 +1282,7 @@ class TestBigQuery(unittest.TestCase):
 
         sql = 'SELECT * FROM %s.%s' % (dataset_id, table_id)
 
-        got_rows = Config.CLIENT.query_rows(sql)
+        got_rows = Config.CLIENT.query(sql)
 
         row_tuples = [r.values() for r in got_rows]
         by_age = operator.itemgetter(1)
