@@ -160,7 +160,10 @@ class Policy(base.BasePolicy):
         # Spawn a helper thread that maintains all of the leases for
         # this policy.
         _LOGGER.debug('Spawning lease maintenance worker.')
-        self._leaser = threading.Thread(target=self.maintain_leases)
+        self._leaser = threading.Thread(
+            name='Thread-LeaseMaintenance',
+            target=self.maintain_leases,
+        )
         self._leaser.daemon = True
         self._leaser.start()
 
