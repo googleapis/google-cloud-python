@@ -149,7 +149,7 @@ class Policy(base.BasePolicy):
         _LOGGER.debug('Starting callback requests worker.')
         self._callback = callback
         self._consumer.helper_threads.start(
-            'callback requests worker',
+            'CallbackRequestsWorker',
             self._request_queue,
             self._callback_requests,
         )
