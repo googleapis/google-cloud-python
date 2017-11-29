@@ -68,13 +68,13 @@ REQUIREMENTS = [
     'google-cloud-storage >= 1.6.0, < 1.7dev',
     'google-cloud-trace >= 0.16.0, < 0.17dev',
     'google-cloud-translate >= 1.3.0, < 1.4dev',
-    'google-cloud-videointelligence >= 0.28.0, < 0.29dev',
+    'google-cloud-videointelligence >= 1.0.0, < 1.1dev',
     'google-cloud-vision >= 0.28.0, < 0.29dev',
 ]
 
 setup(
     name='google-cloud',
-    version='0.30.1.dev1',
+    version='0.31.0',
     description='API Client library for Google Cloud',
     long_description=README,
     install_requires=REQUIREMENTS,
