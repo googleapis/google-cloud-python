@@ -68,7 +68,7 @@ class HelperThreadRegistry(object):
 
         # Keep track of the helper thread, so we are able to stop it.
         self._helper_threads[name] = _HelperThread(name, thread, queue)
-        _LOGGER.debug('Started helper thread {}'.format(name))
+        _LOGGER.debug('Started helper thread %s', name)
         return thread
 
     def stop(self, name):
@@ -86,7 +86,7 @@ class HelperThreadRegistry(object):
 
         # Join the thread if it is still alive.
         if helper_thread.thread.is_alive():
-            _LOGGER.debug('Stopping helper thread {}'.format(name))
+            _LOGGER.debug('Stopping helper thread %s', name)
             helper_thread.queue.put(STOP)
             helper_thread.thread.join()
 
@@ -102,9 +102,25 @@ class HelperThreadRegistry(object):
 
 
 class QueueCallbackThread(object):
-    """A helper thread that executes a callback for every item in
-    the queue.
+    """A helper that executes a callback for every item in the queue.
+
+    .. note::
+
+        This is not actually a thread, but it is intended to be a target
+        for a thread.
+
+    Calls a blocking ``get()`` on the ``queue`` until it encounters
+    :attr:`STOP`.
+
+    Args:
+        queue (~queue.Queue): A Queue instance, appropriate for crossing the
+            concurrency boundary implemented by ``executor``. Items will
+            be popped off (with a blocking ``get()``) until :attr:`STOP`
+            is encountered.
+        callback (Callable): A callback that can process items pulled off
+            of the queue.
     """
+
     def __init__(self, queue, callback):
         self.queue = queue
         self._callback = callback
@@ -113,14 +129,12 @@ class QueueCallbackThread(object):
         while True:
             item = self.queue.get()
             if item == STOP:
-                break
+                _LOGGER.debug('Exiting the QueueCallbackThread.')
+                return
 
             # Run the callback. If any exceptions occur, log them and
             # continue.
             try:
                 self._callback(item)
             except Exception as exc:
-                _LOGGER.error('{class_}: {message}'.format(
-                    class_=exc.__class__.__name__,
-                    message=str(exc),
-                ))
+                _LOGGER.error('%s: %s', exc.__class__.__name__, exc)
