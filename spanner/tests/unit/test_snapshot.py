@@ -252,9 +252,9 @@ class Test_SnapshotBase(unittest.TestCase):
         else:
             self.assertIsNone(result_set._source)
 
-        result_set.consume_all()
+        result_set._consume_all()
 
-        self.assertEqual(list(result_set.rows), VALUES)
+        self.assertEqual(list(result_set._rows), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
 
@@ -392,9 +392,9 @@ class Test_SnapshotBase(unittest.TestCase):
         else:
             self.assertIsNone(result_set._source)
 
-        result_set.consume_all()
+        result_set._consume_all()
 
-        self.assertEqual(list(result_set.rows), VALUES)
+        self.assertEqual(list(result_set._rows), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
 

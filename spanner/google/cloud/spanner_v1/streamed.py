@@ -39,7 +39,7 @@ class StreamedResultSet(object):
     """
     def __init__(self, response_iterator, source=None):
         self._response_iterator = response_iterator
-        self._rows = []             # Fully-processed rows
+        self._processed_rows = []             # Fully-processed rows
         self._counter = 0           # Counter for processed responses
         self._metadata = None       # Until set from first PRS
         self._stats = None          # Until set from last PRS
@@ -48,13 +48,13 @@ class StreamedResultSet(object):
         self._source = source       # Source snapshot
 
     @property
-    def rows(self):
+    def _rows(self):
         """Fully-processed rows.
 
         :rtype: list of row-data lists.
         :returns: list of completed row data, from proceesd PRS responses.
         """
-        return self._rows
+        return self._processed_rows
 
     @property
     def fields(self):
@@ -115,7 +115,7 @@ class StreamedResultSet(object):
                 self._rows.append(self._current_row)
                 self._current_row = []
 
-    def consume_next(self):
+    def _consume_next(self):
         """Consume the next partial result set from the stream.
 
         Parse the result set into new/existing rows in :attr:`_rows`
@@ -142,11 +142,11 @@ class StreamedResultSet(object):
 
         self._merge_values(values)
 
-    def consume_all(self):
+    def _consume_all(self):
         """Consume the streamed responses until there are no more."""
         while True:
             try:
-                self.consume_next()
+                self._consume_next()
             except StopIteration:
                 break
 
@@ -154,7 +154,7 @@ class StreamedResultSet(object):
         iter_rows, self._rows[:] = self._rows[:], ()
         while True:
             if not iter_rows:
-                self.consume_next()  # raises StopIteration
+                self._consume_next()  # raises StopIteration
                 iter_rows, self._rows[:] = self._rows[:], ()
             while iter_rows:
                 yield iter_rows.pop(0)

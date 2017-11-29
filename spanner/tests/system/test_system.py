@@ -869,11 +869,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         retrieved = 0
         while True:
             try:
-                streamed.consume_next()
+                streamed._consume_next()
             except StopIteration:
                 break
-            retrieved += len(streamed.rows)
-            streamed.rows[:] = ()
+            retrieved += len(streamed._rows)
+            streamed._rows[:] = ()
 
         self.assertEqual(retrieved, ROW_COUNT)
         self.assertEqual(streamed._current_row, [])
@@ -1191,11 +1191,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         retrieved = 0
         while True:
             try:
-                streamed.consume_next()
+                streamed._consume_next()
             except StopIteration:
                 break
-            retrieved += len(streamed.rows)
-            streamed.rows[:] = ()
+            retrieved += len(streamed._rows)
+            streamed._rows[:] = ()
 
         self.assertEqual(retrieved, ROW_COUNT)
         self.assertEqual(streamed._current_row, [])
