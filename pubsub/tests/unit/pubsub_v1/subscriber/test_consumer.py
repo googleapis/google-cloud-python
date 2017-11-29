@@ -109,7 +109,7 @@ def test_start_consuming():
         assert consumer._exiting.is_set() is False
         assert consumer.active is True
         start.assert_called_once_with(
-            'consume bidirectional stream',
+            'ConsumeBidirectionalStream',
             consumer._request_queue,
             consumer._blocking_consume,
         )
