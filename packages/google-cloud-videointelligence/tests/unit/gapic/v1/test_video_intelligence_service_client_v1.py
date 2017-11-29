@@ -17,9 +17,8 @@ import pytest
 
 from google.rpc import status_pb2
 
-from google.cloud import videointelligence_v1beta1
-from google.cloud.videointelligence_v1beta1 import enums
-from google.cloud.videointelligence_v1beta1.proto import video_intelligence_pb2
+from google.cloud import videointelligence_v1
+from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 from google.longrunning import operations_pb2
 
 
@@ -74,21 +73,15 @@ class TestVideoIntelligenceServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = videointelligence_v1beta1.VideoIntelligenceServiceClient(
+        client = videointelligence_v1.VideoIntelligenceServiceClient(
             channel=channel)
 
-        # Setup Request
-        input_uri = 'gs://demomaker/cat.mp4'
-        features_element = enums.Feature.LABEL_DETECTION
-        features = [features_element]
-
-        response = client.annotate_video(input_uri, features)
+        response = client.annotate_video()
         result = response.result()
         assert expected_response == result
 
         assert len(channel.requests) == 1
-        expected_request = video_intelligence_pb2.AnnotateVideoRequest(
-            input_uri=input_uri, features=features)
+        expected_request = video_intelligence_pb2.AnnotateVideoRequest()
         actual_request = channel.requests[0][1]
         assert expected_request == actual_request
 
@@ -101,14 +94,9 @@ class TestVideoIntelligenceServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[operation])
-        client = videointelligence_v1beta1.VideoIntelligenceServiceClient(
+        client = videointelligence_v1.VideoIntelligenceServiceClient(
             channel=channel)
 
-        # Setup Request
-        input_uri = 'gs://demomaker/cat.mp4'
-        features_element = enums.Feature.LABEL_DETECTION
-        features = [features_element]
-
-        response = client.annotate_video(input_uri, features)
+        response = client.annotate_video()
         exception = response.exception()
         assert exception.errors[0] == error

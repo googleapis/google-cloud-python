@@ -14,13 +14,13 @@
 #
 # EDITING INSTRUCTIONS
 # This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/cloud/videointelligence/v1beta2/video_intelligence.proto,
+# https://github.com/google/googleapis/blob/master/google/cloud/videointelligence/v1/video_intelligence.proto,
 # and updates to that file get reflected here through a refresh process.
 # For the short term, the refresh process will only be runnable by Google engineers.
 #
 # The only allowed edits are to method and file documentation. A 3-way
 # merge preserves those additions if the generated source changes.
-"""Accesses the google.cloud.videointelligence.v1beta2 VideoIntelligenceService API."""
+"""Accesses the google.cloud.videointelligence.v1 VideoIntelligenceService API."""
 
 import pkg_resources
 
@@ -31,9 +31,9 @@ import google.api_core.grpc_helpers
 import google.api_core.operation
 import google.api_core.operations_v1
 
-from google.cloud.videointelligence_v1beta2.gapic import enums
-from google.cloud.videointelligence_v1beta2.gapic import video_intelligence_service_client_config
-from google.cloud.videointelligence_v1beta2.proto import video_intelligence_pb2
+from google.cloud.videointelligence_v1.gapic import enums
+from google.cloud.videointelligence_v1.gapic import video_intelligence_service_client_config
+from google.cloud.videointelligence_v1.proto import video_intelligence_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
     'google-cloud-videointelligence',
@@ -53,7 +53,7 @@ class VideoIntelligenceServiceClient(object):
     # The name of the interface for this client. This is the key used to find
     # method configuration in the client_config dictionary
     _INTERFACE_NAME = (
-        'google.cloud.videointelligence.v1beta2.VideoIntelligenceService')
+        'google.cloud.videointelligence.v1.VideoIntelligenceService')
 
     def __init__(self,
                  channel=None,
@@ -133,9 +133,9 @@ class VideoIntelligenceServiceClient(object):
         ``Operation.response`` contains ``AnnotateVideoResponse`` (results).
 
         Example:
-            >>> from google.cloud import videointelligence_v1beta2
+            >>> from google.cloud import videointelligence_v1
             >>>
-            >>> client = videointelligence_v1beta2.VideoIntelligenceServiceClient()
+            >>> client = videointelligence_v1.VideoIntelligenceServiceClient()
             >>>
             >>> response = client.annotate_video()
             >>>
@@ -162,10 +162,10 @@ class VideoIntelligenceServiceClient(object):
             input_content (bytes): The video data bytes.
                 If unset, the input video(s) should be specified via ``input_uri``.
                 If set, ``input_uri`` should be unset.
-            features (list[~google.cloud.videointelligence_v1beta2.types.Feature]): Requested video annotation features.
-            video_context (Union[dict, ~google.cloud.videointelligence_v1beta2.types.VideoContext]): Additional video context and/or feature-specific parameters.
+            features (list[~google.cloud.videointelligence_v1.types.Feature]): Requested video annotation features.
+            video_context (Union[dict, ~google.cloud.videointelligence_v1.types.VideoContext]): Additional video context and/or feature-specific parameters.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.videointelligence_v1beta2.types.VideoContext`
+                message :class:`~google.cloud.videointelligence_v1.types.VideoContext`
             output_uri (str): Optional location where the output (in JSON format) should be stored.
                 Currently, only `Google Cloud Storage <https://cloud.google.com/storage/>`_
                 URIs are supported, which must be specified in the following format:
@@ -183,7 +183,7 @@ class VideoIntelligenceServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.videointelligence_v1beta2.types._OperationFuture` instance.
+            A :class:`~google.cloud.videointelligence_v1.types._OperationFuture` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
