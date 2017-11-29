@@ -47,15 +47,13 @@ class HelperThreadRegistry(object):
     def __contains__(self, needle):
         return needle in self._helper_threads
 
-    def start(self, name, queue, target, *args, **kwargs):
+    def start(self, name, queue, target):
         """Create and start a helper thread.
 
         Args:
             name (str): The name of the helper thread.
             queue (Queue): A concurrency-safe queue.
             target (Callable): The target of the thread.
-            args: Additional args passed to the thread constructor.
-            kwargs: Additional kwargs passed to the thread constructor.
 
         Returns:
             threading.Thread: The created thread.
@@ -64,8 +62,6 @@ class HelperThreadRegistry(object):
         thread = threading.Thread(
             name='Thread-ConsumerHelper-{}'.format(name),
             target=target,
-            *args,
-            **kwargs
         )
         thread.daemon = True
         thread.start()
