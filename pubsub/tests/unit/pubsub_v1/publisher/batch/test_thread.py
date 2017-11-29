@@ -57,7 +57,10 @@ def test_init():
     # batch once time elapses).
     with mock.patch.object(threading, 'Thread', autospec=True) as Thread:
         batch = Batch(client, 'topic_name', types.BatchSettings())
-        Thread.assert_called_once_with(target=batch.monitor)
+        Thread.assert_called_once_with(
+            name='Thread-MonitorBatchPublisher',
+            target=batch.monitor,
+        )
 
     # New batches start able to accept messages by default.
     assert batch.status == BatchStatus.ACCEPTING_MESSAGES
@@ -81,7 +84,10 @@ def test_commit():
         batch.commit()
 
         # A thread should have been created to do the actual commit.
-        Thread.assert_called_once_with(target=batch._commit)
+        Thread.assert_called_once_with(
+            name='Thread-CommitBatchPublisher',
+            target=batch._commit,
+        )
         Thread.return_value.start.assert_called_once_with()
 
     # The batch's status needs to be something other than "accepting messages",
