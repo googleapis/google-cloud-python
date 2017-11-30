@@ -123,7 +123,9 @@ from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 
+
 _LOGGER = logging.getLogger(__name__)
+_BIDIRECTIONAL_CONSUMER_NAME = 'ConsumeBidirectionalStream'
 
 
 class Consumer(object):
@@ -240,17 +242,17 @@ class Consumer(object):
                 # case, break out of the while loop and exit this thread.
                 _LOGGER.debug('Clean RPC loop exit signalled consumer exit.')
                 break
-            except KeyboardInterrupt:
-                self.stop_consuming()
             except Exception as exc:
-                self.active = self._policy.on_exception(exc)
+                recover = self._policy.on_exception(exc)
+                if not recover:
+                    self.stop_consuming()
 
     def start_consuming(self):
         """Start consuming the stream."""
         self.active = True
         self._exiting.clear()
         self.helper_threads.start(
-            'ConsumeBidirectionalStream',
+            _BIDIRECTIONAL_CONSUMER_NAME,
             self._request_queue,
             self._blocking_consume,
         )

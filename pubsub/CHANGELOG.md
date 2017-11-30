@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.29.2
+
+### Notable Implementation Changes
+
+- **Bug fix** (#4463): Making a subscription consumer actually stop
+  running after encountering an exception (#4472, #4498). This bug
+  is the **only** reason for the `0.29.2` release.
+- Thread Changes
+  - Added names to all threads created directly by Pub / Sub (#4474,
+    #4476, #4480). Also removing spaces and colons from thread
+    names (#4476).
+- Logging changes
+  - Adding debug logs when lease management exits (#4484)
+  - Adding debug logs when hen `QueueCallbackThread` exits (#4494).
+    Instances handle theprocessing of messages in a
+    subscription (e.g. to `ack`).
+  - Using a named logger in `publisher.batch.thread` (#4473)
+  - Adding newlines before logging protobuf payloads (#4471)
+
+PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.2/
+
 ## 0.29.1
 
 ### Notable Implementation Changes

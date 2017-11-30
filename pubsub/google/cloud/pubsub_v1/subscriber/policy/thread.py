@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 from concurrent import futures
 import logging
+import sys
 import threading
 
 import grpc
@@ -29,6 +30,7 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 
 _LOGGER = logging.getLogger(__name__)
+_CALLBACK_WORKER_NAME = 'CallbackRequestsWorker'
 
 
 def _callback_completed(future):
@@ -104,10 +106,17 @@ class Policy(base.BasePolicy):
         )
 
         # Also maintain a request queue and an executor.
-        _LOGGER.debug('Creating callback requests thread (not starting).')
         if executor is None:
-            executor = futures.ThreadPoolExecutor(max_workers=10)
+            executor_kwargs = {}
+            if sys.version_info >= (3, 6):
+                executor_kwargs['thread_name_prefix'] = (
+                    'ThreadPoolExecutor-SubscriberPolicy')
+            executor = futures.ThreadPoolExecutor(
+                max_workers=10,
+                **executor_kwargs
+            )
         self._executor = executor
+        _LOGGER.debug('Creating callback requests thread (not starting).')
         self._callback_requests = _helper_threads.QueueCallbackThread(
             self._request_queue,
             self.on_callback_request,
@@ -116,7 +125,7 @@ class Policy(base.BasePolicy):
     def close(self):
         """Close the existing connection."""
         # Stop consuming messages.
-        self._consumer.helper_threads.stop('callback requests worker')
+        self._consumer.helper_threads.stop(_CALLBACK_WORKER_NAME)
         self._consumer.stop_consuming()
 
         # The subscription is closing cleanly; resolve the future if it is not
@@ -149,7 +158,7 @@ class Policy(base.BasePolicy):
         _LOGGER.debug('Starting callback requests worker.')
         self._callback = callback
         self._consumer.helper_threads.start(
-            'CallbackRequestsWorker',
+            _CALLBACK_WORKER_NAME,
             self._request_queue,
             self._callback_requests,
         )
@@ -159,7 +168,7 @@ class Policy(base.BasePolicy):
 
         # Spawn a helper thread that maintains all of the leases for
         # this policy.
-        _LOGGER.debug('Spawning lease maintenance worker.')
+        _LOGGER.debug('Starting lease maintenance worker.')
         self._leaser = threading.Thread(
             name='Thread-LeaseMaintenance',
             target=self.maintain_leases,
@@ -171,7 +180,7 @@ class Policy(base.BasePolicy):
         return self._future
 
     def on_callback_request(self, callback_request):
-        """Map the callback request to the appropriate GRPC request."""
+        """Map the callback request to the appropriate gRPC request."""
         action, kwargs = callback_request[0], callback_request[1]
         getattr(self, action)(**kwargs)
 
@@ -179,12 +188,12 @@ class Policy(base.BasePolicy):
         """Handle the exception.
 
         If the exception is one of the retryable exceptions, this will signal
-        to the consumer thread that it should remain active.
+        to the consumer thread that it should "recover" from the failure.
 
         This will cause the stream to exit when it returns :data:`False`.
 
         Returns:
-            bool: Indicates if the caller should remain active or shut down.
+            bool: Indicates if the caller should recover or shut down.
             Will be :data:`True` if the ``exception`` is "acceptable", i.e.
             in a list of retryable / idempotent exceptions.
         """
