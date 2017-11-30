@@ -96,32 +96,6 @@ def system(session, py):
 
 
 @nox.session
-@nox.parametrize('py', ['2.7', '3.6'])
-def system_manual_layer(session, py):
-    """Run the system test suite for the old manual layer."""
-
-    # Sanity check: Only run system tests if the environment variable is set.
-    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
-        session.skip('Credentials must be set via environment variable.')
-
-    # Run unit tests against all supported versions of Python.
-    session.interpreter = 'python{}'.format(py)
-
-    # Install all test dependencies, then install this package in-place.
-    session.install('pytest', '../core/', '../storage/')
-    session.install('../test_utils/')
-    session.install('-e', '.')
-
-    # Run py.test against the unit tests.
-    session.run(
-        'py.test',
-        '--quiet',
-        os.path.join('tests', 'system_old.py'),
-        *session.posargs
-    )
-
-
-@nox.session
 def lint(session):
     """Run linters.
 
