@@ -36,6 +36,29 @@ def test_stop_noop():
     assert len(registry._helper_threads) == 0
 
 
+@mock.patch.object(
+    _helper_threads, '_current_thread', return_value=mock.sentinel.thread)
+def test_stop_current_thread(_current_thread):
+    registry = _helper_threads.HelperThreadRegistry()
+    queue_ = mock.Mock(spec=('put',))
+
+    name = 'here'
+    registry._helper_threads[name] = _helper_threads._HelperThread(
+        name=name,
+        queue=queue_,
+        thread=_current_thread.return_value,
+    )
+    assert list(registry._helper_threads.keys()) == [name]
+    registry.stop(name)
+    # Make sure it hasn't been removed from the registry ...
+    assert list(registry._helper_threads.keys()) == [name]
+    # ... but it did receive the STOP signal.
+    queue_.put.assert_called_once_with(_helper_threads.STOP)
+
+    # Verify that our mock was only called once.
+    _current_thread.assert_called_once_with()
+
+
 def test_stop_dead_thread():
     registry = _helper_threads.HelperThreadRegistry()
     registry._helper_threads['foo'] = _helper_threads._HelperThread(

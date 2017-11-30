@@ -242,10 +242,10 @@ class Consumer(object):
                 # case, break out of the while loop and exit this thread.
                 _LOGGER.debug('Clean RPC loop exit signalled consumer exit.')
                 break
-            except KeyboardInterrupt:
-                self.stop_consuming()
             except Exception as exc:
-                self.active = self._policy.on_exception(exc)
+                recover = self._policy.on_exception(exc)
+                if not recover:
+                    self.stop_consuming()
 
     def start_consuming(self):
         """Start consuming the stream."""
