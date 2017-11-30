@@ -244,6 +244,19 @@ class Consumer(object):
                 break
             except Exception as exc:
                 recover = self._policy.on_exception(exc)
+                if recover:
+                    with threading.Lock():
+                        if self._request_queue.empty():
+                            # NOTE: This assumes that the request generator
+                            #       spawned by ``_request_generator_thread()``
+                            #       has already called a blocking ``get()`` and
+                            #       will immediately pull STOP from the queue.
+                            self._request_queue.put(_helper_threads.STOP)
+                        else:
+                            # This is unexpected, if the queue is not empty,
+                            # then we can't properly recover.
+                            recover = False
+
                 if not recover:
                     self.stop_consuming()
 
