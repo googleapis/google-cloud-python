@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 import io
 
-from google.gax.utils import protobuf
+from google.api_core import protobuf_helpers as protobuf
 
 
 class VisionHelpers(object):
