@@ -180,12 +180,12 @@ class Policy(base.BasePolicy):
         """Handle the exception.
 
         If the exception is one of the retryable exceptions, this will signal
-        to the consumer thread that it should remain active.
+        to the consumer thread that it should "recover" from the failure.
 
         This will cause the stream to exit when it returns :data:`False`.
 
         Returns:
-            bool: Indicates if the caller should remain active or shut down.
+            bool: Indicates if the caller should recover or shut down.
             Will be :data:`True` if the ``exception`` is "acceptable", i.e.
             in a list of retryable / idempotent exceptions.
         """
