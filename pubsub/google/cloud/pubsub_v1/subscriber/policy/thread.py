@@ -16,6 +16,7 @@ from __future__ import absolute_import
 
 from concurrent import futures
 import logging
+import sys
 import threading
 
 import grpc
@@ -106,9 +107,13 @@ class Policy(base.BasePolicy):
 
         # Also maintain a request queue and an executor.
         if executor is None:
+            executor_kwargs = {}
+            if sys.version_info >= (3, 6):
+                executor_kwargs['thread_name_prefix'] = (
+                    'ThreadPoolExecutor-SubscriberPolicy')
             executor = futures.ThreadPoolExecutor(
                 max_workers=10,
-                thread_name_prefix='ThreadPoolExecutor-SubscriberPolicy',
+                **executor_kwargs
             )
         self._executor = executor
         _LOGGER.debug('Creating callback requests thread (not starting).')
