@@ -23,14 +23,6 @@
   - Using a named logger in `publisher.batch.thread` (#4473)
   - Adding newlines before logging protobuf payloads (#4471)
 
-### Documentation
-
-- Fixing broken examples in quick start (#4398)
-
-### Dependencies
-
-- Dropping
-
 PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.2/
 
 ## 0.29.1
