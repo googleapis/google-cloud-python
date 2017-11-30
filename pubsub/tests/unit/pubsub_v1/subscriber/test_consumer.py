@@ -78,15 +78,16 @@ def test_blocking_consume():
 
 class OnException(object):
 
-    def __init__(self, exiting_event, acceptable=None):
-        self.exiting_event = exiting_event
+    def __init__(self, acceptable=None, consumer=None):
         self.acceptable = acceptable
+        self.consumer = consumer
 
     def __call__(self, exception):
         if exception is self.acceptable:
+            if self.consumer is not None:
+                self.consumer._request_queue.put('VERY BAD')
             return True
         else:
-            self.exiting_event.set()
             return False
 
 
@@ -97,10 +98,11 @@ def test_blocking_consume_on_exception():
     policy.on_response.side_effect = exc
 
     consumer = _consumer.Consumer(policy=policy)
-    policy.on_exception.side_effect = OnException(consumer._exiting)
+    policy.on_exception.side_effect = OnException()
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
+    assert not consumer.active
 
     # Check mocks.
     policy.call_rpc.assert_called_once()
@@ -119,11 +121,11 @@ def test_blocking_consume_two_exceptions():
     policy.on_response.side_effect = (exc1, exc2)
 
     consumer = _consumer.Consumer(policy=policy)
-    policy.on_exception.side_effect = OnException(
-        consumer._exiting, acceptable=exc1)
+    policy.on_exception.side_effect = OnException(acceptable=exc1)
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
+    assert not consumer.active
 
     # Check mocks.
     assert policy.call_rpc.call_count == 2
@@ -131,6 +133,26 @@ def test_blocking_consume_two_exceptions():
         [mock.call(mock.sentinel.A), mock.call(mock.sentinel.B)])
     policy.on_exception.assert_has_calls(
         [mock.call(exc1), mock.call(exc2)])
+
+
+def test_blocking_consume_on_exception_bad_queue():
+    policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
+    policy.call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
+    exc = TypeError('Bad things!')
+    policy.on_response.side_effect = exc
+
+    consumer = _consumer.Consumer(policy=policy)
+    policy.on_exception.side_effect = OnException(
+        acceptable=exc, consumer=consumer)
+
+    # Establish that we get responses until we are sent the exiting event.
+    consumer._blocking_consume()
+    assert not consumer.active
+
+    # Check mocks.
+    policy.call_rpc.assert_called_once()
+    policy.on_response.assert_called_once_with(mock.sentinel.A)
+    policy.on_exception.assert_called_once_with(exc)
 
 
 def test_start_consuming():
