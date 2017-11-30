@@ -195,11 +195,18 @@ class Consumer(object):
         """
         self._request_queue.put(request)
 
-    def _request_generator_thread(self):
+    def _request_generator_thread(self, request_queue):
         """Generate requests for the stream.
 
         This blocks for new requests on the request queue and yields them to
         gRPC.
+
+        Args:
+            request_queue (~queue.Queue): A queue where subscribers will add
+                requests to be sent.
+
+        Yields:
+            google.protobuf.message.Message: Protobuf requests.
         """
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
@@ -210,7 +217,7 @@ class Consumer(object):
         # Now yield each of the items on the request queue, and block if there
         # are none. This can and must block to keep the stream open.
         while True:
-            request = self._request_queue.get()
+            request = request_queue.get()
             if request == _helper_threads.STOP:
                 _LOGGER.debug('Request generator signaled to stop.')
                 break
@@ -229,7 +236,8 @@ class Consumer(object):
                 _LOGGER.debug('Event signalled consumer exit.')
                 break
 
-            request_generator = self._request_generator_thread()
+            request_generator = self._request_generator_thread(
+                self._request_queue)
             response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
@@ -244,7 +252,19 @@ class Consumer(object):
                 break
             except Exception as exc:
                 recover = self._policy.on_exception(exc)
-                if not recover:
+                if recover:
+                    with threading.Lock():
+                        # Must lock so that ``self.send_request()`` cannot add
+                        # more items to the queue while it is being replaced.
+                        previous_queue = self._request_queue
+                        self._request_queue = queue.Queue()
+                        # Drain the old into the new queue, will drain FIFO.
+                        while not previous_queue.empty():
+                            request = previous_queue.get()
+                            self._request_queue.put(request)
+                        # Send stop to the old queue.
+                        previous_queue.put(_helper_threads.STOP)
+                else:
                     self.stop_consuming()
 
     def start_consuming(self):
@@ -253,7 +273,7 @@ class Consumer(object):
         self._exiting.clear()
         self.helper_threads.start(
             _BIDIRECTIONAL_CONSUMER_NAME,
-            self._request_queue,
+            self.send_request,
             self._blocking_consume,
         )
 

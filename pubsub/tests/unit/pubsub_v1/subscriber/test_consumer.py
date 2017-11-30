@@ -43,7 +43,7 @@ def test_send_request():
 
 def test_request_generator_thread():
     consumer = create_consumer()
-    generator = consumer._request_generator_thread()
+    generator = consumer._request_generator_thread(consumer._request_queue)
 
     # The first request that comes from the request generator thread
     # should always be the initial request.
@@ -142,6 +142,6 @@ def test_start_consuming():
         assert consumer.active is True
         start.assert_called_once_with(
             'ConsumeBidirectionalStream',
-            consumer._request_queue,
+            consumer.send_request,
             consumer._blocking_consume,
         )
