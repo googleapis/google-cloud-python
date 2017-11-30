@@ -40,6 +40,19 @@ _HelperThread = collections.namedtuple(
 STOP = uuid.uuid4()
 
 
+def _current_thread():
+    """Get the currently active thread.
+
+    This is provided as a test helper so that it can be mocked easily.
+    Mocking ``threading.current_thread()`` directly may have unintended
+    consequences on code that relies on it.
+
+    Returns:
+        threading.Thread: The current thread.
+    """
+    return threading.current_thread()
+
+
 class HelperThreadRegistry(object):
     def __init__(self):
         self._helper_threads = {}
@@ -82,6 +95,16 @@ class HelperThreadRegistry(object):
         # Attempt to retrieve the thread; if it is gone already, no-op.
         helper_thread = self._helper_threads.get(name)
         if helper_thread is None:
+            return
+
+        if helper_thread.thread is _current_thread():
+            # The current thread cannot ``join()`` itself but it can
+            # still send a signal to stop.
+            _LOGGER.debug('Cannot stop current thread %s', name)
+            helper_thread.queue.put(STOP)
+            # We return and stop short of ``pop()``-ing so that the
+            # thread that invoked the current helper can properly stop
+            # it.
             return
 
         # Join the thread if it is still alive.

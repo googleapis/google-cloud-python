@@ -76,19 +76,6 @@ def test_blocking_consume():
             assert on_res.mock_calls[1][1][1] == mock.sentinel.B
 
 
-def test_blocking_consume_keyboard_interrupt():
-    consumer = create_consumer()
-    Policy = type(consumer._policy)
-
-    # Establish that we get responses until we are sent the exiting event.
-    with mock.patch.object(Policy, 'call_rpc', autospec=True) as call_rpc:
-        call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
-        with mock.patch.object(Policy, 'on_response', autospec=True) as on_res:
-            on_res.side_effect = KeyboardInterrupt
-            consumer._blocking_consume()
-            on_res.assert_called_once_with(consumer._policy, mock.sentinel.A)
-
-
 class OnException(object):
 
     def __init__(self, exiting_event, acceptable=None):
