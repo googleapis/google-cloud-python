@@ -147,6 +147,7 @@ def test_start_consuming():
             consumer._blocking_consume,
         )
 
+
 def test_stop_request_generator_not_running():
     consumer = create_consumer()
     request_generator = mock.Mock(spec=('close',))
