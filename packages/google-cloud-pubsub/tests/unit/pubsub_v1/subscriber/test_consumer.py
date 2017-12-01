@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import threading
 import types as base_types
 
 from google.auth import credentials
@@ -78,15 +79,13 @@ def test_blocking_consume():
 
 class OnException(object):
 
-    def __init__(self, exiting_event, acceptable=None):
-        self.exiting_event = exiting_event
+    def __init__(self, acceptable=None):
         self.acceptable = acceptable
 
     def __call__(self, exception):
         if exception is self.acceptable:
             return True
         else:
-            self.exiting_event.set()
             return False
 
 
@@ -97,7 +96,7 @@ def test_blocking_consume_on_exception():
     policy.on_response.side_effect = exc
 
     consumer = _consumer.Consumer(policy=policy)
-    policy.on_exception.side_effect = OnException(consumer._exiting)
+    policy.on_exception.side_effect = OnException()
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
@@ -119,8 +118,7 @@ def test_blocking_consume_two_exceptions():
     policy.on_response.side_effect = (exc1, exc2)
 
     consumer = _consumer.Consumer(policy=policy)
-    policy.on_exception.side_effect = OnException(
-        consumer._exiting, acceptable=exc1)
+    policy.on_exception.side_effect = OnException(acceptable=exc1)
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
@@ -142,6 +140,152 @@ def test_start_consuming():
         assert consumer.active is True
         start.assert_called_once_with(
             'ConsumeBidirectionalStream',
-            consumer._request_queue,
+            consumer.send_request,
             consumer._blocking_consume,
         )
+
+
+def basic_queue_generator(queue, received):
+    while True:
+        value = queue.get()
+        received.put(value)
+        yield value
+
+
+def test_stop_request_generator_not_running():
+    # Model scenario tested:
+    # - The request generator **is not** running
+    # - The request queue **is not** empty
+    # Expected result:
+    # - ``_stop_request_generator()`` successfully calls ``.close()``
+    consumer = create_consumer()
+    queue_ = consumer._request_queue
+    received = queue.Queue()
+    request_generator = basic_queue_generator(queue_, received)
+
+    item1 = 'unblock-please'
+    item2 = 'still-here'
+    queue_.put(item1)
+    queue_.put(item2)
+    assert not queue_.empty()
+    assert received.empty()
+    thread = threading.Thread(target=next, args=(request_generator,))
+    thread.start()
+
+    # Make sure the generator is not stuck at the blocked ``.get()``
+    # in the thread.
+    while request_generator.gi_running:
+        pass
+    assert received.get() == item1
+    # Make sure it **isn't** done.
+    assert request_generator.gi_frame is not None
+
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is True
+
+    # Make sure it **is** done.
+    assert not request_generator.gi_running
+    assert request_generator.gi_frame is None
+    assert not queue_.empty()
+    assert queue_.get() == item2
+    assert queue_.empty()
+
+
+def test_stop_request_generator_close_failure():
+    # Model scenario tested:
+    # - The input isn't actually a generator
+    # Expected result:
+    # - ``_stop_request_generator()`` falls through to the ``LOGGER.error``
+    #   case and returns ``False``
+    consumer = create_consumer()
+
+    request_generator = mock.Mock(spec=('close',))
+    request_generator.close.side_effect = TypeError('Really, not a generator')
+
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is False
+
+    # Make sure close() was only called once.
+    request_generator.close.assert_called_once_with()
+
+
+def test_stop_request_generator_queue_non_empty():
+    # Model scenario tested:
+    # - The request generator **is** running
+    # - The request queue **is not** empty
+    # Expected result:
+    # - ``_stop_request_generator()`` can't call ``.close()`` (since
+    #   the generator is running) but then returns with ``False`` because
+    #   the queue **is not** empty
+    consumer = create_consumer()
+    # Attach a "fake" queue to the request generator so the generator can
+    # block on an empty queue while the consumer's queue is not empty.
+    queue_ = queue.Queue()
+    received = queue.Queue()
+    request_generator = basic_queue_generator(queue_, received)
+    # Make sure the consumer's queue is not empty.
+    item1 = 'not-empty'
+    consumer._request_queue.put(item1)
+
+    thread = threading.Thread(target=next, args=(request_generator,))
+    thread.start()
+
+    # Make sure the generator is stuck at the blocked ``.get()``
+    # in ``thread``.
+    while not request_generator.gi_running:
+        pass
+    assert received.empty()
+    assert request_generator.gi_frame is not None
+
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is False
+
+    # Make sure the generator is **still** not finished.
+    assert request_generator.gi_running
+    assert request_generator.gi_frame is not None
+    assert consumer._request_queue.get() == item1
+    # Allow the generator to exit.
+    item2 = 'just-exit'
+    queue_.put(item2)
+    # Wait until it's actually done.
+    while request_generator.gi_running:
+        pass
+    assert received.get() == item2
+
+
+def test_stop_request_generator_running():
+    # Model scenario tested:
+    # - The request generator **is** running
+    # - The request queue **is** empty
+    # Expected result:
+    # - ``_stop_request_generator()`` can't call ``.close()`` (since
+    #   the generator is running) but then verifies that the queue is
+    #   empty and sends ``STOP`` into the queue to successfully stop
+    #   the generator
+    consumer = create_consumer()
+    queue_ = consumer._request_queue
+    received = queue.Queue()
+    request_generator = basic_queue_generator(queue_, received)
+
+    thread = threading.Thread(target=next, args=(request_generator,))
+    thread.start()
+
+    # Make sure the generator is stuck at the blocked ``.get()``
+    # in the thread.
+    while not request_generator.gi_running:
+        pass
+    assert received.empty()
+    assert request_generator.gi_frame is not None
+
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is True
+
+    # Make sure it **is** done, though we may have to wait until
+    # the generator finishes (it has a few instructions between the
+    # ``get()`` and the ``break``).
+    while request_generator.gi_running:
+        pass
+    request_generator.close()
+    assert request_generator.gi_frame is None
+    assert received.get() == _helper_threads.STOP
+    assert queue_.empty()

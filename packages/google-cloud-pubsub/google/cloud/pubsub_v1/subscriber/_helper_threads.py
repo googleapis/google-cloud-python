@@ -29,7 +29,7 @@ _LOGGER = logging.getLogger(__name__)
 
 _HelperThread = collections.namedtuple(
     'HelperThreads',
-    ['name', 'thread', 'queue'],
+    ['name', 'thread', 'queue_put'],
 )
 
 
@@ -60,12 +60,13 @@ class HelperThreadRegistry(object):
     def __contains__(self, needle):
         return needle in self._helper_threads
 
-    def start(self, name, queue, target):
+    def start(self, name, queue_put, target):
         """Create and start a helper thread.
 
         Args:
             name (str): The name of the helper thread.
-            queue (Queue): A concurrency-safe queue.
+            queue_put (Callable): The ``put()`` method for a
+                concurrency-safe queue.
             target (Callable): The target of the thread.
 
         Returns:
@@ -80,7 +81,7 @@ class HelperThreadRegistry(object):
         thread.start()
 
         # Keep track of the helper thread, so we are able to stop it.
-        self._helper_threads[name] = _HelperThread(name, thread, queue)
+        self._helper_threads[name] = _HelperThread(name, thread, queue_put)
         _LOGGER.debug('Started helper thread %s', name)
         return thread
 
@@ -101,7 +102,7 @@ class HelperThreadRegistry(object):
             # The current thread cannot ``join()`` itself but it can
             # still send a signal to stop.
             _LOGGER.debug('Cannot stop current thread %s', name)
-            helper_thread.queue.put(STOP)
+            helper_thread.queue_put(STOP)
             # We return and stop short of ``pop()``-ing so that the
             # thread that invoked the current helper can properly stop
             # it.
@@ -110,7 +111,7 @@ class HelperThreadRegistry(object):
         # Join the thread if it is still alive.
         if helper_thread.thread.is_alive():
             _LOGGER.debug('Stopping helper thread %s', name)
-            helper_thread.queue.put(STOP)
+            helper_thread.queue_put(STOP)
             helper_thread.thread.join()
 
         # Remove the thread from our tracking.

@@ -159,7 +159,7 @@ class Policy(base.BasePolicy):
         self._callback = callback
         self._consumer.helper_threads.start(
             _CALLBACK_WORKER_NAME,
-            self._request_queue,
+            self._request_queue.put,
             self._callback_requests,
         )
 
