@@ -124,9 +124,15 @@ class Client(object):
         Returns:
             ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance
                 of the defined ``consumer_class`` on the client.
+
+        Raises:
+            TypeError: If ``callback`` is not callable.
         """
         flow_control = types.FlowControl(*flow_control)
         subscr = self._policy_class(self, subscription, flow_control)
         if callable(callback):
             subscr.open(callback)
+        elif callback is not None:
+            error = '{!r} is not callable, please check input'.format(callback)
+            raise TypeError(error)
         return subscr

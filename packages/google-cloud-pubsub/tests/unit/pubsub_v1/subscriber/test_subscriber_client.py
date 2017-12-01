@@ -14,6 +14,7 @@
 
 from google.auth import credentials
 import mock
+import pytest
 
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1.subscriber.policy import thread
@@ -54,3 +55,12 @@ def test_subscribe_with_callback():
         subscription = client.subscribe('sub_name_b', callback)
         open_.assert_called_once_with(callback)
     assert isinstance(subscription, thread.Policy)
+
+
+def test_subscribe_with_failed_callback():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
+    callback = 'abcdefg'
+    with pytest.raises(TypeError) as exc_info:
+        subscription = client.subscribe('sub_name_b', callback)
+    assert callback in str(exc_info.value)
