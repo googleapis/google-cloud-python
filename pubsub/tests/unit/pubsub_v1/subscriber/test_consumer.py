@@ -145,13 +145,40 @@ def test_start_consuming():
         )
 
 
+def basic_queue_generator(queue, received):
+    value = queue.get()
+    received.append(value)
+    yield value
+
+
 def test_stop_request_generator_not_running():
     consumer = create_consumer()
-    request_generator = mock.Mock(spec=('close',))
-    consumer._stop_request_generator(request_generator)
+    queue_ = consumer._request_queue
+    received = []
+    request_generator = basic_queue_generator(queue_, received)
 
-    # Make sure close() was only called once.
-    request_generator.close.assert_called_once_with()
+    queue_.put('unblock-please')
+    queue_.put('still-here')
+    assert not queue_.empty()
+    assert received == []
+    thread = threading.Thread(target=next, args=(request_generator,))
+    thread.start()
+
+    # Make sure the generator is not stuck at the blocked ``.get()``
+    # in the thread.
+    while request_generator.gi_running:
+        pass
+    assert received == ['unblock-please']
+    # Make sure it **isn't** done.
+    assert request_generator.gi_frame is not None
+
+    consumer._stop_request_generator(request_generator)
+    # Make sure it **is** done.
+    assert not request_generator.gi_running
+    assert request_generator.gi_frame is None
+    assert not queue_.empty()
+    assert queue_.get() == 'still-here'
+    assert queue_.empty()
 
 
 def test_stop_request_generator_close_failure():
@@ -189,23 +216,26 @@ def test_stop_request_generator_queue_non_empty():
     request_generator.close.assert_called_once_with()
 
 
-def basic_generator(queue):
-    yield queue.get()
-
-
 def test_stop_request_generator_running():
     consumer = create_consumer()
-    request_generator = basic_generator(consumer._request_queue)
+    queue_ = consumer._request_queue
+    received = []
+    request_generator = basic_queue_generator(queue_, received)
 
     thread = threading.Thread(target=next, args=(request_generator,))
     thread.start()
 
-    # Make sure the generator is stuck at the blocked ``.get()`` in
-    # the thread. This **assumes** the thread will call ``next()``
-    # before this check is performed, but it is **technically** a
-    # data race.
-    assert request_generator.gi_running
+    # Make sure the generator is stuck at the blocked ``.get()``
+    # in the thread.
+    while not request_generator.gi_running:
+        pass
+    assert received == []
+    # Make sure it **isn't** done.
     assert request_generator.gi_frame is not None
+
     consumer._stop_request_generator(request_generator)
+    # Make sure it **is** done.
     assert not request_generator.gi_running
     assert request_generator.gi_frame is None
+    assert received == [_helper_threads.STOP]
+    assert queue_.empty()
