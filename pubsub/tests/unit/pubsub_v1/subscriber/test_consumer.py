@@ -79,15 +79,13 @@ def test_blocking_consume():
 
 class OnException(object):
 
-    def __init__(self, exiting_event, acceptable=None):
-        self.exiting_event = exiting_event
+    def __init__(self, acceptable=None):
         self.acceptable = acceptable
 
     def __call__(self, exception):
         if exception is self.acceptable:
             return True
         else:
-            self.exiting_event.set()
             return False
 
 
@@ -98,7 +96,7 @@ def test_blocking_consume_on_exception():
     policy.on_response.side_effect = exc
 
     consumer = _consumer.Consumer(policy=policy)
-    policy.on_exception.side_effect = OnException(consumer._exiting)
+    policy.on_exception.side_effect = OnException()
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
@@ -120,8 +118,7 @@ def test_blocking_consume_two_exceptions():
     policy.on_response.side_effect = (exc1, exc2)
 
     consumer = _consumer.Consumer(policy=policy)
-    policy.on_exception.side_effect = OnException(
-        consumer._exiting, acceptable=exc1)
+    policy.on_exception.side_effect = OnException(acceptable=exc1)
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
