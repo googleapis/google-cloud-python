@@ -262,10 +262,12 @@ class Consumer(object):
                         'Request generator could not be closed but '
                         'request queue is not empty.')
                     return False
-                # If we **cannot** close the request generator,
-                # then there is no blocking get on the queue. Since
-                # we have locked ``.put()`` this means that the
-                # queue **was** and remains empty.
+                # At this point we know:
+                #   1. The queue is empty and we hold the ``put()`` lock
+                #   2. We **cannot** ``close()`` the request generator.
+                # This means that the request generator is blocking at
+                # ``get()`` from the queue and will continue to block since
+                # we have locked ``.put()``.
                 self._request_queue.put(_helper_threads.STOP)
                 # Wait for the request generator to ``.get()`` the ``STOP``.
                 _LOGGER.debug(
