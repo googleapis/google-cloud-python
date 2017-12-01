@@ -45,7 +45,7 @@ def test_stop_current_thread(_current_thread):
     name = 'here'
     registry._helper_threads[name] = _helper_threads._HelperThread(
         name=name,
-        queue=queue_,
+        queue_put=queue_.put,
         thread=_current_thread.return_value,
     )
     assert list(registry._helper_threads.keys()) == [name]
@@ -63,7 +63,7 @@ def test_stop_dead_thread():
     registry = _helper_threads.HelperThreadRegistry()
     registry._helper_threads['foo'] = _helper_threads._HelperThread(
         name='foo',
-        queue=None,
+        queue_put=None,
         thread=threading.Thread(target=lambda: None),
     )
     assert len(registry._helper_threads) == 1
@@ -79,9 +79,10 @@ def test_stop_alive_thread(join, is_alive, put):
 
     # Set up a registry with a helper thread in it.
     registry = _helper_threads.HelperThreadRegistry()
+    queue_ = queue.Queue()
     registry._helper_threads['foo'] = _helper_threads._HelperThread(
         name='foo',
-        queue=queue.Queue(),
+        queue_put=queue_.put,
         thread=threading.Thread(target=lambda: None),
     )
 
@@ -101,7 +102,7 @@ def test_stop_all():
     registry = _helper_threads.HelperThreadRegistry()
     registry._helper_threads['foo'] = _helper_threads._HelperThread(
         name='foo',
-        queue=None,
+        queue_put=None,
         thread=threading.Thread(target=lambda: None),
     )
     assert len(registry._helper_threads) == 1
