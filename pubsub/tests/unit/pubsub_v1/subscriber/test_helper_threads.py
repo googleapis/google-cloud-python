@@ -117,10 +117,10 @@ def test_stop_all_noop():
     assert len(registry._helper_threads) == 0
 
 
-def test_queue_callback_thread():
+def test_queue_callback_worker():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=())
-    qct = _helper_threads.QueueCallbackThread(queue_, callback)
+    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
@@ -133,10 +133,10 @@ def test_queue_callback_thread():
         callback.assert_called_once_with(mock.sentinel.A)
 
 
-def test_queue_callback_thread_exception():
+def test_queue_callback_worker_exception():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=(), side_effect=(Exception,))
-    qct = _helper_threads.QueueCallbackThread(queue_, callback)
+    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.

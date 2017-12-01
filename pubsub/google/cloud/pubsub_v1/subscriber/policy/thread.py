@@ -117,7 +117,7 @@ class Policy(base.BasePolicy):
             )
         self._executor = executor
         _LOGGER.debug('Creating callback requests thread (not starting).')
-        self._callback_requests = _helper_threads.QueueCallbackThread(
+        self._callback_requests = _helper_threads.QueueCallbackWorker(
             self._request_queue,
             self.on_callback_request,
         )

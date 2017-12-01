@@ -21,7 +21,7 @@ import six
 
 __all__ = (
     'HelperThreadRegistry',
-    'QueueCallbackThread',
+    'QueueCallbackWorker',
     'STOP',
 )
 
@@ -125,13 +125,8 @@ class HelperThreadRegistry(object):
             self.stop(name)
 
 
-class QueueCallbackThread(object):
+class QueueCallbackWorker(object):
     """A helper that executes a callback for every item in the queue.
-
-    .. note::
-
-        This is not actually a thread, but it is intended to be a target
-        for a thread.
 
     Calls a blocking ``get()`` on the ``queue`` until it encounters
     :attr:`STOP`.
@@ -153,7 +148,7 @@ class QueueCallbackThread(object):
         while True:
             item = self.queue.get()
             if item == STOP:
-                _LOGGER.debug('Exiting the QueueCallbackThread.')
+                _LOGGER.debug('Exiting the QueueCallbackWorker.')
                 return
 
             # Run the callback. If any exceptions occur, log them and
