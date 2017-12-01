@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import threading
 import types as base_types
 
 from google.auth import credentials
@@ -43,7 +44,7 @@ def test_send_request():
 
 def test_request_generator_thread():
     consumer = create_consumer()
-    generator = consumer._request_generator_thread(consumer._request_queue)
+    generator = consumer._request_generator_thread()
 
     # The first request that comes from the request generator thread
     # should always be the initial request.
@@ -145,3 +146,68 @@ def test_start_consuming():
             consumer.send_request,
             consumer._blocking_consume,
         )
+
+def test_stop_request_generator_not_running():
+    consumer = create_consumer()
+    request_generator = mock.Mock(spec=('close',))
+    consumer._stop_request_generator(request_generator)
+
+    # Make sure close() was only called once.
+    request_generator.close.assert_called_once_with()
+
+
+def test_stop_request_generator_close_failure():
+    consumer = create_consumer()
+
+    # First, a ValueError with the wrong error message.
+    # Second, an uncaught exception.
+    exceptions = (
+        ValueError('Not a generator'),
+        TypeError('Really, not a generator'),
+    )
+    for exc in exceptions:
+        request_generator = mock.Mock(spec=('close',))
+        request_generator.close.side_effect = exc
+        with pytest.raises(type(exc)) as exc_info:
+            consumer._stop_request_generator(request_generator)
+
+        assert exc_info.value is exc
+        # Make sure close() was only called once.
+        request_generator.close.assert_called_once_with()
+
+
+def test_stop_request_generator_queue_non_empty():
+    consumer = create_consumer()
+    consumer._request_queue.put('not-empty')
+    request_generator = mock.Mock(spec=('close',))
+    request_generator.close.side_effect = ValueError(
+        'generator already executing')
+
+    with pytest.raises(ValueError) as exc_info:
+        consumer._stop_request_generator(request_generator)
+
+    assert exc_info.value.args == ('Queue expected to be empty.',)
+    # Make sure close() was only called once.
+    request_generator.close.assert_called_once_with()
+
+
+def basic_generator(queue):
+    yield queue.get()
+
+
+def test_stop_request_generator_running():
+    consumer = create_consumer()
+    request_generator = basic_generator(consumer._request_queue)
+
+    thread = threading.Thread(target=next, args=(request_generator,))
+    thread.start()
+
+    # Make sure the generator is stuck at the blocked ``.get()`` in
+    # the thread. This **assumes** the thread will call ``next()``
+    # before this check is performed, but it is **technically** a
+    # data race.
+    assert request_generator.gi_running
+    assert request_generator.gi_frame is not None
+    consumer._stop_request_generator(request_generator)
+    assert not request_generator.gi_running
+    assert request_generator.gi_frame is None

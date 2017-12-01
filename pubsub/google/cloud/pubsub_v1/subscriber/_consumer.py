@@ -180,6 +180,7 @@ class Consumer(object):
         self._policy = policy
         self._request_queue = queue.Queue()
         self._exiting = threading.Event()
+        self._put_lock = threading.Lock()
 
         self.active = False
         self.helper_threads = _helper_threads.HelperThreadRegistry()
@@ -193,20 +194,17 @@ class Consumer(object):
         Args:
             request (Any): The request protobuf.
         """
-        self._request_queue.put(request)
+        with self._put_lock:
+            self._request_queue.put(request)
 
-    def _request_generator_thread(self, request_queue):
+    def _request_generator_thread(self):
         """Generate requests for the stream.
 
         This blocks for new requests on the request queue and yields them to
         gRPC.
 
-        Args:
-            request_queue (~queue.Queue): A queue where subscribers will add
-                requests to be sent.
-
         Yields:
-            google.protobuf.message.Message: Protobuf requests.
+            google.cloud.pubsub_v1.types.StreamingPullRequest: Requests
         """
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
@@ -217,13 +215,52 @@ class Consumer(object):
         # Now yield each of the items on the request queue, and block if there
         # are none. This can and must block to keep the stream open.
         while True:
-            request = request_queue.get()
+            request = self._request_queue.get()
             if request == _helper_threads.STOP:
                 _LOGGER.debug('Request generator signaled to stop.')
                 break
 
             _LOGGER.debug('Sending request:\n%r', request)
             yield request
+
+    def _stop_request_generator(self, request_generator):
+        """Ensure a request generator is closed.
+
+        This **must** be done when recovering from a retry-able exception.
+        If not, then an inactive request generator (i.e. not attached to any
+        actual RPC) will be trying to access the same request queue as the
+        active request generator.
+
+        In addition, we want the gRPC thread consuming to cleanly exit so
+        that system resources are not wasted.
+
+        Args:
+            request_generator (Generator): A streaming pull request generator
+                returned from :meth:`_request_generator_thread`.
+
+        Raises:
+            ValueError: If ``.close()`` fails for any reason other than
+                "generator already executing".
+            ValueError: If the queue is not empty and the generator is
+                running.
+        """
+        with self._put_lock:
+            try:
+                request_generator.close()
+            except ValueError as exc:
+                if exc.args != ('generator already executing',):
+                    raise
+                if not self._request_queue.empty():
+                    raise ValueError('Queue expected to be empty.')
+                # If we **cannot** close the request generator,
+                # then there is no blocking get on the queue. Since
+                # we have locked ``.put()`` this means that the
+                # queue **was** and remains empty.
+                self._request_queue.put(_helper_threads.STOP)
+                # Wait for the request generator to ``.get()`` the ``STOP``.
+                while not self._request_queue.empty():
+                    pass
+                request_generator.close()
 
     def _blocking_consume(self):
         """Consume the stream indefinitely."""
@@ -236,8 +273,7 @@ class Consumer(object):
                 _LOGGER.debug('Event signalled consumer exit.')
                 break
 
-            request_generator = self._request_generator_thread(
-                self._request_queue)
+            request_generator = self._request_generator_thread()
             response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
@@ -253,17 +289,7 @@ class Consumer(object):
             except Exception as exc:
                 recover = self._policy.on_exception(exc)
                 if recover:
-                    with threading.Lock():
-                        # Must lock so that ``self.send_request()`` cannot add
-                        # more items to the queue while it is being replaced.
-                        previous_queue = self._request_queue
-                        self._request_queue = queue.Queue()
-                        # Drain the old into the new queue, will drain FIFO.
-                        while not previous_queue.empty():
-                            request = previous_queue.get()
-                            self._request_queue.put(request)
-                        # Send stop to the old queue.
-                        previous_queue.put(_helper_threads.STOP)
+                    self._stop_request_generator(request_generator)
                 else:
                     self.stop_consuming()
 
