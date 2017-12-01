@@ -119,7 +119,7 @@ class Policy(base.BasePolicy):
         _LOGGER.debug('Creating callback requests thread (not starting).')
         self._callback_requests = _helper_threads.QueueCallbackWorker(
             self._request_queue,
-            self.on_callback_request,
+            self.dispatch_callback,
         )
 
     def close(self):
@@ -180,10 +180,33 @@ class Policy(base.BasePolicy):
         # Return the future.
         return self._future
 
-    def on_callback_request(self, callback_request):
-        """Map the callback request to the appropriate gRPC request."""
-        action, kwargs = callback_request[0], callback_request[1]
-        getattr(self, action)(**kwargs)
+    def dispatch_callback(self, action, kwargs):
+        """Map the callback request to the appropriate gRPC request.
+
+        Args:
+            action (str): The method to be invoked.
+            kwargs (Dict[str, Any]): The keyword arguments for the method
+                specified by ``action``.
+
+        Raises:
+            ValueError: If ``action`` isn't one of the expected actions
+                "ack", "drop", "lease", "modify_ack_deadline" or "nack".
+        """
+        if action == 'ack':
+            self.ack(**kwargs)
+        elif action == 'drop':
+            self.drop(**kwargs)
+        elif action == 'lease':
+            self.lease(**kwargs)
+        elif action == 'modify_ack_deadline':
+            self.modify_ack_deadline(**kwargs)
+        elif action == 'nack':
+            self.nack(**kwargs)
+        else:
+            raise ValueError(
+                'Unexpected action', action,
+                'Must be one of "ack", "drop", "lease", '
+                '"modify_ack_deadline" or "nack".')
 
     def on_exception(self, exception):
         """Handle the exception.

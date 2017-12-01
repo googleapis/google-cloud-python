@@ -136,8 +136,10 @@ class QueueCallbackWorker(object):
             concurrency boundary implemented by ``executor``. Items will
             be popped off (with a blocking ``get()``) until :attr:`STOP`
             is encountered.
-        callback (Callable): A callback that can process items pulled off
-            of the queue.
+        callback (Callable[[str, Dict], Any]): A callback that can process
+            items pulled off of the queue. Items are assumed to be a pair
+            of a method name to be invoked and a dictionary of keyword
+            arguments for that method.
     """
 
     def __init__(self, queue, callback):
@@ -154,6 +156,7 @@ class QueueCallbackWorker(object):
             # Run the callback. If any exceptions occur, log them and
             # continue.
             try:
-                self._callback(item)
+                action, kwargs = item
+                self._callback(action, kwargs)
             except Exception as exc:
                 _LOGGER.error('%s: %s', exc.__class__.__name__, exc)
