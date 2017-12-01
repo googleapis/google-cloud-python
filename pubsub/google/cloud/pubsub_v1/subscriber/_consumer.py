@@ -249,6 +249,15 @@ class Consumer(object):
             except ValueError:
                 # Should be ``ValueError('generator already executing')``
                 if not self._request_queue.empty():
+                    # This case may be a false negative in **very** rare
+                    # cases. We **assume** that the generator can't be
+                    # ``close()``-ed because it is blocking on ``get()``.
+                    # It's **very unlikely** that the generator was not
+                    # blocking, but instead **in between** the blocking
+                    # ``get()`` and the next ``yield`` / ``break``. However,
+                    # for practical purposes, we only need to stop the request
+                    # generator if the connection has timed out due to
+                    # inactivity, which indicates an empty queue.
                     _LOGGER.debug(
                         'Request generator could not be closed but '
                         'request queue is not empty.')
@@ -263,7 +272,15 @@ class Consumer(object):
                     'Waiting for active request generator to receive STOP')
                 while not self._request_queue.empty():
                     pass
-                request_generator.close()
+                # We would **like** to call ``request_generator.close()`` here
+                # but can't guarantee that the generator is paused, since it
+                # has a few instructions to complete between the ``get()``
+                # and the ``break``. However, we are confident that
+                #   1. The queue was empty and we hold the ``put()`` lock
+                #   2. We added ``STOP``
+                #   3. We waited until the request generator consumed ``STOP``
+                # so we know the request generator **will** stop within a
+                # few cycles.
             except Exception as exc:
                 _LOGGER.error('Failed to close request generator: %r', exc)
                 return False

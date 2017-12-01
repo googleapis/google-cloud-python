@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import contextlib
 import threading
 import types as base_types
 
@@ -146,66 +145,25 @@ def test_start_consuming():
         )
 
 
-@contextlib.contextmanager
-def no_op_ctx_manager():
-    yield
-
-
-def basic_queue_generator(queue, received, append_lock=None):
-    if append_lock is None:
-        append_lock = no_op_ctx_manager()
-
+def basic_queue_generator(queue, received):
     while True:
         value = queue.get()
-        with append_lock:
-            received.append(value)
+        received.put(value)
         yield value
 
 
 def test_stop_request_generator_not_running():
     consumer = create_consumer()
     queue_ = consumer._request_queue
-    received = []
-    append_lock = threading.Lock()
-    request_generator = basic_queue_generator(queue_, received, append_lock)
-
-    queue_.put('unblock-please')
-    queue_.put('still-here')
-    assert not queue_.empty()
-    assert received == []
-    thread = threading.Thread(target=next, args=(request_generator,))
-    thread.start()
-
-    # Make sure the generator is not stuck at the blocked ``.get()``
-    # in the thread.
-    while request_generator.gi_running:
-        pass
-    with append_lock:
-        assert received == ['unblock-please']
-    # Make sure it **isn't** done.
-    assert request_generator.gi_frame is not None
-
-    stopped = consumer._stop_request_generator(request_generator)
-    assert stopped is True
-
-    # Make sure it **is** done.
-    assert not request_generator.gi_running
-    assert request_generator.gi_frame is None
-    assert not queue_.empty()
-    assert queue_.get() == 'still-here'
-    assert queue_.empty()
-
-
-def test_stop_request_WAT():
-    consumer = create_consumer()
-    queue_ = consumer._request_queue
-    received = []
+    received = queue.Queue()
     request_generator = basic_queue_generator(queue_, received)
 
-    queue_.put('unblock-please')
-    queue_.put('still-here')
+    item1 = 'unblock-please'
+    item2 = 'still-here'
+    queue_.put(item1)
+    queue_.put(item2)
     assert not queue_.empty()
-    assert received == []
+    assert received.empty()
     thread = threading.Thread(target=next, args=(request_generator,))
     thread.start()
 
@@ -213,7 +171,7 @@ def test_stop_request_WAT():
     # in the thread.
     while request_generator.gi_running:
         pass
-    assert received == ['unblock-please']
+    assert received.get() == item1
     # Make sure it **isn't** done.
     assert request_generator.gi_frame is not None
 
@@ -224,7 +182,7 @@ def test_stop_request_WAT():
     assert not request_generator.gi_running
     assert request_generator.gi_frame is None
     assert not queue_.empty()
-    assert queue_.get() == 'still-here'
+    assert queue_.get() == item2
     assert queue_.empty()
 
 
@@ -259,7 +217,7 @@ def test_stop_request_generator_queue_non_empty():
 def test_stop_request_generator_running():
     consumer = create_consumer()
     queue_ = consumer._request_queue
-    received = []
+    received = queue.Queue()
     request_generator = basic_queue_generator(queue_, received)
 
     thread = threading.Thread(target=next, args=(request_generator,))
@@ -269,15 +227,19 @@ def test_stop_request_generator_running():
     # in the thread.
     while not request_generator.gi_running:
         pass
-    assert received == []
+    assert received.empty()
     # Make sure it **isn't** done.
     assert request_generator.gi_frame is not None
 
     stopped = consumer._stop_request_generator(request_generator)
     assert stopped is True
 
-    # Make sure it **is** done.
-    assert not request_generator.gi_running
+    # Make sure it **is** done, though we may have to wait until
+    # the generator finishes (it has a few instructions between the
+    # ``get()`` and the ``break``).
+    while request_generator.gi_running:
+        pass
+    request_generator.close()
     assert request_generator.gi_frame is None
-    assert received == [_helper_threads.STOP]
+    assert received.get() == _helper_threads.STOP
     assert queue_.empty()
