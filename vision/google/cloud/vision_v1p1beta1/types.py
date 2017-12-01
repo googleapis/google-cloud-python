@@ -18,10 +18,10 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.api import http_pb2
-from google.cloud.vision_v1.proto import geometry_pb2
-from google.cloud.vision_v1.proto import image_annotator_pb2
-from google.cloud.vision_v1.proto import text_annotation_pb2
-from google.cloud.vision_v1.proto import web_detection_pb2
+from google.cloud.vision_v1p1beta1.proto import geometry_pb2
+from google.cloud.vision_v1p1beta1.proto import image_annotator_pb2
+from google.cloud.vision_v1p1beta1.proto import text_annotation_pb2
+from google.cloud.vision_v1p1beta1.proto import web_detection_pb2
 from google.protobuf import any_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf import wrappers_pb2
@@ -44,7 +44,7 @@ for module in (
         latlng_pb2,
 ):
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.vision_v1.types'
+        message.__module__ = 'google.cloud.vision_v1p1beta1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 
