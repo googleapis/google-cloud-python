@@ -1,4 +1,4 @@
-# Copyright 2016 Google LLC
+# Copyright 2017, Google LLC All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,20 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
+from __future__ import absolute_import
+
+from pkg_resources import get_distribution
+__version__ = get_distribution('google-cloud-vision').version
+
+from google.cloud.vision_v1 import enums
+from google.cloud.vision_v1 import ImageAnnotatorClient
+from google.cloud.vision_v1 import types
 
 
-class TestVertex(unittest.TestCase):
-    @staticmethod
-    def _get_target_class():
-        from google.cloud.vision.geometry import Vertex
+__all__ = (
+    # Common
+    '__version__',
 
-        return Vertex
-
-    def _make_one(self, x_coordinate, y_coordinate):
-        return self._get_target_class()(x_coordinate, y_coordinate)
-
-    def test_vertex_with_zeros(self):
-        vertex = self._make_one(0.0, 0.0)
-        self.assertEqual(vertex.x_coordinate, 0.0)
-        self.assertEqual(vertex.y_coordinate, 0.0)
+    # GAPIC & Partial Manual Layer
+    'enums',
+    'ImageAnnotatorClient',
+    'types',
+)
