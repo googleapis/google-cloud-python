@@ -238,29 +238,38 @@ class Consumer(object):
             request_generator (Generator): A streaming pull request generator
                 returned from :meth:`_request_generator_thread`.
 
-        Raises:
-            ValueError: If ``.close()`` fails for any reason other than
-                "generator already executing".
-            ValueError: If the queue is not empty and the generator is
-                running.
+        Returns:
+            bool: Indicates if the generator was successfully stopped. Will
+            be :data:`True` unless the queue is not empty and the generator
+            is running.
         """
         with self._put_lock:
             try:
                 request_generator.close()
-            except ValueError as exc:
-                if exc.args != ('generator already executing',):
-                    raise
+            except ValueError:
+                # Should be ``ValueError('generator already executing')``
                 if not self._request_queue.empty():
-                    raise ValueError('Queue expected to be empty.')
+                    _LOGGER.debug(
+                        'Request generator could not be closed but '
+                        'request queue is not empty.')
+                    return False
                 # If we **cannot** close the request generator,
                 # then there is no blocking get on the queue. Since
                 # we have locked ``.put()`` this means that the
                 # queue **was** and remains empty.
                 self._request_queue.put(_helper_threads.STOP)
                 # Wait for the request generator to ``.get()`` the ``STOP``.
+                _LOGGER.debug(
+                    'Waiting for active request generator to receive STOP')
                 while not self._request_queue.empty():
                     pass
                 request_generator.close()
+            except Exception as exc:
+                _LOGGER.error('Failed to close request generator: %r', exc)
+                return False
+
+        _LOGGER.debug('Successfully closed request generator.')
+        return True
 
     def _blocking_consume(self):
         """Consume the stream indefinitely."""
@@ -289,8 +298,8 @@ class Consumer(object):
             except Exception as exc:
                 recover = self._policy.on_exception(exc)
                 if recover:
-                    self._stop_request_generator(request_generator)
-                else:
+                    recover = self._stop_request_generator(request_generator)
+                if not recover:
                     self.stop_consuming()
 
     def start_consuming(self):

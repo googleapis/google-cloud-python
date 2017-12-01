@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import threading
 import types as base_types
 
@@ -145,13 +146,57 @@ def test_start_consuming():
         )
 
 
-def basic_queue_generator(queue, received):
-    value = queue.get()
-    received.append(value)
-    yield value
+@contextlib.contextmanager
+def no_op_ctx_manager():
+    yield
+
+
+def basic_queue_generator(queue, received, append_lock=None):
+    if append_lock is None:
+        append_lock = no_op_ctx_manager()
+
+    while True:
+        value = queue.get()
+        with append_lock:
+            received.append(value)
+        yield value
 
 
 def test_stop_request_generator_not_running():
+    consumer = create_consumer()
+    queue_ = consumer._request_queue
+    received = []
+    append_lock = threading.Lock()
+    request_generator = basic_queue_generator(queue_, received, append_lock)
+
+    queue_.put('unblock-please')
+    queue_.put('still-here')
+    assert not queue_.empty()
+    assert received == []
+    thread = threading.Thread(target=next, args=(request_generator,))
+    thread.start()
+
+    # Make sure the generator is not stuck at the blocked ``.get()``
+    # in the thread.
+    while request_generator.gi_running:
+        pass
+    with append_lock:
+        assert received == ['unblock-please']
+    # Make sure it **isn't** done.
+    assert request_generator.gi_frame is not None
+
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is True
+
+    # Make sure it **is** done.
+    assert not request_generator.gi_running
+    assert request_generator.gi_frame is None
+    assert not queue_.empty()
+    assert queue_.get() == 'still-here'
+    assert queue_.empty()
+
+
+def test_stop_request_WAT():
     consumer = create_consumer()
     queue_ = consumer._request_queue
     received = []
@@ -172,7 +217,9 @@ def test_stop_request_generator_not_running():
     # Make sure it **isn't** done.
     assert request_generator.gi_frame is not None
 
-    consumer._stop_request_generator(request_generator)
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is True
+
     # Make sure it **is** done.
     assert not request_generator.gi_running
     assert request_generator.gi_frame is None
@@ -184,21 +231,15 @@ def test_stop_request_generator_not_running():
 def test_stop_request_generator_close_failure():
     consumer = create_consumer()
 
-    # First, a ValueError with the wrong error message.
-    # Second, an uncaught exception.
-    exceptions = (
-        ValueError('Not a generator'),
-        TypeError('Really, not a generator'),
-    )
-    for exc in exceptions:
-        request_generator = mock.Mock(spec=('close',))
-        request_generator.close.side_effect = exc
-        with pytest.raises(type(exc)) as exc_info:
-            consumer._stop_request_generator(request_generator)
+    exc = TypeError('Really, not a generator')
+    request_generator = mock.Mock(spec=('close',))
+    request_generator.close.side_effect = exc
 
-        assert exc_info.value is exc
-        # Make sure close() was only called once.
-        request_generator.close.assert_called_once_with()
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is False
+
+    # Make sure close() was only called once.
+    request_generator.close.assert_called_once_with()
 
 
 def test_stop_request_generator_queue_non_empty():
@@ -208,10 +249,9 @@ def test_stop_request_generator_queue_non_empty():
     request_generator.close.side_effect = ValueError(
         'generator already executing')
 
-    with pytest.raises(ValueError) as exc_info:
-        consumer._stop_request_generator(request_generator)
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is False
 
-    assert exc_info.value.args == ('Queue expected to be empty.',)
     # Make sure close() was only called once.
     request_generator.close.assert_called_once_with()
 
@@ -233,7 +273,9 @@ def test_stop_request_generator_running():
     # Make sure it **isn't** done.
     assert request_generator.gi_frame is not None
 
-    consumer._stop_request_generator(request_generator)
+    stopped = consumer._stop_request_generator(request_generator)
+    assert stopped is True
+
     # Make sure it **is** done.
     assert not request_generator.gi_running
     assert request_generator.gi_frame is None
