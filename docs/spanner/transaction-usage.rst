@@ -16,15 +16,15 @@ To begin using a transaction:
 
 .. code:: python
 
-    transaction = session.transaction()
+    transaction = database.transaction()
 
 
 Read Table Data
 ---------------
 
-Read data for selected rows from a table in the session's database.  Calls
-the ``Read`` API, which returns all rows specified in ``key_set``, or else
-fails if the result set is too large,
+Read data for selected rows from a table in the database.  Calls the ``Read``
+API, which returns all rows specified in ``key_set``, or else fails if the 
+result set is too large,
 
 .. code:: python
 
@@ -38,14 +38,14 @@ fails if the result set is too large,
 .. note::
 
    If streaming a chunk fails due to a "resumable" error,
-   :meth:`Session.read` retries the ``StreamingRead`` API reqeust,
+   :meth:`Snapshot.read` retries the ``StreamingRead`` API request,
    passing the ``resume_token`` from the last partial result streamed.
 
 
 Execute a SQL Select Statement
 ------------------------------
 
-Read data from a query against tables in the session's database.  Calls
+Read data from a query against tables in the database.  Calls
 the ``ExecuteSql`` API, which returns all rows matching the query, or else
 fails if the result set is too large,
 
@@ -205,16 +205,16 @@ Use a Transaction as a Context Manager
 --------------------------------------
 
 Rather than calling :meth:`Transaction.commit` or :meth:`Transaction.rollback`
-manually, you can use the :class:`Transaction` instance as a context manager:
-in that case, the transaction's :meth:`~Transaction.commit` method will
-called automatically if the ``with`` block exits without raising an exception.
+manually, you should use the :class:`Transaction` instance as a context manager.  
+The transaction's :meth:`~Transaction.commit` method will be called automatically
+if the ``with`` block exits without raising an exception.
 
 If an exception is raised inside the ``with`` block, the transaction's
-:meth:`~Transaction.rollback` method will be called instead.
+:meth:`~Transaction.rollback` method will automatically be called.
 
 .. code:: python
 
-    with session.transaction() as transaction
+    with database.transaction() as transaction
 
         transaction.insert(
             'citizens', columns=['email', 'first_name', 'last_name', 'age'],
