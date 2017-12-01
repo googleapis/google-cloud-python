@@ -39,7 +39,7 @@ setup(
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     name='google-cloud-vision',
-    version='0.28.1.dev1',
+    version='0.29.0',
     description='Python Client for Google Cloud Vision',
     long_description=readme,
     namespace_packages=[
