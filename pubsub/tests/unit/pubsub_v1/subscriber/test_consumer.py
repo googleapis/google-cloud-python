@@ -153,6 +153,11 @@ def basic_queue_generator(queue, received):
 
 
 def test_stop_request_generator_not_running():
+    # Model scenario tested:
+    # - The request generator **is not** running
+    # - The request queue **is not** empty
+    # Expected result:
+    # - ``_stop_request_generator()`` successfully calls ``.close()``
     consumer = create_consumer()
     queue_ = consumer._request_queue
     received = queue.Queue()
@@ -187,11 +192,15 @@ def test_stop_request_generator_not_running():
 
 
 def test_stop_request_generator_close_failure():
+    # Model scenario tested:
+    # - The input isn't actually a generator
+    # Expected result:
+    # - ``_stop_request_generator()`` falls through to the ``LOGGER.error``
+    #   case and returns ``False``
     consumer = create_consumer()
 
-    exc = TypeError('Really, not a generator')
     request_generator = mock.Mock(spec=('close',))
-    request_generator.close.side_effect = exc
+    request_generator.close.side_effect = TypeError('Really, not a generator')
 
     stopped = consumer._stop_request_generator(request_generator)
     assert stopped is False
@@ -201,20 +210,58 @@ def test_stop_request_generator_close_failure():
 
 
 def test_stop_request_generator_queue_non_empty():
+    # Model scenario tested:
+    # - The request generator **is** running
+    # - The request queue **is not** empty
+    # Expected result:
+    # - ``_stop_request_generator()`` can't call ``.close()`` (since
+    #   the generator is running) but then returns with ``False`` because
+    #   the queue **is not** empty
     consumer = create_consumer()
-    consumer._request_queue.put('not-empty')
-    request_generator = mock.Mock(spec=('close',))
-    request_generator.close.side_effect = ValueError(
-        'generator already executing')
+    # Attach a "fake" queue to the request generator so the generator can
+    # block on an empty queue while the consumer's queue is not empty.
+    queue_ = queue.Queue()
+    received = queue.Queue()
+    request_generator = basic_queue_generator(queue_, received)
+    # Make sure the consumer's queue is not empty.
+    item1 = 'not-empty'
+    consumer._request_queue.put(item1)
+
+    thread = threading.Thread(target=next, args=(request_generator,))
+    thread.start()
+
+    # Make sure the generator is stuck at the blocked ``.get()``
+    # in ``thread``.
+    while not request_generator.gi_running:
+        pass
+    assert received.empty()
+    assert request_generator.gi_frame is not None
 
     stopped = consumer._stop_request_generator(request_generator)
     assert stopped is False
 
-    # Make sure close() was only called once.
-    request_generator.close.assert_called_once_with()
+    # Make sure the generator is **still** not finished.
+    assert request_generator.gi_running
+    assert request_generator.gi_frame is not None
+    assert consumer._request_queue.get() == item1
+    # Allow the generator to exit.
+    item2 = 'just-exit'
+    queue_.put(item2)
+    # Wait until it's actually done.
+    while request_generator.gi_running:
+        pass
+    assert received.get() == item2
 
 
 def test_stop_request_generator_running():
+    # Model scenario tested:
+    # - The request generator **is** running
+    # - The request queue **is** empty
+    # Expected result:
+    # - ``_stop_request_generator()`` can't call ``.close()`` (since
+    #   the generator is running) but then verifies that the queue is
+    #   empty and sends ``STOP`` into the queue to successfully stop
+    #   the generator
     consumer = create_consumer()
     queue_ = consumer._request_queue
     received = queue.Queue()
@@ -228,7 +275,6 @@ def test_stop_request_generator_running():
     while not request_generator.gi_running:
         pass
     assert received.empty()
-    # Make sure it **isn't** done.
     assert request_generator.gi_frame is not None
 
     stopped = consumer._stop_request_generator(request_generator)
