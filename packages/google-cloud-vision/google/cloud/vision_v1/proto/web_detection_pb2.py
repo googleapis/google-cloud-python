@@ -23,6 +23,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n0google/cloud/vision_v1/proto/web_detection.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\"\xd6\x03\n\x0cWebDetection\x12\x44\n\x0cweb_entities\x18\x01 \x03(\x0b\x32..google.cloud.vision.v1.WebDetection.WebEntity\x12K\n\x14\x66ull_matching_images\x18\x02 \x03(\x0b\x32-.google.cloud.vision.v1.WebDetection.WebImage\x12N\n\x17partial_matching_images\x18\x03 \x03(\x0b\x32-.google.cloud.vision.v1.WebDetection.WebImage\x12P\n\x1apages_with_matching_images\x18\x04 \x03(\x0b\x32,.google.cloud.vision.v1.WebDetection.WebPage\x1a\x42\n\tWebEntity\x12\x11\n\tentity_id\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x1a&\n\x08WebImage\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x1a%\n\x07WebPage\x12\x0b\n\x03url\x18\x01 \x01(\t\x12\r\n\x05score\x18\x02 \x01(\x02\x42r\n\x1a\x63om.google.cloud.vision.v1B\x11WebDetectionProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -204,7 +205,6 @@ _WEBDETECTION.fields_by_name['full_matching_images'].message_type = _WEBDETECTIO
 _WEBDETECTION.fields_by_name['partial_matching_images'].message_type = _WEBDETECTION_WEBIMAGE
 _WEBDETECTION.fields_by_name['pages_with_matching_images'].message_type = _WEBDETECTION_WEBPAGE
 DESCRIPTOR.message_types_by_name['WebDetection'] = _WEBDETECTION
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_message.Message,), dict(
 
@@ -213,6 +213,16 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     __module__ = 'google.cloud.vision_v1.proto.web_detection_pb2'
     ,
     __doc__ = """Entity deduced from similar images on the Internet.
+    
+    
+    Attributes:
+        entity_id:
+            Opaque entity ID.
+        score:
+            Overall relevancy score for the entity. Not normalized and not
+            comparable across different image queries.
+        description:
+            Canonical description of the entity, in English.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebEntity)
     ))
@@ -223,6 +233,14 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     __module__ = 'google.cloud.vision_v1.proto.web_detection_pb2'
     ,
     __doc__ = """Metadata for online images.
+    
+    
+    Attributes:
+        url:
+            The result image URL.
+        score:
+            Overall relevancy score for the image. Not normalized and not
+            comparable across different image queries.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebImage)
     ))
@@ -233,6 +251,14 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
     __module__ = 'google.cloud.vision_v1.proto.web_detection_pb2'
     ,
     __doc__ = """Metadata for web pages.
+    
+    
+    Attributes:
+        url:
+            The result web page URL.
+        score:
+            Overall relevancy score for the web page. Not normalized and
+            not comparable across different image queries.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.WebDetection.WebPage)
     ))
@@ -244,15 +270,6 @@ WebDetection = _reflection.GeneratedProtocolMessageType('WebDetection', (_messag
   
   
   Attributes:
-      entity_id:
-          Opaque entity ID.
-      score:
-          Overall relevancy score for the web page. Not normalized and
-          not comparable across different image queries.
-      description:
-          Canonical description of the entity, in English.
-      url:
-          The result web page URL.
       web_entities:
           Deduced entities from similar images on the Internet.
       full_matching_images:

@@ -17,9 +17,9 @@ from __future__ import absolute_import
 from google.cloud.vision_helpers.decorators import add_single_feature_methods
 from google.cloud.vision_helpers import VisionHelpers
 
-from google.cloud.vision_v1 import types
-from google.cloud.vision_v1.gapic import enums
-from google.cloud.vision_v1.gapic import image_annotator_client as iac
+from google.cloud.vision_v1p1beta1 import types
+from google.cloud.vision_v1p1beta1.gapic import enums
+from google.cloud.vision_v1p1beta1.gapic import image_annotator_client as iac
 
 
 @add_single_feature_methods
