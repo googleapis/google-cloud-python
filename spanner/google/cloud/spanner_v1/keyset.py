@@ -41,10 +41,14 @@ class KeyRange(object):
         if not any([start_open, start_closed, end_open, end_closed]):
             raise ValueError("Must specify at least a start or end row.")
 
-        if start_open and start_closed:
+        if ((start_open is None and start_closed is None)
+            or (start_open is not None and start_closed is not None)
+        ):
             raise ValueError("Specify one of 'start_open' / 'start_closed'.")
 
-        if end_open and end_closed:
+        if ((end_open is None and end_closed is None)
+            or (end_open is not None and end_closed is not None)
+        ):
             raise ValueError("Specify one of 'end_open' / 'end_closed'.")
 
         self.start_open = start_open

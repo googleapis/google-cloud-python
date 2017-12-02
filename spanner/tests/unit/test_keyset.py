@@ -15,7 +15,6 @@
 
 import unittest
 
-
 class TestKeyRange(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -41,6 +40,53 @@ class TestKeyRange(unittest.TestCase):
         KEY_2 = [u'key_2']
         with self.assertRaises(ValueError):
             self._make_one(end_open=KEY_1, end_closed=KEY_2)
+
+    def test_ctor_w_start_open_and_start_closed_and_end_open(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=KEY_1, start_closed=KEY_2, end_open=[])
+
+    def test_ctor_w_start_and_end_open_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        with self.assertRaises(ValueError):
+            self._make_one(end_open=KEY_1, end_closed=KEY_2, start_open=[])
+
+    def test_ctor_w_start_open_and_start_closed_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=KEY_1, start_closed=KEY_2, end_closed=[])
+
+    def test_ctor_w_start_closed_and_end_open_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        with self.assertRaises(ValueError):
+            self._make_one(end_open=KEY_1, end_closed=KEY_2, start_closed=[])
+
+    def test_ctor_w_start_open_empty_list_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        krange = self._make_one(start_open=[], end_closed=KEY_1)
+        self.assertEqual(krange.start_open, [])
+        self.assertEqual(krange.end_closed, KEY_1)
+
+    def test_ctor_w_start_open_and_start_closed_empty_lists_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=[], start_closed=[], end_closed=KEY_1)
+
+    def test_ctor_w_start_open_and_end_closed_empty_list(self):
+        KEY_1 = [u'key_1']
+        krange = self._make_one(start_open=KEY_1, end_closed=[])
+        self.assertEqual(krange.start_open, KEY_1)
+        self.assertEqual(krange.end_closed, [])
+
+    def test_ctor_w_start_open_and_end_open_and_end_closed_empty_lists(self):
+        KEY_1 = [u'key_1']
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=KEY_1, end_open=[], end_closed=[])
 
     def test_ctor_w_only_start_open(self):
         KEY_1 = [u'key_1']
@@ -73,6 +119,83 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange.start_closed, None)
         self.assertEqual(krange.end_open, None)
         self.assertEqual(krange.end_closed, KEY_1)
+        self.assertEqual(krange.to_pb().start_closed.values[0].string_value[0], [])
+        self.assertEqual(krange.to_pb().end_closed.values[0].string_value,
+                         KEY_1[0])
+        self.assertFalse(krange.to_pb().HasField('start_open'))
+        self.assertFalse(krange.to_pb().HasField('end_open'))
+
+    def test_ctor_w_start_open_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_open=KEY_1, end_closed=KEY_2)
+        self.assertEqual(krange.start_open, KEY_1)
+        self.assertEqual(krange.start_closed, None)
+        self.assertEqual(krange.end_open, None)
+        self.assertEqual(krange.end_closed, KEY_2)
+
+    def test_ctor_w_start_closed_and_end_open(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_closed=KEY_1, end_open=KEY_2)
+        self.assertEqual(krange.start_open, None)
+        self.assertEqual(krange.start_closed, KEY_1)
+        self.assertEqual(krange.end_open, KEY_2)
+        self.assertEqual(krange.end_closed, None)
+
+    def test_ctor_w_start_open_and_end_open(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_open=KEY_1, end_open=KEY_2)
+        self.assertEqual(krange.start_open, KEY_1)
+        self.assertEqual(krange.start_closed, None)
+        self.assertEqual(krange.end_open, None)
+        self.assertEqual(krange.end_closed, KEY_2)
+
+    def test_ctor_w_start_closed_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_closed=KEY_1, end_closed=KEY_2)
+        self.assertEqual(krange.start_open, None)
+        self.assertEqual(krange.start_closed, KEY_1)
+        self.assertEqual(krange.end_open, KEY_2)
+        self.assertEqual(krange.end_closed, None)
+
+    def test_ctor_w_start_open_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_open=KEY_1, end_closed=KEY_2)
+        self.assertEqual(krange.start_open, KEY_1)
+        self.assertEqual(krange.start_closed, None)
+        self.assertEqual(krange.end_open, None)
+        self.assertEqual(krange.end_closed, KEY_2)
+
+    def test_ctor_w_start_closed_and_end_open(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_closed=KEY_1, end_open=KEY_2)
+        self.assertEqual(krange.start_open, None)
+        self.assertEqual(krange.start_closed, KEY_1)
+        self.assertEqual(krange.end_open, KEY_2)
+        self.assertEqual(krange.end_closed, None)
+
+    def test_ctor_w_start_open_and_end_open(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_open=KEY_1, end_open=KEY_2)
+        self.assertEqual(krange.start_open, KEY_1)
+        self.assertEqual(krange.start_closed, None)
+        self.assertEqual(krange.end_open, None)
+        self.assertEqual(krange.end_closed, KEY_2)
+
+    def test_ctor_w_start_closed_and_end_closed(self):
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_closed=KEY_1, end_closed=KEY_2)
+        self.assertEqual(krange.start_open, None)
+        self.assertEqual(krange.start_closed, KEY_1)
+        self.assertEqual(krange.end_open, KEY_2)
+        self.assertEqual(krange.end_closed, None)
 
     def test_ctor_w_start_open_and_end_closed(self):
         KEY_1 = [u'key_1']
@@ -105,7 +228,9 @@ class TestKeyRange(unittest.TestCase):
                          KEY_1[0])
         self.assertEqual(len(krange_pb.end_open), 1)
         self.assertEqual(krange_pb.end_open.values[0].string_value, KEY_2[0])
-
+        self.assertFalse(krange.to_pb().HasField('start_open'))
+        self.assertFalse(krange.to_pb().HasField('end_closed'))
+        
     def test_to_pb_w_start_open_and_end_closed(self):
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
@@ -118,6 +243,132 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange_pb.start_open.values[0].string_value, KEY_1[0])
         self.assertEqual(len(krange_pb.end_closed), 1)
         self.assertEqual(krange_pb.end_closed.values[0].string_value, KEY_2[0])
+        self.assertFalse(krange.to_pb().HasField('start_closed'))
+        self.assertFalse(krange.to_pb().HasField('end_open'))
+
+    def test_to_pb_w_start_open_and_end_open(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_open=KEY_1, end_open=KEY_2)
+        krange_pb = krange.to_pb()
+        self.assertIsInstance(krange_pb, KeyRange)
+        self.assertEqual(len(krange_pb.start_open), 1)
+        self.assertEqual(krange_pb.start_open.values[0].string_value,
+                         KEY_1[0])
+        self.assertEqual(len(krange_pb.end_open), 1)
+        self.assertEqual(krange_pb.end_open.values[0].string_value, KEY_2[0])
+        self.assertFalse(krange.to_pb().HasField('start_closed'))
+        self.assertFalse(krange.to_pb().HasField('end_closed'))
+        
+    def test_to_pb_w_start_closed_and_end_closed(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        KEY_2 = [u'key_2']
+        krange = self._make_one(start_closed=KEY_1, end_closed=KEY_2)
+        krange_pb = krange.to_pb()
+        self.assertIsInstance(krange_pb, KeyRange)
+        self.assertEqual(len(krange_pb.start_closed), 1)
+        self.assertEqual(krange_pb.start_closed.values[0].string_value, KEY_1[0])
+        self.assertEqual(len(krange_pb.end_closed), 1)
+        self.assertEqual(krange_pb.end_closed.values[0].string_value, KEY_2[0])
+        self.assertFalse(krange.to_pb().HasField('start_open'))
+        self.assertFalse(krange.to_pb().HasField('end_open'))
+
+    def test_to_pb_w_start_closed(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        krange = self._make_one(start_closed=KEY_1)
+        krange_pb = krange.to_pb()
+        self.assertIsInstance(krange_pb, KeyRange)
+        self.assertEqual(len(krange_pb.start_closed), 1)
+        self.assertEqual(krange_pb.start_closed.values[0].string_value,
+                         KEY_1[0])
+        self.assertEqual(len(krange_pb.end_closed), 1)
+        self.assertEqual(krange_pb.end_closed.values[0].string_value, [])
+        self.assertFalse(krange.to_pb().HasField('start_open'))
+        self.assertFalse(krange.to_pb().HasField('end_open'))
+
+    def test_to_pb_w_start_open(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        krange = self._make_one(start_open=KEY_1)
+        krange_pb = krange.to_pb()
+        self.assertIsInstance(krange_pb, KeyRange)
+        self.assertEqual(len(krange_pb.start_open), 1)
+        self.assertEqual(krange_pb.start_open.values[0].string_value,
+                         KEY_1[0])
+        self.assertEqual(len(krange_pb.end_closed), 1)
+        self.assertEqual(krange_pb.end_closed.values[0].string_value, [])
+        self.assertFalse(krange.to_pb().HasField('start_closed'))
+        self.assertFalse(krange.to_pb().HasField('end_open'))
+
+    def test_to_pb_w_end_open(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        krange = self._make_one(end_open=KEY_1)
+        krange_pb = krange.to_pb()
+        self.assertIsInstance(krange_pb, KeyRange)
+        self.assertEqual(len(krange_pb.start_closed), 1)
+        self.assertEqual(krange_pb.start_closed.values[0].string_value, [])
+        self.assertEqual(len(krange_pb.end_open), 1)
+        self.assertEqual(krange_pb.end_open.values[0].string_value,
+                         KEY_1[0])
+        self.assertFalse(krange.to_pb().HasField('start_open'))
+        self.assertFalse(krange.to_pb().HasField('end_closed'))
+
+    def test_to_pb_w_end_closed(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        krange = self._make_one(end_closed=KEY_1)
+        krange_pb = krange.to_pb()
+        self.assertIsInstance(krange_pb, KeyRange)
+        self.assertEqual(len(krange_pb.start_closed), 1)
+        self.assertEqual(krange_pb.start_closed.values[0].string_value,
+                         KEY_1[0])
+        self.assertEqual(len(krange_pb.end_closed), 1)
+        self.assertEqual(krange_pb.end_closed.values[0].string_value, []])
+        self.assertFalse(krange.to_pb().HasField('start_open'))
+        self.assertFalse(krange.to_pb().HasField('end_open'))
+
+    def test_to_pb_w_start_closed_list_and_start_open_list_end_open(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        with self.assertRaises(ValueError):
+            krange = self._make_one(start_closed=[], start_open=[], end_open=KEY_2)
+
+    def test_to_pb_w_start_open_list_and_start_closed_list_end_closed(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=[], start_closed=[], end_closed=KEY_1)
+
+    def test_to_pb_w_start_closed_and_end_open_list_and_end_closed_list(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        with self.assertRaises(ValueError):
+            self._make_one(start_closed=KEY_1, end_open=[], end_closed=[])
+
+    def test_to_pb_w_start_open_and_end_open_list_and_end_closed_list(self):
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        KEY_1 = [u'key_1']
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=KEY_1, end_open=[], end_closed=[])
+        
+        
+
+class TestKeyRange(unittest.TestCase):
+
 
 
 class TestKeySet(unittest.TestCase):
