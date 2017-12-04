@@ -33,9 +33,6 @@ from google.cloud.client import ClientWithProject
 
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery._helpers import _field_to_index_mapping
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -48,6 +45,7 @@ from google.cloud.bigquery.query import QueryResults
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import RowIterator
 from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
 from google.cloud.bigquery.table import _row_from_mapping
 
@@ -1189,7 +1187,7 @@ class Client(ClientWithProject):
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`
         :returns: Iterator of row data
                   :class:`~google.cloud.bigquery.table.Row`-s. During each
                   page, the iterator will have the ``total_rows`` attribute
@@ -1217,20 +1215,15 @@ class Client(ClientWithProject):
         if start_index is not None:
             params['startIndex'] = start_index
 
-        iterator = page_iterator.HTTPIterator(
+        row_iterator = RowIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
             path='%s/data' % (table.path,),
-            item_to_value=_item_to_row,
-            items_key='rows',
+            schema=schema,
             page_token=page_token,
-            next_token='pageToken',
             max_results=max_results,
-            page_start=_rows_page_start,
             extra_params=params)
-        iterator.schema = schema
-        iterator._field_to_index = _field_to_index_mapping(schema)
-        return iterator
+        return row_iterator
 
     def list_partitions(self, table, retry=DEFAULT_RETRY):
         """List the partitions in a table.
