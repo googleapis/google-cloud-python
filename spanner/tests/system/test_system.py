@@ -959,6 +959,175 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = all_data_rows[START+1:END+1]
         self._check_row_data(rows, expected)
 
+    def test_read_with_range_keys_index_closed_closed(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        closed_closed = KeyRange(start_closed=start_index,
+                                 end_closed=end_index)
+        keyset = KeySet(ranges=closed_closed)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = data[start:end+1]
+        self.assertEqual(rows, expected)
+
+    def test_read_with_range_keys_index_closed_open(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        closed_open = KeyRange(start_closed=start_index, end_open=end_index)
+        keyset = KeySet(ranges=closed_open)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = data[start:end]
+        self.assertEqual(rows, expected)
+
+    def test_read_with_range_keys_index_open_closed(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        open_closed = KeyRange(start_open=start_index, end_closed=end_index)
+        keyset = KeySet(ranges=open_closed)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = data[start+1, end+1]
+        self.assertEqual(rows, expected)
+
+    def test_read_with_range_keys_index_open_open(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        open_open = KeyRange(start_open=start_index, end_open=end_index)
+        keyset = KeySet(ranges=open_open)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = data[start+1:end]
+        self.assertEqual(rows, expected)
+
+    def test_read_with_range_keys_index_with_limit_closed_closed(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        limit = 2
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        closed_closed = KeyRange(start_closed=start_index, end_closed=end_index)
+        keyset = KeySet(ranges=closed_closed)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name',
+                                 limit=limit)
+        )
+        expected = data[start:end+1]
+        self.assertEqual(rows, expected[:limit])
+
+    def test_read_with_range_keys_index_with_limit_closed_open(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        limit = 2
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        closed_open = KeyRange(start_closed=start_index, end_open=end_index)
+        keyset = KeySet(ranges=closed_open)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name',
+                                 limit=limit)
+        )
+        expected = data[start:end]
+        self.assertEqual(rows, expected[:limit])
+
+    def test_read_with_range_keys_index_with_limit_open_closed(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        limit = 2
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        open_closed = KeyRange(start_open=start_index, end_closed=end_index)
+        keyset = KeySet(ranges=open_closed)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name',
+                                 limit=limit)
+        )
+        expected = data[start+1:end+1]
+        self.assertEqual(rows, expected[:limit])
+
+    def test_read_with_range_keys_index_with_limit_open_open(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        start = 3
+        end = 7
+        limit = 2
+        start_index = [data[start][0], data[start][1]]
+        end_index = [data[end][0], data[end][1]]
+        open_open = KeyRange(start_open=start_index, end_open=end_index)
+        keyset = KeySet(ranges=open_open)
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name',
+                                 limit=limit)
+        )
+        expected = data[start+1:end]
+        self.assertEqual(rows, expected[:limit])
+
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 3000
         session, committed = self._set_up_table(ROW_COUNT)
