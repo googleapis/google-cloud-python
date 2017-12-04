@@ -127,6 +127,7 @@ class Policy(base.BasePolicy):
         # Stop consuming messages.
         self._consumer.helper_threads.stop(_CALLBACK_WORKER_NAME)
         self._consumer.stop_consuming()
+        self._executor.shutdown()
 
         # The subscription is closing cleanly; resolve the future if it is not
         # resolved already.
