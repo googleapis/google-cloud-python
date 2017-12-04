@@ -730,6 +730,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
     def test_snapshot_read_w_various_staleness(self):
         from datetime import datetime
+        from datetime import timedelta
         from google.cloud._helpers import UTC
         ROW_COUNT = 400
         session, committed = self._set_up_table(ROW_COUNT)
@@ -747,12 +748,21 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(min_read_ts.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows, all_data_rows)
 
+        # Test with multiuse and min_read_timestamp raises ValueError
+        with self.assertRaises(ValueError):
+            min_read_ts = session.snapshot(min_read_timestamp=datetime.now(),
+                                           multi_use=True)
         staleness = datetime.utcnow().replace(tzinfo=UTC) - before_reads
 
         # Test w/ max staleness
         max_staleness = session.snapshot(max_staleness=staleness)
         rows = list(max_staleness.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(rows, all_data_rows)
+
+        # Test with multiuse and max_staleness raises ValueError
+        with self.assertRaises(ValueError):
+            max_staleness = session.snapshot(max_staleness=timedelta(0),
+                                             multi_use=True)
 
         # Test w/ exact staleness
         exact_staleness = session.snapshot(exact_staleness=staleness)
