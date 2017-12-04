@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,6 +58,7 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 
@@ -74,6 +75,38 @@
 
 <span class="n">_TABLE_HAS_NO_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;Table has no schema:  call &#39;client.get_table()&#39;&quot;</span>
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_reference_getter</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A :class:`~google.cloud.bigquery.table.TableReference` pointing to</span>
+<span class="sd">    this table.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        google.cloud.bigquery.table.TableReference: pointer to this table</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">dataset</span>
+
+    <span class="n">dataset_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">DatasetReference</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TableReference</span><span class="p">(</span><span class="n">dataset_ref</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_view_use_legacy_sql_getter</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Specifies whether to execute the view with Legacy or Standard SQL.</span>
+
+<span class="sd">    If this table is not a view, None is returned.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the view is using legacy SQL, or None if not a view</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># The server-side default for useLegacySql is True.</span>
+        <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># In some cases, such as in a table list no view object is present, but the</span>
+    <span class="c1"># resource still represents a view. Use the type as a fallback.</span>
+    <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">table_type</span> <span class="o">==</span> <span class="s1">&#39;VIEW&#39;</span><span class="p">:</span>
+        <span class="c1"># The server-side default for useLegacySql is True.</span>
+        <span class="k">return</span> <span class="kc">True</span>
 
 
 <div class="viewcode-block" id="TableReference"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.TableReference">[docs]</a><span class="k">class</span> <span class="nc">TableReference</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -245,6 +278,8 @@
 <span class="sd">        :returns: the table ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_id</span>
+
+    <span class="n">reference</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_reference_getter</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -573,23 +608,7 @@
         <span class="sd">&quot;&quot;&quot;Delete SQL query defining the table as a view.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">view_use_legacy_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Specifies whether to execute the view with Legacy or Standard SQL.</span>
-
-<span class="sd">        The default is False for views (use Standard SQL).</span>
-<span class="sd">        If this table is not a view, None is returned.</span>
-
-<span class="sd">        :rtype: bool or ``NoneType``</span>
-<span class="sd">        :returns: The boolean for view.useLegacySql, or None if not a view.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># useLegacySql is never missing from the view dict if this table</span>
-            <span class="c1"># was created client-side, because the view_query setter populates</span>
-            <span class="c1"># it. So a missing or None can only come from the server, whose</span>
-            <span class="c1"># default is True.</span>
-            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;useLegacySql&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">view_use_legacy_sql</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_view_use_legacy_sql_getter</span><span class="p">)</span>
 
     <span class="nd">@view_use_legacy_sql</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">view_use_legacy_sql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -755,6 +774,122 @@
         <span class="k">return</span> <span class="n">resource</span></div>
 
 
+<div class="viewcode-block" id="TableListItem"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.TableListItem">[docs]</a><span class="k">class</span> <span class="nc">TableListItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A read-only table resource from a list operation.</span>
+
+<span class="sd">    For performance reasons, the BigQuery API only includes some of the table</span>
+<span class="sd">    properties when listing tables. Notably,</span>
+<span class="sd">    :attr:`~google.cloud.bigquery.table.Table.schema` and</span>
+<span class="sd">    :attr:`~google.cloud.bigquery.table.Table.num_rows` are missing.</span>
+
+<span class="sd">    For a full list of the properties that the BigQuery API returns, see the</span>
+<span class="sd">    `REST documentation for tables.list</span>
+<span class="sd">    &lt;https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list&gt;`_.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        resource (dict):</span>
+<span class="sd">            A table-like resource object from a table list response.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The project ID of the project this table belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the project ID of the table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;projectId&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The dataset ID of the dataset this table belongs to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the dataset ID of the table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;datasetId&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The table ID.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the table ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableId&#39;</span><span class="p">)</span>
+
+    <span class="n">reference</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_reference_getter</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Labels for the table.</span>
+
+<span class="sd">        This method always returns a dict. To change a table&#39;s labels,</span>
+<span class="sd">        modify the dict, then call ``Client.update_table``. To delete a</span>
+<span class="sd">        label, set its value to ``None`` before updating.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Map[str, str]: A dictionary of the the table&#39;s labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">full_table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID for the table, in the form ``project_id:dataset_id:table_id``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The fully-qualified ID of the table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">table_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The type of the table.</span>
+
+<span class="sd">        Possible values are &quot;TABLE&quot;, &quot;VIEW&quot;, or &quot;EXTERNAL&quot;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The kind of table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">partitioning_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Time partitioning of the table.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str:</span>
+<span class="sd">                Type of partitioning if the table is partitioned, None</span>
+<span class="sd">                otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">partition_expiration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Expiration time in ms for a partition</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: The time in ms for partition expiration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expirationMs&#39;</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Title of the table.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The name as set by the user, or None (the default)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">)</span>
+
+    <span class="n">view_use_legacy_sql</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_view_use_legacy_sql_getter</span><span class="p">)</span></div>
+
+
 <span class="k">def</span> <span class="nf">_row_from_mapping</span><span class="p">(</span><span class="n">mapping</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a mapping to a row tuple using the schema.</span>
 
@@ -824,8 +959,78 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span> <span class="o">=</span> <span class="n">values</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span> <span class="o">=</span> <span class="n">field_to_index</span>
 
-    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span>
+<div class="viewcode-block" id="Row.values"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.Row.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the values included in this row.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sequence[object]: A sequence of length ``len(row)``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Row.keys"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.Row.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the keys for using a row as a dict.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sequence[str]: The keys corresponding to the columns of a row</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; list(Row((&#39;a&#39;, &#39;b&#39;), {&#39;x&#39;: 0, &#39;y&#39;: 1}).keys())</span>
+<span class="sd">            [&#39;x&#39;, &#39;y&#39;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Row.items"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.Row.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return items as ``(key, value)`` pairs.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sequence[Tuple[str, object]]:</span>
+<span class="sd">                The ``(key, value)`` pairs representing this row.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            &gt;&gt;&gt; list(Row((&#39;a&#39;, &#39;b&#39;), {&#39;x&#39;: 0, &#39;y&#39;: 1}).items())</span>
+<span class="sd">            [(&#39;x&#39;, &#39;a&#39;), (&#39;y&#39;, &#39;b&#39;)]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="Row.get"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.Row.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a value for key, with a default value if it does not exist.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            key (str): The key of the column to access</span>
+<span class="sd">            default (object):</span>
+<span class="sd">                The default value to use if the key does not exist. (Defaults</span>
+<span class="sd">                to :data:`None`.)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object:</span>
+<span class="sd">                The value associated with the provided key, or a default value.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            When the key exists, the value associated with it is returned.</span>
+
+<span class="sd">            &gt;&gt;&gt; Row((&#39;a&#39;, &#39;b&#39;), {&#39;x&#39;: 0, &#39;y&#39;: 1}).get(&#39;x&#39;)</span>
+<span class="sd">            &#39;a&#39;</span>
+
+<span class="sd">            The default value is ``None`` when the key does not exist.</span>
+
+<span class="sd">            &gt;&gt;&gt; Row((&#39;a&#39;, &#39;b&#39;), {&#39;x&#39;: 0, &#39;y&#39;: 1}).get(&#39;z&#39;)</span>
+<span class="sd">            None</span>
+
+<span class="sd">            The default value can be overrided with the ``default`` parameter.</span>
+
+<span class="sd">            &gt;&gt;&gt; Row((&#39;a&#39;, &#39;b&#39;), {&#39;x&#39;: 0, &#39;y&#39;: 1}).get(&#39;z&#39;, &#39;&#39;)</span>
+<span class="sd">            &#39;&#39;</span>
+
+<span class="sd">            &gt;&gt;&gt; Row((&#39;a&#39;, &#39;b&#39;), {&#39;x&#39;: 0, &#39;y&#39;: 1}).get(&#39;z&#39;, default = &#39;&#39;)</span>
+<span class="sd">            &#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">[</span><span class="n">index</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_xxx_field_to_index</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>

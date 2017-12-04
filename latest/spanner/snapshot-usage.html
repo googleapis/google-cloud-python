@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-only Transactions via Snapshots &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Read-only Transactions via Snapshots &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,7 +51,7 @@ the results are consistent as of a particular point in time.</p>
 <p>To begin using a snapshot using the default “bound” (which is “strong”),
 meaning all reads are performed at a timestamp where all previously-committed
 transactions are visible:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can also specify a weaker bound, which can either be to perform all
@@ -59,19 +59,19 @@ reads as of a given timestamp:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">from</span> <span class="nn">pytz</span> <span class="k">import</span> <span class="n">UTC</span>
 <span class="n">TIMESTAMP</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">UTC</span><span class="p">)</span>
-<span class="n">snapshot</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">read_timestamp</span><span class="o">=</span><span class="n">TIMESTAMP</span><span class="p">)</span>
+<span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">read_timestamp</span><span class="o">=</span><span class="n">TIMESTAMP</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>or as of a given duration in the past:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">DURATION</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">snapshot</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">exact_staleness</span><span class="o">=</span><span class="n">DURATION</span><span class="p">)</span>
+<span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">exact_staleness</span><span class="o">=</span><span class="n">DURATION</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="read-table-data">
 <h2>Read Table Data<a class="headerlink" href="#read-table-data" title="Permalink to this headline">#</a></h2>
-<p>Read data for selected rows from a table in the session’s database.  Calls
+<p>Read data for selected rows from a table in the database.  Calls
 the <code class="docutils literal"><span class="pre">Read</span></code> API, which returns all rows specified in <code class="docutils literal"><span class="pre">key_set</span></code>, or else
 fails if the result set is too large,</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
@@ -85,12 +85,8 @@ fails if the result set is too large,</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The result set returned by
-<code class="xref py py-meth docutils literal"><span class="pre">execute_sql()</span></code> <em>must not</em> be
-iterated after the snapshot’s session has been returned to the database’s
-session pool.  Therefore, unless your application creates sessions
-manually, perform all iteration within the context of  the
-<code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code> block.</p>
+<p class="last">Perform all iteration within the context of the <code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
+block.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -114,7 +110,7 @@ which raised the error.  E.g.:</p>
 </div>
 <div class="section" id="execute-a-sql-select-statement">
 <h2>Execute a SQL Select Statement<a class="headerlink" href="#execute-a-sql-select-statement" title="Permalink to this headline">#</a></h2>
-<p>Read data from a query against tables in the session’s database.  Calls
+<p>Read data from a query against tables in the database.  Calls
 the <code class="docutils literal"><span class="pre">ExecuteSql</span></code> API, which returns all rows matching the query, or else
 fails if the result set is too large,</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">()</span> <span class="k">as</span> <span class="n">snapshot</span><span class="p">:</span>
@@ -130,12 +126,8 @@ fails if the result set is too large,</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The result set returned by
-<code class="xref py py-meth docutils literal"><span class="pre">execute_sql()</span></code> <em>must not</em> be
-iterated after the snapshot’s session has been returned to the database’s
-session pool.  Therefore, unless your application creates sessions
-manually, perform all iteration within the context of  the
-<code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code> block.</p>
+<p class="last">Perform all iteration within the context of the <code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
+block.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

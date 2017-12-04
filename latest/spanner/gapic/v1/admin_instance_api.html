@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Admin Instance Client API &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Spanner Admin Instance Client API &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -72,7 +72,7 @@ databases in that instance, and their performance may suffer.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.6.0)"><em>Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
 which to make calls.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.0)"><em>Credentials</em></a>) – The authorization
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><em>Credentials</em></a>) – The authorization
 credentials to attach to requests. These credentials identify this
 application to the service.</li>
 <li><strong>ssl_credentials</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.ChannelCredentials" title="(in grpcio v1.6.0)"><em>ChannelCredentials</em></a>) – A
@@ -169,7 +169,7 @@ length.</li>
 specified must be <code class="docutils literal"><span class="pre">&lt;parent&gt;/instances/&lt;instance_id&gt;</span></code>.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a></li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
@@ -178,7 +178,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -218,13 +218,13 @@ is permanently deleted.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the instance to be deleted. Values are of the form
 <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code></li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -263,7 +263,7 @@ policy if an instance exists but does not have a policy set.</p>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being requested.
 <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
 resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
@@ -272,7 +272,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -302,7 +302,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the requested instance. Values are of the form
 <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
@@ -311,7 +311,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -341,7 +341,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the requested instance configuration. Values are of
 the form <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;</span></code>.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
@@ -350,7 +350,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -409,19 +409,19 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.16)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
 is an iterable of <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.InstanceConfig" title="google.cloud.spanner_admin_instance_v1.types.InstanceConfig"><code class="xref py py-class docutils literal"><span class="pre">InstanceConfig</span></code></a> instances.
 This object can also be configured to iterate over the pages
 of the response through the <cite>options</cite> parameter.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -491,19 +491,19 @@ it has the label “env” with its value containing “dev”.</li>
 </ul>
 </div></blockquote>
 </li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.15)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A <a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.PageIterator" title="(in google-gax v0.15.16)"><code class="xref py py-class docutils literal"><span class="pre">PageIterator</span></code></a> instance. By default, this
 is an iterable of <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Instance" title="google.cloud.spanner_admin_instance_v1.types.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> instances.
 This object can also be configured to iterate over the pages
 of the response through the <cite>options</cite> parameter.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -635,7 +635,7 @@ valid policy but certain Cloud Platform services (such as Projects)
 might reject them.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="admin_instance_types.html#google.cloud.spanner_admin_instance_v1.types.Policy" title="google.cloud.spanner_admin_instance_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a></li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
@@ -644,7 +644,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -684,7 +684,7 @@ resource is specified as <code class="docutils literal"><span class="pre">projec
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
 information see
 <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
@@ -693,7 +693,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>
@@ -778,7 +778,7 @@ The field mask must always be specified; this prevents any future fields in
 about them.
 If a dict is provided, it must be of the same form as the protobuf
 message <code class="xref py py-class docutils literal"><span class="pre">FieldMask</span></code></li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.15)"><em>CallOptions</em></a>) – Overrides the default
+<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
 settings for this call, e.g, timeout, retries etc.</li>
 </ul>
 </td>
@@ -787,7 +787,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.15)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
+<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
 </ul>
 </td>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.datetime_helpers &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.api_core.datetime_helpers &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,12 +56,171 @@
 
 <span class="sd">&quot;&quot;&quot;Helpers for :mod:`datetime`.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">calendar</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">pytz</span>
+
+
+<span class="n">_UTC_EPOCH</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+<span class="n">_RFC3339_MICROS</span> <span class="o">=</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S.</span><span class="si">%f</span><span class="s1">Z&#39;</span>
+<span class="n">_RFC3339_NO_FRACTION</span> <span class="o">=</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S&#39;</span>
+<span class="c1"># datetime.strptime cannot handle nanosecond precision:  parse w/ regex</span>
+<span class="n">_RFC3339_NANOS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    (?P&lt;no_fraction&gt;</span>
+<span class="s2">        \d</span><span class="si">{4}</span><span class="s2">-\d</span><span class="si">{2}</span><span class="s2">-\d</span><span class="si">{2}</span><span class="s2">T\d</span><span class="si">{2}</span><span class="s2">:\d</span><span class="si">{2}</span><span class="s2">:\d</span><span class="si">{2}</span><span class="s2">  # YYYY-MM-DDTHH:MM:SS</span>
+<span class="s2">    )</span>
+<span class="s2">    (                                        # Optional decimal part</span>
+<span class="s2">     \.                                      # decimal point</span>
+<span class="s2">     (?P&lt;nanos&gt;\d{1,9})                      # nanoseconds, maybe truncated</span>
+<span class="s2">    )?</span>
+<span class="s2">    Z                                        # Zulu</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="utcnow"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.utcnow">[docs]</a><span class="k">def</span> <span class="nf">utcnow</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;A :meth:`datetime.datetime.utcnow()` alias to allow mocking in tests.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="to_milliseconds"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.to_milliseconds">[docs]</a><span class="k">def</span> <span class="nf">to_milliseconds</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a zone-aware datetime to milliseconds since the unix epoch.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (datetime.datetime): The datetime to covert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: Milliseconds since the unix epoch.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">micros</span> <span class="o">=</span> <span class="n">to_microseconds</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">micros</span> <span class="o">//</span> <span class="mi">1000</span></div>
+
+
+<div class="viewcode-block" id="from_microseconds"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_microseconds">[docs]</a><span class="k">def</span> <span class="nf">from_microseconds</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert timestamp in microseconds since the unix epoch to datetime.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (float): The timestamp to convert, in microseconds.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        datetime.datetime: The datetime object equivalent to the timestamp in</span>
+<span class="sd">            UTC.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_UTC_EPOCH</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="to_microseconds"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.to_microseconds">[docs]</a><span class="k">def</span> <span class="nf">to_microseconds</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a datetime to microseconds since the unix epoch.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (datetime.datetime): The datetime to covert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: Microseconds since the unix epoch.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="c1"># Regardless of what timezone is on the value, convert it to UTC.</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="c1"># Convert the datetime to a microsecond timestamp.</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span><span class="o">.</span><span class="n">microsecond</span></div>
+
+
+<div class="viewcode-block" id="from_iso8601_date"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_iso8601_date">[docs]</a><span class="k">def</span> <span class="nf">from_iso8601_date</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a ISO8601 date string to a date.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): The ISO8601 date string.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        datetime.date: A date equivalent to the date string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="from_iso8601_time"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_iso8601_time">[docs]</a><span class="k">def</span> <span class="nf">from_iso8601_time</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a zoneless ISO8601 time string to a time.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): The ISO8601 time string.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        datetime.time: A time equivalent to the time string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;%H:%M:%S&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="from_rfc3339"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_rfc3339">[docs]</a><span class="k">def</span> <span class="nf">from_rfc3339</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a microsecond-precision timestamp to datetime.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): The RFC3339 string to convert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        datetime.datetime: The datetime object equivalent to the timestamp in</span>
+<span class="sd">            UTC.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+        <span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_MICROS</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="from_rfc3339_nanos"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.from_rfc3339_nanos">[docs]</a><span class="k">def</span> <span class="nf">from_rfc3339_nanos</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a nanosecond-precision timestamp to a native datetime.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        Python datetimes do not support nanosecond precision; this function</span>
+<span class="sd">        therefore truncates such values to microseconds.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (str): The RFC3339 string to convert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        datetime.datetime: The datetime object equivalent to the timestamp in</span>
+<span class="sd">            UTC.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the timestamp does not match the RFC 3339</span>
+<span class="sd">            regular expression.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">with_nanos</span> <span class="o">=</span> <span class="n">_RFC3339_NANOS</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">with_nanos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Timestamp: </span><span class="si">{!r}</span><span class="s1">, does not match pattern: </span><span class="si">{!r}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_NANOS</span><span class="o">.</span><span class="n">pattern</span><span class="p">))</span>
+
+    <span class="n">bare_seconds</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
+        <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;no_fraction&#39;</span><span class="p">),</span> <span class="n">_RFC3339_NO_FRACTION</span><span class="p">)</span>
+    <span class="n">fraction</span> <span class="o">=</span> <span class="n">with_nanos</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;nanos&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fraction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">micros</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="mi">9</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">fraction</span><span class="p">)</span>
+        <span class="n">nanos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fraction</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="n">scale</span><span class="p">)</span>
+        <span class="n">micros</span> <span class="o">=</span> <span class="n">nanos</span> <span class="o">//</span> <span class="mi">1000</span>
+
+    <span class="k">return</span> <span class="n">bare_seconds</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="n">micros</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="to_rfc3339"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.datetime_helpers.to_rfc3339">[docs]</a><span class="k">def</span> <span class="nf">to_rfc3339</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ignore_zone</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a datetime to an RFC3339 timestamp string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (datetime.datetime):</span>
+<span class="sd">            The datetime object to be converted to a string.</span>
+<span class="sd">        ignore_zone (bool): If True, then the timezone (if any) of the</span>
+<span class="sd">            datetime object is ignored and the datetime is treated as UTC.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The RFC3339 formated string representing the datetime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_zone</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Convert to UTC and remove the time zone info.</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-</span> <span class="n">value</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">_RFC3339_MICROS</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

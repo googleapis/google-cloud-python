@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Helpers &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Helpers &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,6 +57,177 @@
 <span id="datetime-helpers"></span><h2>Datetime Helpers<a class="headerlink" href="#module-google.api_core.datetime_helpers" title="Permalink to this headline">#</a></h2>
 <p>Helpers for <a class="reference external" href="https://docs.python.org/3/library/datetime.html#module-datetime" title="(in Python v3.6)"><code class="xref py py-mod docutils literal"><span class="pre">datetime</span></code></a>.</p>
 <dl class="function">
+<dt id="google.api_core.datetime_helpers.from_iso8601_date">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">from_iso8601_date</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#from_iso8601_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.from_iso8601_date" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a ISO8601 date string to a date.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ISO8601 date string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A date equivalent to the date string.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.6)">datetime.date</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.api_core.datetime_helpers.from_iso8601_time">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">from_iso8601_time</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#from_iso8601_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.from_iso8601_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a zoneless ISO8601 time string to a time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The ISO8601 time string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A time equivalent to the time string.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.time" title="(in Python v3.6)">datetime.time</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.api_core.datetime_helpers.from_microseconds">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">from_microseconds</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#from_microseconds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.from_microseconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert timestamp in microseconds since the unix epoch to datetime.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The timestamp to convert, in microseconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>The datetime object equivalent to the timestamp in</dt>
+<dd>UTC.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)">datetime.datetime</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.api_core.datetime_helpers.from_rfc3339">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">from_rfc3339</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#from_rfc3339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.from_rfc3339" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a microsecond-precision timestamp to datetime.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The RFC3339 string to convert.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>The datetime object equivalent to the timestamp in</dt>
+<dd>UTC.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)">datetime.datetime</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.api_core.datetime_helpers.from_rfc3339_nanos">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">from_rfc3339_nanos</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#from_rfc3339_nanos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.from_rfc3339_nanos" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a nanosecond-precision timestamp to a native datetime.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Python datetimes do not support nanosecond precision; this function
+therefore truncates such values to microseconds.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The RFC3339 string to convert.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>The datetime object equivalent to the timestamp in</dt>
+<dd>UTC.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)">datetime.datetime</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the timestamp does not match the RFC 3339
+regular expression.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.api_core.datetime_helpers.to_microseconds">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">to_microseconds</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#to_microseconds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.to_microseconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a datetime to microseconds since the unix epoch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><em>datetime.datetime</em></a>) – The datetime to covert.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Microseconds since the unix epoch.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.api_core.datetime_helpers.to_milliseconds">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">to_milliseconds</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#to_milliseconds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.to_milliseconds" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a zone-aware datetime to milliseconds since the unix epoch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><em>datetime.datetime</em></a>) – The datetime to covert.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Milliseconds since the unix epoch.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="google.api_core.datetime_helpers.to_rfc3339">
+<code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">to_rfc3339</code><span class="sig-paren">(</span><em>value</em>, <em>ignore_zone=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#to_rfc3339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.to_rfc3339" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert a datetime to an RFC3339 timestamp string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><em>datetime.datetime</em></a>) – The datetime object to be converted to a string.</li>
+<li><strong>ignore_zone</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – If True, then the timezone (if any) of the
+datetime object is ignored and the datetime is treated as UTC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The RFC3339 formated string representing the datetime.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="google.api_core.datetime_helpers.utcnow">
 <code class="descclassname">google.api_core.datetime_helpers.</code><code class="descname">utcnow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/datetime_helpers.html#utcnow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.datetime_helpers.utcnow" title="Permalink to this definition">#</a></dt>
 <dd><p>A <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.utcnow" title="(in Python v3.6)"><code class="xref py py-meth docutils literal"><span class="pre">datetime.datetime.utcnow()</span></code></a> alias to allow mocking in tests.</p>
@@ -76,14 +247,14 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The target service address in the format ‘hostname:port’.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.0)"><em>google.auth.credentials.Credentials</em></a>) – The credentials. If
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><em>google.auth.credentials.Credentials</em></a>) – The credentials. If
 not specified, then this function will attempt to ascertain the
-credentials from the environment using <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</li>
+credentials from the environment using <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</li>
 <li><strong>scopes</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – A optional list of scopes needed for this
 service. These are only used when credentials are not specified and
-are passed to <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</li>
+are passed to <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</li>
 <li><strong>kwargs</strong> – Additional key-word args passed to
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.transport.grpc.html#google.auth.transport.grpc.secure_authorized_channel" title="(in google-auth v1.2.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.transport.grpc.secure_authorized_channel()</span></code></a>.</li>
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.transport.grpc.html#google.auth.transport.grpc.secure_authorized_channel" title="(in google-auth v1.2.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.transport.grpc.secure_authorized_channel()</span></code></a>.</li>
 </ul>
 </td>
 </tr>

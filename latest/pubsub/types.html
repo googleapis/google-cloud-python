@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Pub/Sub Client Types &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Pub/Sub Client Types &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -65,6 +65,42 @@ Must not be empty.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">AcknowledgeRequest</code></dt>
+<dd><p>Request for the Acknowledge method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The subscription whose message is being acknowledged. Format
+is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ack_ids</code></dt>
+<dd><p>The acknowledgment ID for the messages being acknowledged that
+was returned by the Pub/Sub system in the <code class="docutils literal"><span class="pre">Pull</span></code> response.
+Must not be empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.AuditData">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">AuditData</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.AuditData" title="Permalink to this definition">#</a></dt>
+<dd><p>Audit log information specific to Cloud IAM. This message is serialized
+as an <code class="docutils literal"><span class="pre">Any</span></code> type in the <code class="docutils literal"><span class="pre">ServiceData</span></code> message of an <code class="docutils literal"><span class="pre">AuditLog</span></code>
+message.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.AuditData.policy_delta">
+<code class="descname">policy_delta</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.AuditData.policy_delta" title="Permalink to this definition">#</a></dt>
+<dd><p>Policy delta between the original policy and the newly set
+policy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.BatchSettings">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">BatchSettings</code><span class="sig-paren">(</span><em>max_bytes</em>, <em>max_latency</em>, <em>max_messages</em><span class="sig-paren">)</span><a class="headerlink" href="#google.cloud.pubsub_v1.types.BatchSettings" title="Permalink to this definition">#</a></dt>
 <dd><p>Create new instance of BatchSettings(max_bytes, max_latency, max_messages)</p>
@@ -84,6 +120,69 @@ Must not be empty.</p>
 <dt id="google.cloud.pubsub_v1.types.BatchSettings.max_messages">
 <code class="descname">max_messages</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.BatchSettings.max_messages" title="Permalink to this definition">#</a></dt>
 <dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.Binding">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Binding</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Binding" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates <code class="docutils literal"><span class="pre">members</span></code> with a <code class="docutils literal"><span class="pre">role</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Binding.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Binding.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal"><span class="pre">members</span></code>. For example,
+<code class="docutils literal"><span class="pre">roles/viewer</span></code>, <code class="docutils literal"><span class="pre">roles/editor</span></code>, or <code class="docutils literal"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Binding.members">
+<code class="descname">members</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Binding.members" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the identities requesting access for a Cloud
+Platform resource. <code class="docutils literal"><span class="pre">members</span></code> can have the following values:
+-  <code class="docutils literal"><span class="pre">allUsers</span></code>: A special identifier that represents anyone
+who is on    the internet; with or without a Google account.
+-  <code class="docutils literal"><span class="pre">allAuthenticatedUsers</span></code>: A special identifier that
+represents    anyone who is authenticated with a Google
+account or a service    account.  -  <code class="docutils literal"><span class="pre">user:{emailid}</span></code>: An
+email address that represents a specific    Google account.
+For example, <code class="docutils literal"><span class="pre">alice&#64;gmail.com</span></code> or    <code class="docutils literal"><span class="pre">joe&#64;example.com</span></code>.  -
+<code class="docutils literal"><span class="pre">serviceAccount:{emailid}</span></code>: An email address that represents
+a    service account. For example,    <code class="docutils literal"><span class="pre">my-other-</span>
+<span class="pre">app&#64;appspot.gserviceaccount.com</span></code>.  -  <code class="docutils literal"><span class="pre">group:{emailid}</span></code>: An
+email address that represents a Google group.    For example,
+<code class="docutils literal"><span class="pre">admins&#64;example.com</span></code>.  -  <code class="docutils literal"><span class="pre">domain:{domain}</span></code>: A Google Apps
+domain name that represents all    the users of that domain.
+For example, <code class="docutils literal"><span class="pre">google.com</span></code> or    <code class="docutils literal"><span class="pre">example.com</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.BindingDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">BindingDelta</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.BindingDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>One delta entry for Binding. Each individual change (only one member in
+each entry) to a binding will be a separate entry.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.BindingDelta.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.BindingDelta.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The action that was performed on a Binding. Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.BindingDelta.role">
+<code class="descname">role</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.BindingDelta.role" title="Permalink to this definition">#</a></dt>
+<dd><p>Role that is assigned to <code class="docutils literal"><span class="pre">members</span></code>. For example,
+<code class="docutils literal"><span class="pre">roles/viewer</span></code>, <code class="docutils literal"><span class="pre">roles/editor</span></code>, or <code class="docutils literal"><span class="pre">roles/owner</span></code>.
+Required</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.BindingDelta.member">
+<code class="descname">member</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.BindingDelta.member" title="Permalink to this definition">#</a></dt>
+<dd><p>A single identity requesting access for a Cloud Platform
+resource. Follows the same format of Binding.members. Required</p>
 </dd></dl>
 
 </dd></dl>
@@ -120,12 +219,56 @@ completion of the CreateSnapshot request. Format is
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">CreateSnapshotRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">CreateSnapshot</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>Optional user-provided name for this snapshot. If the name is
+not provided in the request, the server will assign a random
+name for this snapshot on the same project as the
+subscription. Note that for REST API requests, you must
+specify a name. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The subscription whose backlog the snapshot retains.
+Specifically, the created snapshot is guaranteed to retain:
+(a) The existing backlog on the subscription. More precisely,
+this is defined as the messages in the subscription’s backlog
+that are unacknowledged upon the successful completion of the
+<code class="docutils literal"><span class="pre">CreateSnapshot</span></code> request; as well as: (b) Any messages
+published to the subscription’s topic following the successful
+completion of the CreateSnapshot request. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.DeleteSnapshotRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">DeleteSnapshotRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeleteSnapshotRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal"><span class="pre">DeleteSnapshot</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.DeleteSnapshotRequest.snapshot">
 <code class="descname">snapshot</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeleteSnapshotRequest.snapshot" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the snapshot to delete. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">DeleteSnapshotRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">DeleteSnapshot</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">snapshot</code></dt>
 <dd><p>The name of the snapshot to delete. Format is
 <code class="docutils literal"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p>
 </dd></dl>
@@ -146,12 +289,38 @@ completion of the CreateSnapshot request. Format is
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">DeleteSubscriptionRequest</code></dt>
+<dd><p>Request for the DeleteSubscription method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The subscription to delete. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.DeleteTopicRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">DeleteTopicRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeleteTopicRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal"><span class="pre">DeleteTopic</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.DeleteTopicRequest.topic">
 <code class="descname">topic</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.DeleteTopicRequest.topic" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the topic to delete. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">DeleteTopicRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">DeleteTopic</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
 <dd><p>Name of the topic to delete. Format is
 <code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p>
 </dd></dl>
@@ -183,6 +352,21 @@ completion of the CreateSnapshot request. Format is
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.pubsub_v1.types.GetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">GetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal"><span class="pre">GetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.GetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+requested. <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.GetSubscriptionRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">GetSubscriptionRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetSubscriptionRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the GetSubscription method.</p>
@@ -196,12 +380,38 @@ completion of the CreateSnapshot request. Format is
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">GetSubscriptionRequest</code></dt>
+<dd><p>Request for the GetSubscription method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The name of the subscription to get. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.GetTopicRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">GetTopicRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetTopicRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the GetTopic method.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.GetTopicRequest.topic">
 <code class="descname">topic</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.GetTopicRequest.topic" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the topic to get. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">GetTopicRequest</code></dt>
+<dd><p>Request for the GetTopic method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
 <dd><p>The name of the topic to get. Format is
 <code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p>
 </dd></dl>
@@ -237,6 +447,34 @@ next page of data.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSnapshotsRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">ListSnapshots</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">project</code></dt>
+<dd><p>The name of the cloud project that snapshots belong to. Format
+is <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Maximum number of snapshots to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>The value returned by the last <code class="docutils literal"><span class="pre">ListSnapshotsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal"><span class="pre">ListSnapshots</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ListSnapshotsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSnapshotsResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSnapshotsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal"><span class="pre">ListSnapshots</span></code> method.</p>
@@ -249,6 +487,26 @@ next page of data.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListSnapshotsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSnapshotsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more snapshot that
+match the request; this value should be passed in a new
+<code class="docutils literal"><span class="pre">ListSnapshotsRequest</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSnapshotsResponse</code></dt>
+<dd><p>Response for the <code class="docutils literal"><span class="pre">ListSnapshots</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">snapshots</code></dt>
+<dd><p>The resulting snapshots.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
 <dd><p>If not empty, indicates that there may be more snapshot that
 match the request; this value should be passed in a new
 <code class="docutils literal"><span class="pre">ListSnapshotsRequest</span></code>.</p>
@@ -285,6 +543,34 @@ the next page of data.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSubscriptionsRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">ListSubscriptions</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">project</code></dt>
+<dd><p>The name of the cloud project that subscriptions belong to.
+Format is <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Maximum number of subscriptions to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>The value returned by the last <code class="docutils literal"><span class="pre">ListSubscriptionsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal"><span class="pre">ListSubscriptions</span></code> call, and that the system should return
+the next page of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ListSubscriptionsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSubscriptionsResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSubscriptionsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal"><span class="pre">ListSubscriptions</span></code> method.</p>
@@ -297,6 +583,26 @@ the next page of data.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListSubscriptionsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListSubscriptionsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more subscriptions
+that match the request; this value should be passed in a new
+<code class="docutils literal"><span class="pre">ListSubscriptionsRequest</span></code> to get more subscriptions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListSubscriptionsResponse</code></dt>
+<dd><p>Response for the <code class="docutils literal"><span class="pre">ListSubscriptions</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscriptions</code></dt>
+<dd><p>The subscriptions that match the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
 <dd><p>If not empty, indicates that there may be more subscriptions
 that match the request; this value should be passed in a new
 <code class="docutils literal"><span class="pre">ListSubscriptionsRequest</span></code> to get more subscriptions.</p>
@@ -333,6 +639,34 @@ that the system should return the next page of data.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicSubscriptionsRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">ListTopicSubscriptions</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
+<dd><p>The name of the topic that subscriptions are attached to.
+Format is <code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Maximum number of subscription names to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>The value returned by the last
+<code class="docutils literal"><span class="pre">ListTopicSubscriptionsResponse</span></code>; indicates that this is a
+continuation of a prior <code class="docutils literal"><span class="pre">ListTopicSubscriptions</span></code> call, and
+that the system should return the next page of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicSubscriptionsResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal"><span class="pre">ListTopicSubscriptions</span></code> method.</p>
@@ -345,6 +679,26 @@ that the system should return the next page of data.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicSubscriptionsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more subscriptions
+that match the request; this value should be passed in a new
+<code class="docutils literal"><span class="pre">ListTopicSubscriptionsRequest</span></code> to get more subscriptions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicSubscriptionsResponse</code></dt>
+<dd><p>Response for the <code class="docutils literal"><span class="pre">ListTopicSubscriptions</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscriptions</code></dt>
+<dd><p>The names of the subscriptions that match the request.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
 <dd><p>If not empty, indicates that there may be more subscriptions
 that match the request; this value should be passed in a new
 <code class="docutils literal"><span class="pre">ListTopicSubscriptionsRequest</span></code> to get more subscriptions.</p>
@@ -381,6 +735,34 @@ next page of data.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicsRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">ListTopics</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">project</code></dt>
+<dd><p>The name of the cloud project that topics belong to. Format is
+<code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_size</code></dt>
+<dd><p>Maximum number of topics to return.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">page_token</code></dt>
+<dd><p>The value returned by the last <code class="docutils literal"><span class="pre">ListTopicsResponse</span></code>;
+indicates that this is a continuation of a prior
+<code class="docutils literal"><span class="pre">ListTopics</span></code> call, and that the system should return the
+next page of data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ListTopicsResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicsResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicsResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal"><span class="pre">ListTopics</span></code> method.</p>
@@ -393,6 +775,26 @@ next page of data.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ListTopicsResponse.next_page_token">
 <code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ListTopicsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If not empty, indicates that there may be more topics that
+match the request; this value should be passed in a new
+<code class="docutils literal"><span class="pre">ListTopicsRequest</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ListTopicsResponse</code></dt>
+<dd><p>Response for the <code class="docutils literal"><span class="pre">ListTopics</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">topics</code></dt>
+<dd><p>The resulting topics.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">next_page_token</code></dt>
 <dd><p>If not empty, indicates that there may be more topics that
 match the request; this value should be passed in a new
 <code class="docutils literal"><span class="pre">ListTopicsRequest</span></code>.</p>
@@ -433,6 +835,38 @@ minutes).</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ModifyAckDeadlineRequest</code></dt>
+<dd><p>Request for the ModifyAckDeadline method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The name of the subscription. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ack_ids</code></dt>
+<dd><p>List of acknowledgment IDs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ack_deadline_seconds</code></dt>
+<dd><p>The new ack deadline with respect to the time this request was
+sent to the Pub/Sub system. For example, if the value is 10,
+the new ack deadline will expire 10 seconds after the
+<code class="docutils literal"><span class="pre">ModifyAckDeadline</span></code> call was made. Specifying zero may
+immediately make the message available for another pull
+request. The minimum deadline you can specify is 0 seconds.
+The maximum deadline you can specify is 600 seconds (10
+minutes).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ModifyPushConfigRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ModifyPushConfigRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ModifyPushConfigRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the ModifyPushConfig method.</p>
@@ -451,6 +885,104 @@ minutes).</p>
 pushing messages from the given subscription and allow
 messages to be pulled and acknowledged - effectively pausing
 the subscription if <code class="docutils literal"><span class="pre">Pull</span></code> is not called.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ModifyPushConfigRequest</code></dt>
+<dd><p>Request for the ModifyPushConfig method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The name of the subscription. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">push_config</code></dt>
+<dd><p>The push configuration for future deliveries.  An empty
+<code class="docutils literal"><span class="pre">pushConfig</span></code> indicates that the Pub/Sub system should stop
+pushing messages from the given subscription and allow
+messages to be pulled and acknowledged - effectively pausing
+the subscription if <code class="docutils literal"><span class="pre">Pull</span></code> is not called.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.Policy">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Policy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Defines an Identity and Access Management (IAM) policy. It is used to
+specify access control policies for Cloud Platform resources.</p>
+<p>A <code class="docutils literal"><span class="pre">Policy</span></code> consists of a list of <code class="docutils literal"><span class="pre">bindings</span></code>. A <code class="docutils literal"><span class="pre">Binding</span></code> binds a
+list of <code class="docutils literal"><span class="pre">members</span></code> to a <code class="docutils literal"><span class="pre">role</span></code>, where the members can be user
+accounts, Google groups, Google domains, and service accounts. A
+<code class="docutils literal"><span class="pre">role</span></code> is a named list of permissions defined by IAM.</p>
+<p><strong>Example</strong></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;bindings&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/owner&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;user:mike@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;group:admins@example.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;domain:google.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;serviceAccount:my-other-app@appspot.gserviceaccount.com&quot;</span><span class="p">,</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;roles/viewer&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;members&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;user:sean@example.com&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For a description of IAM and its features, see the <a class="reference external" href="https://cloud.google.com/iam">IAM developer’s
+guide</a>.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Policy.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Policy.version" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of the <code class="docutils literal"><span class="pre">Policy</span></code>. The default version is 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Policy.bindings">
+<code class="descname">bindings</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Policy.bindings" title="Permalink to this definition">#</a></dt>
+<dd><p>Associates a list of <code class="docutils literal"><span class="pre">members</span></code> to a <code class="docutils literal"><span class="pre">role</span></code>. Multiple
+<code class="docutils literal"><span class="pre">bindings</span></code> must not be specified for the same <code class="docutils literal"><span class="pre">role</span></code>.
+<code class="docutils literal"><span class="pre">bindings</span></code> with no members will result in an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.Policy.etag">
+<code class="descname">etag</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Policy.etag" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">etag</span></code> is used for optimistic concurrency control as a way
+to help prevent simultaneous updates of a policy from
+overwriting each other. It is strongly suggested that systems
+make use of the <code class="docutils literal"><span class="pre">etag</span></code> in the read-modify-write cycle to
+perform policy updates in order to avoid race conditions: An
+<code class="docutils literal"><span class="pre">etag</span></code> is returned in the response to <code class="docutils literal"><span class="pre">getIamPolicy</span></code>, and
+systems are expected to put that etag in the request to
+<code class="docutils literal"><span class="pre">setIamPolicy</span></code> to ensure that their change will be applied
+to the same version of the policy.  If no <code class="docutils literal"><span class="pre">etag</span></code> is provided
+in the call to <code class="docutils literal"><span class="pre">setIamPolicy</span></code>, then the existing policy is
+overwritten blindly.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.PolicyDelta">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PolicyDelta</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PolicyDelta" title="Permalink to this definition">#</a></dt>
+<dd><p>The difference delta between two policies.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.PolicyDelta.binding_deltas">
+<code class="descname">binding_deltas</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PolicyDelta.binding_deltas" title="Permalink to this definition">#</a></dt>
+<dd><p>The delta for Bindings between two policies.</p>
 </dd></dl>
 
 </dd></dl>
@@ -475,12 +1007,45 @@ Format is <code class="docutils literal"><span class="pre">projects/{project}/to
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PublishRequest</code></dt>
+<dd><p>Request for the Publish method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
+<dd><p>The messages in the request will be published on this topic.
+Format is <code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">messages</code></dt>
+<dd><p>The messages to publish.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.PublishResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PublishResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PublishResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal"><span class="pre">Publish</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.PublishResponse.message_ids">
 <code class="descname">message_ids</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PublishResponse.message_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>The server-assigned ID of each published message, in the same
+order as the messages in the request. IDs are guaranteed to be
+unique within the topic.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PublishResponse</code></dt>
+<dd><p>Response for the <code class="docutils literal"><span class="pre">Publish</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">message_ids</code></dt>
 <dd><p>The server-assigned ID of each published message, in the same
 order as the messages in the request. IDs are guaranteed to be
 unique within the topic.</p>
@@ -527,6 +1092,44 @@ populated by the publisher in a <code class="docutils literal"><span class="pre"
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PubsubMessage</code></dt>
+<dd><p>A message data and its attributes. The message payload must not be
+empty; it must contain either a non-empty data field, or at least one
+attribute.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">data</code></dt>
+<dd><p>The message payload.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attributes</code></dt>
+<dd><p>Optional attributes for this message.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">message_id</code></dt>
+<dd><p>ID of this message, assigned by the server when the message is
+published. Guaranteed to be unique within the topic. This
+value may be read by a subscriber that receives a
+<code class="docutils literal"><span class="pre">PubsubMessage</span></code> via a <code class="docutils literal"><span class="pre">Pull</span></code> call or a push delivery. It
+must not be populated by the publisher in a <code class="docutils literal"><span class="pre">Publish</span></code> call.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">publish_time</code></dt>
+<dd><p>The time at which the message was published, populated by the
+server when it receives the <code class="docutils literal"><span class="pre">Publish</span></code> call. It must not be
+populated by the publisher in a <code class="docutils literal"><span class="pre">Publish</span></code> call.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.PullRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PullRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PullRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the <code class="docutils literal"><span class="pre">Pull</span></code> method.</p>
@@ -559,12 +1162,60 @@ Pub/Sub system may return fewer than the number specified.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PullRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">Pull</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The subscription from which messages should be pulled. Format
+is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">return_immediately</code></dt>
+<dd><p>If this field set to true, the system will respond immediately
+even if it there are no messages available to return in the
+<code class="docutils literal"><span class="pre">Pull</span></code> response. Otherwise, the system may wait (for a
+bounded amount of time) until at least one message is
+available, rather than returning no messages. The client may
+cancel the request if it does not wish to wait any longer for
+the response.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">max_messages</code></dt>
+<dd><p>The maximum number of messages returned for this request. The
+Pub/Sub system may return fewer than the number specified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.PullResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PullResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PullResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal"><span class="pre">Pull</span></code> method.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.PullResponse.received_messages">
 <code class="descname">received_messages</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.PullResponse.received_messages" title="Permalink to this definition">#</a></dt>
+<dd><p>Received Pub/Sub messages. The Pub/Sub system will return zero
+messages if there are no more available in the backlog. The
+Pub/Sub system may return fewer than the <code class="docutils literal"><span class="pre">maxMessages</span></code>
+requested even if there are more messages available in the
+backlog.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PullResponse</code></dt>
+<dd><p>Response for the <code class="docutils literal"><span class="pre">Pull</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">received_messages</code></dt>
 <dd><p>Received Pub/Sub messages. The Pub/Sub system will return zero
 messages if there are no more available in the backlog. The
 Pub/Sub system may return fewer than the <code class="docutils literal"><span class="pre">maxMessages</span></code>
@@ -612,6 +1263,43 @@ Pub/Sub    API.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">PushConfig</code></dt>
+<dd><p>Configuration for a push delivery endpoint.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">push_endpoint</code></dt>
+<dd><p>A URL locating the endpoint to which messages should be
+pushed. For example, a Webhook endpoint might use
+“<a class="reference external" href="https://example.com/push">https://example.com/push</a>”.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">attributes</code></dt>
+<dd><p>Endpoint configuration attributes.  Every endpoint has a set
+of API supported attributes that can be used to control
+different aspects of the message delivery.  The currently
+supported attribute is <code class="docutils literal"><span class="pre">x-goog-version</span></code>, which you can use
+to change the format of the pushed message. This attribute
+indicates the version of the data expected by the endpoint.
+This controls the shape of the pushed message (i.e., its
+fields and metadata). The endpoint version is based on the
+version of the Pub/Sub API.  If not present during the
+<code class="docutils literal"><span class="pre">CreateSubscription</span></code> call, it will default to the version of
+the API used to make such call. If not present during a
+<code class="docutils literal"><span class="pre">ModifyPushConfig</span></code> call, its value will not be changed.
+<code class="docutils literal"><span class="pre">GetSubscription</span></code> calls will always return a valid version,
+even if the subscription was created without this attribute.
+The possible values for this attribute are:  -  <code class="docutils literal"><span class="pre">v1beta1</span></code>:
+uses the push format defined in the v1beta1 Pub/Sub API. -
+<code class="docutils literal"><span class="pre">v1</span></code> or <code class="docutils literal"><span class="pre">v1beta2</span></code>: uses the push format defined in the v1
+Pub/Sub    API.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.ReceivedMessage">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ReceivedMessage</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ReceivedMessage" title="Permalink to this definition">#</a></dt>
 <dd><p>A message and its corresponding acknowledgment ID.</p>
@@ -624,6 +1312,24 @@ Pub/Sub    API.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.ReceivedMessage.message">
 <code class="descname">message</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.ReceivedMessage.message" title="Permalink to this definition">#</a></dt>
+<dd><p>The message.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">ReceivedMessage</code></dt>
+<dd><p>A message and its corresponding acknowledgment ID.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">ack_id</code></dt>
+<dd><p>This ID can be used to acknowledge the received message.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">message</code></dt>
 <dd><p>The message.</p>
 </dd></dl>
 
@@ -667,6 +1373,67 @@ as that of the provided subscription. Format is
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">SeekRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">Seek</span></code> method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The subscription to affect.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">time</code></dt>
+<dd><p>The time to seek to. Messages retained in the subscription
+that were published before this time are marked as
+acknowledged, and messages retained in the subscription that
+were published after this time are marked as unacknowledged.
+Note that this operation affects only those messages retained
+in the subscription (configured by the combination of
+<code class="docutils literal"><span class="pre">message_retention_duration</span></code> and <code class="docutils literal"><span class="pre">retain_acked_messages</span></code>).
+For example, if <code class="docutils literal"><span class="pre">time</span></code> corresponds to a point before the
+message retention window (or to a point before the system’s
+notion of the subscription creation time), only retained
+messages will be marked as unacknowledged, and already-
+expunged messages will not be restored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">snapshot</code></dt>
+<dd><p>The snapshot to seek to. The snapshot’s topic must be the same
+as that of the provided subscription. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/snapshots/{snap}</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.SetIamPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">SetIamPolicyRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.SetIamPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal"><span class="pre">SetIamPolicy</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.SetIamPolicyRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.SetIamPolicyRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy is being
+specified. <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.SetIamPolicyRequest.policy">
+<code class="descname">policy</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.SetIamPolicyRequest.policy" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The complete policy to be applied to the
+<code class="docutils literal"><span class="pre">resource</span></code>. The size of the policy is limited to a few 10s
+of KB. An empty policy is a valid policy but certain Cloud
+Platform services (such as Projects) might reject them.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.Snapshot">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Snapshot</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Snapshot" title="Permalink to this definition">#</a></dt>
 <dd><p>A snapshot resource.</p>
@@ -701,6 +1468,46 @@ as long as the snapshot exists – will expire in 4 days.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.Snapshot.labels">
 <code class="descname">labels</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Snapshot.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>User labels.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Snapshot</code></dt>
+<dd><p>A snapshot resource.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>The name of the snapshot.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
+<dd><p>The name of the topic from which this snapshot is retaining
+messages.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">expire_time</code></dt>
+<dd><p>The snapshot is guaranteed to exist up until this time. A
+newly-created snapshot expires no later than 7 days from the
+time of its creation. Its exact lifetime is determined at
+creation by the existing backlog in the source subscription.
+Specifically, the lifetime of the snapshot is <code class="docutils literal"><span class="pre">7</span> <span class="pre">days</span> <span class="pre">-</span> <span class="pre">(age</span>
+<span class="pre">of</span> <span class="pre">oldest</span> <span class="pre">unacked</span> <span class="pre">message</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">subscription)</span></code>. For example,
+consider a subscription whose oldest unacked message is 3 days
+old. If a snapshot is created from this subscription, the
+snapshot – which will always capture this 3-day-old backlog
+as long as the snapshot exists – will expire in 4 days.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
 <dd><p>User labels.</p>
 </dd></dl>
 
@@ -776,6 +1583,75 @@ you can specify is 600 seconds (10 minutes).</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">StreamingPullRequest</code></dt>
+<dd><p>Request for the <code class="docutils literal"><span class="pre">StreamingPull</span></code> streaming RPC method. This request is
+used to establish the initial stream as well as to stream
+acknowledgements and ack deadline modifications from the client to the
+server.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The subscription for which to initialize the new stream. This
+must be provided in the first request on the stream, and must
+not be set in subsequent requests from client to server.
+Format is <code class="docutils literal"><span class="pre">projects/{project}/subscriptions/{sub}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ack_ids</code></dt>
+<dd><p>List of acknowledgement IDs for acknowledging previously
+received messages (received on this stream or a different
+stream). If an ack ID has expired, the corresponding message
+may be redelivered later. Acknowledging a message more than
+once will not result in an error. If the acknowledgement ID is
+malformed, the stream will be aborted with status
+<code class="docutils literal"><span class="pre">INVALID_ARGUMENT</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">modify_deadline_seconds</code></dt>
+<dd><p>The list of new ack deadlines for the IDs listed in
+<code class="docutils literal"><span class="pre">modify_deadline_ack_ids</span></code>. The size of this list must be the
+same as the size of <code class="docutils literal"><span class="pre">modify_deadline_ack_ids</span></code>. If it differs
+the stream will be aborted with <code class="docutils literal"><span class="pre">INVALID_ARGUMENT</span></code>. Each
+element in this list is applied to the element in the same
+position in <code class="docutils literal"><span class="pre">modify_deadline_ack_ids</span></code>. The new ack deadline
+is with respect to the time this request was sent to the
+Pub/Sub system. Must be &gt;= 0. For example, if the value is 10,
+the new ack deadline will expire 10 seconds after this request
+is received. If the value is 0, the message is immediately
+made available for another streaming or non-streaming pull
+request. If the value is &lt; 0 (an error), the stream will be
+aborted with status <code class="docutils literal"><span class="pre">INVALID_ARGUMENT</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">modify_deadline_ack_ids</code></dt>
+<dd><p>List of acknowledgement IDs whose deadline will be modified
+based on the corresponding element in
+<code class="docutils literal"><span class="pre">modify_deadline_seconds</span></code>. This field can be used to
+indicate that more time is needed to process a message by the
+subscriber, or to make the message available for redelivery if
+the processing was interrupted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">stream_ack_deadline_seconds</code></dt>
+<dd><p>The ack deadline to use for the stream. This must be provided
+in the first request on the stream, but it can also be updated
+on subsequent requests from client to server. The minimum
+deadline you can specify is 10 seconds. The maximum deadline
+you can specify is 600 seconds (10 minutes).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.StreamingPullResponse">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">StreamingPullResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.StreamingPullResponse" title="Permalink to this definition">#</a></dt>
 <dd><p>Response for the <code class="docutils literal"><span class="pre">StreamingPull</span></code> method. This response is used to
@@ -783,6 +1659,19 @@ stream messages from the server to the client.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.StreamingPullResponse.received_messages">
 <code class="descname">received_messages</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.StreamingPullResponse.received_messages" title="Permalink to this definition">#</a></dt>
+<dd><p>Received Pub/Sub messages. This will not be empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">StreamingPullResponse</code></dt>
+<dd><p>Response for the <code class="docutils literal"><span class="pre">StreamingPull</span></code> method. This response is used to
+stream messages from the server to the client.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">received_messages</code></dt>
 <dd><p>Received Pub/Sub messages. This will not be empty.</p>
 </dd></dl>
 
@@ -872,6 +1761,125 @@ minutes.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Subscription</code></dt>
+<dd><p>A subscription resource.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>The name of the subscription. It must have the format
+<code class="docutils literal"><span class="pre">&quot;projects/{project}/subscriptions/{subscription}&quot;</span></code>.
+<code class="docutils literal"><span class="pre">{subscription}</span></code> must start with a letter, and contain only
+letters (<code class="docutils literal"><span class="pre">[A-Za-z]</span></code>), numbers (<code class="docutils literal"><span class="pre">[0-9]</span></code>), dashes (<code class="docutils literal"><span class="pre">-</span></code>),
+underscores (<code class="docutils literal"><span class="pre">_</span></code>), periods (<code class="docutils literal"><span class="pre">.</span></code>), tildes (<code class="docutils literal"><span class="pre">~</span></code>), plus
+(<code class="docutils literal"><span class="pre">+</span></code>) or percent signs (<code class="docutils literal"><span class="pre">%</span></code>). It must be between 3 and 255
+characters in length, and it must not start with <code class="docutils literal"><span class="pre">&quot;goog&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
+<dd><p>The name of the topic from which this subscription is
+receiving messages. Format is
+<code class="docutils literal"><span class="pre">projects/{project}/topics/{topic}</span></code>. The value of this field
+will be <code class="docutils literal"><span class="pre">_deleted-topic_</span></code> if the topic has been deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">push_config</code></dt>
+<dd><p>If push delivery is used with this subscription, this field is
+used to configure it. An empty <code class="docutils literal"><span class="pre">pushConfig</span></code> signifies that
+the subscriber will pull and ack messages using API methods.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">ack_deadline_seconds</code></dt>
+<dd><p>This value is the maximum time after a subscriber receives a
+message before the subscriber should acknowledge the message.
+After message delivery but before the ack deadline expires and
+before the message is acknowledged, it is an outstanding
+message and will not be delivered again during that time (on a
+best-effort basis).  For pull subscriptions, this value is
+used as the initial value for the ack deadline. To override
+this value for a given message, call <code class="docutils literal"><span class="pre">ModifyAckDeadline</span></code>
+with the corresponding <code class="docutils literal"><span class="pre">ack_id</span></code> if using pull. The minimum
+custom deadline you can specify is 10 seconds. The maximum
+custom deadline you can specify is 600 seconds (10 minutes).
+If this parameter is 0, a default value of 10 seconds is used.
+For push delivery, this value is also used to set the request
+timeout for the call to the push endpoint.  If the subscriber
+never acknowledges the message, the Pub/Sub system will
+eventually redeliver the message.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">retain_acked_messages</code></dt>
+<dd><p>Indicates whether to retain acknowledged messages. If true,
+then messages are not expunged from the subscription’s
+backlog, even if they are acknowledged, until they fall out of
+the <code class="docutils literal"><span class="pre">message_retention_duration</span></code> window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">message_retention_duration</code></dt>
+<dd><p>How long to retain unacknowledged messages in the
+subscription’s backlog, from the moment a message is
+published. If <code class="docutils literal"><span class="pre">retain_acked_messages</span></code> is true, then this
+also configures the retention of acknowledged messages, and
+thus configures how far back in time a <code class="docutils literal"><span class="pre">Seek</span></code> can be done.
+Defaults to 7 days. Cannot be more than 7 days or less than 10
+minutes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>User labels.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.TestIamPermissionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">TestIamPermissionsRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.TestIamPermissionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request message for <code class="docutils literal"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.TestIamPermissionsRequest.resource">
+<code class="descname">resource</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.TestIamPermissionsRequest.resource" title="Permalink to this definition">#</a></dt>
+<dd><p>REQUIRED: The resource for which the policy detail is being
+requested. <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For
+example, a Project resource is specified as
+<code class="docutils literal"><span class="pre">projects/{project}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.TestIamPermissionsRequest.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.TestIamPermissionsRequest.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of permissions to check for the <code class="docutils literal"><span class="pre">resource</span></code>.
+Permissions with wildcards (such as ‘*’ or ‘storage.*’) are
+not allowed. For more information see <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.pubsub_v1.types.TestIamPermissionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">TestIamPermissionsResponse</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.TestIamPermissionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Response message for <code class="docutils literal"><span class="pre">TestIamPermissions</span></code> method.</p>
+<dl class="attribute">
+<dt id="google.cloud.pubsub_v1.types.TestIamPermissionsResponse.permissions">
+<code class="descname">permissions</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.TestIamPermissionsResponse.permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>A subset of <code class="docutils literal"><span class="pre">TestPermissionsRequest.permissions</span></code> that the
+caller is allowed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.Topic">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Topic</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.Topic" title="Permalink to this definition">#</a></dt>
 <dd><p>A topic resource.</p>
@@ -896,6 +1904,30 @@ and it must not start with <code class="docutils literal"><span class="pre">&quo
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">Topic</code></dt>
+<dd><p>A topic resource.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">name</code></dt>
+<dd><p>The name of the topic. It must have the format
+<code class="docutils literal"><span class="pre">&quot;projects/{project}/topics/{topic}&quot;</span></code>. <code class="docutils literal"><span class="pre">{topic}</span></code> must
+start with a letter, and contain only letters (<code class="docutils literal"><span class="pre">[A-Za-z]</span></code>),
+numbers (<code class="docutils literal"><span class="pre">[0-9]</span></code>), dashes (<code class="docutils literal"><span class="pre">-</span></code>), underscores (<code class="docutils literal"><span class="pre">_</span></code>),
+periods (<code class="docutils literal"><span class="pre">.</span></code>), tildes (<code class="docutils literal"><span class="pre">~</span></code>), plus (<code class="docutils literal"><span class="pre">+</span></code>) or percent signs
+(<code class="docutils literal"><span class="pre">%</span></code>). It must be between 3 and 255 characters in length,
+and it must not start with <code class="docutils literal"><span class="pre">&quot;goog&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">labels</code></dt>
+<dd><p>User labels.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.UpdateSnapshotRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">UpdateSnapshotRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateSnapshotRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the UpdateSnapshot method.</p>
@@ -908,6 +1940,25 @@ and it must not start with <code class="docutils literal"><span class="pre">&quo
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.UpdateSnapshotRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateSnapshotRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates which fields in the provided snapshot to update.
+Must be specified and non-empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">UpdateSnapshotRequest</code></dt>
+<dd><p>Request for the UpdateSnapshot method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">snapshot</code></dt>
+<dd><p>The updated snpashot object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
 <dd><p>Indicates which fields in the provided snapshot to update.
 Must be specified and non-empty.</p>
 </dd></dl>
@@ -934,6 +1985,25 @@ Must be specified and non-empty.</p>
 </dd></dl>
 
 <dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">UpdateSubscriptionRequest</code></dt>
+<dd><p>Request for the UpdateSubscription method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">subscription</code></dt>
+<dd><p>The updated subscription object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
+<dd><p>Indicates which fields in the provided subscription to update.
+Must be specified and non-empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.pubsub_v1.types.UpdateTopicRequest">
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">UpdateTopicRequest</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateTopicRequest" title="Permalink to this definition">#</a></dt>
 <dd><p>Request for the UpdateTopic method.</p>
@@ -946,6 +2016,25 @@ Must be specified and non-empty.</p>
 <dl class="attribute">
 <dt id="google.cloud.pubsub_v1.types.UpdateTopicRequest.update_mask">
 <code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.pubsub_v1.types.UpdateTopicRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates which fields in the provided topic to update. Must
+be specified and non-empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.types.</code><code class="descname">UpdateTopicRequest</code></dt>
+<dd><p>Request for the UpdateTopic method.</p>
+<dl class="attribute">
+<dt>
+<code class="descname">topic</code></dt>
+<dd><p>The topic to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="descname">update_mask</code></dt>
 <dd><p>Indicates which fields in the provided topic to update. Must
 be specified and non-empty.</p>
 </dd></dl>

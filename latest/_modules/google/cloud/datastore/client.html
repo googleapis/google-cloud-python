@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.client &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.datastore.client &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -175,9 +175,9 @@
     <span class="k">while</span> <span class="n">loop_num</span> <span class="o">&lt;</span> <span class="n">_MAX_LOOPS</span><span class="p">:</span>  <span class="c1"># loop against possible deferred.</span>
         <span class="n">loop_num</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">lookup_response</span> <span class="o">=</span> <span class="n">datastore_api</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
-            <span class="n">project_id</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">project</span><span class="p">,</span>
+            <span class="n">key_pbs</span><span class="p">,</span>
             <span class="n">read_options</span><span class="o">=</span><span class="n">read_options</span><span class="p">,</span>
-            <span class="n">keys</span><span class="o">=</span><span class="n">key_pbs</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Accumulate the new results.</span>
@@ -209,10 +209,10 @@
 <span class="sd">       &gt;&gt;&gt; client = datastore.Client()</span>
 
 <span class="sd">    :type project: str</span>
-<span class="sd">    :param project: (optional) The project to pass to proxied API methods.</span>
+<span class="sd">    :param project: (Optional) The project to pass to proxied API methods.</span>
 
 <span class="sd">    :type namespace: str</span>
-<span class="sd">    :param namespace: (optional) namespace to pass to proxied API methods.</span>
+<span class="sd">    :param namespace: (Optional) namespace to pass to proxied API methods.</span>
 
 <span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
 <span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
@@ -388,9 +388,8 @@
 
 <span class="sd">        :type eventual: bool</span>
 <span class="sd">        :param eventual: (Optional) Defaults to strongly consistent (False).</span>
-<span class="sd">                                    Setting True will use eventual consistency,</span>
-<span class="sd">                                    but cannot be used inside a transaction or</span>
-<span class="sd">                                    will raise ValueError.</span>
+<span class="sd">                         Setting True will use eventual consistency, but cannot</span>
+<span class="sd">                         be used inside a transaction or will raise ValueError.</span>
 
 <span class="sd">        :rtype: list of :class:`google.cloud.datastore.entity.Entity`</span>
 <span class="sd">        :returns: The requested entities.</span>
@@ -623,8 +622,8 @@
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; first_page = next(pages)</span>
 <span class="sd">            &gt;&gt;&gt; first_page_entities = list(first_page)</span>
-<span class="sd">            &gt;&gt;&gt; query_iter.next_page_token</span>
-<span class="sd">            b&#39;...&#39;</span>
+<span class="sd">            &gt;&gt;&gt; query_iter.next_page_token is None</span>
+<span class="sd">            True</span>
 
 <span class="sd">        :type kwargs: dict</span>
 <span class="sd">        :param kwargs: Parameters for initializing and instance of</span>

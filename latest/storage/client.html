@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Storage &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Storage &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -48,7 +48,7 @@
 <span class="target" id="module-google.cloud.storage.client"></span><p>Client for interacting with the Google Cloud Storage API.</p>
 <dl class="class">
 <dt id="google.cloud.storage.client.Client">
-<em class="property">class </em><code class="descclassname">google.cloud.storage.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.storage.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=&lt;object object&gt;</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../core/client.html#google.cloud.client.ClientWithProject" title="google.cloud.client.ClientWithProject"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.client.ClientWithProject</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -56,10 +56,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the project which the client acts on behalf of. Will be
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – the project which the client acts on behalf of. Will be
 passed when creating a topic.  If not passed,
 falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
@@ -155,7 +155,7 @@ listing their contents and downloading their blobs.</p>
 
 <dl class="method">
 <dt id="google.cloud.storage.client.Client.create_bucket">
-<code class="descname">create_bucket</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>requester_pays=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.create_bucket" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_bucket</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>requester_pays=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.create_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a new bucket.</p>
 <p>For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -174,6 +174,9 @@ listing their contents and downloading their blobs.</p>
 <li><strong>bucket_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The bucket name to create.</li>
 <li><strong>requester_pays</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Whether requester pays for API requests for this
 bucket and its blobs.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) the project under which the  bucket is to
+be created.  If not passed, uses the project set on
+the client.</li>
 </ul>
 </td>
 </tr>
@@ -236,7 +239,7 @@ no batch is active).</td>
 
 <dl class="method">
 <dt id="google.cloud.storage.client.Client.list_buckets">
-<code class="descname">list_buckets</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.list_buckets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.list_buckets" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_buckets</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.list_buckets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.list_buckets" title="Permalink to this definition">#</a></dt>
 <dd><p>Get all buckets in the project associated to the client.</p>
 <p>This will not populate the list of blobs available in each
 bucket.</p>
@@ -262,13 +265,19 @@ be ‘full’ or ‘noAcl’. Defaults to ‘noAcl’.</li>
 response. Must be a list of fields. For example to get a partial
 response with just the next page token and the language of each
 bucket returned: ‘items/id,nextPageToken’</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) the project whose buckets are to be listed.
+If not passed, uses the project set on the client.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of all <a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">Bucket</span></code></a>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if both <code class="docutils literal"><span class="pre">project</span></code> is <code class="docutils literal"><span class="pre">None</span></code> and the client’s
+project is also <code class="docutils literal"><span class="pre">None</span></code>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of all <a class="reference internal" href="buckets.html#google.cloud.storage.bucket.Bucket" title="google.cloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">Bucket</span></code></a>
 belonging to this project.</p>
 </td>
 </tr>

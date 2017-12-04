@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Authentication &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Authentication &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -93,7 +93,7 @@ Google <a class="reference external" href="https://developers.google.com/identit
 <span id="precedence"></span><h3>Credential Discovery Precedence<a class="headerlink" href="#credential-discovery-precedence" title="Permalink to this headline">#</a></h3>
 <p>When loading the <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>,
 the library will check for credentials in your environment by following the
-precedence outlined by <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
+precedence outlined by <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="explicit-credentials">
@@ -110,7 +110,7 @@ every time (rather than with the locally inferred credentials)</li>
 from different projects</li>
 </ul>
 <p>In these situations, you can create an explicit
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a> object suited to your environment.
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a> object suited to your environment.
 After creation, you can pass it directly to a <a class="reference internal" href="client.html#google.cloud.client.Client" title="google.cloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
@@ -122,7 +122,7 @@ After creation, you can pass it directly to a <a class="reference internal" href
 <div class="section" id="google-app-engine-environment">
 <h3>Google App Engine Environment<a class="headerlink" href="#google-app-engine-environment" title="Permalink to this headline">#</a></h3>
 <p>To create
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.app_engine.html#google.auth.app_engine.Credentials" title="(in google-auth v1.2.0)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.app_engine.html#google.auth.app_engine.Credentials" title="(in google-auth v1.2.1)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
 just for Google App Engine:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="k">import</span> <span class="n">app_engine</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">app_engine</span><span class="o">.</span><span class="n">Credentials</span><span class="p">()</span>
@@ -132,7 +132,7 @@ just for Google App Engine:</p>
 <div class="section" id="google-compute-engine-environment">
 <h3>Google Compute Engine Environment<a class="headerlink" href="#google-compute-engine-environment" title="Permalink to this headline">#</a></h3>
 <p>To create
-<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.compute_engine.html#google.auth.compute_engine.Credentials" title="(in google-auth v1.2.0)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
+<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.compute_engine.html#google.auth.compute_engine.Credentials" title="(in google-auth v1.2.1)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
 just for Google Compute Engine:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.auth</span> <span class="k">import</span> <span class="n">compute_engine</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">compute_engine</span><span class="o">.</span><span class="n">Credentials</span><span class="p">()</span>
@@ -171,7 +171,7 @@ getting started with the <code class="docutils literal"><span class="pre">google
 </div>
 <p>The simplest way to use credentials from a user account is via
 Application Default Credentials using <code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>
-(as mentioned above) and <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.0)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>:</p>
+(as mentioned above) and <a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.html#google.auth.default" title="(in google-auth v1.2.1)"><code class="xref py py-func docutils literal"><span class="pre">google.auth.default()</span></code></a>:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">google.auth</span>
 
 <span class="n">credentials</span><span class="p">,</span> <span class="n">project</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">default</span><span class="p">()</span>

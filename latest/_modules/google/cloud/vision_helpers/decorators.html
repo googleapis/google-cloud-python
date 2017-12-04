@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_helpers.decorators &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.vision_helpers.decorators &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -138,7 +138,7 @@
     <span class="n">feature_value</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">enum</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">feature</span><span class="p">]}</span>
 
     <span class="c1"># Define the function to be returned.</span>
-    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a single feature annotation for the given image.</span>
 
 <span class="sd">        Intended for use with functools.partial, to create the particular</span>
@@ -149,7 +149,7 @@
             <span class="n">features</span><span class="o">=</span><span class="p">[</span><span class="n">feature_value</span><span class="p">],</span>
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotate_image</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotate_image</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 
     <span class="c1"># Set the appropriate function metadata.</span>
     <span class="n">inner</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">fx_name</span>

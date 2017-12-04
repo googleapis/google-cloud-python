@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.query &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.datastore.query &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -68,9 +68,10 @@
 
 
 <span class="n">_NOT_FINISHED</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NOT_FINISHED</span>
+<span class="n">_NO_MORE_RESULTS</span> <span class="o">=</span> <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NO_MORE_RESULTS</span>
 
 <span class="n">_FINISHED</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NO_MORE_RESULTS</span><span class="p">,</span>
+    <span class="n">_NO_MORE_RESULTS</span><span class="p">,</span>
     <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_LIMIT</span><span class="p">,</span>
     <span class="n">query_pb2</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_CURSOR</span><span class="p">,</span>
 <span class="p">)</span>
@@ -512,7 +513,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_skipped_results</span> <span class="o">=</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">skipped_results</span>
 
-        <span class="k">if</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">end_cursor</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="p">:</span>  <span class="c1"># Empty-value for bytes.</span>
+        <span class="k">if</span> <span class="n">response_pb</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">more_results</span> <span class="o">==</span> <span class="n">_NO_MORE_RESULTS</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span>

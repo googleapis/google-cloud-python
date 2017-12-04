@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_helpers &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.vision_helpers &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,7 +57,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">io</span>
 
-<span class="kn">from</span> <span class="nn">google.gax.utils</span> <span class="k">import</span> <span class="n">protobuf</span>
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">protobuf_helpers</span> <span class="k">as</span> <span class="n">protobuf</span>
 
 
 <span class="k">class</span> <span class="nc">VisionHelpers</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -67,7 +67,7 @@
 <span class="sd">    in a multiple-inheritance construction alongside the applicable GAPIC.</span>
 <span class="sd">    See the :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">annotate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">annotate_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run image detection and annotation for an image.</span>
 
 <span class="sd">        Example:</span>
@@ -106,7 +106,7 @@
         <span class="c1"># This method allows features not to be specified, and you get all</span>
         <span class="c1"># of them.</span>
         <span class="n">protobuf</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_all_features</span><span class="p">())</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_annotate_images</span><span class="p">([</span><span class="n">request</span><span class="p">],</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_annotate_images</span><span class="p">([</span><span class="n">request</span><span class="p">],</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">responses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_get_all_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

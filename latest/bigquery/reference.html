@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 988e2c2 documentation</title>
+    <title>API Reference &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -54,7 +54,9 @@ BigQuery API. Use the client methods to run jobs (such as a
 collection of tables.</li>
 <li><a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> represents a single “relation”.</li>
 </ul>
-<span class="target" id="module-google.cloud.bigquery.client"></span><p>Client for interacting with the Google BigQuery API.</p>
+<div class="section" id="module-google.cloud.bigquery.client">
+<span id="client"></span><h2>Client<a class="headerlink" href="#module-google.cloud.bigquery.client" title="Permalink to this headline">#</a></h2>
+<p>Client for interacting with the Google BigQuery API.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery.client.Client">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>_http=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client" title="Permalink to this definition">#</a></dt>
@@ -68,7 +70,7 @@ collection of tables.</li>
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the project which the client acts on behalf of. Will be
 passed when creating a dataset / job.  If not passed,
 falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
@@ -527,7 +529,7 @@ first page of datasets.</li>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="#google.cloud.bigquery.table.TableListItem" title="google.cloud.bigquery.table.TableListItem"><code class="xref py py-class docutils literal"><span class="pre">TableListItem</span></code></a>
 contained within the current dataset.</p>
 </td>
 </tr>
@@ -825,50 +827,6 @@ ignored if a <code class="docutils literal"><span class="pre">job_id</span></cod
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.bigquery.client.Client.query_rows">
-<code class="descname">query_rows</code><span class="sig-paren">(</span><em>query</em>, <em>job_config=None</em>, <em>job_id=None</em>, <em>job_id_prefix=None</em>, <em>timeout=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.query_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.query_rows" title="Permalink to this definition">#</a></dt>
-<dd><p>Start a query job and wait for the results.</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – SQL query to be executed. Defaults to the standard SQL dialect.
-Use the <code class="docutils literal"><span class="pre">job_config</span></code> parameter to change dialects.</li>
-<li><strong>job_config</strong> (<a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig" title="google.cloud.bigquery.job.QueryJobConfig"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.job.QueryJobConfig</span></code></a>) – (Optional) Extra configuration options for the job.</li>
-<li><strong>job_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) ID to use for the query job.</li>
-<li><strong>job_id_prefix</strong> (str or <code class="docutils literal"><span class="pre">NoneType</span></code>) – (Optional) the user-provided prefix for a
-randomly generated job ID. This parameter will be
-ignored if a <code class="docutils literal"><span class="pre">job_id</span></code> is also given.</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – (Optional) How long (in seconds) to wait for job to complete
-before raising a <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">concurrent.futures.TimeoutError</span></code></a>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of row data <a class="reference internal" href="#google.cloud.bigquery.table.Row" title="google.cloud.bigquery.table.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a>-s.
-During each page, the iterator will have the <code class="docutils literal"><span class="pre">total_rows</span></code>
-attribute set, which counts the total number of rows <strong>in the
-result set</strong> (this is distinct from the total number of rows in
-the current page: <code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a> if the
-job failed or <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.TimeoutError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">concurrent.futures.TimeoutError</span></code></a> if the job
-did not complete in the given timeout.</p>
-<p class="last">When an exception happens, the query job will be cancelled on a
-best-effort basis.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="google.cloud.bigquery.client.Client.update_dataset">
 <code class="descname">update_dataset</code><span class="sig-paren">(</span><em>dataset</em>, <em>fields</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.update_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.update_dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Change some fields of a dataset.</p>
@@ -878,7 +836,7 @@ must be provided. If a field is listed in <code class="docutils literal"><span c
 <p>If <code class="docutils literal"><span class="pre">dataset.etag</span></code> is not <code class="docutils literal"><span class="pre">None</span></code>, the update will only
 succeed if the dataset on the server has the same ETag. Thus
 reading a dataset with <code class="docutils literal"><span class="pre">get_dataset</span></code>, changing its fields,
-and then passing it <code class="docutils literal"><span class="pre">update_dataset</span></code> will ensure that the changes
+and then passing it to <code class="docutils literal"><span class="pre">update_dataset</span></code> will ensure that the changes
 will only be saved if no modifications to the dataset occurred
 since the read.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -905,24 +863,32 @@ Dataset properties (e.g. “friendly_name”).</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.update_table">
-<code class="descname">update_table</code><span class="sig-paren">(</span><em>table</em>, <em>properties</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.update_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.update_table" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  update table properties via a PUT request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update</a></p>
+<code class="descname">update_table</code><span class="sig-paren">(</span><em>table</em>, <em>fields</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.update_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.update_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Change some fields of a table.</p>
+<p>Use <code class="docutils literal"><span class="pre">fields</span></code> to specify which fields to update. At least one field
+must be provided. If a field is listed in <code class="docutils literal"><span class="pre">fields</span></code> and is <code class="docutils literal"><span class="pre">None</span></code>
+in <code class="docutils literal"><span class="pre">table</span></code>, it will be deleted.</p>
+<p>If <code class="docutils literal"><span class="pre">table.etag</span></code> is not <code class="docutils literal"><span class="pre">None</span></code>, the update will only succeed if
+the table on the server has the same ETag. Thus reading a table with
+<code class="docutils literal"><span class="pre">get_table</span></code>, changing its fields, and then passing it to
+<code class="docutils literal"><span class="pre">update_table</span></code> will ensure that the changes will only be saved if
+no modifications to the table occurred since the read.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table_ref</strong> – the table to update.</li>
-<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+<li><strong>table</strong> (<a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><em>google.cloud.bigquery.table.Table</em></a>) – The table to update.</li>
+<li><strong>fields</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – The fields of <code class="docutils literal"><span class="pre">table</span></code> to change, spelled as the Table
+properties (e.g. “friendly_name”).</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a>) – (Optional) A description of how to retry the API call.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.table.Table</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The table resource returned from the API call.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a <code class="docutils literal"><span class="pre">Table</span></code> instance</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table">google.cloud.bigquery.table.Table</a></p>
 </td>
 </tr>
 </tbody>
@@ -957,7 +923,10 @@ Dataset properties (e.g. “friendly_name”).</li>
 
 </dd></dl>
 
-<span class="target" id="module-google.cloud.bigquery.job"></span><p>Define API Jobs.</p>
+</div>
+<div class="section" id="module-google.cloud.bigquery.job">
+<span id="job"></span><h2>Job<a class="headerlink" href="#module-google.cloud.bigquery.job" title="Permalink to this headline">#</a></h2>
+<p>Define API Jobs.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery.job.AutoDetectSchema">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.job.</code><code class="descname">AutoDetectSchema</code><span class="sig-paren">(</span><em>name</em>, <em>resource_name</em>, <em>property_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#AutoDetectSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.AutoDetectSchema" title="Permalink to this definition">#</a></dt>
@@ -2305,7 +2274,10 @@ by default)</p>
 <p>Pseudo-enum for <code class="docutils literal"><span class="pre">write_disposition</span></code> properties.</p>
 </dd></dl>
 
-<span class="target" id="module-google.cloud.bigquery.dataset"></span><p>Define API Datasets.</p>
+</div>
+<div class="section" id="module-google.cloud.bigquery.dataset">
+<span id="dataset"></span><h2>Dataset<a class="headerlink" href="#module-google.cloud.bigquery.dataset" title="Permalink to this headline">#</a></h2>
+<p>Define API Datasets.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery.dataset.AccessEntry">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.dataset.</code><code class="descname">AccessEntry</code><span class="sig-paren">(</span><em>role</em>, <em>entity_type</em>, <em>entity_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/dataset.html#AccessEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry" title="Permalink to this definition">#</a></dt>
@@ -2345,7 +2317,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'domain', 'userByEmail', 'view', 'specialGroup'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'view', 'groupByEmail', 'userByEmail', 'specialGroup', 'domain'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -2597,6 +2569,23 @@ a label, set its value to <code class="docutils literal"><span class="pre">None<
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery.dataset.Dataset.reference">
+<code class="descname">reference</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.reference" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference internal" href="#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal"><span class="pre">DatasetReference</span></code></a> pointing to
+this dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A pointer to this dataset</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference">google.cloud.bigquery.dataset.DatasetReference</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.Dataset.self_link">
 <code class="descname">self_link</code><a class="headerlink" href="#google.cloud.bigquery.dataset.Dataset.self_link" title="Permalink to this definition">#</a></dt>
 <dd><p>URL for the dataset resource.</p>
@@ -2719,7 +2708,10 @@ a label, set its value to <code class="docutils literal"><span class="pre">None<
 
 </dd></dl>
 
-<span class="target" id="module-google.cloud.bigquery.table"></span><p>Define API Tables.</p>
+</div>
+<div class="section" id="module-google.cloud.bigquery.table">
+<span id="table"></span><h2>Table<a class="headerlink" href="#module-google.cloud.bigquery.table" title="Permalink to this headline">#</a></h2>
+<p>Define API Tables.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery.table.Row">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.table.</code><code class="descname">Row</code><span class="sig-paren">(</span><em>values</em>, <em>field_to_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Row" title="Permalink to this definition">#</a></dt>
@@ -2739,6 +2731,109 @@ or as properties.</p>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="google.cloud.bigquery.table.Row.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Row.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Row.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a value for key, with a default value if it does not exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The key of the column to access</li>
+<li><strong>default</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><em>object</em></a>) – The default value to use if the key does not exist. (Defaults
+to <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value associated with the provided key, or a default value.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)">object</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>When the key exists, the value associated with it is returned.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Row</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="go">&#39;a&#39;</span>
+</pre></div>
+</div>
+<p>The default value is <code class="docutils literal"><span class="pre">None</span></code> when the key does not exist.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Row</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+<p>The default value can be overrided with the <code class="docutils literal"><span class="pre">default</span></code> parameter.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Row</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Row</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.table.Row.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Row.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Row.items" title="Permalink to this definition">#</a></dt>
+<dd><p>Return items as <code class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The <code class="docutils literal"><span class="pre">(key,</span> <span class="pre">value)</span></code> pairs representing this row.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Sequence[Tuple[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)">object</a>]]</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Row</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+<span class="go">[(&#39;x&#39;, &#39;a&#39;), (&#39;y&#39;, &#39;b&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.table.Row.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Row.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Row.keys" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the keys for using a row as a dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The keys corresponding to the columns of a row</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Sequence[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Row</span><span class="p">((</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;x&#39;, &#39;y&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.table.Row.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#Row.values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.Row.values" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the values included in this row.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A sequence of length <code class="docutils literal"><span class="pre">len(row)</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Sequence[<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)">object</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -3061,6 +3156,23 @@ label, set its value to <code class="docutils literal"><span class="pre">None</s
 </dd></dl>
 
 <dl class="attribute">
+<dt id="google.cloud.bigquery.table.Table.reference">
+<code class="descname">reference</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.reference" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a> pointing to
+this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pointer to this table</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="google.cloud.bigquery.table.Table.schema">
 <code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.schema" title="Permalink to this definition">#</a></dt>
 <dd><p>Table’s schema.</p>
@@ -3163,15 +3275,218 @@ SQL, set view_use_legacy_sql to True.</p>
 <dt id="google.cloud.bigquery.table.Table.view_use_legacy_sql">
 <code class="descname">view_use_legacy_sql</code><a class="headerlink" href="#google.cloud.bigquery.table.Table.view_use_legacy_sql" title="Permalink to this definition">#</a></dt>
 <dd><p>Specifies whether to execute the view with Legacy or Standard SQL.</p>
-<p>The default is False for views (use Standard SQL).
-If this table is not a view, None is returned.</p>
+<p>If this table is not a view, None is returned.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the view is using legacy SQL, or None if not a view</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The boolean for view.useLegacySql, or None if not a view.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.table.TableListItem">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.table.</code><code class="descname">TableListItem</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#TableListItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A read-only table resource from a list operation.</p>
+<p>For performance reasons, the BigQuery API only includes some of the table
+properties when listing tables. Notably,
+<a class="reference internal" href="#google.cloud.bigquery.table.Table.schema" title="google.cloud.bigquery.table.Table.schema"><code class="xref py py-attr docutils literal"><span class="pre">schema</span></code></a> and
+<a class="reference internal" href="#google.cloud.bigquery.table.Table.num_rows" title="google.cloud.bigquery.table.Table.num_rows"><code class="xref py py-attr docutils literal"><span class="pre">num_rows</span></code></a> are missing.</p>
+<p>For a full list of the properties that the BigQuery API returns, see the
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list">REST documentation for tables.list</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A table-like resource object from a table list response.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.dataset_id">
+<code class="descname">dataset_id</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The dataset ID of the dataset this table belongs to.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the dataset ID of the table.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.friendly_name">
+<code class="descname">friendly_name</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.friendly_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Title of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The name as set by the user, or None (the default)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.full_table_id">
+<code class="descname">full_table_id</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.full_table_id" title="Permalink to this definition">#</a></dt>
+<dd><p>ID for the table, in the form <code class="docutils literal"><span class="pre">project_id</span> <span class="pre">--</span> <span class="pre">dataset_id</span> <span class="pre">--</span> <span class="pre">table_id</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The fully-qualified ID of the table</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Labels for the table.</p>
+<p>This method always returns a dict. To change a table’s labels,
+modify the dict, then call <code class="docutils literal"><span class="pre">Client.update_table</span></code>. To delete a
+label, set its value to <code class="docutils literal"><span class="pre">None</span></code> before updating.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dictionary of the the table’s labels</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Map[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.partition_expiration">
+<code class="descname">partition_expiration</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.partition_expiration" title="Permalink to this definition">#</a></dt>
+<dd><p>Expiration time in ms for a partition</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The time in ms for partition expiration</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.partitioning_type">
+<code class="descname">partitioning_type</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.partitioning_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Time partitioning of the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Type of partitioning if the table is partitioned, None
+otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.project">
+<code class="descname">project</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.project" title="Permalink to this definition">#</a></dt>
+<dd><p>The project ID of the project this table belongs to.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the project ID of the table.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.reference">
+<code class="descname">reference</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.reference" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a> pointing to
+this table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">pointer to this table</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference">google.cloud.bigquery.table.TableReference</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.table_id">
+<code class="descname">table_id</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.table_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The table ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the table ID.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.table_type">
+<code class="descname">table_type</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.table_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the table.</p>
+<p>Possible values are “TABLE”, “VIEW”, or “EXTERNAL”.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The kind of table</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.TableListItem.view_use_legacy_sql">
+<code class="descname">view_use_legacy_sql</code><a class="headerlink" href="#google.cloud.bigquery.table.TableListItem.view_use_legacy_sql" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies whether to execute the view with Legacy or Standard SQL.</p>
+<p>If this table is not a view, None is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the view is using legacy SQL, or None if not a view</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
 </tr>
 </tbody>
 </table>
@@ -3298,7 +3613,10 @@ If this table is not a view, None is returned.</p>
 
 </dd></dl>
 
-<span class="target" id="module-google.cloud.bigquery.schema"></span><p>Schemas for BigQuery tables / queries.</p>
+</div>
+<div class="section" id="module-google.cloud.bigquery.schema">
+<span id="schema"></span><h2>Schema<a class="headerlink" href="#module-google.cloud.bigquery.schema" title="Permalink to this headline">#</a></h2>
+<p>Schemas for BigQuery tables / queries.</p>
 <dl class="class">
 <dt id="google.cloud.bigquery.schema.SchemaField">
 <em class="property">class </em><code class="descclassname">google.cloud.bigquery.schema.</code><code class="descname">SchemaField</code><span class="sig-paren">(</span><em>name</em>, <em>field_type</em>, <em>mode='NULLABLE'</em>, <em>description=None</em>, <em>fields=()</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/schema.html#SchemaField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.schema.SchemaField" title="Permalink to this definition">#</a></dt>
@@ -3404,7 +3722,10 @@ of the SchemaField, such as what is output by
 
 </dd></dl>
 
-<span class="target" id="module-google.cloud.bigquery.external_config"></span><p>Define classes that describe external data sources.</p>
+</div>
+<div class="section" id="module-google.cloud.bigquery.external_config">
+<span id="external-configuration"></span><h2>External Configuration<a class="headerlink" href="#module-google.cloud.bigquery.external_config" title="Permalink to this headline">#</a></h2>
+<p>Define classes that describe external data sources.</p>
 <p>These are used for both Table.externalDataConfiguration and
 Job.configuration.query.tableDefinitions.</p>
 <dl class="class">
@@ -3905,6 +4226,7 @@ returned from the API.</td>
 
 </dd></dl>
 
+</div>
 </div>
 
 

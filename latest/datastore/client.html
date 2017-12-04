@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Datastore Client &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Datastore Client &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -58,9 +58,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (optional) The project to pass to proxied API methods.</li>
-<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (optional) namespace to pass to proxied API methods.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) The project to pass to proxied API methods.</li>
+<li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) namespace to pass to proxied API methods.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
 client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
 passed), falls back to the default inferred from the
 environment.</li>
@@ -253,9 +253,8 @@ If the list is not empty, an error will occur.</li>
 <li><strong>transaction</strong> (<a class="reference internal" href="transactions.html#google.cloud.datastore.transaction.Transaction" title="google.cloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a>) – (Optional) Transaction to use for read consistency.
 If not passed, uses current transaction, if set.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Defaults to strongly consistent (False).
-Setting True will use eventual consistency,
-but cannot be used inside a transaction or
-will raise ValueError.</li>
+Setting True will use eventual consistency, but cannot
+be used inside a transaction or will raise ValueError.</li>
 </ul>
 </td>
 </tr>
@@ -341,8 +340,8 @@ entity or multiple entities in a commit request.</p>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_page</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pages</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">first_page_entities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">first_page</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span><span class="o">.</span><span class="n">next_page_token</span>
-<span class="go">b&#39;...&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">

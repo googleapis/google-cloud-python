@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -59,7 +59,6 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">concurrent.futures</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
@@ -71,28 +70,28 @@
 <span class="kn">from</span> <span class="nn">google.resumable_media.requests</span> <span class="k">import</span> <span class="n">ResumableUpload</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
-<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">GoogleAPICallError</span>
-<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-
 <span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_field_to_index_mapping</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_item_to_row</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_page_start</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_snake_to_camel_case</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">_TABLE_HAS_NO_SCHEMA</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_row_from_mapping</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">CopyJob</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">ExtractJob</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">LoadJob</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">QueryJob</span><span class="p">,</span> <span class="n">QueryJobConfig</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.query</span> <span class="k">import</span> <span class="n">QueryResults</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_item_to_row</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_page_start</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_field_to_index_mapping</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_snake_to_camel_case</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableListItem</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_TABLE_HAS_NO_SCHEMA</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_row_from_mapping</span>
 
 
 <span class="n">_DEFAULT_CHUNKSIZE</span> <span class="o">=</span> <span class="mi">1048576</span>  <span class="c1"># 1024 * 1024 B = 1 MB</span>
@@ -356,7 +355,7 @@
 <span class="sd">        If ``dataset.etag`` is not ``None``, the update will only</span>
 <span class="sd">        succeed if the dataset on the server has the same ETag. Thus</span>
 <span class="sd">        reading a dataset with ``get_dataset``, changing its fields,</span>
-<span class="sd">        and then passing it ``update_dataset`` will ensure that the changes</span>
+<span class="sd">        and then passing it to ``update_dataset`` will ensure that the changes</span>
 <span class="sd">        will only be saved if no modifications to the dataset occurred</span>
 <span class="sd">        since the read.</span>
 
@@ -396,23 +395,32 @@
             <span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.update_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.update_table">[docs]</a>    <span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update table properties via a PUT request</span>
+<div class="viewcode-block" id="Client.update_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.update_table">[docs]</a>    <span class="k">def</span> <span class="nf">update_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Change some fields of a table.</span>
 
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update</span>
+<span class="sd">        Use ``fields`` to specify which fields to update. At least one field</span>
+<span class="sd">        must be provided. If a field is listed in ``fields`` and is ``None``</span>
+<span class="sd">        in ``table``, it will be deleted.</span>
 
-<span class="sd">        :type table:</span>
-<span class="sd">            :class:`google.cloud.bigquery.table.Table`</span>
-<span class="sd">        :param table_ref: the table to update.</span>
+<span class="sd">        If ``table.etag`` is not ``None``, the update will only succeed if</span>
+<span class="sd">        the table on the server has the same ETag. Thus reading a table with</span>
+<span class="sd">        ``get_table``, changing its fields, and then passing it to</span>
+<span class="sd">        ``update_table`` will ensure that the changes will only be saved if</span>
+<span class="sd">        no modifications to the table occurred since the read.</span>
 
-<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
-<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            table (google.cloud.bigquery.table.Table): The table to update.</span>
+<span class="sd">            fields (Sequence[str]):</span>
+<span class="sd">                The fields of ``table`` to change, spelled as the Table</span>
+<span class="sd">                properties (e.g. &quot;friendly_name&quot;).</span>
+<span class="sd">            retry (google.api_core.retry.Retry):</span>
+<span class="sd">                (Optional) A description of how to retry the API call.</span>
 
-<span class="sd">        :rtype: :class:`google.cloud.bigquery.table.Table`</span>
-<span class="sd">        :returns: a ``Table`` instance</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery.table.Table:</span>
+<span class="sd">                The table resource returned from the API call.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">partial</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+        <span class="n">partial</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">table</span><span class="o">.</span><span class="n">etag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;If-Match&#39;</span><span class="p">:</span> <span class="n">table</span><span class="o">.</span><span class="n">etag</span><span class="p">}</span>
         <span class="k">else</span><span class="p">:</span>
@@ -447,8 +455,9 @@
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
 
 <span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of :class:`~google.cloud.bigquery.table.Table`</span>
-<span class="sd">                  contained within the current dataset.</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Iterator of :class:`~google.cloud.bigquery.table.TableListItem`</span>
+<span class="sd">            contained within the current dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;dataset must be a Dataset or a DatasetReference&#39;</span><span class="p">)</span>
@@ -1183,67 +1192,6 @@
 
         <span class="k">return</span> <span class="n">errors</span></div>
 
-<div class="viewcode-block" id="Client.query_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.query_rows">[docs]</a>    <span class="k">def</span> <span class="nf">query_rows</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Start a query job and wait for the results.</span>
-
-<span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query</span>
-
-<span class="sd">        :type query: str</span>
-<span class="sd">        :param query:</span>
-<span class="sd">            SQL query to be executed. Defaults to the standard SQL dialect.</span>
-<span class="sd">            Use the ``job_config`` parameter to change dialects.</span>
-
-<span class="sd">        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`</span>
-<span class="sd">        :param job_config: (Optional) Extra configuration options for the job.</span>
-
-<span class="sd">        :type job_id: str</span>
-<span class="sd">        :param job_id: (Optional) ID to use for the query job.</span>
-
-<span class="sd">        :type job_id_prefix: str or ``NoneType``</span>
-<span class="sd">        :param job_id_prefix: (Optional) the user-provided prefix for a</span>
-<span class="sd">                              randomly generated job ID. This parameter will be</span>
-<span class="sd">                              ignored if a ``job_id`` is also given.</span>
-
-<span class="sd">        :type timeout: float</span>
-<span class="sd">        :param timeout:</span>
-<span class="sd">            (Optional) How long (in seconds) to wait for job to complete</span>
-<span class="sd">            before raising a :class:`concurrent.futures.TimeoutError`.</span>
-
-<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
-<span class="sd">        :returns:</span>
-<span class="sd">            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.</span>
-<span class="sd">            During each page, the iterator will have the ``total_rows``</span>
-<span class="sd">            attribute set, which counts the total number of rows **in the</span>
-<span class="sd">            result set** (this is distinct from the total number of rows in</span>
-<span class="sd">            the current page: ``iterator.page.num_items``).</span>
-
-<span class="sd">        :raises:</span>
-<span class="sd">            :class:`~google.api_core.exceptions.GoogleAPICallError` if the</span>
-<span class="sd">            job failed or :class:`concurrent.futures.TimeoutError` if the job</span>
-<span class="sd">            did not complete in the given timeout.</span>
-
-<span class="sd">            When an exception happens, the query job will be cancelled on a</span>
-<span class="sd">            best-effort basis.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">job_id</span> <span class="o">=</span> <span class="n">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job_id_prefix</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-                <span class="n">query</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">,</span> <span class="n">job_id</span><span class="o">=</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
-            <span class="n">rows_iterator</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
-        <span class="k">except</span> <span class="p">(</span><span class="n">GoogleAPICallError</span><span class="p">,</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cancel_job</span><span class="p">(</span><span class="n">job_id</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-                <span class="c1"># It&#39;s OK if couldn&#39;t cancel because job never got created.</span>
-                <span class="k">pass</span>
-            <span class="k">raise</span>
-
-        <span class="k">return</span> <span class="n">rows_iterator</span></div>
-
 <div class="viewcode-block" id="Client.list_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_rows">[docs]</a>    <span class="k">def</span> <span class="nf">list_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List the rows of the table.</span>
@@ -1342,12 +1290,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">QueryJobConfig</span><span class="p">()</span>
         <span class="n">config</span><span class="o">.</span><span class="n">use_legacy_sql</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># required for &#39;$&#39; syntax</span>
-        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_rows</span><span class="p">(</span>
+        <span class="n">query_job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
             <span class="s1">&#39;SELECT partition_id from [</span><span class="si">%s</span><span class="s1">:</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">$__PARTITIONS_SUMMARY__]&#39;</span> <span class="o">%</span>
             <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">table_id</span><span class="p">),</span>
             <span class="n">job_config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">]</span></div></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># pylint: disable=unused-argument</span>
@@ -1409,7 +1357,7 @@
 <span class="sd">    :rtype: :class:`~google.cloud.bigquery.table.Table`</span>
 <span class="sd">    :returns: The next table in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TableListItem</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_make_job_id</span><span class="p">(</span><span class="n">job_id</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

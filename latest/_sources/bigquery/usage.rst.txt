@@ -110,6 +110,12 @@ Update multiple properties in a dataset's metadata:
    :start-after: [START update_dataset_multiple_properties]
    :end-before: [END update_dataset_multiple_properties]
 
+Modify user permissions on a dataset:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_update_dataset_access]
+   :end-before: [END bigquery_update_dataset_access]
+
 Delete a dataset:
 
 .. literalinclude:: snippets.py
@@ -207,6 +213,17 @@ Delete a table:
 Queries
 -------
 
+
+Run a simple query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Run a query and wait for it to finish:
+
+.. literalinclude:: snippets.py
+   :start-after: [START client_simple_query]
+   :end-before: [END client_simple_query]
+
+
 Querying data
 ~~~~~~~~~~~~~
 
@@ -229,23 +246,6 @@ See BigQuery documentation for more information on
 .. literalinclude:: snippets.py
   :start-after: [START client_query_w_param]
   :end-before: [END client_query_w_param]
-
-
-Querying Table Rows
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Run a query and wait for it to finish:
-
-.. literalinclude:: snippets.py
-   :start-after: [START client_query_rows]
-   :end-before: [END client_query_rows]
-
-.. note::
-
-  - Use of the ``timeout`` parameter is optional. The query will continue to
-    run in the background even if it takes longer the timeout allowed. The job
-    may be retrieved using the job ID via
-    :meth:`~google.cloud.bigquery.client.Client.get_job`
 
 
 List jobs for a project

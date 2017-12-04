@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -65,14 +65,14 @@
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">grpc_helpers</span>
-<span class="kn">from</span> <span class="nn">google.cloud.gapic.pubsub.v1</span> <span class="k">import</span> <span class="n">publisher_client</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">_gapic</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.gapic</span> <span class="k">import</span> <span class="n">publisher_client</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.publisher.batch</span> <span class="k">import</span> <span class="n">thread</span>
 
 
-<span class="n">__VERSION__</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s1">&#39;google-cloud-pubsub&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span><span class="s1">&#39;google-cloud-pubsub&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../../pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client">[docs]</a><span class="nd">@_gapic</span><span class="o">.</span><span class="n">add_methods</span><span class="p">(</span><span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;publish&#39;</span><span class="p">,))</span>
@@ -111,9 +111,9 @@
         <span class="c1"># keepalive options.</span>
         <span class="k">if</span> <span class="s1">&#39;channel&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
-                <span class="n">credentials</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;credentials&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;credentials&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                 <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
-                <span class="n">scopes</span><span class="o">=</span><span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="o">.</span><span class="n">_ALL_SCOPES</span><span class="p">,</span>
+                <span class="n">scopes</span><span class="o">=</span><span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
                 <span class="n">options</span><span class="o">=</span><span class="p">{</span>
                     <span class="s1">&#39;grpc.max_send_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
                     <span class="s1">&#39;grpc.max_receive_message_length&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
@@ -122,8 +122,6 @@
 
         <span class="c1"># Add the metrics headers, and instantiate the underlying GAPIC</span>
         <span class="c1"># client.</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lib_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gccl&#39;</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lib_version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">__VERSION__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">api</span> <span class="o">=</span> <span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_settings</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">BatchSettings</span><span class="p">(</span><span class="o">*</span><span class="n">batch_settings</span><span class="p">)</span>
 
@@ -140,10 +138,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: The location of the API.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{host}</span><span class="s1">:</span><span class="si">{port}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">host</span><span class="o">=</span><span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
-            <span class="n">port</span><span class="o">=</span><span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="o">.</span><span class="n">DEFAULT_SERVICE_PORT</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span>
 
 <div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../../pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the current batch for the provided topic.</span>

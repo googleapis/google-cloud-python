@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.helpers &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.datastore.helpers &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -61,6 +61,9 @@
 
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">struct_pb2</span>
+<span class="kn">from</span> <span class="nn">google.type</span> <span class="k">import</span> <span class="n">latlng_pb2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_pb_timestamp</span>
@@ -69,9 +72,6 @@
 <span class="kn">from</span> <span class="nn">google.cloud.datastore_v1.proto</span> <span class="k">import</span> <span class="n">entity_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.entity</span> <span class="k">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.key</span> <span class="k">import</span> <span class="n">Key</span>
-
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">struct_pb2</span>
-<span class="kn">from</span> <span class="nn">google.type</span> <span class="k">import</span> <span class="n">latlng_pb2</span>
 
 
 <span class="k">def</span> <span class="nf">_get_meaning</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>

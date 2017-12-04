@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.vision_v1.proto.text_annotation_pb2 &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.vision_v1.proto.text_annotation_pb2 &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -66,6 +66,7 @@
   <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">2google/cloud/vision_v1/proto/text_annotation.proto</span><span class="se">\x12\x16</span><span class="s1">google.cloud.vision.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a</span><span class="s1">+google/cloud/vision_v1/proto/geometry.proto</span><span class="se">\&quot;\x96\x04\n\x0e</span><span class="s1">TextAnnotation</span><span class="se">\x12</span><span class="s1">+</span><span class="se">\n\x05</span><span class="s1">pages</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.cloud.vision.v1.Page</span><span class="se">\x12\x0c\n\x04</span><span class="s1">text</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a</span><span class="s1">=</span><span class="se">\n\x10\x44\x65</span><span class="s1">tectedLanguage</span><span class="se">\x12\x15\n\r</span><span class="s1">language_code</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x12\n\n</span><span class="s1">confidence</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x02\x1a\xd5\x01\n\r</span><span class="s1">DetectedBreak</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x04</span><span class="s1">type</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1">&gt;.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType</span><span class="se">\x12\x11\n\t</span><span class="s1">is_prefix</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\&quot;</span><span class="s1">c</span><span class="se">\n\t</span><span class="s1">BreakType</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\t\n\x05</span><span class="s1">SPACE</span><span class="se">\x10\x01\x12\x0e\n\n</span><span class="s1">SURE_SPACE</span><span class="se">\x10\x02\x12\x12\n\x0e\x45</span><span class="s1">OL_SURE_SPACE</span><span class="se">\x10\x03\x12\n\n\x06</span><span class="s1">HYPHEN</span><span class="se">\x10\x04\x12\x0e\n\n</span><span class="s1">LINE_BREAK</span><span class="se">\x10\x05\x1a\xb1\x01\n\x0c</span><span class="s1">TextProperty</span><span class="se">\x12</span><span class="s1">S</span><span class="se">\n\x12\x64\x65</span><span class="s1">tected_languages</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x37</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.DetectedLanguage</span><span class="se">\x12</span><span class="s1">L</span><span class="se">\n\x0e\x64\x65</span><span class="s1">tected_break</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x34</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.DetectedBreak</span><span class="se">\&quot;\x9b\x01\n\x04</span><span class="s1">Page</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12\r\n\x05</span><span class="s1">width</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0e\n\x06</span><span class="s1">height</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">-</span><span class="se">\n\x06\x62</span><span class="s1">locks</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1d</span><span class="s1">.google.cloud.vision.v1.Block</span><span class="se">\&quot;\xd2\x02\n\x05\x42</span><span class="s1">lock</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x35\n\n</span><span class="s1">paragraphs</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">!.google.cloud.vision.v1.Paragraph</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\n</span><span class="s1">block_type</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32\&#39;</span><span class="s1">.google.cloud.vision.v1.Block.BlockType</span><span class="se">\&quot;</span><span class="s1">R</span><span class="se">\n\t</span><span class="s1">BlockType</span><span class="se">\x12\x0b\n\x07</span><span class="s1">UNKNOWN</span><span class="se">\x10\x00\x12\x08\n\x04</span><span class="s1">TEXT</span><span class="se">\x10\x01\x12\t\n\x05</span><span class="s1">TABLE</span><span class="se">\x10\x02\x12\x0b\n\x07</span><span class="s1">PICTURE</span><span class="se">\x10\x03\x12\t\n\x05</span><span class="s1">RULER</span><span class="se">\x10\x04\x12\x0b\n\x07\x42\x41</span><span class="s1">RCODE</span><span class="se">\x10\x05\&quot;\xbb\x01\n\t</span><span class="s1">Paragraph</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12</span><span class="s1">+</span><span class="se">\n\x05</span><span class="s1">words</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1c</span><span class="s1">.google.cloud.vision.v1.Word</span><span class="se">\&quot;\xba\x01\n\x04</span><span class="s1">Word</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\x07</span><span class="s1">symbols</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1e</span><span class="s1">.google.cloud.vision.v1.Symbol</span><span class="se">\&quot;\x99\x01\n\x06</span><span class="s1">Symbol</span><span class="se">\x12\x45\n\x08</span><span class="s1">property</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x33</span><span class="s1">.google.cloud.vision.v1.TextAnnotation.TextProperty</span><span class="se">\x12</span><span class="s1">:</span><span class="se">\n\x0c\x62</span><span class="s1">ounding_box</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">$.google.cloud.vision.v1.BoundingPoly</span><span class="se">\x12\x0c\n\x04</span><span class="s1">text</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t</span><span class="s1">Bt</span><span class="se">\n\x1a\x63</span><span class="s1">om.google.cloud.vision.v1B</span><span class="se">\x13</span><span class="s1">TextAnnotationProtoP</span><span class="se">\x01</span><span class="s1">Z&lt;google.golang.org/genproto/googleapis/cloud/vision/v1;vision</span><span class="se">\xf8\x01\x01\x62\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
   <span class="p">,</span>
   <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
+<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
 
 
 
@@ -564,7 +565,6 @@
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;Paragraph&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PARAGRAPH</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;Word&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_WORD</span>
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">message_types_by_name</span><span class="p">[</span><span class="s1">&#39;Symbol&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_SYMBOL</span>
-<span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
 
 <span class="n">TextAnnotation</span> <span class="o">=</span> <span class="n">_reflection</span><span class="o">.</span><span class="n">GeneratedProtocolMessageType</span><span class="p">(</span><span class="s1">&#39;TextAnnotation&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">_message</span><span class="o">.</span><span class="n">Message</span><span class="p">,),</span> <span class="nb">dict</span><span class="p">(</span>
 
@@ -573,6 +573,15 @@
     <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.vision_v1.proto.text_annotation_pb2&#39;</span>
     <span class="p">,</span>
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Detected language for a structural component.</span>
+<span class="s2">    </span>
+<span class="s2">    </span>
+<span class="s2">    Attributes:</span>
+<span class="s2">        language_code:</span>
+<span class="s2">            The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For</span>
+<span class="s2">            more information, see http://www.unicode.org/reports/tr35/#Uni</span>
+<span class="s2">            code\_locale\_identifier.</span>
+<span class="s2">        confidence:</span>
+<span class="s2">            Confidence of detected language. Range [0, 1].</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedLanguage)</span>
     <span class="p">))</span>
@@ -583,6 +592,11 @@
     <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.vision_v1.proto.text_annotation_pb2&#39;</span>
     <span class="p">,</span>
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Detected start or end of a structural component.</span>
+<span class="s2">    </span>
+<span class="s2">    </span>
+<span class="s2">    Attributes:</span>
+<span class="s2">        is_prefix:</span>
+<span class="s2">            True if break prepends the element.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedBreak)</span>
     <span class="p">))</span>
@@ -593,6 +607,13 @@
     <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.vision_v1.proto.text_annotation_pb2&#39;</span>
     <span class="p">,</span>
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Additional information detected on the structural component.</span>
+<span class="s2">    </span>
+<span class="s2">    </span>
+<span class="s2">    Attributes:</span>
+<span class="s2">        detected_languages:</span>
+<span class="s2">            A list of detected languages together with confidence.</span>
+<span class="s2">        detected_break:</span>
+<span class="s2">            Detected start or end of a text segment.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.TextProperty)</span>
     <span class="p">))</span>
@@ -611,18 +632,6 @@
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
-<span class="s2">      language_code:</span>
-<span class="s2">          The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For</span>
-<span class="s2">          more information, see http://www.unicode.org/reports/tr35/#Uni</span>
-<span class="s2">          code\_locale\_identifier.</span>
-<span class="s2">      confidence:</span>
-<span class="s2">          Confidence of detected language. Range [0, 1].</span>
-<span class="s2">      is_prefix:</span>
-<span class="s2">          True if break prepends the element.</span>
-<span class="s2">      detected_languages:</span>
-<span class="s2">          A list of detected languages together with confidence.</span>
-<span class="s2">      detected_break:</span>
-<span class="s2">          Detected start or end of a text segment.</span>
 <span class="s2">      pages:</span>
 <span class="s2">          List of pages detected by OCR.</span>
 <span class="s2">      text:</span>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Buckets &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -223,7 +223,7 @@ dict via the setter.  E.g.:</p>
 
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.create" title="Permalink to this definition">#</a></dt>
+<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em>, <em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates current bucket.</p>
 <p>If the bucket already exists, will raise
 <code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.Conflict</span></code>.</p>
@@ -233,9 +233,22 @@ dict via the setter.  E.g.:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.storage.client.Client" title="google.cloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) – Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</td>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) the project under which the  bucket is to
+be created.  If not passed, uses the project set on
+the client.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <a class="reference internal" href="#google.cloud.storage.bucket.Bucket.user_project" title="google.cloud.storage.bucket.Bucket.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <code class="docutils literal"><span class="pre">project</span></code> is None and client’s
+<code class="xref py py-attr docutils literal"><span class="pre">project</span></code> is also None.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>

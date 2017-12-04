@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.bucket &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.storage.bucket &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -293,7 +293,7 @@
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../../storage/buckets.html#google.cloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates current bucket.</span>
 
 <span class="sd">        If the bucket already exists, will raise</span>
@@ -307,12 +307,28 @@
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the current bucket.</span>
+
+<span class="sd">        :type project: str</span>
+<span class="sd">        :param project: (Optional) the project under which the  bucket is to</span>
+<span class="sd">                        be created.  If not passed, uses the project set on</span>
+<span class="sd">                        the client.</span>
+<span class="sd">        :raises ValueError: if :attr:`user_project` is set.</span>
+<span class="sd">        :raises ValueError: if ``project`` is None and client&#39;s</span>
+<span class="sd">                            :attr:`project` is also None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot create bucket with &#39;user_project&#39; set.&quot;</span><span class="p">)</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Client project not set:  pass an explicit project.&quot;</span><span class="p">)</span>
+
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_changes</span><span class="p">}</span>
         <span class="n">properties</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>

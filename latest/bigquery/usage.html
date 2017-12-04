@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud 988e2c2 documentation</title>
+    <title>BigQuery &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -138,23 +138,31 @@ dataset will have the value as their expiration period.</li>
 <p>Update multiple properties in a dataset’s metadata:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
     <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="ow">is</span> <span class="kc">None</span>
-    <span class="n">entry</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">AccessEntry</span><span class="p">(</span>
-        <span class="n">role</span><span class="o">=</span><span class="s1">&#39;READER&#39;</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="s1">&#39;domain&#39;</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">entry</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span>
     <span class="n">ONE_DAY_MS</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># in milliseconds</span>
     <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">UPDATED_DESCRIPTION</span>
     <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="o">=</span> <span class="n">ONE_DAY_MS</span>
-    <span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span><span class="p">)</span>
-    <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span> <span class="o">=</span> <span class="n">entries</span>
 
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_dataset</span><span class="p">(</span>
         <span class="n">dataset</span><span class="p">,</span>
-        <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;default_table_expiration_ms&#39;</span><span class="p">,</span> <span class="s1">&#39;access_entries&#39;</span><span class="p">]</span>
+        <span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;default_table_expiration_ms&#39;</span><span class="p">]</span>
     <span class="p">)</span>  <span class="c1"># API request</span>
 
     <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">UPDATED_DESCRIPTION</span>
     <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="o">==</span> <span class="n">ONE_DAY_MS</span>
+</pre></div>
+</div>
+<p>Modify user permissions on a dataset:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">entry</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">AccessEntry</span><span class="p">(</span>
+        <span class="n">role</span><span class="o">=</span><span class="s1">&#39;READER&#39;</span><span class="p">,</span>
+        <span class="n">entity_type</span><span class="o">=</span><span class="s1">&#39;userByEmail&#39;</span><span class="p">,</span>
+        <span class="n">entity_id</span><span class="o">=</span><span class="s1">&#39;sample.bigquery.dev@gmail.com&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">entry</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span>
+    <span class="n">entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span><span class="p">)</span>
+    <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span> <span class="o">=</span> <span class="n">entries</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">update_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;access_entries&#39;</span><span class="p">])</span>  <span class="c1"># API request</span>
+
     <span class="k">assert</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_entries</span>
 </pre></div>
 </div>
@@ -276,13 +284,7 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Load table data from Google Cloud Storage:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;person_ages&#39;</span><span class="p">)</span>
-    <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
-    <span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;full_name&#39;</span><span class="p">,</span> <span class="s1">&#39;STRING&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">),</span>
-        <span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;INTEGER&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;required&#39;</span><span class="p">)</span>
-    <span class="p">]</span>
-    <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
     <span class="n">GS_URL</span> <span class="o">=</span> <span class="s1">&#39;gs://</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
     <span class="n">job_id_prefix</span> <span class="o">=</span> <span class="s2">&quot;my_job&quot;</span>
     <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">LoadJobConfig</span><span class="p">()</span>
@@ -352,6 +354,21 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </div>
 <div class="section" id="queries">
 <h2>Queries<a class="headerlink" href="#queries" title="Permalink to this headline">#</a></h2>
+<div class="section" id="run-a-simple-query">
+<h3>Run a simple query<a class="headerlink" href="#run-a-simple-query" title="Permalink to this headline">#</a></h3>
+<p>Run a query and wait for it to finish:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
+        <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
+        <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
+    <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">query_job</span><span class="p">:</span>  <span class="c1"># API request</span>
+        <span class="c1"># Row values can be accessed by field name or index</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="querying-data">
 <h3>Querying data<a class="headerlink" href="#querying-data" title="Permalink to this headline">#</a></h3>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
@@ -407,31 +424,6 @@ run in the background even if it takes longer the timeout allowed.</li>
     <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
     <span class="k">assert</span> <span class="n">row</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;TX&#39;</span>
 </pre></div>
-</div>
-</div>
-<div class="section" id="querying-table-rows">
-<h3>Querying Table Rows<a class="headerlink" href="#querying-table-rows" title="Permalink to this headline">#</a></h3>
-<p>Run a query and wait for it to finish:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s1">&#39;SELECT name FROM `bigquery-public-data.usa_names.usa_1910_2013` &#39;</span>
-        <span class="s1">&#39;WHERE state = &quot;TX&quot; &#39;</span>
-        <span class="s1">&#39;LIMIT 100&#39;</span><span class="p">)</span>
-    <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>  <span class="c1"># in seconds</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">query_rows</span><span class="p">(</span><span class="n">QUERY</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">))</span>  <span class="c1"># API request</span>
-
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
-    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<ul class="last simple">
-<li>Use of the <code class="docutils literal"><span class="pre">timeout</span></code> parameter is optional. The query will continue to
-run in the background even if it takes longer the timeout allowed. The job
-may be retrieved using the job ID via
-<a class="reference internal" href="reference.html#google.cloud.bigquery.client.Client.get_job" title="google.cloud.bigquery.client.Client.get_job"><code class="xref py py-meth docutils literal"><span class="pre">get_job()</span></code></a></li>
-</ul>
 </div>
 </div>
 <div class="section" id="list-jobs-for-a-project">

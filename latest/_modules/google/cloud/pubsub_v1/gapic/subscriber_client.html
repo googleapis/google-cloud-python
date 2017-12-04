@@ -1,0 +1,1371 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.pubsub_v1.gapic.subscriber_client &#8212; google-cloud dfe8a41 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     'dfe8a41',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.pubsub_v1.gapic.subscriber_client</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2017, Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="c1">#</span>
+<span class="c1"># EDITING INSTRUCTIONS</span>
+<span class="c1"># This file was generated from the file</span>
+<span class="c1"># https://github.com/google/googleapis/blob/master/google/pubsub/v1/pubsub.proto,</span>
+<span class="c1"># and updates to that file get reflected here through a refresh process.</span>
+<span class="c1"># For the short term, the refresh process will only be runnable by Google engineers.</span>
+<span class="c1">#</span>
+<span class="c1"># The only allowed edits are to method and file documentation. A 3-way</span>
+<span class="c1"># merge preserves those additions if the generated source changes.</span>
+<span class="sd">&quot;&quot;&quot;Accesses the google.pubsub.v1 Subscriber API.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
+<span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
+<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
+<span class="kn">import</span> <span class="nn">google.api_core.protobuf_helpers</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.gapic</span> <span class="k">import</span> <span class="n">subscriber_client_config</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.proto</span> <span class="k">import</span> <span class="n">pubsub_pb2</span>
+<span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">iam_policy_pb2</span>
+<span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">policy_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">duration_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">timestamp_pb2</span>
+
+<span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
+    <span class="s1">&#39;google-cloud-pubsub&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
+
+
+<span class="k">class</span> <span class="nc">SubscriberClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The service that an application uses to manipulate subscriptions and to</span>
+<span class="sd">    consume messages from a subscription via the ``Pull`` method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;pubsub.googleapis.com:443&#39;</span>
+    <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
+
+    <span class="c1"># The scopes needed to make gRPC calls to all of the methods defined in</span>
+    <span class="c1"># this service</span>
+    <span class="n">_DEFAULT_SCOPES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/pubsub&#39;</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="c1"># The name of the interface for this client. This is the key used to find</span>
+    <span class="c1"># method configuration in the client_config dictionary</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;google.pubsub.v1.Subscriber&#39;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified project resource name string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">snapshot_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">snapshot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified snapshot resource name string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/snapshots/</span><span class="si">{snapshot}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">subscription_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">subscription</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified subscription resource name string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/subscriptions/</span><span class="si">{subscription}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">topic_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">topic</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified topic resource name string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/topics/</span><span class="si">{topic}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">client_config</span><span class="o">=</span><span class="n">subscriber_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+                 <span class="n">client_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            channel (grpc.Channel): A ``Channel`` instance through</span>
+<span class="sd">                which to make calls. If specified, then the ``credentials``</span>
+<span class="sd">                argument is ignored.</span>
+<span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
+<span class="sd">                authorization credentials to attach to requests. These</span>
+<span class="sd">                credentials identify this application to the service. If none</span>
+<span class="sd">                are specified, the client will attempt to ascertain the</span>
+<span class="sd">                credentials from the environment.</span>
+<span class="sd">            client_config (dict):</span>
+<span class="sd">                A dictionary of call options for each method. If not specified</span>
+<span class="sd">                the default configuration is used. Generally, you only need</span>
+<span class="sd">                to set this if you&#39;re developing your own client library.</span>
+<span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
+<span class="sd">                The client info used to send a user-agent string along with</span>
+<span class="sd">                API requests. If ``None``, then default info will be used.</span>
+<span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
+<span class="sd">                your own client library.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;channel and credentials arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
+                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">iam_policy_stub</span> <span class="o">=</span> <span class="p">(</span><span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">IAMPolicyStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span> <span class="o">=</span> <span class="p">(</span><span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">SubscriberStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
+
+        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
+
+        <span class="n">interface_config</span> <span class="o">=</span> <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">]</span>
+        <span class="n">method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+            <span class="n">interface_config</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_subscription</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">CreateSubscription</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_subscription</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">GetSubscription</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_subscription</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">UpdateSubscription</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_subscriptions</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">ListSubscriptions</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListSubscriptions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListSubscriptions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_subscription</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">DeleteSubscription</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteSubscription&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modify_ack_deadline</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">ModifyAckDeadline</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ModifyAckDeadline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ModifyAckDeadline&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_acknowledge</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">Acknowledge</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;Acknowledge&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;Acknowledge&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pull</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">Pull</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;Pull&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;Pull&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_pull</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">StreamingPull</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;StreamingPull&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;StreamingPull&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modify_push_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">ModifyPushConfig</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ModifyPushConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ModifyPushConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_snapshots</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">ListSnapshots</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListSnapshots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListSnapshots&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_snapshot</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">CreateSnapshot</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateSnapshot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateSnapshot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_snapshot</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">UpdateSnapshot</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateSnapshot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateSnapshot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_snapshot</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">DeleteSnapshot</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteSnapshot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteSnapshot&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_seek</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_stub</span><span class="o">.</span><span class="n">Seek</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;Seek&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;Seek&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">iam_policy_stub</span><span class="o">.</span><span class="n">SetIamPolicy</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;SetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;SetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">iam_policy_stub</span><span class="o">.</span><span class="n">GetIamPolicy</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">iam_policy_stub</span><span class="o">.</span><span class="n">TestIamPermissions</span><span class="p">,</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;TestIamPermissions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;TestIamPermissions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">)</span>
+
+    <span class="c1"># Service calls</span>
+    <span class="k">def</span> <span class="nf">create_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">name</span><span class="p">,</span>
+                            <span class="n">topic</span><span class="p">,</span>
+                            <span class="n">push_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">ack_deadline_seconds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">retain_acked_messages</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">message_retention_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a subscription to a given topic.</span>
+<span class="sd">        If the subscription already exists, returns ``ALREADY_EXISTS``.</span>
+<span class="sd">        If the corresponding topic doesn&#39;t exist, returns ``NOT_FOUND``.</span>
+
+<span class="sd">        If the name is not provided in the request, the server will assign a random</span>
+<span class="sd">        name for this subscription on the same project as the topic, conforming</span>
+<span class="sd">        to the</span>
+<span class="sd">        `resource name format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`_.</span>
+<span class="sd">        The generated name is populated in the returned Subscription object.</span>
+<span class="sd">        Note that for REST API requests, you must specify a name in the request.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; topic = client.topic_path(&#39;[PROJECT]&#39;, &#39;[TOPIC]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.create_subscription(name, topic)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the subscription. It must have the format</span>
+<span class="sd">                ``\&quot;projects/{project}/subscriptions/{subscription}\&quot;``. ``{subscription}`` must</span>
+<span class="sd">                start with a letter, and contain only letters (``[A-Za-z]``), numbers</span>
+<span class="sd">                (``[0-9]``), dashes (``-``), underscores (``_``), periods (``.``), tildes (``~``),</span>
+<span class="sd">                plus (``+``) or percent signs (``%``). It must be between 3 and 255 characters</span>
+<span class="sd">                in length, and it must not start with ``\&quot;goog\&quot;``.</span>
+<span class="sd">            topic (str): The name of the topic from which this subscription is receiving messages.</span>
+<span class="sd">                Format is ``projects/{project}/topics/{topic}``.</span>
+<span class="sd">                The value of this field will be ``_deleted-topic_`` if the topic has been</span>
+<span class="sd">                deleted.</span>
+<span class="sd">            push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): If push delivery is used with this subscription, this field is</span>
+<span class="sd">                used to configure it. An empty ``pushConfig`` signifies that the subscriber</span>
+<span class="sd">                will pull and ack messages using API methods.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.PushConfig`</span>
+<span class="sd">            ack_deadline_seconds (int): This value is the maximum time after a subscriber receives a message</span>
+<span class="sd">                before the subscriber should acknowledge the message. After message</span>
+<span class="sd">                delivery but before the ack deadline expires and before the message is</span>
+<span class="sd">                acknowledged, it is an outstanding message and will not be delivered</span>
+<span class="sd">                again during that time (on a best-effort basis).</span>
+
+<span class="sd">                For pull subscriptions, this value is used as the initial value for the ack</span>
+<span class="sd">                deadline. To override this value for a given message, call</span>
+<span class="sd">                ``ModifyAckDeadline`` with the corresponding ``ack_id`` if using</span>
+<span class="sd">                pull.</span>
+<span class="sd">                The minimum custom deadline you can specify is 10 seconds.</span>
+<span class="sd">                The maximum custom deadline you can specify is 600 seconds (10 minutes).</span>
+<span class="sd">                If this parameter is 0, a default value of 10 seconds is used.</span>
+
+<span class="sd">                For push delivery, this value is also used to set the request timeout for</span>
+<span class="sd">                the call to the push endpoint.</span>
+
+<span class="sd">                If the subscriber never acknowledges the message, the Pub/Sub</span>
+<span class="sd">                system will eventually redeliver the message.</span>
+<span class="sd">            retain_acked_messages (bool): Indicates whether to retain acknowledged messages. If true, then</span>
+<span class="sd">                messages are not expunged from the subscription&#39;s backlog, even if they are</span>
+<span class="sd">                acknowledged, until they fall out of the ``message_retention_duration``</span>
+<span class="sd">                window.</span>
+<span class="sd">            message_retention_duration (Union[dict, ~google.cloud.pubsub_v1.types.Duration]): How long to retain unacknowledged messages in the subscription&#39;s backlog,</span>
+<span class="sd">                from the moment a message is published.</span>
+<span class="sd">                If ``retain_acked_messages`` is true, then this also configures the retention</span>
+<span class="sd">                of acknowledged messages, and thus configures how far back in time a ``Seek``</span>
+<span class="sd">                can be done. Defaults to 7 days. Cannot be more than 7 days or less than 10</span>
+<span class="sd">                minutes.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Duration`</span>
+<span class="sd">            labels (dict[str -&gt; str]): User labels.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.Subscription` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span>
+            <span class="n">push_config</span><span class="o">=</span><span class="n">push_config</span><span class="p">,</span>
+            <span class="n">ack_deadline_seconds</span><span class="o">=</span><span class="n">ack_deadline_seconds</span><span class="p">,</span>
+            <span class="n">retain_acked_messages</span><span class="o">=</span><span class="n">retain_acked_messages</span><span class="p">,</span>
+            <span class="n">message_retention_duration</span><span class="o">=</span><span class="n">message_retention_duration</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_subscription</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                         <span class="n">subscription</span><span class="p">,</span>
+                         <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                         <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the configuration details of a subscription.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_subscription(subscription)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The name of the subscription to get.</span>
+<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.Subscription` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">GetSubscriptionRequest</span><span class="p">(</span><span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subscription</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">subscription</span><span class="p">,</span>
+                            <span class="n">update_mask</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates an existing subscription. Note that certain properties of a</span>
+<span class="sd">        subscription, such as its topic, are not modifiable.</span>
+<span class="sd">        NOTE:  The style guide requires body: \&quot;subscription\&quot; instead of body: \&quot;*\&quot;.</span>
+<span class="sd">        Keeping the latter for internal consistency in V1, however it should be</span>
+<span class="sd">        corrected in V2.  See</span>
+<span class="sd">        https://cloud.google.com/apis/design/standard_methods#update for details.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = {}</span>
+<span class="sd">            &gt;&gt;&gt; update_mask = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.update_subscription(subscription, update_mask)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (Union[dict, ~google.cloud.pubsub_v1.types.Subscription]): The updated subscription object.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Subscription`</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided subscription to update.</span>
+<span class="sd">                Must be specified and non-empty.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.FieldMask`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.Subscription` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">UpdateSubscriptionRequest</span><span class="p">(</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span> <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_subscription</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">project</span><span class="p">,</span>
+                           <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists matching subscriptions.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; project = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.list_subscriptions(project):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_subscriptions(project, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            ...     for element in page:</span>
+<span class="sd">            ...         # process element</span>
+<span class="sd">            ...         pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            project (str): The name of the cloud project that subscriptions belong to.</span>
+<span class="sd">                Format is ``projects/{project}``.</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
+<span class="sd">            is an iterable of :class:`~google.cloud.pubsub_v1.types.Subscription` instances.</span>
+<span class="sd">            This object can also be configured to iterate over the pages</span>
+<span class="sd">            of the response through the `options` parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">ListSubscriptionsRequest</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_list_subscriptions</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;subscriptions&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span>
+
+    <span class="k">def</span> <span class="nf">delete_subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">subscription</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes an existing subscription. All messages retained in the subscription</span>
+<span class="sd">        are immediately dropped. Calls to ``Pull`` after deletion will return</span>
+<span class="sd">        ``NOT_FOUND``. After a subscription is deleted, a new one may be created with</span>
+<span class="sd">        the same name, but the new one has no association with the old</span>
+<span class="sd">        subscription or its topic unless the same topic is specified.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_subscription(subscription)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The subscription to delete.</span>
+<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">DeleteSubscriptionRequest</span><span class="p">(</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_subscription</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">subscription</span><span class="p">,</span>
+                            <span class="n">ack_ids</span><span class="p">,</span>
+                            <span class="n">ack_deadline_seconds</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modifies the ack deadline for a specific message. This method is useful</span>
+<span class="sd">        to indicate that more time is needed to process a message by the</span>
+<span class="sd">        subscriber, or to make the message available for redelivery if the</span>
+<span class="sd">        processing was interrupted. Note that this does not modify the</span>
+<span class="sd">        subscription-level ``ackDeadlineSeconds`` used for subsequent messages.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ack_ids = []</span>
+<span class="sd">            &gt;&gt;&gt; ack_deadline_seconds = 0</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.modify_ack_deadline(subscription, ack_ids, ack_deadline_seconds)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The name of the subscription.</span>
+<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            ack_ids (list[str]): List of acknowledgment IDs.</span>
+<span class="sd">            ack_deadline_seconds (int): The new ack deadline with respect to the time this request was sent to</span>
+<span class="sd">                the Pub/Sub system. For example, if the value is 10, the new</span>
+<span class="sd">                ack deadline will expire 10 seconds after the ``ModifyAckDeadline`` call</span>
+<span class="sd">                was made. Specifying zero may immediately make the message available for</span>
+<span class="sd">                another pull request.</span>
+<span class="sd">                The minimum deadline you can specify is 0 seconds.</span>
+<span class="sd">                The maximum deadline you can specify is 600 seconds (10 minutes).</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">ModifyAckDeadlineRequest</span><span class="p">(</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span>
+            <span class="n">ack_ids</span><span class="o">=</span><span class="n">ack_ids</span><span class="p">,</span>
+            <span class="n">ack_deadline_seconds</span><span class="o">=</span><span class="n">ack_deadline_seconds</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modify_ack_deadline</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">subscription</span><span class="p">,</span>
+                    <span class="n">ack_ids</span><span class="p">,</span>
+                    <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Acknowledges the messages associated with the ``ack_ids`` in the</span>
+<span class="sd">        ``AcknowledgeRequest``. The Pub/Sub system can remove the relevant messages</span>
+<span class="sd">        from the subscription.</span>
+
+<span class="sd">        Acknowledging a message whose ack deadline has expired may succeed,</span>
+<span class="sd">        but such a message may be redelivered later. Acknowledging a message more</span>
+<span class="sd">        than once will not result in an error.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; ack_ids = []</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.acknowledge(subscription, ack_ids)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The subscription whose message is being acknowledged.</span>
+<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            ack_ids (list[str]): The acknowledgment ID for the messages being acknowledged that was returned</span>
+<span class="sd">                by the Pub/Sub system in the ``Pull`` response. Must not be empty.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">AcknowledgeRequest</span><span class="p">(</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span> <span class="n">ack_ids</span><span class="o">=</span><span class="n">ack_ids</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_acknowledge</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">subscription</span><span class="p">,</span>
+             <span class="n">max_messages</span><span class="p">,</span>
+             <span class="n">return_immediately</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pulls messages from the server. Returns an empty list if there are no</span>
+<span class="sd">        messages available in the backlog. The server may return ``UNAVAILABLE`` if</span>
+<span class="sd">        there are too many concurrent pull requests pending for the given</span>
+<span class="sd">        subscription.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; max_messages = 0</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.pull(subscription, max_messages)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The subscription from which messages should be pulled.</span>
+<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            max_messages (int): The maximum number of messages returned for this request. The Pub/Sub</span>
+<span class="sd">                system may return fewer than the number specified.</span>
+<span class="sd">            return_immediately (bool): If this field set to true, the system will respond immediately even if</span>
+<span class="sd">                it there are no messages available to return in the ``Pull`` response.</span>
+<span class="sd">                Otherwise, the system may wait (for a bounded amount of time) until at</span>
+<span class="sd">                least one message is available, rather than returning no messages. The</span>
+<span class="sd">                client may cancel the request if it does not wish to wait any longer for</span>
+<span class="sd">                the response.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.PullResponse` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">PullRequest</span><span class="p">(</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span>
+            <span class="n">max_messages</span><span class="o">=</span><span class="n">max_messages</span><span class="p">,</span>
+            <span class="n">return_immediately</span><span class="o">=</span><span class="n">return_immediately</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pull</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">streaming_pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">requests</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        (EXPERIMENTAL) StreamingPull is an experimental feature. This RPC will</span>
+<span class="sd">        respond with UNIMPLEMENTED errors unless you have been invited to test</span>
+<span class="sd">        this feature. Contact cloud-pubsub@google.com with any questions.</span>
+
+<span class="sd">        Establishes a stream with the server, which sends messages down to the</span>
+<span class="sd">        client. The client streams acknowledgements and ack deadline modifications</span>
+<span class="sd">        back to the server. The server will close the stream and return the status</span>
+<span class="sd">        on any error. The server may close the stream with status ``OK`` to reassign</span>
+<span class="sd">        server-side resources, in which case, the client should re-establish the</span>
+<span class="sd">        stream. ``UNAVAILABLE`` may also be returned in the case of a transient error</span>
+<span class="sd">        (e.g., a server restart). These should also be retried by the client. Flow</span>
+<span class="sd">        control can be achieved by configuring the underlying RPC channel.</span>
+
+<span class="sd">        EXPERIMENTAL: This method interface might change in the future.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; stream_ack_deadline_seconds = 0</span>
+<span class="sd">            &gt;&gt;&gt; request = {&#39;subscription&#39;: subscription, &#39;stream_ack_deadline_seconds&#39;: stream_ack_deadline_seconds}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; requests = [request]</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.streaming_pull(requests):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            requests (iterator[dict|google.cloud.pubsub_v1.proto.pubsub_pb2.StreamingPullRequest]): The input objects. If a dict is provided, it must be of the</span>
+<span class="sd">                same form as the protobuf message :class:`~google.cloud.pubsub_v1.types.StreamingPullRequest`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Iterable[~google.cloud.pubsub_v1.types.StreamingPullResponse].</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_streaming_pull</span><span class="p">(</span><span class="n">requests</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">modify_push_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">subscription</span><span class="p">,</span>
+                           <span class="n">push_config</span><span class="p">,</span>
+                           <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                           <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modifies the ``PushConfig`` for a specified subscription.</span>
+
+<span class="sd">        This may be used to change a push subscription to a pull one (signified by</span>
+<span class="sd">        an empty ``PushConfig``) or vice versa, or change the endpoint URL and other</span>
+<span class="sd">        attributes of a push subscription. Messages will accumulate for delivery</span>
+<span class="sd">        continuously through the call regardless of changes to the ``PushConfig``.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; push_config = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.modify_push_config(subscription, push_config)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The name of the subscription.</span>
+<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            push_config (Union[dict, ~google.cloud.pubsub_v1.types.PushConfig]): The push configuration for future deliveries.</span>
+
+<span class="sd">                An empty ``pushConfig`` indicates that the Pub/Sub system should</span>
+<span class="sd">                stop pushing messages from the given subscription and allow</span>
+<span class="sd">                messages to be pulled and acknowledged - effectively pausing</span>
+<span class="sd">                the subscription if ``Pull`` is not called.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.PushConfig`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">ModifyPushConfigRequest</span><span class="p">(</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span> <span class="n">push_config</span><span class="o">=</span><span class="n">push_config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modify_push_config</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">list_snapshots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">project</span><span class="p">,</span>
+                       <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists the existing snapshots.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; project = client.project_path(&#39;[PROJECT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Iterate over all results</span>
+<span class="sd">            &gt;&gt;&gt; for element in client.list_snapshots(project):</span>
+<span class="sd">            ...     # process element</span>
+<span class="sd">            ...     pass</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; # Or iterate over results one page at a time</span>
+<span class="sd">            &gt;&gt;&gt; for page in client.list_snapshots(project, options=CallOptions(page_token=INITIAL_PAGE)):</span>
+<span class="sd">            ...     for element in page:</span>
+<span class="sd">            ...         # process element</span>
+<span class="sd">            ...         pass</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            project (str): The name of the cloud project that snapshots belong to.</span>
+<span class="sd">                Format is ``projects/{project}``.</span>
+<span class="sd">            page_size (int): The maximum number of resources contained in the</span>
+<span class="sd">                underlying API response. If page streaming is performed per-</span>
+<span class="sd">                resource, this parameter does not affect the return value. If page</span>
+<span class="sd">                streaming is performed per-page, this determines the maximum number</span>
+<span class="sd">                of resources in a page.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
+<span class="sd">            is an iterable of :class:`~google.cloud.pubsub_v1.types.Snapshot` instances.</span>
+<span class="sd">            This object can also be configured to iterate over the pages</span>
+<span class="sd">            of the response through the `options` parameter.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">ListSnapshotsRequest</span><span class="p">(</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_list_snapshots</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;snapshots&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span>
+
+    <span class="k">def</span> <span class="nf">create_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">name</span><span class="p">,</span>
+                        <span class="n">subscription</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a snapshot from the requested subscription.</span>
+<span class="sd">        If the snapshot already exists, returns ``ALREADY_EXISTS``.</span>
+<span class="sd">        If the requested subscription doesn&#39;t exist, returns ``NOT_FOUND``.</span>
+
+<span class="sd">        If the name is not provided in the request, the server will assign a random</span>
+<span class="sd">        name for this snapshot on the same project as the subscription, conforming</span>
+<span class="sd">        to the</span>
+<span class="sd">        `resource name format &lt;https://cloud.google.com/pubsub/docs/overview#names&gt;`_.</span>
+<span class="sd">        The generated name is populated in the returned Snapshot object.</span>
+<span class="sd">        Note that for REST API requests, you must specify a name in the request.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; name = client.snapshot_path(&#39;[PROJECT]&#39;, &#39;[SNAPSHOT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.create_snapshot(name, subscription)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Optional user-provided name for this snapshot.</span>
+<span class="sd">                If the name is not provided in the request, the server will assign a random</span>
+<span class="sd">                name for this snapshot on the same project as the subscription.</span>
+<span class="sd">                Note that for REST API requests, you must specify a name.</span>
+<span class="sd">                Format is ``projects/{project}/snapshots/{snap}``.</span>
+<span class="sd">            subscription (str): The subscription whose backlog the snapshot retains.</span>
+<span class="sd">                Specifically, the created snapshot is guaranteed to retain:</span>
+
+<span class="sd">                * The existing backlog on the subscription. More precisely, this is</span>
+<span class="sd">                  defined as the messages in the subscription&#39;s backlog that are</span>
+<span class="sd">                  unacknowledged upon the successful completion of the</span>
+<span class="sd">                  `CreateSnapshot` request; as well as:</span>
+<span class="sd">                * Any messages published to the subscription&#39;s topic following the</span>
+<span class="sd">                  successful completion of the CreateSnapshot request.</span>
+
+<span class="sd">                Format is ``projects/{project}/subscriptions/{sub}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.Snapshot` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">CreateSnapshotRequest</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_snapshot</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">snapshot</span><span class="p">,</span>
+                        <span class="n">update_mask</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates an existing snapshot. Note that certain properties of a snapshot</span>
+<span class="sd">        are not modifiable.</span>
+<span class="sd">        NOTE:  The style guide requires body: \&quot;snapshot\&quot; instead of body: \&quot;*\&quot;.</span>
+<span class="sd">        Keeping the latter for internal consistency in V1, however it should be</span>
+<span class="sd">        corrected in V2.  See</span>
+<span class="sd">        https://cloud.google.com/apis/design/standard_methods#update for details.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; snapshot = {}</span>
+<span class="sd">            &gt;&gt;&gt; update_mask = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.update_snapshot(snapshot, update_mask)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            snapshot (Union[dict, ~google.cloud.pubsub_v1.types.Snapshot]): The updated snpashot object.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Snapshot`</span>
+<span class="sd">            update_mask (Union[dict, ~google.cloud.pubsub_v1.types.FieldMask]): Indicates which fields in the provided snapshot to update.</span>
+<span class="sd">                Must be specified and non-empty.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.FieldMask`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.Snapshot` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">UpdateSnapshotRequest</span><span class="p">(</span>
+            <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">,</span> <span class="n">update_mask</span><span class="o">=</span><span class="n">update_mask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_snapshot</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">delete_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">snapshot</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes an existing snapshot. All messages retained in the snapshot</span>
+<span class="sd">        are immediately dropped. After a snapshot is deleted, a new one may be</span>
+<span class="sd">        created with the same name, but the new one has no association with the old</span>
+<span class="sd">        snapshot or its subscription, unless the same subscription is specified.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; snapshot = client.snapshot_path(&#39;[PROJECT]&#39;, &#39;[SNAPSHOT]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client.delete_snapshot(snapshot)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            snapshot (str): The name of the snapshot to delete.</span>
+<span class="sd">                Format is ``projects/{project}/snapshots/{snap}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">DeleteSnapshotRequest</span><span class="p">(</span><span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_snapshot</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">subscription</span><span class="p">,</span>
+             <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">snapshot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Seeks an existing subscription to a point in time or to a given snapshot,</span>
+<span class="sd">        whichever is provided in the request.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; subscription = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.seek(subscription)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            subscription (str): The subscription to affect.</span>
+<span class="sd">            time (Union[dict, ~google.cloud.pubsub_v1.types.Timestamp]): The time to seek to.</span>
+<span class="sd">                Messages retained in the subscription that were published before this</span>
+<span class="sd">                time are marked as acknowledged, and messages retained in the</span>
+<span class="sd">                subscription that were published after this time are marked as</span>
+<span class="sd">                unacknowledged. Note that this operation affects only those messages</span>
+<span class="sd">                retained in the subscription (configured by the combination of</span>
+<span class="sd">                ``message_retention_duration`` and ``retain_acked_messages``). For example,</span>
+<span class="sd">                if ``time`` corresponds to a point before the message retention</span>
+<span class="sd">                window (or to a point before the system&#39;s notion of the subscription</span>
+<span class="sd">                creation time), only retained messages will be marked as unacknowledged,</span>
+<span class="sd">                and already-expunged messages will not be restored.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Timestamp`</span>
+<span class="sd">            snapshot (str): The snapshot to seek to. The snapshot&#39;s topic must be the same as that of</span>
+<span class="sd">                the provided subscription.</span>
+<span class="sd">                Format is ``projects/{project}/snapshots/{snap}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.SeekResponse` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sanity check: We have some fields which are mutually exclusive;</span>
+        <span class="c1"># raise ValueError if more than one is sent.</span>
+        <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">protobuf_helpers</span><span class="o">.</span><span class="n">check_oneof</span><span class="p">(</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
+            <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">,</span> <span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">pubsub_pb2</span><span class="o">.</span><span class="n">SeekRequest</span><span class="p">(</span>
+            <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">snapshot</span><span class="o">=</span><span class="n">snapshot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_seek</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">resource</span><span class="p">,</span>
+                       <span class="n">policy</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the access control policy on the specified resource. Replaces any</span>
+<span class="sd">        existing policy.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; resource = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; policy = {}</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.set_iam_policy(resource, policy)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            resource (str): REQUIRED: The resource for which the policy is being specified.</span>
+<span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
+<span class="sd">                resource is specified as ``projects/{project}``.</span>
+<span class="sd">            policy (Union[dict, ~google.cloud.pubsub_v1.types.Policy]): REQUIRED: The complete policy to be applied to the ``resource``. The size of</span>
+<span class="sd">                the policy is limited to a few 10s of KB. An empty policy is a</span>
+<span class="sd">                valid policy but certain Cloud Platform services (such as Projects)</span>
+<span class="sd">                might reject them.</span>
+<span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
+<span class="sd">                message :class:`~google.cloud.pubsub_v1.types.Policy`</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.Policy` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">SetIamPolicyRequest</span><span class="p">(</span>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">resource</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the access control policy for a resource.</span>
+<span class="sd">        Returns an empty policy if the resource exists and does not have a policy</span>
+<span class="sd">        set.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; resource = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.get_iam_policy(resource)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            resource (str): REQUIRED: The resource for which the policy is being requested.</span>
+<span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
+<span class="sd">                resource is specified as ``projects/{project}``.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.Policy` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">GetIamPolicyRequest</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">resource</span><span class="p">,</span>
+                             <span class="n">permissions</span><span class="p">,</span>
+                             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns permissions that a caller has on the specified resource.</span>
+<span class="sd">        If the resource does not exist, this will return an empty set of</span>
+<span class="sd">        permissions, not a NOT_FOUND error.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; from google.cloud import pubsub_v1</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; client = pubsub_v1.SubscriberClient()</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; resource = client.subscription_path(&#39;[PROJECT]&#39;, &#39;[SUBSCRIPTION]&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; permissions = []</span>
+<span class="sd">            &gt;&gt;&gt;</span>
+<span class="sd">            &gt;&gt;&gt; response = client.test_iam_permissions(resource, permissions)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            resource (str): REQUIRED: The resource for which the policy detail is being requested.</span>
+<span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
+<span class="sd">                resource is specified as ``projects/{project}``.</span>
+<span class="sd">            permissions (list[str]): The set of permissions to check for the ``resource``. Permissions with</span>
+<span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
+<span class="sd">                information see</span>
+<span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~google.cloud.pubsub_v1.types.TestIamPermissionsResponse` instance.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">TestIamPermissionsRequest</span><span class="p">(</span>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

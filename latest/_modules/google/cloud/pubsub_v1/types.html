@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.types &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.pubsub_v1.types &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -55,14 +55,21 @@
 <span class="c1"># limitations under the License.</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-
 <span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">psutil</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">psutil</span>
+<span class="kn">from</span> <span class="nn">google.api_core.protobuf_helpers</span> <span class="k">import</span> <span class="n">get_messages</span>
 
-<span class="kn">from</span> <span class="nn">google.cloud.proto.pubsub.v1</span> <span class="k">import</span> <span class="n">pubsub_pb2</span>
-<span class="kn">from</span> <span class="nn">google.gax.utils.messages</span> <span class="k">import</span> <span class="n">get_messages</span>
+<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">http_pb2</span>
+<span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.proto</span> <span class="k">import</span> <span class="n">pubsub_pb2</span>
+<span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">iam_policy_pb2</span>
+<span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">policy_pb2</span>
+<span class="kn">from</span> <span class="nn">google.iam.v1.logging</span> <span class="k">import</span> <span class="n">audit_data_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">descriptor_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">duration_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">empty_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">timestamp_pb2</span>
 
 
@@ -97,19 +104,31 @@
 <span class="p">)</span>
 
 
-<span class="c1"># Pub/Sub uses timestamps from the common protobuf package.</span>
-<span class="c1"># Do not make users import from there.</span>
-<span class="n">Timestamp</span> <span class="o">=</span> <span class="n">timestamp_pb2</span><span class="o">.</span><span class="n">Timestamp</span>
-
-
-<span class="n">_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BatchSettings&#39;</span><span class="p">,</span> <span class="s1">&#39;FlowControl&#39;</span><span class="p">,</span> <span class="s1">&#39;Timestamp&#39;</span><span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BatchSettings&#39;</span><span class="p">,</span> <span class="s1">&#39;FlowControl&#39;</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">get_messages</span><span class="p">(</span><span class="n">pubsub_pb2</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">message</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.pubsub_v1.types&#39;</span>
     <span class="nb">setattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-    <span class="n">_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_names</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="n">http_pb2</span><span class="p">,</span>
+        <span class="n">pubsub_pb2</span><span class="p">,</span>
+        <span class="n">iam_policy_pb2</span><span class="p">,</span>
+        <span class="n">policy_pb2</span><span class="p">,</span>
+        <span class="n">audit_data_pb2</span><span class="p">,</span>
+        <span class="n">descriptor_pb2</span><span class="p">,</span>
+        <span class="n">duration_pb2</span><span class="p">,</span>
+        <span class="n">empty_pb2</span><span class="p">,</span>
+        <span class="n">field_mask_pb2</span><span class="p">,</span>
+        <span class="n">timestamp_pb2</span><span class="p">,</span> <span class="p">):</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">get_messages</span><span class="p">(</span><span class="n">module</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">message</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.pubsub_v1.types&#39;</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+        <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">names</span><span class="p">))</span>
 </pre></div>
 
           </div>

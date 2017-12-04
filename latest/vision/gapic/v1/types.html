@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Vision Client Types &#8212; google-cloud 988e2c2 documentation</title>
+    <title>Vision Client Types &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -399,18 +399,6 @@ entity.</p>
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">FaceAnnotation</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation" title="Permalink to this definition">#</a></dt>
 <dd><p>A face annotation object contains the results of face detection.</p>
 <dl class="attribute">
-<dt id="google.cloud.vision_v1.types.FaceAnnotation.type">
-<code class="descname">type</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.type" title="Permalink to this definition">#</a></dt>
-<dd><p>Face landmark type.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.FaceAnnotation.position">
-<code class="descname">position</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.position" title="Permalink to this definition">#</a></dt>
-<dd><p>Face landmark position.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.vision_v1.types.FaceAnnotation.bounding_poly">
 <code class="descname">bounding_poly</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.bounding_poly" title="Permalink to this definition">#</a></dt>
 <dd><p>The bounding polygon around the face. The coordinates of the
@@ -525,6 +513,18 @@ Range [-180,180].</p>
 positions may fall outside the bounds of the image if the face is near
 one or more edges of the image. Therefore it is NOT guaranteed that
 <code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">width</span></code> or <code class="docutils literal"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">y</span> <span class="pre">&lt;</span> <span class="pre">height</span></code>.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.FaceAnnotation.Landmark.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.Landmark.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Face landmark type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.FaceAnnotation.Landmark.position">
+<code class="descname">position</code><a class="headerlink" href="#google.cloud.vision_v1.types.FaceAnnotation.Landmark.position" title="Permalink to this definition">#</a></dt>
+<dd><p>Face landmark position.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -861,38 +861,6 @@ refer to the
 [google.cloud.vision.v1.TextAnnotation.TextProperty][google.cloud.vision.v1.TextAnnotation.TextProperty]
 message definition below for more detail.</p>
 <dl class="attribute">
-<dt id="google.cloud.vision_v1.types.TextAnnotation.language_code">
-<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.language_code" title="Permalink to this definition">#</a></dt>
-<dd><p>The BCP-47 language code, such as “en-US” or “sr-Latn”. For
-more information, see <a class="reference external" href="http://www.unicode.org/reports/tr35/#Uni">http://www.unicode.org/reports/tr35/#Uni</a>
-code_locale_identifier.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.TextAnnotation.confidence">
-<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.confidence" title="Permalink to this definition">#</a></dt>
-<dd><p>Confidence of detected language. Range [0, 1].</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.TextAnnotation.is_prefix">
-<code class="descname">is_prefix</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.is_prefix" title="Permalink to this definition">#</a></dt>
-<dd><p>True if break prepends the element.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.TextAnnotation.detected_languages">
-<code class="descname">detected_languages</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.detected_languages" title="Permalink to this definition">#</a></dt>
-<dd><p>A list of detected languages together with confidence.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.TextAnnotation.detected_break">
-<code class="descname">detected_break</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.detected_break" title="Permalink to this definition">#</a></dt>
-<dd><p>Detected start or end of a text segment.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.vision_v1.types.TextAnnotation.pages">
 <code class="descname">pages</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.pages" title="Permalink to this definition">#</a></dt>
 <dd><p>List of pages detected by OCR.</p>
@@ -908,18 +876,50 @@ code_locale_identifier.</p>
 <dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedBreak">
 <em class="property">class </em><code class="descname">DetectedBreak</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedBreak" title="Permalink to this definition">#</a></dt>
 <dd><p>Detected start or end of a structural component.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedBreak.is_prefix">
+<code class="descname">is_prefix</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedBreak.is_prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>True if break prepends the element.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedLanguage">
 <em class="property">class </em><code class="descname">DetectedLanguage</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedLanguage" title="Permalink to this definition">#</a></dt>
 <dd><p>Detected language for a structural component.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedLanguage.language_code">
+<code class="descname">language_code</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedLanguage.language_code" title="Permalink to this definition">#</a></dt>
+<dd><p>The BCP-47 language code, such as “en-US” or “sr-Latn”. For
+more information, see <a class="reference external" href="http://www.unicode.org/reports/tr35/#Uni">http://www.unicode.org/reports/tr35/#Uni</a>
+code_locale_identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.TextAnnotation.DetectedLanguage.confidence">
+<code class="descname">confidence</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.DetectedLanguage.confidence" title="Permalink to this definition">#</a></dt>
+<dd><p>Confidence of detected language. Range [0, 1].</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.TextAnnotation.TextProperty">
 <em class="property">class </em><code class="descname">TextProperty</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.TextProperty" title="Permalink to this definition">#</a></dt>
 <dd><p>Additional information detected on the structural component.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.TextAnnotation.TextProperty.detected_languages">
+<code class="descname">detected_languages</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.TextProperty.detected_languages" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of detected languages together with confidence.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.TextAnnotation.TextProperty.detected_break">
+<code class="descname">detected_break</code><a class="headerlink" href="#google.cloud.vision_v1.types.TextAnnotation.TextProperty.detected_break" title="Permalink to this definition">#</a></dt>
+<dd><p>Detected start or end of a text segment.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -940,31 +940,6 @@ code_locale_identifier.</p>
 <dt id="google.cloud.vision_v1.types.WebDetection">
 <em class="property">class </em><code class="descclassname">google.cloud.vision_v1.types.</code><code class="descname">WebDetection</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection" title="Permalink to this definition">#</a></dt>
 <dd><p>Relevant information for the image from the Internet.</p>
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.WebDetection.entity_id">
-<code class="descname">entity_id</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.entity_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Opaque entity ID.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.WebDetection.score">
-<code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.score" title="Permalink to this definition">#</a></dt>
-<dd><p>Overall relevancy score for the web page. Not normalized and
-not comparable across different image queries.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.WebDetection.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.description" title="Permalink to this definition">#</a></dt>
-<dd><p>Canonical description of the entity, in English.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.vision_v1.types.WebDetection.url">
-<code class="descname">url</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.url" title="Permalink to this definition">#</a></dt>
-<dd><p>The result web page URL.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="google.cloud.vision_v1.types.WebDetection.web_entities">
 <code class="descname">web_entities</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.web_entities" title="Permalink to this definition">#</a></dt>
@@ -998,18 +973,63 @@ crops.</p>
 <dt id="google.cloud.vision_v1.types.WebDetection.WebEntity">
 <em class="property">class </em><code class="descname">WebEntity</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebEntity" title="Permalink to this definition">#</a></dt>
 <dd><p>Entity deduced from similar images on the Internet.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebEntity.entity_id">
+<code class="descname">entity_id</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebEntity.entity_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Opaque entity ID.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebEntity.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebEntity.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Overall relevancy score for the entity. Not normalized and not
+comparable across different image queries.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebEntity.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebEntity.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Canonical description of the entity, in English.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.WebDetection.WebImage">
 <em class="property">class </em><code class="descname">WebImage</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebImage" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata for online images.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebImage.url">
+<code class="descname">url</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebImage.url" title="Permalink to this definition">#</a></dt>
+<dd><p>The result image URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebImage.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebImage.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Overall relevancy score for the image. Not normalized and not
+comparable across different image queries.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.vision_v1.types.WebDetection.WebPage">
 <em class="property">class </em><code class="descname">WebPage</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebPage" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata for web pages.</p>
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebPage.url">
+<code class="descname">url</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebPage.url" title="Permalink to this definition">#</a></dt>
+<dd><p>The result web page URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.vision_v1.types.WebDetection.WebPage.score">
+<code class="descname">score</code><a class="headerlink" href="#google.cloud.vision_v1.types.WebDetection.WebPage.score" title="Permalink to this definition">#</a></dt>
+<dd><p>Overall relevancy score for the web page. Not normalized and
+not comparable across different image queries.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>

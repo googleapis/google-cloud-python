@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.storage.client &#8212; google-cloud 988e2c2 documentation</title>
+    <title>google.cloud.storage.client &#8212; google-cloud dfe8a41 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '988e2c2',
+        VERSION:     'dfe8a41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -68,10 +68,13 @@
 <span class="kn">from</span> <span class="nn">google.cloud.storage.bucket</span> <span class="k">import</span> <span class="n">Bucket</span>
 
 
+<span class="n">_marker</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">ClientWithProject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
-<span class="sd">    :type project: str</span>
+<span class="sd">    :type project: str or None</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. Will be</span>
 <span class="sd">                    passed when creating a topic.  If not passed,</span>
 <span class="sd">                    falls back to the default inferred from the environment.</span>
@@ -97,10 +100,19 @@
              <span class="s1">&#39;https://www.googleapis.com/auth/devstorage.read_write&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Storage consumer.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">_marker</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_http</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_base_connection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">no_project</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="s1">&#39;&lt;none&gt;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">no_project</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="n">_marker</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
                                      <span class="n">_http</span><span class="o">=</span><span class="n">_http</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">no_project</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_batch_stack</span> <span class="o">=</span> <span class="n">_LocalStack</span><span class="p">()</span>
 
@@ -258,7 +270,7 @@
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Client.create_bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">requester_pays</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.create_bucket"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">requester_pays</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new bucket.</span>
 
 <span class="sd">        For example:</span>
@@ -280,17 +292,22 @@
 <span class="sd">            (Optional) Whether requester pays for API requests for this</span>
 <span class="sd">            bucket and its blobs.</span>
 
+<span class="sd">        :type project: str</span>
+<span class="sd">        :param project: (Optional) the project under which the  bucket is to</span>
+<span class="sd">                        be created.  If not passed, uses the project set on</span>
+<span class="sd">                        the client.</span>
+
 <span class="sd">        :rtype: :class:`google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">requester_pays</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">bucket</span><span class="o">.</span><span class="n">requester_pays</span> <span class="o">=</span> <span class="n">requester_pays</span>
-        <span class="n">bucket</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">bucket</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bucket</span></div>
 
 <div class="viewcode-block" id="Client.list_buckets"><a class="viewcode-back" href="../../../../storage/client.html#google.cloud.storage.client.Client.list_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">list_buckets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                     <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                     <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all buckets in the project associated to the client.</span>
 
 <span class="sd">        This will not populate the list of blobs available in each</span>
@@ -326,11 +343,24 @@
 <span class="sd">            response with just the next page token and the language of each</span>
 <span class="sd">            bucket returned: &#39;items/id,nextPageToken&#39;</span>
 
+<span class="sd">        :type project: str</span>
+<span class="sd">        :param project: (Optional) the project whose buckets are to be listed.</span>
+<span class="sd">                        If not passed, uses the project set on the client.</span>
+
 <span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">        :raises ValueError: if both ``project`` is ``None`` and the client&#39;s</span>
+<span class="sd">                            project is also ``None``.</span>
 <span class="sd">        :returns: Iterator of all :class:`~google.cloud.storage.bucket.Bucket`</span>
 <span class="sd">                  belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Client project not set:  pass an explicit project.&quot;</span><span class="p">)</span>
+
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
