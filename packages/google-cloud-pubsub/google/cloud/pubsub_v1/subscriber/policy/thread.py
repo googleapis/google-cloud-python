@@ -108,7 +108,7 @@ class Policy(base.BasePolicy):
         # Also maintain a request queue and an executor.
         if executor is None:
             executor_kwargs = {}
-            if sys.version_info >= (3, 6):
+            if sys.version_info[:2] == (2, 7) or sys.version_info >= (3, 6):
                 executor_kwargs['thread_name_prefix'] = (
                     'ThreadPoolExecutor-SubscriberPolicy')
             executor = futures.ThreadPoolExecutor(

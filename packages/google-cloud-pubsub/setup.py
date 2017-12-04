@@ -51,7 +51,7 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-api-core[grpc] >= 0.1.1, < 0.2.0dev',
+    'google-api-core[grpc] >= 0.1.2.dev1, < 0.2.0dev',
     'google-auth >= 1.0.2, < 2.0dev',
     'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
     'psutil >= 5.2.2, < 6.0dev',
