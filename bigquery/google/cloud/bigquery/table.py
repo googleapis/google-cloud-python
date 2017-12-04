@@ -21,19 +21,10 @@ import datetime
 import operator
 
 import six
-try:
-    import pandas
-except ImportError:  # pragma: NO COVER
-    pandas = None
-
-from google.api_core.page_iterator import HTTPIterator
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _snake_to_camel_case
-from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -1032,72 +1023,3 @@ class Row(object):
                        key=operator.itemgetter(1))
         f2i = '{' + ', '.join('%r: %d' % item for item in items) + '}'
         return 'Row({}, {})'.format(self._xxx_values, f2i)
-
-
-class RowIterator(HTTPIterator):
-    """A class for iterating through HTTP/JSON API row list responses.
-
-    Args:
-        client (google.cloud.bigquery.Client): The API client.
-        api_request (Callable[google.cloud._http.JSONConnection.api_request]):
-            The function to use to make API requests.
-        path (str): The method path to query for the list of items.
-        page_token (str): A token identifying a page in a result set to start
-            fetching results from.
-        max_results (int): The maximum number of results to fetch.
-        extra_params (dict): Extra query string parameters for the API call.
-
-    .. autoattribute:: pages
-    """
-
-    def __init__(self, client, api_request, path, schema, page_token=None,
-                 max_results=None, extra_params=None):
-        super(RowIterator, self).__init__(
-            client, api_request, path, item_to_value=_item_to_row,
-            items_key='rows', page_token=page_token, max_results=max_results,
-            extra_params=extra_params, page_start=_rows_page_start,
-            next_token='pageToken')
-        self._schema = schema
-        self._field_to_index = _field_to_index_mapping(schema)
-        self._total_rows = None
-
-    @property
-    def schema(self):
-        """Schema for the table containing the rows
-
-        Returns:
-            list of :class:`~google.cloud.bigquery.schema.SchemaField`:
-                fields describing the schema
-        """
-        return list(self._schema)
-
-    @property
-    def total_rows(self):
-        """The total number of rows in the table.
-
-        Returns:
-            int: the row count.
-        """
-        return self._total_rows
-
-    def to_dataframe(self):
-        """Create a pandas DataFrame from the query results.
-
-        Returns:
-            A :class:`~pandas.DataFrame` populated with row data and column
-            headers from the query results. The column headers are derived
-            from the destination table's schema.
-
-        Raises:
-            ValueError: If the `pandas` library cannot be imported.
-
-        """
-        if pandas is None:
-            raise ValueError('The pandas library is not installed, please '
-                             'install pandas to use the to_dataframe() '
-                             'function.')
-
-        column_headers = [field.name for field in self.schema]
-        rows = [row.values() for row in iter(self)]
-
-        return pandas.DataFrame(rows, columns=column_headers)

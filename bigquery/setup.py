@@ -58,10 +58,6 @@ REQUIREMENTS = [
     'requests >= 2.18.0',
 ]
 
-EXTRAS_REQUIREMENTS = {
-    'pandas': ['pandas >= 0.17.1'],
-}
-
 setup(
     name='google-cloud-bigquery',
     version='0.28.1.dev1',
@@ -73,6 +69,5 @@ setup(
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
-    extras_require=EXTRAS_REQUIREMENTS,
     **SETUP_BASE
 )
