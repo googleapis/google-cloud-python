@@ -889,6 +889,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = [all_data_rows[0]]
         self._check_row_data(rows, expected)
 
+    def test_empty_read(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        rows = list(session.read(
+            self.TABLE, self.COLUMNS, KeySet(keys=[(40,)])))
+        self._check_row_data(rows, [])
+
     def test_read_w_multiple_keys(self):
         ROW_COUNT = 40
         indices = [0, 5, 17]
