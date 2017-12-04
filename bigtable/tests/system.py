@@ -329,21 +329,30 @@ class TestTableAdminAPI(unittest.TestCase):
         )
 
         (endpoint, port) = server.stdout.readline().decode("utf-8").rstrip("\n").split(":")
+
+        old_emulator_host = os.environ.get("BIGTABLE_EMULATOR_HOST", None)
         os.environ["BIGTABLE_EMULATOR_HOST"] = endpoint + ":" + port
-        client = Client(project="client", admin=True)
-        instance = Instance("instance", client)
-        table = instance.table("table")
+        try:
+            client = Client(project="client", admin=True)
+            instance = Instance("instance", client)
+            table = instance.table("table")
 
-        # Run test, line by line
-        with open(TEST_SCRIPT, 'r') as script:
-            for line in script.readlines():
-                if line.startswith("CLIENT:"):
-                    chunks = line.split(" ")
-                    op = chunks[1]
-                    process_scan(table, chunks[2], chunks[3])
+            # Run test, line by line
+            with open(TEST_SCRIPT, 'r') as script:
+                for line in script.readlines():
+                    if line.startswith("CLIENT:"):
+                        chunks = line.split(" ")
+                        op = chunks[1]
+                        process_scan(table, chunks[2], chunks[3])
 
-        # Check that the test passed
-        server.kill()
+            # Check that the test passed
+            server.kill()
+        finally:
+            if old_emulator_host:
+                os.environ["BIGTABLE_EMULATOR_HOST"] = old_emulator_host
+            else:
+                del os.environ["BIGTABLE_EMULATOR_HOST"]
+
         server_stdout_lines = []
         while True:
             line = server.stdout.readline().decode("utf-8")
