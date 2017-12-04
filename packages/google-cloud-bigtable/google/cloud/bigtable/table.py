@@ -78,7 +78,6 @@ class Table(object):
     We can use a :class:`Table` to:
 
     * :meth:`create` the table
-    * :meth:`rename` the table
     * :meth:`delete` the table
     * :meth:`list_column_families` in the table
 
