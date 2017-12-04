@@ -1929,7 +1929,7 @@ class QueryJob(_AsyncJob):
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the call that retrieves rows.
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`
         :returns:
             Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.
             During each page, the iterator will have the ``total_rows``
@@ -1948,6 +1948,19 @@ class QueryJob(_AsyncJob):
         dest_table = self.destination
         return self._client.list_rows(dest_table, selected_fields=schema,
                                       retry=retry)
+
+    def to_dataframe(self):
+        """Return a pandas DataFrame from a QueryJob
+
+        Returns:
+            A :class:`~pandas.DataFrame` populated with row data and column
+            headers from the query results. The column headers are derived
+            from the destination table's schema.
+
+        Raises:
+            ValueError: If the `pandas` library cannot be imported.
+        """
+        return self.result().to_dataframe()
 
     def __iter__(self):
         return iter(self.result())
