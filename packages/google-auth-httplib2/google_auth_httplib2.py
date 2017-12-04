@@ -21,6 +21,7 @@ import logging
 from google.auth import exceptions
 from google.auth import transport
 import httplib2
+from six.moves import http_client
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -115,7 +116,9 @@ class Request(transport.Request):
             response, data = self.http.request(
                 url, method=method, body=body, headers=headers, **kwargs)
             return _Response(response, data)
-        except httplib2.HttpLib2Error as exc:
+        # httplib2 should catch the lower http error, this is a bug and
+        # needs to be fixed there.  Catch the error for the meanwhile.
+        except (httplib2.HttpLib2Error, http_client.HTTPException) as exc:
             raise exceptions.TransportError(exc)
 
 
