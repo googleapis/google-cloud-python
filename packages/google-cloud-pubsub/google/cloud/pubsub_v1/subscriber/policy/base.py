@@ -212,7 +212,10 @@ class BasePolicy(object):
         if ack_id in self.managed_ack_ids:
             self.managed_ack_ids.remove(ack_id)
             self._bytes -= byte_size
-            self._bytes = min([self._bytes, 0])
+            if self._bytes < 0:
+                _LOGGER.debug(
+                    'Bytes was unexpectedly negative: %d', self._bytes)
+                self._bytes = 0
 
         # If we have been paused by flow control, check and see if we are
         # back within our limits.
