@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import os
+import sys
 
 import nox
 
@@ -45,6 +46,8 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     deps = UNIT_TEST_DEPS
     if session.interpreter == 'python2.7':
+        deps += ('django >= 1.11.0, < 2.0.0dev',)
+    elif session.interpreter is None and sys.version_info[:2] == (2, 7):
         deps += ('django >= 1.11.0, < 2.0.0dev',)
     else:
         deps += ('django',)
