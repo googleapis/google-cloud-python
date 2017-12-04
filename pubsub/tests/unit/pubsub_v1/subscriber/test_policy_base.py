@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import time
 
 from google.api_core import exceptions
@@ -134,6 +135,18 @@ def test_drop():
     policy.drop('ack_id_string', 20)
     assert len(policy.managed_ack_ids) == 0
     assert policy._bytes == 0
+
+
+@mock.patch.object(base, '_LOGGER', spec=logging.Logger)
+def test_drop_unexpected_negative(_LOGGER):
+    policy = create_policy()
+    policy.managed_ack_ids.add('ack_id_string')
+    policy._bytes = 0
+    policy.drop('ack_id_string', 20)
+    assert len(policy.managed_ack_ids) == 0
+    assert policy._bytes == 0
+    _LOGGER.debug.assert_called_once_with(
+        'Bytes was unexpectedly negative: %d', -20)
 
 
 def test_drop_below_threshold():
