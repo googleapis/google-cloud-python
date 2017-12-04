@@ -24,10 +24,6 @@ import unittest
 import uuid
 
 import six
-try:
-    import pandas
-except ImportError:  # pragma: NO COVER
-    pandas = None
 
 from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
@@ -1248,28 +1244,6 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
 
-    @unittest.skipIf(pandas is None, 'Requires `pandas`')
-    def test_query_results_to_dataframe(self):
-        QUERY = """
-            SELECT id, author, time_ts, dead
-            from `bigquery-public-data.hacker_news.comments`
-            LIMIT 10
-        """
-
-        df = Config.CLIENT.query(QUERY).result().to_dataframe()
-
-        self.assertIsInstance(df, pandas.DataFrame)
-        self.assertEqual(len(df), 10)  # verify the number of rows
-        column_names = ['id', 'author', 'time_ts', 'dead']
-        self.assertEqual(list(df), column_names)  # verify the column names
-        exp_datatypes = {'id': int, 'author': str,
-                         'time_ts': pandas.Timestamp, 'dead': bool}
-        for index, row in df.iterrows():
-            for col in column_names:
-                # all the schema fields are nullable, so None is acceptable
-                if not row[col] is None:
-                    self.assertIsInstance(row[col], exp_datatypes[col])
-
     def test_query_table_def(self):
         gs_url = self._write_csv_to_storage(
             'bq_external_test' + unique_resource_id(), 'person_ages.csv',
@@ -1444,56 +1418,6 @@ class TestBigQuery(unittest.TestCase):
                                   '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)
-
-    def _fetch_dataframe(self, query):
-        return Config.CLIENT.query(query).result().to_dataframe()
-
-    @unittest.skipIf(pandas is None, 'Requires `pandas`')
-    def test_nested_table_to_dataframe(self):
-        SF = bigquery.SchemaField
-        schema = [
-            SF('string_col', 'STRING', mode='NULLABLE'),
-            SF('record_col', 'RECORD', mode='NULLABLE', fields=[
-                SF('nested_string', 'STRING', mode='NULLABLE'),
-                SF('nested_repeated', 'INTEGER', mode='REPEATED'),
-                SF('nested_record', 'RECORD', mode='NULLABLE', fields=[
-                    SF('nested_nested_string', 'STRING', mode='NULLABLE'),
-                ]),
-            ]),
-        ]
-        record = {
-            'nested_string': 'another string value',
-            'nested_repeated': [0, 1, 2],
-            'nested_record': {'nested_nested_string': 'some deep insight'},
-        }
-        to_insert = [
-            ('Some value', record)
-        ]
-        table_id = 'test_table'
-        dataset = self.temp_dataset(_make_dataset_id('nested_df'))
-        table_arg = Table(dataset.table(table_id), schema=schema)
-        table = retry_403(Config.CLIENT.create_table)(table_arg)
-        self.to_delete.insert(0, table)
-        Config.CLIENT.create_rows(table, to_insert)
-        QUERY = 'SELECT * from `{}.{}.{}`'.format(
-            Config.CLIENT.project, dataset.dataset_id, table_id)
-
-        retry = RetryResult(_has_rows, max_tries=8)
-        df = retry(self._fetch_dataframe)(QUERY)
-
-        self.assertIsInstance(df, pandas.DataFrame)
-        self.assertEqual(len(df), 1)  # verify the number of rows
-        exp_columns = ['string_col', 'record_col']
-        self.assertEqual(list(df), exp_columns)  # verify the column names
-        row = df.iloc[0]
-        # verify the row content
-        self.assertEqual(row['string_col'], 'Some value')
-        self.assertEqual(row['record_col'], record)
-        # verify that nested data can be accessed with indices/keys
-        self.assertEqual(row['record_col']['nested_repeated'][0], 0)
-        self.assertEqual(
-            row['record_col']['nested_record']['nested_nested_string'],
-            'some deep insight')
 
     def temp_dataset(self, dataset_id):
         dataset = retry_403(Config.CLIENT.create_dataset)(

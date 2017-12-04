@@ -36,7 +36,7 @@ def default(session):
     """
     # Install all test dependencies, then install this package in-place.
     session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
-    session.install('-e', '.[pandas]')
+    session.install('-e', '.')
 
     # Run py.test against the unit tests.
     session.run(
@@ -89,7 +89,7 @@ def system(session, py):
         os.path.join('..', 'storage'),
         os.path.join('..', 'test_utils'),
     )
-    session.install('-e', '.[pandas]')
+    session.install('-e', '.')
 
     # Run py.test against the system tests.
     session.run(
