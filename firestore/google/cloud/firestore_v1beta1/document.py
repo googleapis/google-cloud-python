@@ -399,7 +399,7 @@ class DocumentReference(object):
 
         return commit_response.commit_time
 
-    def get(self, field_paths=None, transaction=None):
+    def get(self, field_paths=None, transaction=None, raise_error=True):
         """Retrieve a snapshot of the current document.
 
         See :meth:`~.firestore_v1beta1.client.Client.field_path` for
@@ -417,6 +417,10 @@ class DocumentReference(object):
             transaction (Optional[~.firestore_v1beta1.transaction.\
                 Transaction]): An existing transaction that this reference
                 will be retrieved in.
+            raise_error (Optional[bool]): raises_error if True, else 
+                returns a DocumentSnapshot whose exists property is False.
+                It will be user's responsibility to check for existence
+                before use.
 
         Returns:
             ~.firestore_v1beta1.document.DocumentSnapshot: A snapshot of
@@ -429,7 +433,10 @@ class DocumentReference(object):
             [self], field_paths=field_paths, transaction=transaction)
         snapshot = _consume_single_get(snapshot_generator)
         if snapshot is None:
-            raise exceptions.NotFound(self._document_path)
+            if raise_error:
+                raise exceptions.NotFound(self._document_path)
+            else:
+                return DocumentSnapshot([self], {}, False, None, None, None)
         else:
             return snapshot
 

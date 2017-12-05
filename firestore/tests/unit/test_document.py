@@ -422,6 +422,34 @@ class TestDocumentReference(unittest.TestCase):
         client.get_all.assert_called_once_with(
             [document], field_paths=None, transaction=None)
 
+    def test_get_failure_raise_error_false(self):
+        # Create a minimal fake client with a dummy response.
+        response_iterator = iter([None])
+        client = mock.Mock(spec=['get_all'])
+        client.get_all.return_value = response_iterator
+
+        # Actually make a document and call get().
+        document = self._make_one('yellow', 'mellow', client=client)
+        snapshot = document.get(raise_error=False)
+
+        # Verify the response and the mocks.
+        self.assertFalse(snapshot.exists)
+
+    def test_get_failure_raise_error(self):
+        # Create a minimal fake client with a dummy response.
+        response_iterator = iter([None])
+        client = mock.Mock(spec=['get_all'])
+        client.get_all.return_value = response_iterator
+        client._database_string = ''
+
+        # Actually make a document and call get().
+        document = self._make_one('yellow', 'mellow', client=client)
+
+        # Verify the response and the mocks.
+        from google.cloud import exceptions
+        with self.assertRaises(exceptions.NotFound):
+            snapshot = document.get()
+
     def test_get_with_transaction(self):
         from google.cloud.firestore_v1beta1.client import Client
         from google.cloud.firestore_v1beta1.transaction import Transaction
