@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery._helpers &#8212; google-cloud ad1174b documentation</title>
+    <title>google.cloud.bigquery._helpers &#8212; google-cloud 38d4640 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'ad1174b',
+        VERSION:     '38d4640',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -510,7 +510,7 @@
     <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">total_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span><span class="p">)</span>
-    <span class="n">iterator</span><span class="o">.</span><span class="n">total_rows</span> <span class="o">=</span> <span class="n">total_rows</span>
+    <span class="n">iterator</span><span class="o">.</span><span class="n">_total_rows</span> <span class="o">=</span> <span class="n">total_rows</span>
 <span class="c1"># pylint: enable=unused-argument</span>
 
 

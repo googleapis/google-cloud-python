@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud ad1174b documentation</title>
+    <title>API Reference &#8212; google-cloud 38d4640 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'ad1174b',
+        VERSION:     '38d4640',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -701,7 +701,7 @@ row to read.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.table.RowIterator" title="google.cloud.bigquery.table.RowIterator"><code class="xref py py-class docutils literal"><span class="pre">RowIterator</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of row data
@@ -1871,7 +1871,7 @@ a <a class="reference external" href="https://docs.python.org/3/library/concurre
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.table.RowIterator" title="google.cloud.bigquery.table.RowIterator"><code class="xref py py-class docutils literal"><span class="pre">RowIterator</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Iterator of row data <a class="reference internal" href="#google.cloud.bigquery.table.Row" title="google.cloud.bigquery.table.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a>-s.
@@ -1914,6 +1914,24 @@ yet complete.</td>
 <code class="descname">table_definitions</code><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.table_definitions" title="Permalink to this definition">#</a></dt>
 <dd><p>See
 <a class="reference internal" href="#google.cloud.bigquery.job.QueryJobConfig.table_definitions" title="google.cloud.bigquery.job.QueryJobConfig.table_definitions"><code class="xref py py-attr docutils literal"><span class="pre">google.cloud.bigquery.job.QueryJobConfig.table_definitions</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.job.QueryJob.to_dataframe">
+<code class="descname">to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/job.html#QueryJob.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.job.QueryJob.to_dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a pandas DataFrame from a QueryJob</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.21.0)"><code class="xref py py-class docutils literal"><span class="pre">DataFrame</span></code></a> populated with row data and column
+headers from the query results. The column headers are derived
+from the destination table’s schema.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the <cite>pandas</cite> library cannot be imported.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -2317,7 +2335,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'userByEmail', 'view', 'domain', 'specialGroup'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'domain', 'groupByEmail', 'specialGroup', 'userByEmail', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -2829,6 +2847,102 @@ to <a class="reference external" href="https://docs.python.org/3/library/constan
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A sequence of length <code class="docutils literal"><span class="pre">len(row)</span></code>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Sequence[<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)">object</a>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.table.RowIterator">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.table.</code><code class="descname">RowIterator</code><span class="sig-paren">(</span><em>client</em>, <em>api_request</em>, <em>path</em>, <em>schema</em>, <em>page_token=None</em>, <em>max_results=None</em>, <em>extra_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#RowIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.RowIterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.HTTPIterator" title="google.api_core.page_iterator.HTTPIterator"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.page_iterator.HTTPIterator</span></code></a></p>
+<p>A class for iterating through HTTP/JSON API row list responses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<em>google.cloud.bigquery.Client</em>) – The API client.</li>
+<li><strong>api_request</strong> (<em>Callable</em><em>[</em><em>google.cloud._http.JSONConnection.api_request</em><em>]</em>) – The function to use to make API requests.</li>
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The method path to query for the list of items.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A token identifying a page in a result set to start
+fetching results from.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The maximum number of results to fetch.</li>
+<li><strong>extra_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Extra query string parameters for the API call.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.RowIterator.pages">
+<code class="descname">pages</code><a class="headerlink" href="#google.cloud.bigquery.table.RowIterator.pages" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterator of pages in the response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A</dt>
+<dd>generator of page instances.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/types.html#types.GeneratorType" title="(in Python v3.6)">types.GeneratorType</a>[<a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Page" title="google.api_core.page_iterator.Page">google.api_core.page_iterator.Page</a>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the iterator has already been started.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.RowIterator.schema">
+<code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery.table.RowIterator.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Schema for the table containing the rows</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.table.RowIterator.to_dataframe">
+<code class="descname">to_dataframe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/table.html#RowIterator.to_dataframe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.table.RowIterator.to_dataframe" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a pandas DataFrame from the query results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.21.0)"><code class="xref py py-class docutils literal"><span class="pre">DataFrame</span></code></a> populated with row data and column
+headers from the query results. The column headers are derived
+from the destination table’s schema.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the <cite>pandas</cite> library cannot be imported.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.table.RowIterator.total_rows">
+<code class="descname">total_rows</code><a class="headerlink" href="#google.cloud.bigquery.table.RowIterator.total_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>The total number of rows in the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the row count.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)">int</a></td>
 </tr>
 </tbody>
 </table>

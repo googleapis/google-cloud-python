@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud ad1174b documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 38d4640 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'ad1174b',
+        VERSION:     '38d4640',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -75,9 +75,6 @@
 
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">DEFAULT_RETRY</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_SCALAR_VALUE_TO_JSON_ROW</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_field_to_index_mapping</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_item_to_row</span>
-<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_page_start</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_snake_to_camel_case</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
@@ -90,6 +87,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">Table</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableListItem</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">TableReference</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">RowIterator</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_TABLE_HAS_NO_SCHEMA</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_row_from_mapping</span>
 
@@ -1231,7 +1229,7 @@
 <span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
 
-<span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`</span>
 <span class="sd">        :returns: Iterator of row data</span>
 <span class="sd">                  :class:`~google.cloud.bigquery.table.Row`-s. During each</span>
 <span class="sd">                  page, the iterator will have the ``total_rows`` attribute</span>
@@ -1259,20 +1257,15 @@
         <span class="k">if</span> <span class="n">start_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;startIndex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_index</span>
 
-        <span class="n">iterator</span> <span class="o">=</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">HTTPIterator</span><span class="p">(</span>
+        <span class="n">row_iterator</span> <span class="o">=</span> <span class="n">RowIterator</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">api_request</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">,</span> <span class="n">retry</span><span class="p">),</span>
             <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/data&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
-            <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
-            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span>
+            <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span>
             <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
-            <span class="n">next_token</span><span class="o">=</span><span class="s1">&#39;pageToken&#39;</span><span class="p">,</span>
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
-            <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">iterator</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
-        <span class="n">iterator</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">iterator</span></div>
+        <span class="k">return</span> <span class="n">row_iterator</span></div>
 
 <div class="viewcode-block" id="Client.list_partitions"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_partitions">[docs]</a>    <span class="k">def</span> <span class="nf">list_partitions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List the partitions in a table.</span>

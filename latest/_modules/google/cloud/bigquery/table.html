@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud ad1174b documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud 38d4640 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'ad1174b',
+        VERSION:     '38d4640',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -63,10 +63,19 @@
 <span class="kn">import</span> <span class="nn">operator</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pandas</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: NO COVER</span>
+    <span class="n">pandas</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">from</span> <span class="nn">google.api_core.page_iterator</span> <span class="k">import</span> <span class="n">HTTPIterator</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_millis_from_datetime</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_item_to_row</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_page_start</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_snake_to_camel_case</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_field_to_index_mapping</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">SchemaField</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_build_schema_resource</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.schema</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
@@ -1065,6 +1074,75 @@
                        <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
         <span class="n">f2i</span> <span class="o">=</span> <span class="s1">&#39;{&#39;</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%r</span><span class="s1">: </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
         <span class="k">return</span> <span class="s1">&#39;Row(</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xxx_values</span><span class="p">,</span> <span class="n">f2i</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RowIterator"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.RowIterator">[docs]</a><span class="k">class</span> <span class="nc">RowIterator</span><span class="p">(</span><span class="n">HTTPIterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A class for iterating through HTTP/JSON API row list responses.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (google.cloud.bigquery.Client): The API client.</span>
+<span class="sd">        api_request (Callable[google.cloud._http.JSONConnection.api_request]):</span>
+<span class="sd">            The function to use to make API requests.</span>
+<span class="sd">        path (str): The method path to query for the list of items.</span>
+<span class="sd">        page_token (str): A token identifying a page in a result set to start</span>
+<span class="sd">            fetching results from.</span>
+<span class="sd">        max_results (int): The maximum number of results to fetch.</span>
+<span class="sd">        extra_params (dict): Extra query string parameters for the API call.</span>
+
+<span class="sd">    .. autoattribute:: pages</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">schema</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RowIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">client</span><span class="p">,</span> <span class="n">api_request</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">item_to_value</span><span class="o">=</span><span class="n">_item_to_row</span><span class="p">,</span>
+            <span class="n">items_key</span><span class="o">=</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">page_start</span><span class="o">=</span><span class="n">_rows_page_start</span><span class="p">,</span>
+            <span class="n">next_token</span><span class="o">=</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">schema</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_to_index</span> <span class="o">=</span> <span class="n">_field_to_index_mapping</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Schema for the table containing the rows</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of :class:`~google.cloud.bigquery.schema.SchemaField`:</span>
+<span class="sd">                fields describing the schema</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The total number of rows in the table.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: the row count.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_rows</span>
+
+<div class="viewcode-block" id="RowIterator.to_dataframe"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.table.RowIterator.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a pandas DataFrame from the query results.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A :class:`~pandas.DataFrame` populated with row data and column</span>
+<span class="sd">            headers from the query results. The column headers are derived</span>
+<span class="sd">            from the destination table&#39;s schema.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the `pandas` library cannot be imported.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pandas</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The pandas library is not installed, please &#39;</span>
+                             <span class="s1">&#39;install pandas to use the to_dataframe() &#39;</span>
+                             <span class="s1">&#39;function.&#39;</span><span class="p">)</span>
+
+        <span class="n">column_headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">]</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column_headers</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

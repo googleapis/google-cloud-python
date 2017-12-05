@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-write Transactions &#8212; google-cloud ad1174b documentation</title>
+    <title>Read-write Transactions &#8212; google-cloud 38d4640 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'ad1174b',
+        VERSION:     '38d4640',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -51,15 +51,15 @@ To learn more about how to use them in the Python client, continue reading.</p>
 <div class="section" id="begin-a-transaction">
 <h2>Begin a Transaction<a class="headerlink" href="#begin-a-transaction" title="Permalink to this headline">#</a></h2>
 <p>To begin using a transaction:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">transaction</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">transaction</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="read-table-data">
 <h2>Read Table Data<a class="headerlink" href="#read-table-data" title="Permalink to this headline">#</a></h2>
-<p>Read data for selected rows from a table in the session’s database.  Calls
-the <code class="docutils literal"><span class="pre">Read</span></code> API, which returns all rows specified in <code class="docutils literal"><span class="pre">key_set</span></code>, or else
-fails if the result set is too large,</p>
+<p>Read data for selected rows from a table in the database.  Calls the <code class="docutils literal"><span class="pre">Read</span></code>
+API, which returns all rows specified in <code class="docutils literal"><span class="pre">key_set</span></code>, or else fails if the
+result set is too large,</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
     <span class="n">table</span><span class="o">=</span><span class="s1">&#39;table-name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
     <span class="n">key_set</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phred@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;bharney@example.com&#39;</span><span class="p">])</span>
@@ -71,13 +71,13 @@ fails if the result set is too large,</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If streaming a chunk fails due to a “resumable” error,
-<code class="xref py py-meth docutils literal"><span class="pre">Session.read()</span></code> retries the <code class="docutils literal"><span class="pre">StreamingRead</span></code> API reqeust,
+<code class="xref py py-meth docutils literal"><span class="pre">Snapshot.read()</span></code> retries the <code class="docutils literal"><span class="pre">StreamingRead</span></code> API request,
 passing the <code class="docutils literal"><span class="pre">resume_token</span></code> from the last partial result streamed.</p>
 </div>
 </div>
 <div class="section" id="execute-a-sql-select-statement">
 <h2>Execute a SQL Select Statement<a class="headerlink" href="#execute-a-sql-select-statement" title="Permalink to this headline">#</a></h2>
-<p>Read data from a query against tables in the session’s database.  Calls
+<p>Read data from a query against tables in the database.  Calls
 the <code class="docutils literal"><span class="pre">ExecuteSql</span></code> API, which returns all rows matching the query, or else
 fails if the result set is too large,</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">QUERY</span> <span class="o">=</span> <span class="p">(</span>
@@ -209,12 +209,12 @@ the back-end by calling <code class="xref py py-meth docutils literal"><span cla
 <div class="section" id="use-a-transaction-as-a-context-manager">
 <h2>Use a Transaction as a Context Manager<a class="headerlink" href="#use-a-transaction-as-a-context-manager" title="Permalink to this headline">#</a></h2>
 <p>Rather than calling <code class="xref py py-meth docutils literal"><span class="pre">Transaction.commit()</span></code> or <code class="xref py py-meth docutils literal"><span class="pre">Transaction.rollback()</span></code>
-manually, you can use the <code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code> instance as a context manager:
-in that case, the transaction’s <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> method will
-called automatically if the <code class="docutils literal"><span class="pre">with</span></code> block exits without raising an exception.</p>
+manually, you should use the <code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code> instance as a context manager.
+The transaction’s <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> method will be called automatically
+if the <code class="docutils literal"><span class="pre">with</span></code> block exits without raising an exception.</p>
 <p>If an exception is raised inside the <code class="docutils literal"><span class="pre">with</span></code> block, the transaction’s
-<code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code> method will be called instead.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span>
+<code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code> method will automatically be called.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span>
 
     <span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
         <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
