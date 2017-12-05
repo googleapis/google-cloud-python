@@ -31,9 +31,18 @@ Authorization Code grant flow.
 .. _rfc6749 section 4.1: https://tools.ietf.org/html/rfc6749#section-4.1
 """
 
+import io
+import json
+
+import six
+
 from google.auth import _helpers
 from google.auth import credentials
 from google.oauth2 import _client
+
+
+# The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
+_GOOGLE_OAUTH2_TOKEN_ENDPOINT = 'https://accounts.google.com/o/oauth2/token'
 
 
 class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
@@ -120,3 +129,56 @@ class Credentials(credentials.ReadOnlyScoped, credentials.Credentials):
         self.expiry = expiry
         self._refresh_token = refresh_token
         self._id_token = grant_response.get('id_token')
+
+    @classmethod
+    def from_authorized_user_info(cls, info, scopes=None):
+        """Creates a Credentials instance from parsed authorized user info.
+
+        Args:
+            info (Mapping[str, str]): The authorized user info in Google
+                format.
+            scopes (Sequence[str]): Optional list of scopes to include in the
+                credentials.
+
+        Returns:
+            google.oauth2.credentials.Credentials: The constructed
+                credentials.
+
+        Raises:
+            ValueError: If the info is not in the expected format.
+        """
+        keys_needed = set(('refresh_token', 'client_id', 'client_secret'))
+        missing = keys_needed.difference(six.iterkeys(info))
+
+        if missing:
+            raise ValueError(
+                'Authorized user info was not in the expected format, missing '
+                'fields {}.'.format(', '.join(missing)))
+
+        return Credentials(
+            None,  # No access token, must be refreshed.
+            refresh_token=info['refresh_token'],
+            token_uri=_GOOGLE_OAUTH2_TOKEN_ENDPOINT,
+            scopes=scopes,
+            client_id=info['client_id'],
+            client_secret=info['client_secret'])
+
+    @classmethod
+    def from_authorized_user_file(cls, filename, scopes=None):
+        """Creates a Credentials instance from an authorized user json file.
+
+        Args:
+            filename (str): The path to the authorized user json file.
+            scopes (Sequence[str]): Optional list of scopes to include in the
+                credentials.
+
+        Returns:
+            google.oauth2.credentials.Credentials: The constructed
+                credentials.
+
+        Raises:
+            ValueError: If the file is not in the expected format.
+        """
+        with io.open(filename, 'r', encoding='utf-8') as json_file:
+            data = json.load(json_file)
+            return cls.from_authorized_user_info(data, scopes)

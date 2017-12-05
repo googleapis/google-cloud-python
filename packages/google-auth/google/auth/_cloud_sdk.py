@@ -18,13 +18,9 @@ import json
 import os
 import subprocess
 
-import six
-
 from google.auth import environment_vars
 import google.oauth2.credentials
 
-# The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
-_GOOGLE_OAUTH2_TOKEN_ENDPOINT = 'https://accounts.google.com/o/oauth2/token'
 
 # The ~/.config subdirectory containing gcloud credentials.
 _CONFIG_DIRECTORY = 'gcloud'
@@ -94,20 +90,8 @@ def load_authorized_user_credentials(info):
     Raises:
         ValueError: if the info is in the wrong format or missing data.
     """
-    keys_needed = set(('refresh_token', 'client_id', 'client_secret'))
-    missing = keys_needed.difference(six.iterkeys(info))
-
-    if missing:
-        raise ValueError(
-            'Authorized user info was not in the expected format, missing '
-            'fields {}.'.format(', '.join(missing)))
-
-    return google.oauth2.credentials.Credentials(
-        None,  # No access token, must be refreshed.
-        refresh_token=info['refresh_token'],
-        token_uri=_GOOGLE_OAUTH2_TOKEN_ENDPOINT,
-        client_id=info['client_id'],
-        client_secret=info['client_secret'])
+    return google.oauth2.credentials.Credentials.from_authorized_user_info(
+        info)
 
 
 def get_project_id():

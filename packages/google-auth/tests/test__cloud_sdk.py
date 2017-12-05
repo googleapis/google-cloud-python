@@ -145,7 +145,8 @@ def test_load_authorized_user_credentials():
     assert credentials._client_id == AUTHORIZED_USER_FILE_DATA['client_id']
     assert (credentials._client_secret ==
             AUTHORIZED_USER_FILE_DATA['client_secret'])
-    assert credentials._token_uri == _cloud_sdk._GOOGLE_OAUTH2_TOKEN_ENDPOINT
+    assert (credentials._token_uri ==
+            google.oauth2.credentials._GOOGLE_OAUTH2_TOKEN_ENDPOINT)
 
 
 def test_load_authorized_user_credentials_bad_format():
