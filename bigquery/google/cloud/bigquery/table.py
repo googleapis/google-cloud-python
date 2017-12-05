@@ -49,7 +49,7 @@ def _reference_getter(table):
     this table.
 
     Returns:
-        google.cloud.bigquery.table.TableReference: pointer to this table
+        google.cloud.bigquery.table.TableReference: pointer to this table.
     """
     from google.cloud.bigquery import dataset
 
@@ -295,7 +295,7 @@ class Table(object):
         :rtype: dict, {str -> str}
         :returns: A dict of the the table's labels.
         """
-        return self._properties['labels']
+        return self._properties.get('labels', {})
 
     @labels.setter
     def labels(self, value):
@@ -756,10 +756,28 @@ class TableListItem(object):
 
     Args:
         resource (dict):
-            A table-like resource object from a table list response.
+            A table-like resource object from a table list response. A
+            ``tableReference`` property is required.
+
+    Raises:
+        ValueError:
+            If ``tableReference`` or one of its required members is missing
+            from ``resource``.
     """
 
     def __init__(self, resource):
+        if 'tableReference' not in resource:
+            raise ValueError('resource must contain a tableReference value')
+        if 'projectId' not in resource['tableReference']:
+            raise ValueError(
+                "resource['tableReference'] must contain a projectId value")
+        if 'datasetId' not in resource['tableReference']:
+            raise ValueError(
+                "resource['tableReference'] must contain a datasetId value")
+        if 'tableId' not in resource['tableReference']:
+            raise ValueError(
+                "resource['tableReference'] must contain a tableId value")
+
         self._properties = resource
 
     @property
@@ -769,7 +787,7 @@ class TableListItem(object):
         Returns:
             str: the project ID of the table.
         """
-        return self._properties.get('tableReference', {}).get('projectId')
+        return self._properties['tableReference']['projectId']
 
     @property
     def dataset_id(self):
@@ -778,7 +796,7 @@ class TableListItem(object):
         Returns:
             str: the dataset ID of the table.
         """
-        return self._properties.get('tableReference', {}).get('datasetId')
+        return self._properties['tableReference']['datasetId']
 
     @property
     def table_id(self):
@@ -787,7 +805,7 @@ class TableListItem(object):
         Returns:
             str: the table ID.
         """
-        return self._properties.get('tableReference', {}).get('tableId')
+        return self._properties['tableReference']['tableId']
 
     reference = property(_reference_getter)
 
@@ -842,8 +860,9 @@ class TableListItem(object):
         Returns:
             int: The time in ms for partition expiration
         """
-        return int(
-            self._properties.get('timePartitioning', {}).get('expirationMs'))
+        expiration = self._properties.get('timePartitioning', {}).get('expirationMs')
+        if expiration is not None:
+            return int(expiration)
 
     @property
     def friendly_name(self):

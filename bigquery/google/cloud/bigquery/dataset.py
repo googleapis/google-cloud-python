@@ -419,7 +419,7 @@ class Dataset(object):
         :rtype: dict, {str -> str}
         :returns: A dict of the the dataset's labels.
         """
-        return self._properties['labels']
+        return self._properties.get('labels', {})
 
     @labels.setter
     def labels(self, value):
@@ -562,10 +562,24 @@ class DatasetListItem(object):
 
     Args:
         resource (dict):
-            A dataset-like resource object from a dataset list response.
+            A dataset-like resource object from a dataset list response. A
+            ``datasetReference`` property is required.
+
+    Raises:
+        ValueError:
+            If ``datasetReference`` or one of its required members is missing
+            from ``resource``.
     """
 
     def __init__(self, resource):
+        if 'datasetReference' not in resource:
+            raise ValueError('resource must contain a datasetReference value')
+        if 'projectId' not in resource['datasetReference']:
+            raise ValueError(
+                "resource['datasetReference'] must contain a projectId value")
+        if 'datasetId' not in resource['datasetReference']:
+            raise ValueError(
+                "resource['datasetReference'] must contain a datasetId value")
         self._properties = resource
 
     @property
@@ -575,7 +589,7 @@ class DatasetListItem(object):
         :rtype: str
         :returns: the project.
         """
-        return self._properties.get('datasetReference').get('projectId')
+        return self._properties['datasetReference']['projectId']
 
     @property
     def dataset_id(self):
@@ -584,7 +598,7 @@ class DatasetListItem(object):
         :rtype: str
         :returns: the dataset ID.
         """
-        return self._properties.get('datasetReference').get('datasetId')
+        return self._properties['datasetReference']['datasetId']
 
     @property
     def full_dataset_id(self):
@@ -611,7 +625,7 @@ class DatasetListItem(object):
         :rtype: dict, {str -> str}
         :returns: A dict of the the dataset's labels.
         """
-        return self._properties['labels']
+        return self._properties.get('labels', {})
 
     @property
     def reference(self):

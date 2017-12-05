@@ -404,6 +404,10 @@ class TestDataset(unittest.TestCase):
         with self.assertRaises(ValueError):
             dataset.labels = None
 
+    def test_labels_getter_missing_value(self):
+        dataset = self._make_one(self.DS_REF)
+        self.assertEqual(dataset.labels, {})
+
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
         RESOURCE = {}
@@ -499,6 +503,42 @@ class TestDatasetListItem(unittest.TestCase):
         self.assertEqual(dataset.reference.dataset_id, dataset_id)
         self.assertEqual(dataset.friendly_name, 'Data of the Test')
         self.assertEqual(dataset.labels['some-stuff'], 'this-is-a-label')
+
+    def test_ctor_missing_properties(self):
+        resource = {
+            'datasetReference': {
+                'projectId': 'testproject',
+                'datasetId': 'testdataset',
+            },
+        }
+        dataset = self._make_one(resource)
+        self.assertEqual(dataset.project, 'testproject')
+        self.assertEqual(dataset.dataset_id, 'testdataset')
+        self.assertIsNone(dataset.full_dataset_id)
+        self.assertIsNone(dataset.friendly_name)
+        self.assertEqual(dataset.labels, {})
+
+    def test_ctor_wo_project(self):
+        resource = {
+            'datasetReference': {
+                'datasetId': 'testdataset',
+            },
+        }
+        with self.assertRaises(ValueError):
+            self._make_one(resource)
+
+    def test_ctor_wo_dataset(self):
+        resource = {
+            'datasetReference': {
+                'projectId': 'testproject',
+            },
+        }
+        with self.assertRaises(ValueError):
+            self._make_one(resource)
+
+    def test_ctor_wo_reference(self):
+        with self.assertRaises(ValueError):
+            self._make_one({})
 
     def test_table(self):
         from google.cloud.bigquery.table import TableReference
