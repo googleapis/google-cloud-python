@@ -758,6 +758,19 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(results_iter)
         self.assertEqual(rows, [])
 
+    def test_read_with_multiple_keys_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        expected = [[row[1], row[2]] for row in self._row_data(row_count)]
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 KeySet(keys=expected),
+                                 index='name')
+        )
+        self.assertEqual(rows, expected)
+
     def test_snapshot_read_w_various_staleness(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
