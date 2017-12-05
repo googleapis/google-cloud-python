@@ -24,57 +24,56 @@ from google.protobuf.json_format import ParseDict
 
 
 class _TraceAPI(object):
-    """Wrapper to help mapping trace-related APIs.
+    """
+    Wrapper to help mapping trace-related APIs.
 
     See
     https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
     cloudtrace.v1
 
-    :type gax_api:
-        :class:`~google.cloud.trace_v1.gapic.trace_service_client.
-               TraceServiceClient`
-    :param gax_api: API object used to make GAX requests.
+    Args:
+        gax_api (~google.cloud.trace_v1.gapic.trace_service_client.
+            TraceServiceClient): Required. API object used to make GAX
+            requests.
 
-    :type client: :class:`~google.cloud.trace.client.Client`
-    :param client: The client that owns this API object.
+        client (~google.cloud.trace.client.Client): The client that owns this
+            API object.
     """
     def __init__(self, gax_api, client):
         self._gax_api = gax_api
         self.client = client
 
     def patch_traces(self, project_id, traces, options=None):
-        """Sends new traces to Stackdriver Trace or updates existing traces.
+        """
+        Sends new traces to Stackdriver Trace or updates existing traces.
 
-        :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is
-                           stored.
+        Args:
+            project_id (Optional[str]): ID of the Cloud project where the trace
+                data is stored.
 
-        :type traces: dict
-        :param traces: The traces to be patched in the API call.
+            traces (dict): Required. The traces to be patched in the API call.
 
-        :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this
-                        call, e.g, timeout, retries etc.
+            options (Optional[~google.gax.CallOptions]): Overrides the default
+                settings for this call, e.g, timeout, retries etc.
         """
         traces_pb = _traces_mapping_to_pb(traces)
         self._gax_api.patch_traces(project_id, traces_pb, options)
 
     def get_trace(self, project_id, trace_id, options=None):
-        """Gets a single trace by its ID.
+        """
+        Gets a single trace by its ID.
 
-        :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is
-                           stored.
+        Args:
+            trace_id (str): ID of the trace to return.
 
-        :type trace_id: str
-        :param trace_id: ID of the trace to return.
+            project_id (str): Required. ID of the Cloud project where the trace
+                data is stored.
 
-        :type options: :class:`~google.gax.CallOptions`
-        :param options: (Optional) Overrides the default settings for this
-                        call, e.g, timeout, retries etc.
+            options (Optional[~google.gax.CallOptions]): Overrides the default
+                settings for this call, e.g, timeout, retries etc.
 
-        :rtype: :dict
-        :returns: A Trace dict.
+        Returns:
+            A Trace dict.
         """
         trace_pb = self._gax_api.get_trace(project_id, trace_id, options)
         trace_mapping = _parse_trace_pb(trace_pb)
@@ -90,47 +89,41 @@ class _TraceAPI(object):
             filter_=None,
             order_by=None,
             page_token=None):
-        """Returns of a list of traces that match the specified filter
-        conditions.
+        """
+        Returns of a list of traces that match the filter conditions.
 
-        :type project_id: str
-        :param project_id: ID of the Cloud project where the trace data is
-                           stored.
+        Args:
+            project_id (Optional[str]): ID of the Cloud project where the trace
+                data is stored.
 
-        :type view: :class:`google.cloud.trace_v1.gapic.enums.
-                           ListTracesRequest.ViewType`
-        :param view: (Optional) Type of data returned for traces in the list.
-                     Default is ``MINIMAL``.
+            view (Optional[~google.cloud.trace_v1.gapic.enums.
+                ListTracesRequest.ViewType]): Type of data returned for traces
+                in the list. Default is ``MINIMAL``.
 
-        :type page_size: int
-        :param page_size: (Optional) Maximum number of traces to return.
-                          If not specified or <= 0, the implementation selects
-                          a reasonable value. The implementation may return
-                          fewer traces than the requested page size.
+            page_size (Optional[int]): Maximum number of traces to return. If
+                not specified or <= 0, the implementation selects a reasonable
+                value. The implementation may return fewer traces than the
+                requested page size.
 
-        :type start_time: :class:`google.protobuf.timestamp_pb2.Timestamp`
-        :param start_time: (Optional) Start of the time interval (inclusive)
-                           during which the trace data was collected from the
-                           application.
+            start_time (Optional[~datetime.datetime]): Start of the time
+                interval (inclusive) during which the trace data was collected
+                from the application.
 
-        :type end_time: :class:`google.protobuf.timestamp_pb2.Timestamp`
-        :param end_time: (Optional) End of the time interval (inclusive)
-                         during which the trace data was collected from the
-                         application.
+            end_time (Optional[~datetime.datetime]): End of the time interval
+                (inclusive) during which the trace data was collected from the
+                application.
 
-        :type filter_: str
-        :param filter_: (Optional) An optional filter for the request.
+            filter_ (Optional[str]): An optional filter for the request.
 
-        :type order_by: str
-        :param order_by: (Optional) Field used to sort the returned traces.
+            order_by (Optional[str]): Field used to sort the returned traces.
 
-        :type page_token: str
-        :param page_token: opaque marker for the next "page" of entries. If not
-                           passed, the API will return the first page of
-                           entries.
+            page_token (Optional[str]): opaque marker for the next "page" of
+                entries. If not passed, the API will return the first page of
+                entries.
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Traces that match the specified filter conditions.
+        Returns:
+            A  :class:`~google.api_core.page_iterator.Iterator` of traces that
+            match the specified filter conditions.
         """
         if page_token is None:
             page_token = INITIAL_PAGE
@@ -150,14 +143,15 @@ class _TraceAPI(object):
 
 
 def _parse_trace_pb(trace_pb):
-    """Parse a ``Trace`` protobuf to a dictionary.
+    """
+    Parse a ``Trace`` protobuf to a dictionary.
 
-    :type trace_pb: :class:`google.cloud.trace_v1.proto.
-                            trace_pb2.Trace`
-    :param trace_pb: A trace protobuf instance.
+    Args:
+        trace_pb (~google.cloud.trace_v1.proto.trace_pb2.Trace): A trace
+            protobuf instance.
 
-    :rtype: dict
-    :returns: The converted trace dict.
+    Returns:
+        The converted trace dict.
     """
     try:
         return MessageToDict(trace_pb)
@@ -166,40 +160,45 @@ def _parse_trace_pb(trace_pb):
 
 
 def _item_to_mapping(iterator, trace_pb):
-    """Helper callable function for the GAXIterator
+    """
+    Helper callable function for the GAXIterator
 
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
+    Args:
+        iterator(~google.api_core.page_iterator.Iterator): The iterator that is
+            currently in use.
 
-    :type trace_pb: :class:`google.cloud.trace_v1.proto.
-                            trace_pb2.Trace`
-    :param trace_pb: A trace protobuf instance.
+        trace_pb(~google.cloud.trace_v1.proto.trace_pb2.Trace): A trace
+            protobuf instance.
     """
     mapping = _parse_trace_pb(trace_pb)
     return mapping
 
 
 def make_gax_trace_api(client):
-    """Create an instance of the GAX Trace API.
+    """
+    Create an instance of the GAX Trace API.
 
-    :type client: :class:`~google.cloud.trace.client.Client`
-    :param client: The client that holds configuration details.
+    Args:
+        client (~google.cloud.trace.client.Client): The client that holds
+            configuration details.
 
-    :rtype: :class:`~google.cloud.trace._gax._TraceAPI`
-    :returns: A Trace API instance with the proper configurations.
+    Returns:
+        A :class:`~google.cloud.trace._gax._TraceAPI` instance with the proper
+        configurations.
     """
     generated = trace_service_client.TraceServiceClient()
     return _TraceAPI(generated, client)
 
 
 def _traces_mapping_to_pb(traces_mapping):
-    """Convert a trace dict to protobuf.
+    """
+    Convert a trace dict to protobuf.
 
-    :type traces_mapping: dict
-    :param traces_mapping: A trace mapping.
+    Args:
+        traces_mapping (dict): A trace mapping.
 
-    :rtype: class:`google.cloud.trace_v1.proto.trace_pb2.Traces`
-    :returns: The converted protobuf type traces.
+    Returns:
+        The converted protobuf type traces.
     """
     traces_pb = trace_pb2.Traces()
     ParseDict(traces_mapping, traces_pb)

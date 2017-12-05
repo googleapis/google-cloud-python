@@ -33,11 +33,11 @@ class _TraceAPI(object):
     cloudtrace.v2
 
     Args:
-        gax_api (:class:`~google.cloud.trace_v2.gapic.trace_service_client.
-            TraceServiceClient`): Required. API object used to make GAX
+        gax_api (~google.cloud.trace_v2.gapic.trace_service_client.
+            TraceServiceClient): Required. API object used to make GAX
             requests.
 
-        client (:class:`~google.cloud.trace_v2.client.Client`): Required. The
+        client (~google.cloud.trace_v2.client.Client): Required. The
             client that owns this API object.
     """
 
