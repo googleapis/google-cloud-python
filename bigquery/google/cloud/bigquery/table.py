@@ -860,7 +860,8 @@ class TableListItem(object):
         Returns:
             int: The time in ms for partition expiration
         """
-        expiration = self._properties.get('timePartitioning', {}).get('expirationMs')
+        expiration = self._properties.get(
+            'timePartitioning', {}).get('expirationMs')
         if expiration is not None:
             return int(expiration)
 
