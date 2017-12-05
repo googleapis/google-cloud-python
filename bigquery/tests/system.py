@@ -1262,7 +1262,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(df), 10)  # verify the number of rows
         column_names = ['id', 'author', 'time_ts', 'dead']
         self.assertEqual(list(df), column_names)  # verify the column names
-        exp_datatypes = {'id': int, 'author': str,
+        exp_datatypes = {'id': int, 'author': six.text_type,
                          'time_ts': pandas.Timestamp, 'dead': bool}
         for index, row in df.iterrows():
             for col in column_names:
