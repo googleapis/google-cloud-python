@@ -16,6 +16,10 @@ import copy
 
 from six.moves import http_client
 import unittest
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
 
 from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
 from google.cloud.bigquery.job import LoadJobConfig
@@ -2719,6 +2723,41 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], PATH)
         self._verifyResourceProperties(job, RESOURCE)
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe(self):
+        begun_resource = self._make_resource()
+        query_resource = {
+            'jobComplete': True,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_ID,
+            },
+            'schema': {
+                'fields': [
+                    {'name': 'name', 'type': 'STRING', 'mode': 'NULLABLE'},
+                    {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE'},
+                ],
+            },
+            'rows': [
+                {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+                {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+                {'f': [{'v': 'Wylma Phlyntstone'}, {'v': '29'}]},
+                {'f': [{'v': 'Bhettye Rhubble'}, {'v': '27'}]},
+            ],
+        }
+        done_resource = copy.deepcopy(begun_resource)
+        done_resource['status'] = {'state': 'DONE'}
+        connection = _Connection(
+            begun_resource, query_resource, done_resource, query_resource)
+        client = _make_client(project=self.PROJECT, connection=connection)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+
+        df = job.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 4)  # verify the number of rows
+        self.assertEqual(list(df), ['name', 'age'])  # verify the column names
 
     def test_iter(self):
         import types

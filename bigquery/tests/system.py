@@ -24,6 +24,10 @@ import unittest
 import uuid
 
 import six
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
 
 from google.api_core.exceptions import PreconditionFailed
 from google.cloud import bigquery
@@ -673,7 +677,7 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
-    def test_query_rows_w_legacy_sql_types(self):
+    def test_query_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
         stamp = '%s %s' % (naive.date().isoformat(), naive.time().isoformat())
         zoned = naive.replace(tzinfo=UTC)
@@ -706,7 +710,7 @@ class TestBigQuery(unittest.TestCase):
         for example in examples:
             job_config = bigquery.QueryJobConfig()
             job_config.use_legacy_sql = True
-            rows = list(Config.CLIENT.query_rows(
+            rows = list(Config.CLIENT.query(
                 example['sql'], job_config=job_config))
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]), 1)
@@ -806,26 +810,28 @@ class TestBigQuery(unittest.TestCase):
             },
         ]
 
-    def test_query_rows_w_standard_sql_types(self):
+    def test_query_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
         for example in examples:
-            rows = list(Config.CLIENT.query_rows(example['sql']))
+            rows = list(Config.CLIENT.query(example['sql']))
             self.assertEqual(len(rows), 1)
             self.assertEqual(len(rows[0]), 1)
             self.assertEqual(rows[0][0], example['expected'])
 
-    def test_query_rows_w_failed_query(self):
+    def test_query_w_failed_query(self):
         from google.api_core.exceptions import BadRequest
 
         with self.assertRaises(BadRequest):
-            Config.CLIENT.query_rows('invalid syntax;')
+            Config.CLIENT.query('invalid syntax;').result()
 
-    def test_query_rows_w_timeout(self):
+    def test_query_w_timeout(self):
+        query_job = Config.CLIENT.query(
+            'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
+            job_id_prefix='test_query_w_timeout_')
+
         with self.assertRaises(concurrent.futures.TimeoutError):
-            Config.CLIENT.query_rows(
-                'SELECT * FROM `bigquery-public-data.github_repos.commits`;',
-                job_id_prefix='test_query_rows_w_timeout_',
-                timeout=1)  # 1 second is much too short for this query.
+            # 1 second is much too short for this query.
+            query_job.result(timeout=1)
 
     def test_dbapi_w_standard_sql_types(self):
         examples = self._generate_standard_sql_types_examples()
@@ -1224,9 +1230,9 @@ class TestBigQuery(unittest.TestCase):
         SQL = 'SELECT * from `{}.{}.{}` LIMIT {}'.format(
             PUBLIC, DATASET_ID, TABLE_NAME, LIMIT)
 
-        iterator = Config.CLIENT.query_rows(SQL)
+        query_job = Config.CLIENT.query(SQL)
 
-        rows = list(iterator)
+        rows = list(query_job)
         self.assertEqual(len(rows), LIMIT)
 
     def test_query_future(self):
@@ -1242,6 +1248,28 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
 
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_query_results_to_dataframe(self):
+        QUERY = """
+            SELECT id, author, time_ts, dead
+            from `bigquery-public-data.hacker_news.comments`
+            LIMIT 10
+        """
+
+        df = Config.CLIENT.query(QUERY).result().to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 10)  # verify the number of rows
+        column_names = ['id', 'author', 'time_ts', 'dead']
+        self.assertEqual(list(df), column_names)  # verify the column names
+        exp_datatypes = {'id': int, 'author': six.text_type,
+                         'time_ts': pandas.Timestamp, 'dead': bool}
+        for index, row in df.iterrows():
+            for col in column_names:
+                # all the schema fields are nullable, so None is acceptable
+                if not row[col] is None:
+                    self.assertIsInstance(row[col], exp_datatypes[col])
+
     def test_query_table_def(self):
         gs_url = self._write_csv_to_storage(
             'bq_external_test' + unique_resource_id(), 'person_ages.csv',
@@ -1256,7 +1284,7 @@ class TestBigQuery(unittest.TestCase):
         job_config.table_definitions = {table_id: ec}
         sql = 'SELECT * FROM %s' % table_id
 
-        got_rows = Config.CLIENT.query_rows(sql, job_config=job_config)
+        got_rows = Config.CLIENT.query(sql, job_config=job_config)
 
         row_tuples = [r.values() for r in got_rows]
         by_age = operator.itemgetter(1)
@@ -1280,7 +1308,7 @@ class TestBigQuery(unittest.TestCase):
 
         sql = 'SELECT * FROM %s.%s' % (dataset_id, table_id)
 
-        got_rows = Config.CLIENT.query_rows(sql)
+        got_rows = Config.CLIENT.query(sql)
 
         row_tuples = [r.values() for r in got_rows]
         by_age = operator.itemgetter(1)
@@ -1416,6 +1444,56 @@ class TestBigQuery(unittest.TestCase):
                                   '%Y-%m-%dT%H:%M:%S')
             e_favtime = datetime.datetime(*parts[0:6])
             self.assertEqual(found[7], e_favtime)
+
+    def _fetch_dataframe(self, query):
+        return Config.CLIENT.query(query).result().to_dataframe()
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_nested_table_to_dataframe(self):
+        SF = bigquery.SchemaField
+        schema = [
+            SF('string_col', 'STRING', mode='NULLABLE'),
+            SF('record_col', 'RECORD', mode='NULLABLE', fields=[
+                SF('nested_string', 'STRING', mode='NULLABLE'),
+                SF('nested_repeated', 'INTEGER', mode='REPEATED'),
+                SF('nested_record', 'RECORD', mode='NULLABLE', fields=[
+                    SF('nested_nested_string', 'STRING', mode='NULLABLE'),
+                ]),
+            ]),
+        ]
+        record = {
+            'nested_string': 'another string value',
+            'nested_repeated': [0, 1, 2],
+            'nested_record': {'nested_nested_string': 'some deep insight'},
+        }
+        to_insert = [
+            ('Some value', record)
+        ]
+        table_id = 'test_table'
+        dataset = self.temp_dataset(_make_dataset_id('nested_df'))
+        table_arg = Table(dataset.table(table_id), schema=schema)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+        Config.CLIENT.create_rows(table, to_insert)
+        QUERY = 'SELECT * from `{}.{}.{}`'.format(
+            Config.CLIENT.project, dataset.dataset_id, table_id)
+
+        retry = RetryResult(_has_rows, max_tries=8)
+        df = retry(self._fetch_dataframe)(QUERY)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 1)  # verify the number of rows
+        exp_columns = ['string_col', 'record_col']
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+        row = df.iloc[0]
+        # verify the row content
+        self.assertEqual(row['string_col'], 'Some value')
+        self.assertEqual(row['record_col'], record)
+        # verify that nested data can be accessed with indices/keys
+        self.assertEqual(row['record_col']['nested_repeated'][0], 0)
+        self.assertEqual(
+            row['record_col']['nested_record']['nested_nested_string'],
+            'some deep insight')
 
     def temp_dataset(self, dataset_id):
         dataset = retry_403(Config.CLIENT.create_dataset)(

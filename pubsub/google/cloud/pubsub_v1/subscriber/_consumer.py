@@ -117,12 +117,15 @@ example of this.
 """
 
 import logging
-import queue
 import threading
+
+from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import _helper_threads
 
+
 _LOGGER = logging.getLogger(__name__)
+_BIDIRECTIONAL_CONSUMER_NAME = 'ConsumeBidirectionalStream'
 
 
 class Consumer(object):
@@ -177,6 +180,7 @@ class Consumer(object):
         self._policy = policy
         self._request_queue = queue.Queue()
         self._exiting = threading.Event()
+        self._put_lock = threading.Lock()
 
         self.active = False
         self.helper_threads = _helper_threads.HelperThreadRegistry()
@@ -190,20 +194,22 @@ class Consumer(object):
         Args:
             request (Any): The request protobuf.
         """
-        self._request_queue.put(request)
+        with self._put_lock:
+            self._request_queue.put(request)
 
     def _request_generator_thread(self):
         """Generate requests for the stream.
 
         This blocks for new requests on the request queue and yields them to
         gRPC.
+
+        Yields:
+            google.cloud.pubsub_v1.types.StreamingPullRequest: Requests
         """
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
         initial_request = self._policy.get_initial_request(ack_queue=True)
-        _LOGGER.debug('Sending initial request: {initial_request}'.format(
-            initial_request=initial_request,
-        ))
+        _LOGGER.debug('Sending initial request:\n%r', initial_request)
         yield initial_request
 
         # Now yield each of the items on the request queue, and block if there
@@ -214,8 +220,75 @@ class Consumer(object):
                 _LOGGER.debug('Request generator signaled to stop.')
                 break
 
-            _LOGGER.debug('Sending request: {}'.format(request))
+            _LOGGER.debug('Sending request:\n%r', request)
             yield request
+
+    def _stop_request_generator(self, request_generator):
+        """Ensure a request generator is closed.
+
+        This **must** be done when recovering from a retry-able exception.
+        If not, then an inactive request generator (i.e. not attached to any
+        actual RPC) will be trying to access the same request queue as the
+        active request generator.
+
+        In addition, we want the gRPC thread consuming to cleanly exit so
+        that system resources are not wasted.
+
+        Args:
+            request_generator (Generator): A streaming pull request generator
+                returned from :meth:`_request_generator_thread`.
+
+        Returns:
+            bool: Indicates if the generator was successfully stopped. Will
+            be :data:`True` unless the queue is not empty and the generator
+            is running.
+        """
+        with self._put_lock:
+            try:
+                request_generator.close()
+            except ValueError:
+                # Should be ``ValueError('generator already executing')``
+                if not self._request_queue.empty():
+                    # This case may be a false negative in **very** rare
+                    # cases. We **assume** that the generator can't be
+                    # ``close()``-ed because it is blocking on ``get()``.
+                    # It's **very unlikely** that the generator was not
+                    # blocking, but instead **in between** the blocking
+                    # ``get()`` and the next ``yield`` / ``break``. However,
+                    # for practical purposes, we only need to stop the request
+                    # generator if the connection has timed out due to
+                    # inactivity, which indicates an empty queue.
+                    _LOGGER.debug(
+                        'Request generator could not be closed but '
+                        'request queue is not empty.')
+                    return False
+                # At this point we know:
+                #   1. The queue is empty and we hold the ``put()`` lock
+                #   2. We **cannot** ``close()`` the request generator.
+                # This means that the request generator is blocking at
+                # ``get()`` from the queue and will continue to block since
+                # we have locked ``.put()``.
+                self._request_queue.put(_helper_threads.STOP)
+                # Wait for the request generator to ``.get()`` the ``STOP``.
+                _LOGGER.debug(
+                    'Waiting for active request generator to receive STOP')
+                while not self._request_queue.empty():
+                    pass
+                # We would **like** to call ``request_generator.close()`` here
+                # but can't guarantee that the generator is paused, since it
+                # has a few instructions to complete between the ``get()``
+                # and the ``break``. However, we are confident that
+                #   1. The queue was empty and we hold the ``put()`` lock
+                #   2. We added ``STOP``
+                #   3. We waited until the request generator consumed ``STOP``
+                # so we know the request generator **will** stop within a
+                # few cycles.
+            except Exception as exc:
+                _LOGGER.error('Failed to close request generator: %r', exc)
+                return False
+
+        _LOGGER.debug('Successfully closed request generator.')
+        return True
 
     def _blocking_consume(self):
         """Consume the stream indefinitely."""
@@ -232,7 +305,7 @@ class Consumer(object):
             response_generator = self._policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
-                    _LOGGER.debug('Received response: {0}'.format(response))
+                    _LOGGER.debug('Received response:\n%r', response)
                     self._policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
@@ -241,22 +314,20 @@ class Consumer(object):
                 # case, break out of the while loop and exit this thread.
                 _LOGGER.debug('Clean RPC loop exit signalled consumer exit.')
                 break
-            except KeyboardInterrupt:
-                self.stop_consuming()
             except Exception as exc:
-                try:
-                    self._policy.on_exception(exc)
-                except:
-                    self.active = False
-                    raise
+                recover = self._policy.on_exception(exc)
+                if recover:
+                    recover = self._stop_request_generator(request_generator)
+                if not recover:
+                    self.stop_consuming()
 
     def start_consuming(self):
         """Start consuming the stream."""
         self.active = True
         self._exiting.clear()
         self.helper_threads.start(
-            'consume bidirectional stream',
-            self._request_queue,
+            _BIDIRECTIONAL_CONSUMER_NAME,
+            self.send_request,
             self._blocking_consume,
         )
 

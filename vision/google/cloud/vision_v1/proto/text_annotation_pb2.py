@@ -24,6 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   serialized_pb=_b('\n2google/cloud/vision_v1/proto/text_annotation.proto\x12\x16google.cloud.vision.v1\x1a\x1cgoogle/api/annotations.proto\x1a+google/cloud/vision_v1/proto/geometry.proto\"\x96\x04\n\x0eTextAnnotation\x12+\n\x05pages\x18\x01 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Page\x12\x0c\n\x04text\x18\x02 \x01(\t\x1a=\n\x10\x44\x65tectedLanguage\x12\x15\n\rlanguage_code\x18\x01 \x01(\t\x12\x12\n\nconfidence\x18\x02 \x01(\x02\x1a\xd5\x01\n\rDetectedBreak\x12L\n\x04type\x18\x01 \x01(\x0e\x32>.google.cloud.vision.v1.TextAnnotation.DetectedBreak.BreakType\x12\x11\n\tis_prefix\x18\x02 \x01(\x08\"c\n\tBreakType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\t\n\x05SPACE\x10\x01\x12\x0e\n\nSURE_SPACE\x10\x02\x12\x12\n\x0e\x45OL_SURE_SPACE\x10\x03\x12\n\n\x06HYPHEN\x10\x04\x12\x0e\n\nLINE_BREAK\x10\x05\x1a\xb1\x01\n\x0cTextProperty\x12S\n\x12\x64\x65tected_languages\x18\x01 \x03(\x0b\x32\x37.google.cloud.vision.v1.TextAnnotation.DetectedLanguage\x12L\n\x0e\x64\x65tected_break\x18\x02 \x01(\x0b\x32\x34.google.cloud.vision.v1.TextAnnotation.DetectedBreak\"\x9b\x01\n\x04Page\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12\r\n\x05width\x18\x02 \x01(\x05\x12\x0e\n\x06height\x18\x03 \x01(\x05\x12-\n\x06\x62locks\x18\x04 \x03(\x0b\x32\x1d.google.cloud.vision.v1.Block\"\xd2\x02\n\x05\x42lock\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x35\n\nparagraphs\x18\x03 \x03(\x0b\x32!.google.cloud.vision.v1.Paragraph\x12;\n\nblock_type\x18\x04 \x01(\x0e\x32\'.google.cloud.vision.v1.Block.BlockType\"R\n\tBlockType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04TEXT\x10\x01\x12\t\n\x05TABLE\x10\x02\x12\x0b\n\x07PICTURE\x10\x03\x12\t\n\x05RULER\x10\x04\x12\x0b\n\x07\x42\x41RCODE\x10\x05\"\xbb\x01\n\tParagraph\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12+\n\x05words\x18\x03 \x03(\x0b\x32\x1c.google.cloud.vision.v1.Word\"\xba\x01\n\x04Word\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12/\n\x07symbols\x18\x03 \x03(\x0b\x32\x1e.google.cloud.vision.v1.Symbol\"\x99\x01\n\x06Symbol\x12\x45\n\x08property\x18\x01 \x01(\x0b\x32\x33.google.cloud.vision.v1.TextAnnotation.TextProperty\x12:\n\x0c\x62ounding_box\x18\x02 \x01(\x0b\x32$.google.cloud.vision.v1.BoundingPoly\x12\x0c\n\x04text\x18\x03 \x01(\tBt\n\x1a\x63om.google.cloud.vision.v1B\x13TextAnnotationProtoP\x01Z<google.golang.org/genproto/googleapis/cloud/vision/v1;vision\xf8\x01\x01\x62\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_cloud_dot_vision__v1_dot_proto_dot_geometry__pb2.DESCRIPTOR,])
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -522,7 +523,6 @@ DESCRIPTOR.message_types_by_name['Block'] = _BLOCK
 DESCRIPTOR.message_types_by_name['Paragraph'] = _PARAGRAPH
 DESCRIPTOR.message_types_by_name['Word'] = _WORD
 DESCRIPTOR.message_types_by_name['Symbol'] = _SYMBOL
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_message.Message,), dict(
 
@@ -531,6 +531,15 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.vision_v1.proto.text_annotation_pb2'
     ,
     __doc__ = """Detected language for a structural component.
+    
+    
+    Attributes:
+        language_code:
+            The BCP-47 language code, such as "en-US" or "sr-Latn". For
+            more information, see http://www.unicode.org/reports/tr35/#Uni
+            code\_locale\_identifier.
+        confidence:
+            Confidence of detected language. Range [0, 1].
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedLanguage)
     ))
@@ -541,6 +550,11 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.vision_v1.proto.text_annotation_pb2'
     ,
     __doc__ = """Detected start or end of a structural component.
+    
+    
+    Attributes:
+        is_prefix:
+            True if break prepends the element.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.DetectedBreak)
     ))
@@ -551,6 +565,13 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
     __module__ = 'google.cloud.vision_v1.proto.text_annotation_pb2'
     ,
     __doc__ = """Additional information detected on the structural component.
+    
+    
+    Attributes:
+        detected_languages:
+            A list of detected languages together with confidence.
+        detected_break:
+            Detected start or end of a text segment.
     """,
     # @@protoc_insertion_point(class_scope:google.cloud.vision.v1.TextAnnotation.TextProperty)
     ))
@@ -569,18 +590,6 @@ TextAnnotation = _reflection.GeneratedProtocolMessageType('TextAnnotation', (_me
   
   
   Attributes:
-      language_code:
-          The BCP-47 language code, such as "en-US" or "sr-Latn". For
-          more information, see http://www.unicode.org/reports/tr35/#Uni
-          code\_locale\_identifier.
-      confidence:
-          Confidence of detected language. Range [0, 1].
-      is_prefix:
-          True if break prepends the element.
-      detected_languages:
-          A list of detected languages together with confidence.
-      detected_break:
-          Detected start or end of a text segment.
       pages:
           List of pages detected by OCR.
       text:

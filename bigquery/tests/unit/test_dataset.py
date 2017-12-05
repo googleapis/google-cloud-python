@@ -245,7 +245,10 @@ class TestDataset(unittest.TestCase):
 
     def _verify_readonly_resource_properties(self, dataset, resource):
 
+        self.assertEqual(dataset.project, self.PROJECT)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
+        self.assertEqual(dataset.reference.project, self.PROJECT)
+        self.assertEqual(dataset.reference.dataset_id, self.DS_ID)
 
         if 'creationTime' in resource:
             self.assertEqual(dataset.created, self.WHEN)

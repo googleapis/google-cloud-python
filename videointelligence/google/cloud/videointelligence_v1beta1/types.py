@@ -15,7 +15,7 @@
 from __future__ import absolute_import
 import sys
 
-from google.gax.utils.messages import get_messages
+from google.api_core.protobuf_helpers import get_messages
 
 from google.api import http_pb2
 from google.cloud.videointelligence_v1beta1.proto import video_intelligence_pb2
@@ -35,7 +35,8 @@ for module in (
         descriptor_pb2,
         empty_pb2,
         timestamp_pb2,
-        status_pb2, ):
+        status_pb2,
+):
     for name, message in get_messages(module).items():
         message.__module__ = 'google.cloud.videointelligence_v1beta1.types'
         setattr(sys.modules[__name__], name, message)

@@ -25,10 +25,12 @@ with io.open(os.path.join(PACKAGE_ROOT, 'README.rst'), 'r') as readme_file:
     readme = readme_file.read()
 
 REQUIREMENTS = [
-    'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
-    'google-api-core >= 0.1.1, < 0.2.0dev',
-    'google-gax >= 0.15.14, < 0.16dev',
+    'google-api-core>=0.1.0, <0.2.0dev',
+    'google-auth>=1.0.2, <2.0dev',
+    'googleapis-common-protos[grpc]>=1.5.2, <2.0dev',
+    'requests>=2.18.4, <3.0dev',
 ]
+
 EXTRAS_REQUIRE = {
     ':python_version<"3.4"': ['enum34'],
 }
@@ -37,7 +39,7 @@ setup(
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     name='google-cloud-vision',
-    version='0.28.1.dev1',
+    version='0.29.1.dev1',
     description='Python Client for Google Cloud Vision',
     long_description=readme,
     namespace_packages=[

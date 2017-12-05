@@ -15,7 +15,7 @@ transactions are visible:
 
 .. code:: python
 
-    snapshot = session.snapshot()
+    snapshot = database.snapshot()
 
 You can also specify a weaker bound, which can either be to perform all
 reads as of a given timestamp:
@@ -25,7 +25,7 @@ reads as of a given timestamp:
     import datetime
     from pytz import UTC
     TIMESTAMP = datetime.utcnow().replace(tzinfo=UTC)
-    snapshot = session.snapshot(read_timestamp=TIMESTAMP)
+    snapshot = database.snapshot(read_timestamp=TIMESTAMP)
 
 or as of a given duration in the past:
 
@@ -33,13 +33,13 @@ or as of a given duration in the past:
 
     import datetime
     DURATION = datetime.timedelta(seconds=5)
-    snapshot = session.snapshot(exact_staleness=DURATION)
+    snapshot = database.snapshot(exact_staleness=DURATION)
 
 
 Read Table Data
 ---------------
 
-Read data for selected rows from a table in the session's database.  Calls
+Read data for selected rows from a table in the database.  Calls
 the ``Read`` API, which returns all rows specified in ``key_set``, or else
 fails if the result set is too large,
 
@@ -55,12 +55,8 @@ fails if the result set is too large,
 
 .. note::
 
-   The result set returned by
-   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
-   iterated after the snapshot's session has been returned to the database's
-   session pool.  Therefore, unless your application creates sessions
-   manually, perform all iteration within the context of  the
-   ``with database.snapshot()`` block.
+   Perform all iteration within the context of the ``with database.snapshot()`` 
+   block.  
 
 .. note::
 
@@ -87,7 +83,7 @@ fails if the result set is too large,
 Execute a SQL Select Statement
 ------------------------------
 
-Read data from a query against tables in the session's database.  Calls
+Read data from a query against tables in the database.  Calls
 the ``ExecuteSql`` API, which returns all rows matching the query, or else
 fails if the result set is too large,
 
@@ -105,12 +101,8 @@ fails if the result set is too large,
 
 .. note::
 
-   The result set returned by
-   :meth:`~google.cloud.spanner.snapshot.Snapshot.execute_sql` *must not* be
-   iterated after the snapshot's session has been returned to the database's
-   session pool.  Therefore, unless your application creates sessions
-   manually, perform all iteration within the context of  the
-   ``with database.snapshot()`` block.
+   Perform all iteration within the context of the ``with database.snapshot()``
+   block.
 
 .. note::
 

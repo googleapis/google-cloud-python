@@ -51,25 +51,20 @@ SETUP_BASE = {
 
 
 REQUIREMENTS = [
-    'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
-    'google-api-core >= 0.1.1, < 0.2.0dev',
-    'google-gax >= 0.15.13, < 0.16dev',
+    'google-api-core[grpc] >= 0.1.2.dev1, < 0.2.0dev',
+    'google-auth >= 1.0.2, < 2.0dev',
     'grpc-google-iam-v1 >= 0.11.1, < 0.12dev',
     'psutil >= 5.2.2, < 6.0dev',
 ]
 
 setup(
     name='google-cloud-pubsub',
-    version='0.29.1.dev1',
+    version='0.29.3.dev1',
     description='Python Client for Google Cloud Pub/Sub',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.cloud.gapic',
-        'google.cloud.gapic.pubsub',
-        'google.cloud.proto',
-        'google.cloud.proto.pubsub',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import queue
 import time
 
 import mock
+from six.moves import queue
 
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import message

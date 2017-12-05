@@ -12,13 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import time
 
+from google.api_core import exceptions
+from google.auth import credentials
+import grpc
 import mock
 
-from google.auth import credentials
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
+from google.cloud.pubsub_v1.gapic import subscriber_client_config
+from google.cloud.pubsub_v1.subscriber.policy import base
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
@@ -26,6 +31,23 @@ def create_policy(flow_control=types.FlowControl()):
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
     return thread.Policy(client, 'sub_name_d', flow_control=flow_control)
+
+
+def test_idempotent_retry_codes():
+    # Make sure the config matches our hard-coded tuple of exceptions.
+    interfaces = subscriber_client_config.config['interfaces']
+    retry_codes = interfaces['google.pubsub.v1.Subscriber']['retry_codes']
+    idempotent = retry_codes['idempotent']
+
+    status_codes = tuple(
+        getattr(grpc.StatusCode, name, None)
+        for name in idempotent
+    )
+    expected = tuple(
+        exceptions.exception_class_for_grpc_status(status_code)
+        for status_code in status_codes
+    )
+    assert base.BasePolicy._RETRYABLE_STREAM_ERRORS == expected
 
 
 def test_ack_deadline():
@@ -113,6 +135,18 @@ def test_drop():
     policy.drop('ack_id_string', 20)
     assert len(policy.managed_ack_ids) == 0
     assert policy._bytes == 0
+
+
+@mock.patch.object(base, '_LOGGER', spec=logging.Logger)
+def test_drop_unexpected_negative(_LOGGER):
+    policy = create_policy()
+    policy.managed_ack_ids.add('ack_id_string')
+    policy._bytes = 0
+    policy.drop('ack_id_string', 20)
+    assert len(policy.managed_ack_ids) == 0
+    assert policy._bytes == 0
+    _LOGGER.debug.assert_called_once_with(
+        'Bytes was unexpectedly negative: %d', -20)
 
 
 def test_drop_below_threshold():

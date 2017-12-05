@@ -15,16 +15,14 @@
 from __future__ import absolute_import
 
 from concurrent import futures
-import queue
 import threading
 
-import grpc
-
-import mock
-
-import pytest
-
+from google.api_core import exceptions
 from google.auth import credentials
+import mock
+import pytest
+from six.moves import queue
+
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import _helper_threads
@@ -92,17 +90,28 @@ def test_on_callback_request():
 
 def test_on_exception_deadline_exceeded():
     policy = create_policy()
-    exc = mock.Mock(spec=('code',))
-    exc.code.return_value = grpc.StatusCode.DEADLINE_EXCEEDED
-    assert policy.on_exception(exc) is None
+
+    details = 'Bad thing happened. Time out, go sit in the corner.'
+    exc = exceptions.DeadlineExceeded(details)
+
+    assert policy.on_exception(exc) is True
+
+
+def test_on_exception_unavailable():
+    policy = create_policy()
+
+    details = 'UNAVAILABLE. Service taking nap.'
+    exc = exceptions.ServiceUnavailable(details)
+
+    assert policy.on_exception(exc) is True
 
 
 def test_on_exception_other():
     policy = create_policy()
     policy._future = Future(policy=policy)
     exc = TypeError('wahhhhhh')
+    assert policy.on_exception(exc) is False
     with pytest.raises(TypeError):
-        policy.on_exception(exc)
         policy.future.result()
 
 

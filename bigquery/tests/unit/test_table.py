@@ -15,6 +15,11 @@
 import unittest
 
 import mock
+import six
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
 
 from google.cloud.bigquery.dataset import DatasetReference
 
@@ -293,6 +298,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.table_id, self.TABLE_NAME)
         self.assertEqual(table.project, self.PROJECT)
         self.assertEqual(table.dataset_id, self.DS_ID)
+        self.assertEqual(table.reference.table_id, self.TABLE_NAME)
+        self.assertEqual(table.reference.project, self.PROJECT)
+        self.assertEqual(table.reference.dataset_id, self.DS_ID)
         self.assertEqual(
             table.path,
             '/projects/%s/datasets/%s/tables/%s' % (
@@ -861,3 +869,215 @@ class TestRow(unittest.TestCase):
             row.z
         with self.assertRaises(KeyError):
             row['z']
+
+
+class TestRowIterator(unittest.TestCase):
+
+    def test_constructor(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery._helpers import _item_to_row
+        from google.cloud.bigquery._helpers import _rows_page_start
+
+        client = mock.sentinel.client
+        api_request = mock.sentinel.api_request
+        path = '/foo'
+        schema = []
+        iterator = RowIterator(client, api_request, path, schema)
+
+        self.assertFalse(iterator._started)
+        self.assertIs(iterator.client, client)
+        self.assertEqual(iterator.path, path)
+        self.assertIs(iterator._item_to_value, _item_to_row)
+        self.assertEqual(iterator._items_key, 'rows')
+        self.assertIsNone(iterator.max_results)
+        self.assertEqual(iterator.extra_params, {})
+        self.assertEqual(iterator._page_start, _rows_page_start)
+        # Changing attributes.
+        self.assertEqual(iterator.page_number, 0)
+        self.assertIsNone(iterator.next_page_token)
+        self.assertEqual(iterator.num_results, 0)
+
+    def test_iterate(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        rows = [
+            {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+            {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path, schema)
+        self.assertEqual(row_iterator.num_results, 0)
+
+        rows_iter = iter(row_iterator)
+
+        val1 = six.next(rows_iter)
+        print(val1)
+        self.assertEqual(val1.name, 'Phred Phlyntstone')
+        self.assertEqual(row_iterator.num_results, 1)
+
+        val2 = six.next(rows_iter)
+        self.assertEqual(val2.name, 'Bharney Rhubble')
+        self.assertEqual(row_iterator.num_results, 2)
+
+        with self.assertRaises(StopIteration):
+            six.next(rows_iter)
+
+        api_request.assert_called_once_with(
+            method='GET', path=path, query_params={})
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        rows = [
+            {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+            {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+            {'f': [{'v': 'Wylma Phlyntstone'}, {'v': '29'}]},
+            {'f': [{'v': 'Bhettye Rhubble'}, {'v': '27'}]},
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path, schema)
+
+        df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 4)  # verify the number of rows
+        self.assertEqual(list(df), ['name', 'age'])  # verify the column names
+        self.assertEqual(df.name.dtype.name, 'object')
+        self.assertEqual(df.age.dtype.name, 'int64')
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe_w_empty_results(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': []})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path, schema)
+
+        df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 0)  # verify the number of rows
+        self.assertEqual(list(df), ['name', 'age'])  # verify the column names
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe_w_various_types_nullable(self):
+        import datetime
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField('start_timestamp', 'TIMESTAMP'),
+            SchemaField('seconds', 'INT64'),
+            SchemaField('miles', 'FLOAT64'),
+            SchemaField('payment_type', 'STRING'),
+            SchemaField('complete', 'BOOL'),
+            SchemaField('date', 'DATE'),
+        ]
+        row_data = [
+            [None, None, None, None, None, None],
+            ['1.4338368E9', '420', '1.1', 'Cash', 'true', '1999-12-01'],
+            ['1.3878117E9', '2580', '17.7', 'Cash', 'false', '1953-06-14'],
+            ['1.3855653E9', '2280', '4.4', 'Credit', 'true', '1981-11-04'],
+        ]
+        rows = [{'f': [{'v': field} for field in row]} for row in row_data]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path, schema)
+
+        df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 4)  # verify the number of rows
+        exp_columns = [field.name for field in schema]
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+
+        for index, row in df.iterrows():
+            if index == 0:
+                self.assertTrue(row.isnull().all())
+            else:
+                self.assertIsInstance(row.start_timestamp, pandas.Timestamp)
+                self.assertIsInstance(row.seconds, float)
+                self.assertIsInstance(row.payment_type, str)
+                self.assertIsInstance(row.complete, bool)
+                self.assertIsInstance(row.date, datetime.date)
+
+    @unittest.skipIf(pandas is None, 'Requires `pandas`')
+    def test_to_dataframe_column_dtypes(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField('start_timestamp', 'TIMESTAMP'),
+            SchemaField('seconds', 'INT64'),
+            SchemaField('miles', 'FLOAT64'),
+            SchemaField('payment_type', 'STRING'),
+            SchemaField('complete', 'BOOL'),
+            SchemaField('date', 'DATE'),
+        ]
+        row_data = [
+            ['1.4338368E9', '420', '1.1', 'Cash', 'true', '1999-12-01'],
+            ['1.3878117E9', '2580', '17.7', 'Cash', 'false', '1953-06-14'],
+            ['1.3855653E9', '2280', '4.4', 'Credit', 'true', '1981-11-04'],
+        ]
+        rows = [{'f': [{'v': field} for field in row]} for row in row_data]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path, schema)
+
+        df = row_iterator.to_dataframe()
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 3)  # verify the number of rows
+        exp_columns = [field.name for field in schema]
+        self.assertEqual(list(df), exp_columns)  # verify the column names
+
+        self.assertEqual(df.start_timestamp.dtype.name, 'datetime64[ns, UTC]')
+        self.assertEqual(df.seconds.dtype.name, 'int64')
+        self.assertEqual(df.miles.dtype.name, 'float64')
+        self.assertEqual(df.payment_type.dtype.name, 'object')
+        self.assertEqual(df.complete.dtype.name, 'bool')
+        self.assertEqual(df.date.dtype.name, 'object')
+
+    @mock.patch('google.cloud.bigquery.table.pandas', new=None)
+    def test_to_dataframe_error_if_pandas_is_none(self):
+        from google.cloud.bigquery.table import RowIterator
+        from google.cloud.bigquery.table import SchemaField
+
+        schema = [
+            SchemaField('name', 'STRING', mode='REQUIRED'),
+            SchemaField('age', 'INTEGER', mode='REQUIRED')
+        ]
+        rows = [
+            {'f': [{'v': 'Phred Phlyntstone'}, {'v': '32'}]},
+            {'f': [{'v': 'Bharney Rhubble'}, {'v': '33'}]},
+        ]
+        path = '/foo'
+        api_request = mock.Mock(return_value={'rows': rows})
+        row_iterator = RowIterator(
+            mock.sentinel.client, api_request, path, schema)
+
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe()

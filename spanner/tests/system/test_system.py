@@ -281,18 +281,18 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
     def test_update_database_ddl(self):
         pool = BurstyPool()
-        temp_db_id = 'temp_db'
+        temp_db_id = 'temp_db' + unique_resource_id('_')
         temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
         create_op = temp_db.create()
         self.to_delete.append(temp_db)
 
         # We want to make sure the operation completes.
-        create_op.result(90)  # raises on failure / timeout.
+        create_op.result(120)  # raises on failure / timeout.
 
         operation = temp_db.update_ddl(DDL_STATEMENTS)
 
         # We want to make sure the operation completes.
-        operation.result(90)  # raises on failure / timeout.
+        operation.result(120)  # raises on failure / timeout.
 
         temp_db.reload()
 
@@ -728,6 +728,49 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         return session, committed
 
+    def test_read_with_single_keys_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        expected = [[row[1], row[2]] for row in self._row_data(row_count)]
+        row = 5
+        keyset = [[expected[row][0], expected[row][1]]]
+        results_iter = session.read(self.TABLE,
+                                    columns,
+                                    KeySet(keys=keyset),
+                                    index='name'
+        )
+        rows = list(results_iter)
+        self.assertEqual(rows, [expected[row]])
+
+    def test_empty_read_with_single_keys_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        keyset = [["Non", "Existent"]]
+        results_iter = session.read(self.TABLE,
+                                    columns,
+                                    KeySet(keys=keyset),
+                                    index='name'
+        )
+        rows = list(results_iter)
+        self.assertEqual(rows, [])
+
+    def test_read_with_multiple_keys_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        expected = [[row[1], row[2]] for row in self._row_data(row_count)]
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 KeySet(keys=expected),
+                                 index='name')
+        )
+        self.assertEqual(rows, expected)
+
     def test_snapshot_read_w_various_staleness(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
@@ -815,7 +858,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(after, all_data_rows)
 
     def test_read_w_manual_consume(self):
-        ROW_COUNT = 4000
+        ROW_COUNT = 3000
         session, committed = self._set_up_table(ROW_COUNT)
 
         snapshot = session.snapshot(read_timestamp=committed)
@@ -873,6 +916,13 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = [all_data_rows[0]]
         self._check_row_data(rows, expected)
 
+    def test_empty_read(self):
+        ROW_COUNT = 40
+        session, committed = self._set_up_table(ROW_COUNT)
+        rows = list(session.read(
+            self.TABLE, self.COLUMNS, KeySet(keys=[(40,)])))
+        self._check_row_data(rows, [])
+
     def test_read_w_multiple_keys(self):
         ROW_COUNT = 40
         indices = [0, 5, 17]
@@ -888,7 +938,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(rows, expected)
 
     def test_read_w_limit(self):
-        ROW_COUNT = 4000
+        ROW_COUNT = 3000
         LIMIT = 100
         session, committed = self._set_up_table(ROW_COUNT)
 
@@ -901,7 +951,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(rows, expected)
 
     def test_read_w_ranges(self):
-        ROW_COUNT = 4000
+        ROW_COUNT = 3000
         START = 1000
         END = 2000
         session, committed = self._set_up_table(ROW_COUNT)
@@ -937,7 +987,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self._check_row_data(rows, expected)
 
     def test_execute_sql_w_manual_consume(self):
-        ROW_COUNT = 4000
+        ROW_COUNT = 3000
         session, committed = self._set_up_table(ROW_COUNT)
 
         snapshot = session.snapshot(read_timestamp=committed)

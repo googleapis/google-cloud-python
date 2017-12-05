@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 
 import collections
-import concurrent.futures
 import functools
 import os
 import uuid
@@ -29,16 +28,11 @@ from google.resumable_media.requests import MultipartUpload
 from google.resumable_media.requests import ResumableUpload
 
 from google.api_core import page_iterator
-from google.api_core.exceptions import GoogleAPICallError
-from google.api_core.exceptions import NotFound
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
-from google.cloud.bigquery._helpers import _field_to_index_mapping
-from google.cloud.bigquery._helpers import _item_to_row
-from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
@@ -51,6 +45,7 @@ from google.cloud.bigquery.query import QueryResults
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.table import RowIterator
 from google.cloud.bigquery.table import _TABLE_HAS_NO_SCHEMA
 from google.cloud.bigquery.table import _row_from_mapping
 
@@ -316,7 +311,7 @@ class Client(ClientWithProject):
         If ``dataset.etag`` is not ``None``, the update will only
         succeed if the dataset on the server has the same ETag. Thus
         reading a dataset with ``get_dataset``, changing its fields,
-        and then passing it ``update_dataset`` will ensure that the changes
+        and then passing it to ``update_dataset`` will ensure that the changes
         will only be saved if no modifications to the dataset occurred
         since the read.
 
@@ -356,23 +351,32 @@ class Client(ClientWithProject):
             retry, method='PATCH', path=path, data=partial, headers=headers)
         return Dataset.from_api_repr(api_response)
 
-    def update_table(self, table, properties, retry=DEFAULT_RETRY):
-        """API call:  update table properties via a PUT request
+    def update_table(self, table, fields, retry=DEFAULT_RETRY):
+        """Change some fields of a table.
 
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/update
+        Use ``fields`` to specify which fields to update. At least one field
+        must be provided. If a field is listed in ``fields`` and is ``None``
+        in ``table``, it will be deleted.
 
-        :type table:
-            :class:`google.cloud.bigquery.table.Table`
-        :param table_ref: the table to update.
+        If ``table.etag`` is not ``None``, the update will only succeed if
+        the table on the server has the same ETag. Thus reading a table with
+        ``get_table``, changing its fields, and then passing it to
+        ``update_table`` will ensure that the changes will only be saved if
+        no modifications to the table occurred since the read.
 
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
+        Args:
+            table (google.cloud.bigquery.table.Table): The table to update.
+            fields (Sequence[str]):
+                The fields of ``table`` to change, spelled as the Table
+                properties (e.g. "friendly_name").
+            retry (google.api_core.retry.Retry):
+                (Optional) A description of how to retry the API call.
 
-        :rtype: :class:`google.cloud.bigquery.table.Table`
-        :returns: a ``Table`` instance
+        Returns:
+            google.cloud.bigquery.table.Table:
+                The table resource returned from the API call.
         """
-        partial = table._build_resource(properties)
+        partial = table._build_resource(fields)
         if table.etag is not None:
             headers = {'If-Match': table.etag}
         else:
@@ -1144,67 +1148,6 @@ class Client(ClientWithProject):
 
         return errors
 
-    def query_rows(
-            self, query, job_config=None, job_id=None, job_id_prefix=None,
-            timeout=None, retry=DEFAULT_RETRY):
-        """Start a query job and wait for the results.
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query
-
-        :type query: str
-        :param query:
-            SQL query to be executed. Defaults to the standard SQL dialect.
-            Use the ``job_config`` parameter to change dialects.
-
-        :type job_config: :class:`google.cloud.bigquery.job.QueryJobConfig`
-        :param job_config: (Optional) Extra configuration options for the job.
-
-        :type job_id: str
-        :param job_id: (Optional) ID to use for the query job.
-
-        :type job_id_prefix: str or ``NoneType``
-        :param job_id_prefix: (Optional) the user-provided prefix for a
-                              randomly generated job ID. This parameter will be
-                              ignored if a ``job_id`` is also given.
-
-        :type timeout: float
-        :param timeout:
-            (Optional) How long (in seconds) to wait for job to complete
-            before raising a :class:`concurrent.futures.TimeoutError`.
-
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns:
-            Iterator of row data :class:`~google.cloud.bigquery.table.Row`-s.
-            During each page, the iterator will have the ``total_rows``
-            attribute set, which counts the total number of rows **in the
-            result set** (this is distinct from the total number of rows in
-            the current page: ``iterator.page.num_items``).
-
-        :raises:
-            :class:`~google.api_core.exceptions.GoogleAPICallError` if the
-            job failed or :class:`concurrent.futures.TimeoutError` if the job
-            did not complete in the given timeout.
-
-            When an exception happens, the query job will be cancelled on a
-            best-effort basis.
-        """
-        job_id = _make_job_id(job_id, job_id_prefix)
-
-        try:
-            job = self.query(
-                query, job_config=job_config, job_id=job_id, retry=retry)
-            rows_iterator = job.result(timeout=timeout)
-        except (GoogleAPICallError, concurrent.futures.TimeoutError):
-            try:
-                self.cancel_job(job_id)
-            except NotFound:
-                # It's OK if couldn't cancel because job never got created.
-                pass
-            raise
-
-        return rows_iterator
-
     def list_rows(self, table, selected_fields=None, max_results=None,
                   page_token=None, start_index=None, retry=DEFAULT_RETRY):
         """List the rows of the table.
@@ -1244,7 +1187,7 @@ class Client(ClientWithProject):
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :rtype: :class:`~google.api_core.page_iterator.Iterator`
+        :rtype: :class:`~google.cloud.bigquery.table.RowIterator`
         :returns: Iterator of row data
                   :class:`~google.cloud.bigquery.table.Row`-s. During each
                   page, the iterator will have the ``total_rows`` attribute
@@ -1272,20 +1215,15 @@ class Client(ClientWithProject):
         if start_index is not None:
             params['startIndex'] = start_index
 
-        iterator = page_iterator.HTTPIterator(
+        row_iterator = RowIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry),
             path='%s/data' % (table.path,),
-            item_to_value=_item_to_row,
-            items_key='rows',
+            schema=schema,
             page_token=page_token,
-            next_token='pageToken',
             max_results=max_results,
-            page_start=_rows_page_start,
             extra_params=params)
-        iterator.schema = schema
-        iterator._field_to_index = _field_to_index_mapping(schema)
-        return iterator
+        return row_iterator
 
     def list_partitions(self, table, retry=DEFAULT_RETRY):
         """List the partitions in a table.
@@ -1303,12 +1241,12 @@ class Client(ClientWithProject):
         """
         config = QueryJobConfig()
         config.use_legacy_sql = True  # required for '$' syntax
-        rows = self.query_rows(
+        query_job = self.query(
             'SELECT partition_id from [%s:%s.%s$__PARTITIONS_SUMMARY__]' %
             (table.project, table.dataset_id, table.table_id),
             job_config=config,
             retry=retry)
-        return [row[0] for row in rows]
+        return [row[0] for row in query_job]
 
 
 # pylint: disable=unused-argument

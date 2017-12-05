@@ -16,14 +16,24 @@
 
 from __future__ import absolute_import
 
+import copy
 import datetime
 import operator
 
 import six
+try:
+    import pandas
+except ImportError:  # pragma: NO COVER
+    pandas = None
+
+from google.api_core.page_iterator import HTTPIterator
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _millis_from_datetime
+from google.cloud.bigquery._helpers import _item_to_row
+from google.cloud.bigquery._helpers import _rows_page_start
 from google.cloud.bigquery._helpers import _snake_to_camel_case
+from google.cloud.bigquery._helpers import _field_to_index_mapping
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
@@ -32,6 +42,19 @@ from google.cloud.bigquery.external_config import ExternalConfig
 
 _TABLE_HAS_NO_SCHEMA = "Table has no schema:  call 'client.get_table()'"
 _MARKER = object()
+
+
+def _reference_getter(table):
+    """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
+    this table.
+
+    Returns:
+        google.cloud.bigquery.table.TableReference: pointer to this table
+    """
+    from google.cloud.bigquery import dataset
+
+    dataset_ref = dataset.DatasetReference(table.project, table.dataset_id)
+    return TableReference(dataset_ref, table.table_id)
 
 
 def _view_use_legacy_sql_getter(table):
@@ -222,6 +245,8 @@ class Table(object):
         :returns: the table ID.
         """
         return self._table_id
+
+    reference = property(_reference_getter)
 
     @property
     def path(self):
@@ -764,18 +789,7 @@ class TableListItem(object):
         """
         return self._properties.get('tableReference', {}).get('tableId')
 
-    @property
-    def reference(self):
-        """A :class:`~google.cloud.bigquery.table.TableReference` pointing to
-        this table.
-
-        Returns:
-            google.cloud.bigquery.table.TableReference: pointer to this table
-        """
-        from google.cloud.bigquery import dataset
-
-        dataset_ref = dataset.DatasetReference(self.project, self.dataset_id)
-        return TableReference(dataset_ref, self.table_id)
+    reference = property(_reference_getter)
 
     @property
     def labels(self):
@@ -913,43 +927,72 @@ class Row(object):
         self._xxx_field_to_index = field_to_index
 
     def values(self):
-        return self._xxx_values
+        """Return the values included in this row.
+
+        Returns:
+            Sequence[object]: A sequence of length ``len(row)``.
+        """
+        return copy.deepcopy(self._xxx_values)
 
     def keys(self):
+        """Return the keys for using a row as a dict.
+
+        Returns:
+            Sequence[str]: The keys corresponding to the columns of a row
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).keys())
+            ['x', 'y']
         """
-        Return keys as of a dict:
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).keys()
-        ['x', 'y']
-        """
-        keys = self._xxx_field_to_index.keys()
-        return keys
+        return six.iterkeys(self._xxx_field_to_index)
 
     def items(self):
+        """Return items as ``(key, value)`` pairs.
+
+        Returns:
+            Sequence[Tuple[str, object]]:
+                The ``(key, value)`` pairs representing this row.
+
+        Examples:
+
+            >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).items())
+            [('x', 'a'), ('y', 'b')]
         """
-        Return items as of a dict:
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).items()
-        [('x', 'a'), ('y', 'b')]
-        """
-        items = [
-            (k, self._xxx_values[i])
-            for k, i
-            in self._xxx_field_to_index.items()
-        ]
-        return items
+        for key, index in six.iteritems(self._xxx_field_to_index):
+            yield (key, copy.deepcopy(self._xxx_values[index]))
 
     def get(self, key, default=None):
-        """
-        Return value under specified key
-        Defaults to None or specified default
-        if key does not exist:
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
-        'a'
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
-        None
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
-        ''
-        >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
-        ''
+        """Return a value for key, with a default value if it does not exist.
+
+        Args:
+            key (str): The key of the column to access
+            default (object):
+                The default value to use if the key does not exist. (Defaults
+                to :data:`None`.)
+
+        Returns:
+            object:
+                The value associated with the provided key, or a default value.
+
+        Examples:
+            When the key exists, the value associated with it is returned.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('x')
+            'a'
+
+            The default value is ``None`` when the key does not exist.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z')
+            None
+
+            The default value can be overrided with the ``default`` parameter.
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', '')
+            ''
+
+            >>> Row(('a', 'b'), {'x': 0, 'y': 1}).get('z', default = '')
+            ''
         """
         index = self._xxx_field_to_index.get(key)
         if index is None:
@@ -989,3 +1032,72 @@ class Row(object):
                        key=operator.itemgetter(1))
         f2i = '{' + ', '.join('%r: %d' % item for item in items) + '}'
         return 'Row({}, {})'.format(self._xxx_values, f2i)
+
+
+class RowIterator(HTTPIterator):
+    """A class for iterating through HTTP/JSON API row list responses.
+
+    Args:
+        client (google.cloud.bigquery.Client): The API client.
+        api_request (Callable[google.cloud._http.JSONConnection.api_request]):
+            The function to use to make API requests.
+        path (str): The method path to query for the list of items.
+        page_token (str): A token identifying a page in a result set to start
+            fetching results from.
+        max_results (int): The maximum number of results to fetch.
+        extra_params (dict): Extra query string parameters for the API call.
+
+    .. autoattribute:: pages
+    """
+
+    def __init__(self, client, api_request, path, schema, page_token=None,
+                 max_results=None, extra_params=None):
+        super(RowIterator, self).__init__(
+            client, api_request, path, item_to_value=_item_to_row,
+            items_key='rows', page_token=page_token, max_results=max_results,
+            extra_params=extra_params, page_start=_rows_page_start,
+            next_token='pageToken')
+        self._schema = schema
+        self._field_to_index = _field_to_index_mapping(schema)
+        self._total_rows = None
+
+    @property
+    def schema(self):
+        """Schema for the table containing the rows
+
+        Returns:
+            list of :class:`~google.cloud.bigquery.schema.SchemaField`:
+                fields describing the schema
+        """
+        return list(self._schema)
+
+    @property
+    def total_rows(self):
+        """The total number of rows in the table.
+
+        Returns:
+            int: the row count.
+        """
+        return self._total_rows
+
+    def to_dataframe(self):
+        """Create a pandas DataFrame from the query results.
+
+        Returns:
+            A :class:`~pandas.DataFrame` populated with row data and column
+            headers from the query results. The column headers are derived
+            from the destination table's schema.
+
+        Raises:
+            ValueError: If the `pandas` library cannot be imported.
+
+        """
+        if pandas is None:
+            raise ValueError('The pandas library is not installed, please '
+                             'install pandas to use the to_dataframe() '
+                             'function.')
+
+        column_headers = [field.name for field in self.schema]
+        rows = [row.values() for row in iter(self)]
+
+        return pandas.DataFrame(rows, columns=column_headers)
