@@ -21,6 +21,7 @@ from google.api_core import exceptions
 from google.auth import credentials
 import mock
 import pytest
+import six
 from six.moves import queue
 
 from google.cloud.pubsub_v1 import subscriber
@@ -49,36 +50,69 @@ def test_init_with_executor():
 
 
 def test_close():
+    dispatch_thread = mock.Mock(spec=threading.Thread)
+    leases_thread = mock.Mock(spec=threading.Thread)
+
     policy = create_policy()
+    policy._dispatch_thread = dispatch_thread
+    policy._leases_thread = leases_thread
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
         policy.close()
         stop_consuming.assert_called_once_with()
-    assert 'callback request worker' not in policy._consumer.helper_threads
+
+    assert policy._dispatch_thread is None
+    dispatch_thread.join.assert_called_once_with()
+    assert policy._leases_thread is None
+    leases_thread.join.assert_called_once_with()
 
 
 def test_close_with_future():
+    dispatch_thread = mock.Mock(spec=threading.Thread)
+    leases_thread = mock.Mock(spec=threading.Thread)
+
     policy = create_policy()
+    policy._dispatch_thread = dispatch_thread
+    policy._leases_thread = leases_thread
     policy._future = Future(policy=policy)
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
         future = policy.future
         policy.close()
         stop_consuming.assert_called_once_with()
+
+    assert policy._dispatch_thread is None
+    dispatch_thread.join.assert_called_once_with()
+    assert policy._leases_thread is None
+    leases_thread.join.assert_called_once_with()
     assert policy.future != future
     assert future.result() is None
 
 
-@mock.patch.object(_helper_threads.HelperThreadRegistry, 'start')
-@mock.patch.object(threading.Thread, 'start')
-def test_open(thread_start, htr_start):
+def test_open():
     policy = create_policy()
-    with mock.patch.object(policy._consumer, 'start_consuming') as consuming:
+    consumer = policy._consumer
+    threads = (
+        mock.Mock(spec=('name', 'start')),
+        mock.Mock(spec=('name', 'start')),
+        mock.Mock(spec=('name', 'start')),
+    )
+    with mock.patch.object(threading, 'Thread', side_effect=threads):
         policy.open(mock.sentinel.CALLBACK)
-        assert policy._callback is mock.sentinel.CALLBACK
-        consuming.assert_called_once_with()
-        htr_start.assert_called()
-        thread_start.assert_called()
+
+    assert policy._callback is mock.sentinel.CALLBACK
+
+    assert policy._dispatch_thread is threads[0]
+    threads[0].start.assert_called_once_with()
+
+    threads_dict = consumer.helper_threads._helper_threads
+    assert len(threads_dict) == 1
+    helper_thread = next(six.itervalues(threads_dict))
+    assert helper_thread.thread is threads[1]
+    threads[1].start.assert_called_once_with()
+
+    assert policy._leases_thread is threads[2]
+    threads[2].start.assert_called_once_with()
 
 
 def test_dispatch_callback_valid_actions():
