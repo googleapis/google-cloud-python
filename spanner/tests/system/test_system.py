@@ -1217,6 +1217,15 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             expected=[(107,)],
         )
 
+        # Find NaN
+        self._check_sql_results(
+            snapshot,
+            sql='SELECT eye_d FROM all_types WHERE IS_NAN(approx_value)',
+            params={'nan': float('nan')},
+            param_types={'nan': Type(code=FLOAT64)},
+            expected=[(1207,), (2000,)],
+        )
+
         rows = list(snapshot.execute_sql(
             'SELECT'
             ' [CAST("-inf" AS FLOAT64),'
