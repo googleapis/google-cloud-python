@@ -151,7 +151,10 @@ class Policy(base.BasePolicy):
         # Stop consuming messages.
         self._request_queue.put(_helper_threads.STOP)
         self._dispatch_thread.join()  # Wait until stopped.
+        self._dispatch_thread = None
         self._consumer.stop_consuming()
+        self._leases_thread.join()
+        self._leases_thread = None
         self._executor.shutdown()
 
         # The subscription is closing cleanly; resolve the future if it is not
