@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 3fb9f16 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud cc2c07c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '3fb9f16',
+        VERSION:     'cc2c07c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -78,6 +78,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_snake_to_camel_case</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery._http</span> <span class="k">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetListItem</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">DatasetReference</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">CopyJob</span>
 <span class="kn">from</span> <span class="nn">google.cloud.bigquery.job</span> <span class="k">import</span> <span class="n">ExtractJob</span>
@@ -223,8 +224,10 @@
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
 
 <span class="sd">        :rtype: :class:`~google.api_core.page_iterator.Iterator`</span>
-<span class="sd">        :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.</span>
-<span class="sd">                  accessible to the current client.</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            Iterator of</span>
+<span class="sd">            :class:`~google.cloud.bigquery.dataset.DatasetListItem`.</span>
+<span class="sd">            associated with the client&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">include_all</span><span class="p">:</span>
@@ -1317,10 +1320,10 @@
 <span class="sd">    :type resource: dict</span>
 <span class="sd">    :param resource: An item to be converted to a dataset.</span>
 
-<span class="sd">    :rtype: :class:`.Dataset`</span>
+<span class="sd">    :rtype: :class:`.DatasetListItem`</span>
 <span class="sd">    :returns: The next dataset in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">DatasetListItem</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_item_to_job</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>

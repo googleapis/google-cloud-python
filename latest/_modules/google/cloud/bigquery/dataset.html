@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dataset &#8212; google-cloud 3fb9f16 documentation</title>
+    <title>google.cloud.bigquery.dataset &#8212; google-cloud cc2c07c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '3fb9f16',
+        VERSION:     'cc2c07c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -323,8 +323,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">reference</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A :class:`~google.cloud.bigquery.dataset.DatasetReference` pointing to</span>
-<span class="sd">        this dataset.</span>
+        <span class="sd">&quot;&quot;&quot;A reference to this dataset.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            google.cloud.bigquery.dataset.DatasetReference:</span>
@@ -462,7 +461,7 @@
 <span class="sd">        :rtype: dict, {str -&gt; str}</span>
 <span class="sd">        :returns: A dict of the the dataset&#39;s labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{})</span>
 
     <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -588,7 +587,108 @@
 <span class="sd">        :rtype: :class:`~google.cloud.bigquery.table.TableReference`</span>
 <span class="sd">        :returns: a TableReference for a table in this dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">TableReference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">TableReference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">table_id</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DatasetListItem"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.DatasetListItem">[docs]</a><span class="k">class</span> <span class="nc">DatasetListItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A read-only dataset resource from a list operation.</span>
+
+<span class="sd">    For performance reasons, the BigQuery API only includes some of the</span>
+<span class="sd">    dataset properties when listing datasets. Notably,</span>
+<span class="sd">    :attr:`~google.cloud.bigquery.dataset.Dataset.access_entries` is missing.</span>
+
+<span class="sd">    For a full list of the properties that the BigQuery API returns, see the</span>
+<span class="sd">    `REST documentation for datasets.list</span>
+<span class="sd">    &lt;https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list&gt;`_.</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        resource (dict):</span>
+<span class="sd">            A dataset-like resource object from a dataset list response. A</span>
+<span class="sd">            ``datasetReference`` property is required.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError:</span>
+<span class="sd">            If ``datasetReference`` or one of its required members is missing</span>
+<span class="sd">            from ``resource``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;datasetReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;resource must contain a datasetReference value&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;projectId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;resource[&#39;datasetReference&#39;] must contain a projectId value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;datasetId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;resource[&#39;datasetReference&#39;] must contain a datasetId value&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project bound to the dataset.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the project.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dataset ID.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the dataset ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;datasetReference&#39;</span><span class="p">][</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">full_dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;ID for the dataset resource, in the form &quot;project_id:dataset_id&quot;.</span>
+
+<span class="sd">        :rtype: str, or ``NoneType``</span>
+<span class="sd">        :returns: the ID (None until set from the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Title of the dataset.</span>
+
+<span class="sd">        :rtype: str, or ``NoneType``</span>
+<span class="sd">        :returns: The name as set by the user, or None (the default).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Labels for the dataset.</span>
+
+<span class="sd">        :rtype: dict, {str -&gt; str}</span>
+<span class="sd">        :returns: A dict of the the dataset&#39;s labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reference</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A reference to this dataset.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            google.cloud.bigquery.dataset.DatasetReference:</span>
+<span class="sd">                A pointer to this dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">DatasetReference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DatasetListItem.table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.dataset.DatasetListItem.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructs a TableReference.</span>
+
+<span class="sd">        :type table_id: str</span>
+<span class="sd">        :param table_id: the ID of the table.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.table.TableReference`</span>
+<span class="sd">        :returns: a TableReference for a table in this dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">TableReference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">table_id</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

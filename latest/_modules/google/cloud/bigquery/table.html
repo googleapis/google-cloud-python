@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.table &#8212; google-cloud 3fb9f16 documentation</title>
+    <title>google.cloud.bigquery.table &#8212; google-cloud cc2c07c documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '3fb9f16',
+        VERSION:     'cc2c07c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -91,7 +91,7 @@
 <span class="sd">    this table.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        google.cloud.bigquery.table.TableReference: pointer to this table</span>
+<span class="sd">        google.cloud.bigquery.table.TableReference: pointer to this table.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">google.cloud.bigquery</span> <span class="k">import</span> <span class="n">dataset</span>
 
@@ -337,7 +337,7 @@
 <span class="sd">        :rtype: dict, {str -&gt; str}</span>
 <span class="sd">        :returns: A dict of the the table&#39;s labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;labels&#39;</span><span class="p">,</span> <span class="p">{})</span>
 
     <span class="nd">@labels</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -798,10 +798,28 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        resource (dict):</span>
-<span class="sd">            A table-like resource object from a table list response.</span>
+<span class="sd">            A table-like resource object from a table list response. A</span>
+<span class="sd">            ``tableReference`` property is required.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError:</span>
+<span class="sd">            If ``tableReference`` or one of its required members is missing</span>
+<span class="sd">            from ``resource``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;resource must contain a tableReference value&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;projectId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a projectId value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;datasetId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a datasetId value&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;resource[&#39;tableReference&#39;] must contain a tableId value&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="n">resource</span>
 
     <span class="nd">@property</span>
@@ -811,7 +829,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: the project ID of the table.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;projectId&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;projectId&#39;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -820,7 +838,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: the dataset ID of the table.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;datasetId&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;datasetId&#39;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -829,7 +847,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: the table ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tableId&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
 
     <span class="n">reference</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_reference_getter</span><span class="p">)</span>
 
@@ -884,8 +902,10 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            int: The time in ms for partition expiration</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expirationMs&#39;</span><span class="p">))</span>
+        <span class="n">expiration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s1">&#39;timePartitioning&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expirationMs&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">expiration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
