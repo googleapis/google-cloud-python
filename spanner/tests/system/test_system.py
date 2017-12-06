@@ -865,17 +865,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         snapshot = session.snapshot(read_timestamp=committed)
         streamed = snapshot.read(self.TABLE, self.COLUMNS, self.ALL)
+        keyset = KeySet(all_=True)
+        rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
+        items = [item for item in iter(streamed)]
 
-        retrieved = 0
-        while True:
-            try:
-                streamed._consume_next()
-            except StopIteration:
-                break
-            retrieved += len(streamed._rows)
-            streamed._rows[:] = ()
-
-        self.assertEqual(retrieved, ROW_COUNT)
+        self.assertEqual(items, rows)
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 
@@ -1187,17 +1181,11 @@ class TestSessionAPI(unittest.TestCase, _TestData):
 
         snapshot = session.snapshot(read_timestamp=committed)
         streamed = snapshot.execute_sql(self.SQL)
+        keyset = KeySet(all_=True)
+        rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
+        items = [item for item in iter(streamed)]
 
-        retrieved = 0
-        while True:
-            try:
-                streamed._consume_next()
-            except StopIteration:
-                break
-            retrieved += len(streamed._rows)
-            streamed._rows[:] = ()
-
-        self.assertEqual(retrieved, ROW_COUNT)
+        self.assertEqual(items, rows)
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 

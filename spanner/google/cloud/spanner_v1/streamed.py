@@ -39,7 +39,7 @@ class StreamedResultSet(object):
     """
     def __init__(self, response_iterator, source=None):
         self._response_iterator = response_iterator
-        self._processed_rows = []             # Fully-processed rows
+        self._processed_rows = []   # Fully-processed rows
         self._counter = 0           # Counter for processed responses
         self._metadata = None       # Until set from first PRS
         self._stats = None          # Until set from last PRS
