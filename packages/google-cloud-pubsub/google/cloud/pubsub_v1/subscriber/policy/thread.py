@@ -67,60 +67,81 @@ class Policy(base.BasePolicy):
 
     This consumer handles the connection to the Pub/Sub service and all of
     the concurrency needs.
+
+    Args:
+        client (~.pubsub_v1.subscriber.client): The subscriber client used
+            to create this instance.
+        subscription (str): The name of the subscription. The canonical
+            format for this is
+            ``projects/{project}/subscriptions/{subscription}``.
+        flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow
+            control settings.
+        executor (~concurrent.futures.ThreadPoolExecutor): (Optional.) A
+            ThreadPoolExecutor instance, or anything duck-type compatible
+            with it.
+        queue (~queue.Queue): (Optional.) A Queue instance, appropriate
+            for crossing the concurrency boundary implemented by
+            ``executor``.
     """
+
     def __init__(self, client, subscription, flow_control=types.FlowControl(),
                  executor=None, queue=None):
-        """Instantiate the policy.
-
-        Args:
-            client (~.pubsub_v1.subscriber.client): The subscriber client used
-                to create this instance.
-            subscription (str): The name of the subscription. The canonical
-                format for this is
-                ``projects/{project}/subscriptions/{subscription}``.
-            flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow
-                control settings.
-            executor (~concurrent.futures.ThreadPoolExecutor): (Optional.) A
-                ThreadPoolExecutor instance, or anything duck-type compatible
-                with it.
-            queue (~queue.Queue): (Optional.) A Queue instance, appropriate
-                for crossing the concurrency boundary implemented by
-                ``executor``.
-        """
-        # Default the callback to a no-op; it is provided by `.open`.
-        self._callback = _do_nothing_callback
-
-        # Default the future to None; it is provided by `.open`.
-        self._future = None
-
-        # Create a queue for keeping track of shared state.
-        if queue is None:
-            queue = queue_mod.Queue()
-        self._request_queue = queue
-
-        # Call the superclass constructor.
         super(Policy, self).__init__(
             client=client,
             flow_control=flow_control,
             subscription=subscription,
         )
+        # Default the callback to a no-op; the **actual** callback is
+        # provided by ``.open()``.
+        self._callback = _do_nothing_callback
+        # Create a queue for keeping track of shared state.
+        self._request_queue = self._get_queue(queue)
+        # Also maintain an executor.
+        self._executor = self._get_executor(executor)
 
-        # Also maintain a request queue and an executor.
+    @staticmethod
+    def _get_queue(queue):
+        """Gets a queue for the constructor.
+
+        Args:
+            queue (Optional[~queue.Queue]): A Queue instance, appropriate
+                for crossing the concurrency boundary implemented by
+                ``executor``.
+
+        Returns:
+            ~queue.Queue: Either ``queue`` if not :data:`None` or a default
+            queue.
+        """
+        if queue is None:
+            return queue_mod.Queue()
+        else:
+            return queue
+
+    @staticmethod
+    def _get_executor(executor):
+        """Gets an executor for the constructor.
+
+        Args:
+            executor (Optional[~concurrent.futures.ThreadPoolExecutor]): A
+                ThreadPoolExecutor instance, or anything duck-type compatible
+                with it.
+
+        Returns:
+            ~concurrent.futures.ThreadPoolExecutor: Either ``executor`` if not
+            :data:`None` or a default thread pool executor with 10 workers
+            and a prefix (if supported).
+        """
         if executor is None:
             executor_kwargs = {}
             if sys.version_info[:2] == (2, 7) or sys.version_info >= (3, 6):
                 executor_kwargs['thread_name_prefix'] = (
                     'ThreadPoolExecutor-SubscriberPolicy')
-            executor = futures.ThreadPoolExecutor(
+            return futures.ThreadPoolExecutor(
                 max_workers=10,
                 **executor_kwargs
             )
-        self._executor = executor
-        _LOGGER.debug('Creating callback requests thread (not starting).')
-        self._callback_requests = _helper_threads.QueueCallbackWorker(
-            self._request_queue,
-            self.dispatch_callback,
-        )
+        else:
+            return executor
 
     def close(self):
         """Close the existing connection."""
@@ -158,10 +179,14 @@ class Policy(base.BasePolicy):
         # Start the thread to pass the requests.
         _LOGGER.debug('Starting callback requests worker.')
         self._callback = callback
+        dispatch_worker = _helper_threads.QueueCallbackWorker(
+            self._request_queue,
+            self.dispatch_callback,
+        )
         self._consumer.helper_threads.start(
             _CALLBACK_WORKER_NAME,
             self._request_queue.put,
-            self._callback_requests,
+            dispatch_worker,
         )
 
         # Actually start consuming messages.
