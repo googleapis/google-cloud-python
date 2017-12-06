@@ -29,7 +29,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.trace._gax import _TraceAPI
+        from google.cloud.trace.v1._gax import _TraceAPI
 
         return _TraceAPI
 
@@ -44,7 +44,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         from google.cloud.trace_v1.gapic import trace_service_client
         from google.cloud.trace_v1.proto.trace_pb2 import (
             TraceSpan, Trace, Traces)
-        from google.cloud.trace._gax import _traces_mapping_to_pb
+        from google.cloud.trace.v1._gax import _traces_mapping_to_pb
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
         trace_id = 'test_trace_id'
@@ -109,7 +109,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
         gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
         api = self._make_one(gax_api, None)
-        patch = mock.patch('google.cloud.trace._gax._parse_trace_pb',
+        patch = mock.patch('google.cloud.trace.v1._gax._parse_trace_pb',
                            return_value='fake_pb_result')
 
         with patch:
@@ -127,7 +127,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             end_time,
             parent_span_id,
             labels):
-        from google.cloud.trace._gax import _traces_mapping_to_pb
+        from google.cloud.trace.v1._gax import _traces_mapping_to_pb
 
         span_kind = 2
 
@@ -315,7 +315,7 @@ class Test__parse_trace_pb(unittest.TestCase):
 
     @staticmethod
     def _call_fut(*args, **kwargs):
-        from google.cloud.trace._gax import _parse_trace_pb
+        from google.cloud.trace.v1._gax import _parse_trace_pb
 
         return _parse_trace_pb(*args, **kwargs)
 
@@ -366,7 +366,7 @@ class Test__parse_trace_pb(unittest.TestCase):
 
         self.assertEqual(parse_result, expected_result)
 
-    @mock.patch('google.cloud.trace._gax.MessageToDict',
+    @mock.patch('google.cloud.trace.v1._gax.MessageToDict',
                 side_effect=TypeError)
     def test_unregistered_type(self, msg_to_dict_mock):
         trace_pb = mock.Mock(spec=['HasField'])
@@ -378,12 +378,12 @@ class Test__parse_trace_pb(unittest.TestCase):
 class Test_make_gax_trace_api(unittest.TestCase):
 
     def _call_fut(self, client):
-        from google.cloud.trace._gax import make_gax_trace_api
+        from google.cloud.trace.v1._gax import make_gax_trace_api
 
         return make_gax_trace_api(client)
 
     def test_it(self):
-        from google.cloud.trace._gax import _TraceAPI
+        from google.cloud.trace.v1._gax import _TraceAPI
         from google.cloud._http import DEFAULT_USER_AGENT
 
         credentials = object()
@@ -399,7 +399,7 @@ class Test_make_gax_trace_api(unittest.TestCase):
         generated_api.SERVICE_ADDRESS = host
 
         patch_api = mock.patch(
-            'google.cloud.trace._gax.trace_service_client.TraceServiceClient',
+            'google.cloud.trace.v1._gax.trace_service_client.TraceServiceClient',
             new=generated_api)
 
         with patch_api:
