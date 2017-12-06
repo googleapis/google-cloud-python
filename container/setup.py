@@ -26,7 +26,7 @@ setup(
     author_email='googleapis-packages@google.com',
     classifiers=[
         'Intended Audience :: Developers',
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
