@@ -841,6 +841,60 @@ class TestTableListItem(unittest.TestCase):
         # Server default for useLegacySql is True.
         self.assertTrue(table.view_use_legacy_sql)
 
+    def test_ctor_missing_properties(self):
+        resource = {
+            'tableReference': {
+                'projectId': 'testproject',
+                'datasetId': 'testdataset',
+                'tableId': 'testtable',
+            },
+        }
+        table = self._make_one(resource)
+        self.assertEqual(table.project, 'testproject')
+        self.assertEqual(table.dataset_id, 'testdataset')
+        self.assertEqual(table.table_id, 'testtable')
+        self.assertIsNone(table.full_table_id)
+        self.assertIsNone(table.friendly_name)
+        self.assertIsNone(table.table_type)
+        self.assertIsNone(table.partitioning_type)
+        self.assertIsNone(table.partition_expiration)
+        self.assertEqual(table.labels, {})
+        self.assertIsNone(table.view_use_legacy_sql)
+
+    def test_ctor_wo_project(self):
+        resource = {
+            'tableReference': {
+                'datasetId': 'testdataset',
+                'tableId': 'testtable',
+            },
+        }
+        with self.assertRaises(ValueError):
+            self._make_one(resource)
+
+    def test_ctor_wo_dataset(self):
+        resource = {
+            'tableReference': {
+                'projectId': 'testproject',
+                'tableId': 'testtable',
+            },
+        }
+        with self.assertRaises(ValueError):
+            self._make_one(resource)
+
+    def test_ctor_wo_table(self):
+        resource = {
+            'tableReference': {
+                'projectId': 'testproject',
+                'datasetId': 'testdataset',
+            },
+        }
+        with self.assertRaises(ValueError):
+            self._make_one(resource)
+
+    def test_ctor_wo_reference(self):
+        with self.assertRaises(ValueError):
+            self._make_one({})
+
 
 class TestRow(unittest.TestCase):
 
