@@ -17,8 +17,8 @@
     names (#4476).
 - Logging changes
   - Adding debug logs when lease management exits (#4484)
-  - Adding debug logs when hen `QueueCallbackThread` exits (#4494).
-    Instances handle theprocessing of messages in a
+  - Adding debug logs when `QueueCallbackThread` exits (#4494).
+    Instances handle the processing of messages in a
     subscription (e.g. to `ack`).
   - Using a named logger in `publisher.batch.thread` (#4473)
   - Adding newlines before logging protobuf payloads (#4471)

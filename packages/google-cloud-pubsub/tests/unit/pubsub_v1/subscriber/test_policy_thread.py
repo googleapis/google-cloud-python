@@ -81,11 +81,30 @@ def test_open(thread_start, htr_start):
         thread_start.assert_called()
 
 
-def test_on_callback_request():
+def test_dispatch_callback_valid_actions():
     policy = create_policy()
-    with mock.patch.object(policy, 'call_rpc') as call_rpc:
-        policy.on_callback_request(('call_rpc', {'something': 42}))
-        call_rpc.assert_called_once_with(something=42)
+    kwargs = {'foo': 10, 'bar': 13.37}
+    actions = (
+        'ack',
+        'drop',
+        'lease',
+        'modify_ack_deadline',
+        'nack',
+    )
+    for action in actions:
+        with mock.patch.object(policy, action) as mocked:
+            policy.dispatch_callback(action, kwargs)
+            mocked.assert_called_once_with(**kwargs)
+
+
+def test_dispatch_callback_invalid_action():
+    policy = create_policy()
+    with pytest.raises(ValueError) as exc_info:
+        policy.dispatch_callback('gecko', {})
+
+    assert len(exc_info.value.args) == 3
+    assert exc_info.value.args[0] == 'Unexpected action'
+    assert exc_info.value.args[1] == 'gecko'
 
 
 def test_on_exception_deadline_exceeded():

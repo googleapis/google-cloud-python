@@ -117,33 +117,35 @@ def test_stop_all_noop():
     assert len(registry._helper_threads) == 0
 
 
-def test_queue_callback_thread():
+def test_queue_callback_worker():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=())
-    qct = _helper_threads.QueueCallbackThread(queue_, callback)
+    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
     with mock.patch.object(queue.Queue, 'get') as get:
-        get.side_effect = (mock.sentinel.A, _helper_threads.STOP)
+        item1 = ('action', mock.sentinel.A)
+        get.side_effect = (item1, _helper_threads.STOP)
         qct()
 
         # Assert that we got the expected calls.
         assert get.call_count == 2
-        callback.assert_called_once_with(mock.sentinel.A)
+        callback.assert_called_once_with('action', mock.sentinel.A)
 
 
-def test_queue_callback_thread_exception():
+def test_queue_callback_worker_exception():
     queue_ = queue.Queue()
     callback = mock.Mock(spec=(), side_effect=(Exception,))
-    qct = _helper_threads.QueueCallbackThread(queue_, callback)
+    qct = _helper_threads.QueueCallbackWorker(queue_, callback)
 
     # Set up an appropriate mock for the queue, and call the queue callback
     # thread.
     with mock.patch.object(queue.Queue, 'get') as get:
-        get.side_effect = (mock.sentinel.A, _helper_threads.STOP)
+        item1 = ('action', mock.sentinel.A)
+        get.side_effect = (item1, _helper_threads.STOP)
         qct()
 
         # Assert that we got the expected calls.
         assert get.call_count == 2
-        callback.assert_called_once_with(mock.sentinel.A)
+        callback.assert_called_once_with('action', mock.sentinel.A)

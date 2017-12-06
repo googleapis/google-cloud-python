@@ -96,21 +96,21 @@ all together looks like this:
         "gRPC C Core" -> "gRPC Python" [label="queue", dir="both"]
         "gRPC Python" -> "Consumer" [label="responses", color="red"]
         "Consumer" -> "request generator thread" [label="starts", color="gray"]
-        "Policy" -> "QueueCallbackThread" [label="starts", color="gray"]
+        "Policy" -> "QueueCallbackWorker" [label="starts", color="gray"]
         "request generator thread" -> "gRPC Python"
             [label="requests", color="blue"]
         "Consumer" -> "Policy" [label="responses", color="red"]
         "Policy" -> "futures.Executor" [label="response", color="red"]
         "futures.Executor" -> "callback" [label="response", color="red"]
         "callback" -> "callback_request_queue" [label="requests", color="blue"]
-        "callback_request_queue" -> "QueueCallbackThread"
+        "callback_request_queue" -> "QueueCallbackWorker"
             [label="consumed by", color="blue"]
-        "QueueCallbackThread" -> "Consumer"
+        "QueueCallbackWorker" -> "Consumer"
             [label="send_response", color="blue"]
     }
 
 This part is actually up to the Policy to enable. The consumer just provides a
-thread-safe queue for requests. The :cls:`QueueCallbackThread` can be used by
+thread-safe queue for requests. The :cls:`QueueCallbackWorker` can be used by
 the Policy implementation to spin up the worker thread to pump the
 concurrency-safe queue. See the Pub/Sub subscriber implementation for an
 example of this.
