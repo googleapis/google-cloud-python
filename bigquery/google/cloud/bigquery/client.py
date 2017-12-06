@@ -36,6 +36,7 @@ from google.cloud.bigquery._helpers import _SCALAR_VALUE_TO_JSON_ROW
 from google.cloud.bigquery._helpers import _snake_to_camel_case
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
@@ -181,8 +182,10 @@ class Client(ClientWithProject):
         :param retry: (Optional) How to retry the RPC.
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
-        :returns: Iterator of :class:`~google.cloud.bigquery.dataset.Dataset`.
-                  accessible to the current client.
+        :returns:
+            Iterator of
+            :class:`~google.cloud.bigquery.dataset.DatasetListItem`.
+            associated with the client's project.
         """
         extra_params = {}
         if include_all:
@@ -1275,10 +1278,10 @@ def _item_to_dataset(iterator, resource):
     :type resource: dict
     :param resource: An item to be converted to a dataset.
 
-    :rtype: :class:`.Dataset`
+    :rtype: :class:`.DatasetListItem`
     :returns: The next dataset in the page.
     """
-    return Dataset.from_api_repr(resource)
+    return DatasetListItem(resource)
 
 
 def _item_to_job(iterator, resource):

@@ -183,7 +183,7 @@ class TestClient(unittest.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_datasets_defaults(self):
-        from google.cloud.bigquery.dataset import Dataset
+        from google.cloud.bigquery.dataset import DatasetListItem
 
         DATASET_1 = 'dataset_one'
         DATASET_2 = 'dataset_two'
@@ -215,7 +215,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(datasets), len(DATA['datasets']))
         for found, expected in zip(datasets, DATA['datasets']):
-            self.assertIsInstance(found, Dataset)
+            self.assertIsInstance(found, DatasetListItem)
             self.assertEqual(found.full_dataset_id, expected['id'])
             self.assertEqual(found.friendly_name, expected['friendlyName'])
         self.assertEqual(token, TOKEN)
