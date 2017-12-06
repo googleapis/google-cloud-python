@@ -28,13 +28,8 @@ class TestKeyRange(unittest.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_ctor_no_start_no_end(self):
-        krange = self._make_one()
-        boundaries = ('start_closed',
-                      'start_open',
-                      'end_closed',
-                      'end_open')
-        for boundary in boundaries:
-            self.assertEqual(getattr(krange, boundary), None)
+        with self.assertRaises(ValueError):
+            self._make_one()
 
     def test_ctor_start_open_and_start_closed(self):
         KEY_1 = [u'key_1']
@@ -72,21 +67,33 @@ class TestKeyRange(unittest.TestCase):
         KEY_1 = [u'key_1']
         krange = self._make_one(start_closed=KEY_1)
         self.assertEqual(krange.start_closed, KEY_1)
+        self.assertIsNone(krange.start_open)
+        self.assertIsNone(krange.end_open)
+        self.assertIsNone(krange.end_closed)
 
     def test_ctor_single_key_start_open(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(start_open=KEY_1)
         self.assertEqual(krange.start_open, KEY_1)
+        self.assertIsNone(krange.start_closed)
+        self.assertIsNone(krange.end_open)
+        self.assertIsNone(krange.end_closed)
 
     def test_ctor_single_key_end_closed(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(end_closed=KEY_1)
         self.assertEqual(krange.end_closed, KEY_1)
+        self.assertIsNone(krange.start_open)
+        self.assertIsNone(krange.start_closed)
+        self.assertIsNone(krange.end_open)
 
     def test_ctor_single_key_end_open(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(end_open=KEY_1)
         self.assertEqual(krange.end_open, KEY_1)
+        self.assertIsNone(krange.start_open)
+        self.assertIsNone(krange.start_closed)
+        self.assertIsNone(krange.end_closed)
 
     def test_to_pb_single_key_start_closed(self):
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
@@ -362,6 +369,7 @@ class TestKeyRange(unittest.TestCase):
             else:
                 self.assertEqual(len(getattr(krange_pb, key_type)), 0)
         self._check_unused_keys(krange, used_keys)
+
     def test_to_pb_empty_list_end_closed_and_key_start_open(self):
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 

@@ -38,6 +38,9 @@ class KeyRange(object):
     """
     def __init__(self, start_open=None, start_closed=None,
                  end_open=None, end_closed=None):
+        if not any([start_open, start_closed, end_open, end_closed]):
+            raise ValueError("Must specify at least a start or end row.")
+
         if start_open is not None and start_closed is not None:
             raise ValueError("Specify one of 'start_open' / 'start_closed'.")
 
