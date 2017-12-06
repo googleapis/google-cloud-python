@@ -50,19 +50,30 @@ def test_init_with_executor():
 
 
 def test_close():
+    dispatch_thread = mock.Mock(spec=threading.Thread)
+    leases_thread = mock.Mock(spec=threading.Thread)
+
     policy = create_policy()
-    policy._dispatch_thread = mock.Mock(spec=('join',))
+    policy._dispatch_thread = dispatch_thread
+    policy._leases_thread = leases_thread
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
         policy.close()
         stop_consuming.assert_called_once_with()
 
-    policy._dispatch_thread.join.assert_called_once_with()
+    assert policy._dispatch_thread is None
+    dispatch_thread.join.assert_called_once_with()
+    assert policy._leases_thread is None
+    leases_thread.join.assert_called_once_with()
 
 
 def test_close_with_future():
+    dispatch_thread = mock.Mock(spec=threading.Thread)
+    leases_thread = mock.Mock(spec=threading.Thread)
+
     policy = create_policy()
-    policy._dispatch_thread = mock.Mock(spec=('join',))
+    policy._dispatch_thread = dispatch_thread
+    policy._leases_thread = leases_thread
     policy._future = Future(policy=policy)
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
@@ -70,7 +81,10 @@ def test_close_with_future():
         policy.close()
         stop_consuming.assert_called_once_with()
 
-    policy._dispatch_thread.join.assert_called_once_with()
+    assert policy._dispatch_thread is None
+    dispatch_thread.join.assert_called_once_with()
+    assert policy._leases_thread is None
+    leases_thread.join.assert_called_once_with()
     assert policy.future != future
     assert future.result() is None
 
