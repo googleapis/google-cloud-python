@@ -33,6 +33,7 @@ responses, its actually quite straightforward and can be done with just a
 :class:`concurrent.futures.Executor`:
 
 .. graphviz::
+
     digraph responses_only {
        "gRPC C Core" -> "gRPC Python" [label="queue", dir="both"]
        "gRPC Python" -> "Consumer" [label="responses", color="red"]
@@ -57,6 +58,7 @@ request generator in its own thread. That thread can block, so we can use
 a queue for that:
 
 .. graphviz::
+
     digraph response_flow {
         "gRPC C Core" -> "gRPC Python" [label="queue", dir="both"]
         "gRPC Python" -> "Consumer" [label="responses", color="red"]
@@ -71,6 +73,7 @@ response workers could just directly interact with the policy/consumer to
 queue new requests:
 
 .. graphviz::
+
     digraph thread_only_requests {
         "gRPC C Core" -> "gRPC Python" [label="queue", dir="both"]
         "gRPC Python" -> "Consumer" [label="responses", color="red"]
@@ -92,6 +95,7 @@ queue into the gRPC request queue, we need another worker thread. Putting this
 all together looks like this:
 
 .. graphviz::
+
     digraph responses_only {
         "gRPC C Core" -> "gRPC Python" [label="queue", dir="both"]
         "gRPC Python" -> "Consumer" [label="responses", color="red"]
@@ -110,7 +114,8 @@ all together looks like this:
     }
 
 This part is actually up to the Policy to enable. The consumer just provides a
-thread-safe queue for requests. The :cls:`QueueCallbackWorker` can be used by
+thread-safe queue for requests. The :class:`QueueCallbackWorker` can be used by
+
 the Policy implementation to spin up the worker thread to pump the
 concurrency-safe queue. See the Pub/Sub subscriber implementation for an
 example of this.
@@ -146,7 +151,7 @@ class Consumer(object):
     generate requests. This thread is called the *request generator thread*.
     Having the request generator thread allows the consumer to hold the stream
     open indefinitely. Now gRPC will send responses as fast as the consumer can
-    ask for them. The consumer hands these off to the :cls:`Policy` via
+    ask for them. The consumer hands these off to the :class:`Policy` via
     :meth:`Policy.on_response`, which should not block.
 
     Finally, we do not want to block the main thread, so the consumer actually
@@ -184,7 +189,7 @@ class Consumer(object):
 
         self.active = False
         self.helper_threads = _helper_threads.HelperThreadRegistry()
-        """:cls:`_helper_threads.HelperThreads`: manages the helper threads.
+        """:class:`_helper_threads.HelperThreads`: manages the helper threads.
             The policy may use this to schedule its own helper threads.
         """
 
