@@ -30,7 +30,7 @@ from google.cloud.pubsub_v1.subscriber.message import Message
 
 
 _LOGGER = logging.getLogger(__name__)
-_CALLBACK_WORKER_NAME = 'CallbackRequestsWorker'
+_CALLBACK_WORKER_NAME = 'Thread-Consumer-CallbackRequestsWorker'
 
 
 def _callback_completed(future):
@@ -98,6 +98,9 @@ class Policy(base.BasePolicy):
         self._request_queue = self._get_queue(queue)
         # Also maintain an executor.
         self._executor = self._get_executor(executor)
+        # The threads created in ``.open()``.
+        self._dispatch_thread = None
+        self._leases_thread = None
 
     @staticmethod
     def _get_queue(queue):
@@ -146,7 +149,8 @@ class Policy(base.BasePolicy):
     def close(self):
         """Close the existing connection."""
         # Stop consuming messages.
-        self._consumer.helper_threads.stop(_CALLBACK_WORKER_NAME)
+        self._request_queue.put(_helper_threads.STOP)
+        self._dispatch_thread.join()  # Wait until stopped.
         self._consumer.stop_consuming()
         self._executor.shutdown()
 
@@ -155,6 +159,53 @@ class Policy(base.BasePolicy):
         if self._future is not None and not self._future.done():
             self._future.set_result(None)
         self._future = None
+
+    def _start_dispatch(self):
+        """Start a thread to dispatch requests queued up by callbacks.
+
+        .. note::
+
+            This assumes, but does not check, that ``_dispatch_thread``
+            is :data:`None`.
+
+        Spawns a thread to run :meth:`dispatch_callback` and sets the
+        "dispatch thread" member on the current policy.
+        """
+        _LOGGER.debug('Starting callback requests worker.')
+        dispatch_worker = _helper_threads.QueueCallbackWorker(
+            self._request_queue,
+            self.dispatch_callback,
+        )
+        # Create and start the helper thread.
+        thread = threading.Thread(
+            name=_CALLBACK_WORKER_NAME,
+            target=dispatch_worker,
+        )
+        thread.daemon = True
+        thread.start()
+        _LOGGER.debug('Started helper thread %s', thread.name)
+        self._dispatch_thread = thread
+
+    def _start_lease_worker(self):
+        """Spawn a helper thread that maintains all of leases for this policy.
+
+        .. note::
+
+            This assumes, but does not check, that ``_leases_thread`` is
+            :data:`None`.
+
+        Spawns a thread to run :meth:`maintain_leases` and sets the
+        "leases thread" member on the current policy.
+        """
+        _LOGGER.debug('Starting lease maintenance worker.')
+        thread = threading.Thread(
+            name='Thread-LeaseMaintenance',
+            target=self.maintain_leases,
+        )
+        thread.daemon = True
+        thread.start()
+
+        self._leases_thread = thread
 
     def open(self, callback):
         """Open a streaming pull connection and begin receiving messages.
@@ -177,30 +228,11 @@ class Policy(base.BasePolicy):
         self._future = Future(policy=self)
 
         # Start the thread to pass the requests.
-        _LOGGER.debug('Starting callback requests worker.')
         self._callback = callback
-        dispatch_worker = _helper_threads.QueueCallbackWorker(
-            self._request_queue,
-            self.dispatch_callback,
-        )
-        self._consumer.helper_threads.start(
-            _CALLBACK_WORKER_NAME,
-            self._request_queue.put,
-            dispatch_worker,
-        )
-
+        self._start_dispatch()
         # Actually start consuming messages.
         self._consumer.start_consuming()
-
-        # Spawn a helper thread that maintains all of the leases for
-        # this policy.
-        _LOGGER.debug('Starting lease maintenance worker.')
-        self._leaser = threading.Thread(
-            name='Thread-LeaseMaintenance',
-            target=self.maintain_leases,
-        )
-        self._leaser.daemon = True
-        self._leaser.start()
+        self._start_lease_worker()
 
         # Return the future.
         return self._future
