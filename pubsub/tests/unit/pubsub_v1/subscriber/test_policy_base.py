@@ -180,8 +180,10 @@ def test_load():
     assert policy._load == 0.2
 
     # Returning a number above 100% is fine.
-    policy.lease(ack_id='three', byte_size=1000)
-    assert policy._load == 1.16
+    with mock.patch.object(policy, 'close') as close:
+        policy.lease(ack_id='three', byte_size=1000)
+        assert policy._load == 1.16
+        close.assert_called_once_with()
 
 
 def test_modify_ack_deadline():
