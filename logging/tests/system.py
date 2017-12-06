@@ -414,17 +414,16 @@ class TestLogging(unittest.TestCase):
         self.assertTrue(sink.exists())
 
     def test_create_sink_pubsub_topic(self):
-        import uuid
-
         from google.cloud import pubsub_v1
 
         SINK_NAME = 'test-create-sink-topic%s' % (_RESOURCE_ID,)
-        TOPIC_NAME = '%s-%s' % ('systest', str(uuid.uuid4())[0:8])
+        TOPIC_NAME = 'logging-systest{}'.format(unique_resource_id('-'))
 
         # Create the destination topic, and set up the IAM policy to allow
         # Stackdriver Logging to write into it.
         publisher = pubsub_v1.PublisherClient()
         topic_path = publisher.topic_path(Config.CLIENT.project, TOPIC_NAME)
+        self.to_delete.append(_DeleteWrapper(publisher, topic_path))
         publisher.create_topic(topic_path)
 
         policy = publisher.get_iam_policy(topic_path)
@@ -439,7 +438,6 @@ class TestLogging(unittest.TestCase):
         sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
         self.assertFalse(sink.exists())
         sink.create()
-        publisher.delete_topic(topic_path)
         self.assertTrue(sink.exists())
 
     def _init_bigquery_dataset(self):
@@ -517,3 +515,13 @@ class TestLogging(unittest.TestCase):
         sink.update()
         self.assertEqual(sink.filter_, UPDATED_FILTER)
         self.assertEqual(sink.destination, dataset_uri)
+
+
+class _DeleteWrapper(object):
+
+    def __init__(self, publisher, topic_path):
+        self.publisher = publisher
+        self.topic_path = topic_path
+
+    def delete(self):
+        self.publisher.delete_topic(self.topic_path)
