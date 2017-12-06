@@ -12,109 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import threading
-
 import mock
 from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import _helper_threads
-
-
-def test_start():
-    registry = _helper_threads.HelperThreadRegistry()
-    queue_ = queue.Queue()
-    target = mock.Mock(spec=())
-    with mock.patch.object(threading.Thread, 'start', autospec=True) as start:
-        registry.start('foo', queue_, target)
-        assert start.called
-
-
-def test_stop_noop():
-    registry = _helper_threads.HelperThreadRegistry()
-    assert len(registry._helper_threads) == 0
-    registry.stop('foo')
-    assert len(registry._helper_threads) == 0
-
-
-@mock.patch.object(
-    _helper_threads, '_current_thread', return_value=mock.sentinel.thread)
-def test_stop_current_thread(_current_thread):
-    registry = _helper_threads.HelperThreadRegistry()
-    queue_ = mock.Mock(spec=('put',))
-
-    name = 'here'
-    registry._helper_threads[name] = _helper_threads._HelperThread(
-        name=name,
-        queue_put=queue_.put,
-        thread=_current_thread.return_value,
-    )
-    assert list(registry._helper_threads.keys()) == [name]
-    registry.stop(name)
-    # Make sure it hasn't been removed from the registry ...
-    assert list(registry._helper_threads.keys()) == [name]
-    # ... but it did receive the STOP signal.
-    queue_.put.assert_called_once_with(_helper_threads.STOP)
-
-    # Verify that our mock was only called once.
-    _current_thread.assert_called_once_with()
-
-
-def test_stop_dead_thread():
-    registry = _helper_threads.HelperThreadRegistry()
-    registry._helper_threads['foo'] = _helper_threads._HelperThread(
-        name='foo',
-        queue_put=None,
-        thread=threading.Thread(target=lambda: None),
-    )
-    assert len(registry._helper_threads) == 1
-    registry.stop('foo')
-    assert len(registry._helper_threads) == 0
-
-
-@mock.patch.object(queue.Queue, 'put')
-@mock.patch.object(threading.Thread, 'is_alive')
-@mock.patch.object(threading.Thread, 'join')
-def test_stop_alive_thread(join, is_alive, put):
-    is_alive.return_value = True
-
-    # Set up a registry with a helper thread in it.
-    registry = _helper_threads.HelperThreadRegistry()
-    queue_ = queue.Queue()
-    registry._helper_threads['foo'] = _helper_threads._HelperThread(
-        name='foo',
-        queue_put=queue_.put,
-        thread=threading.Thread(target=lambda: None),
-    )
-
-    # Assert that the helper thread is present, and removed correctly
-    # on stop.
-    assert len(registry._helper_threads) == 1
-    registry.stop('foo')
-    assert len(registry._helper_threads) == 0
-
-    # Assert that all of our mocks were called in the expected manner.
-    is_alive.assert_called_once_with()
-    join.assert_called_once_with()
-    put.assert_called_once_with(_helper_threads.STOP)
-
-
-def test_stop_all():
-    registry = _helper_threads.HelperThreadRegistry()
-    registry._helper_threads['foo'] = _helper_threads._HelperThread(
-        name='foo',
-        queue_put=None,
-        thread=threading.Thread(target=lambda: None),
-    )
-    assert len(registry._helper_threads) == 1
-    registry.stop_all()
-    assert len(registry._helper_threads) == 0
-
-
-def test_stop_all_noop():
-    registry = _helper_threads.HelperThreadRegistry()
-    assert len(registry._helper_threads) == 0
-    registry.stop_all()
-    assert len(registry._helper_threads) == 0
 
 
 def test_queue_callback_worker():
