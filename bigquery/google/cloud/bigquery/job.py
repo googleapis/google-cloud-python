@@ -1835,11 +1835,11 @@ class QueryJob(_AsyncJob):
         return tables
 
     @property
-    def undeclared_query_paramters(self):
+    def undeclared_query_parameters(self):
         """Return undeclared query parameters from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParamters
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParameters
 
         :rtype:
             list of
@@ -1850,7 +1850,8 @@ class QueryJob(_AsyncJob):
                   not yet completed.
         """
         parameters = []
-        undeclared = self._job_statistics().get('undeclaredQueryParamters', ())
+        undeclared = self._job_statistics().get(
+            'undeclaredQueryParameters', ())
 
         for parameter in undeclared:
             p_type = parameter['parameterType']
