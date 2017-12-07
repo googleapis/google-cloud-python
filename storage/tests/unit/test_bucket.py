@@ -751,7 +751,7 @@ class Test_Bucket(unittest.TestCase):
                                                      DEST, BLOB_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
-        self.assertEqual(kw['query_params'], {sourceGeneration : GENERATION})
+        self.assertEqual(kw['query_params'], {'sourceGeneration' : GENERATION})
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
