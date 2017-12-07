@@ -26,7 +26,7 @@ class Message(object):
     them in callbacks on subscriptions; most users should never have a need
     to instantiate them by hand. (The exception to this is if you are
     implementing a custom subclass to
-    :class:`~.pubsub_v1.subscriber.consumer.BaseConsumer`.)
+    :class:`~.pubsub_v1.subscriber._consumer.Consumer`.)
 
     Attributes:
         message_id (str): The message ID. In general, you should not need
@@ -186,7 +186,7 @@ class Message(object):
         The default implementation handles this for you; you should not need
         to manually deal with setting ack deadlines. The exception case is
         if you are implementing your own custom subclass of
-        :class:`~.pubsub_v1.subcriber.consumer.BaseConsumer`.
+        :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
 
         .. note::
             This is not an extension; it *sets* the deadline to the given
