@@ -80,8 +80,8 @@ def test_blocking_consume():
 @mock.patch.object(_consumer, '_LOGGER')
 def test_blocking_consume_when_exiting(_LOGGER):
     consumer = create_consumer()
-    assert consumer._exiting.is_set() is False
-    consumer._exiting.set()
+    assert consumer.stopped.is_set() is False
+    consumer.stopped.set()
 
     # Make sure method cleanly exits.
     assert consumer._blocking_consume() is None
@@ -152,8 +152,7 @@ def test_start_consuming():
     with mock.patch.object(threading, 'Thread', autospec=True) as Thread:
         consumer.start_consuming()
 
-    assert consumer._exiting.is_set() is False
-    assert consumer.active is True
+    assert consumer.stopped.is_set() is False
     Thread.assert_called_once_with(
         name=_consumer._BIDIRECTIONAL_CONSUMER_NAME,
         target=consumer._blocking_consume,
@@ -163,16 +162,14 @@ def test_start_consuming():
 
 def test_stop_consuming():
     consumer = create_consumer()
-    consumer.active = True
-    assert consumer._exiting.is_set() is False
+    assert consumer.stopped.is_set() is False
     thread = mock.Mock(spec=threading.Thread)
     consumer._consumer_thread = thread
 
     assert consumer.stop_consuming() is None
 
     # Make sure state was updated.
-    assert consumer.active is False
-    assert consumer._exiting.is_set() is True
+    assert consumer.stopped.is_set() is True
     assert consumer._consumer_thread is None
     # Check mocks.
     thread.join.assert_called_once_with()
