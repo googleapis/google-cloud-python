@@ -92,7 +92,7 @@ class _Base(object):
 
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
-    DS_ID = 'datset_id'
+    DS_ID = 'dataset_id'
     DS_REF = DatasetReference(PROJECT, DS_ID)
     TABLE_ID = 'table_id'
     TABLE_REF = TableReference(DS_REF, TABLE_ID)
@@ -2022,7 +2022,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
 
-    def test_undeclared_query_paramters(self):
+    def test_undeclared_query_parameters(self):
         from google.cloud.bigquery.query import ArrayQueryParameter
         from google.cloud.bigquery.query import ScalarQueryParameter
         from google.cloud.bigquery.query import StructQueryParameter
@@ -2070,17 +2070,17 @@ class TestQueryJob(unittest.TestCase, _Base):
         }]
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
-        self.assertEqual(job.undeclared_query_paramters, [])
+        self.assertEqual(job.undeclared_query_parameters, [])
 
         statistics = job._properties['statistics'] = {}
-        self.assertEqual(job.undeclared_query_paramters, [])
+        self.assertEqual(job.undeclared_query_parameters, [])
 
         query_stats = statistics['query'] = {}
-        self.assertEqual(job.undeclared_query_paramters, [])
+        self.assertEqual(job.undeclared_query_parameters, [])
 
-        query_stats['undeclaredQueryParamters'] = undeclared
+        query_stats['undeclaredQueryParameters'] = undeclared
 
-        scalar, array, struct = job.undeclared_query_paramters
+        scalar, array, struct = job.undeclared_query_parameters
 
         self.assertIsInstance(scalar, ScalarQueryParameter)
         self.assertEqual(scalar.name, 'my_scalar')
