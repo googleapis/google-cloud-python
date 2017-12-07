@@ -237,11 +237,11 @@ class Consumer(object):
         Args:
             request_generator (Generator): A streaming pull request generator
                 returned from :meth:`_request_generator_thread`.
-            response_generator (grpc._channel._Rendezvous): The gRPC
-                bidirectional stream object that **was** consuming the
-                ``request_generator``. (It will actually spawn a thread
-                to consume the requests, but that thread will stop once the
-                rendezvous has a status code set.)
+            response_generator (grpc.Future): The gRPC bidirectional stream
+                object that **was** consuming the ``request_generator``. (It
+                will actually spawn a thread to consume the requests, but
+                that thread will stop once the rendezvous has a status code
+                set.)
 
         Returns:
             bool: Indicates if the generator was successfully stopped. Will
