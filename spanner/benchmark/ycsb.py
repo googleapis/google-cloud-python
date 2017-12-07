@@ -1,10 +1,10 @@
-"""The YCSB cient in Python.
+"""The YCSB client in Python.
 
 Usage:
 
   # Set up instance and load data into database.
 
-  # Set up environment variables. You should use your own credentials and gclod
+  # Set up environment variables. You should use your own credentials and gcloud
   # project.
   $ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
   $ export GCLOUD_PROJECT=gcloud-project-name
@@ -34,7 +34,7 @@ OPERATIONS = ['readproportion', 'updateproportion', 'scanproportion',
               'insertproportion']
 
 
-def ParseOptions():
+def parse_options():
   """Parses options."""
   parser = optparse.OptionParser()
   parser.add_option('-P', '--workload', action='store', dest='workload',
@@ -65,8 +65,8 @@ def ParseOptions():
   return parameters
 
 
-def OpenDatabase(parameters):
-  """Opens a database specified by the parameters from ParseOptions()."""
+def open_database(parameters):
+  """Opens a database specified by the parameters from parse_options()."""
   spanner_client = spanner.Client()
   instance_id = parameters['cloudspanner.instance']
   instance = spanner_client.instance(instance_id)
@@ -77,17 +77,16 @@ def OpenDatabase(parameters):
   return database
 
 
-def LoadKeys(database, parameters):
+def load_keys(database, parameters):
   """Loads keys from database."""
-  global KEYS
-  KEYS = []
+  del KEYS[:]
   results = database.execute_sql('SELECT u.id FROM %s u' % parameters['table'])
 
   for row in results:
     KEYS.append(row[0])
 
 
-def Read(database, table, key):
+def read(database, table, key):
   """Does a single read operation."""
   with database.snapshot() as snapshot:
     result = snapshot.execute_sql('SELECT u.* FROM %s u WHERE u.id="%s"' %
@@ -98,7 +97,7 @@ def Read(database, table, key):
         field = row[i + 1]
 
 
-def Update(database, table, key):
+def update(database, table, key):
   """Does a single update operation."""
   field = random.randrange(10)
   value = ''.join(random.choice(string.printable) for i in range(100))
@@ -107,14 +106,14 @@ def Update(database, table, key):
                  values=[(key, value)])
 
 
-def Insert(database, table, key):
+def insert(database, table, key):
   """Does a single insert operation."""
-  raise Exception('Insert is not implemented.')
+  raise NotImplementedError('Insert is not implemented.')
 
 
-def Scan(database, table, key):
+def scan(database, table, key):
   """Does a single scan operation."""
-  raise Exception('Scan is not implemented.')
+  raise NotImplementedError('Scan is not implemented.')
 
 
 def DoOperation(database, table, operation, latencies_ms):
@@ -122,20 +121,20 @@ def DoOperation(database, table, operation, latencies_ms):
   key = random.choice(KEYS)
   start = timeit.default_timer()
   if operation == 'read':
-    Read(database, table, key)
+    read(database, table, key)
   elif operation == 'update':
-    Update(database, table,  key)
+    update(database, table,  key)
   elif operation == 'insert':
-    Insert(database, table, key)
+    insert(database, table, key)
   elif operation == 'scan':
-    Scan(database, table, key)
+    scan(database, table, key)
   else:
     raise Exception('Unknown operation: %s' % operation)
   end = timeit.default_timer()
   latencies_ms[operation].append((end - start) * 1000)
 
 
-def AggregateMetrics(latencies_ms, duration_ms, num_bucket):
+def aggregate_metrics(latencies_ms, duration_ms, num_bucket):
   """Aggregates metrics."""
   overall_op_count = 0
   op_counts = {}
@@ -143,7 +142,7 @@ def AggregateMetrics(latencies_ms, duration_ms, num_bucket):
     op_counts[operation] = len(latencies_ms[operation])
     overall_op_count += op_counts[operation]
 
-  print '[OVERALL], RumTime(ms), %f' % duration_ms
+  print '[OVERALL], RunTime(ms), %f' % duration_ms
   print '[OVERALL], Throughput(ops/sec), %f' % (float(overall_op_count) /
                                                 duration_ms * 1000.0)
 
@@ -209,7 +208,7 @@ class WorkloadThread(threading.Thread):
     return self._latencies_ms
 
 
-def RunWorkload(database, parameters):
+def run_workload(database, parameters):
   """Runs workload against the database."""
   total_weight = 0.0
   weights = []
@@ -242,18 +241,18 @@ def RunWorkload(database, parameters):
     for key in latencies_ms.keys():
       latencies_ms[key].extend(thread_latencies_ms[key])
 
-  AggregateMetrics(latencies_ms, (end - start) * 1000.0,
-                   parameters['num_bucket'])
+  aggregate_metrics(latencies_ms, (end - start) * 1000.0,
+                    parameters['num_bucket'])
 
 
 if __name__ == '__main__':
-  parameters = ParseOptions()
+  parameters = parse_options()
   if parameters['command'] == 'run':
     if 'cloudspanner.channels' in parameters:
       assert parameters['cloudspanner.channels'] == 1, ('Python doesn\'t '
                                                         'support channels > 1.')
-    database = OpenDatabase(parameters)
-    LoadKeys(database, parameters)
-    RunWorkload(database, parameters)
+    database = open_database(parameters)
+    load_keys(database, parameters)
+    run_workload(database, parameters)
   else:
-    raise Exception('Command %s not implemented.' % parameters['command'])
+    raise Exception('Unknown command %s.' % parameters['command'])
