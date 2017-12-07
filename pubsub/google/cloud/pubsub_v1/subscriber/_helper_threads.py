@@ -12,25 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import collections
 import logging
-import threading
 import uuid
 
-import six
 
 __all__ = (
-    'HelperThreadRegistry',
     'QueueCallbackWorker',
     'STOP',
 )
 
 _LOGGER = logging.getLogger(__name__)
-
-_HelperThread = collections.namedtuple(
-    'HelperThreads',
-    ['name', 'thread', 'queue_put'],
-)
 
 
 # Helper thread stop indicator. This could be a sentinel object or None,
@@ -38,88 +29,6 @@ _HelperThread = collections.namedtuple(
 # None has the possibility of a user accidentally killing the helper
 # thread.
 STOP = uuid.uuid4()
-
-
-def _current_thread():
-    """Get the currently active thread.
-
-    This is provided as a test helper so that it can be mocked easily.
-    Mocking ``threading.current_thread()`` directly may have unintended
-    consequences on code that relies on it.
-
-    Returns:
-        threading.Thread: The current thread.
-    """
-    return threading.current_thread()
-
-
-class HelperThreadRegistry(object):
-    def __init__(self):
-        self._helper_threads = {}
-
-    def start(self, name, queue_put, target):
-        """Create and start a helper thread.
-
-        Args:
-            name (str): The name of the helper thread.
-            queue_put (Callable): The ``put()`` method for a
-                concurrency-safe queue.
-            target (Callable): The target of the thread.
-
-        Returns:
-            threading.Thread: The created thread.
-        """
-        # Create and start the helper thread.
-        thread = threading.Thread(
-            name='Thread-ConsumerHelper-{}'.format(name),
-            target=target,
-        )
-        thread.daemon = True
-        thread.start()
-
-        # Keep track of the helper thread, so we are able to stop it.
-        self._helper_threads[name] = _HelperThread(name, thread, queue_put)
-        _LOGGER.debug('Started helper thread %s', name)
-        return thread
-
-    def stop(self, name):
-        """Stops a helper thread.
-
-        Sends the stop message and blocks until the thread joins.
-
-        Args:
-            name (str): The name of the thread.
-        """
-        # Attempt to retrieve the thread; if it is gone already, no-op.
-        helper_thread = self._helper_threads.get(name)
-        if helper_thread is None:
-            return
-
-        if helper_thread.thread is _current_thread():
-            # The current thread cannot ``join()`` itself but it can
-            # still send a signal to stop.
-            _LOGGER.debug('Cannot stop current thread %s', name)
-            helper_thread.queue_put(STOP)
-            # We return and stop short of ``pop()``-ing so that the
-            # thread that invoked the current helper can properly stop
-            # it.
-            return
-
-        # Join the thread if it is still alive.
-        if helper_thread.thread.is_alive():
-            _LOGGER.debug('Stopping helper thread %s', name)
-            helper_thread.queue_put(STOP)
-            helper_thread.thread.join()
-
-        # Remove the thread from our tracking.
-        self._helper_threads.pop(name, None)
-
-    def stop_all(self):
-        """Stop all helper threads."""
-        # This could be more efficient by sending the stop signal to all
-        # threads before joining any of them.
-        for name in list(six.iterkeys(self._helper_threads)):
-            self.stop(name)
 
 
 class QueueCallbackWorker(object):
