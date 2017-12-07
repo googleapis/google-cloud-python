@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud e7b6b98 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 840df1b documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     'e7b6b98',
+        VERSION:     '840df1b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -68,7 +68,7 @@
 <span class="sd">    them in callbacks on subscriptions; most users should never have a need</span>
 <span class="sd">    to instantiate them by hand. (The exception to this is if you are</span>
 <span class="sd">    implementing a custom subclass to</span>
-<span class="sd">    :class:`~.pubsub_v1.subscriber.consumer.BaseConsumer`.)</span>
+<span class="sd">    :class:`~.pubsub_v1.subscriber._consumer.Consumer`.)</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        message_id (str): The message ID. In general, you should not need</span>
@@ -228,7 +228,7 @@
 <span class="sd">        The default implementation handles this for you; you should not need</span>
 <span class="sd">        to manually deal with setting ack deadlines. The exception case is</span>
 <span class="sd">        if you are implementing your own custom subclass of</span>
-<span class="sd">        :class:`~.pubsub_v1.subcriber.consumer.BaseConsumer`.</span>
+<span class="sd">        :class:`~.pubsub_v1.subcriber._consumer.Consumer`.</span>
 
 <span class="sd">        .. note::</span>
 <span class="sd">            This is not an extension; it *sets* the deadline to the given</span>
