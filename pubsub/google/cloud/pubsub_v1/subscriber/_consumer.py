@@ -184,10 +184,8 @@ class Consumer(object):
         """
         self._policy = policy
         self._request_queue = queue.Queue()
-        self._exiting = threading.Event()
+        self.stopped = threading.Event()
         self._put_lock = threading.Lock()
-
-        self.active = False
         self._consumer_thread = None
 
     def send_request(self, request):
@@ -299,7 +297,7 @@ class Consumer(object):
             # exit cleanly when the user has called stop_consuming(). This
             # checks to make sure we're not exiting before opening a new
             # stream.
-            if self._exiting.is_set():
+            if self.stopped.is_set():
                 _LOGGER.debug('Event signalled consumer exit.')
                 break
 
@@ -326,8 +324,7 @@ class Consumer(object):
 
     def start_consuming(self):
         """Start consuming the stream."""
-        self.active = True
-        self._exiting.clear()
+        self.stopped.clear()
         thread = threading.Thread(
             name=_BIDIRECTIONAL_CONSUMER_NAME,
             target=self._blocking_consume,
@@ -350,8 +347,7 @@ class Consumer(object):
             threading.Thread: The worker ("consumer thread") that is being
             stopped.
         """
-        self.active = False
-        self._exiting.set()
+        self.stopped.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
         self.send_request(_helper_threads.STOP)
         thread = self._consumer_thread
