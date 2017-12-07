@@ -39,22 +39,13 @@ class StreamedResultSet(object):
     """
     def __init__(self, response_iterator, source=None):
         self._response_iterator = response_iterator
-        self._processed_rows = []   # Fully-processed rows
+        self._rows = []             # Fully-processed rows
         self._counter = 0           # Counter for processed responses
         self._metadata = None       # Until set from first PRS
         self._stats = None          # Until set from last PRS
         self._current_row = []      # Accumulated values for incomplete row
         self._pending_chunk = None  # Incomplete value
         self._source = source       # Source snapshot
-
-    @property
-    def _rows(self):
-        """Fully-processed rows.
-
-        :rtype: list of row-data lists.
-        :returns: list of completed row data, from proceesd PRS responses.
-        """
-        return self._processed_rows
 
     @property
     def fields(self):
@@ -141,14 +132,6 @@ class StreamedResultSet(object):
             self._pending_chunk = values.pop()
 
         self._merge_values(values)
-
-    def _consume_all(self):
-        """Consume the streamed responses until there are no more."""
-        while True:
-            try:
-                self._consume_next()
-            except StopIteration:
-                break
 
     def __iter__(self):
         iter_rows, self._rows[:] = self._rows[:], ()

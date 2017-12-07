@@ -624,14 +624,14 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_one_or_none_single_value(self):
         streamed = self._make_one(_MockCancellableIterator())
-        streamed._processed_rows = ['foo']
+        streamed._rows = ['foo']
         with mock.patch.object(streamed, '_consume_next') as consume_next:
             consume_next.side_effect = StopIteration
             self.assertEqual(streamed.one_or_none(), 'foo')
 
     def test_one_or_none_multiple_values(self):
         streamed = self._make_one(_MockCancellableIterator())
-        streamed._processed_rows = ['foo', 'bar']
+        streamed._rows = ['foo', 'bar']
         with self.assertRaises(ValueError):
             streamed.one_or_none()
 
@@ -643,7 +643,7 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test_one_single_value(self):
         streamed = self._make_one(_MockCancellableIterator())
-        streamed._processed_rows = ['foo']
+        streamed._rows = ['foo']
         with mock.patch.object(streamed, '_consume_next') as consume_next:
             consume_next.side_effect = StopIteration
             self.assertEqual(streamed.one(), 'foo')
@@ -772,55 +772,6 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._stats, stats)
 
-    def test_consume_all_empty(self):
-        iterator = _MockCancellableIterator()
-        streamed = self._make_one(iterator)
-        streamed._consume_all()
-
-    def test_consume_all_one_result_set_partial(self):
-        FIELDS = [
-            self._make_scalar_field('full_name', 'STRING'),
-            self._make_scalar_field('age', 'INT64'),
-            self._make_scalar_field('married', 'BOOL'),
-        ]
-        metadata = self._make_result_set_metadata(FIELDS)
-        BARE = [u'Phred Phlyntstone', 42]
-        VALUES = [self._make_value(bare) for bare in BARE]
-        result_set = self._make_partial_result_set(VALUES, metadata=metadata)
-        iterator = _MockCancellableIterator(result_set)
-        streamed = self._make_one(iterator)
-        streamed._consume_all()
-        self.assertEqual(streamed._rows, [])
-        self.assertEqual(streamed._current_row, BARE)
-        self.assertEqual(streamed.metadata, metadata)
-
-    def test_consume_all_multiple_result_sets_filled(self):
-        FIELDS = [
-            self._make_scalar_field('full_name', 'STRING'),
-            self._make_scalar_field('age', 'INT64'),
-            self._make_scalar_field('married', 'BOOL'),
-        ]
-        metadata = self._make_result_set_metadata(FIELDS)
-        BARE = [
-            u'Phred Phlyntstone', 42, True,
-            u'Bharney Rhubble', 39, True,
-            u'Wylma Phlyntstone', 41, True,
-        ]
-        VALUES = [self._make_value(bare) for bare in BARE]
-        result_set1 = self._make_partial_result_set(
-            VALUES[:4], metadata=metadata)
-        result_set2 = self._make_partial_result_set(VALUES[4:])
-        iterator = _MockCancellableIterator(result_set1, result_set2)
-        streamed = self._make_one(iterator)
-        streamed._consume_all()
-        self.assertEqual(streamed._rows, [
-            [BARE[0], BARE[1], BARE[2]],
-            [BARE[3], BARE[4], BARE[5]],
-            [BARE[6], BARE[7], BARE[8]],
-        ])
-        self.assertEqual(streamed._current_row, [])
-        self.assertIsNone(streamed._pending_chunk)
-
     def test___iter___empty(self):
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
@@ -895,14 +846,14 @@ class TestStreamedResultSet(unittest.TestCase):
         result_set2 = self._make_partial_result_set(VALUES[4:])
         iterator = _MockCancellableIterator(result_set1, result_set2)
         streamed = self._make_one(iterator)
-        streamed._processed_rows[:] = ALREADY
+        streamed._rows[:] = ALREADY
         found = list(streamed)
         self.assertEqual(found, ALREADY + [
             [BARE[0], BARE[1], BARE[2]],
             [BARE[3], BARE[4], BARE[5]],
             [BARE[6], BARE[7], BARE[8]],
         ])
-        self.assertEqual(streamed._processed_rows, [])
+        self.assertEqual(streamed._rows, [])
         self.assertEqual(streamed._current_row, [])
         self.assertIsNone(streamed._pending_chunk)
 
@@ -952,11 +903,10 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
         partial_result_sets, expected = self._load_json_test(testcase_name)
         iterator = _MockCancellableIterator(*partial_result_sets)
         partial = self._make_one(iterator)
-        partial._consume_all()
         if assert_equality is not None:
-            assert_equality(partial._rows, expected)
+            assert_equality(list(partial), expected)
         else:
-            self.assertEqual(partial._rows, expected)
+            self.assertEqual(list(partial), expected)
 
     def test_basic(self):
         self._match_results('Basic Test')
