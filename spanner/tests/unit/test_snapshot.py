@@ -252,8 +252,6 @@ class Test_SnapshotBase(unittest.TestCase):
         else:
             self.assertIsNone(result_set._source)
 
-#        result_set._consume_all()
-
         self.assertEqual(list(result_set), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)

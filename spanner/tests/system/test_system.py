@@ -859,20 +859,6 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         after = list(exact.read(self.TABLE, self.COLUMNS, self.ALL))
         self._check_row_data(after, all_data_rows)
 
-    def test_read_w_manual_consume(self):
-        ROW_COUNT = 3000
-        session, committed = self._set_up_table(ROW_COUNT)
-
-        snapshot = session.snapshot(read_timestamp=committed)
-        streamed = snapshot.read(self.TABLE, self.COLUMNS, self.ALL)
-        keyset = KeySet(all_=True)
-        rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
-        items = [item for item in iter(streamed)]
-
-        self.assertEqual(items, rows)
-        self.assertEqual(streamed._current_row, [])
-        self.assertEqual(streamed._pending_chunk, None)
-
     def test_read_w_index(self):
         ROW_COUNT = 2000
         # Indexed reads cannot return non-indexed columns
