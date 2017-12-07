@@ -223,7 +223,7 @@ class Consumer(object):
             _LOGGER.debug('Sending request:\n%r', request)
             yield request
 
-    def _stop_request_generator(self, request_generator):
+    def _stop_request_generator(self, request_generator, response_generator):
         """Ensure a request generator is closed.
 
         This **must** be done when recovering from a retry-able exception.
@@ -237,12 +237,23 @@ class Consumer(object):
         Args:
             request_generator (Generator): A streaming pull request generator
                 returned from :meth:`_request_generator_thread`.
+            response_generator (grpc.Future): The gRPC bidirectional stream
+                object that **was** consuming the ``request_generator``. (It
+                will actually spawn a thread to consume the requests, but
+                that thread will stop once the rendezvous has a status code
+                set.)
 
         Returns:
             bool: Indicates if the generator was successfully stopped. Will
             be :data:`True` unless the queue is not empty and the generator
             is running.
         """
+        if not response_generator.done():
+            _LOGGER.debug(
+                'Response generator must be done before stopping '
+                'request generator.')
+            return False
+
         with self._put_lock:
             try:
                 request_generator.close()
@@ -322,7 +333,8 @@ class Consumer(object):
             except Exception as exc:
                 recover = policy.on_exception(exc)
                 if recover:
-                    recover = self._stop_request_generator(request_generator)
+                    recover = self._stop_request_generator(
+                        request_generator, response_generator)
                 if not recover:
                     self._stop_no_join()
                     return
