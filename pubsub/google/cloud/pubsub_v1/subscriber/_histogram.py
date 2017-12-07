@@ -23,7 +23,7 @@ class Histogram(object):
 
     The default implementation uses the 99th percentile of previous ack
     times to implicitly lease messages; however, custom
-    :class:`~.pubsub_v1.subscriber.consumer.base.BaseConsumer` subclasses
+    :class:`~.pubsub_v1.subscriber._consumer.Consumer` subclasses
     are free to use a different formula.
 
     The precision of data stored is to the nearest integer. Additionally,

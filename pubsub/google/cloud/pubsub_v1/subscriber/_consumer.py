@@ -176,13 +176,7 @@ class Consumer(object):
     low. The Consumer and end-user can configure any sort of executor they want
     for the actual processing of the responses, which may be CPU intensive.
     """
-    def __init__(self, policy):
-        """
-        Args:
-            policy (Consumer): The consumer policy, which defines how
-                requests and responses are handled.
-        """
-        self._policy = policy
+    def __init__(self):
         self._request_queue = queue.Queue()
         self.stopped = threading.Event()
         self._put_lock = threading.Lock()
@@ -197,18 +191,24 @@ class Consumer(object):
         with self._put_lock:
             self._request_queue.put(request)
 
-    def _request_generator_thread(self):
+    def _request_generator_thread(self, policy):
         """Generate requests for the stream.
 
         This blocks for new requests on the request queue and yields them to
         gRPC.
+
+        Args:
+            policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy
+                that owns this consumer. A policy is used to create the
+                initial request used to open the streaming pull bidirectional
+                stream.
 
         Yields:
             google.cloud.pubsub_v1.types.StreamingPullRequest: Requests
         """
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
-        initial_request = self._policy.get_initial_request(ack_queue=True)
+        initial_request = policy.get_initial_request(ack_queue=True)
         _LOGGER.debug('Sending initial request:\n%r', initial_request)
         yield initial_request
 
@@ -290,8 +290,13 @@ class Consumer(object):
         _LOGGER.debug('Successfully closed request generator.')
         return True
 
-    def _blocking_consume(self):
-        """Consume the stream indefinitely."""
+    def _blocking_consume(self, policy):
+        """Consume the stream indefinitely.
+
+        Args:
+            policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy,
+                which defines how requests and responses are handled.
+        """
         while True:
             # It is possible that a timeout can cause the stream to not
             # exit cleanly when the user has called stop_consuming(). This
@@ -301,12 +306,12 @@ class Consumer(object):
                 _LOGGER.debug('Event signalled consumer exit.')
                 break
 
-            request_generator = self._request_generator_thread()
-            response_generator = self._policy.call_rpc(request_generator)
+            request_generator = self._request_generator_thread(policy)
+            response_generator = policy.call_rpc(request_generator)
             try:
                 for response in response_generator:
                     _LOGGER.debug('Received response:\n%r', response)
-                    self._policy.on_response(response)
+                    policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
                 # request stream terminated cleanly, which should only happen
@@ -315,19 +320,29 @@ class Consumer(object):
                 _LOGGER.debug('Clean RPC loop exit signalled consumer exit.')
                 break
             except Exception as exc:
-                recover = self._policy.on_exception(exc)
+                recover = policy.on_exception(exc)
                 if recover:
                     recover = self._stop_request_generator(request_generator)
                 if not recover:
                     self._stop_no_join()
                     return
 
-    def start_consuming(self):
-        """Start consuming the stream."""
+    def start_consuming(self, policy):
+        """Start consuming the stream.
+
+        Sets the ``_consumer_thread`` member on the current consumer with
+        a newly started thread.
+
+        Args:
+            policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy
+                that owns this consumer. A policy defines how requests and
+                responses are handled.
+        """
         self.stopped.clear()
         thread = threading.Thread(
             name=_BIDIRECTIONAL_CONSUMER_NAME,
             target=self._blocking_consume,
+            args=(policy,),
         )
         thread.daemon = True
         thread.start()

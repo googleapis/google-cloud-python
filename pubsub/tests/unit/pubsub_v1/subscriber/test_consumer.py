@@ -27,15 +27,8 @@ from google.cloud.pubsub_v1.subscriber import _helper_threads
 from google.cloud.pubsub_v1.subscriber.policy import thread
 
 
-def create_consumer():
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = subscriber.Client(credentials=creds)
-    subscription = client.subscribe('sub_name_e')
-    return _consumer.Consumer(policy=subscription)
-
-
 def test_send_request():
-    consumer = create_consumer()
+    consumer = _consumer.Consumer()
     request = types.StreamingPullRequest(subscription='foo')
     with mock.patch.object(queue.Queue, 'put') as put:
         consumer.send_request(request)
@@ -43,8 +36,11 @@ def test_send_request():
 
 
 def test_request_generator_thread():
-    consumer = create_consumer()
-    generator = consumer._request_generator_thread()
+    consumer = _consumer.Consumer()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
+    policy = client.subscribe('sub_name_e')
+    generator = consumer._request_generator_thread(policy)
 
     # The first request that comes from the request generator thread
     # should always be the initial request.
@@ -64,27 +60,24 @@ def test_request_generator_thread():
 
 
 def test_blocking_consume():
-    consumer = create_consumer()
-    Policy = type(consumer._policy)
+    policy = mock.Mock(spec=('call_rpc', 'on_response'))
+    policy.call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
 
-    # Establish that we get responses until we run out of them.
-    with mock.patch.object(Policy, 'call_rpc', autospec=True) as call_rpc:
-        call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
-        with mock.patch.object(Policy, 'on_response', autospec=True) as on_res:
-            consumer._blocking_consume()
-            assert on_res.call_count == 2
-            assert on_res.mock_calls[0][1][1] == mock.sentinel.A
-            assert on_res.mock_calls[1][1][1] == mock.sentinel.B
+    consumer = _consumer.Consumer()
+    assert consumer._blocking_consume(policy) is None
+    policy.call_rpc.assert_called_once()
+    policy.on_response.assert_has_calls(
+        [mock.call(mock.sentinel.A), mock.call(mock.sentinel.B)])
 
 
 @mock.patch.object(_consumer, '_LOGGER')
 def test_blocking_consume_when_exiting(_LOGGER):
-    consumer = create_consumer()
+    consumer = _consumer.Consumer()
     assert consumer.stopped.is_set() is False
     consumer.stopped.set()
 
     # Make sure method cleanly exits.
-    assert consumer._blocking_consume() is None
+    assert consumer._blocking_consume(None) is None
 
     _LOGGER.debug.assert_called_once_with('Event signalled consumer exit.')
 
@@ -107,12 +100,12 @@ def test_blocking_consume_on_exception():
     exc = TypeError('Bad things!')
     policy.on_response.side_effect = exc
 
-    consumer = _consumer.Consumer(policy=policy)
+    consumer = _consumer.Consumer()
     consumer._consumer_thread = mock.Mock(spec=threading.Thread)
     policy.on_exception.side_effect = OnException()
 
     # Establish that we get responses until we are sent the exiting event.
-    consumer._blocking_consume()
+    consumer._blocking_consume(policy)
     assert consumer._consumer_thread is None
 
     # Check mocks.
@@ -131,12 +124,12 @@ def test_blocking_consume_two_exceptions():
     exc2 = ValueError('Something grumble.')
     policy.on_response.side_effect = (exc1, exc2)
 
-    consumer = _consumer.Consumer(policy=policy)
+    consumer = _consumer.Consumer()
     consumer._consumer_thread = mock.Mock(spec=threading.Thread)
     policy.on_exception.side_effect = OnException(acceptable=exc1)
 
     # Establish that we get responses until we are sent the exiting event.
-    consumer._blocking_consume()
+    consumer._blocking_consume(policy)
     assert consumer._consumer_thread is None
 
     # Check mocks.
@@ -148,20 +141,24 @@ def test_blocking_consume_two_exceptions():
 
 
 def test_start_consuming():
-    consumer = create_consumer()
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
+    policy = client.subscribe('sub_name_e')
+    consumer = _consumer.Consumer()
     with mock.patch.object(threading, 'Thread', autospec=True) as Thread:
-        consumer.start_consuming()
+        consumer.start_consuming(policy)
 
     assert consumer.stopped.is_set() is False
     Thread.assert_called_once_with(
         name=_consumer._BIDIRECTIONAL_CONSUMER_NAME,
         target=consumer._blocking_consume,
+        args=(policy,),
     )
     assert consumer._consumer_thread is Thread.return_value
 
 
 def test_stop_consuming():
-    consumer = create_consumer()
+    consumer = _consumer.Consumer()
     assert consumer.stopped.is_set() is False
     thread = mock.Mock(spec=threading.Thread)
     consumer._consumer_thread = thread
@@ -188,7 +185,7 @@ def test_stop_request_generator_not_running():
     # - The request queue **is not** empty
     # Expected result:
     # - ``_stop_request_generator()`` successfully calls ``.close()``
-    consumer = create_consumer()
+    consumer = _consumer.Consumer()
     queue_ = consumer._request_queue
     received = queue.Queue()
     request_generator = basic_queue_generator(queue_, received)
@@ -227,7 +224,7 @@ def test_stop_request_generator_close_failure():
     # Expected result:
     # - ``_stop_request_generator()`` falls through to the ``LOGGER.error``
     #   case and returns ``False``
-    consumer = create_consumer()
+    consumer = _consumer.Consumer()
 
     request_generator = mock.Mock(spec=('close',))
     request_generator.close.side_effect = TypeError('Really, not a generator')
@@ -247,7 +244,7 @@ def test_stop_request_generator_queue_non_empty():
     # - ``_stop_request_generator()`` can't call ``.close()`` (since
     #   the generator is running) but then returns with ``False`` because
     #   the queue **is not** empty
-    consumer = create_consumer()
+    consumer = _consumer.Consumer()
     # Attach a "fake" queue to the request generator so the generator can
     # block on an empty queue while the consumer's queue is not empty.
     queue_ = queue.Queue()
@@ -292,7 +289,7 @@ def test_stop_request_generator_running():
     #   the generator is running) but then verifies that the queue is
     #   empty and sends ``STOP`` into the queue to successfully stop
     #   the generator
-    consumer = create_consumer()
+    consumer = _consumer.Consumer()
     queue_ = consumer._request_queue
     received = queue.Queue()
     request_generator = basic_queue_generator(queue_, received)
