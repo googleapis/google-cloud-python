@@ -177,7 +177,7 @@ class BasePolicy(object):
         # However, if the consumer is inactive, then queue the ack_id here
         # instead; it will be acked as part of the initial request when the
         # consumer is started again.
-        if self._consumer.active:
+        if self._consumer.stopped.is_set():
             request = types.StreamingPullRequest(ack_ids=[ack_id])
             self._consumer.send_request(request)
         else:
@@ -311,7 +311,7 @@ class BasePolicy(object):
         """
         while True:
             # Sanity check: Should this infinite loop quit?
-            if not self._consumer.active:
+            if not self._consumer.stopped.is_set():
                 _LOGGER.debug('Consumer inactive, ending lease maintenance.')
                 return
 
@@ -326,7 +326,7 @@ class BasePolicy(object):
             # because it is more efficient to make a single request.
             ack_ids = list(self.managed_ack_ids)
             _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
-            if ack_ids and self._consumer.active:
+            if ack_ids and self._consumer.stopped.is_set():
                 request = types.StreamingPullRequest(
                     modify_deadline_ack_ids=ack_ids,
                     modify_deadline_seconds=[p99] * len(ack_ids),
