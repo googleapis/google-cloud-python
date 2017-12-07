@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud cc2c07c documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 0dbccac documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../../',
-        VERSION:     'cc2c07c',
+        VERSION:     '0dbccac',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -159,9 +159,9 @@
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span> <span class="o">=</span> <span class="n">executor</span>
         <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Creating callback requests thread (not starting).&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_callback_requests</span> <span class="o">=</span> <span class="n">_helper_threads</span><span class="o">.</span><span class="n">QueueCallbackThread</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback_requests</span> <span class="o">=</span> <span class="n">_helper_threads</span><span class="o">.</span><span class="n">QueueCallbackWorker</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">on_callback_request</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_callback</span><span class="p">,</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Policy.close"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -222,10 +222,33 @@
         <span class="c1"># Return the future.</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span></div>
 
-    <span class="k">def</span> <span class="nf">on_callback_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback_request</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map the callback request to the appropriate gRPC request.&quot;&quot;&quot;</span>
-        <span class="n">action</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">callback_request</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">callback_request</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">)(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dispatch_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map the callback request to the appropriate gRPC request.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action (str): The method to be invoked.</span>
+<span class="sd">            kwargs (Dict[str, Any]): The keyword arguments for the method</span>
+<span class="sd">                specified by ``action``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``action`` isn&#39;t one of the expected actions</span>
+<span class="sd">                &quot;ack&quot;, &quot;drop&quot;, &quot;lease&quot;, &quot;modify_ack_deadline&quot; or &quot;nack&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;ack&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ack</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;drop&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;lease&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lease</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;modify_ack_deadline&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;nack&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nack</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Unexpected action&#39;</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span>
+                <span class="s1">&#39;Must be one of &quot;ack&quot;, &quot;drop&quot;, &quot;lease&quot;, &#39;</span>
+                <span class="s1">&#39;&quot;modify_ack_deadline&quot; or &quot;nack&quot;.&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">on_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exception</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle the exception.</span>
