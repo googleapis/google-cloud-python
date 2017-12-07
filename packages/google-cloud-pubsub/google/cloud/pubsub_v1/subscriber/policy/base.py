@@ -75,7 +75,7 @@ class BasePolicy(object):
                  flow_control=types.FlowControl(), histogram_data=None):
         self._client = client
         self._subscription = subscription
-        self._consumer = _consumer.Consumer(self)
+        self._consumer = _consumer.Consumer()
         self._ack_deadline = 10
         self._last_histogram_size = 0
         self._future = None

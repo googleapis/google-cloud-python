@@ -234,7 +234,7 @@ class Policy(base.BasePolicy):
         self._callback = callback
         self._start_dispatch()
         # Actually start consuming messages.
-        self._consumer.start_consuming()
+        self._consumer.start_consuming(self)
         self._start_lease_worker()
 
         # Return the future.
