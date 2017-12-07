@@ -130,7 +130,7 @@ from google.cloud.pubsub_v1.subscriber import _helper_threads
 
 
 _LOGGER = logging.getLogger(__name__)
-_BIDIRECTIONAL_CONSUMER_NAME = 'ConsumeBidirectionalStream'
+_BIDIRECTIONAL_CONSUMER_NAME = 'Thread-ConsumeBidirectionalStream'
 
 
 class Consumer(object):
@@ -188,10 +188,7 @@ class Consumer(object):
         self._put_lock = threading.Lock()
 
         self.active = False
-        self.helper_threads = _helper_threads.HelperThreadRegistry()
-        """:class:`_helper_threads.HelperThreads`: manages the helper threads.
-            The policy may use this to schedule its own helper threads.
-        """
+        self._consumer_thread = None
 
     def send_request(self, request):
         """Queue a request to be sent to gRPC.
@@ -330,14 +327,20 @@ class Consumer(object):
         """Start consuming the stream."""
         self.active = True
         self._exiting.clear()
-        self.helper_threads.start(
-            _BIDIRECTIONAL_CONSUMER_NAME,
-            self.send_request,
-            self._blocking_consume,
+        thread = threading.Thread(
+            name=_BIDIRECTIONAL_CONSUMER_NAME,
+            target=self._blocking_consume,
         )
+        thread.daemon = True
+        thread.start()
+        _LOGGER.debug('Started helper thread %s', thread.name)
+        self._consumer_thread = thread
 
     def stop_consuming(self):
         """Signal the stream to stop and block until it completes."""
         self.active = False
         self._exiting.set()
-        self.helper_threads.stop_all()
+        _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
+        self.send_request(_helper_threads.STOP)
+        self._consumer_thread.join()
+        self._consumer_thread = None

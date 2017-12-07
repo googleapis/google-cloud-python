@@ -21,7 +21,6 @@ from google.api_core import exceptions
 from google.auth import credentials
 import mock
 import pytest
-import six
 from six.moves import queue
 
 from google.cloud.pubsub_v1 import subscriber
@@ -105,10 +104,7 @@ def test_open():
     assert policy._dispatch_thread is threads[0]
     threads[0].start.assert_called_once_with()
 
-    threads_dict = consumer.helper_threads._helper_threads
-    assert len(threads_dict) == 1
-    helper_thread = next(six.itervalues(threads_dict))
-    assert helper_thread.thread is threads[1]
+    assert consumer._consumer_thread is threads[1]
     threads[1].start.assert_called_once_with()
 
     assert policy._leases_thread is threads[2]
