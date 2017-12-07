@@ -118,7 +118,7 @@ def main(client_secrets, scope, save, credentials, headless):
         del creds_data['token']
 
         config_path = os.path.dirname(credentials)
-        if not os.path.isdir(config_path):
+        if config_path and not os.path.isdir(config_path):
             os.makedirs(config_path)
 
         with open(credentials, 'w') as outfile:
