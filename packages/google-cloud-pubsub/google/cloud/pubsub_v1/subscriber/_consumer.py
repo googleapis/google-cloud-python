@@ -321,7 +321,8 @@ class Consumer(object):
                 if recover:
                     recover = self._stop_request_generator(request_generator)
                 if not recover:
-                    self.stop_consuming()
+                    self._stop_no_join()
+                    return
 
     def start_consuming(self):
         """Start consuming the stream."""
@@ -336,11 +337,35 @@ class Consumer(object):
         _LOGGER.debug('Started helper thread %s', thread.name)
         self._consumer_thread = thread
 
-    def stop_consuming(self):
-        """Signal the stream to stop and block until it completes."""
+    def _stop_no_join(self):
+        """Signal the request stream to stop.
+
+        To actually stop the worker ("consumer thread"), a ``STOP`` is
+        sent to the request queue.
+
+        The ``_consumer_thread`` member is removed from the current instance
+        and returned.
+
+        Returns:
+            threading.Thread: The worker ("consumer thread") that is being
+            stopped.
+        """
         self.active = False
         self._exiting.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
         self.send_request(_helper_threads.STOP)
-        self._consumer_thread.join()
+        thread = self._consumer_thread
         self._consumer_thread = None
+        return thread
+
+    def stop_consuming(self):
+        """Signal the stream to stop and block until it completes.
+
+        To actually stop the worker ("consumer thread"), a ``STOP`` is
+        sent to the request queue.
+
+        This **assumes** that the caller is not in the same thread
+        (since a thread cannot ``join()`` itself).
+        """
+        thread = self._stop_no_join()
+        thread.join()

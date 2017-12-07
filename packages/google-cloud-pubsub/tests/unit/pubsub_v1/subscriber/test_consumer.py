@@ -77,6 +77,18 @@ def test_blocking_consume():
             assert on_res.mock_calls[1][1][1] == mock.sentinel.B
 
 
+@mock.patch.object(_consumer, '_LOGGER')
+def test_blocking_consume_when_exiting(_LOGGER):
+    consumer = create_consumer()
+    assert consumer._exiting.is_set() is False
+    consumer._exiting.set()
+
+    # Make sure method cleanly exits.
+    assert consumer._blocking_consume() is None
+
+    _LOGGER.debug.assert_called_once_with('Event signalled consumer exit.')
+
+
 class OnException(object):
 
     def __init__(self, acceptable=None):
@@ -147,6 +159,23 @@ def test_start_consuming():
         target=consumer._blocking_consume,
     )
     assert consumer._consumer_thread is Thread.return_value
+
+
+def test_stop_consuming():
+    consumer = create_consumer()
+    consumer.active = True
+    assert consumer._exiting.is_set() is False
+    thread = mock.Mock(spec=threading.Thread)
+    consumer._consumer_thread = thread
+
+    assert consumer.stop_consuming() is None
+
+    # Make sure state was updated.
+    assert consumer.active is False
+    assert consumer._exiting.is_set() is True
+    assert consumer._consumer_thread is None
+    # Check mocks.
+    thread.join.assert_called_once_with()
 
 
 def basic_queue_generator(queue, received):
