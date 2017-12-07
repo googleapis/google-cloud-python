@@ -678,6 +678,10 @@ class Bucket(_PropertyMixin):
         :param preserve_acl: Optional. Copies ACL from old blob to new blob.
                              Default: True.
 
+        :type source_generation: long
+        :param source_generation: Optional. The generation of the blob to be copied.
+                                    Default: None.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
         """
