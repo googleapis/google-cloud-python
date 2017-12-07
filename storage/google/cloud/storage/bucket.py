@@ -679,8 +679,8 @@ class Bucket(_PropertyMixin):
                              Default: True.
 
         :type source_generation: long
-        :param source_generation: Optional. The generation of the blob to be copied.
-                                    Default: None.
+        :param source_generation: Optional. The generation of the blob to be
+                                  copied.
 
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
