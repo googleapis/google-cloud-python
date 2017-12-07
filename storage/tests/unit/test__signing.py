@@ -43,10 +43,12 @@ class Test_get_expiration_seconds(unittest.TestCase):
         self.assertEqual(self._call_fut(123), 123)
 
     def test_w_long(self):
-        if six.PY3:
-            raise unittest.SkipTest('No long on Python 3')
-
-        self.assertEqual(self._call_fut(long(123)), 123)  # noqa: F821
+        try:
+            with self.assertRaises(NameError):
+                # No long in python 3
+                long_var = long(123) # noqa: F821
+        except AssertionError:
+            self.assertEqual(self._call_fut(long_var), 123)
 
     def test_w_naive_datetime(self):
         expiration_no_tz = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
