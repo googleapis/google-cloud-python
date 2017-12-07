@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 0dbccac documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud a2cc7af documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../../',
-        VERSION:     '0dbccac',
+        VERSION:     'a2cc7af',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -72,7 +72,7 @@
 
 
 <span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="n">_CALLBACK_WORKER_NAME</span> <span class="o">=</span> <span class="s1">&#39;CallbackRequestsWorker&#39;</span>
+<span class="n">_CALLBACK_WORKER_NAME</span> <span class="o">=</span> <span class="s1">&#39;Thread-Consumer-CallbackRequestsWorker&#39;</span>
 
 
 <span class="k">def</span> <span class="nf">_callback_completed</span><span class="p">(</span><span class="n">future</span><span class="p">):</span>
@@ -109,66 +109,94 @@
 
 <span class="sd">    This consumer handles the connection to the Pub/Sub service and all of</span>
 <span class="sd">    the concurrency needs.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        client (~.pubsub_v1.subscriber.client): The subscriber client used</span>
+<span class="sd">            to create this instance.</span>
+<span class="sd">        subscription (str): The name of the subscription. The canonical</span>
+<span class="sd">            format for this is</span>
+<span class="sd">            ``projects/{project}/subscriptions/{subscription}``.</span>
+<span class="sd">        flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow</span>
+<span class="sd">            control settings.</span>
+<span class="sd">        executor (~concurrent.futures.ThreadPoolExecutor): (Optional.) A</span>
+<span class="sd">            ThreadPoolExecutor instance, or anything duck-type compatible</span>
+<span class="sd">            with it.</span>
+<span class="sd">        queue (~queue.Queue): (Optional.) A Queue instance, appropriate</span>
+<span class="sd">            for crossing the concurrency boundary implemented by</span>
+<span class="sd">            ``executor``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span> <span class="n">flow_control</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">FlowControl</span><span class="p">(),</span>
                  <span class="n">executor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate the policy.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            client (~.pubsub_v1.subscriber.client): The subscriber client used</span>
-<span class="sd">                to create this instance.</span>
-<span class="sd">            subscription (str): The name of the subscription. The canonical</span>
-<span class="sd">                format for this is</span>
-<span class="sd">                ``projects/{project}/subscriptions/{subscription}``.</span>
-<span class="sd">            flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow</span>
-<span class="sd">                control settings.</span>
-<span class="sd">            executor (~concurrent.futures.ThreadPoolExecutor): (Optional.) A</span>
-<span class="sd">                ThreadPoolExecutor instance, or anything duck-type compatible</span>
-<span class="sd">                with it.</span>
-<span class="sd">            queue (~queue.Queue): (Optional.) A Queue instance, appropriate</span>
-<span class="sd">                for crossing the concurrency boundary implemented by</span>
-<span class="sd">                ``executor``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Default the callback to a no-op; it is provided by `.open`.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">_do_nothing_callback</span>
-
-        <span class="c1"># Default the future to None; it is provided by `.open`.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="c1"># Create a queue for keeping track of shared state.</span>
-        <span class="k">if</span> <span class="n">queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">queue</span> <span class="o">=</span> <span class="n">queue_mod</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span> <span class="o">=</span> <span class="n">queue</span>
-
-        <span class="c1"># Call the superclass constructor.</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Policy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
             <span class="n">flow_control</span><span class="o">=</span><span class="n">flow_control</span><span class="p">,</span>
             <span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="c1"># Default the callback to a no-op; the **actual** callback is</span>
+        <span class="c1"># provided by ``.open()``.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">_do_nothing_callback</span>
+        <span class="c1"># Create a queue for keeping track of shared state.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_queue</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+        <span class="c1"># Also maintain an executor.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_executor</span><span class="p">(</span><span class="n">executor</span><span class="p">)</span>
+        <span class="c1"># The threads created in ``.open()``.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_thread</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leases_thread</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Also maintain a request queue and an executor.</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_queue</span><span class="p">(</span><span class="n">queue</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets a queue for the constructor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            queue (Optional[~queue.Queue]): A Queue instance, appropriate</span>
+<span class="sd">                for crossing the concurrency boundary implemented by</span>
+<span class="sd">                ``executor``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~queue.Queue: Either ``queue`` if not :data:`None` or a default</span>
+<span class="sd">            queue.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">queue</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">queue_mod</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">queue</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_executor</span><span class="p">(</span><span class="n">executor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets an executor for the constructor.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            executor (Optional[~concurrent.futures.ThreadPoolExecutor]): A</span>
+<span class="sd">                ThreadPoolExecutor instance, or anything duck-type compatible</span>
+<span class="sd">                with it.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~concurrent.futures.ThreadPoolExecutor: Either ``executor`` if not</span>
+<span class="sd">            :data:`None` or a default thread pool executor with 10 workers</span>
+<span class="sd">            and a prefix (if supported).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">executor_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
                 <span class="n">executor_kwargs</span><span class="p">[</span><span class="s1">&#39;thread_name_prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s1">&#39;ThreadPoolExecutor-SubscriberPolicy&#39;</span><span class="p">)</span>
-            <span class="n">executor</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span>
+            <span class="k">return</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">(</span>
                 <span class="n">max_workers</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                 <span class="o">**</span><span class="n">executor_kwargs</span>
             <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span> <span class="o">=</span> <span class="n">executor</span>
-        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Creating callback requests thread (not starting).&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_callback_requests</span> <span class="o">=</span> <span class="n">_helper_threads</span><span class="o">.</span><span class="n">QueueCallbackWorker</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_callback</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">executor</span>
 
 <div class="viewcode-block" id="Policy.close"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Close the existing connection.&quot;&quot;&quot;</span>
         <span class="c1"># Stop consuming messages.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">helper_threads</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="n">_CALLBACK_WORKER_NAME</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">_helper_threads</span><span class="o">.</span><span class="n">STOP</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>  <span class="c1"># Wait until stopped.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_thread</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">stop_consuming</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leases_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leases_thread</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_executor</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
 
         <span class="c1"># The subscription is closing cleanly; resolve the future if it is not</span>
@@ -176,6 +204,53 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">_start_dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start a thread to dispatch requests queued up by callbacks.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This assumes, but does not check, that ``_dispatch_thread``</span>
+<span class="sd">            is :data:`None`.</span>
+
+<span class="sd">        Spawns a thread to run :meth:`dispatch_callback` and sets the</span>
+<span class="sd">        &quot;dispatch thread&quot; member on the current policy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Starting callback requests worker.&#39;</span><span class="p">)</span>
+        <span class="n">dispatch_worker</span> <span class="o">=</span> <span class="n">_helper_threads</span><span class="o">.</span><span class="n">QueueCallbackWorker</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_callback</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Create and start the helper thread.</span>
+        <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">_CALLBACK_WORKER_NAME</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">dispatch_worker</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Started helper thread </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">thread</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_thread</span> <span class="o">=</span> <span class="n">thread</span>
+
+    <span class="k">def</span> <span class="nf">_start_lease_worker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Spawn a helper thread that maintains all of leases for this policy.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This assumes, but does not check, that ``_leases_thread`` is</span>
+<span class="sd">            :data:`None`.</span>
+
+<span class="sd">        Spawns a thread to run :meth:`maintain_leases` and sets the</span>
+<span class="sd">        &quot;leases thread&quot; member on the current policy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Starting lease maintenance worker.&#39;</span><span class="p">)</span>
+        <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Thread-LeaseMaintenance&#39;</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maintain_leases</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_leases_thread</span> <span class="o">=</span> <span class="n">thread</span>
 
 <div class="viewcode-block" id="Policy.open"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Open a streaming pull connection and begin receiving messages.</span>
@@ -198,26 +273,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="n">Future</span><span class="p">(</span><span class="n">policy</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="c1"># Start the thread to pass the requests.</span>
-        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Starting callback requests worker.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="n">callback</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">helper_threads</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
-            <span class="n">_CALLBACK_WORKER_NAME</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_callback_requests</span><span class="p">,</span>
-        <span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_dispatch</span><span class="p">()</span>
         <span class="c1"># Actually start consuming messages.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_consumer</span><span class="o">.</span><span class="n">start_consuming</span><span class="p">()</span>
-
-        <span class="c1"># Spawn a helper thread that maintains all of the leases for</span>
-        <span class="c1"># this policy.</span>
-        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Starting lease maintenance worker.&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Thread-LeaseMaintenance&#39;</span><span class="p">,</span>
-            <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">maintain_leases</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_leaser</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start_lease_worker</span><span class="p">()</span>
 
         <span class="c1"># Return the future.</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span></div>
