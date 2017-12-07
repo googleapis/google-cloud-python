@@ -96,10 +96,12 @@ def test_blocking_consume_on_exception():
     policy.on_response.side_effect = exc
 
     consumer = _consumer.Consumer(policy=policy)
+    consumer._consumer_thread = mock.Mock(spec=threading.Thread)
     policy.on_exception.side_effect = OnException()
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
+    assert consumer._consumer_thread is None
 
     # Check mocks.
     policy.call_rpc.assert_called_once()
@@ -118,10 +120,12 @@ def test_blocking_consume_two_exceptions():
     policy.on_response.side_effect = (exc1, exc2)
 
     consumer = _consumer.Consumer(policy=policy)
+    consumer._consumer_thread = mock.Mock(spec=threading.Thread)
     policy.on_exception.side_effect = OnException(acceptable=exc1)
 
     # Establish that we get responses until we are sent the exiting event.
     consumer._blocking_consume()
+    assert consumer._consumer_thread is None
 
     # Check mocks.
     assert policy.call_rpc.call_count == 2
@@ -133,16 +137,16 @@ def test_blocking_consume_two_exceptions():
 
 def test_start_consuming():
     consumer = create_consumer()
-    helper_threads = consumer.helper_threads
-    with mock.patch.object(helper_threads, 'start', autospec=True) as start:
+    with mock.patch.object(threading, 'Thread', autospec=True) as Thread:
         consumer.start_consuming()
-        assert consumer._exiting.is_set() is False
-        assert consumer.active is True
-        start.assert_called_once_with(
-            'ConsumeBidirectionalStream',
-            consumer.send_request,
-            consumer._blocking_consume,
-        )
+
+    assert consumer._exiting.is_set() is False
+    assert consumer.active is True
+    Thread.assert_called_once_with(
+        name=_consumer._BIDIRECTIONAL_CONSUMER_NAME,
+        target=consumer._blocking_consume,
+    )
+    assert consumer._consumer_thread is Thread.return_value
 
 
 def basic_queue_generator(queue, received):
