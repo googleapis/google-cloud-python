@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 0.1.2
+
+- Upgrading `concurrent.futures` backport from `>= 3.0.0`
+  to `>= 3.2.0` (#4521).
+
 ## 0.1.1
 
 - Upgrading `grpcio` dependency from `1.2.0, < 1.6dev` to `>= 1.7.0` (#4280)
