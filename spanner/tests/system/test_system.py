@@ -118,6 +118,9 @@ def setUpModule():
 def tearDownModule():
     if CREATE_INSTANCE:
         Config.INSTANCE.delete()
+    else:
+        for database in Config.INSTANCE.list_databases():
+            database.drop()
 
 
 class TestInstanceAdminAPI(unittest.TestCase):
