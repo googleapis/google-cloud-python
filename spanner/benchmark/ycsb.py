@@ -117,7 +117,7 @@ def scan(database, table, key):
   raise NotImplementedError('Scan is not implemented.')
 
 
-def DoOperation(database, table, operation, latencies_ms):
+def do_operation(database, table, operation, latencies_ms):
   """Does a single operation and records latency."""
   key = random.choice(KEYS)
   start = timeit.default_timer()
@@ -130,7 +130,7 @@ def DoOperation(database, table, operation, latencies_ms):
   elif operation == 'scan':
     scan(database, table, key)
   else:
-    raise Exception('Unknown operation: %s' % operation)
+    raise ValueError('Unknown operation: %s' % operation)
   end = timeit.default_timer()
   latencies_ms[operation].append((end - start) * 1000)
 
@@ -198,8 +198,8 @@ class WorkloadThread(threading.Thread):
       weight = random.uniform(0, self._total_weight)
       for j in range(len(self._weights)):
         if weight <= self._weights[j]:
-          DoOperation(self._database, self._parameters['table'],
-                      self._operations[j], self._latencies_ms)
+          do_operation(self._database, self._parameters['table'],
+                       self._operations[j], self._latencies_ms)
           break
 
   def latencies_ms(self):
@@ -254,4 +254,4 @@ if __name__ == '__main__':
     load_keys(database, parameters)
     run_workload(database, parameters)
   else:
-    raise Exception('Unknown command %s.' % parameters['command'])
+    raise ValueError('Unknown command %s.' % parameters['command'])
