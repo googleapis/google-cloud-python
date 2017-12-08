@@ -32,6 +32,7 @@ from google.cloud import spanner
 KEYS = []
 OPERATIONS = ['readproportion', 'updateproportion', 'scanproportion',
               'insertproportion']
+NUM_FIELD = 10
 
 
 def parse_options():
@@ -93,7 +94,7 @@ def read(database, table, key):
                                   (table, key))
     for row in result:
       key = row[0]
-      for i in range(10):
+      for i in range(NUM_FIELD):
         field = row[i + 1]
 
 
@@ -137,11 +138,9 @@ def DoOperation(database, table, operation, latencies_ms):
 def aggregate_metrics(latencies_ms, duration_ms, num_bucket):
   """Aggregates metrics."""
   overall_op_count = 0
-  op_counts = {}
-  for operation in latencies_ms.keys():
-    op_counts[operation] = len(latencies_ms[operation])
-    overall_op_count += op_counts[operation]
-
+  op_counts = {operation : len(latency) for operation, latency in latencies_ms.iteritems()}
+  overall_op_count = sum([op_count for op_count in op_counts.itervalues()])
+  
   print '[OVERALL], RunTime(ms), %f' % duration_ms
   print '[OVERALL], Throughput(ops/sec), %f' % (float(overall_op_count) /
                                                 duration_ms * 1000.0)
@@ -152,7 +151,7 @@ def aggregate_metrics(latencies_ms, duration_ms, num_bucket):
     print '[%s], AverageLatency(us), %f' % (
         operation_upper, numpy.average(latencies_ms[operation]) * 1000.0)
     print '[%s], LatencyVariance(us), %f' % (
-        operation_upper, numpy.std(latencies_ms[operation]) * 1000.0)
+        operation_upper, numpy.var(latencies_ms[operation]) * 1000.0)
     print '[%s], MinLatency(us), %f' % (
         operation_upper, min(latencies_ms[operation]) * 1000.0)
     print '[%s], MaxLatency(us), %f' % (
