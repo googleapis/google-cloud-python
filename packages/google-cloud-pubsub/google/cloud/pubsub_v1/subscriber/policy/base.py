@@ -225,7 +225,7 @@ class BasePolicy(object):
         # before restarting.
         if self._paused and self._load < self.flow_control.resume_threshold:
             self._paused = False
-            self.open(self._callback)
+            self._consumer.resume()
 
     def get_initial_request(self, ack_queue=False):
         """Return the initial request.
@@ -291,7 +291,7 @@ class BasePolicy(object):
         # If we do, we need to stop the stream.
         if self._load >= 1.0:
             self._paused = True
-            self.close()
+            self._consumer.pause()
 
     def maintain_leases(self):
         """Maintain all of the leases being managed by the policy.

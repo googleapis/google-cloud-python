@@ -109,10 +109,13 @@ def test_ack_no_time():
 def test_ack_paused():
     policy = create_policy()
     policy._paused = True
-    policy._consumer.stopped.clear()
-    with mock.patch.object(policy, 'open') as open_:
+    consumer = policy._consumer
+
+    with mock.patch.object(consumer, 'resume') as resume:
         policy.ack('ack_id_string')
-        open_.assert_called()
+        resume.assert_called_once_with()
+
+    assert policy._paused is False
     assert 'ack_id_string' in policy._ack_on_resume
 
 
@@ -157,33 +160,38 @@ def test_drop_below_threshold():
     """
     policy = create_policy()
     policy.managed_ack_ids.add('ack_id_string')
-    policy._bytes = 20
+    num_bytes = 20
+    policy._bytes = num_bytes
     policy._paused = True
-    with mock.patch.object(policy, 'open') as open_:
-        policy.drop(ack_id='ack_id_string', byte_size=20)
-        open_.assert_called_once_with(policy._callback)
+    consumer = policy._consumer
+
+    with mock.patch.object(consumer, 'resume') as resume:
+        policy.drop(ack_id='ack_id_string', byte_size=num_bytes)
+        resume.assert_called_once_with()
+
     assert policy._paused is False
 
 
 def test_load():
     flow_control = types.FlowControl(max_messages=10, max_bytes=1000)
     policy = create_policy(flow_control=flow_control)
+    consumer = policy._consumer
 
-    # This should mean that our messages count is at 10%, and our bytes
-    # are at 15%; the ._load property should return the higher (0.15).
-    policy.lease(ack_id='one', byte_size=150)
-    assert policy._load == 0.15
-
-    # After this message is added, the messages should be higher at 20%
-    # (versus 16% for bytes).
-    policy.lease(ack_id='two', byte_size=10)
-    assert policy._load == 0.2
-
-    # Returning a number above 100% is fine.
-    with mock.patch.object(policy, 'close') as close:
+    with mock.patch.object(consumer, 'pause') as pause:
+        # This should mean that our messages count is at 10%, and our bytes
+        # are at 15%; the ._load property should return the higher (0.15).
+        policy.lease(ack_id='one', byte_size=150)
+        assert policy._load == 0.15
+        pause.assert_not_called()
+        # After this message is added, the messages should be higher at 20%
+        # (versus 16% for bytes).
+        policy.lease(ack_id='two', byte_size=10)
+        assert policy._load == 0.2
+        pause.assert_not_called()
+        # Returning a number above 100% is fine.
         policy.lease(ack_id='three', byte_size=1000)
         assert policy._load == 1.16
-        close.assert_called_once_with()
+        pause.assert_called_once_with()
 
 
 def test_modify_ack_deadline():
@@ -251,11 +259,13 @@ def test_lease():
 def test_lease_above_threshold():
     flow_control = types.FlowControl(max_messages=2)
     policy = create_policy(flow_control=flow_control)
-    with mock.patch.object(policy, 'close') as close:
+    consumer = policy._consumer
+
+    with mock.patch.object(consumer, 'pause') as pause:
         policy.lease(ack_id='first_ack_id', byte_size=20)
-        assert close.call_count == 0
+        pause.assert_not_called()
         policy.lease(ack_id='second_ack_id', byte_size=25)
-        close.assert_called_once_with()
+        pause.assert_called_once_with()
 
 
 def test_nack():
