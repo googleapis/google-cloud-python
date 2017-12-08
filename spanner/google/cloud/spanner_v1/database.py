@@ -18,6 +18,7 @@ import re
 import threading
 
 import google.auth.credentials
+from google.api_core import exceptions
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
@@ -208,14 +209,7 @@ class Database(object):
                 options=options,
             )
         except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.ALREADY_EXISTS:
-                raise Conflict(self.name)
-            elif exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound('Instance not found: {name}'.format(
-                    name=self._instance.name,
-                ))
-            raise
-
+            raise exceptions.from_grpc_error(exc.cause)
         return future
 
     def exists(self):

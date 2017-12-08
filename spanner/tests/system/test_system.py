@@ -36,6 +36,7 @@ from grpc import StatusCode
 
 from google.cloud._helpers import UTC
 from google.cloud.exceptions import GrpcRendezvous
+from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 from google.cloud.spanner import Client
 from google.cloud.spanner import KeyRange
@@ -281,6 +282,35 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             database.database_id
             for database in Config.INSTANCE.list_databases()]
         self.assertIn(temp_db_id, database_ids)
+
+    def test_table_not_found(self):
+        temp_db_id = 'temp_db' + unique_resource_id('_')
+
+        correct_table = 'MyTable'
+        incorrect_table = 'NotMyTable'
+        self.assertNotEqual(correct_table, incorrect_table)
+
+        create_table = (
+            'CREATE TABLE {} (\n'
+            '    Id      STRING(36) NOT NULL,\n'
+            '    Field1  STRING(36) NOT NULL\n'
+            ') PRIMARY KEY (Id)').format(correct_table)
+        index = 'CREATE INDEX IDX ON {} (Field1)'.format(incorrect_table)
+
+        temp_db = Config.INSTANCE.database(
+            temp_db_id,
+            ddl_statements=[
+                create_table,
+                index,
+            ],
+        )
+        try:
+            temp_db.create()
+        except NotFound as exc:
+            self.assertEqual(exc.args[0],
+                             'Table not found: {0}'.format(incorrect_table))
+        except:
+            self.fail()
 
     def test_update_database_ddl(self):
         pool = BurstyPool()
