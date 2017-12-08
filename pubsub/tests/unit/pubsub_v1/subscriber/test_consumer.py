@@ -61,9 +61,11 @@ def test_request_generator_thread():
 
 def test_blocking_consume():
     policy = mock.Mock(spec=('call_rpc', 'on_response'))
-    policy.call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
+    policy.call_rpc.return_value = iter((mock.sentinel.A, mock.sentinel.B))
 
     consumer = _consumer.Consumer()
+    consumer.resume()
+
     assert consumer._blocking_consume(policy) is None
     policy.call_rpc.assert_called_once()
     policy.on_response.assert_has_calls(
@@ -96,11 +98,12 @@ class OnException(object):
 
 def test_blocking_consume_on_exception():
     policy = mock.Mock(spec=('call_rpc', 'on_response', 'on_exception'))
-    policy.call_rpc.return_value = (mock.sentinel.A, mock.sentinel.B)
+    policy.call_rpc.return_value = iter((mock.sentinel.A, mock.sentinel.B))
     exc = TypeError('Bad things!')
     policy.on_response.side_effect = exc
 
     consumer = _consumer.Consumer()
+    consumer.resume()
     consumer._consumer_thread = mock.Mock(spec=threading.Thread)
     policy.on_exception.side_effect = OnException()
 
@@ -114,6 +117,28 @@ def test_blocking_consume_on_exception():
     policy.on_exception.assert_called_once_with(exc)
 
 
+class RaisingResponseGenerator(object):
+    # NOTE: This is needed because defining `.next` on an **instance**
+    #       rather than the **class** will not be iterable in Python 2.
+    #       This is problematic since a `Mock` just sets members.
+
+    def __init__(self, exception):
+        self.exception = exception
+        self.done_calls = 0
+        self.next_calls = 0
+
+    def done(self):
+        self.done_calls += 1
+        return True
+
+    def __next__(self):
+        self.next_calls += 1
+        raise self.exception
+
+    def next(self):
+        return self.__next__()  # Python 2
+
+
 def test_blocking_consume_two_exceptions():
     policy = mock.Mock(spec=('call_rpc', 'on_exception'))
 
@@ -121,28 +146,46 @@ def test_blocking_consume_two_exceptions():
     exc2 = ValueError('Something grumble.')
     policy.on_exception.side_effect = OnException(acceptable=exc1)
 
-    response_generator1 = mock.MagicMock(spec=('__iter__', 'done'))
-    response_generator1.__iter__.side_effect = exc1
-    response_generator1.done.return_value = True
-    response_generator2 = mock.MagicMock(spec=('__iter__', 'done'))
-    response_generator2.__iter__.side_effect = exc2
+    response_generator1 = RaisingResponseGenerator(exc1)
+    response_generator2 = RaisingResponseGenerator(exc2)
     policy.call_rpc.side_effect = (response_generator1, response_generator2)
 
     consumer = _consumer.Consumer()
+    consumer.resume()
     consumer._consumer_thread = mock.Mock(spec=threading.Thread)
 
     # Establish that we get responses until we are sent the exiting event.
-    consumer._blocking_consume(policy)
+    assert consumer._blocking_consume(policy) is None
     assert consumer._consumer_thread is None
 
     # Check mocks.
     assert policy.call_rpc.call_count == 2
-    response_generator1.__iter__.assert_called_once_with()
-    response_generator1.done.assert_called_once_with()
-    response_generator2.__iter__.assert_called_once_with()
-    response_generator2.done.assert_not_called()
+    assert response_generator1.next_calls == 1
+    assert response_generator1.done_calls == 1
+    assert response_generator2.next_calls == 1
+    assert response_generator2.done_calls == 0
     policy.on_exception.assert_has_calls(
         [mock.call(exc1), mock.call(exc2)])
+
+
+@mock.patch.object(_consumer, '_LOGGER')
+def test_pause(_LOGGER):
+    consumer = _consumer.Consumer()
+    consumer._can_consume.set()
+
+    assert consumer.pause() is None
+    assert not consumer._can_consume.is_set()
+    _LOGGER.debug.assert_called_once_with('Pausing consumer')
+
+
+@mock.patch.object(_consumer, '_LOGGER')
+def test_resume(_LOGGER):
+    consumer = _consumer.Consumer()
+    consumer._can_consume.clear()
+
+    assert consumer.resume() is None
+    assert consumer._can_consume.is_set()
+    _LOGGER.debug.assert_called_once_with('Resuming consumer')
 
 
 def test_start_consuming():
