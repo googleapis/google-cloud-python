@@ -179,6 +179,7 @@ class Consumer(object):
     def __init__(self):
         self._request_queue = queue.Queue()
         self.stopped = threading.Event()
+        self._can_consume = threading.Event()
         self._put_lock = threading.Lock()
         self._consumer_thread = None
 
@@ -319,8 +320,10 @@ class Consumer(object):
 
             request_generator = self._request_generator_thread(policy)
             response_generator = policy.call_rpc(request_generator)
+            responses = _pausable_iterator(
+                response_generator, self._can_consume)
             try:
-                for response in response_generator:
+                for response in responses:
                     _LOGGER.debug('Received response:\n%r', response)
                     policy.on_response(response)
 
@@ -339,6 +342,34 @@ class Consumer(object):
                     self._stop_no_join()
                     return
 
+    def pause(self):
+        """Pause the current consumer.
+
+        This method is idempotent by design.
+
+        This will clear the ``_can_consume`` event which is checked
+        every time :meth:`_blocking_consume` consumes a response from the
+        bidirectional streaming pull.
+
+        Complement to :meth:`resume`.
+        """
+        _LOGGER.debug('Pausing consumer')
+        self._can_consume.clear()
+
+    def resume(self):
+        """Resume the current consumer.
+
+        This method is idempotent by design.
+
+        This will set the ``_can_consume`` event which is checked
+        every time :meth:`_blocking_consume` consumes a response from the
+        bidirectional streaming pull.
+
+        Complement to :meth:`pause`.
+        """
+        _LOGGER.debug('Resuming consumer')
+        self._can_consume.set()
+
     def start_consuming(self, policy):
         """Start consuming the stream.
 
@@ -351,6 +382,7 @@ class Consumer(object):
                 responses are handled.
         """
         self.stopped.clear()
+        self.resume()  # Make sure we aren't paused.
         thread = threading.Thread(
             name=_BIDIRECTIONAL_CONSUMER_NAME,
             target=self._blocking_consume,
@@ -374,6 +406,7 @@ class Consumer(object):
             threading.Thread: The worker ("consumer thread") that is being
             stopped.
         """
+        self.resume()  # Make sure we aren't paused.
         self.stopped.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
         self.send_request(_helper_threads.STOP)
@@ -392,3 +425,27 @@ class Consumer(object):
         """
         thread = self._stop_no_join()
         thread.join()
+
+
+def _pausable_iterator(iterator, can_continue):
+    """Converts a standard iterator into one that can be paused.
+
+    The ``can_continue`` event can be used by an independent, concurrent
+    worker to pause and resume the iteration over ``iterator``.
+
+    Args:
+        iterator (Iterator): Any iterator to be iterated over.
+        can_continue (threading.Event): An event which determines if we
+            can advance to the next iteration. Will be ``wait()``-ed on
+            before
+
+    Yields:
+        Any: The items from ``iterator``.
+    """
+    while True:
+        can_continue.wait()
+
+        try:
+            yield next(iterator)
+        except StopIteration:
+            break
