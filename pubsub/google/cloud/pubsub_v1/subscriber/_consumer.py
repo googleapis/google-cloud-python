@@ -444,8 +444,4 @@ def _pausable_iterator(iterator, can_continue):
     """
     while True:
         can_continue.wait()
-
-        try:
-            yield next(iterator)
-        except StopIteration:
-            break
+        yield next(iterator)
