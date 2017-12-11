@@ -8,10 +8,21 @@
 
 - Upgrading `concurrent.futures` backport from `>= 3.0.0`
   to `>= 3.2.0` (#4521).
+- Moved `datetime`-related helpers from `google.cloud.core` to
+  `google.api_core.datetime_helpers` (#4399).
+- Added missing `client_info` to `gapic_v1/__init__.py`'s
+  `__all__` (#4567).
+- Added helpers for routing headers to `gapic_v1` (#4336).
+
+PyPI: https://pypi.org/project/google-api-core/0.1.2/
 
 ## 0.1.1
 
+### Dependencies
+
 - Upgrading `grpcio` dependency from `1.2.0, < 1.6dev` to `>= 1.7.0` (#4280)
+
+PyPI: https://pypi.org/project/google-api-core/0.1.1/
 
 ## 0.1.0
 
@@ -42,3 +53,5 @@ relevant changes from that package are included here.
 - Port gax proto helper methods (#4249)
 - Remove gapic_v1.method.wrap_with_paging (#4257)
 - Add final set of protobuf helpers to api_core (#4259)
+
+PyPI: https://pypi.org/project/google-api-core/0.1.0/
