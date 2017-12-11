@@ -19,6 +19,8 @@ import struct
 
 import six
 
+import concurrent.futures
+
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
@@ -26,6 +28,8 @@ from google.cloud.bigtable._generated import (
     data_pb2 as data_v2_pb2)
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
+from google.api_core import retry
+from google.api_core import exceptions
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -414,7 +418,20 @@ class DirectRow(_SetDeleteRow):
         )
         # We expect a `google.protobuf.empty_pb2.Empty`
         client = self._table._instance._client
-        client._data_stub.MutateRow(request_pb)
+        try:
+            client._data_stub.MutateRow(request_pb)
+        except exceptions.Unknown:
+            retry_ = retry.Retry(
+                predicate=retry.if_exception_type(False),
+                deadline=30)
+
+            try:
+                retry_(client._data_stub.MutateRow(request_pb))()
+            except exceptions.RetryError:
+                raise concurrent.futures.TimeoutError(
+                    'Operation did not complete within the designated '
+                    'timeout.')
+
         self.clear()
 
     def clear(self):
