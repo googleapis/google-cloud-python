@@ -86,7 +86,6 @@ class BasePolicy(object):
         # They should not need to be used by subclasses.
         self._bytes = 0
         self._ack_on_resume = set()
-        self._paused = False
 
     @property
     def ack_deadline(self):
@@ -223,8 +222,8 @@ class BasePolicy(object):
         # In order to not thrash too much, require us to have passed below
         # the resume threshold (80% by default) of each flow control setting
         # before restarting.
-        if self._paused and self._load < self.flow_control.resume_threshold:
-            self._paused = False
+        if (self._consumer.paused and
+                self._load < self.flow_control.resume_threshold):
             self._consumer.resume()
 
     def get_initial_request(self, ack_queue=False):
@@ -290,7 +289,6 @@ class BasePolicy(object):
         # Sanity check: Do we have too many things in our inventory?
         # If we do, we need to stop the stream.
         if self._load >= 1.0:
-            self._paused = True
             self._consumer.pause()
 
     def maintain_leases(self):

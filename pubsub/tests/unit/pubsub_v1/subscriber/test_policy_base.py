@@ -108,15 +108,13 @@ def test_ack_no_time():
 
 def test_ack_paused():
     policy = create_policy()
-    policy._paused = True
     consumer = policy._consumer
     consumer.stopped.set()
+    assert consumer.paused is True
 
-    with mock.patch.object(consumer, 'resume') as resume:
-        policy.ack('ack_id_string')
-        resume.assert_called_once_with()
+    policy.ack('ack_id_string')
 
-    assert policy._paused is False
+    assert consumer.paused is False
     assert 'ack_id_string' in policy._ack_on_resume
 
 
@@ -163,14 +161,12 @@ def test_drop_below_threshold():
     policy.managed_ack_ids.add('ack_id_string')
     num_bytes = 20
     policy._bytes = num_bytes
-    policy._paused = True
     consumer = policy._consumer
+    assert consumer.paused is True
 
-    with mock.patch.object(consumer, 'resume') as resume:
-        policy.drop(ack_id='ack_id_string', byte_size=num_bytes)
-        resume.assert_called_once_with()
+    policy.drop(ack_id='ack_id_string', byte_size=num_bytes)
 
-    assert policy._paused is False
+    assert consumer.paused is False
 
 
 def test_load():
