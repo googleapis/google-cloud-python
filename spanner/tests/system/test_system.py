@@ -1052,6 +1052,30 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 [[['a', 1], ['b', 2]]],
             ])
 
+    def test_invalid_column(self):
+        table = 'counters'
+        columns = ('name', 'invalid')
+        row_data = (('', 0),)
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        error = "StatusCode.NOT_FOUND, Column not found in table"
+        with self.assertRaisesRegexp(errors.RetryError, error):
+            with session.batch() as batch:
+                batch.insert(table, columns, row_data)
+
+    def test_invalid_table(self):
+        table = 'invalid'
+        columns = ('name', 'value')
+        row_data = (('', 0),)
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+        error = "StatusCode.NOT_FOUND, Table not found"
+        with self.assertRaisesRegexp(errors.RetryError, error):
+            with session.batch() as batch:
+                batch.insert(table, columns, row_data)
+
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
         session.create()
