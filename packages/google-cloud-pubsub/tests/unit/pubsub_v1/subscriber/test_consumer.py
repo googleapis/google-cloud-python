@@ -168,6 +168,17 @@ def test_blocking_consume_two_exceptions():
         [mock.call(exc1), mock.call(exc2)])
 
 
+def test_paused():
+    consumer = _consumer.Consumer()
+    assert consumer.paused is True
+
+    consumer._can_consume.set()
+    assert consumer.paused is False
+
+    consumer._can_consume.clear()
+    assert consumer.paused is True
+
+
 @mock.patch.object(_consumer, '_LOGGER')
 def test_pause(_LOGGER):
     consumer = _consumer.Consumer()
