@@ -342,6 +342,11 @@ class Consumer(object):
                     self._stop_no_join()
                     return
 
+    @property
+    def paused(self):
+        """bool: Check if the current consumer is paused."""
+        return not self._can_consume.is_set()
+
     def pause(self):
         """Pause the current consumer.
 
