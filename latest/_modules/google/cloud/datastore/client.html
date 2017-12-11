@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.client &#8212; google-cloud 983829b documentation</title>
+    <title>google.cloud.datastore.client &#8212; google-cloud f4bdb33 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '983829b',
+        VERSION:     'f4bdb33',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -553,9 +553,13 @@
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.batch.Batch`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.transaction"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.transaction.Transaction`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Client.transaction"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.transaction.Transaction`.</span>
+
+<span class="sd">        :type kwargs: dict</span>
+<span class="sd">        :param kwargs: Keyword arguments to be passed in.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`google.cloud.datastore.query.Query`.</span>
