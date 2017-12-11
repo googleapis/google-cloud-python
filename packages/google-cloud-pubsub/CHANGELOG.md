@@ -49,7 +49,7 @@ PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.4/
 - Upgrading `google-api-core` dependency to latest revision (`0.1.2`)
   since we rely on the latest version of the `concurrent.futures` backport
   to provide the `thread_name_prefix` argument for thread pool
-  executor (#4521, #XYZ).
+  executor (#4521, #4559).
 
 PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.3/
 
