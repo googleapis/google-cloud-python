@@ -960,32 +960,38 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         snapshot = session.snapshot(read_timestamp=committed, multi_use=True)
         all_data_rows = list(self._row_data(ROW_COUNT))
 
+        single_key = KeyRange(start_closed=[START], end_open=[START + 1])
+        keyset = KeySet(ranges=(single_key,))
+        rows = list(snapshot.read(self.TABLE, self.COLUMNS, keyset))
+        expected = all_data_rows[START : START+1]
+        self._check_rows_data(rows, expected)
+
         closed_closed = KeyRange(start_closed=[START], end_closed=[END])
         keyset = KeySet(ranges=(closed_closed,))
         rows = list(snapshot.read(
             self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[START:END+1]
+        expected = all_data_rows[START : END+1]
         self._check_row_data(rows, expected)
 
         closed_open = KeyRange(start_closed=[START], end_open=[END])
         keyset = KeySet(ranges=(closed_open,))
         rows = list(snapshot.read(
             self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[START:END]
+        expected = all_data_rows[START : END]
         self._check_row_data(rows, expected)
 
         open_open = KeyRange(start_open=[START], end_open=[END])
         keyset = KeySet(ranges=(open_open,))
         rows = list(snapshot.read(
             self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[START+1:END]
+        expected = all_data_rows[START+1 : END]
         self._check_row_data(rows, expected)
 
         open_closed = KeyRange(start_open=[START], end_closed=[END])
         keyset = KeySet(ranges=(open_closed,))
         rows = list(snapshot.read(
             self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[START+1:END+1]
+        expected = all_data_rows[START+1 : END+1]
         self._check_row_data(rows, expected)
 
     def test_execute_sql_w_manual_consume(self):
