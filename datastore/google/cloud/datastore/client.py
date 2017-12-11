@@ -511,9 +511,13 @@ class Client(ClientWithProject):
         """Proxy to :class:`google.cloud.datastore.batch.Batch`."""
         return Batch(self)
 
-    def transaction(self):
-        """Proxy to :class:`google.cloud.datastore.transaction.Transaction`."""
-        return Transaction(self)
+    def transaction(self, **kwargs):
+        """Proxy to :class:`google.cloud.datastore.transaction.Transaction`.
+
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to be passed in.
+        """
+        return Transaction(self, **kwargs)
 
     def query(self, **kwargs):
         """Proxy to :class:`google.cloud.datastore.query.Query`.
