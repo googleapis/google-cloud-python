@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.transaction &#8212; google-cloud f4bdb33 documentation</title>
+    <title>google.cloud.datastore.transaction &#8212; google-cloud ec03490 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'f4bdb33',
+        VERSION:     'ec03490',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,7 +57,6 @@
 <span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Datastore transactions.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.datastore.batch</span> <span class="k">import</span> <span class="n">Batch</span>
-<span class="kn">from</span> <span class="nn">google.cloud.datastore_v1.types</span> <span class="k">import</span> <span class="n">TransactionOptions</span>
 
 
 <div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">Batch</span><span class="p">):</span>
@@ -195,22 +194,13 @@
 
 <span class="sd">    :type client: :class:`google.cloud.datastore.client.Client`</span>
 <span class="sd">    :param client: the client used to connect to datastore.</span>
-
-<span class="sd">    :type read_only: bool</span>
-<span class="sd">    :param read_only: indicates the transaction is read only.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_status</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">read_only</span><span class="p">:</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="n">TransactionOptions</span><span class="p">(</span>
-                <span class="n">read_only</span><span class="o">=</span><span class="n">TransactionOptions</span><span class="o">.</span><span class="n">ReadOnly</span><span class="p">())</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="n">TransactionOptions</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">options</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -285,25 +275,7 @@
             <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="c1"># Clear our own ID in case this gets accidentally reused.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span></div>
-
-<div class="viewcode-block" id="Transaction.put"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.transaction.Transaction.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Adds an entity to be committed.</span>
-
-<span class="sd">        Ensures the transaction is not marked readonly.</span>
-<span class="sd">        Please see documentation at</span>
-<span class="sd">        :meth:`~google.cloud.datastore.batch.Batch.put`</span>
-
-<span class="sd">        :type entity: :class:`~google.cloud.datastore.entity.Entity`</span>
-<span class="sd">        :param entity: the entity to be saved.</span>
-
-<span class="sd">        :raises: :class:`RuntimeError` if the transaction</span>
-<span class="sd">                 is marked ReadOnly</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;read_only&#39;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Transaction is read only&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span></div></div>
 </pre></div>
 
           </div>
