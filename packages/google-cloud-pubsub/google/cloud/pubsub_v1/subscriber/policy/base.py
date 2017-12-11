@@ -173,15 +173,15 @@ class BasePolicy(object):
         if time_to_ack is not None:
             self.histogram.add(int(time_to_ack))
 
-        # Send the request to ack the message.
-        # However, if the consumer is inactive, then queue the ack_id here
-        # instead; it will be acked as part of the initial request when the
-        # consumer is started again.
         if self._consumer.stopped.is_set():
+            # If the consumer is inactive, then queue the ack_id here; it
+            # will be acked as part of the initial request when the consumer
+            # is started again.
+            self._ack_on_resume.add(ack_id)
+        else:
+            # Send the request to ack the message.
             request = types.StreamingPullRequest(ack_ids=[ack_id])
             self._consumer.send_request(request)
-        else:
-            self._ack_on_resume.add(ack_id)
 
         # Remove the message from lease management.
         self.drop(ack_id=ack_id, byte_size=byte_size)
@@ -311,7 +311,7 @@ class BasePolicy(object):
         """
         while True:
             # Sanity check: Should this infinite loop quit?
-            if not self._consumer.stopped.is_set():
+            if self._consumer.stopped.is_set():
                 _LOGGER.debug('Consumer inactive, ending lease maintenance.')
                 return
 
@@ -326,7 +326,7 @@ class BasePolicy(object):
             # because it is more efficient to make a single request.
             ack_ids = list(self.managed_ack_ids)
             _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
-            if ack_ids and self._consumer.stopped.is_set():
+            if ack_ids and not self._consumer.stopped.is_set():
                 request = types.StreamingPullRequest(
                     modify_deadline_ack_ids=ack_ids,
                     modify_deadline_seconds=[p99] * len(ack_ids),

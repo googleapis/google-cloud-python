@@ -85,7 +85,7 @@ def test_subscription():
 
 def test_ack():
     policy = create_policy()
-    policy._consumer.stopped.set()
+    policy._consumer.stopped.clear()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
         policy.ack('ack_id_string', 20)
         send_request.assert_called_once_with(types.StreamingPullRequest(
@@ -97,7 +97,7 @@ def test_ack():
 
 def test_ack_no_time():
     policy = create_policy()
-    policy._consumer.stopped.set()
+    policy._consumer.stopped.clear()
     with mock.patch.object(policy._consumer, 'send_request') as send_request:
         policy.ack('ack_id_string')
         send_request.assert_called_once_with(types.StreamingPullRequest(
@@ -110,6 +110,7 @@ def test_ack_paused():
     policy = create_policy()
     policy._paused = True
     consumer = policy._consumer
+    consumer.stopped.set()
 
     with mock.patch.object(consumer, 'resume') as resume:
         policy.ack('ack_id_string')
@@ -206,20 +207,21 @@ def test_modify_ack_deadline():
 
 def test_maintain_leases_inactive_consumer():
     policy = create_policy()
-    policy._consumer.stopped.clear()
+    policy._consumer.stopped.set()
     assert policy.maintain_leases() is None
 
 
 def test_maintain_leases_ack_ids():
     policy = create_policy()
-    policy._consumer.stopped.set()
+    policy._consumer.stopped.clear()
     policy.lease('my ack id', 50)
 
     # Mock the sleep object.
     with mock.patch.object(time, 'sleep', autospec=True) as sleep:
         def trigger_inactive(seconds):
             assert 0 < seconds < 10
-            policy._consumer.stopped.clear()
+            policy._consumer.stopped.set()
+
         sleep.side_effect = trigger_inactive
 
         # Also mock the consumer, which sends the request.
@@ -234,11 +236,12 @@ def test_maintain_leases_ack_ids():
 
 def test_maintain_leases_no_ack_ids():
     policy = create_policy()
-    policy._consumer.stopped.set()
+    policy._consumer.stopped.clear()
     with mock.patch.object(time, 'sleep', autospec=True) as sleep:
         def trigger_inactive(seconds):
             assert 0 < seconds < 10
-            policy._consumer.stopped.clear()
+            policy._consumer.stopped.set()
+
         sleep.side_effect = trigger_inactive
         policy.maintain_leases()
         sleep.assert_called()
