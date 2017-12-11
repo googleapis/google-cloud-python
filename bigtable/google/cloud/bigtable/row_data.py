@@ -171,6 +171,24 @@ class PartialRowData(object):
         """
         return self._row_key
 
+    def cell_value(self, column_family_id, column_id, index=0):
+        """Get a cell value
+
+        :type column_family_id: str
+        :param column_family_id: The ID of the column family. Must be of the
+                                 form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+
+        :type index: int
+        :param index: The offset in the series of values, default = 0
+
+        :rtype:  bytes or :class:`int`
+        :returns: the cell value
+        """
+        return self._cells[column_family_id][column_id][index].value
+
 
 class InvalidReadRowsResponse(RuntimeError):
     """Exception raised to to invalid response data from back-end."""
