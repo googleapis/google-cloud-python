@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.29.4
+
+### Notable Implementation Changes
+
+- **Bug fix**: Restore previous behavior of the subscription lease
+  maintenance worker. This was accidentally "stopped" in `0.29.3`
+  due to a change in implementation that went from an `active`
+  boolean to an "inactive" / `stopped` boolean, so `True` became
+  `False` and vice-versa (#4564).
+
+PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.4/
+
 ## 0.29.3
 
 ### Notable Implementation Changes
