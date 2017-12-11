@@ -296,8 +296,9 @@ class Policy(base.BasePolicy):
         For each message, schedule a callback with the executor.
         """
         for msg in response.received_messages:
-            _LOGGER.debug('New message received from Pub/Sub:\n%r', msg)
-            _LOGGER.debug(self._callback)
+            _LOGGER.debug(
+                'Using %s to process new message received:\n%r',
+                self._callback, msg)
             message = Message(msg.message, msg.ack_id, self._request_queue)
             future = self._executor.submit(self._callback, message)
             future.add_done_callback(_callback_completed)
