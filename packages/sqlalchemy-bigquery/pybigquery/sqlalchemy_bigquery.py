@@ -119,17 +119,16 @@ class BigQueryDialect(DefaultDialect):
 
         return (project, dataset, table_name)
 
-    def _get_table(self, connection, table_name,schema=None):
-        if (isinstance(connection,Engine)):
+    def _get_table(self, connection, table_name, schema=None):
+        if isinstance(connection, Engine):
             connection = connection.connect()
-        project, dataset, tablename = self._split_table_name(table_name)
-        if dataset == None and schema != None:
+
+        project, dataset, table_name_prepared = self._split_table_name(table_name)
+        if dataset is None and schema is not None:
             dataset = schema
-            tablename = table_name
-        print(project)
-        print(schema)
-        print(tablename)
-        table = connection.connection._client.dataset(dataset, project=project).table(tablename)
+            table_name_prepared = table_name
+
+        table = connection.connection._client.dataset(dataset, project=project).table(table_name_prepared)
         try:
             t = connection.connection._client.get_table(table)
         except NotFound as e:
@@ -144,7 +143,7 @@ class BigQueryDialect(DefaultDialect):
             return False
 
     def get_columns(self, connection, table_name, schema=None, **kw):
-        table = self._get_table(connection, table_name,schema)
+        table = self._get_table(connection, table_name, schema)
         columns = table.schema
         result = []
         for col in columns:
@@ -173,19 +172,22 @@ class BigQueryDialect(DefaultDialect):
     def get_indexes(self, connection, table_name, schema=None, **kw):
         # BigQuery has no support for indexes.
         return []
+
     def get_schema_names(self, connection, **kw):
-        if (isinstance(connection,Engine)):
+        if isinstance(connection, Engine):
             connection = connection.connect()
+
         datasets = connection.connection._client.list_datasets()
         return [d.dataset_id for d in datasets]
 
     def get_table_names(self, connection, schema=None, **kw):
-        if (isinstance(connection,Engine)):
+        if isinstance(connection, Engine):
             connection = connection.connect()
+
         datasets = connection.connection._client.list_datasets()
         result = []
         for d in datasets:
-            if schema != None and d.dataset_id != schema:
+            if schema is not None and d.dataset_id != schema:
                 continue
             tables = connection.connection._client.list_dataset_tables(d)
             for t in tables:
@@ -203,5 +205,3 @@ class BigQueryDialect(DefaultDialect):
     def _check_unicode_description(self, connection):
         # requests gives back Unicode strings
         return True
-
-
