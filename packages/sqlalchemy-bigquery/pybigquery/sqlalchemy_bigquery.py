@@ -137,7 +137,7 @@ class BigQueryDialect(DefaultDialect):
 
     def has_table(self, connection, table_name, schema=None):
         try:
-            self._get_table(connection, table_name)
+            self._get_table(connection, table_name, schema)
             return True
         except NoSuchTableError:
             return False
