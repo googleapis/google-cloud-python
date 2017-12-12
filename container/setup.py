@@ -21,12 +21,12 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 
 setup(
     name='google-cloud-container',
-    version='0.15.4',
+    version='0.1.0',
     author='Google Inc',
     author_email='googleapis-packages@google.com',
     classifiers=[
         'Intended Audience :: Developers',
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
