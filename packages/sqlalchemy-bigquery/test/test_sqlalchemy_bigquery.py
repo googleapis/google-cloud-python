@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
-from sqlalchemy import types, func, case
+from sqlalchemy import types, func, case, inspect
 from sqlalchemy.sql import expression, select, literal_column
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy.orm import sessionmaker
@@ -38,6 +38,18 @@ ONE_ROW_CONTENTS_DML = [
     'test_bytes'
 ]
 
+SAMPLE_COLUMNS = [
+    {'name': 'integer', 'type': types.Integer(), 'nullable': True, 'default': None},
+    {'name': 'timestamp', 'type': types.TIMESTAMP(), 'nullable': True, 'default': None},
+    {'name': 'string', 'type': types.String(), 'nullable': True, 'default': None},
+    {'name': 'float', 'type': types.Float(), 'nullable': True, 'default': None},
+    {'name': 'boolean', 'type': types.Boolean(), 'nullable': True, 'default': None},
+    {'name': 'date', 'type': types.DATE(), 'nullable': True, 'default': None},
+    {'name': 'datetime', 'type': types.DATETIME(), 'nullable': True, 'default': None},
+    {'name': 'time', 'type': types.TIME(), 'nullable': True, 'default': None},
+    {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None}
+]
+
 
 @pytest.fixture(scope='session')
 def engine():
@@ -65,6 +77,11 @@ def session(engine):
     Session = sessionmaker(bind=engine)
     session = Session()
     return session
+
+
+@pytest.fixture(scope='session')
+def inspector(engine):
+    return inspect(engine)
 
 
 @pytest.fixture(scope='session')
@@ -138,8 +155,10 @@ def test_reflect_dataset_does_not_exist(engine):
 
 
 def test_tables_list(engine):
-    assert 'test_pybigquery.sample' in engine.table_names()
-    assert 'test_pybigquery.sample_one_row' in engine.table_names()
+    tables = engine.table_names()
+    assert 'test_pybigquery.sample' in tables
+    assert 'test_pybigquery.sample_one_row' in tables
+    assert 'test_pybigquery.sample_dml' in tables
 
 
 def test_group_by(session, table):
@@ -208,3 +227,34 @@ def test_dml(engine, session, table_dml):
     session.query(table_dml).filter(table_dml.c.string == 'updated_row').delete(synchronize_session=False)
     result = table_dml.select().execute().fetchall()
     assert len(result) == 0
+
+
+def test_schemas_names(inspector):
+    datasets = inspector.get_schema_names()
+    assert 'test_pybigquery' in datasets
+
+
+def test_table_names_in_schema(inspector):
+    tables = inspector.get_table_names('test_pybigquery')
+    assert 'test_pybigquery.sample' in tables
+    assert 'test_pybigquery.sample_one_row' in tables
+    assert 'test_pybigquery.sample_dml' in tables
+    assert len(tables) == 3
+
+
+def test_get_columns(inspector):
+    columns_without_schema = inspector.get_columns('test_pybigquery.sample')
+    columns_schema = inspector.get_columns('sample', 'test_pybigquery')
+    columns_queries = [columns_without_schema, columns_schema]
+    for columns in columns_queries:
+        for i, col in enumerate(columns):
+            sample_col = SAMPLE_COLUMNS[i]
+            assert col['name'] == sample_col['name']
+            assert col['nullable'] == sample_col['nullable']
+            assert col['default'] == sample_col['default']
+            assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
+
+
+def test_has_table(engine):
+    assert engine.has_table('sample', 'test_pybigquery') is True
+    assert engine.has_table('test_pybigquery.sample') is True

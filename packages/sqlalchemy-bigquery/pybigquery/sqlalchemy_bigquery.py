@@ -5,11 +5,12 @@ from __future__ import unicode_literals
 
 from google.cloud.bigquery import dbapi
 from google.cloud import bigquery
-from google.api.core.exceptions import NotFound
+from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, util
 from sqlalchemy.sql.compiler import SQLCompiler, IdentifierPreparer
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
+from sqlalchemy.engine.base import Engine
 
 
 class UniversalSet(object):
@@ -118,24 +119,31 @@ class BigQueryDialect(DefaultDialect):
 
         return (project, dataset, table_name)
 
-    def _get_table(self, connection, table_name):
-        project, dataset, table_name = self._split_table_name(table_name)
-        table = connection.connection._client.dataset(dataset, project=project).table(table_name)
+    def _get_table(self, connection, table_name, schema=None):
+        if isinstance(connection, Engine):
+            connection = connection.connect()
+
+        project, dataset, table_name_prepared = self._split_table_name(table_name)
+        if dataset is None and schema is not None:
+            dataset = schema
+            table_name_prepared = table_name
+
+        table = connection.connection._client.dataset(dataset, project=project).table(table_name_prepared)
         try:
-            table.reload()
+            t = connection.connection._client.get_table(table)
         except NotFound as e:
             raise NoSuchTableError(table_name)
-        return table
+        return t
 
     def has_table(self, connection, table_name, schema=None):
         try:
-            self._get_table(connection, table_name)
+            self._get_table(connection, table_name, schema)
             return True
         except NoSuchTableError:
             return False
 
     def get_columns(self, connection, table_name, schema=None, **kw):
-        table = self._get_table(connection, table_name)
+        table = self._get_table(connection, table_name, schema)
         columns = table.schema
         result = []
         for col in columns:
@@ -165,13 +173,25 @@ class BigQueryDialect(DefaultDialect):
         # BigQuery has no support for indexes.
         return []
 
+    def get_schema_names(self, connection, **kw):
+        if isinstance(connection, Engine):
+            connection = connection.connect()
+
+        datasets = connection.connection._client.list_datasets()
+        return [d.dataset_id for d in datasets]
+
     def get_table_names(self, connection, schema=None, **kw):
+        if isinstance(connection, Engine):
+            connection = connection.connect()
+
         datasets = connection.connection._client.list_datasets()
         result = []
         for d in datasets:
-            tables = d.list_tables()
+            if schema is not None and d.dataset_id != schema:
+                continue
+            tables = connection.connection._client.list_dataset_tables(d)
             for t in tables:
-                result.append(d.name + '.' + t.name)
+                result.append(d.dataset_id + '.' + t.table_id)
         return result
 
     def do_rollback(self, dbapi_connection):
@@ -185,4 +205,3 @@ class BigQueryDialect(DefaultDialect):
     def _check_unicode_description(self, connection):
         # requests gives back Unicode strings
         return True
-
