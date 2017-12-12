@@ -34,6 +34,31 @@ def unit_tests(session, python_version):
 
 
 @nox.session
+@nox.parametrize('python_version', ['2.7', '3.6'])
+def system_tests(session, python_version):
+    """Run the system test suite."""
+
+    # Sanity check: Only run system tests if the environment variable is set.
+    if not os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', ''):
+        session.skip('Credentials must be set via environment variable.')
+
+    # Run the system tests against latest Python 2 and Python 3 only.
+    session.interpreter = 'python{}'.format(python_version)
+
+    # Set the virtualenv dirname.
+    session.virtualenv_dirname = 'sys-' + python_version
+
+    # Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install('mock', 'pytest')
+    session.install('../test_utils/')
+    session.install('.')
+
+    # Run py.test against the system tests.
+    session.run('py.test', '--quiet', 'tests/system/')
+
+
+@nox.session
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.interpreter = 'python3.6'
