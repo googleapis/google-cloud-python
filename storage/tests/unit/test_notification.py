@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import re
 import unittest
 
 import mock
@@ -131,174 +130,6 @@ class TestBucketNotification(unittest.TestCase):
         with self.assertRaises(ValueError):
             klass.from_api_repr(resource, bucket=bucket)
 
-    def test_from_api_repr_project_name_too_long_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' * 31
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_project_name_maximum_length_succeeds(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' * 30
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        notification = klass.from_api_repr(resource, bucket=bucket)
-        self.assertEqual(notification.topic_project, project)
-
-    def test_from_api_repr_below_min_length_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' * 5
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_above_max_length_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' * 31
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_below_max_length_success(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' * 30
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        notification = klass.from_api_repr(resource, bucket=bucket)
-        self.assertEqual(notification.topic_project, project)
-
-    def test_from_api_repr_above_max_length_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' * 31
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_capital_letters_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'aaaAaa'
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_leading_digit_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = '1' + 'a' * 5
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_leading_hyphen_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = '-' + 'a' * 5
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_trailing_hyphen_fail(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' * 5 + '-'
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        with self.assertRaises(ValueError):
-            klass.from_api_repr(resource, bucket=bucket)
-
-    def test_from_api_repr_hyphens_success(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a' + '-' * 28 + 'a'
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        notification = klass.from_api_repr(resource, bucket=bucket)
-        self.assertEqual(notification.topic_project, project)
-
-    def test_from_api_repr_letters_success(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'abcdefghijklmnopqrstuvwxyz'
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        notification = klass.from_api_repr(resource, bucket=bucket)
-        self.assertEqual(notification.topic_project, project)
-
-    def test_from_api_repr_digits_success(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'z0123456789'
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        notification = klass.from_api_repr(resource, bucket=bucket)
-        self.assertEqual(notification.topic_project, project)
-
-    def test_from_api_repr_assortment_success(self):
-        klass = self._get_target_class()
-        client = self._make_client()
-        project = 'a-bcdefghijklmn12opqrstuv0wxyz'
-        bucket = self._make_bucket(client)
-        self.TOPIC_REF = self.TOPIC_REF.replace(self.BUCKET_PROJECT, project)
-        resource = {
-            'topic': self.TOPIC_REF,
-        }
-        notification = klass.from_api_repr(resource, bucket=bucket)
-        self.assertEqual(notification.topic_project, project)
-
     def test_from_api_repr_invalid_topic(self):
         klass = self._get_target_class()
         client = self._make_client()
@@ -306,6 +137,7 @@ class TestBucketNotification(unittest.TestCase):
         resource = {
             'topic': '@#$%',
         }
+
         with self.assertRaises(ValueError):
             klass.from_api_repr(resource, bucket=bucket)
 
@@ -655,3 +487,67 @@ class TestBucketNotification(unittest.TestCase):
             path=self.NOTIFICATION_PATH,
             query_params={'userProject': USER_PROJECT},
         )
+
+
+class Test__parse_topic_path(unittest.TestCase):
+
+    @staticmethod
+    def _call_fut(*args, **kwargs):
+        from google.cloud.storage import notification
+
+        return notification._parse_topic_path(*args, **kwargs)
+
+    @staticmethod
+    def _make_topic_path(project, topic_name):
+        from google.cloud.storage import notification
+
+        return notification._TOPIC_REF_FMT.format(project, topic_name)
+
+    def test_project_name_too_long(self):
+        project = 'a' * 31
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_project_name_uppercase(self):
+        project = 'aaaAaa'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_leading_digit(self):
+        project = '1aaaaa'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_leading_hyphen(self):
+        project = '-aaaaa'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_trailing_hyphen(self):
+        project = 'aaaaa-'
+        topic_path = self._make_topic_path(project, 'topic-name')
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_invalid_format(self):
+        topic_path = '@#$%'
+        with self.assertRaises(ValueError):
+            self._call_fut(topic_path)
+
+    def test_success(self):
+        topic_name = 'tah-pic-nehm'
+        project_choices = (
+            'a' * 30,  # Max length.
+            'a-b--c---d',  # Valid hyphen usage.
+            'abcdefghijklmnopqrstuvwxyz',  # Valid letters.
+            'z0123456789',  # Valid digits (non-leading).
+            'a-bcdefghijklmn12opqrstuv0wxyz',
+        )
+        for project in project_choices:
+            topic_path = self._make_topic_path(project, topic_name)
+            result = self._call_fut(topic_path)
+            self.assertEqual(result, (topic_name, project))
