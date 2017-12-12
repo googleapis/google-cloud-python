@@ -1,4 +1,4 @@
-Python Client for Google Container Engine API (`Beta`_)
+Python Client for Google Container Engine API (`Alpha`_)
 ========================================================
 
 `Google Container Engine API`_: The Google Kubernetes Engine API is used for building and managing container
@@ -7,7 +7,7 @@ based applications, powered by the open source Kubernetes technology.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
+.. _Alpha: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Google Container Engine API: https://cloud.google.com/container
 .. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/container-usage
 .. _Product Documentation:  https://cloud.google.com/container
@@ -59,6 +59,23 @@ Windows
     virtualenv <your-env>
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-container
+
+Preview
+~~~~~~~
+
+ClusterManagerClient
+^^^^^^^^^^^^^^^^^^^^
+
+.. code:: py
+
+    from google.cloud import container_v1
+
+    client = container_v1.ClusterManagerClient()
+
+    project_id = ''
+    zone = ''
+
+    response = client.list_clusters(project_id, zone)
 
 Next Steps
 ~~~~~~~~~~

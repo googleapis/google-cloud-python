@@ -11,15 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/container/v1/cluster_service.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.container.v1 ClusterManager API."""
 
 import pkg_resources
@@ -48,8 +39,8 @@ class ClusterManagerClient(object):
     _DEFAULT_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
 
     # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary
-    _INTERFACE_NAME = ('google.container.v1.ClusterManager')
+    # method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.container.v1.ClusterManager'
 
     def __init__(self,
                  channel=None,
@@ -60,197 +51,236 @@ class ClusterManagerClient(object):
 
         Args:
             channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. If specified, then the ``credentials``
-                argument is ignored.
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict):
-                A dictionary of call options for each method. If not specified
-                the default configuration is used. Generally, you only need
-                to set this if you're developing your own client library.
+            client_config (dict): A dictionary of call options for each
+                method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
+        # If both `channel` and `credentials` are specified, raise an
+        # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'channel and credentials arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__))
+                'The `channel` and `credentials` arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__), )
 
+        # Create the channel.
         if channel is None:
             channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES)
+                scopes=self._DEFAULT_SCOPES,
+            )
 
+        # Create the gRPC stubs.
         self.cluster_manager_stub = (
             cluster_service_pb2.ClusterManagerStub(channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
-        interface_config = client_config['interfaces'][self._INTERFACE_NAME]
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
         method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            interface_config)
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
+        # Write the "inner API call" methods to the class.
+        # These are wrapped versions of the gRPC stub methods, with retry and
+        # timeout configuration applied, called by the public methods on
+        # this class.
         self._list_clusters = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.ListClusters,
             default_retry=method_configs['ListClusters'].retry,
             default_timeout=method_configs['ListClusters'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._get_cluster = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.GetCluster,
             default_retry=method_configs['GetCluster'].retry,
             default_timeout=method_configs['GetCluster'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._create_cluster = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.CreateCluster,
             default_retry=method_configs['CreateCluster'].retry,
             default_timeout=method_configs['CreateCluster'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._update_cluster = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.UpdateCluster,
             default_retry=method_configs['UpdateCluster'].retry,
             default_timeout=method_configs['UpdateCluster'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._update_node_pool = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.UpdateNodePool,
             default_retry=method_configs['UpdateNodePool'].retry,
             default_timeout=method_configs['UpdateNodePool'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_node_pool_autoscaling = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetNodePoolAutoscaling,
             default_retry=method_configs['SetNodePoolAutoscaling'].retry,
             default_timeout=method_configs['SetNodePoolAutoscaling'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_logging_service = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetLoggingService,
             default_retry=method_configs['SetLoggingService'].retry,
             default_timeout=method_configs['SetLoggingService'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_monitoring_service = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetMonitoringService,
             default_retry=method_configs['SetMonitoringService'].retry,
             default_timeout=method_configs['SetMonitoringService'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_addons_config = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetAddonsConfig,
             default_retry=method_configs['SetAddonsConfig'].retry,
             default_timeout=method_configs['SetAddonsConfig'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_locations = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetLocations,
             default_retry=method_configs['SetLocations'].retry,
             default_timeout=method_configs['SetLocations'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._update_master = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.UpdateMaster,
             default_retry=method_configs['UpdateMaster'].retry,
             default_timeout=method_configs['UpdateMaster'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_master_auth = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetMasterAuth,
             default_retry=method_configs['SetMasterAuth'].retry,
             default_timeout=method_configs['SetMasterAuth'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._delete_cluster = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.DeleteCluster,
             default_retry=method_configs['DeleteCluster'].retry,
             default_timeout=method_configs['DeleteCluster'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._list_operations = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.ListOperations,
             default_retry=method_configs['ListOperations'].retry,
             default_timeout=method_configs['ListOperations'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._get_operation = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.GetOperation,
             default_retry=method_configs['GetOperation'].retry,
             default_timeout=method_configs['GetOperation'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._cancel_operation = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.CancelOperation,
             default_retry=method_configs['CancelOperation'].retry,
             default_timeout=method_configs['CancelOperation'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._get_server_config = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.GetServerConfig,
             default_retry=method_configs['GetServerConfig'].retry,
             default_timeout=method_configs['GetServerConfig'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._list_node_pools = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.ListNodePools,
             default_retry=method_configs['ListNodePools'].retry,
             default_timeout=method_configs['ListNodePools'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._get_node_pool = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.GetNodePool,
             default_retry=method_configs['GetNodePool'].retry,
             default_timeout=method_configs['GetNodePool'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._create_node_pool = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.CreateNodePool,
             default_retry=method_configs['CreateNodePool'].retry,
             default_timeout=method_configs['CreateNodePool'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._delete_node_pool = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.DeleteNodePool,
             default_retry=method_configs['DeleteNodePool'].retry,
             default_timeout=method_configs['DeleteNodePool'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._rollback_node_pool_upgrade = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.RollbackNodePoolUpgrade,
             default_retry=method_configs['RollbackNodePoolUpgrade'].retry,
             default_timeout=method_configs['RollbackNodePoolUpgrade'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_node_pool_management = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetNodePoolManagement,
             default_retry=method_configs['SetNodePoolManagement'].retry,
             default_timeout=method_configs['SetNodePoolManagement'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_labels = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetLabels,
             default_retry=method_configs['SetLabels'].retry,
             default_timeout=method_configs['SetLabels'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_legacy_abac = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetLegacyAbac,
             default_retry=method_configs['SetLegacyAbac'].retry,
             default_timeout=method_configs['SetLegacyAbac'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._start_i_p_rotation = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.StartIPRotation,
             default_retry=method_configs['StartIPRotation'].retry,
             default_timeout=method_configs['StartIPRotation'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._complete_i_p_rotation = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.CompleteIPRotation,
             default_retry=method_configs['CompleteIPRotation'].retry,
             default_timeout=method_configs['CompleteIPRotation'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_node_pool_size = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetNodePoolSize,
             default_retry=method_configs['SetNodePoolSize'].retry,
             default_timeout=method_configs['SetNodePoolSize'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_network_policy = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetNetworkPolicy,
             default_retry=method_configs['SetNetworkPolicy'].retry,
             default_timeout=method_configs['SetNetworkPolicy'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._set_maintenance_policy = google.api_core.gapic_v1.method.wrap_method(
             self.cluster_manager_stub.SetMaintenancePolicy,
             default_retry=method_configs['SetMaintenancePolicy'].retry,
             default_timeout=method_configs['SetMaintenancePolicy'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
 
     # Service calls
     def list_clusters(self,
@@ -296,7 +326,9 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.ListClustersRequest(
-            project_id=project_id, zone=zone)
+            project_id=project_id,
+            zone=zone,
+        )
         return self._list_clusters(request, retry=retry, timeout=timeout)
 
     def get_cluster(self,
@@ -344,7 +376,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.GetClusterRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id)
+            project_id=project_id,
+            zone=zone,
+            cluster_id=cluster_id,
+        )
         return self._get_cluster(request, retry=retry, timeout=timeout)
 
     def create_cluster(self,
@@ -407,7 +442,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.CreateClusterRequest(
-            project_id=project_id, zone=zone, cluster=cluster)
+            project_id=project_id,
+            zone=zone,
+            cluster=cluster,
+        )
         return self._create_cluster(request, retry=retry, timeout=timeout)
 
     def update_cluster(self,
@@ -463,7 +501,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            update=update)
+            update=update,
+        )
         return self._update_cluster(request, retry=retry, timeout=timeout)
 
     def update_node_pool(self,
@@ -527,7 +566,8 @@ class ClusterManagerClient(object):
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
             node_version=node_version,
-            image_type=image_type)
+            image_type=image_type,
+        )
         return self._update_node_pool(request, retry=retry, timeout=timeout)
 
     def set_node_pool_autoscaling(
@@ -588,7 +628,8 @@ class ClusterManagerClient(object):
             zone=zone,
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
-            autoscaling=autoscaling)
+            autoscaling=autoscaling,
+        )
         return self._set_node_pool_autoscaling(
             request, retry=retry, timeout=timeout)
 
@@ -647,7 +688,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            logging_service=logging_service)
+            logging_service=logging_service,
+        )
         return self._set_logging_service(request, retry=retry, timeout=timeout)
 
     def set_monitoring_service(
@@ -706,7 +748,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            monitoring_service=monitoring_service)
+            monitoring_service=monitoring_service,
+        )
         return self._set_monitoring_service(
             request, retry=retry, timeout=timeout)
 
@@ -764,7 +807,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            addons_config=addons_config)
+            addons_config=addons_config,
+        )
         return self._set_addons_config(request, retry=retry, timeout=timeout)
 
     def set_locations(self,
@@ -824,7 +868,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            locations=locations)
+            locations=locations,
+        )
         return self._set_locations(request, retry=retry, timeout=timeout)
 
     def update_master(self,
@@ -880,7 +925,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            master_version=master_version)
+            master_version=master_version,
+        )
         return self._update_master(request, retry=retry, timeout=timeout)
 
     def set_master_auth(self,
@@ -943,7 +989,8 @@ class ClusterManagerClient(object):
             zone=zone,
             cluster_id=cluster_id,
             action=action,
-            update=update)
+            update=update,
+        )
         return self._set_master_auth(request, retry=retry, timeout=timeout)
 
     def delete_cluster(self,
@@ -999,7 +1046,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.DeleteClusterRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id)
+            project_id=project_id,
+            zone=zone,
+            cluster_id=cluster_id,
+        )
         return self._delete_cluster(request, retry=retry, timeout=timeout)
 
     def list_operations(self,
@@ -1043,7 +1093,9 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.ListOperationsRequest(
-            project_id=project_id, zone=zone)
+            project_id=project_id,
+            zone=zone,
+        )
         return self._list_operations(request, retry=retry, timeout=timeout)
 
     def get_operation(self,
@@ -1091,7 +1143,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.GetOperationRequest(
-            project_id=project_id, zone=zone, operation_id=operation_id)
+            project_id=project_id,
+            zone=zone,
+            operation_id=operation_id,
+        )
         return self._get_operation(request, retry=retry, timeout=timeout)
 
     def cancel_operation(self,
@@ -1135,7 +1190,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.CancelOperationRequest(
-            project_id=project_id, zone=zone, operation_id=operation_id)
+            project_id=project_id,
+            zone=zone,
+            operation_id=operation_id,
+        )
         self._cancel_operation(request, retry=retry, timeout=timeout)
 
     def get_server_config(self,
@@ -1179,7 +1237,9 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.GetServerConfigRequest(
-            project_id=project_id, zone=zone)
+            project_id=project_id,
+            zone=zone,
+        )
         return self._get_server_config(request, retry=retry, timeout=timeout)
 
     def list_node_pools(self,
@@ -1227,7 +1287,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.ListNodePoolsRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id)
+            project_id=project_id,
+            zone=zone,
+            cluster_id=cluster_id,
+        )
         return self._list_node_pools(request, retry=retry, timeout=timeout)
 
     def get_node_pool(self,
@@ -1281,7 +1344,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            node_pool_id=node_pool_id)
+            node_pool_id=node_pool_id,
+        )
         return self._get_node_pool(request, retry=retry, timeout=timeout)
 
     def create_node_pool(self,
@@ -1337,7 +1401,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            node_pool=node_pool)
+            node_pool=node_pool,
+        )
         return self._create_node_pool(request, retry=retry, timeout=timeout)
 
     def delete_node_pool(self,
@@ -1391,7 +1456,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            node_pool_id=node_pool_id)
+            node_pool_id=node_pool_id,
+        )
         return self._delete_node_pool(request, retry=retry, timeout=timeout)
 
     def rollback_node_pool_upgrade(
@@ -1447,7 +1513,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            node_pool_id=node_pool_id)
+            node_pool_id=node_pool_id,
+        )
         return self._rollback_node_pool_upgrade(
             request, retry=retry, timeout=timeout)
 
@@ -1509,7 +1576,8 @@ class ClusterManagerClient(object):
             zone=zone,
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
-            management=management)
+            management=management,
+        )
         return self._set_node_pool_management(
             request, retry=retry, timeout=timeout)
 
@@ -1573,7 +1641,8 @@ class ClusterManagerClient(object):
             zone=zone,
             cluster_id=cluster_id,
             resource_labels=resource_labels,
-            label_fingerprint=label_fingerprint)
+            label_fingerprint=label_fingerprint,
+        )
         return self._set_labels(request, retry=retry, timeout=timeout)
 
     def set_legacy_abac(self,
@@ -1627,7 +1696,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            enabled=enabled)
+            enabled=enabled,
+        )
         return self._set_legacy_abac(request, retry=retry, timeout=timeout)
 
     def start_i_p_rotation(self,
@@ -1675,7 +1745,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.StartIPRotationRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id)
+            project_id=project_id,
+            zone=zone,
+            cluster_id=cluster_id,
+        )
         return self._start_i_p_rotation(request, retry=retry, timeout=timeout)
 
     def complete_i_p_rotation(self,
@@ -1723,7 +1796,10 @@ class ClusterManagerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = cluster_service_pb2.CompleteIPRotationRequest(
-            project_id=project_id, zone=zone, cluster_id=cluster_id)
+            project_id=project_id,
+            zone=zone,
+            cluster_id=cluster_id,
+        )
         return self._complete_i_p_rotation(
             request, retry=retry, timeout=timeout)
 
@@ -1782,7 +1858,8 @@ class ClusterManagerClient(object):
             zone=zone,
             cluster_id=cluster_id,
             node_pool_id=node_pool_id,
-            node_count=node_count)
+            node_count=node_count,
+        )
         return self._set_node_pool_size(request, retry=retry, timeout=timeout)
 
     def set_network_policy(self,
@@ -1838,7 +1915,8 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            network_policy=network_policy)
+            network_policy=network_policy,
+        )
         return self._set_network_policy(request, retry=retry, timeout=timeout)
 
     def set_maintenance_policy(
@@ -1896,6 +1974,7 @@ class ClusterManagerClient(object):
             project_id=project_id,
             zone=zone,
             cluster_id=cluster_id,
-            maintenance_policy=maintenance_policy)
+            maintenance_policy=maintenance_policy,
+        )
         return self._set_maintenance_policy(
             request, retry=retry, timeout=timeout)
