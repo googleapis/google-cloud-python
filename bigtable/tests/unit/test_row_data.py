@@ -174,6 +174,27 @@ class TestPartialRowData(unittest.TestCase):
         }
         self.assertEqual(result, expected_result)
 
+    def test_cell_value(self):
+        from google.cloud.bigtable.row_data import Cell
+
+        family_name = u'name1'
+        qual = b'col1'
+
+        timestamp = object()
+        value = b'value-bytes'
+        cell = Cell(value, timestamp)
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qual: [cell]
+            }
+        }
+
+        result = partial_row_data.cell_value(family_name, qual)
+        expected_result = value
+        self.assertEqual(result, expected_result)
+
     def test_cells_property(self):
         partial_row_data = self._make_one(None)
         cells = {1: 2}

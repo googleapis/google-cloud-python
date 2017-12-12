@@ -171,7 +171,7 @@ class PartialRowData(object):
         """
         return self._row_key
 
-    def cell_value(self, column_family_id, column_id, index=0):
+    def cell_value(self, column_family_id, column, index=0):
         """Get a cell value
 
         :type column_family_id: str
@@ -187,7 +187,7 @@ class PartialRowData(object):
         :rtype:  bytes or :class:`int`
         :returns: the cell value
         """
-        return self._cells[column_family_id][column_id][index].value
+        return self._cells[column_family_id][column][index].value
 
 
 class InvalidReadRowsResponse(RuntimeError):
