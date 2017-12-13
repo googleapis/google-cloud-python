@@ -5,6 +5,7 @@ api_core/
 core/
 storage/
 bigquery/
+bigquerydatatransfer/
 bigtable/
 datastore/
 dns/
