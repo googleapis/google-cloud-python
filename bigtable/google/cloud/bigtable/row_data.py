@@ -22,6 +22,16 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
 
 
+_MISSING_COLUMN_FAMILY = (
+    'Column family {} is not among the cells stored in this row.')
+_MISSING_COLUMN = (
+    'Column {} is not among the cells stored in this row in the '
+    'column family {}.')
+_MISSING_INDEX = (
+    'Index {!r} is not valid for the cells stored in this row for column {} '
+    'in the column family {}. There are {} such cells.')
+
+
 class Cell(object):
     """Representation of a Google Cloud Bigtable Cell.
 
@@ -171,23 +181,54 @@ class PartialRowData(object):
         """
         return self._row_key
 
-    def cell_value(self, column_family_id, column, index=0):
-        """Get a cell value
+    def get_cell(self, column_family_id, column, index=0):
+        """Get a single cell stored on this instance.
 
-        :type column_family_id: str
-        :param column_family_id: The ID of the column family. Must be of the
-                                 form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
-        :type column: bytes
-        :param column: The column within the column family where the cell
-                       is located.
+        .. note::
 
-        :type index: int
-        :param index: The offset in the series of values, default = 0
+            This returns a copy of the actual ``Cell`` (so that the
+            caller cannot mutate internal state).
 
-        :rtype:  bytes or :class:`int`
-        :returns: the cell value
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cell
+                is located.
+            index (Optional[int]): The offset within the series of values. If
+                not specified, will return the first cell.
+
+        Returns:
+            ~google.cloud.bigtable.row_data.Cell: The cell stored in the
+            specified column.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+            IndexError: If ``index`` cannot be found within the cells stored
+                in this row for the given ``column_family_id``, ``column``
+                pair.
         """
-        return self._cells[column_family_id][column][index].value
+        try:
+            column_family = self._cells[column_family_id]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN_FAMILY.format(column_family_id))
+
+        try:
+            cells = column_family[column]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN.format(column, column_family_id))
+
+        try:
+            cell = cells[index]
+        except (TypeError, IndexError):
+            num_cells = len(cells)
+            msg = _MISSING_INDEX.format(
+                index, column, column_family_id, num_cells)
+            raise IndexError(msg)
+
+        return copy.deepcopy(cell)
 
 
 class InvalidReadRowsResponse(RuntimeError):
