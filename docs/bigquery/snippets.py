@@ -130,6 +130,41 @@ def test_get_dataset(client, to_delete):
     # [END get_dataset]
 
 
+# [START bigquery_dataset_exists]
+def dataset_exists(client, dataset_reference):
+    """Return if a dataset exists.
+
+    Args:
+        client (google.cloud.bigquery.client.Client):
+            A client to connect to the BigQuery API.
+        dataset_reference (google.cloud.bigquery.dataset.DatasetReference):
+            A reference to the dataset to look for.
+
+    Returns:
+        bool: ``True`` if the dataset exists, ``False`` otherwise.
+    """
+    from google.cloud.exceptions import NotFound
+
+    try:
+        client.get_dataset(dataset_reference)
+        return True
+    except NotFound:
+        return False
+# [END bigquery_dataset_exists]
+
+
+def test_dataset_exists(client, to_delete):
+    """Determine if a dataset exists."""
+    DATASET_ID = 'get_table_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(DATASET_ID)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    assert dataset_exists(client, dataset_ref)
+    assert not dataset_exists(client, client.dataset('i_dont_exist'))
+
+
 def test_update_dataset_simple(client, to_delete):
     """Update a dataset's metadata."""
     DATASET_ID = 'update_dataset_simple_{}'.format(_millis())
@@ -277,6 +312,46 @@ def test_get_table(client, to_delete):
     table = client.get_table(table)  # API request
     assert table.description == ORIGINAL_DESCRIPTION
     # [END get_table]
+
+
+# [START bigquery_table_exists]
+def table_exists(client, table_reference):
+    """Return if a table exists.
+
+    Args:
+        client (google.cloud.bigquery.client.Client):
+            A client to connect to the BigQuery API.
+        table_reference (google.cloud.bigquery.table.TableReference):
+            A reference to the table to look for.
+
+    Returns:
+        bool: ``True`` if the table exists, ``False`` otherwise.
+    """
+    from google.cloud.exceptions import NotFound
+
+    try:
+        client.get_table(table_reference)
+        return True
+    except NotFound:
+        return False
+# [END bigquery_table_exists]
+
+
+def test_table_exists(client, to_delete):
+    """Determine if a table exists."""
+    DATASET_ID = 'get_table_dataset_{}'.format(_millis())
+    TABLE_ID = 'get_table_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table_ref = dataset.table(TABLE_ID)
+    table = bigquery.Table(table_ref, schema=SCHEMA)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    assert table_exists(client, table_ref)
+    assert not table_exists(client, dataset.table('i_dont_exist'))
 
 
 def test_update_table_simple(client, to_delete):
