@@ -209,6 +209,9 @@ class ReadOnlyScoped(object):
         .. warning: This method is not guaranteed to be accurate if the
             credentials are :attr:`~Credentials.invalid`.
 
+        Args:
+            scopes (Sequence[str]): The list of scopes to check.
+
         Returns:
             bool: True if the credentials have the given scopes.
         """
@@ -248,7 +251,8 @@ class Scoped(ReadOnlyScoped):
         """Create a copy of these credentials with the specified scopes.
 
         Args:
-            scopes (Sequence[str]): The list of scopes to request.
+            scopes (Sequence[str]): The list of scopes to attach to the
+                current credentials.
 
         Raises:
             NotImplementedError: If the credentials' scopes can not be changed.
