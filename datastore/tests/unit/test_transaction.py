@@ -178,6 +178,7 @@ class TestTransaction(unittest.TestCase):
     def test_transaction_id_same_on_retry(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
         import google.gax.errors
+        from google.api_core import retry
 
         project = 'PROJECT'
         kind = 'KIND'
@@ -186,8 +187,7 @@ class TestTransaction(unittest.TestCase):
         txn_pb = mock.Mock(
             transaction=id1, spec=['transaction'])
         begin_txn = mock.Mock(return_value=txn_pb, spec=[])
-        commit_method = mock.Mock(
-             return_value=_make_commit_response(key), spec=[])
+        commit_method = mock.Mock(spec=[])
         commit_method.side_effect = [_make_gax_error("UNAVAILABLE", "none"),
                                      _make_gax_error("UNAVAILABLE", "none"),
                                      _make_commit_response(key)]
@@ -197,7 +197,16 @@ class TestTransaction(unittest.TestCase):
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
-        xact.commit()
+        while True:
+            try:
+                xact.commit()
+                break
+            except google.gax.errors.GaxError as exception:
+                # simulate retry
+                xact._status = xact._IN_PROGRESS
+                xact._id = id1
+                self.assertEqual(exception.args[0], "UNAVAILABLE")
+        self.assertEqual(len(ds_api.commit.mock_calls), 3)
         for call in ds_api.commit.mock_calls:
             #assert transaction id is same on subsequent calls
             self.assertEqual(call[2]['transaction'], id1)
@@ -216,7 +225,6 @@ class TestTransaction(unittest.TestCase):
         commit_method = mock.Mock(
              return_value=_make_commit_response(key), spec=[])
         commit_method.side_effect = _make_gax_error("INTERNAL", "none")
-
         ds_api =  mock.Mock(
             commit=commit_method, begin_transaction=begin_txn,
             spec=['begin_transaction', 'commit'])
@@ -289,14 +297,6 @@ class TestTransaction(unittest.TestCase):
         xact.begin()
         with self.assertRaises(RuntimeError):
             xact.put(entity)
-
-
-class TestSleep(unittest.TestCase):
-
-    def test__sleep(self):
-        from google.cloud.datastore.transaction import _sleep
-        self.assertEqual(_sleep(1.0, 30.0, 2.0), 2.0)
-        self.assertEqual(_sleep(20.0, 30.0, 2.0), 30.0)
 
 
 def _make_key(kind, id_, project):
@@ -394,4 +394,4 @@ def _make_gax_error(err_name, details):
     status_code = getattr(grpc.StatusCode, err_name)
     cause = _make_rendezvous(status_code, details)
     # Then put it into a high-level GaxError.
-    return errors.GaxError('RPC failed', cause=cause)
+    return errors.GaxError(err_name, cause=cause)

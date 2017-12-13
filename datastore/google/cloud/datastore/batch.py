@@ -244,6 +244,7 @@ class Batch(object):
             mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
         else:
             mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
+
         commit_response_pb = self._client._datastore_api.commit(
             self.project, mode, self._mutations, transaction=self._id)
         _, updated_keys = _parse_commit_response(commit_response_pb)
@@ -254,7 +255,6 @@ class Batch(object):
                                       self._partial_key_entities):
             new_id = new_key_pb.path[-1].id
             entity.key = entity.key.completed_key(new_id)
-        return commit_response_pb
 
     def commit(self):
         """Commits the batch.
@@ -270,10 +270,9 @@ class Batch(object):
             raise ValueError('Batch must be in progress to commit()')
 
         try:
-            commit_response_pb = self._commit()
+            self._commit()
         finally:
             self._status = self._FINISHED
-        return commit_response_pb
 
     def rollback(self):
         """Rolls back the current batch.

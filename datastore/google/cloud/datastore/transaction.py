@@ -14,11 +14,6 @@
 
 """Create / interact with Google Cloud Datastore transactions."""
 
-import random
-import time
-
-import google.gax.grpc
-
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore_v1.types import TransactionOptions
 
@@ -244,20 +239,8 @@ class Transaction(Batch):
 
         - Sets the current transaction's ID to None.
         """
-        current_sleep = 1.0
-        max_sleep = 30.0
-        multiplier = 2.0
         try:
-            while True:
-                try:
-                    return super(Transaction, self).commit()
-                except google.gax.errors.GaxError as exc:
-                    status_code = google.gax.grpc.exc_to_code(exc.cause)
-                    if status_code == google.gax.grpc.StatusCode.UNAVAILABLE:
-                        self._status = self._IN_PROGRESS
-                    else:
-                        raise
-                current_sleep = _sleep(current_sleep, max_sleep, multiplier)
+            super(Transaction, self).commit()
         finally:
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
@@ -279,28 +262,3 @@ class Transaction(Batch):
             raise RuntimeError("Transaction is read only")
         else:
             super(Transaction, self).put(entity)
-
-
-def _sleep(current_sleep, max_sleep=30.0, multiplier=2.0):
-    """Sleep and produce a new sleep time.
-
-    .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\
-                                        2015/03/backoff.html
-
-    Select a duration between zero and ``current_sleep``. It might seem
-    counterintuitive to have so much jitter, but
-    `Exponential Backoff And Jitter`_ argues that "full jitter" is
-    the best strategy.
-
-    Args:
-        current_sleep (float): The current "max" for sleep interval.
-        max_sleep (Optional[float]): Eventual "max" sleep time
-        multiplier (Optional[float]): Multiplier for exponential backoff.
-
-    Returns:
-        float: Newly doubled ``current_sleep`` or ``max_sleep`` (whichever
-        is smaller)
-    """
-    actual_sleep = random.uniform(0.0, current_sleep)
-    time.sleep(actual_sleep)
-    return min(multiplier * current_sleep, max_sleep)
