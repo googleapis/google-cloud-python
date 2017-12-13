@@ -1,4 +1,4 @@
-# Copyright 2015 Google LLC
+# Copyright 2015 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,12 +30,19 @@ from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 from google.api_core import retry
 from google.api_core import exceptions
+from google.cloud.exceptions import GrpcRendezvous
+from google.api_core.retry import RetryErrors
 
 
 _PACK_I64 = struct.Struct('>q').pack
 
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
+
+def _retry_on_unavailable(exc):
+    """Retry only errors whose status code is 'UNAVAILABLE'."""
+    from grpc import StatusCode
+    return exc.code() == StatusCode.UNAVAILABLE
 
 
 class Row(object):
@@ -273,6 +280,7 @@ class DirectRow(_SetDeleteRow):
     def __init__(self, row_key, table):
         super(DirectRow, self).__init__(row_key, table)
         self._pb_mutations = []
+        self.request_pb = None
 
     def _get_mutations(self, state):  # pylint: disable=unused-argument
         """Gets the list of mutations for a given state.
@@ -389,6 +397,16 @@ class DirectRow(_SetDeleteRow):
         self._delete_cells(column_family_id, columns, time_range=time_range,
                            state=None)
 
+    def retry_commit(self):
+        """ Retry commit if it fails
+        """
+        try:
+            client = self._table._instance._client
+            client._data_stub.MutateRow(self.request_pb)
+            return True
+        except:
+            return False
+
     def commit(self):
         """Makes a ``MutateRow`` API request.
 
@@ -416,17 +434,21 @@ class DirectRow(_SetDeleteRow):
             row_key=self._row_key,
             mutations=mutations_list,
         )
+        # set request_pb to use on retry if it falis
+        self.request_pb = request_pb
         # We expect a `google.protobuf.empty_pb2.Empty`
         client = self._table._instance._client
+
         try:
             client._data_stub.MutateRow(request_pb)
-        except exceptions.Unknown:
-            retry_ = retry.Retry(
-                predicate=retry.if_exception_type(False),
-                deadline=30)
+        except:
+            retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
+            # retry_ = retry.Retry(
+            #     predicate=retry.if_exception_type(False),
+            #     deadline=30)
 
             try:
-                retry_(client._data_stub.MutateRow(request_pb))()
+                retry(self.retry_commit())()
             except exceptions.RetryError:
                 raise concurrent.futures.TimeoutError(
                     'Operation did not complete within the designated '
