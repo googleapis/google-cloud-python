@@ -181,12 +181,43 @@ class PartialRowData(object):
         """
         return self._row_key
 
+    def _get_cells_no_copy(self, column_family_id, column):
+        """Get a time series of cells stored on this instance.
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+
+        Returns:
+            List[~google.cloud.bigtable.row_data.Cell]: The cells stored in the
+            specified column.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        try:
+            column_family = self._cells[column_family_id]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN_FAMILY.format(column_family_id))
+
+        try:
+            cells = column_family[column]
+        except KeyError:
+            raise KeyError(_MISSING_COLUMN.format(column, column_family_id))
+
+        return cells
+
     def get_cell(self, column_family_id, column, index=0):
         """Get a single cell stored on this instance.
 
         .. note::
 
-            This returns a copy of the actual ``Cell`` (so that the
+            This returns a copy of the actual cell (so that the
             caller cannot mutate internal state).
 
         Args:
@@ -210,15 +241,7 @@ class PartialRowData(object):
                 in this row for the given ``column_family_id``, ``column``
                 pair.
         """
-        try:
-            column_family = self._cells[column_family_id]
-        except KeyError:
-            raise KeyError(_MISSING_COLUMN_FAMILY.format(column_family_id))
-
-        try:
-            cells = column_family[column]
-        except KeyError:
-            raise KeyError(_MISSING_COLUMN.format(column, column_family_id))
+        cells = self._get_cells_no_copy(column_family_id, column)
 
         try:
             cell = cells[index]
@@ -229,6 +252,33 @@ class PartialRowData(object):
             raise IndexError(msg)
 
         return copy.deepcopy(cell)
+
+    def get_cells(self, column_family_id, column):
+        """Get a time series of cells stored on this instance.
+
+        .. note::
+
+            This returns a copy of the actual cells (so that the
+            caller cannot mutate internal state).
+
+        Args:
+            column_family_id (str): The ID of the column family. Must be of the
+                form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            column (bytes): The column within the column family where the cells
+                are located.
+
+        Returns:
+            List[~google.cloud.bigtable.row_data.Cell]: The cells stored in the
+            specified column.
+
+        Raises:
+            KeyError: If ``column_family_id`` is not among the cells stored
+                in this row.
+            KeyError: If ``column`` is not among the cells stored in this row
+                for the given ``column_family_id``.
+        """
+        cells = self._get_cells_no_copy(column_family_id, column)
+        return copy.deepcopy(cells)
 
 
 class InvalidReadRowsResponse(RuntimeError):

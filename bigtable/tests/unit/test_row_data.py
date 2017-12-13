@@ -261,6 +261,54 @@ class TestPartialRowData(unittest.TestCase):
                 index, qual, family_name, 0)
             self.assertEqual(exc_info.exception.args, (expected_arg,))
 
+    def test_get_cells(self):
+        family_name = u'name1'
+        qual = b'col1'
+        cell = _make_cell(b'hi-mom')
+
+        partial_row_data = self._make_one(None)
+        cells = [cell]
+        partial_row_data._cells = {
+            family_name: {
+                qual: cells,
+            },
+        }
+
+        result = partial_row_data.get_cells(family_name, qual)
+        # Make sure we get a copy, not the original.
+        self.assertIsNot(result, cells)
+        self.assertEqual(result, cells)
+        self.assertIsNot(result[0], cell)
+        self.assertEqual(result[0], cell)
+
+    def test_get_cells_bad_family(self):
+        from google.cloud.bigtable import row_data
+
+        family_name = u'name1'
+        partial_row_data = self._make_one(None)
+        self.assertEqual(partial_row_data._cells, {})
+
+        with self.assertRaises(KeyError) as exc_info:
+            partial_row_data.get_cells(family_name, None)
+
+        expected_arg = row_data._MISSING_COLUMN_FAMILY.format(family_name)
+        self.assertEqual(exc_info.exception.args, (expected_arg,))
+
+    def test_get_cell_bad_column(self):
+        from google.cloud.bigtable import row_data
+
+        family_name = u'name1'
+        qual = b'col1'
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {family_name: {}}
+
+        with self.assertRaises(KeyError) as exc_info:
+            partial_row_data.get_cells(family_name, qual)
+
+        expected_arg = row_data._MISSING_COLUMN.format(qual, family_name)
+        self.assertEqual(exc_info.exception.args, (expected_arg,))
+
     def test_cells_property(self):
         partial_row_data = self._make_one(None)
         cells = {1: 2}
