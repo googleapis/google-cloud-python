@@ -1169,9 +1169,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         streamed = snapshot.execute_sql(self.SQL)
         keyset = KeySet(all_=True)
         rows = list(session.read(self.TABLE, self.COLUMNS, keyset))
-        items = [item for item in iter(streamed)]
-
-        self.assertEqual(items, rows)
+        self.assertEqual(list(streamed), rows)
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, None)
 
