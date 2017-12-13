@@ -427,12 +427,12 @@ class Test__auto_id(unittest.TestCase):
     def test_it(self, mock_rand_choice):
         from google.cloud.firestore_v1beta1.collection import _AUTO_ID_CHARS
 
-        mock_result = '23456789abcdefghjkmnp'
+        mock_result = '0123456789abcdefghij'
         mock_rand_choice.side_effect = list(mock_result)
         result = self._call_fut()
         self.assertEqual(result, mock_result)
 
-        mock_calls = [mock.call(_AUTO_ID_CHARS)] * 21
+        mock_calls = [mock.call(_AUTO_ID_CHARS)] * 20
         self.assertEqual(mock_rand_choice.mock_calls, mock_calls)
 
 
