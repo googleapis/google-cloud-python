@@ -6,6 +6,7 @@
   core/index
   bigquery/usage
   bigtable/usage
+  container/index
   datastore/usage
   dns/usage
   firestore/index
