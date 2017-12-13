@@ -294,7 +294,7 @@ class TestPartialRowData(unittest.TestCase):
         expected_arg = row_data._MISSING_COLUMN_FAMILY.format(family_name)
         self.assertEqual(exc_info.exception.args, (expected_arg,))
 
-    def test_get_cell_bad_column(self):
+    def test_get_cells_bad_column(self):
         from google.cloud.bigtable import row_data
 
         family_name = u'name1'
