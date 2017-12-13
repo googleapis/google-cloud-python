@@ -1104,6 +1104,83 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = data[start+1 : end]
         self.assertEqual(rows, expected[:limit])
 
+    def test_read_with_range_keys_and_index_closed_closed(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        keyrow, start, end = 1, 3, 7
+        closed_closed = KeyRange(start_closed=data[start],
+                                 end_closed=data[end])
+        keys = [data[keyrow],]
+        keyset = KeySet(keys=keys, ranges=(closed_closed,))
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = ([data[keyrow]] + data[start : end+1])
+        self.assertEqual(rows, expected)
+
+    def test_read_with_range_keys_and_index_closed_open(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        keyrow, start, end = 1, 3, 7
+        closed_open = KeyRange(start_closed=data[start],
+                               end_open=data[end])
+        keys = [data[keyrow],]
+        keyset = KeySet(keys=keys, ranges=(closed_open,))
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = ([data[keyrow]] + data[start : end])
+        self.assertEqual(rows, expected)
+
+    def test_read_with_range_keys_and_index_open_closed(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        keyrow, start, end = 1, 3, 7
+        open_closed = KeyRange(start_open=data[start],
+                               end_closed=data[end])
+        keys = [data[keyrow],]
+        keyset = KeySet(keys=keys, ranges=(open_closed,))
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = ([data[keyrow]] + data[start+1 : end+1])
+        self.assertEqual(rows, expected)
+
+    def test_read_with_range_keys_and_index_open_open(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        session, committed = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        keyrow, start, end = 1, 3, 7
+        open_open = KeyRange(start_open=data[start],
+                             end_open=data[end])
+        keys = [data[keyrow],]
+        keyset = KeySet(keys=keys, ranges=(open_open,))
+        rows = list(session.read(self.TABLE,
+                                 columns,
+                                 keyset,
+                                 index='name')
+        )
+        expected = ([data[keyrow]] + data[start+1 : end])
+        self.assertEqual(rows, expected)
+
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 3000
         session, committed = self._set_up_table(ROW_COUNT)
