@@ -129,12 +129,6 @@ def _get_gcloud_sdk_credentials():
     if not project_id:
         project_id = _cloud_sdk.get_project_id()
 
-    if not project_id:
-        _LOGGER.warning(
-            'No project ID could be determined from the Cloud SDK '
-            'configuration. Consider running `gcloud config set project` or '
-            'setting the %s environment variable', environment_vars.PROJECT)
-
     return credentials, project_id
 
 
@@ -146,12 +140,6 @@ def _get_explicit_environ_credentials():
     if explicit_file is not None:
         credentials, project_id = _load_credentials_from_file(
             os.environ[environment_vars.CREDENTIALS])
-
-        if not project_id:
-            _LOGGER.warning(
-                'No project ID could be determined from the credentials at %s '
-                'Consider setting the %s environment variable',
-                environment_vars.CREDENTIALS, environment_vars.PROJECT)
 
         return credentials, project_id
 
@@ -188,10 +176,6 @@ def _get_gce_credentials(request=None):
         try:
             project_id = _metadata.get_project_id(request=request)
         except exceptions.TransportError:
-            _LOGGER.warning(
-                'No project ID could be determined from the Compute Engine '
-                'metadata service. Consider setting the %s environment '
-                'variable.', environment_vars.PROJECT)
             project_id = None
 
         return compute_engine.Credentials(), project_id
@@ -287,6 +271,13 @@ def default(scopes=None, request=None):
         credentials, project_id = checker()
         if credentials is not None:
             credentials = with_scopes_if_required(credentials, scopes)
-            return credentials, explicit_project_id or project_id
+            effective_project_id = explicit_project_id or project_id
+            if not effective_project_id:
+                _LOGGER.warning(
+                    'No project ID could be determined. Consider running '
+                    '`gcloud config set project` or setting the %s '
+                    'environment variable',
+                    environment_vars.PROJECT)
+            return credentials, effective_project_id
 
     raise exceptions.DefaultCredentialsError(_HELP_MESSAGE)

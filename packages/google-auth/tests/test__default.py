@@ -302,6 +302,28 @@ def test_default_explict_legacy_project_id(unused_get, monkeypatch):
 
 
 @mock.patch(
+    'logging.Logger.warning',
+    autospec=True)
+@mock.patch(
+    'google.auth._default._get_explicit_environ_credentials',
+    return_value=(mock.sentinel.credentials, None), autospec=True)
+@mock.patch(
+    'google.auth._default._get_gcloud_sdk_credentials',
+    return_value=(mock.sentinel.credentials, None), autospec=True)
+@mock.patch(
+    'google.auth._default._get_gae_credentials',
+    return_value=(mock.sentinel.credentials, None), autospec=True)
+@mock.patch(
+    'google.auth._default._get_gce_credentials',
+    return_value=(mock.sentinel.credentials, None), autospec=True)
+def test_default_without_project_id(
+        unused_gce, unused_gae, unused_sdk, unused_explicit, logger_warning):
+    assert _default.default() == (
+        mock.sentinel.credentials, None)
+    logger_warning.assert_called_with(mock.ANY, mock.ANY, mock.ANY)
+
+
+@mock.patch(
     'google.auth._default._get_explicit_environ_credentials',
     return_value=(None, None), autospec=True)
 @mock.patch(
@@ -324,7 +346,7 @@ def test_default_fail(unused_gce, unused_gae, unused_sdk, unused_explicit):
     autospec=True)
 @mock.patch(
     'google.auth.credentials.with_scopes_if_required', autospec=True)
-def test_default_scoped(with_scopes, get):
+def test_default_scoped(with_scopes, unused_get):
     scopes = ['one', 'two']
 
     credentials, project_id = _default.default(scopes=scopes)
