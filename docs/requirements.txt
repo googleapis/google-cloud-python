@@ -6,6 +6,7 @@ core/
 storage/
 bigquery/
 bigtable/
+container/
 datastore/
 dns/
 firestore/
