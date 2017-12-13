@@ -33,7 +33,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         self.assertIs(streamed._response_iterator, iterator)
         self.assertIsNone(streamed._source)
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
 
@@ -43,7 +43,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator, source=source)
         self.assertIs(streamed._response_iterator, iterator)
         self.assertIs(streamed._source, source)
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertIsNone(streamed.metadata)
         self.assertIsNone(streamed.stats)
 
@@ -484,7 +484,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._current_row = []
         streamed._merge_values([])
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_empty_and_partial(self):
@@ -500,7 +500,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BARE)
 
     def test_merge_values_empty_and_filled(self):
@@ -516,7 +516,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual(streamed._rows, [BARE])
+        self.assertEqual(list(streamed), [BARE])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_empty_and_filled_plus(self):
@@ -536,7 +536,7 @@ class TestStreamedResultSet(unittest.TestCase):
         VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
-        self.assertEqual(streamed._rows, [BARE[0:3], BARE[3:6]])
+        self.assertEqual(list(streamed), [BARE[0:3], BARE[3:6]])
         self.assertEqual(streamed._current_row, BARE[6:])
 
     def test_merge_values_partial_and_empty(self):
@@ -553,7 +553,7 @@ class TestStreamedResultSet(unittest.TestCase):
         ]
         streamed._current_row[:] = BEFORE
         streamed._merge_values([])
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BEFORE)
 
     def test_merge_values_partial_and_partial(self):
@@ -570,7 +570,7 @@ class TestStreamedResultSet(unittest.TestCase):
         MERGED = [42]
         TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BEFORE + MERGED)
 
     def test_merge_values_partial_and_filled(self):
@@ -589,7 +589,7 @@ class TestStreamedResultSet(unittest.TestCase):
         MERGED = [42, True]
         TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
-        self.assertEqual(streamed._rows, [BEFORE + MERGED])
+        self.assertEqual(list(streamed), [BEFORE + MERGED])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_partial_and_filled_plus(self):
@@ -613,7 +613,7 @@ class TestStreamedResultSet(unittest.TestCase):
         TO_MERGE = [self._make_value(item) for item in MERGED]
         VALUES = BEFORE + MERGED
         streamed._merge_values(TO_MERGE)
-        self.assertEqual(streamed._rows, [VALUES[0:3], VALUES[3:6]])
+        self.assertEqual(list(streamed), [VALUES[0:3], VALUES[3:6]])
         self.assertEqual(streamed._current_row, VALUES[6:])
 
     def test_one_or_none_no_value(self):
@@ -680,7 +680,7 @@ class TestStreamedResultSet(unittest.TestCase):
         source = mock.Mock(_transaction_id=None, spec=['_transaction_id'])
         streamed = self._make_one(iterator, source=source)
         streamed._consume_next()
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
         self.assertEqual(source._transaction_id, TXN_ID)
@@ -701,7 +701,7 @@ class TestStreamedResultSet(unittest.TestCase):
         source = mock.Mock(_transaction_id=TXN_ID, spec=['_transaction_id'])
         streamed = self._make_one(iterator, source=source)
         streamed._consume_next()
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
         self.assertEqual(source._transaction_id, TXN_ID)
@@ -720,7 +720,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._consume_next()
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._pending_chunk, VALUES[0])
 
@@ -742,7 +742,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._pending_chunk = self._make_value(u'Phred ')
         streamed._consume_next()
-        self.assertEqual(streamed._rows, [
+        self.assertEqual(list(streamed), [
             [u'Phred Phlyntstone', BARE[1], BARE[2]],
             [BARE[3], BARE[4], BARE[5]],
         ])
@@ -768,7 +768,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         streamed._metadata = metadata
         streamed._consume_next()
-        self.assertEqual(streamed._rows, [BARE])
+        self.assertEqual(list(streamed), [BARE])
         self.assertEqual(streamed._current_row, [])
         self.assertEqual(streamed._stats, stats)
 
@@ -792,7 +792,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         found = list(streamed)
         self.assertEqual(found, [])
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BARE)
         self.assertEqual(streamed.metadata, metadata)
 
@@ -820,7 +820,7 @@ class TestStreamedResultSet(unittest.TestCase):
             [BARE[3], BARE[4], BARE[5]],
             [BARE[6], BARE[7], BARE[8]],
         ])
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, [])
         self.assertIsNone(streamed._pending_chunk)
 
@@ -853,7 +853,7 @@ class TestStreamedResultSet(unittest.TestCase):
             [BARE[3], BARE[4], BARE[5]],
             [BARE[6], BARE[7], BARE[8]],
         ])
-        self.assertEqual(streamed._rows, [])
+        self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, [])
         self.assertIsNone(streamed._pending_chunk)
 
