@@ -48,7 +48,7 @@ class Sink(object):
 
     @property
     def client(self):
-        """Clent bound to the sink."""
+        """Client bound to the sink."""
         return self._client
 
     @property
