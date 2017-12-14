@@ -23,7 +23,6 @@ from google.api_core import grpc_helpers
 from google.api_core import timeout
 from google.api_core.gapic_v1 import client_info
 
-METRICS_METADATA_KEY = 'x-goog-api-client'
 USE_DEFAULT_METADATA = object()
 DEFAULT = object()
 """Sentinel value indicating that a retry or timeout argument was unspecified,

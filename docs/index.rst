@@ -7,6 +7,7 @@
   bigquery/usage
   bigquerydatatransfer/index
   bigtable/usage
+  container/index
   datastore/usage
   dns/usage
   firestore/index

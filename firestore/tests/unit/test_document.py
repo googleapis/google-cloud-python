@@ -344,7 +344,7 @@ class TestDocumentReference(unittest.TestCase):
         }
         field_paths = list(field_updates.keys())
         write_pb = self._write_pb_for_update(
-            document._document_path, update_values, field_paths)
+            document._document_path, update_values, sorted(field_paths))
         if option is not None:
             option.modify_write(write_pb)
         firestore_api.commit.assert_called_once_with(

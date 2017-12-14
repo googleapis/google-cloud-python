@@ -1086,15 +1086,15 @@ class Test_get_transform_pb(unittest.TestCase):
 
         server_val = enums.DocumentTransform.FieldTransform.ServerValue
         transform1 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='man.bear',
+            field_path='apple.x.y',
             set_to_server_value=server_val.REQUEST_TIME,
         )
         transform2 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='pig',
+            field_path='man.bear',
             set_to_server_value=server_val.REQUEST_TIME,
         )
         transform3 = write_pb2.DocumentTransform.FieldTransform(
-            field_path='apple.x.y',
+            field_path='pig',
             set_to_server_value=server_val.REQUEST_TIME,
         )
 
