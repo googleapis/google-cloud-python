@@ -448,7 +448,7 @@ class DirectRow(_SetDeleteRow):
                 deadline=30)
 
             try:
-                retry_(retry_commit())()
+                retry_(retry_commit)()
             except exceptions.RetryError:
                 raise concurrent.futures.TimeoutError(
                     'Operation did not complete within the designated '
