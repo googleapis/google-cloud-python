@@ -31,7 +31,6 @@ from google.cloud.bigtable._generated import (
 from google.api_core import retry
 from google.api_core import exceptions
 from google.cloud.exceptions import GrpcRendezvous
-from google.api_core.retry import RetryErrors
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -247,6 +246,17 @@ class _SetDeleteRow(Row):
             mutations_list.extend(to_append)
 
 
+class RetryCommit:
+
+    def __init__(self, table, request_pb):
+        self._table = table
+        self.request_pb = request_pb
+
+    def __call__(self):
+        client = self._table._instance._client
+        client._data_stub.MutateRow(self.request_pb)
+
+
 class DirectRow(_SetDeleteRow):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
@@ -397,12 +407,6 @@ class DirectRow(_SetDeleteRow):
         self._delete_cells(column_family_id, columns, time_range=time_range,
                            state=None)
 
-    def retry_commit(self):
-        """ Retry commit if it fails
-        """
-        client = self._table._instance._client
-        client._data_stub.MutateRow(self.request_pb)
-
     def commit(self):
         """Makes a ``MutateRow`` API request.
 
@@ -438,13 +442,13 @@ class DirectRow(_SetDeleteRow):
         try:
             client._data_stub.MutateRow(request_pb)
         except:
-            retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
-            # retry_ = retry.Retry(
-            #     predicate=retry.if_exception_type(False),
-            #     deadline=30)
+            retry_commit = RetryCommit(self.table, self.request_pb)
+            retry_ = retry.Retry(
+                predicate=retry.if_exception_type(False),
+                deadline=30)
 
             try:
-                retry(self.retry_commit())()
+                retry_(retry_commit())()
             except exceptions.RetryError:
                 raise concurrent.futures.TimeoutError(
                     'Operation did not complete within the designated '
