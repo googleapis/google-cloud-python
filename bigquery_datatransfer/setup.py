@@ -36,7 +36,7 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 setup(
     name='google-cloud-bigquery-datatransfer',
     version='0.1.0',
-    author='Google Inc',
+    author='Google LLC',
     author_email='googleapis-packages@google.com',
     classifiers=[
         'Intended Audience :: Developers',
@@ -59,4 +59,5 @@ setup(
     packages=find_packages(exclude=('tests*',)),
     namespace_packages=['google', 'google.cloud'],
     zip_safe=False,
-    url='https://github.com/GoogleCloudPlatform/google-cloud-python')
+    url='https://github.com/GoogleCloudPlatform/google-cloud-python',
+)
