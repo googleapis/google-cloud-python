@@ -59,10 +59,10 @@ jobs:
               nox -f bigquery/nox.py
             fi
       - run:
-          name: Run tests - google.cloud.bigquerydatatransfer
+          name: Run tests - google.cloud.bigquery_datatransfer
           command: |
-            if [[ -n $(grep bigquerydatatransfer ~/target_packages) ]]; then
-              nox -f bigquerydatatransfer/nox.py
+            if [[ -n $(grep bigquery_datatransfer ~/target_packages) ]]; then
+              nox -f bigquery_datatransfer/nox.py
             fi
       - run:
           name: Run tests - google.cloud.bigtable
