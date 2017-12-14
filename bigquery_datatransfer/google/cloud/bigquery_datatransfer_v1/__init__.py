@@ -14,9 +14,16 @@
 
 from __future__ import absolute_import
 
-from google.cloud.bigquery.datatransfer_v1 import DataTransferServiceClient
-from google.cloud.bigquery.datatransfer_v1 import enums
-from google.cloud.bigquery.datatransfer_v1 import types
+from google.cloud.bigquery_datatransfer_v1 import types
+from google.cloud.bigquery_datatransfer_v1.gapic import data_transfer_service_client
+from google.cloud.bigquery_datatransfer_v1.gapic import enums
+
+
+class DataTransferServiceClient(
+        data_transfer_service_client.DataTransferServiceClient):
+    __doc__ = data_transfer_service_client.DataTransferServiceClient.__doc__
+    enums = enums
+
 
 __all__ = (
     'enums',

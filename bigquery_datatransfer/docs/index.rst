@@ -68,9 +68,9 @@ DataTransferServiceClient
 
 .. code:: py
 
-    from google.cloud.bigquery import datatransfer_v1
+    from google.cloud import bigquery_datatransfer_v1
 
-    client = datatransfer_v1.DataTransferServiceClient()
+    client = bigquery_datatransfer_v1.DataTransferServiceClient()
 
     parent = client.location_path('[PROJECT]', '[LOCATION]')
 

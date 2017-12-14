@@ -15,9 +15,9 @@
 
 import pytest
 
-from google.cloud.bigquery import datatransfer_v1
-from google.cloud.bigquery.datatransfer_v1.proto import datatransfer_pb2
-from google.cloud.bigquery.datatransfer_v1.proto import transfer_pb2
+from google.cloud import bigquery_datatransfer_v1
+from google.cloud.bigquery_datatransfer_v1.proto import datatransfer_pb2
+from google.cloud.bigquery_datatransfer_v1.proto import transfer_pb2
 from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
@@ -96,7 +96,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         name = client.location_data_source_path('[PROJECT]', '[LOCATION]',
@@ -113,7 +114,8 @@ class TestDataTransferServiceClient(object):
     def test_get_data_source_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         name = client.location_data_source_path('[PROJECT]', '[LOCATION]',
@@ -136,7 +138,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -155,7 +158,8 @@ class TestDataTransferServiceClient(object):
 
     def test_list_data_sources_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -190,7 +194,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -208,7 +213,8 @@ class TestDataTransferServiceClient(object):
     def test_create_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -243,7 +249,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         transfer_config = {}
@@ -261,7 +268,8 @@ class TestDataTransferServiceClient(object):
     def test_update_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         transfer_config = {}
@@ -272,7 +280,8 @@ class TestDataTransferServiceClient(object):
 
     def test_delete_transfer_config(self):
         channel = ChannelStub()
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
@@ -289,7 +298,8 @@ class TestDataTransferServiceClient(object):
     def test_delete_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
@@ -324,7 +334,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
@@ -341,7 +352,8 @@ class TestDataTransferServiceClient(object):
     def test_get_transfer_config_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]',
@@ -364,7 +376,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -383,7 +396,8 @@ class TestDataTransferServiceClient(object):
 
     def test_list_transfer_configs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         parent = client.location_path('[PROJECT]', '[LOCATION]')
@@ -400,7 +414,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         parent = client.location_transfer_config_path(
@@ -420,7 +435,8 @@ class TestDataTransferServiceClient(object):
     def test_schedule_transfer_runs_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         parent = client.location_transfer_config_path(
@@ -449,7 +465,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         name = client.location_run_path('[PROJECT]', '[LOCATION]',
@@ -466,7 +483,8 @@ class TestDataTransferServiceClient(object):
     def test_get_transfer_run_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         name = client.location_run_path('[PROJECT]', '[LOCATION]',
@@ -477,7 +495,8 @@ class TestDataTransferServiceClient(object):
 
     def test_delete_transfer_run(self):
         channel = ChannelStub()
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         name = client.location_run_path('[PROJECT]', '[LOCATION]',
@@ -493,7 +512,8 @@ class TestDataTransferServiceClient(object):
     def test_delete_transfer_run_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         name = client.location_run_path('[PROJECT]', '[LOCATION]',
@@ -516,7 +536,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         parent = client.location_transfer_config_path(
@@ -536,7 +557,8 @@ class TestDataTransferServiceClient(object):
 
     def test_list_transfer_runs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         parent = client.location_transfer_config_path(
@@ -560,7 +582,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         parent = client.location_run_path('[PROJECT]', '[LOCATION]',
@@ -580,7 +603,8 @@ class TestDataTransferServiceClient(object):
 
     def test_list_transfer_logs_exception(self):
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         parent = client.location_run_path('[PROJECT]', '[LOCATION]',
@@ -599,7 +623,8 @@ class TestDataTransferServiceClient(object):
 
         # Mock the API response
         channel = ChannelStub(responses=[expected_response])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup Request
         name = client.location_data_source_path('[PROJECT]', '[LOCATION]',
@@ -616,7 +641,8 @@ class TestDataTransferServiceClient(object):
     def test_check_valid_creds_exception(self):
         # Mock the API response
         channel = ChannelStub(responses=[CustomException()])
-        client = datatransfer_v1.DataTransferServiceClient(channel=channel)
+        client = bigquery_datatransfer_v1.DataTransferServiceClient(
+            channel=channel)
 
         # Setup request
         name = client.location_data_source_path('[PROJECT]', '[LOCATION]',

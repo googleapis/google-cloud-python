@@ -32,15 +32,16 @@ import google.api_core.grpc_helpers
 import google.api_core.page_iterator
 import google.api_core.path_template
 
-from google.cloud.bigquery.datatransfer_v1.gapic import data_transfer_service_client_config
-from google.cloud.bigquery.datatransfer_v1.gapic import enums
-from google.cloud.bigquery.datatransfer_v1.proto import datatransfer_pb2
-from google.cloud.bigquery.datatransfer_v1.proto import transfer_pb2
+from google.cloud.bigquery_datatransfer_v1.gapic import data_transfer_service_client_config
+from google.cloud.bigquery_datatransfer_v1.gapic import enums
+from google.cloud.bigquery_datatransfer_v1.proto import datatransfer_pb2
+from google.cloud.bigquery_datatransfer_v1.proto import transfer_pb2
 from google.protobuf import field_mask_pb2
 from google.protobuf import timestamp_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-bigquerydatatransfer', ).version
+    'google-cloud-bigquery-datatransfer',
+).version
 
 
 class DataTransferServiceClient(object):
@@ -269,9 +270,9 @@ class DataTransferServiceClient(object):
         which can be used for UI rendering.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> name = client.location_data_source_path('[PROJECT]', '[LOCATION]', '[DATA_SOURCE]')
             >>>
@@ -288,7 +289,7 @@ class DataTransferServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.bigquery.datatransfer_v1.types.DataSource` instance.
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.DataSource` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -310,9 +311,9 @@ class DataTransferServiceClient(object):
         which can be used for UI rendering.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
@@ -345,7 +346,7 @@ class DataTransferServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery.datatransfer_v1.types.DataSource` instances.
+            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.DataSource` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -379,9 +380,9 @@ class DataTransferServiceClient(object):
         Creates a new data transfer configuration.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>> transfer_config = {}
@@ -395,9 +396,9 @@ class DataTransferServiceClient(object):
                 /projects/{project_id}/locations/-
                 In case when '-' is specified as location_id, location is infered from
                 the destination dataset region.
-            transfer_config (Union[dict, ~google.cloud.bigquery.datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
+            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferConfig`
+                message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`
             authorization_code (str): Optional OAuth2 authorization code to use with this transfer configuration.
                 This is required if new credentials are needed, as indicated by
                 ``CheckValidCreds``.
@@ -422,7 +423,7 @@ class DataTransferServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferConfig` instance.
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -450,9 +451,9 @@ class DataTransferServiceClient(object):
         All fields must be set, even if they are not updated.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> transfer_config = {}
             >>> update_mask = {}
@@ -460,12 +461,12 @@ class DataTransferServiceClient(object):
             >>> response = client.update_transfer_config(transfer_config, update_mask)
 
         Args:
-            transfer_config (Union[dict, ~google.cloud.bigquery.datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
+            transfer_config (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.TransferConfig]): Data transfer configuration to create.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferConfig`
-            update_mask (Union[dict, ~google.cloud.bigquery.datatransfer_v1.types.FieldMask]): Required list of fields to be updated in this request.
+                message :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig`
+            update_mask (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.FieldMask]): Required list of fields to be updated in this request.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.bigquery.datatransfer_v1.types.FieldMask`
+                message :class:`~google.cloud.bigquery_datatransfer_v1.types.FieldMask`
             authorization_code (str): Optional OAuth2 authorization code to use with this transfer configuration.
                 If it is provided, the transfer configuration will be associated with the
                 authorizing user.
@@ -490,7 +491,7 @@ class DataTransferServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferConfig` instance.
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -516,9 +517,9 @@ class DataTransferServiceClient(object):
         including any associated transfer runs and logs.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
             >>>
@@ -552,9 +553,9 @@ class DataTransferServiceClient(object):
         Returns information about a data transfer config.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> name = client.location_transfer_config_path('[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
             >>>
@@ -571,7 +572,7 @@ class DataTransferServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferConfig` instance.
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -593,9 +594,9 @@ class DataTransferServiceClient(object):
         Returns information about all data transfers in the project.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> parent = client.location_path('[PROJECT]', '[LOCATION]')
             >>>
@@ -629,7 +630,7 @@ class DataTransferServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferConfig` instances.
+            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferConfig` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -668,9 +669,9 @@ class DataTransferServiceClient(object):
         Note that runs are created per UTC time in the time range.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> parent = client.location_transfer_config_path('[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
             >>> start_time = {}
@@ -681,14 +682,14 @@ class DataTransferServiceClient(object):
         Args:
             parent (str): Transfer configuration name in the form:
                 ``projects/{project_id}/transferConfigs/{config_id}``.
-            start_time (Union[dict, ~google.cloud.bigquery.datatransfer_v1.types.Timestamp]): Start time of the range of transfer runs. For example,
+            start_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): Start time of the range of transfer runs. For example,
                 ``\"2017-05-25T00:00:00+00:00\"``.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.bigquery.datatransfer_v1.types.Timestamp`
-            end_time (Union[dict, ~google.cloud.bigquery.datatransfer_v1.types.Timestamp]): End time of the range of transfer runs. For example,
+                message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`
+            end_time (Union[dict, ~google.cloud.bigquery_datatransfer_v1.types.Timestamp]): End time of the range of transfer runs. For example,
                 ``\"2017-05-30T00:00:00+00:00\"``.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.bigquery.datatransfer_v1.types.Timestamp`
+                message :class:`~google.cloud.bigquery_datatransfer_v1.types.Timestamp`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -697,7 +698,7 @@ class DataTransferServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.bigquery.datatransfer_v1.types.ScheduleTransferRunsResponse` instance.
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -719,9 +720,9 @@ class DataTransferServiceClient(object):
         Returns information about the particular transfer run.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> name = client.location_run_path('[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]', '[RUN]')
             >>>
@@ -738,7 +739,7 @@ class DataTransferServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferRun` instance.
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferRun` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -758,9 +759,9 @@ class DataTransferServiceClient(object):
         Deletes the specified transfer run.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> name = client.location_run_path('[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]', '[RUN]')
             >>>
@@ -797,9 +798,9 @@ class DataTransferServiceClient(object):
         Returns information about running and completed jobs.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> parent = client.location_transfer_config_path('[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]')
             >>>
@@ -819,13 +820,13 @@ class DataTransferServiceClient(object):
             parent (str): Name of transfer configuration for which transfer runs should be retrieved.
                 Format of transfer configuration resource name is:
                 ``projects/{project_id}/transferConfigs/{config_id}``.
-            states (list[~google.cloud.bigquery.datatransfer_v1.types.TransferState]): When specified, only transfer runs with requested states are returned.
+            states (list[~google.cloud.bigquery_datatransfer_v1.types.TransferState]): When specified, only transfer runs with requested states are returned.
             page_size (int): The maximum number of resources contained in the
                 underlying API response. If page streaming is performed per-
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            run_attempt (~google.cloud.bigquery.datatransfer_v1.types.RunAttempt): Indicates how run attempts are to be pulled.
+            run_attempt (~google.cloud.bigquery_datatransfer_v1.types.RunAttempt): Indicates how run attempts are to be pulled.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.
@@ -835,7 +836,7 @@ class DataTransferServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferRun` instances.
+            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferRun` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -871,9 +872,9 @@ class DataTransferServiceClient(object):
         Returns user facing log messages for the data transfer run.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> parent = client.location_run_path('[PROJECT]', '[LOCATION]', '[TRANSFER_CONFIG]', '[RUN]')
             >>>
@@ -897,7 +898,7 @@ class DataTransferServiceClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            message_types (list[~google.cloud.bigquery.datatransfer_v1.types.MessageSeverity]): Message types to return. If not populated - INFO, WARNING and ERROR
+            message_types (list[~google.cloud.bigquery_datatransfer_v1.types.MessageSeverity]): Message types to return. If not populated - INFO, WARNING and ERROR
                 messages are returned.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
@@ -908,7 +909,7 @@ class DataTransferServiceClient(object):
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
-            is an iterable of :class:`~google.cloud.bigquery.datatransfer_v1.types.TransferMessage` instances.
+            is an iterable of :class:`~google.cloud.bigquery_datatransfer_v1.types.TransferMessage` instances.
             This object can also be configured to iterate over the pages
             of the response through the `options` parameter.
 
@@ -944,9 +945,9 @@ class DataTransferServiceClient(object):
         create a transfer config.
 
         Example:
-            >>> from google.cloud.bigquery import datatransfer_v1
+            >>> from google.cloud import bigquery_datatransfer_v1
             >>>
-            >>> client = datatransfer_v1.DataTransferServiceClient()
+            >>> client = bigquery_datatransfer_v1.DataTransferServiceClient()
             >>>
             >>> name = client.location_data_source_path('[PROJECT]', '[LOCATION]', '[DATA_SOURCE]')
             >>>
@@ -963,7 +964,7 @@ class DataTransferServiceClient(object):
                 specified, the timeout applies to each individual attempt.
 
         Returns:
-            A :class:`~google.cloud.bigquery.datatransfer_v1.types.CheckValidCredsResponse` instance.
+            A :class:`~google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsResponse` instance.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request

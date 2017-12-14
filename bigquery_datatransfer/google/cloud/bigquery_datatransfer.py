@@ -12,17 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import time
+from __future__ import absolute_import
 
-from google.cloud.bigquery import datatransfer_v1
-from google.cloud.bigquery.datatransfer_v1.proto import datatransfer_pb2
+from google.cloud.bigquery_datatransfer_v1 import DataTransferServiceClient
+from google.cloud.bigquery_datatransfer_v1 import enums
+from google.cloud.bigquery_datatransfer_v1 import types
 
-
-class TestSystemDataTransferService(object):
-    def test_list_data_sources(self):
-        project_id = os.environ['PROJECT_ID']
-
-        client = datatransfer_v1.DataTransferServiceClient()
-        parent = client.location_path(project_id, "us-central1")
-        response = client.list_data_sources(parent)
+__all__ = (
+    'enums',
+    'types',
+    'DataTransferServiceClient',
+)

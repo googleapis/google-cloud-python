@@ -18,8 +18,8 @@ import sys
 from google.api_core.protobuf_helpers import get_messages
 
 from google.api import http_pb2
-from google.cloud.bigquery.datatransfer_v1.proto import datatransfer_pb2
-from google.cloud.bigquery.datatransfer_v1.proto import transfer_pb2
+from google.cloud.bigquery_datatransfer_v1.proto import datatransfer_pb2
+from google.cloud.bigquery_datatransfer_v1.proto import transfer_pb2
 from google.protobuf import any_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf import duration_pb2
@@ -46,7 +46,7 @@ for module in (
         status_pb2,
 ):
     for name, message in get_messages(module).items():
-        message.__module__ = 'google.cloud.bigquery.datatransfer_v1.types'
+        message.__module__ = 'google.cloud.bigquery_datatransfer_v1.types'
         setattr(sys.modules[__name__], name, message)
         names.append(name)
 

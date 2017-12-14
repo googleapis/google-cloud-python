@@ -34,7 +34,7 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
     long_description = readme_file.read()
 
 setup(
-    name='google-cloud-bigquerydatatransfer',
+    name='google-cloud-bigquery-datatransfer',
     version='0.1.0',
     author='Google Inc',
     author_email='googleapis-packages@google.com',
