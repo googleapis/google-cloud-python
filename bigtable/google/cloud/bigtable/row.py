@@ -400,12 +400,8 @@ class DirectRow(_SetDeleteRow):
     def retry_commit(self):
         """ Retry commit if it fails
         """
-        try:
-            client = self._table._instance._client
-            client._data_stub.MutateRow(self.request_pb)
-            return True
-        except:
-            return False
+        client = self._table._instance._client
+        client._data_stub.MutateRow(self.request_pb)
 
     def commit(self):
         """Makes a ``MutateRow`` API request.
