@@ -16,9 +16,9 @@ import grpc
 import mock
 import pytest
 
-import google.auth.credentials
 from google.api_core import exceptions
 from google.api_core import grpc_helpers
+import google.auth.credentials
 
 
 def test__patch_callable_name():
