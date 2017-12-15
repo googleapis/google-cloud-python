@@ -9,6 +9,10 @@ BigQuery
   reference
   dbapi
 
+.. note::
+
+  Python version 3.4 is no longer supported.
+
 Authentication / Configuration
 ------------------------------
 
