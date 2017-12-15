@@ -40,6 +40,7 @@ class _Base(object):
     PROJECT = 'PROJECT'
     PROJECT_PATH = 'projects/%s' % (PROJECT,)
     FILTER = 'logName:syslog AND severity>=ERROR'
+    UNIQUE_WRITER_IDENTITY = True
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -737,13 +738,32 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         api.sink_create(
             self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
 
-        parent, sink, options = (
+        parent, sink, options, unique_writer_identity = (
             gax_api._create_sink_called_with)
         self.assertEqual(parent, self.PROJECT_PATH)
         self.assertIsInstance(sink, LogSink)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertIsNone(options)
+
+    def test_sink_create_with_unique_writer_identity(self):
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
+
+        gax_api = _GAXSinksAPI()
+        api = self._make_one(gax_api, None)
+        api.sink_create(
+            self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
+            self.UNIQUE_WRITER_IDENTITY
+        )
+        parent, sink, options, unique_writer_identity = (
+            gax_api._create_sink_called_with)
+        self.assertEqual(parent, self.PROJECT_PATH)
+        self.assertIsInstance(sink, LogSink)
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(unique_writer_identity, self.UNIQUE_WRITER_IDENTITY)
         self.assertIsNone(options)
 
     def test_sink_get_error(self):
@@ -1462,10 +1482,10 @@ class _GAXSinksAPI(_GAXBaseAPI):
         self._list_sinks_called_with = parent, page_size, options
         return self._list_sinks_response
 
-    def create_sink(self, parent, sink, options):
+    def create_sink(self, parent, sink, options, unique_writer_identity=False):
         from google.gax.errors import GaxError
 
-        self._create_sink_called_with = parent, sink, options
+        self._create_sink_called_with = parent, sink, options, unique_writer_identity
         if self._random_gax_error:
             raise GaxError('error')
         if self._create_sink_conflict:
