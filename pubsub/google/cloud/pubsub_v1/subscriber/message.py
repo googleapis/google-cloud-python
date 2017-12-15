@@ -33,7 +33,8 @@ class Message(object):
             to use this directly.
         data (bytes): The data in the message. Note that this will be a
             :class:`bytes`, not a text string.
-        attributes (dict): The attributes sent along with the message.
+        attributes (.ScalarMapContainer): The attributes sent along with the
+            message. See :attr:`attributes` for more information on this type.
         publish_time (datetime): The time that this message was originally
             published.
     """
@@ -85,8 +86,18 @@ class Message(object):
     def attributes(self):
         """Return the attributes of the underlying Pub/Sub Message.
 
+        .. warning::
+
+            A ``ScalarMapContainer`` behaves slightly differently than a
+            ``dict``. For a Pub / Sub message this is a ``string->string`` map.
+            When trying to access a value via ``map['key']``, if the key is
+            not in the map, then the default value for the string type will
+            be returned, which is an empty string. It may be more intuitive
+            to just cast the map to a ``dict`` or to one use ``map.get``.
+
         Returns:
-            dict: The message's attributes.
+            .ScalarMapContainer: The message's attributes. This is a
+            ``dict``-like object provided by ``google.protobuf``.
         """
         return self._message.attributes
 
