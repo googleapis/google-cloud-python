@@ -20,6 +20,7 @@ import six
 from google.api_core import exceptions
 from google.api_core import general_helpers
 import google.auth
+import google.auth.credentials
 import google.auth.transport.grpc
 import google.auth.transport.requests
 
@@ -127,6 +128,9 @@ def create_channel(target, credentials=None, scopes=None, **kwargs):
     """
     if credentials is None:
         credentials, _ = google.auth.default(scopes=scopes)
+    else:
+        credentials = google.auth.credentials.with_scopes_if_required(
+            credentials, scopes)
 
     request = google.auth.transport.requests.Request()
 

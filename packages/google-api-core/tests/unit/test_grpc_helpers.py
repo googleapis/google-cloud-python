@@ -18,6 +18,7 @@ import pytest
 
 from google.api_core import exceptions
 from google.api_core import grpc_helpers
+import google.auth.credentials
 
 
 def test__patch_callable_name():
@@ -169,3 +170,19 @@ def test_create_channel_explicit(secure_authorized_channel):
     assert channel is secure_authorized_channel.return_value
     secure_authorized_channel.assert_called_once_with(
         mock.sentinel.credentials, mock.ANY, target)
+
+
+@mock.patch('google.auth.transport.grpc.secure_authorized_channel')
+def test_create_channel_explicit_scoped(unused_secure_authorized_channel):
+    scopes = ['1', '2']
+
+    credentials = mock.create_autospec(
+        google.auth.credentials.Scoped, instance=True)
+    credentials.requires_scopes = True
+
+    grpc_helpers.create_channel(
+        mock.sentinel.target,
+        credentials=credentials,
+        scopes=scopes)
+
+    credentials.with_scopes.assert_called_once_with(scopes)
