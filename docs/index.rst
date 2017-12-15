@@ -5,6 +5,7 @@
   releases
   core/index
   bigquery/usage
+  bigquery_datatransfer/index
   bigtable/usage
   container/index
   datastore/usage

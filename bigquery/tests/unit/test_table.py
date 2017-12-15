@@ -18,7 +18,7 @@ import mock
 import six
 try:
     import pandas
-except ImportError:  # pragma: NO COVER
+except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
 
 from google.cloud.bigquery.dataset import DatasetReference
