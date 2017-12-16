@@ -172,15 +172,15 @@ class BasePolicy(object):
         if time_to_ack is not None:
             self.histogram.add(int(time_to_ack))
 
-        if self._consumer.stopped.is_set():
+        if self._consumer.active:
+            # Send the request to ack the message.
+            request = types.StreamingPullRequest(ack_ids=[ack_id])
+            self._consumer.send_request(request)
+        else:
             # If the consumer is inactive, then queue the ack_id here; it
             # will be acked as part of the initial request when the consumer
             # is started again.
             self._ack_on_resume.add(ack_id)
-        else:
-            # Send the request to ack the message.
-            request = types.StreamingPullRequest(ack_ids=[ack_id])
-            self._consumer.send_request(request)
 
         # Remove the message from lease management.
         self.drop(ack_id=ack_id, byte_size=byte_size)
@@ -309,7 +309,7 @@ class BasePolicy(object):
         """
         while True:
             # Sanity check: Should this infinite loop quit?
-            if self._consumer.stopped.is_set():
+            if not self._consumer.active:
                 _LOGGER.debug('Consumer inactive, ending lease maintenance.')
                 return
 
@@ -329,11 +329,11 @@ class BasePolicy(object):
                     modify_deadline_ack_ids=ack_ids,
                     modify_deadline_seconds=[p99] * len(ack_ids),
                 )
-                # NOTE: This may not work as expected if ``consumer.stopped``
-                #       has been set since we checked it. An implementation
+                # NOTE: This may not work as expected if ``consumer.active``
+                #       has changed since we checked it. An implementation
                 #       without any sort of race condition would require a
                 #       way for ``send_request`` to fail when the consumer
-                #       is stopped.
+                #       is inactive.
                 self._consumer.send_request(request)
 
             # Now wait an appropriate period of time and do this again.
