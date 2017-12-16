@@ -55,6 +55,10 @@ def test_close():
     policy = create_policy()
     policy._dispatch_thread = dispatch_thread
     policy._leases_thread = leases_thread
+    future = mock.Mock(spec=('done',))
+    future.done.return_value = True
+    policy._future = future
+
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
         policy.close()
@@ -64,9 +68,21 @@ def test_close():
     dispatch_thread.join.assert_called_once_with()
     assert policy._leases_thread is None
     leases_thread.join.assert_called_once_with()
+    assert policy._future is None
+    future.done.assert_called_once_with()
 
 
-def test_close_with_future():
+def test_close_without_future():
+    policy = create_policy()
+    assert policy._future is None
+
+    with pytest.raises(ValueError) as exc_info:
+        policy.close()
+
+    assert exc_info.value.args == ('This policy has not been opened yet.',)
+
+
+def test_close_with_unfinished_future():
     dispatch_thread = mock.Mock(spec=threading.Thread)
     leases_thread = mock.Mock(spec=threading.Thread)
 
@@ -109,6 +125,16 @@ def test_open():
 
     assert policy._leases_thread is threads[2]
     threads[2].start.assert_called_once_with()
+
+
+def test_open_already_open():
+    policy = create_policy()
+    policy._future = mock.sentinel.future
+
+    with pytest.raises(ValueError) as exc_info:
+        policy.open(None)
+
+    assert exc_info.value.args == ('This policy has already been opened.',)
 
 
 def test_dispatch_callback_valid_actions():
