@@ -14,8 +14,35 @@
 
 from __future__ import absolute_import
 
+import json
 import math
 import time
+
+
+_MESSAGE_REPR = """\
+Message {{
+  data: {!r}
+  attributes: {}
+}}"""
+
+
+def _indent(lines, prefix='  '):
+    """Indent some text.
+
+    Note that this is present as ``textwrap.indent``, but not in Python 2.
+
+    Args:
+        lines (str): The newline delimited string to be indented.
+        prefix (Optional[str]): The prefix to indent each line with. Default
+            to two spaces.
+
+    Returns:
+        str: The newly indented content.
+    """
+    indented = []
+    for line in lines.split('\n'):
+        indented.append(prefix + line)
+    return '\n'.join(indented)
 
 
 class Message(object):
@@ -73,14 +100,18 @@ class Message(object):
         # Get an abbreviated version of the data.
         abbv_data = self._message.data
         if len(abbv_data) > 50:
-            abbv_data = abbv_data[0:50] + b'...'
+            abbv_data = abbv_data[:50] + b'...'
 
-        # Return a useful representation.
-        answer = 'Message {\n'
-        answer += '    data: {0!r}\n'.format(abbv_data)
-        answer += '    attributes: {0!r}\n'.format(self.attributes)
-        answer += '}'
-        return answer
+        pretty_attrs = json.dumps(
+            dict(self.attributes),
+            indent=2,
+            separators=(',', ': '),
+            sort_keys=True,
+        )
+        pretty_attrs = _indent(pretty_attrs)
+        # We don't actually want the first line indented.
+        pretty_attrs = pretty_attrs.lstrip()
+        return _MESSAGE_REPR.format(abbv_data, pretty_attrs)
 
     @property
     def attributes(self):
