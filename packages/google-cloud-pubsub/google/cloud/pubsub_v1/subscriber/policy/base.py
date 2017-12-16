@@ -324,11 +324,16 @@ class BasePolicy(object):
             # because it is more efficient to make a single request.
             ack_ids = list(self.managed_ack_ids)
             _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
-            if ack_ids and not self._consumer.stopped.is_set():
+            if ack_ids:
                 request = types.StreamingPullRequest(
                     modify_deadline_ack_ids=ack_ids,
                     modify_deadline_seconds=[p99] * len(ack_ids),
                 )
+                # NOTE: This may not work as expected if ``consumer.stopped``
+                #       has been set since we checked it. An implementation
+                #       without any sort of race condition would require a
+                #       way for ``send_request`` to fail when the consumer
+                #       is stopped.
                 self._consumer.send_request(request)
 
             # Now wait an appropriate period of time and do this again.
