@@ -155,7 +155,7 @@ class Policy(base.BasePolicy):
             called while another thread is executing :meth:`open`, then the
             policy could end up in an undefined state. The **same** policy
             instance is not intended to be used by multiple workers (though
-            each policy instance **does** have a threadsafe private queue).
+            each policy instance **does** have a thread-safe private queue).
 
         Raises:
             ValueError: If the policy has not been opened yet.
@@ -234,7 +234,7 @@ class Policy(base.BasePolicy):
             called while another thread is executing :meth:`close`, then the
             policy could end up in an undefined state. The **same** policy
             instance is not intended to be used by multiple workers (though
-            each policy instance **does** have a threadsafe private queue).
+            each policy instance **does** have a thread-safe private queue).
 
         For each message received, the ``callback`` function is fired with
         a :class:`~.pubsub_v1.subscriber.message.Message` as its only
