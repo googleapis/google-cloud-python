@@ -178,10 +178,20 @@ class Consumer(object):
     """
     def __init__(self):
         self._request_queue = queue.Queue()
-        self.stopped = threading.Event()
+        self._stopped = threading.Event()
         self._can_consume = threading.Event()
         self._put_lock = threading.Lock()
         self._consumer_thread = None
+
+    @property
+    def active(self):
+        """bool: Indicates if the consumer is active.
+
+        This is intended to be an implementation independent way of indicating
+        that the consumer is stopped. (E.g. so a policy that owns a consumer
+        doesn't need to know what a ``threading.Event`` is.)
+        """
+        return not self._stopped.is_set()
 
     def send_request(self, request):
         """Queue a request to be sent to gRPC.
@@ -314,7 +324,7 @@ class Consumer(object):
             # exit cleanly when the user has called stop_consuming(). This
             # checks to make sure we're not exiting before opening a new
             # stream.
-            if self.stopped.is_set():
+            if self._stopped.is_set():
                 _LOGGER.debug('Event signalled consumer exit.')
                 break
 
@@ -386,7 +396,7 @@ class Consumer(object):
                 that owns this consumer. A policy defines how requests and
                 responses are handled.
         """
-        self.stopped.clear()
+        self._stopped.clear()
         self.resume()  # Make sure we aren't paused.
         thread = threading.Thread(
             name=_BIDIRECTIONAL_CONSUMER_NAME,
@@ -412,7 +422,7 @@ class Consumer(object):
             stopped.
         """
         self.resume()  # Make sure we aren't paused.
-        self.stopped.set()
+        self._stopped.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
         self.send_request(_helper_threads.STOP)
         thread = self._consumer_thread
