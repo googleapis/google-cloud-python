@@ -745,6 +745,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertFalse(unique_writer_identity)
         self.assertIsNone(options)
 
     def test_sink_create_with_unique_writer_identity(self):
@@ -754,7 +755,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         api = self._make_one(gax_api, None)
         api.sink_create(
             self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-            self.UNIQUE_WRITER_IDENTITY
+            unique_writer_identity=self.UNIQUE_WRITER_IDENTITY,
         )
         parent, sink, options, unique_writer_identity = (
             gax_api._create_sink_called_with)
@@ -763,7 +764,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertEqual(unique_writer_identity, self.UNIQUE_WRITER_IDENTITY)
+        self.assertTrue(unique_writer_identity)
         self.assertIsNone(options)
 
     def test_sink_get_error(self):

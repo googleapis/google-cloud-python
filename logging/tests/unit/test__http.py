@@ -482,19 +482,21 @@ class Test_SinksAPI(unittest.TestCase):
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-        
+
         conn = _Connection({})
         client = _Client(conn)
         api = self._make_one(client)
 
         api.sink_create(
-            self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI, True)
-
-        self.assertEqual(conn._called_with['method'], 'POST')
+            self.PROJECT, self.SINK_NAME, self.FILTER,
+            self.DESTINATION_URI, True)
         path = '/projects/%s/sinks' % (self.PROJECT,)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['data'], SENT)
-        self.assertEqual(conn._called_with['query_params'], {'uniqueWriterIdentity': True})
+        expected = {'method': 'POST',
+                    'path': path,
+                    'data': SENT,
+                    'query_params': {'uniqueWriterIdentity': True},
+                    }
+        self.assertEqual(conn._called_with, expected)
 
     def test_sink_get_miss(self):
         from google.cloud.exceptions import NotFound
