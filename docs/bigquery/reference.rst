@@ -44,6 +44,14 @@ Schema
   :show-inheritance:
 
 
+Query
+=====
+
+.. automodule:: google.cloud.bigquery.query
+  :members:
+  :show-inheritance:
+
+
 External Configuration
 ======================
 
