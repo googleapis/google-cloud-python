@@ -147,7 +147,26 @@ class Policy(base.BasePolicy):
             return executor
 
     def close(self):
-        """Close the existing connection."""
+        """Close the existing connection.
+
+        .. warning::
+
+            This method is not thread-safe. For example, if this method is
+            called while another thread is executing :meth:`open`, then the
+            policy could end up in an undefined state. The **same** policy
+            instance is not intended to be used by multiple workers (though
+            each policy instance **does** have a thread-safe private queue).
+
+        Returns:
+            ~google.api_core.future.Future: The future that **was** attached
+            to the subscription.
+
+        Raises:
+            ValueError: If the policy has not been opened yet.
+        """
+        if self._future is None:
+            raise ValueError('This policy has not been opened yet.')
+
         # Stop consuming messages.
         self._request_queue.put(_helper_threads.STOP)
         self._dispatch_thread.join()  # Wait until stopped.
@@ -159,9 +178,11 @@ class Policy(base.BasePolicy):
 
         # The subscription is closing cleanly; resolve the future if it is not
         # resolved already.
-        if self._future is not None and not self._future.done():
+        if not self._future.done():
             self._future.set_result(None)
+        future = self._future
         self._future = None
+        return future
 
     def _start_dispatch(self):
         """Start a thread to dispatch requests queued up by callbacks.
@@ -213,6 +234,14 @@ class Policy(base.BasePolicy):
     def open(self, callback):
         """Open a streaming pull connection and begin receiving messages.
 
+        .. warning::
+
+            This method is not thread-safe. For example, if this method is
+            called while another thread is executing :meth:`close`, then the
+            policy could end up in an undefined state. The **same** policy
+            instance is not intended to be used by multiple workers (though
+            each policy instance **does** have a thread-safe private queue).
+
         For each message received, the ``callback`` function is fired with
         a :class:`~.pubsub_v1.subscriber.message.Message` as its only
         argument.
@@ -222,9 +251,15 @@ class Policy(base.BasePolicy):
 
         Returns:
             ~google.api_core.future.Future: A future that provides
-                an interface to block on the subscription if desired, and
-                handle errors.
+            an interface to block on the subscription if desired, and
+            handle errors.
+
+        Raises:
+            ValueError: If the policy has already been opened.
         """
+        if self._future is not None:
+            raise ValueError('This policy has already been opened.')
+
         # Create the Future that this method will return.
         # This future is the main thread's interface to handle exceptions,
         # block on the subscription, etc.
