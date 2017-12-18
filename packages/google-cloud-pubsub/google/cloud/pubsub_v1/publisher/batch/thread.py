@@ -18,6 +18,8 @@ import logging
 import threading
 import time
 
+import six
+
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
@@ -25,6 +27,10 @@ from google.cloud.pubsub_v1.publisher.batch import base
 
 
 _LOGGER = logging.getLogger(__name__)
+_CAN_COMMIT = (
+    base.BatchStatus.ACCEPTING_MESSAGES,
+    base.BatchStatus.STARTING,
+)
 
 
 class Batch(base.Batch):
@@ -63,20 +69,20 @@ class Batch(base.Batch):
     """
     def __init__(self, client, topic, settings, autocommit=True):
         self._client = client
+        self._topic = topic
+        self._settings = settings
 
+        self._commit_lock = threading.Lock()
         # These objects are all communicated between threads; ensure that
         # any writes to them are atomic.
         self._futures = []
         self._messages = []
         self._size = 0
-        self._settings = settings
         self._status = base.BatchStatus.ACCEPTING_MESSAGES
-        self._topic = topic
 
         # If max latency is specified, start a thread to monitor the batch and
         # commit when the max latency is reached.
         self._thread = None
-        self._commit_lock = threading.Lock()
         if autocommit and self._settings.max_latency < float('inf'):
             self._thread = threading.Thread(
                 name='Thread-MonitorBatchPublisher',
@@ -135,12 +141,9 @@ class Batch(base.Batch):
             This method is non-blocking. It opens a new thread, which calls
             :meth:`_commit`, which does block.
         """
-        # Set the status to in-flight synchronously, to ensure that
+        # Set the status to "starting" synchronously, to ensure that
         # this batch will necessarily not accept new messages.
-        #
-        # Yes, this is repeated in `_commit`, because that method is called
-        # directly by `monitor`.
-        self._status = 'in-flight'
+        self._status = base.BatchStatus.STARTING
 
         # Start a new thread to actually handle the commit.
         commit_thread = threading.Thread(
@@ -162,48 +165,47 @@ class Batch(base.Batch):
             version, which calls this one.
         """
         with self._commit_lock:
-            # If, in the intervening period, the batch started to be committed,
-            # or completed a commit, then no-op at this point.
-            if self._status != base.BatchStatus.ACCEPTING_MESSAGES:
+            if self._status in _CAN_COMMIT:
+                self._status = base.BatchStatus.IN_PROGRESS
+            else:
+                # If, in the intervening period between when this method was
+                # called and now, the batch started to be committed, or
+                # completed a commit, then no-op at this point.
+                _LOGGER.debug('Batch is already in progress, exiting commit')
                 return
-
-            # Update the status.
-            self._status = 'in-flight'
 
             # Sanity check: If there are no messages, no-op.
             if not self._messages:
+                _LOGGER.debug('No messages to publish, exiting commit')
+                self._status = base.BatchStatus.SUCCESS
                 return
 
             # Begin the request to publish these messages.
             # Log how long the underlying request takes.
             start = time.time()
-            response = self.client.api.publish(
+            response = self._client.api.publish(
                 self._topic,
-                self.messages,
+                self._messages,
             )
             end = time.time()
-            _LOGGER.debug('gRPC Publish took {s} seconds.'.format(
-                s=end - start,
-            ))
+            _LOGGER.debug('gRPC Publish took %s seconds.', end - start)
 
-            # We got a response from Pub/Sub; denote that we are processing.
-            self._status = 'processing results'
-
-            # Sanity check: If the number of message IDs is not equal to the
-            # number of futures I have, then something went wrong.
-            if len(response.message_ids) != len(self._futures):
+            if len(response.message_ids) == len(self._futures):
+                # Iterate over the futures on the queue and return the response
+                # IDs. We are trusting that there is a 1:1 mapping, and raise
+                # an exception if not.
+                self._status = base.BatchStatus.SUCCESS
+                zip_iter = six.moves.zip(response.message_ids, self._futures)
+                for message_id, future in zip_iter:
+                    future.set_result(message_id)
+            else:
+                # Sanity check: If the number of message IDs is not equal to
+                # the number of futures I have, then something went wrong.
+                self._status = base.BatchStatus.ERROR
+                exception = exceptions.PublishError(
+                    'Some messages were not successfully published.')
                 for future in self._futures:
-                    future.set_exception(exceptions.PublishError(
-                        'Some messages were not successfully published.',
-                    ))
-                return
-
-            # Iterate over the futures on the queue and return the response
-            # IDs. We are trusting that there is a 1:1 mapping, and raise an
-            # exception if not.
-            self._status = base.BatchStatus.SUCCESS
-            for message_id, future in zip(response.message_ids, self._futures):
-                future.set_result(message_id)
+                    future.set_exception(exception)
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -246,7 +248,7 @@ class Batch(base.Batch):
 
         # Store the actual message in the batch's message queue.
         self._messages.append(message)
-        if len(self._messages) >= self.settings.max_messages:
+        if len(self._messages) >= self._settings.max_messages:
             self.commit()
 
         # Return a Future. That future needs to be aware of the status

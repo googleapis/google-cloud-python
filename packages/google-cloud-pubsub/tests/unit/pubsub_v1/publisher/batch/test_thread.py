@@ -22,6 +22,7 @@ from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher.batch.base import BatchStatus
+from google.cloud.pubsub_v1.publisher.batch import thread
 from google.cloud.pubsub_v1.publisher.batch.thread import Batch
 
 
@@ -93,9 +94,10 @@ def test_commit():
     # The batch's status needs to be something other than "accepting messages",
     # since the commit started.
     assert batch.status != BatchStatus.ACCEPTING_MESSAGES
+    assert batch.status == BatchStatus.STARTING
 
 
-def test_blocking_commit():
+def test_blocking__commit():
     batch = create_batch()
     futures = (
         batch.publish({'data': b'This is my message.'}),
@@ -103,34 +105,63 @@ def test_blocking_commit():
     )
 
     # Set up the underlying API publish method to return a PublishResponse.
-    with mock.patch.object(type(batch.client.api), 'publish') as publish:
-        publish.return_value = types.PublishResponse(message_ids=['a', 'b'])
-
-        # Actually commit the batch.
+    publish_response = types.PublishResponse(message_ids=['a', 'b'])
+    patch = mock.patch.object(
+        type(batch.client.api), 'publish', return_value=publish_response)
+    with patch as publish:
         batch._commit()
 
-        # Establish that the underlying API call was made with expected
-        # arguments.
-        publish.assert_called_once_with('topic_name', [
+    # Establish that the underlying API call was made with expected
+    # arguments.
+    publish.assert_called_once_with(
+        'topic_name',
+        [
             types.PubsubMessage(data=b'This is my message.'),
             types.PubsubMessage(data=b'This is another message.'),
-        ])
+        ],
+    )
 
     # Establish that all of the futures are done, and that they have the
     # expected values.
-    assert all([f.done() for f in futures])
+    assert futures[0].done()
     assert futures[0].result() == 'a'
+    assert futures[1].done()
     assert futures[1].result() == 'b'
 
 
-def test_blocking_commit_no_messages():
+@mock.patch.object(thread, '_LOGGER')
+def test_blocking__commit_starting(_LOGGER):
+    batch = create_batch()
+    batch._status = BatchStatus.STARTING
+
+    batch._commit()
+    assert batch._status == BatchStatus.SUCCESS
+
+    _LOGGER.debug.assert_called_once_with(
+        'No messages to publish, exiting commit')
+
+
+@mock.patch.object(thread, '_LOGGER')
+def test_blocking__commit_already_started(_LOGGER):
+    batch = create_batch()
+    batch._status = BatchStatus.IN_PROGRESS
+
+    batch._commit()
+    assert batch._status == BatchStatus.IN_PROGRESS
+
+    _LOGGER.debug.assert_called_once_with(
+        'Batch is already in progress, exiting commit')
+
+
+def test_blocking__commit_no_messages():
     batch = create_batch()
     with mock.patch.object(type(batch.client.api), 'publish') as publish:
         batch._commit()
-        assert publish.call_count == 0
+
+    assert publish.call_count == 0
 
 
-def test_blocking_commit_wrong_messageid_length():
+def test_blocking__commit_wrong_messageid_length():
     batch = create_batch()
     futures = (
         batch.publish({'data': b'blah blah blah'}),
@@ -138,9 +169,12 @@ def test_blocking_commit_wrong_messageid_length():
     )
 
     # Set up a PublishResponse that only returns one message ID.
-    with mock.patch.object(type(batch.client.api), 'publish') as publish:
-        publish.return_value = types.PublishResponse(message_ids=['a'])
+    publish_response = types.PublishResponse(message_ids=['a'])
+    patch = mock.patch.object(
+        type(batch.client.api), 'publish', return_value=publish_response)
+    with patch as publish:
         batch._commit()
+
     for future in futures:
         assert future.done()
         assert isinstance(future.exception(), exceptions.PublishError)
@@ -152,25 +186,26 @@ def test_monitor():
         with mock.patch.object(type(batch), '_commit') as _commit:
             batch.monitor()
 
-            # The monitor should have waited the given latency.
-            sleep.assert_called_once_with(5.0)
+    # The monitor should have waited the given latency.
+    sleep.assert_called_once_with(5.0)
 
-            # Since `monitor` runs in its own thread, it should call
-            # the blocking commit implementation.
-            _commit.assert_called_once_with()
+    # Since `monitor` runs in its own thread, it should call
+    # the blocking commit implementation.
+    _commit.assert_called_once_with()
 
 
 def test_monitor_already_committed():
     batch = create_batch(max_latency=5.0)
-    batch._status = 'something else'
+    status = 'something else'
+    batch._status = status
     with mock.patch.object(time, 'sleep') as sleep:
         batch.monitor()
 
-        # The monitor should have waited the given latency.
-        sleep.assert_called_once_with(5.0)
+    # The monitor should have waited the given latency.
+    sleep.assert_called_once_with(5.0)
 
-        # The status should not have changed.
-        assert batch._status == 'something else'
+    # The status should not have changed.
+    assert batch._status == status
 
 
 def test_publish():

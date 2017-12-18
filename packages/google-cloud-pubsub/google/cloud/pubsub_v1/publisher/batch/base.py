@@ -153,5 +153,7 @@ class BatchStatus(object):
     library hooks in functionality.
     """
     ACCEPTING_MESSAGES = 'accepting messages'
+    STARTING = 'starting'
+    IN_PROGRESS = 'in progress'
     ERROR = 'error'
     SUCCESS = 'success'
