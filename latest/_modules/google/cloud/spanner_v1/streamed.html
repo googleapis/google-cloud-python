@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.streamed &#8212; google-cloud 7bad261 documentation</title>
+    <title>google.cloud.spanner_v1.streamed &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -90,15 +90,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">source</span>       <span class="c1"># Source snapshot</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fully-processed rows.</span>
-
-<span class="sd">        :rtype: list of row-data lists.</span>
-<span class="sd">        :returns: list of completed row data, from proceesd PRS responses.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Field descriptors for result set columns.</span>
 
@@ -157,7 +148,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_row</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_current_row</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="StreamedResultSet.consume_next"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_next">[docs]</a>    <span class="k">def</span> <span class="nf">consume_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_consume_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Consume the next partial result set from the stream.</span>
 
 <span class="sd">        Parse the result set into new/existing rows in :attr:`_rows`</span>
@@ -182,21 +173,13 @@
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">chunked_value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pending_chunk</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_merge_values</span><span class="p">(</span><span class="n">values</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="StreamedResultSet.consume_all"><a class="viewcode-back" href="../../../../spanner/streamed-api.html#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Consume the streamed responses until there are no more.&quot;&quot;&quot;</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">consume_next</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-                <span class="k">break</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_merge_values</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">iter_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:],</span> <span class="p">()</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">iter_rows</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">consume_next</span><span class="p">()</span>  <span class="c1"># raises StopIteration</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_consume_next</span><span class="p">()</span>  <span class="c1"># raises StopIteration</span>
                 <span class="n">iter_rows</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[:],</span> <span class="p">()</span>
             <span class="k">while</span> <span class="n">iter_rows</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">iter_rows</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -381,7 +364,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>

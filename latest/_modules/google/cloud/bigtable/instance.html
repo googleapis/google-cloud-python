@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigtable.instance &#8212; google-cloud 7bad261 documentation</title>
+    <title>google.cloud.bigtable.instance &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -333,7 +333,7 @@
 <span class="sd">        :param serve_nodes: (Optional) The number of nodes in the cluster.</span>
 <span class="sd">                            Defaults to 3.</span>
 
-<span class="sd">        :rtype: :class:`.Cluster`</span>
+<span class="sd">        :rtype: :class:`~.bigtable.cluster.Cluster`</span>
 <span class="sd">        :returns: The cluster owned by this client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Cluster</span><span class="p">(</span><span class="n">cluster_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">serve_nodes</span><span class="p">)</span></div>
@@ -342,9 +342,10 @@
         <span class="sd">&quot;&quot;&quot;Lists clusters in this instance.</span>
 
 <span class="sd">        :rtype: tuple</span>
-<span class="sd">        :returns: A pair of results, the first is a list of :class:`.Cluster` s</span>
-<span class="sd">                  returned and the second is a list of strings (the failed</span>
-<span class="sd">                  locations in the request).</span>
+<span class="sd">        :returns: A pair of results, the first is a list of</span>
+<span class="sd">                  :class:`~.bigtable.cluster.Cluster` objects returned and the</span>
+<span class="sd">                  second is a list of strings (the failed locations in the</span>
+<span class="sd">                  request).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">ListClustersRequest</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="c1"># We expect a `.cluster_messages_v1_pb2.ListClustersResponse`</span>
@@ -420,7 +421,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>

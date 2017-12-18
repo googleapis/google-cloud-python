@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.operation &#8212; google-cloud 7bad261 documentation</title>
+    <title>google.api_core.operation &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -95,8 +95,8 @@
 <span class="sd">    Args:</span>
 <span class="sd">        operation (google.longrunning.operations_pb2.Operation): The</span>
 <span class="sd">            initial operation.</span>
-<span class="sd">        refresh (Callable[[], Operation]): A callable that returns the</span>
-<span class="sd">            latest state of the operation.</span>
+<span class="sd">        refresh (Callable[[], ~.api_core.operation.Operation]): A callable that</span>
+<span class="sd">            returns the latest state of the operation.</span>
 <span class="sd">        cancel (Callable[[], None]): A callable that tries to cancel</span>
 <span class="sd">            the operation.</span>
 <span class="sd">        result_type (func:`type`): The protobuf type for the operation&#39;s</span>
@@ -247,7 +247,8 @@
 <span class="sd">        kwargs: Keyword args passed into the :class:`Operation` constructor.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Operation: The operation future to track the given operation.</span>
+<span class="sd">        ~.api_core.operation.Operation: The operation future to track the given</span>
+<span class="sd">            operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">operation_proto</span> <span class="o">=</span> <span class="n">json_format</span><span class="o">.</span><span class="n">ParseDict</span><span class="p">(</span>
         <span class="n">operation</span><span class="p">,</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">Operation</span><span class="p">())</span>
@@ -303,7 +304,8 @@
 <span class="sd">        kwargs: Keyword args passed into the :class:`Operation` constructor.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Operation: The operation future to track the given operation.</span>
+<span class="sd">        ~.api_core.operation.Operation: The operation future to track the given</span>
+<span class="sd">            operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
         <span class="n">_refresh_grpc</span><span class="p">,</span> <span class="n">operations_stub</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -330,7 +332,8 @@
 <span class="sd">        kwargs: Keyword args passed into the :class:`Operation` constructor.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Operation: The operation future to track the given operation.</span>
+<span class="sd">        ~.api_core.operation.Operation: The operation future to track the given</span>
+<span class="sd">            operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">refresh</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
         <span class="n">operations_client</span><span class="o">.</span><span class="n">get_operation</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -367,7 +370,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>

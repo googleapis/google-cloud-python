@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Long-Running Operations &#8212; google-cloud 7bad261 documentation</title>
+    <title>Long-Running Operations &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -71,8 +71,8 @@ long-running operation using <code class="xref py py-meth docutils literal"><spa
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>operation</strong> (<em>google.longrunning.operations_pb2.Operation</em>) – The
 initial operation.</li>
-<li><strong>refresh</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation"><em>Operation</em></a><em>]</em>) – A callable that returns the
-latest state of the operation.</li>
+<li><strong>refresh</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>Operation</em><em>]</em>) – A callable that
+returns the latest state of the operation.</li>
 <li><strong>cancel</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a><em>]</em>) – A callable that tries to cancel
 the operation.</li>
 <li><strong>(</strong><strong>func</strong> (<em>metadata_type</em>) – <cite>type</cite>): The protobuf type for the operation’s
@@ -158,10 +158,15 @@ to a given API) via a gapic client.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The operation future to track the given operation.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>The operation future to track the given</dt>
+<dd><p class="first last">operation.</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation">Operation</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Operation</p>
 </td>
 </tr>
 </tbody>
@@ -186,10 +191,15 @@ to a given API) via gRPC.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The operation future to track the given operation.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>The operation future to track the given</dt>
+<dd><p class="first last">operation.</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation">Operation</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Operation</p>
 </td>
 </tr>
 </tbody>
@@ -216,10 +226,15 @@ should generally be
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The operation future to track the given operation.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>The operation future to track the given</dt>
+<dd><p class="first last">operation.</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#google.api_core.operation.Operation" title="google.api_core.operation.Operation">Operation</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Operation</p>
 </td>
 </tr>
 </tbody>
@@ -272,7 +287,9 @@ should generally be
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>

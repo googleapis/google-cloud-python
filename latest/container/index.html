@@ -1,0 +1,208 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Python Client for Google Container Engine API (Beta) &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.28.1.dev1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="google-cloud-container Releases" href="releases.html" />
+    <link rel="prev" title="Data API" href="../bigtable/data-api.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-client-for-google-container-engine-api-beta">
+<h1>Python Client for Google Container Engine API (<a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst">Beta</a>)<a class="headerlink" href="#python-client-for-google-container-engine-api-beta" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://cloud.google.com/container">Google Container Engine API</a>: The Google Kubernetes Engine API is used for building and managing container
+based applications, powered by the open source Kubernetes technology.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/stable/container-usage">Client Library Documentation</a></li>
+<li><a class="reference external" href="https://cloud.google.com/container">Product Documentation</a></li>
+</ul>
+<div class="section" id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">#</a></h2>
+<p>In order to use this library, you first need to go through the following steps:</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://console.cloud.google.com/project">Select or create a Cloud Platform project.</a></li>
+<li><a class="reference external" href="https://cloud.google.com/container">Enable the Google Container Engine API.</a></li>
+<li><a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/stable/google-cloud-auth">Setup Authentication.</a></li>
+</ol>
+<div class="section" id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h3>
+<p>Install this library in a <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> using pip. <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> is a tool to
+create isolated Python environments. The basic problem it addresses is one of
+dependencies and versions, and indirectly permissions.</p>
+<p>With <a class="reference external" href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>, it’s possible to install this library without needing system
+install permissions, and without clashing with the installed system
+dependencies.</p>
+<div class="section" id="mac-linux">
+<h4>Mac/Linux<a class="headerlink" href="#mac-linux" title="Permalink to this headline">#</a></h4>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">pip install virtualenv</span>
+<span class="go">virtualenv &lt;your-env&gt;</span>
+<span class="go">source &lt;your-env&gt;/bin/activate</span>
+<span class="go">&lt;your-env&gt;/bin/pip install google-cloud-container</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="windows">
+<h4>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">#</a></h4>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">pip install virtualenv</span>
+<span class="go">virtualenv &lt;your-env&gt;</span>
+<span class="go">&lt;your-env&gt;\Scripts\activate</span>
+<span class="go">&lt;your-env&gt;\Scripts\pip.exe install google-cloud-container</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h3>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li>Read the <a class="reference external" href="https://googlecloudplatform.github.io/google-cloud-python/stable/container-usage">Client Library Documentation</a> for Google Container Engine API
+API to see other available methods on the client.</li>
+<li>Read the <a class="reference external" href="https://cloud.google.com/container">Google Container Engine API Product documentation</a> to learn
+more about the product and see How-to Guides.</li>
+<li>View this <a class="reference external" href="https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst">repository’s main README</a> to see the full list of Cloud
+APIs that we cover.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-reference">
+<h2>Api Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="releases.html"><code class="docutils literal"><span class="pre">google-cloud-container</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1/api.html">Client for Google Container Engine API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gapic/v1/types.html">Types for Google Container Engine API Client</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Client for Google Container Engine API (Beta)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../bigtable/data-api.html" title="previous chapter">Data API</a></li>
+      <li>Next: <a href="releases.html" title="next chapter"><code class="docutils literal"><span class="pre">google-cloud-container</span></code> Releases</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/container/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

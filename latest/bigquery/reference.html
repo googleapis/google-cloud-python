@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 7bad261 documentation</title>
+    <title>API Reference &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -2336,7 +2336,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'domain', 'userByEmail', 'view', 'groupByEmail', 'specialGroup'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'userByEmail', 'view', 'domain', 'specialGroup'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -3979,6 +3979,480 @@ of the SchemaField, such as what is output by
 </dd></dl>
 
 </div>
+<div class="section" id="module-google.cloud.bigquery.query">
+<span id="query"></span><h2>Query<a class="headerlink" href="#module-google.cloud.bigquery.query" title="Permalink to this headline">#</a></h2>
+<p>BigQuery query processing.</p>
+<dl class="class">
+<dt id="google.cloud.bigquery.query.ArrayQueryParameter">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">ArrayQueryParameter</code><span class="sig-paren">(</span><em>name</em>, <em>array_type</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.query._AbstractQueryParameter</span></code></p>
+<p>Named / positional query parameters for array values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – Parameter name, used via <code class="docutils literal"><span class="pre">&#64;foo</span></code> syntax.  If None, the
+parameter can only be addressed via position (<code class="docutils literal"><span class="pre">?</span></code>).</li>
+<li><strong>array_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of type of array elements.  One of <cite>‘STRING’</cite>, <cite>‘INT64’</cite>,
+<cite>‘FLOAT64’</cite>, <cite>‘BOOL’</cite>, <cite>‘TIMESTAMP’</cite>, or <cite>‘DATE’</cite>.</li>
+<li><strong>values</strong> (<em>list of appropriate scalar type.</em>) – the parameter array values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct parameter from JSON resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – JSON mapping of parameter</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ArrayQueryParameter</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.query.ArrayQueryParameter.positional">
+<em class="property">classmethod </em><code class="descname">positional</code><span class="sig-paren">(</span><em>array_type</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.positional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.positional" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory for positional parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>array_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of type of array elements.  One of <cite>‘STRING’</cite>, <cite>‘INT64’</cite>,
+<cite>‘FLOAT64’</cite>, <cite>‘BOOL’</cite>, <cite>‘TIMESTAMP’</cite>, or <cite>‘DATE’</cite>.</li>
+<li><strong>values</strong> (<em>list of appropriate scalar type</em>) – the parameter array values.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ArrayQueryParameter</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">instance without name</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ArrayQueryParameter.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct JSON API representation for the parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">JSON mapping</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.query.QueryResults">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">QueryResults</code><span class="sig-paren">(</span><em>properties</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#QueryResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Results of a query.</p>
+<p>See:
+<a class="reference external" href="https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs/getQueryResults">https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs/getQueryResults</a></p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.cache_hit">
+<code class="descname">cache_hit</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.cache_hit" title="Permalink to this definition">#</a></dt>
+<dd><p>Query results served from cache.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#cacheHit">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#cacheHit</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the query results were served from cache (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.complete">
+<code class="descname">complete</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.complete" title="Permalink to this definition">#</a></dt>
+<dd><p>Server completed query.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobComplete">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobComplete</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the query completed on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.errors">
+<code class="descname">errors</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.errors" title="Permalink to this definition">#</a></dt>
+<dd><p>Errors generated by the query.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#errors">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#errors</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of mapping, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mappings describing errors generated on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.job_id">
+<code class="descname">job_id</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.job_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Job ID of the query job these results are from.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobReference">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobReference</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)">string</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Job ID of the query job.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.num_dml_affected_rows">
+<code class="descname">num_dml_affected_rows</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.num_dml_affected_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of rows affected by a DML query.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#numDmlAffectedRows">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#numDmlAffectedRows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Count generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token for fetching next bach of results.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#pageToken">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#pageToken</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Token generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.project">
+<code class="descname">project</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.project" title="Permalink to this definition">#</a></dt>
+<dd><p>Project bound to the query job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)">str</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the project that the query job is associated with.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.rows">
+<code class="descname">rows</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Query results.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#rows">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#rows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#google.cloud.bigquery.table.Row" title="google.cloud.bigquery.table.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.schema">
+<code class="descname">schema</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Schema for query results.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#schema">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#schema</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code>, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.total_bytes_processed">
+<code class="descname">total_bytes_processed</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.total_bytes_processed" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of bytes processed by the query.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalBytesProcessed">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalBytesProcessed</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Count generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery.query.QueryResults.total_rows">
+<code class="descname">total_rows</code><a class="headerlink" href="#google.cloud.bigquery.query.QueryResults.total_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of rows returned by the query.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalRows">https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalRows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Count generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.query.ScalarQueryParameter">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">ScalarQueryParameter</code><span class="sig-paren">(</span><em>name</em>, <em>type_</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ScalarQueryParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ScalarQueryParameter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.query._AbstractQueryParameter</span></code></p>
+<p>Named / positional query parameters for scalar values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – Parameter name, used via <code class="docutils literal"><span class="pre">&#64;foo</span></code> syntax.  If None, the
+parameter can only be addressed via position (<code class="docutils literal"><span class="pre">?</span></code>).</li>
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of parameter type.  One of ‘STRING’, ‘INT64’,
+‘FLOAT64’, ‘BOOL’, ‘TIMESTAMP’, ‘DATETIME’, or ‘DATE’.</li>
+<li><strong>value</strong> (str, int, float, bool, <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>, or
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.date</span></code></a>.) – the scalar parameter value.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.query.ScalarQueryParameter.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ScalarQueryParameter.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ScalarQueryParameter.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct parameter from JSON resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – JSON mapping of parameter</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.query.ScalarQueryParameter" title="google.cloud.bigquery.query.ScalarQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ScalarQueryParameter</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.query.ScalarQueryParameter.positional">
+<em class="property">classmethod </em><code class="descname">positional</code><span class="sig-paren">(</span><em>type_</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ScalarQueryParameter.positional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ScalarQueryParameter.positional" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory for positional paramater.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of parameter type.  One of ‘STRING’, ‘INT64’,
+‘FLOAT64’, ‘BOOL’, ‘TIMESTAMP’, ‘DATETIME’, or ‘DATE’.</li>
+<li><strong>value</strong> (str, int, float, bool, <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>, or
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.date" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">datetime.date</span></code></a>.) – the scalar parameter value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#google.cloud.bigquery.query.ScalarQueryParameter" title="google.cloud.bigquery.query.ScalarQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ScalarQueryParameter</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">instance without name</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.query.ScalarQueryParameter.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#ScalarQueryParameter.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.ScalarQueryParameter.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct JSON API representation for the parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">JSON mapping</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.query.StructQueryParameter">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">StructQueryParameter</code><span class="sig-paren">(</span><em>name</em>, <em>*sub_params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#StructQueryParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.StructQueryParameter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">google.cloud.bigquery.query._AbstractQueryParameter</span></code></p>
+<p>Named / positional query parameters for struct values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) – Parameter name, used via <code class="docutils literal"><span class="pre">&#64;foo</span></code> syntax.  If None, the
+parameter can only be addressed via position (<code class="docutils literal"><span class="pre">?</span></code>).</li>
+<li><strong>sub_params</strong> (tuple of <a class="reference internal" href="#google.cloud.bigquery.query.ScalarQueryParameter" title="google.cloud.bigquery.query.ScalarQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ScalarQueryParameter</span></code></a>,
+<a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ArrayQueryParameter</span></code></a>, or
+<a class="reference internal" href="#google.cloud.bigquery.query.StructQueryParameter" title="google.cloud.bigquery.query.StructQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">StructQueryParameter</span></code></a>) – the sub-parameters for the struct</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.query.StructQueryParameter.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#StructQueryParameter.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.StructQueryParameter.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory: construct parameter from JSON resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – JSON mapping of parameter</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.query.StructQueryParameter" title="google.cloud.bigquery.query.StructQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">StructQueryParameter</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="google.cloud.bigquery.query.StructQueryParameter.positional">
+<em class="property">classmethod </em><code class="descname">positional</code><span class="sig-paren">(</span><em>*sub_params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#StructQueryParameter.positional"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.StructQueryParameter.positional" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory for positional parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sub_params</strong> (tuple of
+<a class="reference internal" href="#google.cloud.bigquery.query.ScalarQueryParameter" title="google.cloud.bigquery.query.ScalarQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ScalarQueryParameter</span></code></a>,
+<a class="reference internal" href="#google.cloud.bigquery.query.ArrayQueryParameter" title="google.cloud.bigquery.query.ArrayQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">ArrayQueryParameter</span></code></a>, or
+<a class="reference internal" href="#google.cloud.bigquery.query.StructQueryParameter" title="google.cloud.bigquery.query.StructQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">StructQueryParameter</span></code></a>) – the sub-parameters for the struct</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#google.cloud.bigquery.query.StructQueryParameter" title="google.cloud.bigquery.query.StructQueryParameter"><code class="xref py py-class docutils literal"><span class="pre">StructQueryParameter</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">instance without name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.query.StructQueryParameter.to_api_repr">
+<code class="descname">to_api_repr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#StructQueryParameter.to_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.StructQueryParameter.to_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct JSON API representation for the parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)">dict</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">JSON mapping</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery.query.UDFResource">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery.query.</code><code class="descname">UDFResource</code><span class="sig-paren">(</span><em>udf_type</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/query.html#UDFResource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.query.UDFResource" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Describe a single user-defined function (UDF) resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>udf_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the type of the resource (‘inlineCode’ or ‘resourceUri’)</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the inline code or resource URI.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/user-defined-functions#api">https://cloud.google.com/bigquery/user-defined-functions#api</a></p>
+</dd></dl>
+
+</div>
 <div class="section" id="module-google.cloud.bigquery.external_config">
 <span id="external-configuration"></span><h2>External Configuration<a class="headerlink" href="#module-google.cloud.bigquery.external_config" title="Permalink to this headline">#</a></h2>
 <p>Define classes that describe external data sources.</p>
@@ -4524,7 +4998,9 @@ returned from the API.</td>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#queries">Queries</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>

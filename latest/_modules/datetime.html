@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>datetime &#8212; google-cloud 7bad261 documentation</title>
+    <title>datetime &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -1095,7 +1095,7 @@
 <span class="sd">        hour, minute (required)</span>
 <span class="sd">        second, microsecond (default to zero)</span>
 <span class="sd">        tzinfo (default to None)</span>
-<span class="sd">        fold (keyword only, default to True)</span>
+<span class="sd">        fold (keyword only, default to zero)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hour</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">hour</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span> <span class="ow">and</span> <span class="n">hour</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&amp;</span><span class="mh">0x7F</span> <span class="o">&lt;</span> <span class="mi">24</span><span class="p">:</span>
             <span class="c1"># Pickle support</span>
@@ -2313,7 +2313,8 @@
          <span class="n">_check_tzinfo_arg</span><span class="p">,</span> <span class="n">_check_tzname</span><span class="p">,</span> <span class="n">_check_utc_offset</span><span class="p">,</span> <span class="n">_cmp</span><span class="p">,</span> <span class="n">_cmperror</span><span class="p">,</span>
          <span class="n">_date_class</span><span class="p">,</span> <span class="n">_days_before_month</span><span class="p">,</span> <span class="n">_days_before_year</span><span class="p">,</span> <span class="n">_days_in_month</span><span class="p">,</span>
          <span class="n">_format_time</span><span class="p">,</span> <span class="n">_is_leap</span><span class="p">,</span> <span class="n">_isoweek1monday</span><span class="p">,</span> <span class="n">_math</span><span class="p">,</span> <span class="n">_ord2ymd</span><span class="p">,</span>
-         <span class="n">_time</span><span class="p">,</span> <span class="n">_time_class</span><span class="p">,</span> <span class="n">_tzinfo_class</span><span class="p">,</span> <span class="n">_wrap_strftime</span><span class="p">,</span> <span class="n">_ymd2ord</span><span class="p">)</span>
+         <span class="n">_time</span><span class="p">,</span> <span class="n">_time_class</span><span class="p">,</span> <span class="n">_tzinfo_class</span><span class="p">,</span> <span class="n">_wrap_strftime</span><span class="p">,</span> <span class="n">_ymd2ord</span><span class="p">,</span>
+         <span class="n">_divide_and_round</span><span class="p">)</span>
     <span class="c1"># XXX Since import * above excludes names that start with _,</span>
     <span class="c1"># docstring does not get overwritten. In the future, it may be</span>
     <span class="c1"># appropriate to maintain a single module level docstring and</span>
@@ -2349,7 +2350,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>
