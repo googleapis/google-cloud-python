@@ -26,6 +26,11 @@
   - Moving `will_accept()` check out of `PublisherClient.batch()`
     factory (#4613).
   - Checking `Batch.will_accept` in thread-safe way (#4616).
+- **Breaking API change**: As part of #4613, changing `PublisherClient.batch()`
+  to no longer accept a `message` (since the `will_accept` check needs to
+  happen in a more concurrency friendly way). In addition, changing the
+  `create` argument so that it means "create even if batch already exists"
+  rather than "create if missing".
 
 ### Documentation
 
