@@ -84,17 +84,30 @@ def test_commit():
     with mock.patch.object(threading, 'Thread', autospec=True) as Thread:
         batch.commit()
 
-        # A thread should have been created to do the actual commit.
-        Thread.assert_called_once_with(
-            name='Thread-CommitBatchPublisher',
-            target=batch._commit,
-        )
-        Thread.return_value.start.assert_called_once_with()
+    # A thread should have been created to do the actual commit.
+    Thread.assert_called_once_with(
+        name='Thread-CommitBatchPublisher',
+        target=batch._commit,
+    )
+    Thread.return_value.start.assert_called_once_with()
 
     # The batch's status needs to be something other than "accepting messages",
     # since the commit started.
     assert batch.status != BatchStatus.ACCEPTING_MESSAGES
     assert batch.status == BatchStatus.STARTING
+
+
+def test_commit_no_op():
+    batch = create_batch()
+    batch._status = BatchStatus.IN_PROGRESS
+    with mock.patch.object(threading, 'Thread', autospec=True) as Thread:
+        batch.commit()
+
+    # Make sure a thread was not created.
+    Thread.assert_not_called()
+
+    # Check that batch status is unchanged.
+    assert batch.status == BatchStatus.IN_PROGRESS
 
 
 def test_blocking__commit():
@@ -217,21 +230,35 @@ def test_publish():
     )
 
     # Publish each of the messages, which should save them to the batch.
-    for message in messages:
-        batch.publish(message)
+    futures = [batch.publish(message) for message in messages]
 
     # There should be three messages on the batch, and three futures.
     assert len(batch.messages) == 3
-    assert len(batch._futures) == 3
+    assert batch._futures == futures
 
     # The size should have been incremented by the sum of the size of the
     # messages.
-    assert batch.size == sum([m.ByteSize() for m in messages])
+    expected_size = sum([message_pb.ByteSize() for message_pb in messages])
+    assert batch.size == expected_size
     assert batch.size > 0  # I do not always trust protobuf.
 
 
-def test_publish_max_messages():
-    batch = create_batch(max_messages=4)
+def test_publish_not_will_accept():
+    batch = create_batch(max_messages=0)
+
+    # Publish the message.
+    message = types.PubsubMessage(data=b'foobarbaz')
+    future = batch.publish(message)
+
+    assert future is None
+    assert batch.size == 0
+    assert batch.messages == []
+    assert batch._futures == []
+
+
+def test_publish_exceed_max_messages():
+    max_messages = 4
+    batch = create_batch(max_messages=max_messages)
     messages = (
         types.PubsubMessage(data=b'foobarbaz'),
         types.PubsubMessage(data=b'spameggs'),
@@ -240,27 +267,29 @@ def test_publish_max_messages():
 
     # Publish each of the messages, which should save them to the batch.
     with mock.patch.object(batch, 'commit') as commit:
-        for message in messages:
-            batch.publish(message)
+        futures = [batch.publish(message) for message in messages]
+        assert batch._futures == futures
+        assert len(futures) == max_messages - 1
 
         # Commit should not yet have been called.
         assert commit.call_count == 0
 
         # When a fourth message is published, commit should be called.
-        batch.publish(types.PubsubMessage(data=b'last one'))
+        future = batch.publish(types.PubsubMessage(data=b'last one'))
         commit.assert_called_once_with()
+
+        futures.append(future)
+        assert batch._futures == futures
+        assert len(futures) == max_messages
 
 
 def test_publish_dict():
     batch = create_batch()
-    batch.publish({'data': b'foobarbaz', 'attributes': {'spam': 'eggs'}})
+    future = batch.publish(
+        {'data': b'foobarbaz', 'attributes': {'spam': 'eggs'}})
 
     # There should be one message on the batch.
-    assert len(batch.messages) == 1
-
-    # It should be an actual protobuf Message at this point, with the
-    # expected values.
-    message = batch.messages[0]
-    assert isinstance(message, types.PubsubMessage)
-    assert message.data == b'foobarbaz'
-    assert message.attributes == {'spam': 'eggs'}
+    expected_message = types.PubsubMessage(
+        data=b'foobarbaz', attributes={'spam': 'eggs'})
+    assert batch.messages == [expected_message]
+    assert batch._futures == [future]
