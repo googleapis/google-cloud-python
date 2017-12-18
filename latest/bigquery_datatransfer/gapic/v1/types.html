@@ -1,0 +1,1080 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for BigQuery Data Transfer API Client &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.28.1.dev1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Bigtable" href="../../../bigtable/usage.html" />
+    <link rel="prev" title="Client for BigQuery Data Transfer API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.bigquery_datatransfer_v1.types">
+<span id="types-for-bigquery-data-transfer-api-client"></span><h1>Types for BigQuery Data Transfer API Client<a class="headerlink" href="#module-google.cloud.bigquery_datatransfer_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">CheckValidCredsRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to determine whether the user has valid credentials. This
+method is used to limit the number of OAuth popups in the user
+interface. The user id is inferred from the API call context. If the
+data source has the Google+ authorization type, this method returns
+false, as it cannot be determined whether the credentials are already
+valid merely based on the user id.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The data source in the form:
+<code class="docutils literal"><span class="pre">projects/{project_id}/dataSources/{data_source_id}</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">CheckValidCredsResponse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>A response indicating whether the credentials exist and are valid.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsResponse.has_valid_creds">
+<code class="descname">has_valid_creds</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsResponse.has_valid_creds" title="Permalink to this definition">#</a></dt>
+<dd><p>If set to <code class="docutils literal"><span class="pre">true</span></code>, the credentials exist and are valid.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">CreateTransferConfigRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to create a data transfer configuration. If new credentials
+are needed for this transfer configuration, an authorization code must
+be provided. If an authorization code is provided, the transfer
+configuration will be associated with the user id corresponding to the
+authorization code. Otherwise, the transfer configuration will be
+associated with the calling user.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The BigQuery project id where the transfer configuration
+should be created. Must be in the format
+/projects/{project_id}/locations/{location_id} or
+/projects/{project_id}/locations/- In case when ‘-‘ is
+specified as location_id, location is infered from the
+destination dataset region.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.transfer_config">
+<code class="descname">transfer_config</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.transfer_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Data transfer configuration to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.authorization_code">
+<code class="descname">authorization_code</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest.authorization_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional OAuth2 authorization code to use with this transfer
+configuration. This is required if new credentials are needed,
+as indicated by <code class="docutils literal"><span class="pre">CheckValidCreds</span></code>. In order to obtain
+authorization_code, please make a request to <a class="reference external" href="https://www.gsta">https://www.gsta</a>
+tic.com/bigquerydatatransfer/oauthz/auth?client_id=&amp;scope=&amp;re
+direct_uri=  -  client_id should be OAuth client_id of
+BigQuery DTS API for the    given data source returned by
+ListDataSources method. -  data_source_scopes are the scopes
+returned by ListDataSources    method. -  redirect_uri is an
+optional parameter. If not specified, then    authorization
+code is posted to the opener of authorization flow    window.
+Otherwise it will be sent to the redirect uri. A special
+value of <a class="reference external" href="urn:ietf:wg:oauth:2.0:oob">urn:ietf:wg:oauth:2.0:oob</a> means that authorization
+code    should be returned in the title bar of the browser,
+with the page    text prompting the user to copy the code and
+paste it in the    application.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">DataSource</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents data source metadata. Metadata is sufficient to render UI and
+request proper OAuth tokens.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Data source resource name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.data_source_id">
+<code class="descname">data_source_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.data_source_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Data source id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>User friendly data source name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.description" title="Permalink to this definition">#</a></dt>
+<dd><p>User friendly data source description string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.client_id">
+<code class="descname">client_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.client_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Data source client id which should be used to receive refresh
+token. When not supplied, no offline credentials are populated
+for data transfer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.scopes">
+<code class="descname">scopes</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.scopes" title="Permalink to this definition">#</a></dt>
+<dd><p>Api auth scopes for which refresh token needs to be obtained.
+Only valid when <code class="docutils literal"><span class="pre">client_id</span></code> is specified. Ignored otherwise.
+These are scopes needed by a data source to prepare data and
+ingest them into BigQuery, e.g.,
+<a class="reference external" href="https://www.googleapis.com/auth/bigquery">https://www.googleapis.com/auth/bigquery</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.transfer_type">
+<code class="descname">transfer_type</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.transfer_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Transfer type. Currently supports only batch transfers, which
+are transfers that use the BigQuery batch APIs (load or query)
+to ingest the data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.supports_multiple_transfers">
+<code class="descname">supports_multiple_transfers</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.supports_multiple_transfers" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates whether the data source supports multiple transfers
+to different BigQuery targets.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.update_deadline_seconds">
+<code class="descname">update_deadline_seconds</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.update_deadline_seconds" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of seconds to wait for an update from the data
+source before BigQuery marks the transfer as failed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.default_schedule">
+<code class="descname">default_schedule</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.default_schedule" title="Permalink to this definition">#</a></dt>
+<dd><p>Default data transfer schedule. Examples of valid schedules
+include: <code class="docutils literal"><span class="pre">1st,3rd</span> <span class="pre">monday</span> <span class="pre">of</span> <span class="pre">month</span> <span class="pre">15:30</span></code>, <code class="docutils literal"><span class="pre">every</span> <span class="pre">wed,fri</span> <span class="pre">of</span>
+<span class="pre">jan,jun</span> <span class="pre">13:15</span></code>, and <code class="docutils literal"><span class="pre">first</span> <span class="pre">sunday</span> <span class="pre">of</span> <span class="pre">quarter</span> <span class="pre">00:00</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.supports_custom_schedule">
+<code class="descname">supports_custom_schedule</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.supports_custom_schedule" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies whether the data source supports a user defined
+schedule, or operates on the default schedule. When set to
+<code class="docutils literal"><span class="pre">true</span></code>, user can override default schedule.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.parameters">
+<code class="descname">parameters</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>Data source parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.help_url">
+<code class="descname">help_url</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.help_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Url for the help document for this data source.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.authorization_type">
+<code class="descname">authorization_type</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.authorization_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates the type of authorization.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.data_refresh_type">
+<code class="descname">data_refresh_type</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.data_refresh_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies whether the data source supports automatic data
+refresh for the past few days, and how it’s supported. For
+some data sources, data might not be complete until a few days
+later, so it’s useful to refresh data automatically.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.default_data_refresh_window_days">
+<code class="descname">default_data_refresh_window_days</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.default_data_refresh_window_days" title="Permalink to this definition">#</a></dt>
+<dd><p>Default data refresh window on days. Only meaningful when
+<code class="docutils literal"><span class="pre">data_refresh_type</span></code> = <code class="docutils literal"><span class="pre">SLIDING_WINDOW</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.manual_runs_disabled">
+<code class="descname">manual_runs_disabled</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.manual_runs_disabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Disables backfilling and manual run scheduling for the data
+source.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSource.minimum_schedule_interval">
+<code class="descname">minimum_schedule_interval</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSource.minimum_schedule_interval" title="Permalink to this definition">#</a></dt>
+<dd><p>The minimum interval between two consecutive scheduled runs.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">DataSourceParameter</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a data source parameter with validation rules, so that
+parameters can be rendered in the UI. These parameters are given to us
+by supported data sources, and include all needed information for
+rendering and validation. Thus, whoever uses this api can decide to
+generate either generic ui, or custom data source specific forms.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.param_id">
+<code class="descname">param_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.param_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter identifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter display name in the user interface.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter description.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameter type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.required">
+<code class="descname">required</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.required" title="Permalink to this definition">#</a></dt>
+<dd><p>Is parameter required.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.repeated">
+<code class="descname">repeated</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.repeated" title="Permalink to this definition">#</a></dt>
+<dd><p>Can parameter have multiple values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.validation_regex">
+<code class="descname">validation_regex</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.validation_regex" title="Permalink to this definition">#</a></dt>
+<dd><p>Regular expression which can be used for parameter validation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.allowed_values">
+<code class="descname">allowed_values</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.allowed_values" title="Permalink to this definition">#</a></dt>
+<dd><p>All possible values for the parameter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.min_value">
+<code class="descname">min_value</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.min_value" title="Permalink to this definition">#</a></dt>
+<dd><p>For integer and double values specifies minimum allowed value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.max_value">
+<code class="descname">max_value</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.max_value" title="Permalink to this definition">#</a></dt>
+<dd><p>For integer and double values specifies maxminum allowed
+value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.fields">
+<code class="descname">fields</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.fields" title="Permalink to this definition">#</a></dt>
+<dd><p>When parameter is a record, describes child fields.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.validation_description">
+<code class="descname">validation_description</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.validation_description" title="Permalink to this definition">#</a></dt>
+<dd><p>Description of the requirements for this field, in case the
+user input does not fulfill the regex pattern or min/max
+values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.validation_help_url">
+<code class="descname">validation_help_url</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.validation_help_url" title="Permalink to this definition">#</a></dt>
+<dd><p>URL to a help document to further explain the naming
+requirements.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.immutable">
+<code class="descname">immutable</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.immutable" title="Permalink to this definition">#</a></dt>
+<dd><p>Cannot be changed after initial creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.recurse">
+<code class="descname">recurse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.recurse" title="Permalink to this definition">#</a></dt>
+<dd><p>If set to true, schema should be taken from the parent with
+the same parameter_id. Only applicable when parameter type is
+RECORD.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">DeleteTransferConfigRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to delete data transfer information. All associated transfer
+runs and log messages will be deleted as well.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The field will contain name of the resource requested, for
+example: <code class="docutils literal"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">DeleteTransferRunRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to delete data transfer run information.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The field will contain name of the resource requested, for
+example: <code class="docutils literal"><span class="pre">projects/{project_id}/transferConfigs/{config_id}/r</span>
+<span class="pre">uns/{run_id}</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">GetDataSourceRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to get data source info.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The field will contain name of the resource requested, for
+example:
+<code class="docutils literal"><span class="pre">projects/{project_id}/dataSources/{data_source_id}</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">GetTransferConfigRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to get data transfer information.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The field will contain name of the resource requested, for
+example: <code class="docutils literal"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">GetTransferRunRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to get data transfer run information.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The field will contain name of the resource requested, for
+example: <code class="docutils literal"><span class="pre">projects/{project_id}/transferConfigs/{config_id}/r</span>
+<span class="pre">uns/{run_id}</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListDataSourcesRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Request to list supported data sources and their data transfer settings.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The BigQuery project id for which data sources should be
+returned. Must be in the form: <code class="docutils literal"><span class="pre">projects/{project_id}</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Pagination token, which can be used to request a specific page
+of <code class="docutils literal"><span class="pre">ListDataSourcesRequest</span></code> list results. For multiple-page
+results, <code class="docutils literal"><span class="pre">ListDataSourcesResponse</span></code> outputs a <code class="docutils literal"><span class="pre">next_page</span></code>
+token, which can be used as the <code class="docutils literal"><span class="pre">page_token</span></code> value to
+request the next page of list results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Page size. The default page size is the maximum value of 1000
+results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListDataSourcesResponse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns list of supported data sources and their metadata.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse.data_sources">
+<code class="descname">data_sources</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse.data_sources" title="Permalink to this definition">#</a></dt>
+<dd><p>List of supported data sources and their transfer settings.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The next-pagination token. For multiple-page list
+results, this token can be used as the
+<code class="docutils literal"><span class="pre">ListDataSourcesRequest.page_token</span></code> to request the next page
+of list results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListTransferConfigsRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to list data transfers configured for a BigQuery project.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>The BigQuery project id for which data sources should be
+returned: <code class="docutils literal"><span class="pre">projects/{project_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.data_source_ids">
+<code class="descname">data_source_ids</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.data_source_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>When specified, only configurations of requested data sources
+are returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Pagination token, which can be used to request a specific page
+of <code class="docutils literal"><span class="pre">ListTransfersRequest</span></code> list results. For multiple-page
+results, <code class="docutils literal"><span class="pre">ListTransfersResponse</span></code> outputs a <code class="docutils literal"><span class="pre">next_page</span></code>
+token, which can be used as the <code class="docutils literal"><span class="pre">page_token</span></code> value to
+request the next page of list results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Page size. The default page size is the maximum value of 1000
+results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListTransferConfigsResponse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The returned list of pipelines in the project.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse.transfer_configs">
+<code class="descname">transfer_configs</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse.transfer_configs" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The stored pipeline transfer configurations.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The next-pagination token. For multiple-page list
+results, this token can be used as the
+<code class="docutils literal"><span class="pre">ListTransferConfigsRequest.page_token</span></code> to request the next
+page of list results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListTransferLogsRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to get user facing log messages associated with data transfer
+run.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Transfer run name in the form: <code class="docutils literal"><span class="pre">projects/{project_id}/transfe</span>
+<span class="pre">rConfigs/{config_Id}/runs/{run_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Pagination token, which can be used to request a specific page
+of <code class="docutils literal"><span class="pre">ListTransferLogsRequest</span></code> list results. For multiple-page
+results, <code class="docutils literal"><span class="pre">ListTransferLogsResponse</span></code> outputs a <code class="docutils literal"><span class="pre">next_page</span></code>
+token, which can be used as the <code class="docutils literal"><span class="pre">page_token</span></code> value to
+request the next page of list results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Page size. The default page size is the maximum value of 1000
+results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.message_types">
+<code class="descname">message_types</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest.message_types" title="Permalink to this definition">#</a></dt>
+<dd><p>Message types to return. If not populated - INFO, WARNING and
+ERROR messages are returned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListTransferLogsResponse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The returned list transfer run messages.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse.transfer_messages">
+<code class="descname">transfer_messages</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse.transfer_messages" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The stored pipeline transfer messages.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The next-pagination token. For multiple-page list
+results, this token can be used as the
+<code class="docutils literal"><span class="pre">GetTransferRunLogRequest.page_token</span></code> to request the next
+page of list results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListTransferRunsRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to list data transfer runs. UI can use this method to
+show/filter specific data transfer runs. The data source can use this
+method to request all scheduled transfer runs.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of transfer configuration for which transfer runs should
+be retrieved. Format of transfer configuration resource name
+is: <code class="docutils literal"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.states">
+<code class="descname">states</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.states" title="Permalink to this definition">#</a></dt>
+<dd><p>When specified, only transfer runs with requested states are
+returned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Pagination token, which can be used to request a specific page
+of <code class="docutils literal"><span class="pre">ListTransferRunsRequest</span></code> list results. For multiple-page
+results, <code class="docutils literal"><span class="pre">ListTransferRunsResponse</span></code> outputs a <code class="docutils literal"><span class="pre">next_page</span></code>
+token, which can be used as the <code class="docutils literal"><span class="pre">page_token</span></code> value to
+request the next page of list results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Page size. The default page size is the maximum value of 1000
+results.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.run_attempt">
+<code class="descname">run_attempt</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.run_attempt" title="Permalink to this definition">#</a></dt>
+<dd><p>Indicates how run attempts are to be pulled.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ListTransferRunsResponse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The returned list of pipelines in the project.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse.transfer_runs">
+<code class="descname">transfer_runs</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse.transfer_runs" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The stored pipeline transfer runs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The next-pagination token. For multiple-page list
+results, this token can be used as the
+<code class="docutils literal"><span class="pre">ListTransferRunsRequest.page_token</span></code> to request the next
+page of list results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ScheduleTransferRunsRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to schedule transfer runs for a time range.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest.parent">
+<code class="descname">parent</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Transfer configuration name in the form:
+<code class="docutils literal"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Start time of the range of transfer runs. For example,
+<code class="docutils literal"><span class="pre">&quot;2017-05-25T00:00:00+00:00&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>End time of the range of transfer runs. For example,
+<code class="docutils literal"><span class="pre">&quot;2017-05-30T00:00:00+00:00&quot;</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">ScheduleTransferRunsResponse</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>A response to schedule transfer runs for a time range.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsResponse.runs">
+<code class="descname">runs</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsResponse.runs" title="Permalink to this definition">#</a></dt>
+<dd><p>The transfer runs that were scheduled.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">TransferConfig</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a data transfer configuration. A transfer configuration
+contains all metadata needed to perform a data transfer. For example,
+<code class="docutils literal"><span class="pre">destination_dataset_id</span></code> specifies where data should be stored. When a
+new transfer configuration is created, the specified
+<code class="docutils literal"><span class="pre">destination_dataset_id</span></code> is created when needed and shared with the
+appropriate data source service account.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the transfer config. Transfer config
+names have the form
+<code class="docutils literal"><span class="pre">projects/{project_id}/transferConfigs/{config_id}</span></code>. Where
+<code class="docutils literal"><span class="pre">config_id</span></code> is usually a uuid, even though it is not
+guaranteed or required. The name is ignored when creating a
+transfer config.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.destination_dataset_id">
+<code class="descname">destination_dataset_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.destination_dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The BigQuery target dataset id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>User specified display name for the data transfer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.data_source_id">
+<code class="descname">data_source_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.data_source_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Data source id. Cannot be changed once data transfer is
+created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.params">
+<code class="descname">params</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.params" title="Permalink to this definition">#</a></dt>
+<dd><p>Data transfer specific parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.schedule">
+<code class="descname">schedule</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.schedule" title="Permalink to this definition">#</a></dt>
+<dd><p>Data transfer schedule. If the data source does not support a
+custom schedule, this should be empty. If it is empty, the
+default value for the data source will be used. The specified
+times are in UTC. Examples of valid format: <code class="docutils literal"><span class="pre">1st,3rd</span> <span class="pre">monday</span>
+<span class="pre">of</span> <span class="pre">month</span> <span class="pre">15:30</span></code>, <code class="docutils literal"><span class="pre">every</span> <span class="pre">wed,fri</span> <span class="pre">of</span> <span class="pre">jan,jun</span> <span class="pre">13:15</span></code>, and
+<code class="docutils literal"><span class="pre">first</span> <span class="pre">sunday</span> <span class="pre">of</span> <span class="pre">quarter</span> <span class="pre">00:00</span></code>. See more explanation about
+the format here: <a class="reference external" href="https://cloud.google.com/appengine/docs/flexi">https://cloud.google.com/appengine/docs/flexi</a>
+ble/python/scheduling-jobs-with-cron-
+yaml#the_schedule_format NOTE: the granularity should be at
+least 8 hours, or less frequent.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.data_refresh_window_days">
+<code class="descname">data_refresh_window_days</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.data_refresh_window_days" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of days to look back to automatically refresh the
+data. For example, if <code class="docutils literal"><span class="pre">data_refresh_window_days</span> <span class="pre">=</span> <span class="pre">10</span></code>, then
+every day BigQuery reingests data for [today-10, today-1],
+rather than ingesting data for just [today-1]. Only valid if
+the data source supports the feature. Set the value to 0 to
+use the default value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.disabled">
+<code class="descname">disabled</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.disabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Is this config disabled. When set to true, no runs are
+scheduled for a given transfer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Data transfer modification time. Ignored by
+server on input.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.next_run_time">
+<code class="descname">next_run_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.next_run_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Next time when data transfer will run.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. State of the most recently updated transfer run.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.user_id">
+<code class="descname">user_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.user_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Unique ID of the user on whose behalf transfer is
+done. Applicable only to data sources that do not support
+service accounts. When set to 0, the data source service
+account credentials are used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferConfig.dataset_region">
+<code class="descname">dataset_region</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferConfig.dataset_region" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Region in which BigQuery dataset is located.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferMessage">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">TransferMessage</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferMessage" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a user facing message for a particular data transfer run.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferMessage.message_time">
+<code class="descname">message_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferMessage.message_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time when message was logged.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferMessage.severity">
+<code class="descname">severity</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferMessage.severity" title="Permalink to this definition">#</a></dt>
+<dd><p>Message severity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferMessage.message_text">
+<code class="descname">message_text</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferMessage.message_text" title="Permalink to this definition">#</a></dt>
+<dd><p>Message text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">TransferRun</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents a data transfer run. Next id: 23</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource name of the transfer run. Transfer run names have
+the form <code class="docutils literal"><span class="pre">projects/{project_id}/locations/{location}/transfer</span>
+<span class="pre">Configs/{config_id}/runs/{run_id}</span></code>. The name is ignored when
+creating a transfer run.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.destination_dataset_id">
+<code class="descname">destination_dataset_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.destination_dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The BigQuery target dataset id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.schedule_time">
+<code class="descname">schedule_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.schedule_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimum time after which a transfer run can be started.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.params">
+<code class="descname">params</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.params" title="Permalink to this definition">#</a></dt>
+<dd><p>Data transfer specific parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.run_time">
+<code class="descname">run_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.run_time" title="Permalink to this definition">#</a></dt>
+<dd><p>For batch transfer runs, specifies the date and time that data
+should be ingested.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Time when transfer run was started. Parameter
+ignored by server for input requests.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Time when transfer run ended. Parameter ignored
+by server for input requests.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.update_time">
+<code class="descname">update_time</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.update_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Last time the data transfer run state was
+updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.data_source_id">
+<code class="descname">data_source_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.data_source_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Data source id.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.state">
+<code class="descname">state</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.state" title="Permalink to this definition">#</a></dt>
+<dd><p>Data transfer run state. Ignored for input requests.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.user_id">
+<code class="descname">user_id</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.user_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Unique ID of the user on whose behalf transfer is
+done. Applicable only to data sources that do not support
+service accounts. When set to 0, the data source service
+account credentials are used. May be negative.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.TransferRun.schedule">
+<code class="descname">schedule</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.TransferRun.schedule" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. Describes the schedule of this transfer run if it
+was created as part of a regular schedule. For batch transfer
+runs that are scheduled manually, this is empty. NOTE: the
+system might choose to delay the schedule depending on the
+current load, so <code class="docutils literal"><span class="pre">schedule_time</span></code> doesn’t always matches
+this.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.bigquery_datatransfer_v1.types.</code><code class="descname">UpdateTransferConfigRequest</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>A request to update a transfer configuration. To update the user id of
+the transfer configuration, an authorization code needs to be provided.</p>
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.transfer_config">
+<code class="descname">transfer_config</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.transfer_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Data transfer configuration to create.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.authorization_code">
+<code class="descname">authorization_code</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.authorization_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional OAuth2 authorization code to use with this transfer
+configuration. If it is provided, the transfer configuration
+will be associated with the authorizing user. In order to
+obtain authorization_code, please make a request to <a class="reference external" href="https://w">https://w</a>
+ww.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=&amp;sc
+ope=&amp;redirect_uri=  -  client_id should be OAuth client_id
+of BigQuery DTS API for the    given data source returned by
+ListDataSources method. -  data_source_scopes are the scopes
+returned by ListDataSources    method. -  redirect_uri is an
+optional parameter. If not specified, then    authorization
+code is posted to the opener of authorization flow    window.
+Otherwise it will be sent to the redirect uri. A special
+value of <a class="reference external" href="urn:ietf:wg:oauth:2.0:oob">urn:ietf:wg:oauth:2.0:oob</a> means that authorization
+code    should be returned in the title bar of the browser,
+with the page    text prompting the user to copy the code and
+paste it in the    application.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.update_mask">
+<code class="descname">update_mask</code><a class="headerlink" href="#google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest.update_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Required list of fields to be updated in this request.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for BigQuery Data Transfer API (Alpha)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for BigQuery Data Transfer API (Alpha)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for BigQuery Data Transfer API</a></li>
+      <li>Next: <a href="../../../bigtable/usage.html" title="next chapter">Bigtable</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/bigquery_datatransfer/gapic/v1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

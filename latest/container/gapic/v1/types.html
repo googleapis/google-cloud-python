@@ -1,0 +1,2313 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types for Google Container Engine API Client &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.28.1.dev1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Datastore" href="../../../datastore/usage.html" />
+    <link rel="prev" title="Client for Google Container Engine API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-google.cloud.container_v1.types">
+<span id="types-for-google-container-engine-api-client"></span><h1>Types for Google Container Engine API Client<a class="headerlink" href="#module-google.cloud.container_v1.types" title="Permalink to this headline">#</a></h1>
+<dl class="class">
+<dt id="google.cloud.container_v1.types.AcceleratorConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">AcceleratorConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.AcceleratorConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>AcceleratorConfig represents a Hardware Accelerator request.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AcceleratorConfig.accelerator_count">
+<code class="descname">accelerator_count</code><a class="headerlink" href="#google.cloud.container_v1.types.AcceleratorConfig.accelerator_count" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of the accelerator cards exposed to an instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AcceleratorConfig.accelerator_type">
+<code class="descname">accelerator_type</code><a class="headerlink" href="#google.cloud.container_v1.types.AcceleratorConfig.accelerator_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The accelerator type resource name. List of supported
+accelerators <a class="reference external" href="/compute/docs/gpus/#Introduction">here</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.AddonsConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">AddonsConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.AddonsConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the addons that can be automatically spun up in the
+cluster, enabling additional functionality.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AddonsConfig.http_load_balancing">
+<code class="descname">http_load_balancing</code><a class="headerlink" href="#google.cloud.container_v1.types.AddonsConfig.http_load_balancing" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the HTTP (L7) load balancing controller
+addon, which makes it easy to set up HTTP load balancers for
+services in a cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AddonsConfig.horizontal_pod_autoscaling">
+<code class="descname">horizontal_pod_autoscaling</code><a class="headerlink" href="#google.cloud.container_v1.types.AddonsConfig.horizontal_pod_autoscaling" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the horizontal pod autoscaling feature,
+which increases or decreases the number of replica pods a
+replication controller has based on the resource usage of the
+existing pods.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AddonsConfig.kubernetes_dashboard">
+<code class="descname">kubernetes_dashboard</code><a class="headerlink" href="#google.cloud.container_v1.types.AddonsConfig.kubernetes_dashboard" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the Kubernetes Dashboard.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AddonsConfig.network_policy_config">
+<code class="descname">network_policy_config</code><a class="headerlink" href="#google.cloud.container_v1.types.AddonsConfig.network_policy_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for NetworkPolicy. This only tracks whether the
+addon is enabled or not on the Master, it does not track
+whether network policy is enabled for the nodes.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.AutoUpgradeOptions">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">AutoUpgradeOptions</code><a class="headerlink" href="#google.cloud.container_v1.types.AutoUpgradeOptions" title="Permalink to this definition">#</a></dt>
+<dd><p>AutoUpgradeOptions defines the set of options for the user to control
+how the Auto Upgrades will proceed.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AutoUpgradeOptions.auto_upgrade_start_time">
+<code class="descname">auto_upgrade_start_time</code><a class="headerlink" href="#google.cloud.container_v1.types.AutoUpgradeOptions.auto_upgrade_start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] This field is set when upgrades are about to
+commence with the approximate start time for the upgrades, in
+<a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> text
+format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.AutoUpgradeOptions.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.container_v1.types.AutoUpgradeOptions.description" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] This field is set when upgrades are about to
+commence with the description of the upgrade.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.CancelOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">CancelOperationRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>CancelOperationRequest cancels a single operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CancelOperationRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CancelOperationRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the operation
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CancelOperationRequest.operation_id">
+<code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CancelOperationRequest.operation_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The server-assigned <code class="docutils literal"><span class="pre">name</span></code> of the operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ClientCertificateConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ClientCertificateConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.ClientCertificateConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for client certificates on the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClientCertificateConfig.issue_client_certificate">
+<code class="descname">issue_client_certificate</code><a class="headerlink" href="#google.cloud.container_v1.types.ClientCertificateConfig.issue_client_certificate" title="Permalink to this definition">#</a></dt>
+<dd><p>Issue a client certificate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.Cluster">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">Cluster</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>A Google Container Engine cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of this cluster. The name must be unique within this
+project and zone, and can be up to 40 characters with the
+following restrictions:  -  Lowercase letters, numbers, and
+hyphens only. -  Must start with a letter. -  Must end with a
+number or a letter.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.description" title="Permalink to this definition">#</a></dt>
+<dd><p>An optional description of this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.initial_node_count">
+<code class="descname">initial_node_count</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.initial_node_count" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of nodes to create in this cluster. You must ensure
+that your Compute Engine resource quota is sufficient for this
+number of instances. You must also have available firewall and
+routes quota. For requests, this field should only be used in
+lieu of a “node_pool” object, since this configuration (along
+with the “node_config”) will be used to create a “NodePool”
+object with an auto-generated name. Do not use this and a
+node_pool at the same time.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.node_config">
+<code class="descname">node_config</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.node_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameters used in creating the cluster’s nodes. See
+<code class="docutils literal"><span class="pre">nodeConfig</span></code> for the description of its properties. For
+requests, this field should only be used in lieu of a
+“node_pool” object, since this configuration (along with the
+“initial_node_count”) will be used to create a “NodePool”
+object with an auto-generated name. Do not use this and a
+node_pool at the same time. For responses, this field will be
+populated with the node configuration of the first node pool.
+If unspecified, the defaults are used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.master_auth">
+<code class="descname">master_auth</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.master_auth" title="Permalink to this definition">#</a></dt>
+<dd><p>The authentication information for accessing the master
+endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.logging_service">
+<code class="descname">logging_service</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.logging_service" title="Permalink to this definition">#</a></dt>
+<dd><p>The logging service the cluster should use to write logs.
+Currently available options:  -  <code class="docutils literal"><span class="pre">logging.googleapis.com</span></code> -
+the Google Cloud Logging service. -  <code class="docutils literal"><span class="pre">none</span></code> - no logs will
+be exported from the cluster. -  if left as an empty string,          <code class="docutils literal"><span class="pre">logging.googleapis.com</span></code> will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.monitoring_service">
+<code class="descname">monitoring_service</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.monitoring_service" title="Permalink to this definition">#</a></dt>
+<dd><p>The monitoring service the cluster should use to write
+metrics. Currently available options:  -
+<code class="docutils literal"><span class="pre">monitoring.googleapis.com</span></code> - the Google Cloud Monitoring
+service. -  <code class="docutils literal"><span class="pre">none</span></code> - no metrics will be exported from the
+cluster. -  if left as an empty string,
+<code class="docutils literal"><span class="pre">monitoring.googleapis.com</span></code> will be    used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.network">
+<code class="descname">network</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.network" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/networks-and-firewalls#networks">network</a> to which
+the cluster is connected. If left unspecified, the <code class="docutils literal"><span class="pre">default</span></code>
+network will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.cluster_ipv4_cidr">
+<code class="descname">cluster_ipv4_cidr</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.cluster_ipv4_cidr" title="Permalink to this definition">#</a></dt>
+<dd><p>The IP address range of the container pods in this cluster, in
+<a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>). Leave
+blank to have one automatically chosen or specify a <code class="docutils literal"><span class="pre">/14</span></code>
+block in <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.addons_config">
+<code class="descname">addons_config</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.addons_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configurations for the various addons available to run in the
+cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.subnetwork">
+<code class="descname">subnetwork</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.subnetwork" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/subnetworks">subnetwork</a> to which the cluster is
+connected.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.node_pools">
+<code class="descname">node_pools</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.node_pools" title="Permalink to this definition">#</a></dt>
+<dd><p>The node pools associated with this cluster. This field should
+not be set if “node_config” or “initial_node_count” are
+specified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.locations">
+<code class="descname">locations</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.locations" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">locations</a> in which the cluster’s
+nodes should be located.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.enable_kubernetes_alpha">
+<code class="descname">enable_kubernetes_alpha</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.enable_kubernetes_alpha" title="Permalink to this definition">#</a></dt>
+<dd><p>Kubernetes alpha features are enabled on this cluster. This
+includes alpha API groups (e.g. v1alpha1) and features that
+may not be production ready in the kubernetes version of the
+master and nodes. The cluster has no SLA for uptime and
+master/node upgrades are disabled. Alpha enabled clusters are
+automatically deleted thirty days after creation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.resource_labels">
+<code class="descname">resource_labels</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.resource_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>The resource labels for the cluster to use to annotate any
+related Google Compute Engine resources.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.label_fingerprint">
+<code class="descname">label_fingerprint</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.label_fingerprint" title="Permalink to this definition">#</a></dt>
+<dd><p>The fingerprint of the set of labels for this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.legacy_abac">
+<code class="descname">legacy_abac</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.legacy_abac" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the legacy ABAC authorization mode.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.network_policy">
+<code class="descname">network_policy</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.network_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for the NetworkPolicy feature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.ip_allocation_policy">
+<code class="descname">ip_allocation_policy</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.ip_allocation_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for cluster IP allocation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.master_authorized_networks_config">
+<code class="descname">master_authorized_networks_config</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.master_authorized_networks_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Master authorized networks is a Beta feature. The
+configuration options for master authorized networks feature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.maintenance_policy">
+<code class="descname">maintenance_policy</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.maintenance_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Configure the maintenance policy for this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.self_link">
+<code class="descname">self_link</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.self_link" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Server-defined URL for the resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.endpoint">
+<code class="descname">endpoint</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.endpoint" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The IP address of this cluster’s master
+endpoint. The endpoint can be accessed from the internet at
+<code class="docutils literal"><span class="pre">https://username:password&#64;endpoint/</span></code>.  See the
+<code class="docutils literal"><span class="pre">masterAuth</span></code> property of this resource for username and
+password information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.initial_cluster_version">
+<code class="descname">initial_cluster_version</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.initial_cluster_version" title="Permalink to this definition">#</a></dt>
+<dd><p>The initial Kubernetes version for this cluster. Valid
+versions are those found in validMasterVersions returned by
+getServerConfig. The version can be upgraded over time; such
+upgrades are reflected in currentMasterVersion and
+currentNodeVersion.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.current_master_version">
+<code class="descname">current_master_version</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.current_master_version" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The current software version of the master
+endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.current_node_version">
+<code class="descname">current_node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.current_node_version" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The current version of the node software
+components. If they are currently at multiple versions because
+they’re in the process of being upgraded, this reflects the
+minimum version of all nodes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time the cluster was created, in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> text format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.status">
+<code class="descname">status</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.status" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The current status of this cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.status_message">
+<code class="descname">status_message</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.status_message" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Additional information about the current status
+of this cluster, if available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.node_ipv4_cidr_size">
+<code class="descname">node_ipv4_cidr_size</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.node_ipv4_cidr_size" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The size of the address space on each node for
+hosting containers. This is provisioned from within the
+<code class="docutils literal"><span class="pre">container_ipv4_cidr</span></code> range.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.services_ipv4_cidr">
+<code class="descname">services_ipv4_cidr</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.services_ipv4_cidr" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The IP address range of the Kubernetes services
+in this cluster, in <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">1.2.3.4/29</span></code>). Service
+addresses are typically put in the last <code class="docutils literal"><span class="pre">/16</span></code> from the
+container CIDR.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.instance_group_urls">
+<code class="descname">instance_group_urls</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.instance_group_urls" title="Permalink to this definition">#</a></dt>
+<dd><p>Deprecated. Use node_pools.instance_group_urls.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.current_node_count">
+<code class="descname">current_node_count</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.current_node_count" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The number of nodes currently in the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Cluster.expire_time">
+<code class="descname">expire_time</code><a class="headerlink" href="#google.cloud.container_v1.types.Cluster.expire_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time the cluster will be automatically
+deleted in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a>
+text format.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ClusterUpdate">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ClusterUpdate</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate" title="Permalink to this definition">#</a></dt>
+<dd><p>ClusterUpdate describes an update to the cluster. Exactly one update can
+be applied to a cluster with each request, so at most one field can be
+provided.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_node_version">
+<code class="descname">desired_node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_node_version" title="Permalink to this definition">#</a></dt>
+<dd><p>The Kubernetes version to change the nodes to (typically an
+upgrade). Use <code class="docutils literal"><span class="pre">-</span></code> to upgrade to the latest version supported
+by the server.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_monitoring_service">
+<code class="descname">desired_monitoring_service</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_monitoring_service" title="Permalink to this definition">#</a></dt>
+<dd><p>The monitoring service the cluster should use to write
+metrics. Currently available options:  -
+“monitoring.googleapis.com” - the Google Cloud Monitoring
+service -  “none” - no metrics will be exported from the
+cluster</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_addons_config">
+<code class="descname">desired_addons_config</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_addons_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configurations for the various addons available to run in the
+cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_node_pool_id">
+<code class="descname">desired_node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The node pool to be upgraded. This field is mandatory if
+“desired_node_version”, “desired_image_family” or
+“desired_node_pool_autoscaling” is specified and there is
+more than one node pool on the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_image_type">
+<code class="descname">desired_image_type</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_image_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired image type for the node pool. NOTE: Set the
+“desired_node_pool” field as well.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_node_pool_autoscaling">
+<code class="descname">desired_node_pool_autoscaling</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_node_pool_autoscaling" title="Permalink to this definition">#</a></dt>
+<dd><p>Autoscaler configuration for the node pool specified in
+desired_node_pool_id. If there is only one pool in the
+cluster and desired_node_pool_id is not provided then the
+change applies to that single node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_locations">
+<code class="descname">desired_locations</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_locations" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired list of Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">locations</a> in which the cluster’s
+nodes should be located. Changing the locations a cluster is
+in will result in nodes being either created or removed from
+the cluster, depending on whether locations are being added or
+removed.  This list must always include the cluster’s primary
+zone.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_master_authorized_networks_config">
+<code class="descname">desired_master_authorized_networks_config</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_master_authorized_networks_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Master authorized networks is a Beta feature. The desired
+configuration options for master authorized networks feature.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ClusterUpdate.desired_master_version">
+<code class="descname">desired_master_version</code><a class="headerlink" href="#google.cloud.container_v1.types.ClusterUpdate.desired_master_version" title="Permalink to this definition">#</a></dt>
+<dd><p>The Kubernetes version to change the master to. The only valid
+value is the latest supported version. Use “-” to have the
+server automatically select the latest version.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.CompleteIPRotationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">CompleteIPRotationRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>CompleteIPRotationRequest moves the cluster master back into single-IP
+mode.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CompleteIPRotationRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CompleteIPRotationRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CompleteIPRotationRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CompleteIPRotationRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.CreateClusterRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">CreateClusterRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>CreateClusterRequest creates a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateClusterRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateClusterRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateClusterRequest.cluster">
+<code class="descname">cluster</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateClusterRequest.cluster" title="Permalink to this definition">#</a></dt>
+<dd><p>A <a class="reference external" href="/container-engine/reference/rest/v1/projects.zones.clusters">cluster resource</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.CreateNodePoolRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">CreateNodePoolRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>CreateNodePoolRequest creates a node pool for a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateNodePoolRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateNodePoolRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateNodePoolRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.CreateNodePoolRequest.node_pool">
+<code class="descname">node_pool</code><a class="headerlink" href="#google.cloud.container_v1.types.CreateNodePoolRequest.node_pool" title="Permalink to this definition">#</a></dt>
+<dd><p>The node pool to create.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.DailyMaintenanceWindow">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">DailyMaintenanceWindow</code><a class="headerlink" href="#google.cloud.container_v1.types.DailyMaintenanceWindow" title="Permalink to this definition">#</a></dt>
+<dd><p>Time window specified for daily maintenance operations.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DailyMaintenanceWindow.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.container_v1.types.DailyMaintenanceWindow.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Time within the maintenance window to start the maintenance
+operations. Time format should be in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> format “HH:MM”,
+where HH : [00-23] and MM : [00-59] GMT.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DailyMaintenanceWindow.duration">
+<code class="descname">duration</code><a class="headerlink" href="#google.cloud.container_v1.types.DailyMaintenanceWindow.duration" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Duration of the time window, automatically
+chosen to be smallest possible in the given scenario. Duration
+will be in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a>
+format “PTnHnMnS”.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.DeleteClusterRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">DeleteClusterRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>DeleteClusterRequest deletes a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteClusterRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteClusterRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteClusterRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteClusterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to delete.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.DeleteNodePoolRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">DeleteNodePoolRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>DeleteNodePoolRequest deletes a node pool for a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.DeleteNodePoolRequest.node_pool_id">
+<code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.DeleteNodePoolRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool to delete.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.GetClusterRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">GetClusterRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>GetClusterRequest gets the settings of a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetClusterRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetClusterRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetClusterRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetClusterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to retrieve.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.GetNodePoolRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">GetNodePoolRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>GetNodePoolRequest retrieves a node pool for a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetNodePoolRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetNodePoolRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetNodePoolRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetNodePoolRequest.node_pool_id">
+<code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetNodePoolRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.GetOperationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">GetOperationRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>GetOperationRequest gets a single operation.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetOperationRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetOperationRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetOperationRequest.operation_id">
+<code class="descname">operation_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetOperationRequest.operation_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The server-assigned <code class="docutils literal"><span class="pre">name</span></code> of the operation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.GetServerConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">GetServerConfigRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.GetServerConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the current Container Engine service configuration.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetServerConfigRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.GetServerConfigRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.GetServerConfigRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.GetServerConfigRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> to return operations for.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.HorizontalPodAutoscaling">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">HorizontalPodAutoscaling</code><a class="headerlink" href="#google.cloud.container_v1.types.HorizontalPodAutoscaling" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for the horizontal pod autoscaling feature, which
+increases or decreases the number of replica pods a replication
+controller has based on the resource usage of the existing pods.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HorizontalPodAutoscaling.disabled">
+<code class="descname">disabled</code><a class="headerlink" href="#google.cloud.container_v1.types.HorizontalPodAutoscaling.disabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the Horizontal Pod Autoscaling feature is enabled in
+the cluster. When enabled, it ensures that a Heapster pod is
+running in the cluster, which is also used by the Cloud
+Monitoring service.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.HttpLoadBalancing">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">HttpLoadBalancing</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpLoadBalancing" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for the HTTP (L7) load balancing controller addon,
+which makes it easy to set up HTTP load balancers for services in a
+cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.HttpLoadBalancing.disabled">
+<code class="descname">disabled</code><a class="headerlink" href="#google.cloud.container_v1.types.HttpLoadBalancing.disabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the HTTP Load Balancing controller is enabled in the
+cluster. When enabled, it runs a small pod in the cluster that
+manages the load balancers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">IPAllocationPolicy</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for controlling how IPs are allocated in the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.use_ip_aliases">
+<code class="descname">use_ip_aliases</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.use_ip_aliases" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether alias IPs will be used for pod IPs in the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.create_subnetwork">
+<code class="descname">create_subnetwork</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.create_subnetwork" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether a new subnetwork will be created automatically for the
+cluster.  This field is only applicable when
+<code class="docutils literal"><span class="pre">use_ip_aliases</span></code> is true.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.subnetwork_name">
+<code class="descname">subnetwork_name</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.subnetwork_name" title="Permalink to this definition">#</a></dt>
+<dd><p>A custom subnetwork name to be used if <code class="docutils literal"><span class="pre">create_subnetwork</span></code>
+is true. If this field is empty, then an automatic name will
+be chosen for the new subnetwork.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.cluster_ipv4_cidr">
+<code class="descname">cluster_ipv4_cidr</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.cluster_ipv4_cidr" title="Permalink to this definition">#</a></dt>
+<dd><p>This field is deprecated, use cluster_ipv4_cidr_block.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.node_ipv4_cidr">
+<code class="descname">node_ipv4_cidr</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.node_ipv4_cidr" title="Permalink to this definition">#</a></dt>
+<dd><p>This field is deprecated, use node_ipv4_cidr_block.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.services_ipv4_cidr">
+<code class="descname">services_ipv4_cidr</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.services_ipv4_cidr" title="Permalink to this definition">#</a></dt>
+<dd><p>This field is deprecated, use services_ipv4_cidr_block.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.cluster_secondary_range_name">
+<code class="descname">cluster_secondary_range_name</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.cluster_secondary_range_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the secondary range to be used for the cluster
+CIDR block. The secondary range will be used for pod IP
+addresses. This must be an existing secondary range associated
+with the cluster subnetwork.  This field is only applicable
+with use_ip_aliases is true and create_subnetwork is false.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.services_secondary_range_name">
+<code class="descname">services_secondary_range_name</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.services_secondary_range_name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the secondary range to be used as for the services
+CIDR block. The secondary range will be used for service
+ClusterIPs. This must be an existing secondary range
+associated with the cluster subnetwork.  This field is only
+applicable with use_ip_aliases is true and
+create_subnetwork is false.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.cluster_ipv4_cidr_block">
+<code class="descname">cluster_ipv4_cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.cluster_ipv4_cidr_block" title="Permalink to this definition">#</a></dt>
+<dd><p>The IP address range for the cluster pod IPs. If this field is
+set, then <code class="docutils literal"><span class="pre">cluster.cluster_ipv4_cidr</span></code> must be left blank.
+This field is only applicable when <code class="docutils literal"><span class="pre">use_ip_aliases</span></code> is true.
+Set to blank to have a range chosen with the default size.
+Set to /netmask (e.g. <code class="docutils literal"><span class="pre">/14</span></code>) to have a range chosen with a
+specific netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>) from the
+RFC-1918 private networks (e.g. <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>,
+<code class="docutils literal"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
+range to use.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.node_ipv4_cidr_block">
+<code class="descname">node_ipv4_cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.node_ipv4_cidr_block" title="Permalink to this definition">#</a></dt>
+<dd><p>The IP address range of the instance IPs in this cluster.
+This is applicable only if <code class="docutils literal"><span class="pre">create_subnetwork</span></code> is true.  Set
+to blank to have a range chosen with the default size.  Set to
+/netmask (e.g. <code class="docutils literal"><span class="pre">/14</span></code>) to have a range chosen with a specific
+netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>) from the
+RFC-1918 private networks (e.g. <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>,
+<code class="docutils literal"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
+range to use.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.IPAllocationPolicy.services_ipv4_cidr_block">
+<code class="descname">services_ipv4_cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.IPAllocationPolicy.services_ipv4_cidr_block" title="Permalink to this definition">#</a></dt>
+<dd><p>The IP address range of the services IPs in this cluster. If
+blank, a range will be automatically chosen with the default
+size.  This field is only applicable when <code class="docutils literal"><span class="pre">use_ip_aliases</span></code>
+is true.  Set to blank to have a range chosen with the default
+size.  Set to /netmask (e.g. <code class="docutils literal"><span class="pre">/14</span></code>) to have a range chosen
+with a specific netmask.  Set to a <a class="reference external" href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR</a> notation (e.g. <code class="docutils literal"><span class="pre">10.96.0.0/14</span></code>) from the
+RFC-1918 private networks (e.g. <code class="docutils literal"><span class="pre">10.0.0.0/8</span></code>,
+<code class="docutils literal"><span class="pre">172.16.0.0/12</span></code>, <code class="docutils literal"><span class="pre">192.168.0.0/16</span></code>) to pick a specific
+range to use.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.KubernetesDashboard">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">KubernetesDashboard</code><a class="headerlink" href="#google.cloud.container_v1.types.KubernetesDashboard" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the Kubernetes Dashboard.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.KubernetesDashboard.disabled">
+<code class="descname">disabled</code><a class="headerlink" href="#google.cloud.container_v1.types.KubernetesDashboard.disabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the Kubernetes Dashboard is enabled for this cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.LegacyAbac">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">LegacyAbac</code><a class="headerlink" href="#google.cloud.container_v1.types.LegacyAbac" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for the legacy Attribute Based Access Control
+authorization mode.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.LegacyAbac.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#google.cloud.container_v1.types.LegacyAbac.enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the ABAC authorizer is enabled for this cluster. When
+enabled, identities in the system, including service accounts,
+nodes, and controllers, will have statically granted
+permissions beyond those provided by the RBAC configuration or
+IAM.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ListClustersRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ListClustersRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>ListClustersRequest lists clusters.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListClustersRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListClustersRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides, or “-” for all zones.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ListClustersResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ListClustersResponse</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>ListClustersResponse is the result of ListClustersRequest.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListClustersResponse.clusters">
+<code class="descname">clusters</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersResponse.clusters" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of clusters in the project in the specified zone, or
+across all ones.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListClustersResponse.missing_zones">
+<code class="descname">missing_zones</code><a class="headerlink" href="#google.cloud.container_v1.types.ListClustersResponse.missing_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>If any zones are listed here, the list of clusters returned
+may be missing those zones.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ListNodePoolsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ListNodePoolsRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>ListNodePoolsRequest lists the node pool(s) for a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListNodePoolsRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListNodePoolsRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListNodePoolsRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ListNodePoolsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ListNodePoolsResponse</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>ListNodePoolsResponse is the result of ListNodePoolsRequest.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListNodePoolsResponse.node_pools">
+<code class="descname">node_pools</code><a class="headerlink" href="#google.cloud.container_v1.types.ListNodePoolsResponse.node_pools" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of node pools for a cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ListOperationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ListOperationsRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>ListOperationsRequest lists operations.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListOperationsRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListOperationsRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> to return operations for,
+or <code class="docutils literal"><span class="pre">-</span></code> for all zones.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ListOperationsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ListOperationsResponse</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>ListOperationsResponse is the result of ListOperationsRequest.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListOperationsResponse.operations">
+<code class="descname">operations</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsResponse.operations" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of operations in the project in the specified zone.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ListOperationsResponse.missing_zones">
+<code class="descname">missing_zones</code><a class="headerlink" href="#google.cloud.container_v1.types.ListOperationsResponse.missing_zones" title="Permalink to this definition">#</a></dt>
+<dd><p>If any zones are listed here, the list of operations returned
+may be missing the operations from those zones.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.MaintenancePolicy">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MaintenancePolicy</code><a class="headerlink" href="#google.cloud.container_v1.types.MaintenancePolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>MaintenancePolicy defines the maintenance policy to be used for the
+cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MaintenancePolicy.window">
+<code class="descname">window</code><a class="headerlink" href="#google.cloud.container_v1.types.MaintenancePolicy.window" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the maintenance window in which maintenance may be
+performed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.MaintenanceWindow">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MaintenanceWindow</code><a class="headerlink" href="#google.cloud.container_v1.types.MaintenanceWindow" title="Permalink to this definition">#</a></dt>
+<dd><p>MaintenanceWindow defines the maintenance window to be used for the
+cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MaintenanceWindow.daily_maintenance_window">
+<code class="descname">daily_maintenance_window</code><a class="headerlink" href="#google.cloud.container_v1.types.MaintenanceWindow.daily_maintenance_window" title="Permalink to this definition">#</a></dt>
+<dd><p>DailyMaintenanceWindow specifies a daily maintenance operation
+window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.MasterAuth">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MasterAuth</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth" title="Permalink to this definition">#</a></dt>
+<dd><p>The authentication information for accessing the master endpoint.
+Authentication can be done using HTTP basic auth or using client
+certificates.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuth.username">
+<code class="descname">username</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth.username" title="Permalink to this definition">#</a></dt>
+<dd><p>The username to use for HTTP basic authentication to the
+master endpoint. For clusters v1.6.0 and later, you can
+disable basic authentication by providing an empty username.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuth.password">
+<code class="descname">password</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth.password" title="Permalink to this definition">#</a></dt>
+<dd><p>The password to use for HTTP basic authentication to the
+master endpoint. Because the master endpoint is open to the
+Internet, you should create a strong password. If a password
+is provided for cluster creation, username must be non-empty.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuth.client_certificate_config">
+<code class="descname">client_certificate_config</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth.client_certificate_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for client certificate authentication on the
+cluster. If no configuration is specified, a client
+certificate is issued.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuth.cluster_ca_certificate">
+<code class="descname">cluster_ca_certificate</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth.cluster_ca_certificate" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Base64-encoded public certificate that is the
+root of trust for the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuth.client_certificate">
+<code class="descname">client_certificate</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth.client_certificate" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Base64-encoded public certificate used by
+clients to authenticate to the cluster endpoint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuth.client_key">
+<code class="descname">client_key</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuth.client_key" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Base64-encoded private key used by clients to
+authenticate to the cluster endpoint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">MasterAuthorizedNetworksConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Master authorized networks is a Beta feature. Configuration options for
+the master authorized networks feature. Enabled master authorized
+networks will disallow all external traffic to access Kubernetes master
+through HTTPS except traffic from the given CIDR blocks, Google Compute
+Engine Public IPs and Google Prod IPs.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether or not master authorized networks is enabled.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.cidr_blocks">
+<code class="descname">cidr_blocks</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.cidr_blocks" title="Permalink to this definition">#</a></dt>
+<dd><p>cidr_blocks define up to 10 external networks that could
+access Kubernetes master through HTTPS.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.CidrBlock">
+<em class="property">class </em><code class="descname">CidrBlock</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.CidrBlock" title="Permalink to this definition">#</a></dt>
+<dd><p>CidrBlock contains an optional name and one CIDR block.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.CidrBlock.display_name">
+<code class="descname">display_name</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.CidrBlock.display_name" title="Permalink to this definition">#</a></dt>
+<dd><p>display_name is an optional field for users to identify CIDR
+blocks.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.CidrBlock.cidr_block">
+<code class="descname">cidr_block</code><a class="headerlink" href="#google.cloud.container_v1.types.MasterAuthorizedNetworksConfig.CidrBlock.cidr_block" title="Permalink to this definition">#</a></dt>
+<dd><p>cidr_block must be specified in CIDR notation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NetworkPolicy">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NetworkPolicy</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkPolicy" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for the NetworkPolicy feature.
+<a class="reference external" href="https://kubernetes.io/docs/concepts/services-networking/networkpolicies/">https://kubernetes.io/docs/concepts/services-networking/networkpolicies/</a></p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NetworkPolicy.provider">
+<code class="descname">provider</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkPolicy.provider" title="Permalink to this definition">#</a></dt>
+<dd><p>The selected network policy provider.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NetworkPolicy.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkPolicy.enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether network policy is enabled on the cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NetworkPolicyConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NetworkPolicyConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkPolicyConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration for NetworkPolicy. This only tracks whether the addon is
+enabled or not on the Master, it does not track whether network policy
+is enabled for the nodes.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NetworkPolicyConfig.disabled">
+<code class="descname">disabled</code><a class="headerlink" href="#google.cloud.container_v1.types.NetworkPolicyConfig.disabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether NetworkPolicy is enabled for this cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NodeConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NodeConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Parameters that describe the nodes in a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.machine_type">
+<code class="descname">machine_type</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.machine_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of a Google Compute Engine <a class="reference external" href="/compute/docs/machine-types">machine type</a> (e.g. <code class="docutils literal"><span class="pre">n1-standard-1</span></code>).  If
+unspecified, the default machine type is <code class="docutils literal"><span class="pre">n1-standard-1</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.disk_size_gb">
+<code class="descname">disk_size_gb</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.disk_size_gb" title="Permalink to this definition">#</a></dt>
+<dd><p>Size of the disk attached to each node, specified in GB. The
+smallest allowed disk size is 10GB.  If unspecified, the
+default disk size is 100GB.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.oauth_scopes">
+<code class="descname">oauth_scopes</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.oauth_scopes" title="Permalink to this definition">#</a></dt>
+<dd><p>The set of Google API scopes to be made available on all of
+the node VMs under the “default” service account.  The
+following scopes are recommended, but not required, and by
+default are not included:  -
+<code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/compute</span></code> is required for
+mounting    persistent storage on your nodes. -
+<code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/devstorage.read_only</span></code> is
+required    for communicating with <strong>gcr.io</strong> (the <a class="reference external" href="/container-registry/">Google
+Container    Registry</a>).  If
+unspecified, no scopes are added, unless Cloud Logging or
+Cloud Monitoring are enabled, in which case their required
+scopes will be added.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.service_account">
+<code class="descname">service_account</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.service_account" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Cloud Platform Service Account to be used by the
+node VMs. If no Service Account is specified, the “default”
+service account is used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>The metadata key/value pairs assigned to instances in the
+cluster.  Keys must conform to the regexp [a-zA-Z0-9-_]+ and
+be less than 128 bytes in length. These are reflected as part
+of a URL in the metadata server. Additionally, to avoid
+ambiguity, keys must not conflict with any other metadata keys
+for the project or be one of the four reserved keys:
+“instance-template”, “kube-env”, “startup-script”, and “user-
+data”  Values are free-form strings, and only have meaning as
+interpreted by the image running in the instance. The only
+restriction placed on them is that each value’s size must be
+less than or equal to 32 KB.  The total size of all keys and
+values must be less than 512 KB.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.image_type">
+<code class="descname">image_type</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.image_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The image type to use for this node. Note that for a given
+image type, the latest version of it will be used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>The map of Kubernetes labels (key/value pairs) to be applied
+to each node. These will added in addition to any default
+label(s) that Kubernetes may apply to the node. In case of
+conflict in label keys, the applied set may differ depending
+on the Kubernetes version – it’s best to assume the behavior
+is undefined and conflicts should be avoided. For more
+information, including usage and the valid values, see:
+<a class="reference external" href="https://kubernetes.io/docs/concepts/overview/working-with">https://kubernetes.io/docs/concepts/overview/working-with</a>-
+objects/labels/</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.local_ssd_count">
+<code class="descname">local_ssd_count</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.local_ssd_count" title="Permalink to this definition">#</a></dt>
+<dd><p>The number of local SSD disks to be attached to the node.  The
+limit for this value is dependant upon the maximum number of
+disks available on a machine per zone. See:
+<a class="reference external" href="https://cloud.google.com/compute/docs/disks/local">https://cloud.google.com/compute/docs/disks/local</a>-
+ssd#local_ssd_limits for more information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.tags">
+<code class="descname">tags</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.tags" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of instance tags applied to all nodes. Tags are used
+to identify valid sources or targets for network firewalls and
+are specified by the client during cluster or node pool
+creation. Each tag within the list must comply with RFC1035.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.preemptible">
+<code class="descname">preemptible</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.preemptible" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether the nodes are created as preemptible VM instances.
+See:
+<a class="reference external" href="https://cloud.google.com/compute/docs/instances/preemptible">https://cloud.google.com/compute/docs/instances/preemptible</a>
+for more information about preemptible VM instances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.accelerators">
+<code class="descname">accelerators</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.accelerators" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of hardware accelerators to be attached to each node.
+See <a class="reference external" href="https://cloud.google.com/compute/docs/gpus">https://cloud.google.com/compute/docs/gpus</a> for more
+information about support for GPUs.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeConfig.min_cpu_platform">
+<code class="descname">min_cpu_platform</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeConfig.min_cpu_platform" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimum CPU platform to be used by this instance. The instance
+may be scheduled on the specified or newer CPU platform.
+Applicable values are the friendly names of CPU platforms,
+such as minCpuPlatform: “Intel Haswell” or minCpuPlatform:
+“Intel Sandy Bridge”. For more information, read <a class="reference external" href="https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform">how to
+specify min CPU platform</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NodeManagement">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NodeManagement</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeManagement" title="Permalink to this definition">#</a></dt>
+<dd><p>NodeManagement defines the set of node management services turned on for
+the node pool.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeManagement.auto_upgrade">
+<code class="descname">auto_upgrade</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeManagement.auto_upgrade" title="Permalink to this definition">#</a></dt>
+<dd><p>A flag that specifies whether node auto-upgrade is enabled for
+the node pool. If enabled, node auto-upgrade helps keep the
+nodes in your node pool up to date with the latest release
+version of Kubernetes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeManagement.auto_repair">
+<code class="descname">auto_repair</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeManagement.auto_repair" title="Permalink to this definition">#</a></dt>
+<dd><p>A flag that specifies whether the node auto-repair is enabled
+for the node pool. If enabled, the nodes in this node pool
+will be monitored and, if they fail health checks too many
+times, an automatic repair action will be triggered.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodeManagement.upgrade_options">
+<code class="descname">upgrade_options</code><a class="headerlink" href="#google.cloud.container_v1.types.NodeManagement.upgrade_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Specifies the Auto Upgrade knobs for the node pool.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NodePool">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NodePool</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool" title="Permalink to this definition">#</a></dt>
+<dd><p>NodePool contains the name and configuration for a cluster’s node pool.
+Node pools are a set of nodes (i.e. VM’s), with a common configuration
+and specification, under the control of the cluster master. They may
+have a set of Kubernetes labels applied to them, which may be used to
+reference them during pod scheduling. They may also be resized up or
+down, to accommodate the workload.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.config">
+<code class="descname">config</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.config" title="Permalink to this definition">#</a></dt>
+<dd><p>The node configuration of the pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.initial_node_count">
+<code class="descname">initial_node_count</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.initial_node_count" title="Permalink to this definition">#</a></dt>
+<dd><p>The initial node count for the pool. You must ensure that your
+Compute Engine resource quota is sufficient for this number of
+instances. You must also have available firewall and routes
+quota.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.self_link">
+<code class="descname">self_link</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.self_link" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Server-defined URL for the resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.version">
+<code class="descname">version</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.version" title="Permalink to this definition">#</a></dt>
+<dd><p>The version of the Kubernetes of this node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.instance_group_urls">
+<code class="descname">instance_group_urls</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.instance_group_urls" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The resource URLs of the <a class="reference external" href="/compute/docs/instance-groups/creating-groups-of-managed-instances">managed instance
+groups</a> associated with this node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.status">
+<code class="descname">status</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.status" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The status of the nodes in this pool instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.status_message">
+<code class="descname">status_message</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.status_message" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] Additional information about the current status
+of this node pool instance, if available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.autoscaling">
+<code class="descname">autoscaling</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.autoscaling" title="Permalink to this definition">#</a></dt>
+<dd><p>Autoscaler configuration for this NodePool. Autoscaler is
+enabled only if a valid configuration is present.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePool.management">
+<code class="descname">management</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePool.management" title="Permalink to this definition">#</a></dt>
+<dd><p>NodeManagement configuration for this NodePool.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.NodePoolAutoscaling">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">NodePoolAutoscaling</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePoolAutoscaling" title="Permalink to this definition">#</a></dt>
+<dd><p>NodePoolAutoscaling contains information required by cluster autoscaler
+to adjust the size of the node pool to the current cluster usage.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePoolAutoscaling.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePoolAutoscaling.enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Is autoscaling enabled for this node pool.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePoolAutoscaling.min_node_count">
+<code class="descname">min_node_count</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePoolAutoscaling.min_node_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimum number of nodes in the NodePool. Must be &gt;= 1 and &lt;=
+max_node_count.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.NodePoolAutoscaling.max_node_count">
+<code class="descname">max_node_count</code><a class="headerlink" href="#google.cloud.container_v1.types.NodePoolAutoscaling.max_node_count" title="Permalink to this definition">#</a></dt>
+<dd><p>Maximum number of nodes in the NodePool. Must be &gt;=
+min_node_count. There has to enough quota to scale up the
+cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.Operation">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">Operation</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation" title="Permalink to this definition">#</a></dt>
+<dd><p>This operation resource represents operations that may have happened or
+are happening on the cluster. All fields are output only.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The server-assigned ID for the operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the operation is
+taking place.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.operation_type">
+<code class="descname">operation_type</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.operation_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The operation type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.status">
+<code class="descname">status</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.status" title="Permalink to this definition">#</a></dt>
+<dd><p>The current status of the operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.detail">
+<code class="descname">detail</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.detail" title="Permalink to this definition">#</a></dt>
+<dd><p>Detailed operation progress, if available.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.status_message">
+<code class="descname">status_message</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.status_message" title="Permalink to this definition">#</a></dt>
+<dd><p>If an error has occurred, a textual description of the error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.self_link">
+<code class="descname">self_link</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.self_link" title="Permalink to this definition">#</a></dt>
+<dd><p>Server-defined URL for the resource.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.target_link">
+<code class="descname">target_link</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.target_link" title="Permalink to this definition">#</a></dt>
+<dd><p>Server-defined URL for the target of the operation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.start_time">
+<code class="descname">start_time</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.start_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time the operation started, in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> text format.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.Operation.end_time">
+<code class="descname">end_time</code><a class="headerlink" href="#google.cloud.container_v1.types.Operation.end_time" title="Permalink to this definition">#</a></dt>
+<dd><p>[Output only] The time the operation completed, in <a class="reference external" href="https://www.ietf.org/rfc/rfc3339.txt">RFC3339</a> text format.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">RollbackNodePoolUpgradeRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or
+Failed NodePool upgrade. This will be an no-op if the last upgrade
+successfully completed.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to rollback.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.node_pool_id">
+<code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.RollbackNodePoolUpgradeRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool to rollback.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.ServerConfig">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">ServerConfig</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig" title="Permalink to this definition">#</a></dt>
+<dd><p>Container Engine service configuration.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServerConfig.default_cluster_version">
+<code class="descname">default_cluster_version</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig.default_cluster_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Version of Kubernetes the service deploys by default.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServerConfig.valid_node_versions">
+<code class="descname">valid_node_versions</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig.valid_node_versions" title="Permalink to this definition">#</a></dt>
+<dd><p>List of valid node upgrade target versions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServerConfig.default_image_type">
+<code class="descname">default_image_type</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig.default_image_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Default image type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServerConfig.valid_image_types">
+<code class="descname">valid_image_types</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig.valid_image_types" title="Permalink to this definition">#</a></dt>
+<dd><p>List of valid image types.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.ServerConfig.valid_master_versions">
+<code class="descname">valid_master_versions</code><a class="headerlink" href="#google.cloud.container_v1.types.ServerConfig.valid_master_versions" title="Permalink to this definition">#</a></dt>
+<dd><p>List of valid master versions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetAddonsConfigRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetAddonsConfigRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetAddonsConfigRequest sets the addons associated with the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetAddonsConfigRequest.addons_config">
+<code class="descname">addons_config</code><a class="headerlink" href="#google.cloud.container_v1.types.SetAddonsConfigRequest.addons_config" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired configurations for the various addons available to
+run in the cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetLabelsRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetLabelsRequest sets the Google Cloud Platform labels on a Google
+Container Engine cluster, which will in turn set them for Google Compute
+Engine resources used by that cluster</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.resource_labels">
+<code class="descname">resource_labels</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.resource_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>The labels to set for that cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLabelsRequest.label_fingerprint">
+<code class="descname">label_fingerprint</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLabelsRequest.label_fingerprint" title="Permalink to this definition">#</a></dt>
+<dd><p>The fingerprint of the previous set of labels for this
+resource, used to detect conflicts. The fingerprint is
+initially generated by Container Engine and changes after
+every request to modify or update labels. You must always
+provide an up-to-date fingerprint hash when updating or
+changing labels. Make a get() request to the resource to get
+the latest fingerprint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetLegacyAbacRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetLegacyAbacRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetLegacyAbacRequest enables or disables the ABAC authorization
+mechanism for a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLegacyAbacRequest.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLegacyAbacRequest.enabled" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether ABAC authorization will be enabled in the cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetLocationsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetLocationsRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetLocationsRequest sets the locations of the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLocationsRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLocationsRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLocationsRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLocationsRequest.locations">
+<code class="descname">locations</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLocationsRequest.locations" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired list of Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">locations</a> in which the cluster’s
+nodes should be located. Changing the locations a cluster is
+in will result in nodes being either created or removed from
+the cluster, depending on whether locations are being added or
+removed.  This list must always include the cluster’s primary
+zone.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetLoggingServiceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetLoggingServiceRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetLoggingServiceRequest sets the logging service of a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetLoggingServiceRequest.logging_service">
+<code class="descname">logging_service</code><a class="headerlink" href="#google.cloud.container_v1.types.SetLoggingServiceRequest.logging_service" title="Permalink to this definition">#</a></dt>
+<dd><p>The logging service the cluster should use to write metrics.
+Currently available options:  -  “logging.googleapis.com” -
+the Google Cloud Logging service -  “none” - no metrics will
+be exported from the cluster</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetMaintenancePolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetMaintenancePolicyRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMaintenancePolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetMaintenancePolicyRequest sets the maintenance policy for a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMaintenancePolicyRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMaintenancePolicyRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMaintenancePolicyRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMaintenancePolicyRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMaintenancePolicyRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMaintenancePolicyRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMaintenancePolicyRequest.maintenance_policy">
+<code class="descname">maintenance_policy</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMaintenancePolicyRequest.maintenance_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>The maintenance policy to be set for the cluster. An empty
+field clears the existing maintenance policy.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetMasterAuthRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetMasterAuthRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetMasterAuthRequest updates the admin password of a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMasterAuthRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMasterAuthRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMasterAuthRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMasterAuthRequest.action">
+<code class="descname">action</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.action" title="Permalink to this definition">#</a></dt>
+<dd><p>The exact form of action to be taken on the master auth.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMasterAuthRequest.update">
+<code class="descname">update</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMasterAuthRequest.update" title="Permalink to this definition">#</a></dt>
+<dd><p>A description of the update.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetMonitoringServiceRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetMonitoringServiceRequest sets the monitoring service of a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetMonitoringServiceRequest.monitoring_service">
+<code class="descname">monitoring_service</code><a class="headerlink" href="#google.cloud.container_v1.types.SetMonitoringServiceRequest.monitoring_service" title="Permalink to this definition">#</a></dt>
+<dd><p>The monitoring service the cluster should use to write
+metrics. Currently available options:  -
+“monitoring.googleapis.com” - the Google Cloud Monitoring
+service -  “none” - no metrics will be exported from the
+cluster</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetNetworkPolicyRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetNetworkPolicyRequest enables/disables network policy for a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNetworkPolicyRequest.network_policy">
+<code class="descname">network_policy</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNetworkPolicyRequest.network_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Configuration options for the NetworkPolicy feature.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetNodePoolAutoscalingRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetNodePoolAutoscalingRequest sets the autoscaler settings of a node
+pool.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.node_pool_id">
+<code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.autoscaling">
+<code class="descname">autoscaling</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolAutoscalingRequest.autoscaling" title="Permalink to this definition">#</a></dt>
+<dd><p>Autoscaling configuration for the node pool.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetNodePoolManagementRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetNodePoolManagementRequest sets the node management properties of a
+node pool.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.node_pool_id">
+<code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolManagementRequest.management">
+<code class="descname">management</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolManagementRequest.management" title="Permalink to this definition">#</a></dt>
+<dd><p>NodeManagement configuration for the node pool.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">SetNodePoolSizeRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>SetNodePoolSizeRequest sets the size a node pool.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.node_pool_id">
+<code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool to update.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.SetNodePoolSizeRequest.node_count">
+<code class="descname">node_count</code><a class="headerlink" href="#google.cloud.container_v1.types.SetNodePoolSizeRequest.node_count" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired node count for the pool.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.StartIPRotationRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">StartIPRotationRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>StartIPRotationRequest creates a new IP for the cluster and then
+performs a node upgrade on each node pool to point to the new IP.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.StartIPRotationRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <cite>project ID or project number &lt;h
+ttps://developers.google.com/console/help/new/#projectnumber&gt;</cite>
+__.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.StartIPRotationRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.StartIPRotationRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.StartIPRotationRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.UpdateClusterRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">UpdateClusterRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>UpdateClusterRequest updates the settings of a cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateClusterRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateClusterRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateClusterRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateClusterRequest.update">
+<code class="descname">update</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateClusterRequest.update" title="Permalink to this definition">#</a></dt>
+<dd><p>A description of the update.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.UpdateMasterRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">UpdateMasterRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>UpdateMasterRequest updates the master of the cluster.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateMasterRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateMasterRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateMasterRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateMasterRequest.master_version">
+<code class="descname">master_version</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateMasterRequest.master_version" title="Permalink to this definition">#</a></dt>
+<dd><p>The Kubernetes version to change the master to. The only valid
+value is the latest supported version. Use “-” to have the
+server automatically select the latest version.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.container_v1.types.</code><code class="descname">UpdateNodePoolRequest</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>UpdateNodePoolRequests update a node pool’s image and/or version.</p>
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.project_id">
+<code class="descname">project_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.project_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The Google Developers Console <a class="reference external" href="https://support.google.com/cloud/answer/6158840">project ID or project number</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.zone">
+<code class="descname">zone</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.zone" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the Google Compute Engine <a class="reference external" href="/compute/docs/zones#available">zone</a> in which the cluster
+resides.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.cluster_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the cluster to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.node_pool_id">
+<code class="descname">node_pool_id</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.node_pool_id" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the node pool to upgrade.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.node_version">
+<code class="descname">node_version</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.node_version" title="Permalink to this definition">#</a></dt>
+<dd><p>The Kubernetes version to change the nodes to (typically an
+upgrade). Use <code class="docutils literal"><span class="pre">-</span></code> to upgrade to the latest version supported
+by the server.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.container_v1.types.UpdateNodePoolRequest.image_type">
+<code class="descname">image_type</code><a class="headerlink" href="#google.cloud.container_v1.types.UpdateNodePoolRequest.image_type" title="Permalink to this definition">#</a></dt>
+<dd><p>The desired image type for the node pool.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Python Client for Google Container Engine API (Beta)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html#api-reference">Api Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Python Client for Google Container Engine API (Beta)</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">Client for Google Container Engine API</a></li>
+      <li>Next: <a href="../../../datastore/usage.html" title="next chapter">Datastore</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../../../_sources/container/gapic/v1/types.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

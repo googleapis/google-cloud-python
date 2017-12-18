@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Subscriptions &#8212; google-cloud 7bad261 documentation</title>
+    <title>Subscriptions &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,7 +45,7 @@
 <h1>Subscriptions<a class="headerlink" href="#subscriptions" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.pubsub_v1.subscriber.policy.thread.Policy">
-<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.subscriber.policy.thread.</code><code class="descname">Policy</code><span class="sig-paren">(</span><em>client</em>, <em>subscription</em>, <em>flow_control=FlowControl(max_bytes=12663087104.0</em>, <em>max_messages=inf</em>, <em>resume_threshold=0.8)</em>, <em>executor=None</em>, <em>queue=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/policy/thread.html#Policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.policy.thread.Policy" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.subscriber.policy.thread.</code><code class="descname">Policy</code><span class="sig-paren">(</span><em>client</em>, <em>subscription</em>, <em>flow_control=FlowControl(max_bytes=3336719564.8</em>, <em>max_messages=inf</em>, <em>resume_threshold=0.8)</em>, <em>executor=None</em>, <em>queue=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/policy/thread.html#Policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.policy.thread.Policy" title="Permalink to this definition">#</a></dt>
 <dd><p>A consumer class based on <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></a>.</p>
 <p>This consumer handles the connection to the Pub/Sub service and all of
 the concurrency needs.</p>
@@ -76,12 +76,41 @@ for crossing the concurrency boundary implemented by
 <dt id="google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close">
 <code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/policy/thread.html#Policy.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close" title="Permalink to this definition">#</a></dt>
 <dd><p>Close the existing connection.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method is not thread-safe. For example, if this method is
+called while another thread is executing <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open" title="google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open"><code class="xref py py-meth docutils literal"><span class="pre">open()</span></code></a>, then the
+policy could end up in an undefined state. The <strong>same</strong> policy
+instance is not intended to be used by multiple workers (though
+each policy instance <strong>does</strong> have a thread-safe private queue).</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The future that <strong>was</strong> attached
+to the subscription.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Future</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the policy has not been opened yet.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open">
 <code class="descname">open</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/subscriber/policy/thread.html#Policy.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open" title="Permalink to this definition">#</a></dt>
 <dd><p>Open a streaming pull connection and begin receiving messages.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method is not thread-safe. For example, if this method is
+called while another thread is executing <a class="reference internal" href="#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close" title="google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close"><code class="xref py py-meth docutils literal"><span class="pre">close()</span></code></a>, then the
+policy could end up in an undefined state. The <strong>same</strong> policy
+instance is not intended to be used by multiple workers (though
+each policy instance <strong>does</strong> have a thread-safe private queue).</p>
+</div>
 <p>For each message received, the <code class="docutils literal"><span class="pre">callback</span></code> function is fired with
 a <a class="reference internal" href="message.html#google.cloud.pubsub_v1.subscriber.message.Message" title="google.cloud.pubsub_v1.subscriber.message.Message"><code class="xref py py-class docutils literal"><span class="pre">Message</span></code></a> as its only
 argument.</p>
@@ -91,14 +120,13 @@ argument.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>callback</strong> (<em>Callable</em>) – The callback function.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
-<dt>A future that provides</dt>
-<dd>an interface to block on the subscription if desired, and
-handle errors.</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A future that provides
+an interface to block on the subscription if desired, and
+handle errors.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Future</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the policy has already been opened.</td>
 </tr>
 </tbody>
 </table>
@@ -137,7 +165,9 @@ handle errors.</dd>
 <li class="toctree-l1"><a class="reference internal" href="../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>

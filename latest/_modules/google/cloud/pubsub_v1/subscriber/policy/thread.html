@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 7bad261 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.policy.thread &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -189,7 +189,26 @@
             <span class="k">return</span> <span class="n">executor</span>
 
 <div class="viewcode-block" id="Policy.close"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Close the existing connection.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Close the existing connection.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This method is not thread-safe. For example, if this method is</span>
+<span class="sd">            called while another thread is executing :meth:`open`, then the</span>
+<span class="sd">            policy could end up in an undefined state. The **same** policy</span>
+<span class="sd">            instance is not intended to be used by multiple workers (though</span>
+<span class="sd">            each policy instance **does** have a thread-safe private queue).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ~google.api_core.future.Future: The future that **was** attached</span>
+<span class="sd">            to the subscription.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the policy has not been opened yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This policy has not been opened yet.&#39;</span><span class="p">)</span>
+
         <span class="c1"># Stop consuming messages.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_request_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">_helper_threads</span><span class="o">.</span><span class="n">STOP</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dispatch_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>  <span class="c1"># Wait until stopped.</span>
@@ -201,9 +220,11 @@
 
         <span class="c1"># The subscription is closing cleanly; resolve the future if it is not</span>
         <span class="c1"># resolved already.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span></div>
+        <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">future</span></div>
 
     <span class="k">def</span> <span class="nf">_start_dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Start a thread to dispatch requests queued up by callbacks.</span>
@@ -255,6 +276,14 @@
 <div class="viewcode-block" id="Policy.open"><a class="viewcode-back" href="../../../../../../pubsub/subscriber/api/policy.html#google.cloud.pubsub_v1.subscriber.policy.thread.Policy.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Open a streaming pull connection and begin receiving messages.</span>
 
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            This method is not thread-safe. For example, if this method is</span>
+<span class="sd">            called while another thread is executing :meth:`close`, then the</span>
+<span class="sd">            policy could end up in an undefined state. The **same** policy</span>
+<span class="sd">            instance is not intended to be used by multiple workers (though</span>
+<span class="sd">            each policy instance **does** have a thread-safe private queue).</span>
+
 <span class="sd">        For each message received, the ``callback`` function is fired with</span>
 <span class="sd">        a :class:`~.pubsub_v1.subscriber.message.Message` as its only</span>
 <span class="sd">        argument.</span>
@@ -264,9 +293,15 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ~google.api_core.future.Future: A future that provides</span>
-<span class="sd">                an interface to block on the subscription if desired, and</span>
-<span class="sd">                handle errors.</span>
+<span class="sd">            an interface to block on the subscription if desired, and</span>
+<span class="sd">            handle errors.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the policy has already been opened.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_future</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This policy has already been opened.&#39;</span><span class="p">)</span>
+
         <span class="c1"># Create the Future that this method will return.</span>
         <span class="c1"># This future is the main thread&#39;s interface to handle exceptions,</span>
         <span class="c1"># block on the subscription, etc.</span>
@@ -374,7 +409,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../../firestore/index.html">Firestore</a></li>

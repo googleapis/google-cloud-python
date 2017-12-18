@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>StreamedResultSet API &#8212; google-cloud 7bad261 documentation</title>
+    <title>StreamedResultSet API &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -63,19 +63,6 @@ instances.</li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.consume_all">
-<code class="descname">consume_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.consume_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_all" title="Permalink to this definition">#</a></dt>
-<dd><p>Consume the streamed responses until there are no more.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.consume_next">
-<code class="descname">consume_next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/streamed.html#StreamedResultSet.consume_next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.consume_next" title="Permalink to this definition">#</a></dt>
-<dd><p>Consume the next partial result set from the stream.</p>
-<p>Parse the result set into new/existing rows in <code class="xref py py-attr docutils literal"><span class="pre">_rows</span></code></p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.fields">
 <code class="descname">fields</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.fields" title="Permalink to this definition">#</a></dt>
@@ -139,22 +126,6 @@ in whole or in part.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">RuntimeError</span></code></a>: If consumption has already occurred,
 in whole or in part.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.streamed.StreamedResultSet.rows">
-<code class="descname">rows</code><a class="headerlink" href="#google.cloud.spanner_v1.streamed.StreamedResultSet.rows" title="Permalink to this definition">#</a></dt>
-<dd><p>Fully-processed rows.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of row-data lists.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of completed row data, from proceesd PRS responses.</td>
 </tr>
 </tbody>
 </table>
@@ -229,7 +200,9 @@ in whole or in part.</td>
 <li class="toctree-l1"><a class="reference internal" href="../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../firestore/index.html">Firestore</a></li>

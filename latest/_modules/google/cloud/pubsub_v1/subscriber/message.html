@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 7bad261 documentation</title>
+    <title>google.cloud.pubsub_v1.subscriber.message &#8212; google-cloud 0.28.1.dev1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '7bad261',
+        VERSION:     '0.28.1.dev1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -56,8 +56,35 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="n">_MESSAGE_REPR</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">Message {{</span>
+<span class="s2">  data: </span><span class="si">{!r}</span><span class="s2"></span>
+<span class="s2">  attributes: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">}}&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_indent</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;  &#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Indent some text.</span>
+
+<span class="sd">    Note that this is present as ``textwrap.indent``, but not in Python 2.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lines (str): The newline delimited string to be indented.</span>
+<span class="sd">        prefix (Optional[str]): The prefix to indent each line with. Default</span>
+<span class="sd">            to two spaces.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The newly indented content.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indented</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+        <span class="n">indented</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">indented</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../../../pubsub/subscriber/api/message.html#google.cloud.pubsub_v1.subscriber.message.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -75,7 +102,8 @@
 <span class="sd">            to use this directly.</span>
 <span class="sd">        data (bytes): The data in the message. Note that this will be a</span>
 <span class="sd">            :class:`bytes`, not a text string.</span>
-<span class="sd">        attributes (dict): The attributes sent along with the message.</span>
+<span class="sd">        attributes (.ScalarMapContainer): The attributes sent along with the</span>
+<span class="sd">            message. See :attr:`attributes` for more information on this type.</span>
 <span class="sd">        publish_time (datetime): The time that this message was originally</span>
 <span class="sd">            published.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -114,21 +142,35 @@
         <span class="c1"># Get an abbreviated version of the data.</span>
         <span class="n">abbv_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">data</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">abbv_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
-            <span class="n">abbv_data</span> <span class="o">=</span> <span class="n">abbv_data</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;...&#39;</span>
+            <span class="n">abbv_data</span> <span class="o">=</span> <span class="n">abbv_data</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;...&#39;</span>
 
-        <span class="c1"># Return a useful representation.</span>
-        <span class="n">answer</span> <span class="o">=</span> <span class="s1">&#39;Message {</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="n">answer</span> <span class="o">+=</span> <span class="s1">&#39;    data: </span><span class="si">{0!r}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">abbv_data</span><span class="p">)</span>
-        <span class="n">answer</span> <span class="o">+=</span> <span class="s1">&#39;    attributes: </span><span class="si">{0!r}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
-        <span class="n">answer</span> <span class="o">+=</span> <span class="s1">&#39;}&#39;</span>
-        <span class="k">return</span> <span class="n">answer</span>
+        <span class="n">pretty_attrs</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">),</span>
+            <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;: &#39;</span><span class="p">),</span>
+            <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">pretty_attrs</span> <span class="o">=</span> <span class="n">_indent</span><span class="p">(</span><span class="n">pretty_attrs</span><span class="p">)</span>
+        <span class="c1"># We don&#39;t actually want the first line indented.</span>
+        <span class="n">pretty_attrs</span> <span class="o">=</span> <span class="n">pretty_attrs</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">_MESSAGE_REPR</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">abbv_data</span><span class="p">,</span> <span class="n">pretty_attrs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the attributes of the underlying Pub/Sub Message.</span>
 
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            A ``ScalarMapContainer`` behaves slightly differently than a</span>
+<span class="sd">            ``dict``. For a Pub / Sub message this is a ``string-&gt;string`` map.</span>
+<span class="sd">            When trying to access a value via ``map[&#39;key&#39;]``, if the key is</span>
+<span class="sd">            not in the map, then the default value for the string type will</span>
+<span class="sd">            be returned, which is an empty string. It may be more intuitive</span>
+<span class="sd">            to just cast the map to a ``dict`` or to one use ``map.get``.</span>
+
 <span class="sd">        Returns:</span>
-<span class="sd">            dict: The message&#39;s attributes.</span>
+<span class="sd">            .ScalarMapContainer: The message&#39;s attributes. This is a</span>
+<span class="sd">            ``dict``-like object provided by ``google.protobuf``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="o">.</span><span class="n">attributes</span>
 
@@ -294,7 +336,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../core/index.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../firestore/index.html">Firestore</a></li>

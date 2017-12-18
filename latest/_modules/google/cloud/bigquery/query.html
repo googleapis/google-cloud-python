@@ -1,0 +1,777 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>google.cloud.bigquery.query &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.28.1.dev1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for google.cloud.bigquery.query</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2015 Google LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;BigQuery query processing.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery.table</span> <span class="k">import</span> <span class="n">_parse_schema_resource</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_rows_from_json</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_QUERY_PARAMS_FROM_JSON</span>
+<span class="kn">from</span> <span class="nn">google.cloud.bigquery._helpers</span> <span class="k">import</span> <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span>
+
+
+<div class="viewcode-block" id="UDFResource"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.UDFResource">[docs]</a><span class="k">class</span> <span class="nc">UDFResource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Describe a single user-defined function (UDF) resource.</span>
+
+<span class="sd">    :type udf_type: str</span>
+<span class="sd">    :param udf_type: the type of the resource (&#39;inlineCode&#39; or &#39;resourceUri&#39;)</span>
+
+<span class="sd">    :type value: str</span>
+<span class="sd">    :param value: the inline code or resource URI.</span>
+
+<span class="sd">    See</span>
+<span class="sd">    https://cloud.google.com/bigquery/user-defined-functions#api</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">udf_type</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">udf_type</span> <span class="o">=</span> <span class="n">udf_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">UDFResource</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">udf_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">udf_type</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span></div>
+
+
+<span class="k">class</span> <span class="nc">_AbstractQueryParameter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for named / positional query parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: JSON mapping of parameter</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<div class="viewcode-block" id="ScalarQueryParameter"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ScalarQueryParameter">[docs]</a><span class="k">class</span> <span class="nc">ScalarQueryParameter</span><span class="p">(</span><span class="n">_AbstractQueryParameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Named / positional query parameters for scalar values.</span>
+
+<span class="sd">    :type name: str or None</span>
+<span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
+<span class="sd">                 parameter can only be addressed via position (``?``).</span>
+
+<span class="sd">    :type type_: str</span>
+<span class="sd">    :param type_: name of parameter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
+<span class="sd">                  &#39;FLOAT64&#39;, &#39;BOOL&#39;, &#39;TIMESTAMP&#39;, &#39;DATETIME&#39;, or &#39;DATE&#39;.</span>
+
+<span class="sd">    :type value: str, int, float, bool, :class:`datetime.datetime`, or</span>
+<span class="sd">                 :class:`datetime.date`.</span>
+<span class="sd">    :param value: the scalar parameter value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="ScalarQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ScalarQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory for positional paramater.</span>
+
+<span class="sd">        :type type_: str</span>
+<span class="sd">        :param type_:</span>
+<span class="sd">            name of parameter type.  One of &#39;STRING&#39;, &#39;INT64&#39;,</span>
+<span class="sd">            &#39;FLOAT64&#39;, &#39;BOOL&#39;, &#39;TIMESTAMP&#39;, &#39;DATETIME&#39;, or &#39;DATE&#39;.</span>
+
+<span class="sd">        :type value: str, int, float, bool, :class:`datetime.datetime`, or</span>
+<span class="sd">                     :class:`datetime.date`.</span>
+<span class="sd">        :param value: the scalar parameter value.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`</span>
+<span class="sd">        :returns: instance without name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScalarQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ScalarQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: JSON mapping of parameter</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.ScalarQueryParameter`</span>
+<span class="sd">        :returns: instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+        <span class="n">converted</span> <span class="o">=</span> <span class="n">_QUERY_PARAMS_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ScalarQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ScalarQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: JSON mapping</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">resource</span></div>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this</span>
+<span class="sd">                   :class:`~google.cloud.bigquery.query.ScalarQueryParameter`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ScalarQueryParameter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ScalarQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="ArrayQueryParameter"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ArrayQueryParameter">[docs]</a><span class="k">class</span> <span class="nc">ArrayQueryParameter</span><span class="p">(</span><span class="n">_AbstractQueryParameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Named / positional query parameters for array values.</span>
+
+<span class="sd">    :type name: str or None</span>
+<span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
+<span class="sd">                 parameter can only be addressed via position (``?``).</span>
+
+<span class="sd">    :type array_type: str</span>
+<span class="sd">    :param array_type:</span>
+<span class="sd">        name of type of array elements.  One of `&#39;STRING&#39;`, `&#39;INT64&#39;`,</span>
+<span class="sd">        `&#39;FLOAT64&#39;`, `&#39;BOOL&#39;`, `&#39;TIMESTAMP&#39;`, or `&#39;DATE&#39;`.</span>
+
+<span class="sd">    :type values: list of appropriate scalar type.</span>
+<span class="sd">    :param values: the parameter array values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">=</span> <span class="n">array_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
+
+<div class="viewcode-block" id="ArrayQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ArrayQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
+
+<span class="sd">        :type array_type: str</span>
+<span class="sd">        :param array_type:</span>
+<span class="sd">            name of type of array elements.  One of `&#39;STRING&#39;`, `&#39;INT64&#39;`,</span>
+<span class="sd">            `&#39;FLOAT64&#39;`, `&#39;BOOL&#39;`, `&#39;TIMESTAMP&#39;`, or `&#39;DATE&#39;`.</span>
+
+<span class="sd">        :type values: list of appropriate scalar type</span>
+<span class="sd">        :param values: the parameter array values.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`</span>
+<span class="sd">        :returns: instance without name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_from_api_repr_struct</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">converted</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># We need to flatten the array to use the StructQueryParameter</span>
+        <span class="c1"># parse code.</span>
+        <span class="n">resource_template</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="c1"># The arrayType includes all the types of the fields of the STRUCT</span>
+            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">array_value</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;arrayValues&#39;</span><span class="p">]:</span>
+            <span class="n">struct_resource</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">resource_template</span><span class="p">)</span>
+            <span class="n">struct_resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">array_value</span>
+            <span class="n">struct_value</span> <span class="o">=</span> <span class="n">StructQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
+            <span class="n">converted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">struct_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_from_api_repr_scalar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">array_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">value</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">value</span>
+            <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;arrayValues&#39;</span><span class="p">]]</span>
+        <span class="n">converted</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">_QUERY_PARAMS_FROM_JSON</span><span class="p">[</span><span class="n">array_type</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">array_type</span><span class="p">,</span> <span class="n">converted</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ArrayQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ArrayQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: JSON mapping of parameter</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.ArrayQueryParameter`</span>
+<span class="sd">        :returns: instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">array_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;arrayType&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_struct</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_from_api_repr_scalar</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ArrayQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.ArrayQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: JSON mapping</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;RECORD&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
+            <span class="n">reprs</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+            <span class="n">a_type</span> <span class="o">=</span> <span class="n">reprs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;parameterType&#39;</span><span class="p">]</span>
+            <span class="n">a_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">repr_</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">repr_</span> <span class="ow">in</span> <span class="n">reprs</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="p">}</span>
+            <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+            <span class="n">a_values</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;arrayType&#39;</span><span class="p">:</span> <span class="n">a_type</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;arrayValues&#39;</span><span class="p">:</span> <span class="n">a_values</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">resource</span></div>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this</span>
+<span class="sd">                   :class:`~google.cloud.bigquery.query.ArrayQueryParameter`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">array_type</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ArrayQueryParameter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;ArrayQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="StructQueryParameter"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.StructQueryParameter">[docs]</a><span class="k">class</span> <span class="nc">StructQueryParameter</span><span class="p">(</span><span class="n">_AbstractQueryParameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Named / positional query parameters for struct values.</span>
+
+<span class="sd">    :type name: str or None</span>
+<span class="sd">    :param name: Parameter name, used via ``@foo`` syntax.  If None, the</span>
+<span class="sd">                 parameter can only be addressed via position (``?``).</span>
+
+<span class="sd">    :type sub_params:</span>
+<span class="sd">        tuple of :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,</span>
+<span class="sd">        :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or</span>
+<span class="sd">        :class:`~google.cloud.bigquery.query.StructQueryParameter`</span>
+<span class="sd">    :param sub_params: the sub-parameters for the struct</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">sub_params</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+                <span class="n">types</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;STRUCT&#39;</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">ArrayQueryParameter</span><span class="p">):</span>
+                <span class="n">types</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ARRAY&#39;</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">types</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">type_</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">value</span>
+
+<div class="viewcode-block" id="StructQueryParameter.positional"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.StructQueryParameter.positional">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">positional</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory for positional parameters.</span>
+
+<span class="sd">        :type sub_params:</span>
+<span class="sd">            tuple of</span>
+<span class="sd">            :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,</span>
+<span class="sd">            :class:`~google.cloud.bigquery.query.ArrayQueryParameter`, or</span>
+<span class="sd">            :class:`~google.cloud.bigquery.query.StructQueryParameter`</span>
+<span class="sd">        :param sub_params: the sub-parameters for the struct</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`</span>
+<span class="sd">        :returns: instance without name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">sub_params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StructQueryParameter.from_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.StructQueryParameter.from_api_repr">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory: construct parameter from JSON resource.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: JSON mapping of parameter</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.bigquery.query.StructQueryParameter`</span>
+<span class="sd">        :returns: instance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">type_resources</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">struct_types</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">][</span><span class="s1">&#39;structTypes&#39;</span><span class="p">]:</span>
+            <span class="n">types</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+            <span class="n">type_resources</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">struct_values</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">][</span><span class="s1">&#39;structValues&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">struct_values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">converted</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">:</span>
+                <span class="n">struct_resource</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">type_resources</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                    <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">StructQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">type_</span> <span class="o">==</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">:</span>
+                <span class="n">struct_resource</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">key</span><span class="p">,</span>
+                    <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="n">type_resources</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
+                    <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">ArrayQueryParameter</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">struct_resource</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+                <span class="n">converted</span> <span class="o">=</span> <span class="n">_QUERY_PARAMS_FROM_JSON</span><span class="p">[</span><span class="n">type_</span><span class="p">](</span><span class="n">value</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">instance</span><span class="o">.</span><span class="n">struct_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">converted</span>
+        <span class="k">return</span> <span class="n">instance</span></div>
+
+<div class="viewcode-block" id="StructQueryParameter.to_api_repr"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.StructQueryParameter.to_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">to_api_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct JSON API representation for the parameter.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: JSON mapping</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s_types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">type_</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;STRUCT&#39;</span><span class="p">,</span> <span class="s1">&#39;ARRAY&#39;</span><span class="p">):</span>
+                <span class="n">repr_</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+                <span class="n">s_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">repr_</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">]}</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">repr_</span><span class="p">[</span><span class="s1">&#39;parameterValue&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">s_types</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">type_</span><span class="p">}}</span>
+                <span class="n">converter</span> <span class="o">=</span> <span class="n">_SCALAR_VALUE_TO_JSON_PARAM</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+
+        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;parameterType&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;STRUCT&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;structTypes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">s_types</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;parameterValue&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;structValues&#39;</span><span class="p">:</span> <span class="n">values</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">resource</span></div>
+
+    <span class="k">def</span> <span class="nf">_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A tuple key that uniquely describes this field.</span>
+
+<span class="sd">        Used to compute this instance&#39;s hashcode and evaluate equality.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: The contents of this</span>
+<span class="sd">                   :class:`~google.cloud.biquery.ArrayQueryParameter`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">struct_types</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">struct_values</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">StructQueryParameter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_key</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">other</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;StructQueryParameter</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="QueryResults"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.query.QueryResults">[docs]</a><span class="k">class</span> <span class="nc">QueryResults</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Results of a query.</span>
+
+<span class="sd">    See:</span>
+<span class="sd">    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs/getQueryResults</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">api_response</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project bound to the query job.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: the project that the query job is associated with.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;projectId&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cache_hit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query results served from cache.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#cacheHit</span>
+
+<span class="sd">        :rtype: bool or ``NoneType``</span>
+<span class="sd">        :returns: True if the query results were served from cache (None</span>
+<span class="sd">                  until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cacheHit&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Server completed query.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobComplete</span>
+
+<span class="sd">        :rtype: bool or ``NoneType``</span>
+<span class="sd">        :returns: True if the query completed on the server (None</span>
+<span class="sd">                  until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobComplete&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Errors generated by the query.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#errors</span>
+
+<span class="sd">        :rtype: list of mapping, or ``NoneType``</span>
+<span class="sd">        :returns: Mappings describing errors generated on the server (None</span>
+<span class="sd">                  until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;errors&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">job_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Job ID of the query job these results are from.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#jobReference</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: Job ID of the query job.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobId&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">page_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Token for fetching next bach of results.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#pageToken</span>
+
+<span class="sd">        :rtype: str, or ``NoneType``</span>
+<span class="sd">        :returns: Token generated on the server (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Total number of rows returned by the query.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalRows</span>
+
+<span class="sd">        :rtype: int, or ``NoneType``</span>
+<span class="sd">        :returns: Count generated on the server (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_rows</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_bytes_processed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Total number of bytes processed by the query.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#totalBytesProcessed</span>
+
+<span class="sd">        :rtype: int, or ``NoneType``</span>
+<span class="sd">        :returns: Count generated on the server (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_bytes_processed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalBytesProcessed&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_bytes_processed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_bytes_processed</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_dml_affected_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Total number of rows affected by a DML query.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#numDmlAffectedRows</span>
+
+<span class="sd">        :rtype: int, or ``NoneType``</span>
+<span class="sd">        :returns: Count generated on the server (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_dml_affected_rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numDmlAffectedRows&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num_dml_affected_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_dml_affected_rows</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query results.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#rows</span>
+
+<span class="sd">        :rtype: list of :class:`~google.cloud.bigquery.table.Row`</span>
+<span class="sd">        :returns: fields describing the schema (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_rows_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Schema for query results.</span>
+
+<span class="sd">        See</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#schema</span>
+
+<span class="sd">        :rtype: list of :class:`SchemaField`, or ``NoneType``</span>
+<span class="sd">        :returns: fields describing the schema (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{}))</span>
+
+    <span class="k">def</span> <span class="nf">_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update properties from resource in body of ``api_response``</span>
+
+<span class="sd">        :type api_response: dict</span>
+<span class="sd">        :param api_response: response returned from an API call</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">job_id_present</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s1">&#39;jobReference&#39;</span> <span class="ow">in</span> <span class="n">api_response</span>
+            <span class="ow">and</span> <span class="s1">&#39;jobId&#39;</span> <span class="ow">in</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="s1">&#39;projectId&#39;</span> <span class="ow">in</span> <span class="n">api_response</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">job_id_present</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;QueryResult requires a job reference&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">api_response</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_query_param_from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper:  construct concrete query parameter from JSON resource.&quot;&quot;&quot;</span>
+    <span class="n">qp_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;parameterType&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;arrayType&#39;</span> <span class="ow">in</span> <span class="n">qp_type</span><span class="p">:</span>
+        <span class="n">klass</span> <span class="o">=</span> <span class="n">ArrayQueryParameter</span>
+    <span class="k">elif</span> <span class="s1">&#39;structTypes&#39;</span> <span class="ow">in</span> <span class="n">qp_type</span><span class="p">:</span>
+        <span class="n">klass</span> <span class="o">=</span> <span class="n">StructQueryParameter</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">klass</span> <span class="o">=</span> <span class="n">ScalarQueryParameter</span>
+    <span class="k">return</span> <span class="n">klass</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">google-cloud</a></h1>
+
+
+
+<p class="blurb">Google Cloud Client Libraries for Python</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=GoogleCloudPlatform&repo=google-cloud-python&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../releases.html"><code class="docutils literal"><span class="pre">google-cloud</span></code> Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core/index.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery/usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable/usage.html">Bigtable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../datastore/usage.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dns/usage.html">DNS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../firestore/index.html">Firestore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../language/usage.html">Natural Language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pubsub/index.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../resource-manager/api.html">Resource Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../runtimeconfig/usage.html">Runtimeconfig</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../spanner/usage.html">Spanner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../speech/index.html">Speech</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../error-reporting/usage.html">Stackdriver Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../monitoring/usage.html">Stackdriver Monitoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../logging/usage.html">Stackdriver Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../storage/client.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../translate/usage.html">Translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vision/index.html">Vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../videointelligence/index.html">Video Intelligence</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2014-2017, Google.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/GoogleCloudPlatform/google-cloud-python" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
