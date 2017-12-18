@@ -974,6 +974,18 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = all_data_rows[START+1 : END+1]
         self._check_row_data(rows, expected)
 
+    def test_read_with_range_keys_index_single_key(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        data = [[row[1], row[2]] for row in self._row_data(row_count)]
+        session, _ = self._set_up_table(row_count)
+        self.to_delete.append(session)
+        start = 3
+        krange = KeyRange(start_closed=data[start], end_open=data[start + 1])
+        keyset = KeySet(ranges=(krange,))
+        rows = list(session.read(self.TABLE, columns, keyset, index='name'))
+        self.assertEqual(rows, data[start : start+1])
+
     def test_read_with_range_keys_index_closed_closed(self):
         row_count = 10
         columns = self.COLUMNS[1], self.COLUMNS[2]
