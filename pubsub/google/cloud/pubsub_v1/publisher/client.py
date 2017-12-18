@@ -98,19 +98,21 @@ class Client(object):
         """
         return publisher_client.PublisherClient.SERVICE_ADDRESS
 
-    def batch(self, topic, message, create=True, autocommit=True):
+    def batch(self, topic, create=False, autocommit=True):
         """Return the current batch for the provided topic.
 
-        This will create a new batch only if no batch currently exists.
+        This will create a new batch if ``create=True`` or if no batch
+        currently exists.
 
         Args:
             topic (str): A string representing the topic.
-            message (~google.cloud.pubsub_v1.types.PubsubMessage): The message
-                that will be committed.
-            create (bool): Whether to create a new batch if no batch is
-                found. Defaults to True.
-            autocommit (bool): Whether to autocommit this batch.
-                This is primarily useful for debugging.
+            create (bool): Whether to create a new batch. Defaults to
+                :data:`False`. If :data:`True`, this will create a new batch
+                even if one already exists.
+            autocommit (bool): Whether to autocommit this batch. This is
+                primarily useful for debugging and testing, since it allows
+                the caller to avoid some side effects that batch creation
+                might have (e.g. spawning a worker to publish a batch).
 
         Returns:
             ~.pubsub_v1.batch.Batch: The batch object.
@@ -118,10 +120,12 @@ class Client(object):
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
         with self._batch_lock:
-            batch = self._batches.get(topic, None)
-            if batch is None or not batch.will_accept(message):
-                if not create:
-                    return None
+            if not create:
+                batch = self._batches.get(topic)
+                if batch is None:
+                    create = True
+
+            if create:
                 batch = self._batch_class(
                     autocommit=autocommit,
                     client=self,
@@ -130,7 +134,6 @@ class Client(object):
                 )
                 self._batches[topic] = batch
 
-        # Simply return the appropriate batch.
         return batch
 
     def publish(self, topic, data, **attrs):
@@ -190,4 +193,12 @@ class Client(object):
         message = types.PubsubMessage(data=data, attributes=attrs)
 
         # Delegate the publishing to the batch.
-        return self.batch(topic, message=message).publish(message)
+        batch = self.batch(topic)
+        future = None
+        while future is None:
+            if batch.will_accept(message):
+                future = batch.publish(message)
+            else:
+                batch = self.batch(topic, create=True)
+
+        return future
