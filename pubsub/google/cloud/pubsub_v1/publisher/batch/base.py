@@ -97,6 +97,11 @@ class Batch(object):
     def will_accept(self, message):
         """Return True if the batch is able to accept the message.
 
+        In concurrent implementations, the attributes on the current batch
+        may be modified by other workers. With this in mind, the caller will
+        likely want to hold a lock that will make sure the state remains
+        the same after the "will accept?" question is answered.
+
         Args:
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
@@ -107,8 +112,14 @@ class Batch(object):
         if self.status != BatchStatus.ACCEPTING_MESSAGES:
             return False
 
-        # If this batch can not hold the message in question, return False.
+        # If this message will make the batch exceed the ``max_bytes``
+        # setting, return False.
         if self.size + message.ByteSize() > self.settings.max_bytes:
+            return False
+
+        # If this message will make the batch exceed the ``max_messages``
+        # setting, return False.
+        if len(self.messages) >= self.settings.max_messages:
             return False
 
         # Okay, everything is good.

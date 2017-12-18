@@ -67,3 +67,12 @@ def test_will_not_accept_size():
     )
     message = types.PubsubMessage(data=b'abcdefghijklmnopqrstuvwxyz')
     assert batch.will_accept(message) is False
+
+
+def test_will_not_accept_number():
+    batch = create_batch(
+        settings=types.BatchSettings(max_messages=-1),
+        status=BatchStatus.ACCEPTING_MESSAGES,
+    )
+    message = types.PubsubMessage(data=b'abc')
+    assert batch.will_accept(message) is False
