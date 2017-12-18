@@ -2014,25 +2014,25 @@ class QueryPlanEntry(object):
     :param wait_ratio_avg: average wait ratio
 
     :type wait_ratio_max: float
-    :param wait_ratio_avg: maximum wait ratio
+    :param wait_ratio_max: maximum wait ratio
 
     :type read_ratio_avg: float
     :param read_ratio_avg: average read ratio
 
     :type read_ratio_max: float
-    :param read_ratio_avg: maximum read ratio
+    :param read_ratio_max: maximum read ratio
 
-    :type copute_ratio_avg: float
-    :param copute_ratio_avg: average copute ratio
+    :type compute_ratio_avg: float
+    :param compute_ratio_avg: average compute ratio
 
-    :type copute_ratio_max: float
-    :param copute_ratio_avg: maximum copute ratio
+    :type compute_ratio_max: float
+    :param compute_ratio_max: maximum compute ratio
 
     :type write_ratio_avg: float
     :param write_ratio_avg: average write ratio
 
     :type write_ratio_max: float
-    :param write_ratio_avg: maximum write ratio
+    :param write_ratio_max: maximum write ratio
 
     :type records_read: int
     :param records_read: number of records read
