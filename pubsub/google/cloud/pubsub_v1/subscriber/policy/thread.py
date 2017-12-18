@@ -157,6 +157,10 @@ class Policy(base.BasePolicy):
             instance is not intended to be used by multiple workers (though
             each policy instance **does** have a thread-safe private queue).
 
+        Returns:
+            ~google.api_core.future.Future: The future that **was** attached
+            to the subscription.
+
         Raises:
             ValueError: If the policy has not been opened yet.
         """
@@ -176,7 +180,9 @@ class Policy(base.BasePolicy):
         # resolved already.
         if not self._future.done():
             self._future.set_result(None)
+        future = self._future
         self._future = None
+        return future
 
     def _start_dispatch(self):
         """Start a thread to dispatch requests queued up by callbacks.
@@ -245,8 +251,8 @@ class Policy(base.BasePolicy):
 
         Returns:
             ~google.api_core.future.Future: A future that provides
-                an interface to block on the subscription if desired, and
-                handle errors.
+            an interface to block on the subscription if desired, and
+            handle errors.
 
         Raises:
             ValueError: If the policy has already been opened.

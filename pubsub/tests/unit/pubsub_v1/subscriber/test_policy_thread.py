@@ -61,13 +61,14 @@ def test_close():
 
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
-        policy.close()
+        closed_fut = policy.close()
         stop_consuming.assert_called_once_with()
 
     assert policy._dispatch_thread is None
     dispatch_thread.join.assert_called_once_with()
     assert policy._leases_thread is None
     leases_thread.join.assert_called_once_with()
+    assert closed_fut is future
     assert policy._future is None
     future.done.assert_called_once_with()
 
@@ -93,14 +94,15 @@ def test_close_with_unfinished_future():
     consumer = policy._consumer
     with mock.patch.object(consumer, 'stop_consuming') as stop_consuming:
         future = policy.future
-        policy.close()
+        closed_fut = policy.close()
         stop_consuming.assert_called_once_with()
 
     assert policy._dispatch_thread is None
     dispatch_thread.join.assert_called_once_with()
     assert policy._leases_thread is None
     leases_thread.join.assert_called_once_with()
-    assert policy.future != future
+    assert policy._future is None
+    assert closed_fut is future
     assert future.result() is None
 
 
