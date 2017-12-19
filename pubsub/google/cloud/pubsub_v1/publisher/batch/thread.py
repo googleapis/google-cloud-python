@@ -37,7 +37,7 @@ class Batch(base.Batch):
     """A batch of messages.
 
     The batch is the internal group of messages which are either awaiting
-    publication or currently in-flight.
+    publication or currently in progress.
 
     A batch is automatically created by the PublisherClient when the first
     message to be published is received; subsequent messages are added to
@@ -72,9 +72,9 @@ class Batch(base.Batch):
         self._topic = topic
         self._settings = settings
 
-        self._commit_lock = threading.Lock()
-        # These objects are all communicated between threads; ensure that
-        # any writes to them are atomic.
+        self._state_lock = threading.Lock()
+        # These members are all communicated between threads; ensure that
+        # any writes to them use the "state lock" to remain atomic.
         self._futures = []
         self._messages = []
         self._size = 0
@@ -133,17 +133,24 @@ class Batch(base.Batch):
     def commit(self):
         """Actually publish all of the messages on the active batch.
 
-        This synchronously sets the batch status to in-flight, and then opens
-        a new thread, which handles actually sending the messages to Pub/Sub.
-
         .. note::
 
             This method is non-blocking. It opens a new thread, which calls
             :meth:`_commit`, which does block.
+
+        This synchronously sets the batch status to "starting", and then opens
+        a new thread, which handles actually sending the messages to Pub/Sub.
+
+        If the current batch is **not** accepting messages, this method
+        does nothing.
         """
         # Set the status to "starting" synchronously, to ensure that
         # this batch will necessarily not accept new messages.
-        self._status = base.BatchStatus.STARTING
+        with self._state_lock:
+            if self._status == base.BatchStatus.ACCEPTING_MESSAGES:
+                self._status = base.BatchStatus.STARTING
+            else:
+                return
 
         # Start a new thread to actually handle the commit.
         commit_thread = threading.Thread(
@@ -155,7 +162,7 @@ class Batch(base.Batch):
     def _commit(self):
         """Actually publish all of the messages on the active batch.
 
-        This moves the batch out from being the active batch to an in-flight
+        This moves the batch out from being the active batch to an in progress
         batch on the publisher, and then the batch is discarded upon
         completion.
 
@@ -164,7 +171,7 @@ class Batch(base.Batch):
             This method blocks. The :meth:`commit` method is the non-blocking
             version, which calls this one.
         """
-        with self._commit_lock:
+        with self._state_lock:
             if self._status in _CAN_COMMIT:
                 self._status = base.BatchStatus.IN_PROGRESS
             else:
@@ -213,13 +220,13 @@ class Batch(base.Batch):
         This simply sleeps for ``self._settings.max_latency`` seconds,
         and then calls commit unless the batch has already been committed.
         """
-        # Note: This thread blocks; it is up to the calling code to call it
-        # in a separate thread.
-        #
+        # NOTE: This blocks; it is up to the calling code to call it
+        #       in a separate thread.
+
         # Sleep for however long we should be waiting.
         time.sleep(self._settings.max_latency)
 
-        # Commit.
+        _LOGGER.debug('Monitor is waking up')
         return self._commit()
 
     def publish(self, message):
@@ -235,24 +242,34 @@ class Batch(base.Batch):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~google.api_core.future.Future: An object conforming to
-                the :class:`concurrent.futures.Future` interface.
+            Optional[~google.api_core.future.Future]: An object conforming to
+            the :class:`~concurrent.futures.Future` interface or :data:`None`.
+            If :data:`None` is returned, that signals that the batch cannot
+            accept a message.
         """
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
             message = types.PubsubMessage(**message)
 
-        # Add the size to the running total of the size, so we know
-        # if future messages need to be rejected.
-        self._size += message.ByteSize()
+        with self._state_lock:
+            if not self.will_accept(message):
+                return None
 
-        # Store the actual message in the batch's message queue.
-        self._messages.append(message)
-        if len(self._messages) >= self._settings.max_messages:
+            # Add the size to the running total of the size, so we know
+            # if future messages need to be rejected.
+            self._size += message.ByteSize()
+            # Store the actual message in the batch's message queue.
+            self._messages.append(message)
+            # Track the future on this batch (so that the result of the
+            # future can be set).
+            future = futures.Future()
+            self._futures.append(future)
+            # Determine the number of messages before releasing the lock.
+            num_messages = len(self._messages)
+
+        # Try to commit, but it must be **without** the lock held, since
+        # ``commit()`` will try to obtain the lock.
+        if num_messages >= self._settings.max_messages:
             self.commit()
 
-        # Return a Future. That future needs to be aware of the status
-        # of this batch.
-        f = futures.Future()
-        self._futures.append(f)
-        return f
+        return future

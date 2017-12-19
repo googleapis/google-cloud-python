@@ -196,9 +196,8 @@ class Client(object):
         batch = self.batch(topic)
         future = None
         while future is None:
-            if batch.will_accept(message):
-                future = batch.publish(message)
-            else:
+            future = batch.publish(message)
+            if future is None:
                 batch = self.batch(topic, create=True)
 
         return future
