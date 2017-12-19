@@ -72,6 +72,13 @@ def test_init_infinite_latency():
     assert batch._thread is None
 
 
+@mock.patch.object(threading, 'Lock')
+def test_make_lock(Lock):
+    lock = Batch.make_lock()
+    assert lock is Lock.return_value
+    Lock.assert_called_once_with()
+
+
 def test_client():
     client = create_client()
     settings = types.BatchSettings()

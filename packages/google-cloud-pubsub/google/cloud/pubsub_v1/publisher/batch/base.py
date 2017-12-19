@@ -49,6 +49,16 @@ class Batch(object):
         """Return the number of messages currently in the batch."""
         return len(self.messages)
 
+    @staticmethod
+    @abc.abstractmethod
+    def make_lock():
+        """Return a lock in the chosen concurrency model.
+
+        Returns:
+            ContextManager: A newly created lock.
+        """
+        raise NotImplementedError
+
     @property
     @abc.abstractmethod
     def messages(self):
