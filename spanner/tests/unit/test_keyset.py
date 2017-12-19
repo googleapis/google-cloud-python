@@ -15,7 +15,9 @@
 
 import unittest
 
+
 import six
+
 
 class TestKeyRange(unittest.TestCase):
 
@@ -43,56 +45,55 @@ class TestKeyRange(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._make_one(end_open=KEY_1, end_closed=KEY_2)
 
-    def test_ctor_start_open_and_start_closed_empty_lists_and_end_closed(self):
+    def test_ctor_conflicting_start(self):
         KEY_1 = [u'key_1']
-        KEY_2 = [u'key_2']
         with self.assertRaises(ValueError):
             self._make_one(start_open=[], start_closed=[], end_closed=KEY_1)
 
-    def test_ctor_start_open_and_end_open_and_end_closed_empty_lists(self):
+    def test_ctor_conflicting_end(self):
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
             self._make_one(start_open=KEY_1, end_open=[], end_closed=[])
 
-    def _check_unused_keys(self, krange, used_keys):
+    def _check_unused_keys(self, key_range, used_keys):
         key_types = ('start_closed',
                      'start_open',
                      'end_closed',
                      'end_open')
         for key_type in key_types:
             if key_type not in used_keys:
-                self.assertFalse(krange.to_pb().HasField(key_type))
+                self.assertFalse(key_range.to_pb().HasField(key_type))
 
     def test_ctor_single_key_start_closed(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(start_closed=KEY_1)
         self.assertEqual(krange.start_closed, KEY_1)
+        self.assertEqual(krange.end_closed, [])
         self.assertIsNone(krange.start_open)
         self.assertIsNone(krange.end_open)
-        self.assertIsNone(krange.end_closed)
 
     def test_ctor_single_key_start_open(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(start_open=KEY_1)
         self.assertEqual(krange.start_open, KEY_1)
+        self.assertEqual(krange.end_closed, [])
         self.assertIsNone(krange.start_closed)
         self.assertIsNone(krange.end_open)
-        self.assertIsNone(krange.end_closed)
 
     def test_ctor_single_key_end_closed(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(end_closed=KEY_1)
         self.assertEqual(krange.end_closed, KEY_1)
+        self.assertEqual(krange.start_closed, [])
         self.assertIsNone(krange.start_open)
-        self.assertIsNone(krange.start_closed)
         self.assertIsNone(krange.end_open)
 
     def test_ctor_single_key_end_open(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(end_open=KEY_1)
         self.assertEqual(krange.end_open, KEY_1)
+        self.assertEqual(krange.start_closed, [])
         self.assertIsNone(krange.start_open)
-        self.assertIsNone(krange.start_closed)
         self.assertIsNone(krange.end_closed)
 
     def test_ctor_w_start_open_and_end_closed(self):
