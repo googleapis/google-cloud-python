@@ -8,7 +8,7 @@
 
 ### Notable Implementation Changes
 
-- Dropping redundant Pub / Sub `Policy._paused` data member (#4568).
+- Dropping redundant `Policy._paused` data member (#4568).
 - Removing redundant "active" check in policy (#4603).
 - Adding a `Consumer.active` property (#4604).
 - Making it impossible to call `Policy.open()` on an already opened
@@ -16,9 +16,9 @@
 - **Bug fix** (#4575): Fix bug with async publish for batches. There
   were two related bugs. The first: if a batch exceeds the `max_messages`
   from the batch settings, then the `commit()` will fail. The second:
-  when a "monitor" worker that after `max_latency` seconds, a failure
-  can occur if a new message is added to the batch during the publish.
-  To fix, the following changes were implemented:
+  when a "monitor" worker calls `commit()` after `max_latency` seconds,
+  a failure can occur if a new message is added to the batch **during**
+  the commit. To fix, the following changes were implemented:
   - Adding a "STARTING" status for `Batch.commit()` (#4614). This
     fixes the issue when the batch exceeds `max_messages`.
   - Adding extra check in `Batch.will_accept` for the number of
@@ -34,7 +34,7 @@
 
 ### Documentation
 
-- Add more explicit documentation for Pub / Sub `Message.attributes` (#4601).
+- Add more explicit documentation for `Message.attributes` (#4601).
 - Make `Message.__repr__` a bit prettier / more useful (#4602).
 
 PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.0/
