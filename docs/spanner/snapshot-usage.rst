@@ -35,6 +35,20 @@ or as of a given duration in the past:
     DURATION = datetime.timedelta(seconds=5)
     snapshot = database.snapshot(exact_staleness=DURATION)
 
+Single Use and Multiple Use Snapshots
+-------------------------------------
+
+In the context of read only transactions, ``read`` and ``execute_sql``
+methods can be used multiple times if you specify ``multi_use=True``
+in the constructor of the snapshot.  However, ``multi_use=True`` is
+incompatible with either ``max_staleness`` and/or ``min_read_timestamp``.
+
+Otherwise ``multi_use`` defaults to ``False`` and the snapshot cannot be
+reused.
+
+.. code:: python
+
+    snapshot = database.snapshot(multi_use=True)
 
 Read Table Data
 ---------------
