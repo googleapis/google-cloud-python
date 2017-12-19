@@ -16,8 +16,8 @@ from __future__ import absolute_import
 import os
 
 from google.auth import credentials
-import mock
 
+import mock
 import pytest
 
 from google.cloud.pubsub_v1.gapic import publisher_client
