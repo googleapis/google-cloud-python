@@ -41,10 +41,10 @@ class KeyRange(object):
         if not any([start_open, start_closed, end_open, end_closed]):
             raise ValueError("Must specify at least a start or end row.")
 
-        if start_open and start_closed:
+        if start_open is not None and start_closed is not None:
             raise ValueError("Specify one of 'start_open' / 'start_closed'.")
 
-        if end_open and end_closed:
+        if end_open is not None and end_closed is not None:
             raise ValueError("Specify one of 'end_open' / 'end_closed'.")
 
         self.start_open = start_open
@@ -60,17 +60,19 @@ class KeyRange(object):
         """
         kwargs = {}
 
-        if self.start_open:
+        if self.start_open is not None:
             kwargs['start_open'] = _make_list_value_pb(self.start_open)
-
-        if self.start_closed:
+        elif self.start_closed is not None:
             kwargs['start_closed'] = _make_list_value_pb(self.start_closed)
+        else:
+            kwargs['start_closed'] = _make_list_value_pb([])
 
-        if self.end_open:
+        if self.end_open is not None:
             kwargs['end_open'] = _make_list_value_pb(self.end_open)
-
-        if self.end_closed:
+        elif self.end_closed is not None:
             kwargs['end_closed'] = _make_list_value_pb(self.end_closed)
+        else:
+            kwargs['end_closed'] = _make_list_value_pb([])
 
         return KeyRangePB(**kwargs)
 
