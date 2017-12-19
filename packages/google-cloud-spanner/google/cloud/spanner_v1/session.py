@@ -182,7 +182,7 @@ class Session(object):
                       table's primary key
 
         :type limit: int
-        :param limit: (Optional) maxiumn number of rows to return
+        :param limit: (Optional) maximum number of rows to return
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
