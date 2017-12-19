@@ -51,15 +51,6 @@ def test_init_emulator(monkeypatch):
     assert channel.target().decode('utf8') == '/foo/bar/'
 
 
-def test_init_custom_lock():
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = publisher.Client(
-        batch_lock=mock.sentinel.lock,
-        credentials=creds,
-    )
-    assert client._batch_lock is mock.sentinel.lock
-
-
 def test_batch_create():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)

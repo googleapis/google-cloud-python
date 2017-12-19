@@ -90,6 +90,15 @@ class Batch(base.Batch):
             )
             self._thread.start()
 
+    @staticmethod
+    def make_lock():
+        """Return a threading lock.
+
+        Returns:
+            _thread.Lock: A newly created lock.
+        """
+        return threading.Lock()
+
     @property
     def client(self):
         """~.pubsub_v1.client.PublisherClient: A publisher client."""

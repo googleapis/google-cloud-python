@@ -17,7 +17,6 @@ from __future__ import absolute_import
 import copy
 import os
 import pkg_resources
-import threading
 
 import grpc
 import six
@@ -49,10 +48,9 @@ class Client(object):
             :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
             order to define your own batcher. This is primarily provided to
             allow use of different concurrency models; the default
-            is based on :class:`threading.Thread`.
-        batch_lock (Optional[Any]): A lock used to ensure atomic modifications
-            to the batches tracked by this client. Defaults to a
-            :class:`threading.Lock`.
+            is based on :class:`threading.Thread`. This class should also have
+            a class method (or static method) that takes no arguments and
+            produces a lock that can be used as a context manager.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
@@ -61,8 +59,7 @@ class Client(object):
             be added if ``credentials`` are passed explicitly or if the
             Pub / Sub emulator is detected as running.
     """
-    def __init__(self, batch_settings=(), batch_class=thread.Batch,
-                 batch_lock=None, **kwargs):
+    def __init__(self, batch_settings=(), batch_class=thread.Batch, **kwargs):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
@@ -93,9 +90,7 @@ class Client(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_class = batch_class
-        if batch_lock is None:
-            batch_lock = threading.Lock()
-        self._batch_lock = batch_lock
+        self._batch_lock = batch_class.make_lock()
         self._batches = {}
 
     @property
