@@ -83,6 +83,12 @@ jobs:
               nox -f datastore/nox.py
             fi
       - run:
+          name: Run tests - google.cloud.dataproc
+          command: |
+            if [[ -n $(grep dataproc ~/target_packages) ]]; then
+              nox -f dataproc/nox.py
+            fi
+      - run:
           name: Run tests - google.cloud.dns
           command: |
             if [[ -n $(grep dns ~/target_packages) ]]; then
