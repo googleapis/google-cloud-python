@@ -8,7 +8,7 @@
 
 ### Notable Implementation Changes
 
-- Dropping redundant Pub / Sub `Policy._paused` data member (#4568).
+- Dropping redundant `Policy._paused` data member (#4568).
 - Removing redundant "active" check in policy (#4603).
 - Adding a `Consumer.active` property (#4604).
 - Making it impossible to call `Policy.open()` on an already opened
@@ -34,7 +34,7 @@
 
 ### Documentation
 
-- Add more explicit documentation for Pub / Sub `Message.attributes` (#4601).
+- Add more explicit documentation for `Message.attributes` (#4601).
 - Make `Message.__repr__` a bit prettier / more useful (#4602).
 
 PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.0/
