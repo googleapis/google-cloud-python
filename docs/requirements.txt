@@ -8,6 +8,7 @@ bigquery/
 bigquery_datatransfer/
 bigtable/
 container/
+dataproc/
 datastore/
 dns/
 firestore/
