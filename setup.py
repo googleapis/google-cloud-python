@@ -49,9 +49,11 @@ SETUP_BASE = {
 }
 
 REQUIREMENTS = [
-    'google-api-core >= 0.1.1, < 0.2.0dev',
+    'google-api-core >= 0.1.2, < 0.2.0dev',
     'google-cloud-bigquery >= 0.28.0, < 0.29dev',
-    'google-cloud-bigtable >= 0.28.0, < 0.29dev',
+    'google-cloud-bigquery-datatransfer >= 0.1.0, < 0.2dev',
+    'google-cloud-bigtable >= 0.28.1, < 0.29dev',
+    'google-cloud-container >= 0.1.0, < 0.2dev',
     'google-cloud-core >= 0.28.0, < 0.29dev',
     'google-cloud-datastore >= 1.4.0, < 1.5dev',
     'google-cloud-dns >= 0.28.0, < 0.29dev',
@@ -60,21 +62,21 @@ REQUIREMENTS = [
     'google-cloud-language >= 1.0.0, < 1.1dev',
     'google-cloud-logging >= 1.4.0, < 1.5dev',
     'google-cloud-monitoring >= 0.28.0, < 0.29dev',
-    'google-cloud-pubsub >= 0.29.1, < 0.30dev',
+    'google-cloud-pubsub >= 0.30.0, < 0.31dev',
     'google-cloud-resource-manager >= 0.28.0, < 0.29dev',
     'google-cloud-runtimeconfig >= 0.28.0, < 0.29dev',
     'google-cloud-spanner >= 0.29.0, < 0.30dev',
     'google-cloud-speech >= 0.30.0, < 0.31dev',
     'google-cloud-storage >= 1.6.0, < 1.7dev',
-    'google-cloud-trace >= 0.16.0, < 0.17dev',
+    'google-cloud-trace >= 0.17.0, < 0.18dev',
     'google-cloud-translate >= 1.3.0, < 1.4dev',
     'google-cloud-videointelligence >= 1.0.0, < 1.1dev',
-    'google-cloud-vision >= 0.28.0, < 0.29dev',
+    'google-cloud-vision >= 0.29.0, < 0.30dev',
 ]
 
 setup(
     name='google-cloud',
-    version='0.31.1.dev1',
+    version='0.32.0',
     description='API Client library for Google Cloud',
     long_description=README,
     install_requires=REQUIREMENTS,
