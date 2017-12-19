@@ -17,7 +17,7 @@ Feature / bugfix release for the following packages:
 - [`google-cloud-bigtable==0.28.1`](https://pypi.org/project/google-cloud-bigtable/0.28.1/)
 - [`google-cloud-pubsub==0.30.0`](https://pypi.org/project/google-cloud-pubsub/0.30.0/)
 - [`google-cloud-trace==0.17.0`](https://pypi.org/project/google-cloud-trace/0.17.0/)
-- [`google-cloud-vision==0.29.0`](https://pypi.org/project/google-cloud-/0.29.0/)
+- [`google-cloud-vision==0.29.0`](https://pypi.org/project/google-cloud-vision/0.29.0/)
 
 ## 0.31.0
 
