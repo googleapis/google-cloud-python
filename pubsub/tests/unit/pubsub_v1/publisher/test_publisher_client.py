@@ -52,7 +52,11 @@ def test_init_emulator(monkeypatch):
 
 
 def test_init_custom_lock():
-    client = publisher.Client(batch_lock=mock.sentinel.lock)
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(
+        batch_lock=mock.sentinel.lock,
+        credentials=creds,
+    )
     assert client._batch_lock is mock.sentinel.lock
 
 
