@@ -95,13 +95,20 @@ def test_publish():
     batch = mock.Mock(spec=client._batch_class)
     # Set the mock up to claim indiscriminately that it accepts all messages.
     batch.will_accept.return_value = True
+    batch.publish.side_effect = (
+        mock.sentinel.future1,
+        mock.sentinel.future2,
+    )
 
     topic = 'topic/path'
     client._batches[topic] = batch
 
     # Begin publishing.
-    client.publish(topic, b'spam')
-    client.publish(topic, b'foo', bar='baz')
+    future1 = client.publish(topic, b'spam')
+    future2 = client.publish(topic, b'foo', bar='baz')
+
+    assert future1 is mock.sentinel.future1
+    assert future2 is mock.sentinel.future2
 
     # Check mock.
     batch.publish.assert_has_calls(
@@ -138,7 +145,9 @@ def test_publish_attrs_bytestring():
     client._batches[topic] = batch
 
     # Begin publishing.
-    client.publish(topic, b'foo', bar=b'baz')
+    future = client.publish(topic, b'foo', bar=b'baz')
+
+    assert future is batch.publish.return_value
 
     # The attributes should have been sent as text.
     batch.publish.assert_called_once_with(
@@ -158,8 +167,8 @@ def test_publish_new_batch_needed():
     batch2 = mock.Mock(spec=client._batch_class)
     # Set the first mock up to claim indiscriminately that it rejects all
     # messages and the second accepts all.
-    batch1.will_accept.return_value = False
-    batch2.will_accept.return_value = True
+    batch1.publish.return_value = None
+    batch2.publish.return_value = mock.sentinel.future
 
     topic = 'topic/path'
     client._batches[topic] = batch1
@@ -168,23 +177,23 @@ def test_publish_new_batch_needed():
     batch_class = mock.Mock(spec=(), return_value=batch2)
     client._batch_class = batch_class
 
-    # Begin publishing.
-    client.publish(topic, b'foo', bar=b'baz')
+    # Publish a message.
+    future = client.publish(topic, b'foo', bar=b'baz')
+    assert future is mock.sentinel.future
+
+    # Check the mocks.
     batch_class.assert_called_once_with(
         autocommit=True,
         client=client,
         settings=client.batch_settings,
         topic=topic,
     )
-
-    # The attributes should have been sent as text.
-    batch1.publish.assert_not_called()
-    batch2.publish.assert_called_once_with(
-        types.PubsubMessage(
-            data=b'foo',
-            attributes={'bar': u'baz'},
-        ),
+    message_pb = types.PubsubMessage(
+        data=b'foo',
+        attributes={'bar': u'baz'},
     )
+    batch1.publish.assert_called_once_with(message_pb)
+    batch2.publish.assert_called_once_with(message_pb)
 
 
 def test_publish_attrs_type_error():
