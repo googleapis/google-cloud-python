@@ -1235,6 +1235,31 @@ class TestSessionAPI(unittest.TestCase, _TestData):
                 [[['a', 1], ['b', 2]]],
             ])
 
+    def test_invalid_type(self):
+        table = 'counters'
+        columns = ('name', 'value')
+        session = self._db.session()
+        session.create()
+        self.to_delete.append(session)
+
+        valid_input = (('', 0),)
+        with session.batch() as batch:
+            batch.delete(table, self.ALL)
+            batch.insert(table, columns, valid_input)
+
+        invalid_input = ((0, ''),)
+        with self.assertRaises(errors.RetryError) as exc_info:
+            with session.batch() as batch:
+                batch.delete(table, self.ALL)
+                batch.insert(table, columns, invalid_input)
+
+        cause = exc_info.exception.cause
+        self.assertEqual(cause.code(), StatusCode.FAILED_PRECONDITION)
+        error_msg = (
+            'Invalid value for column value in table '
+            'counters: Expected INT64.')
+        self.assertEqual(cause.details(), error_msg)
+
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
         session.create()
