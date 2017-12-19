@@ -44,18 +44,25 @@ class Client(object):
     Args:
         batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
             settings for batch publishing.
-        batch_class (class): A class that describes how to handle
+        batch_class (Optional[type]): A class that describes how to handle
             batches. You may subclass the
             :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
             order to define your own batcher. This is primarily provided to
             allow use of different concurrency models; the default
             is based on :class:`threading.Thread`.
+        batch_lock (Optional[Any]): A lock used to ensure atomic modifications
+            to the batches tracked by this client. Defaults to a
+            :class:`threading.Lock`.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally, you should not need to set additional keyword arguments.
+            Before being passed along to the GAPIC constructor, a channel may
+            be added if ``credentials`` are passed explicitly or if the
+            Pub / Sub emulator is detected as running.
     """
-    def __init__(self, batch_settings=(), batch_class=thread.Batch, **kwargs):
+    def __init__(self, batch_settings=(), batch_class=thread.Batch,
+                 batch_lock=None, **kwargs):
         # Sanity check: Is our goal to use the emulator?
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
@@ -86,7 +93,9 @@ class Client(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_class = batch_class
-        self._batch_lock = threading.Lock()
+        if batch_lock is None:
+            batch_lock = threading.Lock()
+        self._batch_lock = batch_lock
         self._batches = {}
 
     @property

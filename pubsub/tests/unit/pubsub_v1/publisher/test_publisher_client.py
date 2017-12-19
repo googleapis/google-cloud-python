@@ -16,8 +16,8 @@ from __future__ import absolute_import
 import os
 
 from google.auth import credentials
-import mock
 
+import mock
 import pytest
 
 from google.cloud.pubsub_v1.gapic import publisher_client
@@ -49,6 +49,11 @@ def test_init_emulator(monkeypatch):
     # the private API of gRPC.
     channel = client.api.publisher_stub.Publish._channel
     assert channel.target().decode('utf8') == '/foo/bar/'
+
+
+def test_init_custom_lock():
+    client = publisher.Client(batch_lock=mock.sentinel.lock)
+    assert client._batch_lock is mock.sentinel.lock
 
 
 def test_batch_create():
