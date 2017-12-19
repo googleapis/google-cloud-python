@@ -50,6 +50,10 @@ reused.
 
     snapshot = database.snapshot(multi_use=True)
 
+:meth:`~.spanner_v1.snapshot.Snapshot.begin` can only be used on a
+snapshot with ``multi_use=True``.  In which case it is also necessary
+to call if you need to have multiple pending operations.
+
 Read Table Data
 ---------------
 
