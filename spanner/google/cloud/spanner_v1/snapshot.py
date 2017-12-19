@@ -290,7 +290,7 @@ class Snapshot(_SnapshotBase):
             if the transaction is already begun, committed, or rolled back.
         """
         if not self._multi_use:
-            raise ValueError("Cannot call 'begin' single-use snapshots")
+            raise ValueError("Cannot call 'begin' on single-use snapshots")
 
         if self._transaction_id is not None:
             raise ValueError("Read-only transaction already begun")
