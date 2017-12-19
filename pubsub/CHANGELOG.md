@@ -16,9 +16,9 @@
 - **Bug fix** (#4575): Fix bug with async publish for batches. There
   were two related bugs. The first: if a batch exceeds the `max_messages`
   from the batch settings, then the `commit()` will fail. The second:
-  when a "monitor" worker that after `max_latency` seconds, a failure
-  can occur if a new message is added to the batch during the publish.
-  To fix, the following changes were implemented:
+  when a "monitor" worker calls `commit()` after `max_latency` seconds,
+  a failure can occur if a new message is added to the batch **during**
+  the commit. To fix, the following changes were implemented:
   - Adding a "STARTING" status for `Batch.commit()` (#4614). This
     fixes the issue when the batch exceeds `max_messages`.
   - Adding extra check in `Batch.will_accept` for the number of
