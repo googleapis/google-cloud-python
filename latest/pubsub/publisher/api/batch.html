@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Batch API &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <title>Batch API &#8212; google-cloud 4a9a950 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.28.1.dev1',
+        VERSION:     '4a9a950',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,7 +46,7 @@
 <em class="property">class </em><code class="descclassname">google.cloud.pubsub_v1.publisher.batch.thread.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>client</em>, <em>topic</em>, <em>settings</em>, <em>autocommit=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/publisher/batch/thread.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.publisher.batch.thread.Batch" title="Permalink to this definition">#</a></dt>
 <dd><p>A batch of messages.</p>
 <p>The batch is the internal group of messages which are either awaiting
-publication or currently in-flight.</p>
+publication or currently in progress.</p>
 <p>A batch is automatically created by the PublisherClient when the first
 message to be published is received; subsequent messages are added to
 that batch until the process of actual publishing _starts_.</p>
@@ -89,13 +89,15 @@ inf.</li>
 <dt id="google.cloud.pubsub_v1.publisher.batch.thread.Batch.commit">
 <code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/publisher/batch/thread.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.publisher.batch.thread.Batch.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Actually publish all of the messages on the active batch.</p>
-<p>This synchronously sets the batch status to in-flight, and then opens
-a new thread, which handles actually sending the messages to Pub/Sub.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method is non-blocking. It opens a new thread, which calls
 <code class="xref py py-meth docutils literal"><span class="pre">_commit()</span></code>, which does block.</p>
 </div>
+<p>This synchronously sets the batch status to “starting”, and then opens
+a new thread, which handles actually sending the messages to Pub/Sub.</p>
+<p>If the current batch is <strong>not</strong> accepting messages, this method
+does nothing.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -126,13 +128,12 @@ period of time has elapsed.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>PubsubMessage</em>) – The Pub/Sub message.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
-<dt>An object conforming to</dt>
-<dd>the <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">concurrent.futures.Future</span></code></a> interface.</dd>
-</dl>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An object conforming to
+the <a class="reference external" href="https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.Future" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Future</span></code></a> interface or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.
+If <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> is returned, that signals that the batch cannot
+accept a message.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Future</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Optional[Future]</td>
 </tr>
 </tbody>
 </table>
@@ -202,6 +203,10 @@ period of time has elapsed.</p>
 <dt id="google.cloud.pubsub_v1.publisher.batch.thread.Batch.will_accept">
 <code class="descname">will_accept</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/publisher/batch/base.html#Batch.will_accept"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.publisher.batch.thread.Batch.will_accept" title="Permalink to this definition">#</a></dt>
 <dd><p>Return True if the batch is able to accept the message.</p>
+<p>In concurrent implementations, the attributes on the current batch
+may be modified by other workers. With this in mind, the caller will
+likely want to hold a lock that will make sure the state remains
+the same after the “will accept?” question is answered.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

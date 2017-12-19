@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Publisher Client API &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <title>Publisher Client API &#8212; google-cloud 4a9a950 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.28.1.dev1',
+        VERSION:     '4a9a950',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -74,21 +74,23 @@ Generally, you should not need to set additional keyword arguments.</li>
 </table>
 <dl class="method">
 <dt id="google.cloud.pubsub_v1.publisher.client.Client.batch">
-<code class="descname">batch</code><span class="sig-paren">(</span><em>topic</em>, <em>message</em>, <em>create=True</em>, <em>autocommit=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/publisher/client.html#Client.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.publisher.client.Client.batch" title="Permalink to this definition">#</a></dt>
+<code class="descname">batch</code><span class="sig-paren">(</span><em>topic</em>, <em>create=False</em>, <em>autocommit=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/pubsub_v1/publisher/client.html#Client.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.pubsub_v1.publisher.client.Client.batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the current batch for the provided topic.</p>
-<p>This will create a new batch only if no batch currently exists.</p>
+<p>This will create a new batch if <code class="docutils literal"><span class="pre">create=True</span></code> or if no batch
+currently exists.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>topic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A string representing the topic.</li>
-<li><strong>message</strong> (<a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.PubsubMessage" title="google.cloud.pubsub_v1.types.PubsubMessage"><em>PubsubMessage</em></a>) – The message
-that will be committed.</li>
-<li><strong>create</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Whether to create a new batch if no batch is
-found. Defaults to True.</li>
-<li><strong>autocommit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Whether to autocommit this batch.
-This is primarily useful for debugging.</li>
+<li><strong>create</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Whether to create a new batch. Defaults to
+<a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>. If <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>, this will create a new batch
+even if one already exists.</li>
+<li><strong>autocommit</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Whether to autocommit this batch. This is
+primarily useful for debugging and testing, since it allows
+the caller to avoid some side effects that batch creation
+might have (e.g. spawning a worker to publish a batch).</li>
 </ul>
 </td>
 </tr>

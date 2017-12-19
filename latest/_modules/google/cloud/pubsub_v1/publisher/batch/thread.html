@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.publisher.batch.thread &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <title>google.cloud.pubsub_v1.publisher.batch.thread &#8212; google-cloud 4a9a950 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../../',
-        VERSION:     '0.28.1.dev1',
+        VERSION:     '4a9a950',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -60,6 +60,8 @@
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
+
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1</span> <span class="k">import</span> <span class="n">types</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.publisher</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">google.cloud.pubsub_v1.publisher</span> <span class="k">import</span> <span class="n">futures</span>
@@ -67,13 +69,17 @@
 
 
 <span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">_CAN_COMMIT</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">ACCEPTING_MESSAGES</span><span class="p">,</span>
+    <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">STARTING</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../../../../pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">Batch</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A batch of messages.</span>
 
 <span class="sd">    The batch is the internal group of messages which are either awaiting</span>
-<span class="sd">    publication or currently in-flight.</span>
+<span class="sd">    publication or currently in progress.</span>
 
 <span class="sd">    A batch is automatically created by the PublisherClient when the first</span>
 <span class="sd">    message to be published is received; subsequent messages are added to</span>
@@ -105,20 +111,20 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span> <span class="o">=</span> <span class="n">topic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 
-        <span class="c1"># These objects are all communicated between threads; ensure that</span>
-        <span class="c1"># any writes to them are atomic.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="c1"># These members are all communicated between threads; ensure that</span>
+        <span class="c1"># any writes to them use the &quot;state lock&quot; to remain atomic.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_futures</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_messages</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">ACCEPTING_MESSAGES</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span> <span class="o">=</span> <span class="n">topic</span>
 
         <span class="c1"># If max latency is specified, start a thread to monitor the batch and</span>
         <span class="c1"># commit when the max latency is reached.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_commit_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">autocommit</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">max_latency</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
                 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Thread-MonitorBatchPublisher&#39;</span><span class="p">,</span>
@@ -169,20 +175,24 @@
 <div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../../../../pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Actually publish all of the messages on the active batch.</span>
 
-<span class="sd">        This synchronously sets the batch status to in-flight, and then opens</span>
-<span class="sd">        a new thread, which handles actually sending the messages to Pub/Sub.</span>
-
 <span class="sd">        .. note::</span>
 
 <span class="sd">            This method is non-blocking. It opens a new thread, which calls</span>
 <span class="sd">            :meth:`_commit`, which does block.</span>
+
+<span class="sd">        This synchronously sets the batch status to &quot;starting&quot;, and then opens</span>
+<span class="sd">        a new thread, which handles actually sending the messages to Pub/Sub.</span>
+
+<span class="sd">        If the current batch is **not** accepting messages, this method</span>
+<span class="sd">        does nothing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Set the status to in-flight synchronously, to ensure that</span>
+        <span class="c1"># Set the status to &quot;starting&quot; synchronously, to ensure that</span>
         <span class="c1"># this batch will necessarily not accept new messages.</span>
-        <span class="c1">#</span>
-        <span class="c1"># Yes, this is repeated in `_commit`, because that method is called</span>
-        <span class="c1"># directly by `monitor`.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s1">&#39;in-flight&#39;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">==</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">ACCEPTING_MESSAGES</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">STARTING</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span>
 
         <span class="c1"># Start a new thread to actually handle the commit.</span>
         <span class="n">commit_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
@@ -194,7 +204,7 @@
     <span class="k">def</span> <span class="nf">_commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Actually publish all of the messages on the active batch.</span>
 
-<span class="sd">        This moves the batch out from being the active batch to an in-flight</span>
+<span class="sd">        This moves the batch out from being the active batch to an in progress</span>
 <span class="sd">        batch on the publisher, and then the batch is discarded upon</span>
 <span class="sd">        completion.</span>
 
@@ -203,49 +213,48 @@
 <span class="sd">            This method blocks. The :meth:`commit` method is the non-blocking</span>
 <span class="sd">            version, which calls this one.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commit_lock</span><span class="p">:</span>
-            <span class="c1"># If, in the intervening period, the batch started to be committed,</span>
-            <span class="c1"># or completed a commit, then no-op at this point.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">!=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">ACCEPTING_MESSAGES</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="ow">in</span> <span class="n">_CAN_COMMIT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">IN_PROGRESS</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If, in the intervening period between when this method was</span>
+                <span class="c1"># called and now, the batch started to be committed, or</span>
+                <span class="c1"># completed a commit, then no-op at this point.</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Batch is already in progress, exiting commit&#39;</span><span class="p">)</span>
                 <span class="k">return</span>
-
-            <span class="c1"># Update the status.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s1">&#39;in-flight&#39;</span>
 
             <span class="c1"># Sanity check: If there are no messages, no-op.</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_messages</span><span class="p">:</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;No messages to publish, exiting commit&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">SUCCESS</span>
                 <span class="k">return</span>
 
             <span class="c1"># Begin the request to publish these messages.</span>
             <span class="c1"># Log how long the underlying request takes.</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_messages</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;gRPC Publish took </span><span class="si">{s}</span><span class="s1"> seconds.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">s</span><span class="o">=</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span>
-            <span class="p">))</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;gRPC Publish took </span><span class="si">%s</span><span class="s1"> seconds.&#39;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
 
-            <span class="c1"># We got a response from Pub/Sub; denote that we are processing.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="s1">&#39;processing results&#39;</span>
-
-            <span class="c1"># Sanity check: If the number of message IDs is not equal to the</span>
-            <span class="c1"># number of futures I have, then something went wrong.</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">message_ids</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_futures</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">message_ids</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_futures</span><span class="p">):</span>
+                <span class="c1"># Iterate over the futures on the queue and return the response</span>
+                <span class="c1"># IDs. We are trusting that there is a 1:1 mapping, and raise</span>
+                <span class="c1"># an exception if not.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">SUCCESS</span>
+                <span class="n">zip_iter</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">message_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_futures</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">message_id</span><span class="p">,</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">zip_iter</span><span class="p">:</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">message_id</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Sanity check: If the number of message IDs is not equal to</span>
+                <span class="c1"># the number of futures I have, then something went wrong.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">ERROR</span>
+                <span class="n">exception</span> <span class="o">=</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">PublishError</span><span class="p">(</span>
+                    <span class="s1">&#39;Some messages were not successfully published.&#39;</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_futures</span><span class="p">:</span>
-                    <span class="n">future</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exceptions</span><span class="o">.</span><span class="n">PublishError</span><span class="p">(</span>
-                        <span class="s1">&#39;Some messages were not successfully published.&#39;</span><span class="p">,</span>
-                    <span class="p">))</span>
-                <span class="k">return</span>
-
-            <span class="c1"># Iterate over the futures on the queue and return the response</span>
-            <span class="c1"># IDs. We are trusting that there is a 1:1 mapping, and raise an</span>
-            <span class="c1"># exception if not.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">BatchStatus</span><span class="o">.</span><span class="n">SUCCESS</span>
-            <span class="k">for</span> <span class="n">message_id</span><span class="p">,</span> <span class="n">future</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">message_ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_futures</span><span class="p">):</span>
-                <span class="n">future</span><span class="o">.</span><span class="n">set_result</span><span class="p">(</span><span class="n">message_id</span><span class="p">)</span>
+                    <span class="n">future</span><span class="o">.</span><span class="n">set_exception</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Batch.monitor"><a class="viewcode-back" href="../../../../../../pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.monitor">[docs]</a>    <span class="k">def</span> <span class="nf">monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commit this batch after sufficient time has elapsed.</span>
@@ -253,13 +262,13 @@
 <span class="sd">        This simply sleeps for ``self._settings.max_latency`` seconds,</span>
 <span class="sd">        and then calls commit unless the batch has already been committed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Note: This thread blocks; it is up to the calling code to call it</span>
-        <span class="c1"># in a separate thread.</span>
-        <span class="c1">#</span>
+        <span class="c1"># NOTE: This blocks; it is up to the calling code to call it</span>
+        <span class="c1">#       in a separate thread.</span>
+
         <span class="c1"># Sleep for however long we should be waiting.</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">max_latency</span><span class="p">)</span>
 
-        <span class="c1"># Commit.</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Monitor is waking up&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commit</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Batch.publish"><a class="viewcode-back" href="../../../../../../pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.publish">[docs]</a>    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
@@ -275,27 +284,37 @@
 <span class="sd">            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            ~google.api_core.future.Future: An object conforming to</span>
-<span class="sd">                the :class:`concurrent.futures.Future` interface.</span>
+<span class="sd">            Optional[~google.api_core.future.Future]: An object conforming to</span>
+<span class="sd">            the :class:`~concurrent.futures.Future` interface or :data:`None`.</span>
+<span class="sd">            If :data:`None` is returned, that signals that the batch cannot</span>
+<span class="sd">            accept a message.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Coerce the type, just in case.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">types</span><span class="o">.</span><span class="n">PubsubMessage</span><span class="p">):</span>
             <span class="n">message</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">PubsubMessage</span><span class="p">(</span><span class="o">**</span><span class="n">message</span><span class="p">)</span>
 
-        <span class="c1"># Add the size to the running total of the size, so we know</span>
-        <span class="c1"># if future messages need to be rejected.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">+=</span> <span class="n">message</span><span class="o">.</span><span class="n">ByteSize</span><span class="p">()</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">will_accept</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="c1"># Store the actual message in the batch&#39;s message queue.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_messages</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">max_messages</span><span class="p">:</span>
+            <span class="c1"># Add the size to the running total of the size, so we know</span>
+            <span class="c1"># if future messages need to be rejected.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">+=</span> <span class="n">message</span><span class="o">.</span><span class="n">ByteSize</span><span class="p">()</span>
+            <span class="c1"># Store the actual message in the batch&#39;s message queue.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="c1"># Track the future on this batch (so that the result of the</span>
+            <span class="c1"># future can be set).</span>
+            <span class="n">future</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+            <span class="c1"># Determine the number of messages before releasing the lock.</span>
+            <span class="n">num_messages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_messages</span><span class="p">)</span>
+
+        <span class="c1"># Try to commit, but it must be **without** the lock held, since</span>
+        <span class="c1"># ``commit()`` will try to obtain the lock.</span>
+        <span class="k">if</span> <span class="n">num_messages</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">max_messages</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
-        <span class="c1"># Return a Future. That future needs to be aware of the status</span>
-        <span class="c1"># of this batch.</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">f</span></div></div>
+        <span class="k">return</span> <span class="n">future</span></div></div>
 </pre></div>
 
           </div>

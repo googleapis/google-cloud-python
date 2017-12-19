@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.publisher.batch.base &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <title>google.cloud.pubsub_v1.publisher.batch.base &#8212; google-cloud 4a9a950 documentation</title>
     <link rel="stylesheet" href="../../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../../',
-        VERSION:     '0.28.1.dev1',
+        VERSION:     '4a9a950',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -139,6 +139,11 @@
 <div class="viewcode-block" id="Batch.will_accept"><a class="viewcode-back" href="../../../../../../pubsub/publisher/api/batch.html#google.cloud.pubsub_v1.publisher.batch.thread.Batch.will_accept">[docs]</a>    <span class="k">def</span> <span class="nf">will_accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if the batch is able to accept the message.</span>
 
+<span class="sd">        In concurrent implementations, the attributes on the current batch</span>
+<span class="sd">        may be modified by other workers. With this in mind, the caller will</span>
+<span class="sd">        likely want to hold a lock that will make sure the state remains</span>
+<span class="sd">        the same after the &quot;will accept?&quot; question is answered.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.</span>
 
@@ -149,8 +154,14 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">BatchStatus</span><span class="o">.</span><span class="n">ACCEPTING_MESSAGES</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="c1"># If this batch can not hold the message in question, return False.</span>
+        <span class="c1"># If this message will make the batch exceed the ``max_bytes``</span>
+        <span class="c1"># setting, return False.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">message</span><span class="o">.</span><span class="n">ByteSize</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">max_bytes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># If this message will make the batch exceed the ``max_messages``</span>
+        <span class="c1"># setting, return False.</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">max_messages</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="c1"># Okay, everything is good.</span>
@@ -184,6 +195,8 @@
 <span class="sd">    library hooks in functionality.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ACCEPTING_MESSAGES</span> <span class="o">=</span> <span class="s1">&#39;accepting messages&#39;</span>
+    <span class="n">STARTING</span> <span class="o">=</span> <span class="s1">&#39;starting&#39;</span>
+    <span class="n">IN_PROGRESS</span> <span class="o">=</span> <span class="s1">&#39;in progress&#39;</span>
     <span class="n">ERROR</span> <span class="o">=</span> <span class="s1">&#39;error&#39;</span>
     <span class="n">SUCCESS</span> <span class="o">=</span> <span class="s1">&#39;success&#39;</span>
 </pre></div>

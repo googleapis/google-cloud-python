@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <title>google.cloud.pubsub_v1.publisher.client &#8212; google-cloud 4a9a950 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '0.28.1.dev1',
+        VERSION:     '4a9a950',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -140,19 +140,21 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">publisher_client</span><span class="o">.</span><span class="n">PublisherClient</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span>
 
-<div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../../pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../../../pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">autocommit</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the current batch for the provided topic.</span>
 
-<span class="sd">        This will create a new batch only if no batch currently exists.</span>
+<span class="sd">        This will create a new batch if ``create=True`` or if no batch</span>
+<span class="sd">        currently exists.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            topic (str): A string representing the topic.</span>
-<span class="sd">            message (~google.cloud.pubsub_v1.types.PubsubMessage): The message</span>
-<span class="sd">                that will be committed.</span>
-<span class="sd">            create (bool): Whether to create a new batch if no batch is</span>
-<span class="sd">                found. Defaults to True.</span>
-<span class="sd">            autocommit (bool): Whether to autocommit this batch.</span>
-<span class="sd">                This is primarily useful for debugging.</span>
+<span class="sd">            create (bool): Whether to create a new batch. Defaults to</span>
+<span class="sd">                :data:`False`. If :data:`True`, this will create a new batch</span>
+<span class="sd">                even if one already exists.</span>
+<span class="sd">            autocommit (bool): Whether to autocommit this batch. This is</span>
+<span class="sd">                primarily useful for debugging and testing, since it allows</span>
+<span class="sd">                the caller to avoid some side effects that batch creation</span>
+<span class="sd">                might have (e.g. spawning a worker to publish a batch).</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            ~.pubsub_v1.batch.Batch: The batch object.</span>
@@ -160,10 +162,12 @@
         <span class="c1"># If there is no matching batch yet, then potentially create one</span>
         <span class="c1"># and place it on the batches dictionary.</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_lock</span><span class="p">:</span>
-            <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batches</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">batch</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">batch</span><span class="o">.</span><span class="n">will_accept</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">create</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">create</span><span class="p">:</span>
+                <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batches</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">batch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">create</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="k">if</span> <span class="n">create</span><span class="p">:</span>
                 <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_class</span><span class="p">(</span>
                     <span class="n">autocommit</span><span class="o">=</span><span class="n">autocommit</span><span class="p">,</span>
                     <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -172,7 +176,6 @@
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_batches</span><span class="p">[</span><span class="n">topic</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span>
 
-        <span class="c1"># Simply return the appropriate batch.</span>
         <span class="k">return</span> <span class="n">batch</span></div>
 
 <div class="viewcode-block" id="Client.publish"><a class="viewcode-back" href="../../../../../pubsub/publisher/api/client.html#google.cloud.pubsub_v1.publisher.client.Client.publish">[docs]</a>    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
@@ -232,7 +235,14 @@
         <span class="n">message</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">PubsubMessage</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
 
         <span class="c1"># Delegate the publishing to the batch.</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div></div>
+        <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="n">future</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">future</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">future</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">future</span></div></div>
 </pre></div>
 
           </div>

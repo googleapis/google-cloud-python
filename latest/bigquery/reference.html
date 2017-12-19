@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 0.28.1.dev1 documentation</title>
+    <title>API Reference &#8212; google-cloud 4a9a950 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.28.1.dev1',
+        VERSION:     '4a9a950',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -2199,13 +2199,13 @@ by default)</p>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of the entry</li>
 <li><strong>entry_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – ID of the entry</li>
 <li><strong>wait_ratio_avg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – average wait ratio</li>
-<li><strong>wait_ratio_avg</strong> – maximum wait ratio</li>
+<li><strong>wait_ratio_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – maximum wait ratio</li>
 <li><strong>read_ratio_avg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – average read ratio</li>
-<li><strong>read_ratio_avg</strong> – maximum read ratio</li>
-<li><strong>copute_ratio_avg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – average copute ratio</li>
-<li><strong>copute_ratio_avg</strong> – maximum copute ratio</li>
+<li><strong>read_ratio_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – maximum read ratio</li>
+<li><strong>compute_ratio_avg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – average compute ratio</li>
+<li><strong>compute_ratio_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – maximum compute ratio</li>
 <li><strong>write_ratio_avg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – average write ratio</li>
-<li><strong>write_ratio_avg</strong> – maximum write ratio</li>
+<li><strong>write_ratio_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – maximum write ratio</li>
 <li><strong>records_read</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of records read</li>
 <li><strong>records_written</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – number of records written</li>
 <li><strong>status</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – entry status</li>
@@ -2336,7 +2336,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'userByEmail', 'view', 'domain', 'specialGroup'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'specialGroup', 'domain', 'userByEmail', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
