@@ -69,8 +69,8 @@ fails if the result set is too large,
 
 .. note::
 
-   Perform all iteration within the context of the ``with database.snapshot()`` 
-   block.  
+   Perform all iteration within the context of the ``with database.snapshot()``
+   block.
 
 .. note::
 
