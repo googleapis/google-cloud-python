@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-only Transactions via Snapshots &#8212; google-cloud d8133f6 documentation</title>
+    <title>Read-only Transactions via Snapshots &#8212; google-cloud f033763 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'd8133f6',
+        VERSION:     'f033763',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -66,6 +66,18 @@ reads as of a given timestamp:</p>
 <div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="n">DURATION</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">exact_staleness</span><span class="o">=</span><span class="n">DURATION</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="single-use-and-multiple-use-snapshots">
+<h2>Single Use and Multiple Use Snapshots<a class="headerlink" href="#single-use-and-multiple-use-snapshots" title="Permalink to this headline">#</a></h2>
+<p>In the context of read only transactions, <code class="docutils literal"><span class="pre">read</span></code> and <code class="docutils literal"><span class="pre">execute_sql</span></code>
+methods can be used multiple times if you specify <code class="docutils literal"><span class="pre">multi_use=True</span></code>
+in the constructor of the snapshot.  However, <code class="docutils literal"><span class="pre">multi_use=True</span></code> is
+incompatible with either <code class="docutils literal"><span class="pre">max_staleness</span></code> and/or <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.</p>
+<p>Otherwise <code class="docutils literal"><span class="pre">multi_use</span></code> defaults to <code class="docutils literal"><span class="pre">False</span></code> and the snapshot cannot be
+reused.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">snapshot</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">multi_use</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
