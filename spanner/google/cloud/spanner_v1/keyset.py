@@ -38,19 +38,13 @@ class KeyRange(object):
     """
     def __init__(self, start_open=None, start_closed=None,
                  end_open=None, end_closed=None):
-        keys = (start_open, start_closed, end_open, end_closed)
-        if all(key is None for key in keys):
-            raise ValueError("Must specify at least a start or end row.")
+        if ((start_open is None and start_closed is None)
+            or (start_open is not None and start_closed is not None)):
+            raise ValueError("Specify exactly one start key type")
 
-        if start_open is not None and start_closed is not None:
-            raise ValueError("Specify one of 'start_open' / 'start_closed'.")
-        elif start_open is None and start_closed is None:
-            start_closed = []
-
-        if end_open is not None and end_closed is not None:
-            raise ValueError("Specify one of 'end_open' / 'end_closed'.")
-        elif end_open is None and end_closed is None:
-            end_closed = []
+        if ((end_open is None and end_closed is None)
+            or (end_open is not None and end_closed is not None)):
+            raise ValueError("Specify exactly one end key type")
 
         self.start_open = start_open
         self.start_closed = start_closed
@@ -65,14 +59,16 @@ class KeyRange(object):
         """
         kwargs = {}
 
-        if self.start_open is not None:
+        if self.start_open:
             kwargs['start_open'] = _make_list_value_pb(self.start_open)
-        else:
+
+        if self.start_closed:
             kwargs['start_closed'] = _make_list_value_pb(self.start_closed)
 
-        if self.end_open is not None:
+        if self.end_open:
             kwargs['end_open'] = _make_list_value_pb(self.end_open)
-        else:
+
+        if self.end_closed:
             kwargs['end_closed'] = _make_list_value_pb(self.end_closed)
 
         return KeyRangePB(**kwargs)
