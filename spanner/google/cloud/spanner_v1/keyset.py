@@ -39,11 +39,11 @@ class KeyRange(object):
     def __init__(self, start_open=None, start_closed=None,
                  end_open=None, end_closed=None):
         if ((start_open is None and start_closed is None)
-            or (start_open is not None and start_closed is not None)):
+                or (start_open is not None and start_closed is not None)):
             raise ValueError('Specify exactly one of start_closed or start_open')
 
         if ((end_open is None and end_closed is None)
-            or (end_open is not None and end_closed is not None)):
+                or (end_open is not None and end_closed is not None)):
             raise ValueError('Specify exactly one of end_closed or end_open')
 
         self.start_open = start_open
