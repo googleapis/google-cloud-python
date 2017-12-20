@@ -102,8 +102,13 @@ class TestSink(unittest.TestCase):
 
         self.assertEqual(
             api._sink_create_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-             False)
+            (
+                self.PROJECT,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                False,
+            ),
         )
 
     def test_create_w_alternate_client(self):
@@ -118,8 +123,13 @@ class TestSink(unittest.TestCase):
 
         self.assertEqual(
             api._sink_create_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-             False)
+            (
+                self.PROJECT,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                False,
+            ),
         )
 
     def test_exists_miss_w_bound_client(self):

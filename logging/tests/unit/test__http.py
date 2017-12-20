@@ -477,7 +477,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertEqual(conn._called_with['data'], SENT)
 
     def test_sink_create_unique_writer_identity(self):
-        SENT = {
+        sent = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
@@ -488,14 +488,19 @@ class Test_SinksAPI(unittest.TestCase):
         api = self._make_one(client)
 
         api.sink_create(
-            self.PROJECT, self.SINK_NAME, self.FILTER,
-            self.DESTINATION_URI, True)
+            self.PROJECT,
+            self.SINK_NAME,
+            self.FILTER,
+            self.DESTINATION_URI,
+            unique_writer_identity=True,
+        )
         path = '/projects/%s/sinks' % (self.PROJECT,)
-        expected = {'method': 'POST',
-                    'path': path,
-                    'data': SENT,
-                    'query_params': {'uniqueWriterIdentity': True},
-                    }
+        expected = {
+            'method': 'POST',
+            'path': path,
+            'data': sent,
+            'query_params': {'uniqueWriterIdentity': True},
+        }
         self.assertEqual(conn._called_with, expected)
 
     def test_sink_get_miss(self):

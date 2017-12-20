@@ -40,7 +40,6 @@ class _Base(object):
     PROJECT = 'PROJECT'
     PROJECT_PATH = 'projects/%s' % (PROJECT,)
     FILTER = 'logName:syslog AND severity>=ERROR'
-    UNIQUE_WRITER_IDENTITY = True
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -745,8 +744,8 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertFalse(unique_writer_identity)
         self.assertIsNone(options)
+        self.assertFalse(unique_writer_identity)
 
     def test_sink_create_with_unique_writer_identity(self):
         from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
@@ -755,7 +754,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         api = self._make_one(gax_api, None)
         api.sink_create(
             self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-            unique_writer_identity=self.UNIQUE_WRITER_IDENTITY,
+            unique_writer_identity=True,
         )
         parent, sink, options, unique_writer_identity = (
             gax_api._create_sink_called_with)
@@ -764,8 +763,8 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertTrue(unique_writer_identity)
         self.assertIsNone(options)
+        self.assertTrue(unique_writer_identity)
 
     def test_sink_get_error(self):
         from google.cloud.exceptions import NotFound

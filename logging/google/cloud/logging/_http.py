@@ -262,8 +262,12 @@ class _SinksAPI(object):
             'destination': destination,
         }
         query_params = {'uniqueWriterIdentity': unique_writer_identity}
-        self.api_request(method='POST', path=target, data=data,
-                         query_params=query_params)
+        self.api_request(
+            method='POST',
+            path=target,
+            data=data,
+            query_params=query_params,
+        )
 
     def sink_get(self, project, sink_name):
         """API call:  retrieve a sink resource.
