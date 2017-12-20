@@ -304,6 +304,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
                 index,
             ],
         )
+        self.to_delete.append(temp_db)
         with self.assertRaises(NotFound) as exc_info:
             temp_db.create()
 
