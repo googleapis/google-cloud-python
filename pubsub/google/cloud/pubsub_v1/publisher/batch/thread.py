@@ -271,7 +271,7 @@ class Batch(base.Batch):
             self._messages.append(message)
             # Track the future on this batch (so that the result of the
             # future can be set).
-            future = futures.Future()
+            future = futures.Future(event_factory=threading.Event)
             self._futures.append(future)
             # Determine the number of messages before releasing the lock.
             num_messages = len(self._messages)

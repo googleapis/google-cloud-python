@@ -29,6 +29,16 @@ class Future(google.api_core.future.Future):
 
     This object should not be created directly, but is returned by other
     methods in this library.
+
+    Args:
+        event_factory (Optional[Callable[[], Any]]): An event factory, expected
+            to take no arguments and return an event with the same interface as
+            :class:`threading.Event`. This is provided so that callers
+            with different concurrency models (e.g. ``threading`` or
+            ``multiprocessing``) can wait on an event that is compatible
+            with that model. The ``wait()`` and ``set()`` methods will be
+            used on the returned event. The default is
+            :class:`threading.Event`.
     """
 
     # This could be a sentinel object or None, but the sentinel object's ID
@@ -36,11 +46,11 @@ class Future(google.api_core.future.Future):
     # actually being a result.
     _SENTINEL = uuid.uuid4()
 
-    def __init__(self):
+    def __init__(self, event_factory=threading.Event):
         self._result = self._SENTINEL
         self._exception = self._SENTINEL
         self._callbacks = []
-        self._completed = threading.Event()
+        self._completed = event_factory()
 
     def cancel(self):
         """Actions in Pub/Sub generally may not be canceled.
