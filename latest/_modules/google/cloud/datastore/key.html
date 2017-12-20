@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.datastore.key &#8212; google-cloud 465a888 documentation</title>
+    <title>google.cloud.datastore.key &#8212; google-cloud 4e50bba documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '465a888',
+        VERSION:     '4e50bba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -340,7 +340,7 @@
 
         <span class="k">return</span> <span class="n">key</span></div>
 
-<div class="viewcode-block" id="Key.to_legacy_urlsafe"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.key.Key.to_legacy_urlsafe">[docs]</a>    <span class="k">def</span> <span class="nf">to_legacy_urlsafe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.to_legacy_urlsafe"><a class="viewcode-back" href="../../../../datastore/usage.html#google.cloud.datastore.key.Key.to_legacy_urlsafe">[docs]</a>    <span class="k">def</span> <span class="nf">to_legacy_urlsafe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert to a base64 encode urlsafe string for App Engine.</span>
 
 <span class="sd">        This is intended to work with the &quot;legacy&quot; representation of a</span>
@@ -352,13 +352,26 @@
 <span class="sd">        .. note::</span>
 
 <span class="sd">            The string returned by ``to_legacy_urlsafe`` is equivalent, but</span>
-<span class="sd">            not identical, to the string returned by ``ndb``.</span>
+<span class="sd">            not identical, to the string returned by ``ndb``. The location</span>
+<span class="sd">            prefix may need to be specified to obtain identical urlsafe</span>
+<span class="sd">            keys.</span>
+
+<span class="sd">        :type location_prefix: str</span>
+<span class="sd">        :param location_prefix: The location prefix of an App Engine project</span>
+<span class="sd">                                ID. Often this value is &#39;s~&#39;, but may also be</span>
+<span class="sd">                                &#39;e~&#39;, or other location prefixes currently</span>
+<span class="sd">                                unknown.</span>
 
 <span class="sd">        :rtype: bytes</span>
 <span class="sd">        :returns: A bytestring containing the key encoded as URL-safe base64.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">location_prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">project_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">project_id</span> <span class="o">=</span> <span class="n">location_prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+
         <span class="n">reference</span> <span class="o">=</span> <span class="n">_app_engine_key_pb2</span><span class="o">.</span><span class="n">Reference</span><span class="p">(</span>
-            <span class="n">app</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">app</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">_to_legacy_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">),</span>  <span class="c1"># Avoid the copy.</span>
             <span class="n">name_space</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">,</span>
         <span class="p">)</span>

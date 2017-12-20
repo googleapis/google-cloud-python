@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Datastore &#8212; google-cloud 465a888 documentation</title>
+    <title>Datastore &#8212; google-cloud 4e50bba documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '465a888',
+        VERSION:     '4e50bba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -978,7 +978,7 @@ one path element, returns <code class="docutils literal"><span class="pre">None<
 
 <dl class="method">
 <dt id="google.cloud.datastore.Key.to_legacy_urlsafe">
-<code class="descname">to_legacy_urlsafe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.to_legacy_urlsafe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Key.to_legacy_urlsafe" title="Permalink to this definition">#</a></dt>
+<code class="descname">to_legacy_urlsafe</code><span class="sig-paren">(</span><em>location_prefix=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/key.html#Key.to_legacy_urlsafe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Key.to_legacy_urlsafe" title="Permalink to this definition">#</a></dt>
 <dd><p>Convert to a base64 encode urlsafe string for App Engine.</p>
 <p>This is intended to work with the “legacy” representation of a
 datastore “Key” used within Google App Engine (a so-called
@@ -988,15 +988,22 @@ will have padding removed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The string returned by <code class="docutils literal"><span class="pre">to_legacy_urlsafe</span></code> is equivalent, but
-not identical, to the string returned by <code class="docutils literal"><span class="pre">ndb</span></code>.</p>
+not identical, to the string returned by <code class="docutils literal"><span class="pre">ndb</span></code>. The location
+prefix may need to be specified to obtain identical urlsafe
+keys.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)">bytes</a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location_prefix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The location prefix of an App Engine project
+ID. Often this value is ‘s~’, but may also be
+‘e~’, or other location prefixes currently
+unknown.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A bytestring containing the key encoded as URL-safe base64.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.6)">bytes</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A bytestring containing the key encoded as URL-safe base64.</td>
 </tr>
 </tbody>
 </table>
