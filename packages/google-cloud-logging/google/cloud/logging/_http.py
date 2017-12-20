@@ -229,7 +229,8 @@ class _SinksAPI(object):
             page_token=page_token,
             extra_params=extra_params)
 
-    def sink_create(self, project, sink_name, filter_, destination):
+    def sink_create(self, project, sink_name, filter_, destination,
+                    unique_writer_identity=False):
         """API call:  create a sink resource.
 
         See
@@ -248,6 +249,11 @@ class _SinksAPI(object):
         :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
+
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                       IAM identity returned as
+                                       writer_identity in the new sink.
         """
         target = '/projects/%s/sinks' % (project,)
         data = {
@@ -255,7 +261,13 @@ class _SinksAPI(object):
             'filter': filter_,
             'destination': destination,
         }
-        self.api_request(method='POST', path=target, data=data)
+        query_params = {'uniqueWriterIdentity': unique_writer_identity}
+        self.api_request(
+            method='POST',
+            path=target,
+            data=data,
+            query_params=query_params,
+        )
 
     def sink_get(self, project, sink_name):
         """API call:  retrieve a sink resource.

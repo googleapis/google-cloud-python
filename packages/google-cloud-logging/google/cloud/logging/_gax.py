@@ -192,7 +192,8 @@ class _SinksAPI(object):
         return page_iterator._GAXIterator(
             self._client, page_iter, _item_to_sink)
 
-    def sink_create(self, project, sink_name, filter_, destination):
+    def sink_create(self, project, sink_name, filter_, destination,
+                    unique_writer_identity=False):
         """API call:  create a sink resource.
 
         See
@@ -211,13 +212,23 @@ class _SinksAPI(object):
         :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
+
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                       IAM identity returned as
+                                       writer_identity in the new sink.
         """
         options = None
         parent = 'projects/%s' % (project,)
         sink_pb = LogSink(name=sink_name, filter=filter_,
                           destination=destination)
         try:
-            self._gax_api.create_sink(parent, sink_pb, options=options)
+            self._gax_api.create_sink(
+                parent,
+                sink_pb,
+                unique_writer_identity=unique_writer_identity,
+                options=options,
+            )
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 path = 'projects/%s/sinks/%s' % (project, sink_name)
