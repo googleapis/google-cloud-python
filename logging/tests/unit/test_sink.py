@@ -102,7 +102,14 @@ class TestSink(unittest.TestCase):
 
         self.assertEqual(
             api._sink_create_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
+            (
+                self.PROJECT,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                False,
+            ),
+        )
 
     def test_create_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
@@ -116,7 +123,14 @@ class TestSink(unittest.TestCase):
 
         self.assertEqual(
             api._sink_create_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
+            (
+                self.PROJECT,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                False,
+            ),
+        )
 
     def test_exists_miss_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -255,9 +269,10 @@ class _Client(object):
 
 class _DummySinksAPI(object):
 
-    def sink_create(self, project, sink_name, filter_, destination):
+    def sink_create(self, project, sink_name, filter_, destination,
+                    unique_writer_identity=False):
         self._sink_create_called_with = (
-            project, sink_name, filter_, destination)
+            project, sink_name, filter_, destination, unique_writer_identity)
 
     def sink_get(self, project, sink_name):
         from google.cloud.exceptions import NotFound
