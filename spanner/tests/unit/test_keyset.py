@@ -55,22 +55,22 @@ class TestKeyRange(unittest.TestCase):
     def test_ctor_single_key_start_closed(self):
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
-            krange = self._make_one(start_closed=KEY_1)
+            self._make_one(start_closed=KEY_1)
 
     def test_ctor_single_key_start_open(self):
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
-            krange = self._make_one(start_open=KEY_1)
+            self._make_one(start_open=KEY_1)
 
     def test_ctor_single_key_end_closed(self):
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
-            krange = self._make_one(end_closed=KEY_1)
+            self._make_one(end_closed=KEY_1)
 
     def test_ctor_single_key_end_open(self):
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):        
-            krange = self._make_one(end_open=KEY_1)
+            self._make_one(end_open=KEY_1)
 
     def test_ctor_w_start_open_and_end_closed(self):
         KEY_1 = [u'key_1']
@@ -122,28 +122,28 @@ class TestKeyRange(unittest.TestCase):
 
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
-            krange = self._make_one(start_closed=KEY_1)
+            self._make_one(start_closed=KEY_1)
 
     def test_to_pb_single_key_start_open(self):
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
-            krange = self._make_one(start_open=KEY_1)
+            self._make_one(start_open=KEY_1)
 
     def test_to_pb_single_key_end_closed(self):
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
-            krange = self._make_one(end_closed=KEY_1)
+            self._make_one(end_closed=KEY_1)
 
     def test_to_pb_single_key_end_open(self):
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
         KEY_1 = [u'key_1']
         with self.assertRaises(ValueError):
-            krange = self._make_one(end_open=KEY_1)
+            self._make_one(end_open=KEY_1)
 
 class TestKeySet(unittest.TestCase):
 
