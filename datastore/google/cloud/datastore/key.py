@@ -311,21 +311,22 @@ class Key(object):
 
             The string returned by ``to_legacy_urlsafe`` is equivalent, but
             not identical, to the string returned by ``ndb``. The location
-            prefix may need to be specified to obtain idendentical urlsafe
+            prefix may need to be specified to obtain identical urlsafe
             keys.
 
         :type location_prefix: str
-        :param location_prefix: The location prefix of ones project. Often
-                                this value is 's~', but may be 'dev~', 'e~', or
-                                other location prefixes currently unknown.
+        :param location_prefix: The location prefix of an App Engine project
+                                ID. Often this value is 's~', but may also be
+                                'e~', or other location prefixes currently
+                                unknown.
 
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.
         """
-        if location_prefix:
-            project_id = location_prefix + self.project
-        else:
+        if location_prefix is None:
             project_id = self.project
+        else:
+            project_id = location_prefix + self.project
 
         reference = _app_engine_key_pb2.Reference(
             app=project_id,
