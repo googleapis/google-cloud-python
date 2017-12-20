@@ -284,7 +284,7 @@ class TestDatabase(_BaseTest):
         self.assertNotEqual(database1, database2)
 
     def test_create_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import GoogleAPICallError
 
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
@@ -293,7 +293,7 @@ class TestDatabase(_BaseTest):
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(GoogleAPICallError):
             database.create()
 
         (parent, create_statement, extra_statements,
