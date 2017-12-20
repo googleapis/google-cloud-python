@@ -73,8 +73,8 @@ class Future(google.api_core.future.Future):
         This still returns True in failure cases; checking :meth:`result` or
         :meth:`exception` is the canonical way to assess success or failure.
         """
-        return (self._exception is not self._SENTINEL or
-                self._result is not self._SENTINEL)
+        return (self._exception != self._SENTINEL or
+                self._result != self._SENTINEL)
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -123,7 +123,7 @@ class Future(google.api_core.future.Future):
             raise exceptions.TimeoutError('Timed out waiting for result.')
 
         # If the batch completed successfully, this should return None.
-        if self._result is not self._SENTINEL:
+        if self._result != self._SENTINEL:
             return None
 
         # Okay, this batch had an error; this should return it.
