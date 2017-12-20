@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.database &#8212; google-cloud 1bbc457 documentation</title>
+    <title>google.cloud.spanner_v1.database &#8212; google-cloud 4e69087 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '1bbc457',
+        VERSION:     '4e69087',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -59,19 +59,20 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
+<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">exceptions</span>
 <span class="kn">import</span> <span class="nn">google.auth.credentials</span>
+<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span>
+<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.gax.errors</span> <span class="k">import</span> <span class="n">GaxError</span>
 <span class="kn">from</span> <span class="nn">google.gax.grpc</span> <span class="k">import</span> <span class="n">exc_to_code</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.gapic.spanner_client</span> <span class="k">import</span> <span class="n">SpannerClient</span>
 <span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">StatusCode</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="c1"># pylint: disable=ungrouped-imports</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1</span> <span class="k">import</span> <span class="n">__version__</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.batch</span> <span class="k">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.gapic.spanner_client</span> <span class="k">import</span> <span class="n">SpannerClient</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.pool</span> <span class="k">import</span> <span class="n">BurstyPool</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.pool</span> <span class="k">import</span> <span class="n">SessionCheckout</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.session</span> <span class="k">import</span> <span class="n">Session</span>
@@ -250,14 +251,7 @@
                 <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">ALREADY_EXISTS</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">Conflict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;Instance not found: </span><span class="si">{name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="p">))</span>
-            <span class="k">raise</span>
-
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">from_grpc_error</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">future</span></div>
 
 <div class="viewcode-block" id="Database.exists"><a class="viewcode-back" href="../../../../spanner/database-api.html#google.cloud.spanner_v1.database.Database.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
