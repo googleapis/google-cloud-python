@@ -187,11 +187,12 @@ class AckCallback(object):
 
     def __init__(self):
         self.calls = 0
+        self.lock = threading.Lock()
 
     def __call__(self, message):
         message.ack()
         # Only increment the number of calls **after** finishing.
-        with threading.Lock():
+        with self.lock:
             self.calls += 1
 
 
@@ -201,13 +202,14 @@ class TimesCallback(object):
         self.sleep_time = sleep_time
         self.calls = 0
         self.call_times = []
+        self.lock = threading.Lock()
 
     def __call__(self, message):
         now = datetime.datetime.now()
         time.sleep(self.sleep_time)
         message.ack()
         # Only increment the number of calls **after** finishing.
-        with threading.Lock():
+        with self.lock:
             # list.append() is thread-safe, but we still wait until
             # ``calls`` is incremented to do it.
             self.call_times.append(now)
