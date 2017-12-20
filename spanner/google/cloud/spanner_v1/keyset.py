@@ -72,16 +72,16 @@ class KeyRange(object):
         """
         kwargs = {}
 
-        if self.start_open:
+        if self.start_open is not None:
             kwargs['start_open'] = _make_list_value_pb(self.start_open)
 
-        if self.start_closed:
+        if self.start_closed is not None:
             kwargs['start_closed'] = _make_list_value_pb(self.start_closed)
 
-        if self.end_open:
+        if self.end_open is not None:
             kwargs['end_open'] = _make_list_value_pb(self.end_open)
 
-        if self.end_closed:
+        if self.end_closed is not None:
             kwargs['end_closed'] = _make_list_value_pb(self.end_closed)
 
         return KeyRangePB(**kwargs)
