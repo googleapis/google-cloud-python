@@ -276,6 +276,7 @@ class ClusterControllerClient(object):
                         }
                       }
                     }
+
                 Similarly, to change the number of preemptible workers in a cluster to 5,
                 the ``update_mask`` parameter would be
                 ``config.secondary_worker_config.num_instances``, and the ``PATCH`` request
@@ -290,30 +291,19 @@ class ClusterControllerClient(object):
                         }
                       }
                     }
-                <strong>Note:</strong> Currently, only the following fields can be updated:
 
-                 <table>
-                 <tbody>
-                 <tr>
-                 <td><strong>Mask</strong></td>
-                 <td><strong>Purpose</strong></td>
-                 </tr>
-                 <tr>
-                 <td><strong><em>labels</em></strong></td>
-                 <td>Update labels</td>
-                 </tr>
-                 <tr>
-                 <td><strong><em>config.worker_config.num_instances</em></strong></td>
-                 <td>Resize primary worker group</td>
-                 </tr>
-                 <tr>
-                 <td><strong><em>config.secondary_worker_config.num_instances</em></strong></td>
-                 <td>Resize secondary worker group</td>
-                 </tr>
-                 </tbody>
-                 </table>
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dataproc_v1.types.FieldMask`
+                .. note::
+
+                    Currently, only the following fields can be updated:
+
+                    * ``labels``: Update labels
+                    * ``config.worker_config.num_instances``: Resize primary
+                      worker group
+                    * ``config.secondary_worker_config.num_instances``: Resize
+                      secondary worker group
+
+                    If a dict is provided, it must be of the same form as the protobuf
+                    message :class:`~google.cloud.dataproc_v1.types.FieldMask`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will not
                 be retried.

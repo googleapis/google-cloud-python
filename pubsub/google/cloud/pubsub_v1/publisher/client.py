@@ -43,7 +43,7 @@ class Client(object):
     Args:
         batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
             settings for batch publishing.
-        batch_class (Optional[type]): A class that describes how to handle
+        batch_class (Optional[Type]): A class that describes how to handle
             batches. You may subclass the
             :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
             order to define your own batcher. This is primarily provided to
