@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 0.1.3
+
+### Notable Implementation Changes
+
+- Apply scopes to explicitly provided credentials if needed (#4594).
+- Removing `google.api_core.gapic_v1.method.METRICS_METADATA_KEY`. It
+  can be accessed via
+  `google.api_core.gapic_v1.client_info.METRICS_METADATA_KEY` (#4588).
+
+### Dependencies
+
+- Upgrading to latest `grpcio==1.8.2` (#4642). For details, see
+  related gRPC [bug](https://github.com/grpc/grpc/issues/9688)
+  and [fix](https://github.com/grpc/grpc/pull/13665).
+
+PyPI: https://pypi.org/project/google-api-core/0.1.3/
+
 ## 0.1.2
 
 - Upgrading `concurrent.futures` backport from `>= 3.0.0`
