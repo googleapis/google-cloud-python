@@ -413,6 +413,15 @@ class TestKey(unittest.TestCase):
         # Make sure it started with base64 padding.
         self.assertNotEqual(len(self._URLSAFE_EXAMPLE2) % 4, 0)
 
+    def test_to_legacy_urlsafe_with_location_prefix(self):
+        key = self._make_one(
+            *self._URLSAFE_FLAT_PATH1,
+            project=self._URLSAFE_APP3,
+            namespace=self._URLSAFE_NAMESPACE1)
+        # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
+        urlsafe = key.to_legacy_urlsafe(self._URLSAFE_LOCATION_PREFIX)
+        self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE3)
+
     def test_from_legacy_urlsafe(self):
         klass = self._get_target_class()
         key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE1)
@@ -434,15 +443,6 @@ class TestKey(unittest.TestCase):
         self.assertEqual('s~' + key.project, self._URLSAFE_APP2)
         self.assertIsNone(key.namespace)
         self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH2)
-
-    def test_from_legacy_urlsafe_with_location_prefix(self):
-        key = self._make_one(
-            *self._URLSAFE_FLAT_PATH1,
-            project=self._URLSAFE_APP3,
-            namespace=self._URLSAFE_NAMESPACE1)
-        # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
-        urlsafe = key.to_legacy_urlsafe(self._URLSAFE_LOCATION_PREFIX)
-        self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE3)
 
     def test_is_partial_no_name_or_id(self):
         key = self._make_one('KIND', project=self._DEFAULT_PROJECT)
