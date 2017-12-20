@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Sinks &#8212; google-cloud 157b498 documentation</title>
+    <title>Sinks &#8212; google-cloud 465a888 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '157b498',
+        VERSION:     '465a888',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -46,7 +46,7 @@
 <p>Define Stackdriver Logging API Sinks.</p>
 <dl class="class">
 <dt id="google.cloud.logging.sink.Sink">
-<em class="property">class </em><code class="descclassname">google.cloud.logging.sink.</code><code class="descname">Sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>destination=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.logging.sink.</code><code class="descname">Sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>destination=None</em>, <em>client=None</em>, <em>unique_writer_identity=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/logging/sink.html#Sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.logging.sink.Sink" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Sinks represent filtered exports for log entries.</p>
 <p>See
@@ -65,6 +65,9 @@ If not passed, the instance should already exist, to
 be refreshed via <a class="reference internal" href="#google.cloud.logging.sink.Sink.reload" title="google.cloud.logging.sink.Sink.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="client.html#google.cloud.logging.client.Client" title="google.cloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.logging.client.Client</span></code></a>) – A client which holds credentials and project configuration
 for the sink (which requires a project).</li>
+<li><strong>unique_writer_identity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) determines the kind of
+IAM identity returned as
+writer_identity in the new sink.</li>
 </ul>
 </td>
 </tr>
