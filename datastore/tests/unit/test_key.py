@@ -34,12 +34,10 @@ class TestKey(unittest.TestCase):
     _URLSAFE_FLAT_PATH1 = ('Parent', 59, 'Child', 'Feather')
     _URLSAFE_EXAMPLE2 = b'agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA'
     _URLSAFE_APP2 = 's~fire'
-    _URLSAFE_APP3 = 'sample-app-no-location'
-    _URLSAFE_LOCATION_PREFIX = 's~'
-    _URLSAFE_EXAMPLE3 = (
-        b'ahhzfnNhbXBsZS1hcHAtbm8tbG9jYXRpb25yHgsSBlBhcmVudBg7DAsSBUNoaWxkIgdG'
-        b'ZWF0aGVyDKIBBXNwYWNl')
     _URLSAFE_FLAT_PATH2 = ('Kind', 'Thing')
+    _URLSAFE_EXAMPLE3 = b'ahhzfnNhbXBsZS1hcHAtbm8tbG9jYXRpb25yCgsSBFpvcnAYWAw'
+    _URLSAFE_APP3 = 'sample-app-no-location'
+    _URLSAFE_FLAT_PATH3 = ('Zorp', 88)
 
     @staticmethod
     def _get_target_class():
@@ -415,11 +413,9 @@ class TestKey(unittest.TestCase):
 
     def test_to_legacy_urlsafe_with_location_prefix(self):
         key = self._make_one(
-            *self._URLSAFE_FLAT_PATH1,
-            project=self._URLSAFE_APP3,
-            namespace=self._URLSAFE_NAMESPACE1)
-        # NOTE: ``key.project`` is somewhat "invalid" but that is OK.
-        urlsafe = key.to_legacy_urlsafe(self._URLSAFE_LOCATION_PREFIX)
+            *self._URLSAFE_FLAT_PATH3,
+            project=self._URLSAFE_APP3)
+        urlsafe = key.to_legacy_urlsafe(location_prefix='s~')
         self.assertEqual(urlsafe, self._URLSAFE_EXAMPLE3)
 
     def test_from_legacy_urlsafe(self):
@@ -443,6 +439,15 @@ class TestKey(unittest.TestCase):
         self.assertEqual('s~' + key.project, self._URLSAFE_APP2)
         self.assertIsNone(key.namespace)
         self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH2)
+
+    def test_from_legacy_urlsafe_with_location_prefix(self):
+        klass = self._get_target_class()
+        # Make sure it will have base64 padding added.
+        key = klass.from_legacy_urlsafe(self._URLSAFE_EXAMPLE3)
+
+        self.assertEqual(key.project, self._URLSAFE_APP3)
+        self.assertIsNone(key.namespace)
+        self.assertEqual(key.flat_path, self._URLSAFE_FLAT_PATH3)
 
     def test_is_partial_no_name_or_id(self):
         key = self._make_one('KIND', project=self._DEFAULT_PROJECT)
