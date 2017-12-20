@@ -183,6 +183,22 @@ class Entity(dict):
         if self.key:
             return self.key.kind
 
+    @property
+    def id(self):
+        """Get the ID of the current entity.
+
+        .. note::
+
+            This relies entirely on the :class:`google.cloud.datastore.key.Key`
+            set on the entity.  That means that we're not storing the ID
+            of the entity at all, just the properties and a pointer to a
+            Key which knows its ID.
+        """
+        if self.key is None:
+            return None
+        else:
+            return self.key.id
+
     def __repr__(self):
         if self.key:
             return '<Entity%s %s>' % (self.key._flat_path,
