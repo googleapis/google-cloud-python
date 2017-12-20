@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import threading
+import uuid
 
 import google.api_core.future
 from google.cloud.pubsub_v1.publisher import exceptions
@@ -29,7 +30,11 @@ class Future(google.api_core.future.Future):
     This object should not be created directly, but is returned by other
     methods in this library.
     """
-    _SENTINEL = object()
+
+    # This could be a sentinel object or None, but the sentinel object's ID
+    # can change if the process is forked, and None has the possibility of
+    # actually being a result.
+    _SENTINEL = uuid.uuid4()
 
     def __init__(self):
         self._result = self._SENTINEL
