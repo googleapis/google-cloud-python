@@ -30,49 +30,47 @@ class TestKeyRange(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._make_one()
 
-    def test_ctor_w_start_open_and_start_closed(self):
+    def test_ctor_start_open_and_start_closed(self):
         KEY_1 = [u'key_1']
         KEY_2 = [u'key_2']
         with self.assertRaises(ValueError):
             self._make_one(start_open=KEY_1, start_closed=KEY_2)
 
-    def test_ctor_w_end_open_and_end_closed(self):
+    def test_ctor_end_open_and_end_closed(self):
         KEY_1 = [u'key_1']
         KEY_2 = [u'key_2']
         with self.assertRaises(ValueError):
             self._make_one(end_open=KEY_1, end_closed=KEY_2)
 
-    def test_ctor_w_only_start_open(self):
+    def test_ctor_conflicting_start(self):
         KEY_1 = [u'key_1']
-        krange = self._make_one(start_open=KEY_1)
-        self.assertEqual(krange.start_open, KEY_1)
-        self.assertEqual(krange.start_closed, None)
-        self.assertEqual(krange.end_open, None)
-        self.assertEqual(krange.end_closed, None)
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=[], start_closed=[], end_closed=KEY_1)
 
-    def test_ctor_w_only_start_closed(self):
+    def test_ctor_conflicting_end(self):
         KEY_1 = [u'key_1']
-        krange = self._make_one(start_closed=KEY_1)
-        self.assertEqual(krange.start_open, None)
-        self.assertEqual(krange.start_closed, KEY_1)
-        self.assertEqual(krange.end_open, None)
-        self.assertEqual(krange.end_closed, None)
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=KEY_1, end_open=[], end_closed=[])
 
-    def test_ctor_w_only_end_open(self):
+    def test_ctor_single_key_start_closed(self):
         KEY_1 = [u'key_1']
-        krange = self._make_one(end_open=KEY_1)
-        self.assertEqual(krange.start_open, None)
-        self.assertEqual(krange.start_closed, None)
-        self.assertEqual(krange.end_open, KEY_1)
-        self.assertEqual(krange.end_closed, None)
+        with self.assertRaises(ValueError):
+            self._make_one(start_closed=KEY_1)
 
-    def test_ctor_w_only_end_closed(self):
+    def test_ctor_single_key_start_open(self):
         KEY_1 = [u'key_1']
-        krange = self._make_one(end_closed=KEY_1)
-        self.assertEqual(krange.start_open, None)
-        self.assertEqual(krange.start_closed, None)
-        self.assertEqual(krange.end_open, None)
-        self.assertEqual(krange.end_closed, KEY_1)
+        with self.assertRaises(ValueError):
+            self._make_one(start_open=KEY_1)
+
+    def test_ctor_single_key_end_closed(self):
+        KEY_1 = [u'key_1']
+        with self.assertRaises(ValueError):
+            self._make_one(end_closed=KEY_1)
+
+    def test_ctor_single_key_end_open(self):
+        KEY_1 = [u'key_1']
+        with self.assertRaises(ValueError):
+            self._make_one(end_open=KEY_1)
 
     def test_ctor_w_start_open_and_end_closed(self):
         KEY_1 = [u'key_1']
@@ -93,31 +91,58 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange.end_closed, None)
 
     def test_to_pb_w_start_closed_and_end_open(self):
+        from google.protobuf.struct_pb2 import ListValue
+        from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
-        KEY_1 = [u'key_1']
-        KEY_2 = [u'key_2']
-        krange = self._make_one(start_closed=KEY_1, end_open=KEY_2)
-        krange_pb = krange.to_pb()
-        self.assertIsInstance(krange_pb, KeyRange)
-        self.assertEqual(len(krange_pb.start_closed), 1)
-        self.assertEqual(krange_pb.start_closed.values[0].string_value,
-                         KEY_1[0])
-        self.assertEqual(len(krange_pb.end_open), 1)
-        self.assertEqual(krange_pb.end_open.values[0].string_value, KEY_2[0])
+        key1 = u'key_1'
+        key2 = u'key_2'
+        key_range = self._make_one(start_closed=[key1], end_open=[key2])
+        key_range_pb = key_range.to_pb()
+        expected = KeyRange(
+            start_closed=ListValue(values=[
+                Value(string_value=key1)
+            ]),
+            end_open=ListValue(values=[
+                Value(string_value=key2)
+            ]),
+        )
+        self.assertEqual(key_range_pb, expected)
 
     def test_to_pb_w_start_open_and_end_closed(self):
+        from google.protobuf.struct_pb2 import ListValue
+        from google.protobuf.struct_pb2 import Value
         from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
 
-        KEY_1 = [u'key_1']
-        KEY_2 = [u'key_2']
-        krange = self._make_one(start_open=KEY_1, end_closed=KEY_2)
-        krange_pb = krange.to_pb()
-        self.assertIsInstance(krange_pb, KeyRange)
-        self.assertEqual(len(krange_pb.start_open), 1)
-        self.assertEqual(krange_pb.start_open.values[0].string_value, KEY_1[0])
-        self.assertEqual(len(krange_pb.end_closed), 1)
-        self.assertEqual(krange_pb.end_closed.values[0].string_value, KEY_2[0])
+        key1 = u'key_1'
+        key2 = u'key_2'
+        key_range = self._make_one(start_open=[key1], end_closed=[key2])
+        key_range_pb = key_range.to_pb()
+        expected = KeyRange(
+            start_open=ListValue(values=[
+                Value(string_value=key1)
+            ]),
+            end_closed=ListValue(values=[
+                Value(string_value=key2)
+            ]),
+        )
+        self.assertEqual(key_range_pb, expected)
+
+    def test_to_pb_w_empty_list(self):
+        from google.protobuf.struct_pb2 import ListValue
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+
+        key = u'key'
+        key_range = self._make_one(start_closed=[], end_closed=[key])
+        key_range_pb = key_range.to_pb()
+        expected = KeyRange(
+            start_closed=ListValue(values=[]),
+            end_closed=ListValue(values=[
+                Value(string_value=key)
+            ]),
+        )
+        self.assertEqual(key_range_pb, expected)
 
 
 class TestKeySet(unittest.TestCase):
