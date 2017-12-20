@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Publisher Client API &#8212; google-cloud f033763 documentation</title>
+    <title>Publisher Client API &#8212; google-cloud a62931a documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'f033763',
+        VERSION:     'a62931a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -57,16 +57,21 @@ get sensible defaults.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>batch_settings</strong> (<a class="reference internal" href="../../types.html#google.cloud.pubsub_v1.types.BatchSettings" title="google.cloud.pubsub_v1.types.BatchSettings"><em>BatchSettings</em></a>) – The
 settings for batch publishing.</li>
-<li><strong>batch_class</strong> (<em>class</em>) – A class that describes how to handle
+<li><strong>batch_class</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../spanner/gapic/v1/types.html#google.cloud.spanner_v1.types.Type" title="google.cloud.spanner_v1.types.Type"><em>Type</em></a><em>]</em>) – A class that describes how to handle
 batches. You may subclass the
 <code class="xref py py-class docutils literal"><span class="pre">pubsub_v1.publisher.batch.base.BaseBatch</span></code> class in
 order to define your own batcher. This is primarily provided to
 allow use of different concurrency models; the default
-is based on <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></a>.</li>
+is based on <a class="reference external" href="https://docs.python.org/3/library/threading.html#threading.Thread" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></code></a>. This class should also have
+a class method (or static method) that takes no arguments and
+produces a lock that can be used as a context manager.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Any additional arguments provided are sent as keyword
 arguments to the underlying
 <code class="xref py py-class docutils literal"><span class="pre">PublisherClient</span></code>.
-Generally, you should not need to set additional keyword arguments.</li>
+Generally, you should not need to set additional keyword arguments.
+Before being passed along to the GAPIC constructor, a channel may
+be added if <code class="docutils literal"><span class="pre">credentials</span></code> are passed explicitly or if the
+Pub / Sub emulator is detected as running.</li>
 </ul>
 </td>
 </tr>
@@ -706,6 +711,7 @@ to a retryable error and retry attempts failed.</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigquery_datatransfer/index.html">Python Client for BigQuery Data Transfer API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable/usage.html">Bigtable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../container/index.html">Python Client for Google Container Engine API (Beta)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataproc/index.html">Python Client for Google Cloud Dataproc API (Alpha)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore/usage.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../dns/usage.html">DNS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../firestore/index.html">Firestore</a></li>
