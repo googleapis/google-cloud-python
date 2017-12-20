@@ -55,7 +55,7 @@ REQUIREMENTS = [
 ]
 
 EXTRAS_REQUIREMENTS = {
-    'grpc': ['grpcio >= 1.7.0'],
+    'grpc': ['grpcio >= 1.8.2'],
 }
 
 setup(
