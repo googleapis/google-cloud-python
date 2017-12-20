@@ -1003,77 +1003,59 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         expected = all_data_rows[START+1 : END+1]
         self._check_row_data(rows, expected)
 
-    def test_read_partial_range_start(self):
-        ROW_COUNT = 3000
-        START = 1000
-        END = 2000
-        session, committed = self._set_up_table(ROW_COUNT)
+    def test_read_partial_range_until_end(self):
+        row_count = 3000
+        start = 1000
+        session, committed = self._set_up_table(row_count)
         snapshot = session.snapshot(read_timestamp=committed, multi_use=True)
-        all_data_rows = list(self._row_data(ROW_COUNT))
+        all_data_rows = list(self._row_data(row_count))
 
-        closed_closed = KeyRange(start_closed=[START], end_closed=[])
-        keyset = KeySet(ranges=(closed_closed,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[START:]
-        self._check_row_data(rows, expected)
+        expected_map = {
+            ('start_closed', 'end_closed'): all_data_rows[start:],
+            ('start_closed', 'end_open'): [],
+            ('start_open', 'end_closed'): all_data_rows[start+1:],
+            ('start_open', 'end_open'): [],
+        }
+        for start_arg in ('start_closed', 'start_open'):
+            for end_arg in ('end_closed', 'end_open'):
+                range_kwargs = {start_arg: [start], end_arg: []}
+                keyset = KeySet(
+                    ranges=(
+                        KeyRange(**range_kwargs),
+                    ),
+                )
 
-        closed_open = KeyRange(start_closed=[START], end_open=[])
-        keyset = KeySet(ranges=(closed_open,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = []
-        self._check_row_data(rows, expected)
+                rows = list(snapshot.read(
+                    self.TABLE, self.COLUMNS, keyset))
+                expected = expected_map[(start_arg, end_arg)]
+                self._check_row_data(rows, expected)
 
-        open_open = KeyRange(start_open=[START], end_open=[])
-        keyset = KeySet(ranges=(open_open,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = []
-        self._check_row_data(rows, expected)
-
-        open_closed = KeyRange(start_open=[START], end_closed=[])
-        keyset = KeySet(ranges=(open_closed,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[START+1:]
-        self._check_row_data(rows, expected)
-
-    def test_read_partial_range_end(self):
-        ROW_COUNT = 3000
-        START = 1000
-        END = 2000
-        session, committed = self._set_up_table(ROW_COUNT)
+    def test_read_partial_range_from_beginning(self):
+        row_count = 3000
+        end = 2000
+        session, committed = self._set_up_table(row_count)
         snapshot = session.snapshot(read_timestamp=committed, multi_use=True)
-        all_data_rows = list(self._row_data(ROW_COUNT))
+        all_data_rows = list(self._row_data(row_count))
 
-        closed_closed = KeyRange(start_closed=[], end_closed=[END])
-        keyset = KeySet(ranges=(closed_closed,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[:END+1]
-        self._check_row_data(rows, expected)
+        expected_map = {
+            ('start_closed', 'end_closed'): all_data_rows[:end+1],
+            ('start_closed', 'end_open'): all_data_rows[:end],
+            ('start_open', 'end_closed'): [],
+            ('start_open', 'end_open'): [],
+        }
+        for start_arg in ('start_closed', 'start_open'):
+            for end_arg in ('end_closed', 'end_open'):
+                range_kwargs = {start_arg: [], end_arg: [end]}
+                keyset = KeySet(
+                    ranges=(
+                        KeyRange(**range_kwargs),
+                    ),
+                )
 
-        closed_open = KeyRange(start_closed=[], end_open=[END])
-        keyset = KeySet(ranges=(closed_open,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = all_data_rows[:END]
-        self._check_row_data(rows, expected)
-
-        open_open = KeyRange(start_open=[], end_open=[END])
-        keyset = KeySet(ranges=(open_open,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = []
-        self._check_row_data(rows, expected)
-
-        open_closed = KeyRange(start_open=[], end_closed=[END])
-        keyset = KeySet(ranges=(open_closed,))
-        rows = list(snapshot.read(
-            self.TABLE, self.COLUMNS, keyset))
-        expected = []
-        self._check_row_data(rows, expected)
+                rows = list(snapshot.read(
+                    self.TABLE, self.COLUMNS, keyset))
+                expected = expected_map[(start_arg, end_arg)]
+                self._check_row_data(rows, expected)
 
     def test_read_with_range_keys_index_single_key(self):
         row_count = 10
