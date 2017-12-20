@@ -9,7 +9,7 @@ based applications, powered by the open source Kubernetes technology.
 
 .. _Beta: https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/README.rst
 .. _Google Container Engine API: https://cloud.google.com/container
-.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/stable/container-usage
+.. _Client Library Documentation: https://googlecloudplatform.github.io/google-cloud-python/latest/container/index.html
 .. _Product Documentation:  https://cloud.google.com/container
 
 Quick Start
@@ -23,7 +23,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable the Google Container Engine API.:  https://cloud.google.com/container
-.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/stable/google-cloud-auth
+.. _Setup Authentication.: https://googlecloudplatform.github.io/google-cloud-python/latest/core/auth.html
 
 Installation
 ~~~~~~~~~~~~
