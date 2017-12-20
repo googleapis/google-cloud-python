@@ -222,12 +222,12 @@ class _SinksAPI(object):
         parent = 'projects/%s' % (project,)
         sink_pb = LogSink(name=sink_name, filter=filter_,
                           destination=destination)
+        uwi = unique_writer_identity
         try:
             self._gax_api.create_sink(parent,
-                sink_pb,
-                unique_writer_identity=unique_writer_identity,
-                options=options,
-            )
+                                      sink_pb,
+                                      unique_writer_identity=uwi,
+                                      options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 path = 'projects/%s/sinks/%s' % (project, sink_name)
