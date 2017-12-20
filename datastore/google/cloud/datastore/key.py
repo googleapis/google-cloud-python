@@ -298,7 +298,7 @@ class Key(object):
 
         return key
 
-    def to_legacy_urlsafe(self):
+    def to_legacy_urlsafe(self, location_prefix=None):
         """Convert to a base64 encode urlsafe string for App Engine.
 
         This is intended to work with the "legacy" representation of a
@@ -310,13 +310,25 @@ class Key(object):
         .. note::
 
             The string returned by ``to_legacy_urlsafe`` is equivalent, but
-            not identical, to the string returned by ``ndb``.
+            not identical, to the string returned by ``ndb``. The location
+            prefix may need to be specified to obtain idendentical urlsafe
+            keys.
+
+        :type location_prefix: str
+        :param location_prefix: The location prefix of ones project. Often
+                                this value is 's~', but may be 'dev~', 'e~', or
+                                other location prefixes currently unknown.
 
         :rtype: bytes
         :returns: A bytestring containing the key encoded as URL-safe base64.
         """
+        if location_prefix:
+            project_id = location_prefix + self.project
+        else:
+            project_id = self.project
+
         reference = _app_engine_key_pb2.Reference(
-            app=self.project,
+            app=project_id,
             path=_to_legacy_path(self._path),  # Avoid the copy.
             name_space=self.namespace,
         )
