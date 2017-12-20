@@ -17,20 +17,20 @@
 import re
 import threading
 
-import google.auth.credentials
 from google.api_core import exceptions
+import google.auth.credentials
+from google.cloud.exceptions import Conflict
+from google.cloud.exceptions import NotFound
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
-from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
 from grpc import StatusCode
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.exceptions import Conflict
-from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1 import __version__
 from google.cloud.spanner_v1._helpers import _options_with_prefix
 from google.cloud.spanner_v1.batch import Batch
+from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
 from google.cloud.spanner_v1.session import Session

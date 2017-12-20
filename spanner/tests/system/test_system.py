@@ -304,13 +304,11 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
                 index,
             ],
         )
-        try:
+        with self.assertRaises(NotFound) as exc_info:
             temp_db.create()
-        except NotFound as exc:
-            self.assertEqual(exc.args[0],
-                             'Table not found: {0}'.format(incorrect_table))
-        except:
-            self.fail()
+
+        expected = 'Table not found: {0}'.format(incorrect_table)
+        self.assertEqual(exc_info.exception.args, (expected,))
 
     def test_update_database_ddl(self):
         pool = BurstyPool()
