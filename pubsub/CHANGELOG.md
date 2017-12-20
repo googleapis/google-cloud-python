@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.30.1
+
+### Notable Implementation Changes
+
+- Moving lock factory used in publisher client to the Batch
+  implementation (#4628).
+- Use a UUID (rather than a sentinel object) on `Future` (#4634).
+
+### Dependencies
+
+- Upgrading to latest `grpcio==1.8.2` (#4642). This fixes #4600. For
+  details, see related gRPC [bug](https://github.com/grpc/grpc/issues/9688)
+  and [fix](https://github.com/grpc/grpc/pull/13665).
+
+PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.1/
+
 ## 0.30.0
 
 ### Notable Implementation Changes
