@@ -127,8 +127,9 @@ class FieldPath(object):
 
     def __init__(self, *parts):
         for part in parts:
-            if not isinstance(part, six.string_types):
-                raise ValueError("One or more components is not a string.")
+            if not isinstance(part, six.string_types) or not part:
+                error = 'One or more components is not a string or is empty.'
+                raise ValueError(error)
         self.parts = tuple(parts)
 
     @staticmethod
@@ -146,10 +147,10 @@ class FieldPath(object):
             as arguments to `FieldPath`.
         """
         invalid_characters = '~*/[]'
+        for invalid_character in invalid_characters:
+            if invalid_character in string:
+                raise ValueError('Invalid characters in string.')
         string = string.split('.')
-        for part in string:
-            if not part or part in invalid_characters:
-                raise ValueError("No string or invalid characters in string.")
         return FieldPath(*string)
 
     def to_api_repr(self):

@@ -100,15 +100,19 @@ class TestFieldPath(unittest.TestCase):
 
     def test_none_fails(self):
         with self.assertRaises(ValueError):
-            field_path = self._make_one('a', None, 'b')
+            self._make_one('a', None, 'b')
+
+    def test_empty_string_in_part_fails(self):
+        with self.assertRaises(ValueError):
+            self._make_one('a', '', 'b')
 
     def test_integer_fails(self):
         with self.assertRaises(ValueError):
-            field_path = self._make_one('a', 3, 'b')
+            self._make_one('a', 3, 'b')
 
     def test_iterable_fails(self):
         with self.assertRaises(ValueError):
-            field_path = self._make_one('a', ['a'], 'b')
+            self._make_one('a', ['a'], 'b')
 
     def test_invalid_chars_in_constructor(self):
         parts = '~*/[].'
@@ -192,43 +196,43 @@ class TestFieldPath(unittest.TestCase):
         parts = '~*/[].'
         for part in parts:
             with self.assertRaises(ValueError):
-                field_path = self._get_target_class().from_string(part)
+                self._get_target_class().from_string(part)
 
     def test_empty_string_fails(self):
         parts = ''
         with self.assertRaises(ValueError):
-            field_path = self._get_target_class().from_string(parts)
+            self._get_target_class().from_string(parts)
 
     def test_list_fails(self):
         parts = ['a', 'b', 'c']
         with self.assertRaises(ValueError):
-            field_path = self._make_one(parts)
+            self._make_one(parts)
 
     def test_tuple_fails(self):
         parts = ('a', 'b', 'c')
         with self.assertRaises(ValueError):
-            field_path = self._make_one(parts)
+            self._make_one(parts)
 
     def test_equality(self):
-        field_path = self._make_one("a", "b")
-        string_path = self._get_target_class().from_string("a.b")
+        field_path = self._make_one('a', 'b')
+        string_path = self._get_target_class().from_string('a.b')
         self.assertEqual(field_path, string_path)
 
     def test_non_equal_types(self):
         import mock
         mock = mock.Mock()
-        mock.parts = "a", "b"
-        field_path = self._make_one("a", "b")
+        mock.parts = 'a', 'b'
+        field_path = self._make_one('a', 'b')
         self.assertNotEqual(field_path, mock)
 
     def test_key(self):
-        parts = 'a'
         field_path = self._make_one('a321', 'b456')
         field_path_same = self._get_target_class().from_string('a321.b456')
         field_path_different = self._make_one('a321', 'b457')
-        keys = {field_path: '',
-                field_path_same: '',
-                field_path_different: ''
+        keys = {
+            field_path: '',
+            field_path_same: '',
+            field_path_different: ''
         }
         for key in keys:
             if key == field_path_different:
