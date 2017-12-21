@@ -42,7 +42,7 @@ from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob, QueryJobConfig
-from google.cloud.bigquery.query import QueryResults
+from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
@@ -488,8 +488,8 @@ class Client(ClientWithProject):
             (Optional) number of milliseconds the the API call should wait for
             the query to complete before the request times out.
 
-        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
-        :returns: a new ``QueryResults`` instance
+        :rtype: :class:`google.cloud.bigquery.query._QueryResults`
+        :returns: a new ``_QueryResults`` instance
         """
 
         extra_params = {'maxResults': 0}
@@ -507,7 +507,7 @@ class Client(ClientWithProject):
         # QueryJob.result()). So we don't need to poll here.
         resource = self._call_api(
             retry, method='GET', path=path, query_params=extra_params)
-        return QueryResults.from_api_repr(resource)
+        return _QueryResults.from_api_repr(resource)
 
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
