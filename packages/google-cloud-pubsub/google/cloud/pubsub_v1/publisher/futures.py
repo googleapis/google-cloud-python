@@ -25,6 +25,15 @@ class Future(futures.Future):
 
     This object should not be created directly, but is returned by other
     methods in this library.
+
+    Args:
+        completed (Optional[Any]): An event, with the same interface as
+            :class:`threading.Event`. This is provided so that callers
+            with different concurrency models (e.g. ``threading`` or
+            ``multiprocessing``) can supply an event that is compatible
+            with that model. The ``wait()`` and ``set()`` methods will be
+            used. If this argument is not provided, then a new
+            :class:`threading.Event` will be created and used.
     """
     # The publishing-side subclass does not need any special behavior
     # at this time.
