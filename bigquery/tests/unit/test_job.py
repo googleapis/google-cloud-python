@@ -2097,40 +2097,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(struct.struct_types, {'count': 'INT64'})
         self.assertEqual(struct.struct_values, {'count': 123})
 
-    def test_query_results(self):
-        from google.cloud.bigquery.query import QueryResults
-
-        query_resource = {
-            'jobComplete': True,
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-        }
-        connection = _Connection(query_resource)
-        client = _make_client(self.PROJECT, connection=connection)
-        job = self._make_one(self.JOB_ID, self.QUERY, client)
-        results = job.query_results()
-        self.assertIsInstance(results, QueryResults)
-
-    def test_query_results_w_cached_value(self):
-        from google.cloud.bigquery.query import QueryResults
-
-        client = _make_client(project=self.PROJECT)
-        job = self._make_one(self.JOB_ID, self.QUERY, client)
-        resource = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-        }
-        query_results = QueryResults(resource)
-        job._query_results = query_results
-
-        results = job.query_results()
-
-        self.assertIs(results, query_results)
-
     def test_result(self):
         query_resource = {
             'jobComplete': True,
