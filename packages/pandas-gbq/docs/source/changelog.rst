@@ -5,8 +5,7 @@ Changelog
 ------------------
 
 - Use the `google-cloud-bigquery <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/usage.html>`__ library for API calls. The ``google-cloud-bigquery`` package is a new dependency, and dependencies on ``google-api-python-client`` and ``httplib2`` are removed. See the `installation guide <https://pandas-gbq.readthedocs.io/en/latest/install.html#dependencies>`__ for more details.  (:issue:`93`)
-- :func:`to_gbq` now uses a load job instead of the streaming API. (:issue:`75`)
-- Remove ``StreamingInsertError`` class, as it is no longer used by :func:`to_gbq`. (:issue:`75`)
+- :func:`to_gbq` now uses a load job instead of the streaming API. Remove ``StreamingInsertError`` class, as it is no longer used by :func:`to_gbq`. (:issue:`7`, :issue:`75`)
 
 0.2.1 / 2017-11-27
 ------------------
