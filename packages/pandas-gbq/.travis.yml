@@ -22,21 +22,21 @@ install:
   - conda config --add channels conda-forge
   - conda update -q conda
   - conda info -a
-  - conda create -n test-environment python=$PYTHON
+  - conda create -q -n test-environment python=$PYTHON
   - source activate test-environment
   - if [[ "$PANDAS" == "MASTER" ]]; then
-      conda install numpy pytz python-dateutil;
+      conda install -q numpy pytz python-dateutil;
       PRE_WHEELS="https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com";
       pip install --pre --upgrade --timeout=60 -f $PRE_WHEELS pandas;
     else
-      conda install pandas=$PANDAS;
+      conda install -q pandas=$PANDAS;
     fi
   - pip install coverage pytest pytest-cov flake8 codecov
   - REQ="ci/requirements-${PYTHON}-${PANDAS}"
   - if [ -f "$REQ.pip" ]; then
       pip install -r "$REQ.pip";
     else
-      conda install --file "$REQ.conda";
+      conda install -q --file "$REQ.conda";
     fi
   - conda list
   - python setup.py install
