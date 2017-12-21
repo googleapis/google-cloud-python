@@ -654,7 +654,7 @@ class Bucket(_PropertyMixin):
                     raise
 
     def copy_blob(self, blob, destination_bucket, new_name=None,
-                  client=None, preserve_acl=True):
+                  client=None, preserve_acl=True, source_generation=None):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         If :attr:`user_project` is set, bills the API request to that project.
@@ -678,6 +678,10 @@ class Bucket(_PropertyMixin):
         :param preserve_acl: Optional. Copies ACL from old blob to new blob.
                              Default: True.
 
+        :type source_generation: long
+        :param source_generation: Optional. The generation of the blob to be
+                                  copied.
+
         :rtype: :class:`google.cloud.storage.blob.Blob`
         :returns: The new Blob.
         """
@@ -686,6 +690,9 @@ class Bucket(_PropertyMixin):
 
         if self.user_project is not None:
             query_params['userProject'] = self.user_project
+
+        if source_generation is not None:
+            query_params['sourceGeneration'] = source_generation
 
         if new_name is None:
             new_name = blob.name
