@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Entities &#8212; google-cloud 4e50bba documentation</title>
+    <title>Entities &#8212; google-cloud ff818ba documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '4e50bba',
+        VERSION:     'ff818ba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -133,6 +133,19 @@ indexed for this entity.</li>
 <dt id="google.cloud.datastore.entity.Entity.exclude_from_indexes">
 <code class="descname">exclude_from_indexes</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.datastore.entity.Entity.exclude_from_indexes" title="Permalink to this definition">#</a></dt>
 <dd><p>Names of fields which are <em>not</em> to be indexed for this entity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.datastore.entity.Entity.id">
+<code class="descname">id</code><a class="headerlink" href="#google.cloud.datastore.entity.Entity.id" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the ID of the current entity.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This relies entirely on the <a class="reference internal" href="keys.html#google.cloud.datastore.key.Key" title="google.cloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">google.cloud.datastore.key.Key</span></code></a>
+set on the entity.  That means that we’re not storing the ID
+of the entity at all, just the properties and a pointer to a
+Key which knows its ID.</p>
+</div>
 </dd></dl>
 
 <dl class="attribute">
