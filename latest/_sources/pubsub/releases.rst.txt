@@ -21,3 +21,4 @@
 * ``0.29.3`` (`PyPI <https://pypi.org/project/google-cloud-pubsub/0.29.3/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/pubsub-0.29.3>`__)
 * ``0.29.4`` (`PyPI <https://pypi.org/project/google-cloud-pubsub/0.29.4/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/pubsub-0.29.4>`__)
 * ``0.30.0`` (`PyPI <https://pypi.org/project/google-cloud-pubsub/0.30.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/pubsub-0.30.0>`__)
+* ``0.30.1`` (`PyPI <https://pypi.org/project/google-cloud-pubsub/0.30.1/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/pubsub-0.30.1>`__)
