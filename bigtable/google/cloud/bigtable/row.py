@@ -30,7 +30,7 @@ from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 from google.api_core import retry
 from google.api_core import exceptions
-from google.cloud.exceptions import GrpcRendezvous
+from google.api_core.exceptions import ServiceUnavailable
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -436,23 +436,18 @@ class DirectRow(_SetDeleteRow):
         )
         # set request_pb to use on retry if it falis
         self.request_pb = request_pb
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client = self._table._instance._client
+
+        retry_commit = RetryCommit(self._table, self.request_pb)
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(_retry_on_unavailable),
+            deadline=30)
 
         try:
-            client._data_stub.MutateRow(request_pb)
-        except:
-            retry_commit = RetryCommit(self.table, self.request_pb)
-            retry_ = retry.Retry(
-                predicate=retry.if_exception_type(False),
-                deadline=30)
-
-            try:
-                retry_(retry_commit)()
-            except exceptions.RetryError:
-                raise concurrent.futures.TimeoutError(
-                    'Operation did not complete within the designated '
-                    'timeout.')
+            retry_(retry_commit)()
+        except exceptions.RetryError:
+            raise concurrent.futures.TimeoutError(
+                'Operation did not complete within the designated '
+                'timeout.')
 
         self.clear()
 

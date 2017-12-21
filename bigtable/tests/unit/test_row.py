@@ -203,6 +203,42 @@ class TestDirectRow(unittest.TestCase):
             'time_range': time_range,
         }])
 
+    def test_commit_retry(self):
+        klass = self._get_target_class()
+
+        class MockRow(klass):
+
+            def __init__(self, *args, **kwargs):
+                super(MockRow, self).__init__(*args, **kwargs)
+                self._args = []
+                self._kwargs = []
+
+            # Replace the called method with one that logs arguments.
+            def _commit(self, *args, **kwargs):
+                self._args.append(args)
+                self._kwargs.append(kwargs)
+
+        row_key = b'row_key'
+        column = b'column'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        mock_row = MockRow(row_key, table)
+        # Make sure no values are set before calling the method.
+        self.assertEqual(mock_row._pb_mutations, [])
+        self.assertEqual(mock_row._args, [])
+        self.assertEqual(mock_row._kwargs, [])
+
+        # Actually make the request against the mock class.
+        time_range = object()
+        mock_row.commit()
+        self.assertEqual(mock_row._pb_mutations, [])
+        self.assertEqual(mock_row._args, [(column_family_id, [column])])
+        self.assertEqual(mock_row._kwargs, [{
+            'state': None,
+            'time_range': time_range,
+        }])
+
     def test_delete_cells_non_iterable(self):
         row_key = b'row_key'
         column_family_id = u'column_family_id'
