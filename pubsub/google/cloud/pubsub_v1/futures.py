@@ -29,6 +29,15 @@ class Future(google.api_core.future.Future):
 
     This object should not be created directly, but is returned by other
     methods in this library.
+
+    Args:
+        completed (Optional[Any]): An event, with the same interface as
+            :class:`threading.Event`. This is provided so that callers
+            with different concurrency models (e.g. ``threading`` or
+            ``multiprocessing``) can supply an event that is compatible
+            with that model. The ``wait()`` and ``set()`` methods will be
+            used. If this argument is not provided, then a new
+            :class:`threading.Event` will be created and used.
     """
 
     # This could be a sentinel object or None, but the sentinel object's ID
@@ -36,11 +45,13 @@ class Future(google.api_core.future.Future):
     # actually being a result.
     _SENTINEL = uuid.uuid4()
 
-    def __init__(self):
+    def __init__(self, completed=None):
         self._result = self._SENTINEL
         self._exception = self._SENTINEL
         self._callbacks = []
-        self._completed = threading.Event()
+        if completed is None:
+            completed = threading.Event()
+        self._completed = completed
 
     def cancel(self):
         """Actions in Pub/Sub generally may not be canceled.
