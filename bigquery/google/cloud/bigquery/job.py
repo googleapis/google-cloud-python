@@ -1867,20 +1867,6 @@ class QueryJob(_AsyncJob):
 
         return parameters
 
-    def query_results(self, retry=DEFAULT_RETRY):
-        """Construct a QueryResults instance, bound to this job.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.cloud.bigquery.QueryResults`
-        :returns: results instance
-        """
-        if not self._query_results:
-            self._query_results = self._client._get_query_results(
-                self.job_id, retry, project=self.project)
-        return self._query_results
-
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
 
@@ -1945,7 +1931,10 @@ class QueryJob(_AsyncJob):
         """
         super(QueryJob, self).result(timeout=timeout)
         # Return an iterator instead of returning the job.
-        schema = self.query_results().schema
+        if not self._query_results:
+            self._query_results = self._client._get_query_results(
+                self.job_id, retry, project=self.project)
+        schema = self._query_results.schema
         dest_table = self.destination
         return self._client.list_rows(dest_table, selected_fields=schema,
                                       retry=retry)
