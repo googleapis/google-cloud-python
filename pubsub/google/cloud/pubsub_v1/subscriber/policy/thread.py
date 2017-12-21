@@ -263,7 +263,7 @@ class Policy(base.BasePolicy):
         # Create the Future that this method will return.
         # This future is the main thread's interface to handle exceptions,
         # block on the subscription, etc.
-        self._future = Future(policy=self, event_factory=threading.Event)
+        self._future = Future(policy=self, completed=threading.Event())
 
         # Start the thread to pass the requests.
         self._callback = callback

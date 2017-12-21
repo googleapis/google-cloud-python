@@ -26,26 +26,25 @@ def _future(*args, **kwargs):
 
 
 def test_constructor_defaults():
-    future = _future()
+    with mock.patch.object(threading, 'Event', autospec=True) as Event:
+        future = _future()
 
     assert future._result == futures.Future._SENTINEL
     assert future._exception == futures.Future._SENTINEL
     assert future._callbacks == []
-    event_type = type(threading.Event())
-    assert isinstance(future._completed, event_type)
+    assert future._completed is Event.return_value
+
+    Event.assert_called_once_with()
 
 
-def test_constructor_with_factory():
-    event_factory = mock.Mock(spec=())
-    future = _future(event_factory=event_factory)
+def test_constructor_explicit_completed():
+    completed = mock.sentinel.completed
+    future = _future(completed=completed)
 
     assert future._result == futures.Future._SENTINEL
     assert future._exception == futures.Future._SENTINEL
     assert future._callbacks == []
-    assert future._completed is event_factory.return_value
-
-    # Check mocks.
-    event_factory.assert_called_once_with()
+    assert future._completed is completed
 
 
 def test_cancel():

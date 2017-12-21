@@ -27,14 +27,13 @@ class Future(futures.Future):
     methods in this library.
 
     Args:
-        event_factory (Optional[Callable[[], Any]]): An event factory, expected
-            to take no arguments and return an event with the same interface as
+        completed (Optional[Any]): An event, with the same interface as
             :class:`threading.Event`. This is provided so that callers
             with different concurrency models (e.g. ``threading`` or
-            ``multiprocessing``) can wait on an event that is compatible
+            ``multiprocessing``) can supply an event that is compatible
             with that model. The ``wait()`` and ``set()`` methods will be
-            used on the returned event. The default is
-            :class:`threading.Event`.
+            used. If this argument is not provided, then a new
+            :class:`threading.Event` will be created and used.
     """
     # The publishing-side subclass does not need any special behavior
     # at this time.

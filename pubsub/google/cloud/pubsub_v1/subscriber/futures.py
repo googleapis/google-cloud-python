@@ -29,18 +29,17 @@ class Future(futures.Future):
     Args:
         policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy
             that creates this Future.
-        event_factory (Optional[Callable[[], Any]]): An event factory, expected
-            to take no arguments and return an event with the same interface as
+        completed (Optional[Any]): An event, with the same interface as
             :class:`threading.Event`. This is provided so that callers
             with different concurrency models (e.g. ``threading`` or
-            ``multiprocessing``) can wait on an event that is compatible
+            ``multiprocessing``) can supply an event that is compatible
             with that model. The ``wait()`` and ``set()`` methods will be
-            used on the returned event. The default is
-            :class:`threading.Event`.
+            used. If this argument is not provided, then a new
+            :class:`threading.Event` will be created and used.
     """
-    def __init__(self, policy, *args, **kwargs):
+    def __init__(self, policy, completed=None):
         self._policy = policy
-        super(Future, self).__init__(*args, **kwargs)
+        super(Future, self).__init__(completed=completed)
 
     def running(self):
         """Return whether this subscription is opened with this Future.
