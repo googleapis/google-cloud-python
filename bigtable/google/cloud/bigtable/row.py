@@ -30,7 +30,6 @@ from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 from google.api_core import retry
 from google.api_core import exceptions
-from google.api_core.exceptions import ClientError
 
 
 _PACK_I64 = struct.Struct('>q').pack
