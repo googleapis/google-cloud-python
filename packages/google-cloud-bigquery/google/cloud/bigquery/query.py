@@ -461,7 +461,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         return 'StructQueryParameter{}'.format(self._key())
 
 
-class QueryResults(object):
+class _QueryResults(object):
     """Results of a query.
 
     See:
