@@ -11,6 +11,8 @@
 - Moving lock factory used in publisher client to the Batch
   implementation (#4628).
 - Use a UUID (rather than a sentinel object) on `Future` (#4634).
+- Apply scopes to explicitly provided credentials if needed (#4594).
+  Fixes #4479. This feature comes as part of `google-api-core==0.1.3`.
 
 ### Dependencies
 
