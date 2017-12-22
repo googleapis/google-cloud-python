@@ -134,8 +134,8 @@ Table operations
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
-   :start-after: [START list_dataset_tables]
-   :end-before: [END list_dataset_tables]
+   :start-after: [START list_tables]
+   :end-before: [END list_tables]
 
 Create a table:
 
