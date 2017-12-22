@@ -438,7 +438,7 @@ class DirectRow(_SetDeleteRow):
 
         retry_commit = RetryCommit(self._table, self.request_pb)
         retry_ = retry.Retry(
-            predicate=retry.if_exception_type(exceptions.ClientError),
+            predicate=retry.if_exception_type(exceptions._Rendezvous),
             deadline=30)
 
         try:

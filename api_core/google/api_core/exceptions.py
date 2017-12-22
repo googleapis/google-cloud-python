@@ -325,6 +325,13 @@ class DeadlineExceeded(GatewayTimeout):
         grpc.StatusCode.DEADLINE_EXCEEDED if grpc is not None else None)
 
 
+class _Rendezvous(ClientError):
+    """Exception mapping a :attr:`grpc.StatusCode.UNAVAILABLE` error."""
+    code = http_client.UNAVAILABLE
+    grpc_status_code = (
+        grpc.StatusCode.UNAVAILABLE if grpc is not None else None)
+
+
 def exception_class_for_http_status(status_code):
     """Return the exception class for a specific HTTP status code.
 
