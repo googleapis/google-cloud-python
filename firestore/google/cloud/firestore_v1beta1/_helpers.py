@@ -47,10 +47,6 @@ FIELD_PATH_WRONG_TYPE = (
     'The data at {!r} is not a dictionary, so it cannot contain the key {!r}')
 FIELD_PATH_DELIMITER = '.'
 DOCUMENT_PATH_DELIMITER = '/'
-_NO_CREATE_TEMPLATE = (
-    'The ``create_if_missing`` option cannot be used '
-    'on ``{}()`` requests.')
-NO_CREATE_ON_DELETE = _NO_CREATE_TEMPLATE.format('delete')
 INACTIVE_TXN = (
     'Transaction not in progress, cannot be used in API requests.')
 READ_AFTER_WRITE_ERROR = 'Attempted read after write in a transaction.'
@@ -856,7 +852,7 @@ def pbs_for_update(client, document_path, field_updates, option):
     """
     if option is None:
         # Default uses ``exists=True``.
-        option = client.write_option(create_if_missing=False)
+        option = client.write_option(exists=True)
 
     transform_paths, actual_updates = remove_server_timestamp(field_updates)
     update_values, field_paths = FieldPathHelper.to_field_paths(actual_updates)
@@ -897,7 +893,7 @@ def pb_for_delete(document_path, option):
     """
     write_pb = write_pb2.Write(delete=document_path)
     if option is not None:
-        option.modify_write(write_pb, no_create_msg=NO_CREATE_ON_DELETE)
+        option.modify_write(write_pb)
 
     return write_pb
 
