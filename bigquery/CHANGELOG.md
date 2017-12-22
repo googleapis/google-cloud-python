@@ -26,7 +26,7 @@
 
 -   Add `Client.insert_rows()` and `Client.insert_rows_json()`, deprecate
     `Client.create_rows()` and `Client.create_rows_json()`.
-    ([#????](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/????))
+    ([#4657](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4657))
 -   Add `Client.list_tables`, deprecate `Client.list_dataset_tables`.
     ([#4653](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4653))
 -   `Client.list_tables` returns an iterators of `TableListItem`. The API
