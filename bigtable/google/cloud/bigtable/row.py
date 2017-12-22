@@ -37,11 +37,6 @@ _PACK_I64 = struct.Struct('>q').pack
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
 
-def _retry_on_unavailable(exc):
-    """Retry only errors whose status code is 'UNAVAILABLE'."""
-    from grpc import StatusCode
-    return exc.code() == StatusCode.UNAVAILABLE
-
 
 class Row(object):
     """Base representation of a Google Cloud Bigtable Row.
@@ -248,10 +243,19 @@ class _SetDeleteRow(Row):
 class RetryCommit:
 
     def __init__(self, table, request_pb):
+        """
+
+        :param table:
+        :param request_pb:
+        """
         self._table = table
         self.request_pb = request_pb
 
     def __call__(self):
+        """
+
+        :return: raise exception for MutateRow
+        """
         client = self._table._instance._client
         client._data_stub.MutateRow(self.request_pb)
 
@@ -433,7 +437,7 @@ class DirectRow(_SetDeleteRow):
             row_key=self._row_key,
             mutations=mutations_list,
         )
-        # set request_pb to use on retry if it falis
+        # set request_pb to use on retry if it fails
         self.request_pb = request_pb
 
         retry_commit = RetryCommit(self._table, self.request_pb)
