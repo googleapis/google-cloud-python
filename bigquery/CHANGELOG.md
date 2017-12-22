@@ -4,6 +4,11 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 0.x.y
+
+- Remove support for Python version 3.4. (#4597)
+
+
 ## 0.28.0
 
 **0.28.0 significantly changes the interface for this package.** For examples
