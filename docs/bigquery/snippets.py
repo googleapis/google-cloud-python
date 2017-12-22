@@ -247,26 +247,26 @@ def test_delete_dataset(client):
     # [END delete_dataset]
 
 
-def test_list_dataset_tables(client, to_delete):
+def test_list_tables(client, to_delete):
     """List tables within a dataset."""
-    DATASET_ID = 'list_dataset_tables_dataset_{}'.format(_millis())
+    DATASET_ID = 'list_tables_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    # [START list_dataset_tables]
-    tables = list(client.list_dataset_tables(dataset))  # API request(s)
+    # [START list_tables]
+    tables = list(client.list_tables(dataset))  # API request(s)
     assert len(tables) == 0
 
     table_ref = dataset.table('my_table')
     table = bigquery.Table(table_ref)
     table.view_query = QUERY
     client.create_table(table)                          # API request
-    tables = list(client.list_dataset_tables(dataset))  # API request(s)
+    tables = list(client.list_tables(dataset))  # API request(s)
 
     assert len(tables) == 1
     assert tables[0].table_id == 'my_table'
-    # [END list_dataset_tables]
+    # [END list_tables]
 
     to_delete.insert(0, table)
 
