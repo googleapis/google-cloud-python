@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Buckets &#8212; google-cloud b2c7c11 documentation</title>
+    <title>Buckets &#8212; google-cloud 29620a1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'b2c7c11',
+        VERSION:     '29620a1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -152,7 +152,7 @@ Typically something like index.html.</li>
 
 <dl class="method">
 <dt id="google.cloud.storage.bucket.Bucket.copy_blob">
-<code class="descname">copy_blob</code><span class="sig-paren">(</span><em>blob</em>, <em>destination_bucket</em>, <em>new_name=None</em>, <em>client=None</em>, <em>preserve_acl=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.copy_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.copy_blob" title="Permalink to this definition">#</a></dt>
+<code class="descname">copy_blob</code><span class="sig-paren">(</span><em>blob</em>, <em>destination_bucket</em>, <em>new_name=None</em>, <em>client=None</em>, <em>preserve_acl=True</em>, <em>source_generation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/bucket.html#Bucket.copy_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.bucket.Bucket.copy_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Copy the given blob to the given bucket, optionally with a new name.</p>
 <p>If <a class="reference internal" href="#google.cloud.storage.bucket.Bucket.user_project" title="google.cloud.storage.bucket.Bucket.user_project"><code class="xref py py-attr docutils literal"><span class="pre">user_project</span></code></a> is set, bills the API request to that project.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -169,6 +169,8 @@ copied.</li>
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 <li><strong>preserve_acl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Optional. Copies ACL from old blob to new blob.
 Default: True.</li>
+<li><strong>source_generation</strong> (<em>long</em>) – Optional. The generation of the blob to be
+copied.</li>
 </ul>
 </td>
 </tr>

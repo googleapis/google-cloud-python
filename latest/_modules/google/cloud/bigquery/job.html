@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.job &#8212; google-cloud b2c7c11 documentation</title>
+    <title>google.cloud.bigquery.job &#8212; google-cloud 29620a1 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'b2c7c11',
+        VERSION:     '29620a1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -1909,20 +1909,6 @@
 
         <span class="k">return</span> <span class="n">parameters</span>
 
-<div class="viewcode-block" id="QueryJob.query_results"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryJob.query_results">[docs]</a>    <span class="k">def</span> <span class="nf">query_results</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a QueryResults instance, bound to this job.</span>
-
-<span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
-<span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
-
-<span class="sd">        :rtype: :class:`~google.cloud.bigquery.QueryResults`</span>
-<span class="sd">        :returns: results instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_query_results</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span></div>
-
 <div class="viewcode-block" id="QueryJob.done"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.job.QueryJob.done">[docs]</a>    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Refresh the job and checks if it is complete.</span>
 
@@ -1987,7 +1973,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="c1"># Return an iterator instead of returning the job.</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span><span class="o">.</span><span class="n">schema</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_get_query_results</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">retry</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_results</span><span class="o">.</span><span class="n">schema</span>
         <span class="n">dest_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span><span class="n">dest_table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="n">schema</span><span class="p">,</span>
                                       <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span></div>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.dbapi.cursor &#8212; google-cloud b2c7c11 documentation</title>
+    <title>google.cloud.bigquery.dbapi.cursor &#8212; google-cloud 29620a1 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     'b2c7c11',
+        VERSION:     '29620a1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -128,7 +128,7 @@
 <span class="sd">        of modified rows.</span>
 
 <span class="sd">        :type query_results:</span>
-<span class="sd">            :class:`~google.cloud.bigquery.query.QueryResults`</span>
+<span class="sd">            :class:`~google.cloud.bigquery.query._QueryResults`</span>
 <span class="sd">        :param query_results: results of a query</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">total_rows</span> <span class="o">=</span> <span class="mi">0</span>
@@ -198,7 +198,7 @@
         <span class="k">except</span> <span class="n">google</span><span class="o">.</span><span class="n">cloud</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">GoogleCloudError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">DatabaseError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">errors</span><span class="p">)</span>
 
-        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span>
+        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">_query_results</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_rowcount</span><span class="p">(</span><span class="n">query_results</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_description</span><span class="p">(</span><span class="n">query_results</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span></div>
 
@@ -235,7 +235,7 @@
             <span class="c1"># TODO(tswast): pass in page size to list_rows based on arraysize</span>
             <span class="n">rows_iter</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span>
-                <span class="n">selected_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">query_results</span><span class="p">()</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+                <span class="n">selected_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_job</span><span class="o">.</span><span class="n">_query_results</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_query_data</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">rows_iter</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Cursor.fetchone"><a class="viewcode-back" href="../../../../../bigquery/dbapi.html#google.cloud.bigquery.dbapi.Cursor.fetchone">[docs]</a>    <span class="k">def</span> <span class="nf">fetchone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
