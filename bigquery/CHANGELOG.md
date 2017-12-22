@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 0.29.0 (unreleased)
+
+## Interface changes / breaking changes
+
+-   Add `Client.insert_rows()` and `Client.insert_rows_json()`, deprecate
+    `Client.create_rows()` and `Client.create_rows_json()`.
+    ([#????](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/????))
+
 ## 0.28.0
 
 **0.28.0 significantly changes the interface for this package.** For examples
