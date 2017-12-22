@@ -437,10 +437,8 @@ class DirectRow(_SetDeleteRow):
             row_key=self._row_key,
             mutations=mutations_list,
         )
-        # set request_pb to use on retry if it fails
-        self.request_pb = request_pb
 
-        retry_commit = RetryCommit(self._table, self.request_pb)
+        retry_commit = RetryCommit(self._table, request_pb)
         retry_ = retry.Retry(
             predicate=retry.if_exception_type(exceptions.GrpcRendezvous),
             deadline=30)
