@@ -29,7 +29,7 @@ from google.cloud.bigtable._generated import (
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 from google.api_core import retry
-from google.api_core import exceptions
+from google.cloud import exceptions
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -438,7 +438,7 @@ class DirectRow(_SetDeleteRow):
 
         retry_commit = RetryCommit(self._table, self.request_pb)
         retry_ = retry.Retry(
-            predicate=retry.if_exception_type(exceptions._Rendezvous),
+            predicate=retry.if_exception_type(exceptions.GrpcRendezvous),
             deadline=30)
 
         try:
