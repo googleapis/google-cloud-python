@@ -1444,9 +1444,9 @@ class Test_pbs_for_set(unittest.TestCase):
 
     def test_with_option(self):
         from google.cloud.firestore_v1beta1.proto import common_pb2
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
+        from google.cloud.firestore_v1beta1.client import ExistsOption
 
-        option = CreateIfMissingOption(False)
+        option = ExistsOption(True)
         precondition = common_pb2.Precondition(exists=True)
         self._helper(option=option, current_document=precondition)
 
@@ -1480,11 +1480,12 @@ class Test_pbs_for_update(unittest.TestCase):
         return pbs_for_update(client, document_path, field_updates, option)
 
     def _helper(self, option=None, do_transform=False, **write_kwargs):
+        from google.cloud.firestore_v1beta1.client import Client
+        from google.cloud.firestore_v1beta1.client import ExistsOption
         from google.cloud.firestore_v1beta1.gapic import enums
         from google.cloud.firestore_v1beta1.proto import common_pb2
         from google.cloud.firestore_v1beta1.proto import document_pb2
         from google.cloud.firestore_v1beta1.proto import write_pb2
-        from google.cloud.firestore_v1beta1.client import Client
         from google.cloud.firestore_v1beta1.constants import SERVER_TIMESTAMP
 
         document_path = _make_ref_string(
@@ -1505,6 +1506,9 @@ class Test_pbs_for_update(unittest.TestCase):
         map_pb = document_pb2.MapValue(fields={
             'yum': _value_pb(bytes_value=value),
         })
+        if isinstance(option, ExistsOption):
+            write_kwargs = {'current_document' : {'exists': option._exists}}
+
         expected_update_pb = write_pb2.Write(
             update=document_pb2.Document(
                 name=document_path,
@@ -1538,9 +1542,10 @@ class Test_pbs_for_update(unittest.TestCase):
         self._helper(current_document=precondition)
 
     def test_with_option(self):
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
+        from google.cloud.firestore_v1beta1.proto import common_pb2
+        from google.cloud.firestore_v1beta1.client import ExistsOption
 
-        option = CreateIfMissingOption(True)
+        option = ExistsOption(False)
         self._helper(option=option)
 
     def test_update_and_transform(self):
@@ -1586,16 +1591,6 @@ class Test_pb_for_delete(unittest.TestCase):
         option = LastUpdateOption(update_time)
         precondition = common_pb2.Precondition(update_time=update_time)
         self._helper(option=option, current_document=precondition)
-
-    def test_bad_option(self):
-        from google.cloud.firestore_v1beta1._helpers import NO_CREATE_ON_DELETE
-        from google.cloud.firestore_v1beta1.client import CreateIfMissingOption
-
-        option = CreateIfMissingOption(True)
-        with self.assertRaises(ValueError) as exc_info:
-            self._helper(option=option)
-
-        self.assertEqual(exc_info.exception.args, (NO_CREATE_ON_DELETE,))
 
 
 class Test_get_transaction_id(unittest.TestCase):

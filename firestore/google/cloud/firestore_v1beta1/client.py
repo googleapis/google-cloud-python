@@ -39,8 +39,7 @@ from google.cloud.firestore_v1beta1.transaction import Transaction
 DEFAULT_DATABASE = '(default)'
 """str: The default database used in a :class:`~.firestore.client.Client`."""
 _BAD_OPTION_ERR = (
-    'Exactly one of ``create_if_missing``, ``last_update_time`` '
-    'and ``exists`` must be provided.')
+    'Exactly one of ``last_update_time`` or ``exists`` must be provided.')
 _BAD_DOC_TEMPLATE = (
     'Document {!r} appeared in response but was not present among references')
 _ACTIVE_TXN = 'There is already an active transaction.'
@@ -250,10 +249,8 @@ class Client(ClientWithProject):
         :meth:`~.DocumentReference.update` and
         :meth:`~.DocumentReference.delete`.
 
-        Exactly one of three keyword arguments must be provided:
+        One of the following two keyword arguments must be provided:
 
-        * ``create_if_missing`` (:class:`bool`): Indicates if the document
-          should be created if it doesn't already exist.
         * ``last_update_time`` (:class:`google.protobuf.timestamp_pb2.\
            Timestamp`): A timestamp. When set, the target document must exist
            and have been last updated at that time. Protobuf ``update_time``
@@ -266,9 +263,8 @@ class Client(ClientWithProject):
         it is not allowed). Providing multiple would be an apparent
         contradiction, since ``last_update_time`` assumes that the
         document **was** updated (it can't have been updated if it
-        doesn't exist) and both ``create_if_missing`` and ``exists`` indicate
-        that it is unknown if the document exists or not (but in different
-        ways).
+        doesn't exist) and ``exists`` indicate that it is unknown if the
+        document exists or not.
 
         Args:
             kwargs (Dict[str, Any]): The keyword arguments described above.
@@ -281,9 +277,7 @@ class Client(ClientWithProject):
             raise TypeError(_BAD_OPTION_ERR)
 
         name, value = kwargs.popitem()
-        if name == 'create_if_missing':
-            return CreateIfMissingOption(value)
-        elif name == 'last_update_time':
+        if name == 'last_update_time':
             return LastUpdateOption(value)
         elif name == 'exists':
             return ExistsOption(value)
@@ -469,24 +463,6 @@ class ExistsOption(WriteOption):
 
     This will typically be created by
     :meth:`~.firestore_v1beta1.client.Client.write_option`.
-
-    This option is closely related to
-    :meth:`~.firestore_v1beta1.client.CreateIfMissingOption`,
-    but a "create if missing". In fact,
-
-    .. code-block:: python
-
-       >>> ExistsOption(exists=True)
-
-    is (mostly) equivalent to
-
-    .. code-block:: python
-
-       >>> CreateIfMissingOption(create_if_missing=False)
-
-    The only difference being that "create if missing" cannot be used
-    on some operations (e.g. :meth:`~.DocumentReference.delete`)
-    while "exists" can.
 
     Args:
         exists (bool): Indicates if the document being modified
