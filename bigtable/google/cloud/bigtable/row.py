@@ -248,7 +248,7 @@ class RetryCommit:
         :param table:
         :param request_pb:
         """
-        self._table = table
+        self.table = table
         self.request_pb = request_pb
 
     def __call__(self):
@@ -256,7 +256,7 @@ class RetryCommit:
 
         :return: raise exception for MutateRow
         """
-        client = self._table._instance._client
+        client = self.table._instance._client
         client._data_stub.MutateRow(self.request_pb)
 
 
