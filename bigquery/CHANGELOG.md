@@ -6,7 +6,7 @@
 
 ## 0.29.0 (unreleased)
 
-## Additions
+## Interface changes / additions
 
 -   Add `to_dataframe()` method to row iterators. When Pandas is installed this
     method returns a `DataFrame` containing the query's or table's rows.
@@ -22,7 +22,7 @@
     ([#4393](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4393),
     [#4413](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4413))
 
-## Interface changes
+## Interface changes / breaking changes
 
 -   Add `Client.list_tables`, deprecate `Client.list_dataset_tables`.
     ([#4653](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4653))
