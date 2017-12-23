@@ -419,7 +419,7 @@ def test_table_insert_rows(client, to_delete):
     """Insert / fetch table data."""
     dataset_id = 'table_insert_rows_dataset_{}'.format(_millis())
     table_id = 'table_insert_rows_table_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
