@@ -176,10 +176,6 @@ class TestTransaction(unittest.TestCase):
         ds_api.begin_transaction.assert_called_once_with(project)
 
     def test_transaction_id_same_on_retry(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
-        import google.gax.errors
-        from google.api_core import retry
-
         project = 'PROJECT'
         kind = 'KIND'
         id1 = 123
@@ -197,23 +193,36 @@ class TestTransaction(unittest.TestCase):
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
-        while True:
-            try:
-                xact.commit()
-                break
-            except google.gax.errors.GaxError as exception:
-                # simulate retry
-                xact._status = xact._IN_PROGRESS
-                xact._id = id1
-                self.assertEqual(exception.args[0], "UNAVAILABLE")
+        xact.commit()
         self.assertEqual(len(ds_api.commit.mock_calls), 3)
         for call in ds_api.commit.mock_calls:
             #assert transaction id is same on subsequent calls
             self.assertEqual(call[2]['transaction'], id1)
 
+    def test_transaction_id_fail_on_read_only(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        project = 'PROJECT'
+        kind = 'KIND'
+        id1 = 123
+        key = _make_key(kind, id1, project)
+        txn_pb = mock.Mock(
+            transaction=id1, spec=['transaction'])
+        begin_txn = mock.Mock(return_value=txn_pb, spec=[])
+        commit_method = mock.Mock(spec=[])
+        commit_method.side_effect = _make_gax_error("UNAVAILABLE", "none")
+        ds_api =  mock.Mock(
+            commit=commit_method, begin_transaction=begin_txn,
+            spec=['begin_transaction', 'commit'])
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client, read_only=True)
+        xact.begin()
+        with self.assertRaises(ServiceUnavailable):
+            xact.commit()
+
     def test_transaction_raise_gax_error(self):
         from google.cloud.datastore_v1.proto import datastore_pb2
-        import google.gax.errors
+        from google.api_core.exceptions import InternalServerError
 
         project = 'PROJECT'
         kind = 'KIND'
@@ -231,7 +240,7 @@ class TestTransaction(unittest.TestCase):
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
         xact.begin()
-        with self.assertRaises(google.gax.errors.GaxError):
+        with self.assertRaises(InternalServerError):
             xact.commit()
 
     def test_context_manager_no_raise(self):

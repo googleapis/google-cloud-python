@@ -14,8 +14,24 @@
 
 """Create / interact with Google Cloud Datastore transactions."""
 
+from google.api_core.exceptions import from_grpc_error
+from google.api_core.retry import exponential_sleep_generator
+from google.gax.grpc import exc_to_code
+from google.gax.grpc import StatusCode
+from google.gax.errors import GaxError
 from google.cloud.datastore.batch import Batch
 from google.cloud.datastore_v1.types import TransactionOptions
+
+
+_INITIAL_SLEEP = 1.0
+"""float: Initial "max" for sleep interval.
+To be used in :func:`exponential_sleep_generator`."""
+_MAX_SLEEP = 30.0
+"""float: Eventual "max" sleep time.
+To be used in :func:`exponential_sleep_generator`."""
+_MULTIPLIER = 2.0
+"""float: Multiplier for exponential backoff.
+To be used in :func:`exponential_sleep_generator`."""
 
 
 class Transaction(Batch):
@@ -240,7 +256,21 @@ class Transaction(Batch):
         - Sets the current transaction's ID to None.
         """
         try:
-            super(Transaction, self).commit()
+            current_sleep = _INITIAL_SLEEP
+            while True:
+                try:
+                    super(Transaction, self).commit()
+                    break
+                except GaxError as exc:
+                    status_code = exc_to_code(exc.cause)
+                    if (status_code == StatusCode.UNAVAILABLE
+                            and not self._options.HasField('read_only')):
+                        self._status = self._IN_PROGRESS  # retry
+                    else:
+                        raise from_grpc_error(exc.cause)
+                current_sleep = exponential_sleep_generator(current_sleep,
+                                                            _MAX_SLEEP,
+                                                            _MULTIPLIER)
         finally:
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
