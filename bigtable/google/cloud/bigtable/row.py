@@ -30,6 +30,7 @@ from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 from google.api_core import retry
 from google.cloud import exceptions
+from google.api_core.exceptions import RetryError
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -445,7 +446,7 @@ class DirectRow(_SetDeleteRow):
 
         try:
             retry_(retry_commit)()
-        except exceptions.RetryError:
+        except RetryError:
             raise concurrent.futures.TimeoutError(
                 'Operation did not complete within the designated '
                 'timeout.')
