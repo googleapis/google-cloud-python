@@ -30,3 +30,11 @@ def wraps(wrapped):
         return six.wraps(wrapped, assigned=_PARTIAL_VALID_ASSIGNMENTS)
     else:
         return six.wraps(wrapped)
+
+
+def my_decorator(f):
+    """A functools.wraps helper that handles partial objects on Python 2."""
+    @functools.wraps(f)
+    def wrapper(*args, **kwds):
+        return f(*args, **kwds)
+    return wrapper

@@ -246,7 +246,7 @@ class Retry(object):
             Callable: A callable that will invoke ``func`` with retry
                 behavior.
         """
-        @general_helpers.wraps(func)
+        @general_helpers.my_decorator
         def retry_wrapped_func(*args, **kwargs):
             """A wrapper that calls target function with retry."""
             target = functools.partial(func, *args, **kwargs)
