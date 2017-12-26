@@ -15,14 +15,13 @@
 """Helpers for general Python functionality."""
 
 import functools
-from functools import wraps
 
 import six
 
 
 # functools.partial objects lack several attributes present on real function
 # objects. In Python 2 wraps fails on this so use a restricted set instead.
-_PARTIAL_VALID_ASSIGNMENTS = ('__name__', '__doc__',)
+_PARTIAL_VALID_ASSIGNMENTS = ('__doc__',)
 
 
 def wraps(wrapped):
@@ -34,7 +33,7 @@ def wraps(wrapped):
 
 
 def my_decorator(f):
-    @wraps(f)
+    @functools.wraps(f)
     def wrapper(*args, **kwds):
         return f(*args, **kwds)
     return wrapper
