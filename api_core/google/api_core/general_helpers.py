@@ -30,3 +30,10 @@ def wraps(wrapped):
         return six.wraps(wrapped, assigned=_PARTIAL_VALID_ASSIGNMENTS)
     else:
         return six.wraps(wrapped)
+
+
+def my_decorator(f):
+    @functools.wraps(f)
+    def wrapper(*args, **kwds):
+        return f(*args, **kwds)
+    return wrapper
