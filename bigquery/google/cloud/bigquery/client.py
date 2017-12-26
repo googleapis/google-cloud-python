@@ -20,6 +20,7 @@ import collections
 import functools
 import os
 import uuid
+import warnings
 
 import six
 
@@ -389,8 +390,8 @@ class Client(ClientWithProject):
             method='PATCH', path=table.path, data=partial, headers=headers)
         return Table.from_api_repr(api_response)
 
-    def list_dataset_tables(self, dataset, max_results=None, page_token=None,
-                            retry=DEFAULT_RETRY):
+    def list_tables(self, dataset, max_results=None, page_token=None,
+                    retry=DEFAULT_RETRY):
         """List tables in the dataset.
 
         See
@@ -431,6 +432,16 @@ class Client(ClientWithProject):
             max_results=max_results)
         result.dataset = dataset
         return result
+
+    def list_dataset_tables(self, *args, **kwargs):
+        """DEPRECATED: List tables in the dataset.
+
+        Use :func:`~google.cloud.bigquery.client.Client.list_tables` instead.
+        """
+        warnings.warn(
+            'list_dataset_tables is deprecated, use list_tables instead.',
+            DeprecationWarning)
+        return self.list_tables(*args, **kwargs)
 
     def delete_dataset(self, dataset, retry=DEFAULT_RETRY):
         """Delete a dataset.
