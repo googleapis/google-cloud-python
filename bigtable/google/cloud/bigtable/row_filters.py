@@ -168,7 +168,7 @@ class RowSampleFilter(RowFilter):
 
     :type sample: float
     :param sample: The probability of matching a cell (must be in the
-                   interval ``[0, 1]``).
+                   interval ``(0, 1)``  The end points are excluded).
     """
 
     def __init__(self, sample):
