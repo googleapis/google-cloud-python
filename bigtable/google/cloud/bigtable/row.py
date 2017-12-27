@@ -431,7 +431,9 @@ class DirectRow(_SetDeleteRow):
             mutations=mutations_list,
         )
 
-        retry_commit = wrapped_partial(call_mutate_row, self._table, request_pb)
+        retry_commit = wrapped_partial(call_mutate_row,
+                                       self._table,
+                                       request_pb)
         retry_ = retry.Retry(
             predicate=retry.if_exception_type(exceptions.GrpcRendezvous),
             deadline=30)
