@@ -439,8 +439,9 @@ class DirectRow(_SetDeleteRow):
         try:
             retry_(retry_commit)()
         except exceptions.RetryError:
-            raise futures.TimeoutError('Operation did not complete '
-                                       'within the designated timeout.')
+            raise futures.\
+                TimeoutError('Operation did not complete '
+                             'within the designated timeout.')
 
         self.clear()
 
