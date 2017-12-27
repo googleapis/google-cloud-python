@@ -55,5 +55,6 @@ MethodNotImplemented = exceptions.MethodNotImplemented
 BadGateway = exceptions.BadGateway
 ServiceUnavailable = exceptions.ServiceUnavailable
 GatewayTimeout = exceptions.GatewayTimeout
+RetryError = exceptions.RetryError
 from_http_status = exceptions.from_http_status
 from_http_response = exceptions.from_http_response

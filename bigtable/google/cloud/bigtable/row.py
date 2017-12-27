@@ -19,6 +19,8 @@ import struct
 
 import six
 
+from concurrent import futures
+
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
@@ -26,12 +28,22 @@ from google.cloud.bigtable._generated import (
     data_pb2 as data_v2_pb2)
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
+from google.api_core import retry
+from google.cloud import exceptions
+from functools import partial, update_wrapper
 
 
 _PACK_I64 = struct.Struct('>q').pack
 
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
+
+
+def wrapped_partial(func, *args, **kwargs):
+    """Create partial wrapper for a function"""
+    partial_func = partial(func, *args, **kwargs)
+    update_wrapper(partial_func, func)
+    return partial_func
 
 
 class Row(object):
@@ -236,6 +248,12 @@ class _SetDeleteRow(Row):
             mutations_list.extend(to_append)
 
 
+def call_mutate_row(table, request_pb):
+    """Call the MutateRow"""
+    client = table._instance._client
+    client._data_stub.MutateRow(request_pb)
+
+
 class DirectRow(_SetDeleteRow):
     """Google Cloud Bigtable Row for sending "direct" mutations.
 
@@ -412,9 +430,18 @@ class DirectRow(_SetDeleteRow):
             row_key=self._row_key,
             mutations=mutations_list,
         )
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client = self._table._instance._client
-        client._data_stub.MutateRow(request_pb)
+
+        retry_commit = wrapped_partial(call_mutate_row, self._table, request_pb)
+        retry_ = retry.Retry(
+            predicate=retry.if_exception_type(exceptions.GrpcRendezvous),
+            deadline=30)
+
+        try:
+            retry_(retry_commit)()
+        except exceptions.RetryError:
+            raise futures.TimeoutError('Operation did not complete '
+                                       'within the designated timeout.')
+
         self.clear()
 
     def clear(self):
