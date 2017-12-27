@@ -19,8 +19,6 @@ import struct
 
 import six
 
-from concurrent import futures
-
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
@@ -437,13 +435,7 @@ class DirectRow(_SetDeleteRow):
         retry_ = retry.Retry(
             predicate=retry.if_exception_type(exceptions.GrpcRendezvous),
             deadline=30)
-
-        try:
-            retry_(retry_commit)()
-        except exceptions.RetryError:
-            raise futures.\
-                TimeoutError('Operation did not complete '
-                             'within the designated timeout.')
+        retry_(retry_commit)()
 
         self.clear()
 
