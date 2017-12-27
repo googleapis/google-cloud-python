@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud 29620a1 documentation</title>
+    <title>BigQuery &#8212; google-cloud e063b17 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '29620a1',
+        VERSION:     'e063b17',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -184,14 +184,14 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <div class="section" id="table-operations">
 <h3>Table operations<a class="headerlink" href="#table-operations" title="Permalink to this headline">#</a></h3>
 <p>List tables for the dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_dataset_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
 
     <span class="n">table_ref</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">table_ref</span><span class="p">)</span>
     <span class="n">table</span><span class="o">.</span><span class="n">view_query</span> <span class="o">=</span> <span class="n">QUERY</span>
     <span class="n">client</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>                          <span class="c1"># API request</span>
-    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_dataset_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
+    <span class="n">tables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>  <span class="c1"># API request(s)</span>
 
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="k">assert</span> <span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">table_id</span> <span class="o">==</span> <span class="s1">&#39;my_table&#39;</span>

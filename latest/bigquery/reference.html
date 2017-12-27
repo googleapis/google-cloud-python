@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 29620a1 documentation</title>
+    <title>API Reference &#8212; google-cloud e063b17 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '29620a1',
+        VERSION:     'e063b17',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -505,36 +505,9 @@ or <a class="reference internal" href="#google.cloud.bigquery.job.QueryJob" titl
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.list_dataset_tables">
-<code class="descname">list_dataset_tables</code><span class="sig-paren">(</span><em>dataset</em>, <em>max_results=None</em>, <em>page_token=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.list_dataset_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_dataset_tables" title="Permalink to this definition">#</a></dt>
-<dd><p>List tables in the dataset.</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset</strong> (One of:
-<a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code></a>
-<a class="reference internal" href="#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal"><span class="pre">DatasetReference</span></code></a>) – the dataset whose tables to list, or a reference to it.</li>
-<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of tables to return.
-If not passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Opaque marker for the next “page” of
-datasets. If not passed, the API will return the
-first page of datasets.</li>
-<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="#google.cloud.bigquery.table.TableListItem" title="google.cloud.bigquery.table.TableListItem"><code class="xref py py-class docutils literal"><span class="pre">TableListItem</span></code></a>
-contained within the current dataset.</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="descname">list_dataset_tables</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.list_dataset_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_dataset_tables" title="Permalink to this definition">#</a></dt>
+<dd><p>DEPRECATED: List tables in the dataset.</p>
+<p>Use <a class="reference internal" href="#google.cloud.bigquery.client.Client.list_tables" title="google.cloud.bigquery.client.Client.list_tables"><code class="xref py py-func docutils literal"><span class="pre">list_tables()</span></code></a> instead.</p>
 </dd></dl>
 
 <dl class="method">
@@ -711,6 +684,40 @@ page, the iterator will have the <code class="docutils literal"><span class="pre
 set, which counts the total number of rows <strong>in the table</strong>
 (this is distinct from the total number of rows in the
 current page: <code class="docutils literal"><span class="pre">iterator.page.num_items</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.list_tables">
+<code class="descname">list_tables</code><span class="sig-paren">(</span><em>dataset</em>, <em>max_results=None</em>, <em>page_token=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.list_tables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.list_tables" title="Permalink to this definition">#</a></dt>
+<dd><p>List tables in the dataset.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list">https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> (One of:
+<a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code></a>
+<a class="reference internal" href="#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal"><span class="pre">DatasetReference</span></code></a>) – the dataset whose tables to list, or a reference to it.</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – (Optional) Maximum number of tables to return.
+If not passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) Opaque marker for the next “page” of
+datasets. If not passed, the API will return the
+first page of datasets.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="../core/page_iterator.html#google.api_core.page_iterator.Iterator" title="google.api_core.page_iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">Iterator</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Iterator of <a class="reference internal" href="#google.cloud.bigquery.table.TableListItem" title="google.cloud.bigquery.table.TableListItem"><code class="xref py py-class docutils literal"><span class="pre">TableListItem</span></code></a>
+contained within the current dataset.</p>
 </td>
 </tr>
 </tbody>
@@ -2318,7 +2325,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'domain', 'view', 'groupByEmail', 'specialGroup', 'userByEmail'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'view', 'specialGroup', 'groupByEmail', 'userByEmail', 'domain'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 

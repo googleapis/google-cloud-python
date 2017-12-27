@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 29620a1 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud e063b17 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '29620a1',
+        VERSION:     'e063b17',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -62,6 +62,7 @@
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
 
@@ -431,8 +432,8 @@
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">table</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Table</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_dataset_tables"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_dataset_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_dataset_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                            <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_tables"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List tables in the dataset.</span>
 
 <span class="sd">        See</span>
@@ -473,6 +474,16 @@
             <span class="n">max_results</span><span class="o">=</span><span class="n">max_results</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span>
         <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="Client.list_dataset_tables"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_dataset_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_dataset_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;DEPRECATED: List tables in the dataset.</span>
+
+<span class="sd">        Use :func:`~google.cloud.bigquery.client.Client.list_tables` instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s1">&#39;list_dataset_tables is deprecated, use list_tables instead.&#39;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.delete_dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.delete_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a dataset.</span>
