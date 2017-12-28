@@ -47,7 +47,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-bigquerydatatransfer
+    <your-env>/bin/pip install google-cloud-bigquery-datatransfer
 
 
 Windows
@@ -58,7 +58,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-bigquerydatatransfer
+    <your-env>\Scripts\pip.exe install google-cloud-bigquery-datatransfer
 
 Preview
 ~~~~~~~
