@@ -194,28 +194,18 @@ class PartialRowsData(object):
 
     def __init__(self, response_iterator):
         self._response_iterator = response_iterator
+        self.generator = YieldRowsData(response_iterator)
+
         # Fully-processed rows, keyed by `row_key`
         self._rows = {}
-        # Counter for responses pulled from iterator
-        self._counter = 0
-        # Maybe cached from previous response
-        self._last_scanned_row_key = None
-        # In-progress row, unset until first response, after commit/reset
-        self._row = None
-        # Last complete row, unset until first commit
-        self._previous_row = None
-        # In-progress cell, unset until first response, after completion
-        self._cell = None
-        # Last complete cell, unset until first completion, after new row
-        self._previous_cell = None
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return NotImplemented
+            return False
         return other._response_iterator == self._response_iterator
 
     def __ne__(self, other):
-        return not self == other
+        return not self.__eq__(other)
 
     @property
     def state(self):
