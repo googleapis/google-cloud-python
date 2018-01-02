@@ -176,8 +176,8 @@ Utilize iterator properties returned with row data:
 Insert rows into a table's data:
 
 .. literalinclude:: snippets.py
-   :start-after: [START table_create_rows]
-   :end-before: [END table_create_rows]
+   :start-after: [START table_insert_rows]
+   :end-before: [END table_insert_rows]
 
 Upload table data from a file:
 

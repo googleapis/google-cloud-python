@@ -23,6 +23,7 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
+import json
 import time
 
 import pytest
@@ -64,9 +65,9 @@ def to_delete(client):
     doomed = []
     yield doomed
     for item in doomed:
-        if isinstance(item, bigquery.Dataset):
+        if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
             client.delete_dataset(item)
-        elif isinstance(item, bigquery.Table):
+        elif isinstance(item, (bigquery.Table, bigquery.TableReference)):
             client.delete_table(item)
         else:
             item.delete()
@@ -414,28 +415,28 @@ def test_update_table_multiple_properties(client, to_delete):
     # [END update_table_multiple_properties]
 
 
-def test_table_create_rows(client, to_delete):
+def test_table_insert_rows(client, to_delete):
     """Insert / fetch table data."""
-    DATASET_ID = 'table_create_rows_dataset_{}'.format(_millis())
-    TABLE_ID = 'table_create_rows_table_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset_id = 'table_insert_rows_dataset_{}'.format(_millis())
+    table_id = 'table_insert_rows_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    table = bigquery.Table(dataset.table(TABLE_ID), schema=SCHEMA)
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
     to_delete.insert(0, table)
 
-    # [START table_create_rows]
-    ROWS_TO_INSERT = [
+    # [START table_insert_rows]
+    rows_to_insert = [
         (u'Phred Phlyntstone', 32),
         (u'Wylma Phlyntstone', 29),
     ]
 
-    errors = client.create_rows(table, ROWS_TO_INSERT)  # API request
+    errors = client.insert_rows(table, rows_to_insert)  # API request
 
     assert errors == []
-    # [END table_create_rows]
+    # [END table_insert_rows]
 
 
 def test_load_table_from_file(client, to_delete):
@@ -600,9 +601,20 @@ def test_extract_table(client, to_delete):
     to_delete.append(dataset)
 
     table_ref = dataset.table('person_ages')
-    table = client.create_table(bigquery.Table(table_ref, schema=SCHEMA))
-    to_delete.insert(0, table)
-    client.create_rows(table, ROWS)
+    to_insert = [
+        {'full_name': name, 'age': age}
+        for name, age in ROWS
+    ]
+    rows = [json.dumps(row) for row in to_insert]
+    body = six.StringIO('{}\n'.format('\n'.join(rows)))
+    job_config = bigquery.LoadJobConfig()
+    job_config.write_disposition = 'WRITE_TRUNCATE'
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.schema = SCHEMA
+    to_delete.insert(0, table_ref)
+    # Load a table using a local JSON file from memory.
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
 
     bucket_name = 'extract_person_ages_job_{}'.format(_millis())
     # [START extract_table]
