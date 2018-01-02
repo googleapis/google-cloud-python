@@ -1007,8 +1007,8 @@ class Client(ClientWithProject):
         job._begin(retry=retry)
         return job
 
-    def create_rows(self, table, rows, selected_fields=None, **kwargs):
-        """API call:  insert table data via a POST request
+    def insert_rows(self, table, rows, selected_fields=None, **kwargs):
+        """Insert rows into a table via the streaming API.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
@@ -1073,12 +1073,12 @@ class Client(ClientWithProject):
 
             json_rows.append(json_row)
 
-        return self.create_rows_json(table, json_rows, **kwargs)
+        return self.insert_rows_json(table, json_rows, **kwargs)
 
-    def create_rows_json(self, table, json_rows, row_ids=None,
+    def insert_rows_json(self, table, json_rows, row_ids=None,
                          skip_invalid_rows=None, ignore_unknown_values=None,
                          template_suffix=None, retry=DEFAULT_RETRY):
-        """API call:  insert table data via a POST request
+        """Insert rows into a table without applying local type conversions.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
@@ -1161,6 +1161,27 @@ class Client(ClientWithProject):
                            'errors': error['errors']})
 
         return errors
+
+    def create_rows(self, *args, **kwargs):
+        """DEPRECATED: Insert rows into a table via the streaming API.
+
+        Use :func:`~google.cloud.bigquery.client.Client.insert_rows` instead.
+        """
+        warnings.warn(
+            'create_rows is deprecated, use insert_rows instead.',
+            DeprecationWarning)
+        return self.insert_rows(*args, **kwargs)
+
+    def create_rows_json(self, *args, **kwargs):
+        """DEPRECATED: Insert rows into a table without type conversions.
+
+        Use :func:`~google.cloud.bigquery.client.Client.insert_rows_json`
+        instead.
+        """
+        warnings.warn(
+            'create_rows_json is deprecated, use insert_rows_json instead.',
+            DeprecationWarning)
+        return self.insert_rows_json(*args, **kwargs)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
                   page_token=None, start_index=None, retry=DEFAULT_RETRY):
