@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 5595968 documentation</title>
+    <title>API Reference &#8212; google-cloud 55df6a2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '5595968',
+        VERSION:     '55df6a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -182,99 +182,17 @@ the client.</td>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.create_rows">
-<code class="descname">create_rows</code><span class="sig-paren">(</span><em>table</em>, <em>rows</em>, <em>selected_fields=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.create_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.create_rows" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  insert table data via a POST request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (One of:
-<a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>
-<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>) – the destination table for the row data, or a reference
-to it.</li>
-<li><strong>rows</strong> (<em>One of:
-list of tuples
-list of dictionaries</em>) – Row data to be inserted. If a list of tuples is given,
-each tuple should contain data for each schema field on
-the current table and in the same order as the schema
-fields.  If a list of dictionaries is given, the keys must
-include all required fields in the schema.  Keys which do
-not correspond to a field in the schema are ignored.</li>
-<li><strong>selected_fields</strong> (list of <a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></a>) – The fields to return. Required if <code class="docutils literal"><span class="pre">table</span></code> is a
-<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Keyword arguments to
-<a class="reference internal" href="#google.cloud.bigquery.client.Client.create_rows_json" title="google.cloud.bigquery.client.Client.create_rows_json"><code class="xref py py-meth docutils literal"><span class="pre">create_rows_json()</span></code></a></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of mappings</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">One mapping per row with insert errors:  the “index” key
-identifies the row, and the “errors” key contains a list
-of the mappings describing one or more problems with the
-row.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if table’s schema is not set</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="descname">create_rows</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.create_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.create_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>DEPRECATED: Insert rows into a table via the streaming API.</p>
+<p>Use <a class="reference internal" href="#google.cloud.bigquery.client.Client.insert_rows" title="google.cloud.bigquery.client.Client.insert_rows"><code class="xref py py-func docutils literal"><span class="pre">insert_rows()</span></code></a> instead.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.create_rows_json">
-<code class="descname">create_rows_json</code><span class="sig-paren">(</span><em>table</em>, <em>json_rows</em>, <em>row_ids=None</em>, <em>skip_invalid_rows=None</em>, <em>ignore_unknown_values=None</em>, <em>template_suffix=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.create_rows_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.create_rows_json" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  insert table data via a POST request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>table</strong> (One of:
-<a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>
-<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>) – the destination table for the row data, or a reference
-to it.</li>
-<li><strong>json_rows</strong> (<em>list of dictionaries</em>) – Row data to be inserted. Keys must match the table
-schema fields and values must be JSON-compatible
-representations.</li>
-<li><strong>row_ids</strong> (<em>list of string</em>) – (Optional)  Unique ids, one per row being inserted.
-If omitted, unique IDs are created.</li>
-<li><strong>skip_invalid_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional)  Insert all valid rows of a
-request, even if invalid rows exist.
-The default value is False, which causes
-the entire request to fail if any invalid
-rows exist.</li>
-<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Accept rows that contain
-values that do not match the schema.
-The unknown values are ignored. Default
-is False, which treats unknown values as
-errors.</li>
-<li><strong>template_suffix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) treat <code class="docutils literal"><span class="pre">name</span></code> as a template table and provide a suffix.
-BigQuery will create the table <code class="docutils literal"><span class="pre">&lt;name&gt;</span> <span class="pre">+</span> <span class="pre">&lt;template_suffix&gt;</span></code> based
-on the schema of the template table. See
-<a class="reference external" href="https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a></li>
-<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of mappings</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">One mapping per row with insert errors:  the “index” key
-identifies the row, and the “errors” key contains a list
-of the mappings describing one or more problems with the
-row.</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="descname">create_rows_json</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.create_rows_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.create_rows_json" title="Permalink to this definition">#</a></dt>
+<dd><p>DEPRECATED: Insert rows into a table without type conversions.</p>
+<p>Use <a class="reference internal" href="#google.cloud.bigquery.client.Client.insert_rows_json" title="google.cloud.bigquery.client.Client.insert_rows_json"><code class="xref py py-func docutils literal"><span class="pre">insert_rows_json()</span></code></a>
+instead.</p>
 </dd></dl>
 
 <dl class="method">
@@ -475,6 +393,103 @@ or <a class="reference internal" href="#google.cloud.bigquery.job.QueryJob" titl
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a <code class="docutils literal"><span class="pre">Table</span></code> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.insert_rows">
+<code class="descname">insert_rows</code><span class="sig-paren">(</span><em>table</em>, <em>rows</em>, <em>selected_fields=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.insert_rows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.insert_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert rows into a table via the streaming API.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (One of:
+<a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>
+<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>) – the destination table for the row data, or a reference
+to it.</li>
+<li><strong>rows</strong> (<em>One of:
+list of tuples
+list of dictionaries</em>) – Row data to be inserted. If a list of tuples is given,
+each tuple should contain data for each schema field on
+the current table and in the same order as the schema
+fields.  If a list of dictionaries is given, the keys must
+include all required fields in the schema.  Keys which do
+not correspond to a field in the schema are ignored.</li>
+<li><strong>selected_fields</strong> (list of <a class="reference internal" href="#google.cloud.bigquery.schema.SchemaField" title="google.cloud.bigquery.schema.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></a>) – The fields to return. Required if <code class="docutils literal"><span class="pre">table</span></code> is a
+<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – Keyword arguments to
+<a class="reference internal" href="#google.cloud.bigquery.client.Client.create_rows_json" title="google.cloud.bigquery.client.Client.create_rows_json"><code class="xref py py-meth docutils literal"><span class="pre">create_rows_json()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of mappings</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">One mapping per row with insert errors:  the “index” key
+identifies the row, and the “errors” key contains a list
+of the mappings describing one or more problems with the
+row.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if table’s schema is not set</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.cloud.bigquery.client.Client.insert_rows_json">
+<code class="descname">insert_rows_json</code><span class="sig-paren">(</span><em>table</em>, <em>json_rows</em>, <em>row_ids=None</em>, <em>skip_invalid_rows=None</em>, <em>ignore_unknown_values=None</em>, <em>template_suffix=None</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.insert_rows_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.insert_rows_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Insert rows into a table without applying local type conversions.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (One of:
+<a class="reference internal" href="#google.cloud.bigquery.table.Table" title="google.cloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>
+<a class="reference internal" href="#google.cloud.bigquery.table.TableReference" title="google.cloud.bigquery.table.TableReference"><code class="xref py py-class docutils literal"><span class="pre">TableReference</span></code></a>) – the destination table for the row data, or a reference
+to it.</li>
+<li><strong>json_rows</strong> (<em>list of dictionaries</em>) – Row data to be inserted. Keys must match the table
+schema fields and values must be JSON-compatible
+representations.</li>
+<li><strong>row_ids</strong> (<em>list of string</em>) – (Optional)  Unique ids, one per row being inserted.
+If omitted, unique IDs are created.</li>
+<li><strong>skip_invalid_rows</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional)  Insert all valid rows of a
+request, even if invalid rows exist.
+The default value is False, which causes
+the entire request to fail if any invalid
+rows exist.</li>
+<li><strong>ignore_unknown_values</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – (Optional) Accept rows that contain
+values that do not match the schema.
+The unknown values are ignored. Default
+is False, which treats unknown values as
+errors.</li>
+<li><strong>template_suffix</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – (Optional) treat <code class="docutils literal"><span class="pre">name</span></code> as a template table and provide a suffix.
+BigQuery will create the table <code class="docutils literal"><span class="pre">&lt;name&gt;</span> <span class="pre">+</span> <span class="pre">&lt;template_suffix&gt;</span></code> based
+on the schema of the template table. See
+<a class="reference external" href="https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a></li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of mappings</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">One mapping per row with insert errors:  the “index” key
+identifies the row, and the “errors” key contains a list
+of the mappings describing one or more problems with the
+row.</p>
 </td>
 </tr>
 </tbody>
@@ -2325,7 +2340,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'domain', 'specialGroup', 'view', 'userByEmail', 'groupByEmail'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'specialGroup', 'userByEmail', 'domain', 'view', 'groupByEmail'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 

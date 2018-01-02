@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud 5595968 documentation</title>
+    <title>BigQuery &#8212; google-cloud 55df6a2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '5595968',
+        VERSION:     '55df6a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -258,12 +258,12 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 </pre></div>
 </div>
 <p>Insert rows into a table’s data:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ROWS_TO_INSERT</span> <span class="o">=</span> <span class="p">[</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">rows_to_insert</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Phred Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
         <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;Wylma Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">29</span><span class="p">),</span>
     <span class="p">]</span>
 
-    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">ROWS_TO_INSERT</span><span class="p">)</span>  <span class="c1"># API request</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">insert_rows</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">rows_to_insert</span><span class="p">)</span>  <span class="c1"># API request</span>
 
     <span class="k">assert</span> <span class="n">errors</span> <span class="o">==</span> <span class="p">[]</span>
 </pre></div>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 5595968 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 55df6a2 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '5595968',
+        VERSION:     '55df6a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -1049,8 +1049,8 @@
         <span class="n">job</span><span class="o">.</span><span class="n">_begin</span><span class="p">(</span><span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">job</span></div>
 
-<div class="viewcode-block" id="Client.create_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_rows">[docs]</a>    <span class="k">def</span> <span class="nf">create_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  insert table data via a POST request</span>
+<div class="viewcode-block" id="Client.insert_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.insert_rows">[docs]</a>    <span class="k">def</span> <span class="nf">insert_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Insert rows into a table via the streaming API.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</span>
@@ -1115,12 +1115,12 @@
 
             <span class="n">json_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json_row</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_rows_json</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_rows_json</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.create_rows_json"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_rows_json">[docs]</a>    <span class="k">def</span> <span class="nf">create_rows_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="n">row_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.insert_rows_json"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.insert_rows_json">[docs]</a>    <span class="k">def</span> <span class="nf">insert_rows_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">json_rows</span><span class="p">,</span> <span class="n">row_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">skip_invalid_rows</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_unknown_values</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                          <span class="n">template_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  insert table data via a POST request</span>
+        <span class="sd">&quot;&quot;&quot;Insert rows into a table without applying local type conversions.</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll</span>
@@ -1203,6 +1203,27 @@
                            <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]})</span>
 
         <span class="k">return</span> <span class="n">errors</span></div>
+
+<div class="viewcode-block" id="Client.create_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_rows">[docs]</a>    <span class="k">def</span> <span class="nf">create_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;DEPRECATED: Insert rows into a table via the streaming API.</span>
+
+<span class="sd">        Use :func:`~google.cloud.bigquery.client.Client.insert_rows` instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s1">&#39;create_rows is deprecated, use insert_rows instead.&#39;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_rows</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Client.create_rows_json"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.create_rows_json">[docs]</a>    <span class="k">def</span> <span class="nf">create_rows_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;DEPRECATED: Insert rows into a table without type conversions.</span>
+
+<span class="sd">        Use :func:`~google.cloud.bigquery.client.Client.insert_rows_json`</span>
+<span class="sd">        instead.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s1">&#39;create_rows_json is deprecated, use insert_rows_json instead.&#39;</span><span class="p">,</span>
+            <span class="ne">DeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_rows_json</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.list_rows"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.list_rows">[docs]</a>    <span class="k">def</span> <span class="nf">list_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
