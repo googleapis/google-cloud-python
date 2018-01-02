@@ -201,36 +201,6 @@ class TestPartialRowsData(unittest.TestCase):
 
         return PartialRowsData
 
-    def _getYieldDoNothingClass(self):
-        klass = self._get_yield_target_class()
-
-        class FakeYieldRowsData(klass):
-            def __init__(self, *args, **kwargs):
-                super(FakeYieldRowsData, self).__init__(*args, **kwargs)
-                self._consumed = []
-
-            def consume_next(self):
-                value = self._response_iterator.next()
-                self._consumed.append(value)
-                return value
-
-        return FakeYieldRowsData
-
-    def _getPartialDoNothingClass(self):
-        klass = self._get_partial_target_class()
-
-        class FakePartialRowsData(klass):
-            def __init__(self, *args, **kwargs):
-                super(FakePartialRowsData, self).__init__(*args, **kwargs)
-                self._consumed = []
-
-            def consume_next(self):
-                value = self._response_iterator.next()
-                self._consumed.append(value)
-                return value
-
-        return FakePartialRowsData
-
     def _make_yield_one(self, *args, **kwargs):
         return self._get_yield_target_class()(*args, **kwargs)
 
