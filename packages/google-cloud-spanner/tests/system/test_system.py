@@ -1564,8 +1564,8 @@ class TestStreamingChunking(unittest.TestCase, _TestData):
         self._verify_one_column(FOUR_KAY)
 
     def test_forty_kay(self):
-        from tests.system.utils.streaming_utils import FOUR_KAY
-        self._verify_one_column(FOUR_KAY)
+        from tests.system.utils.streaming_utils import FORTY_KAY
+        self._verify_one_column(FORTY_KAY)
 
     def test_four_hundred_kay(self):
         from tests.system.utils.streaming_utils import FOUR_HUNDRED_KAY
