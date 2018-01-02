@@ -920,6 +920,56 @@ class TestReadGBQIntegrationWithServiceAccountKeyPath(object):
         assert self.gbq_connector.sizeof_fmt(1.208926E24) == "1.0 YB"
         assert self.gbq_connector.sizeof_fmt(1.208926E28) == "10000.0 YB"
 
+    def test_struct(self):
+        query = """SELECT 1 int_field,
+                   STRUCT("a" as letter, 1 as num) struct_field"""
+        df = gbq.read_gbq(query, project_id=_get_project_id(),
+                          private_key=_get_private_key_path(),
+                          dialect='standard')
+        tm.assert_frame_equal(df, DataFrame([[1, {"letter": "a", "num": 1}]],
+                              columns=["int_field", "struct_field"]))
+
+    def test_array(self):
+        query = """select ["a","x","b","y","c","z"] as letters"""
+        df = gbq.read_gbq(query, project_id=_get_project_id(),
+                          private_key=_get_private_key_path(),
+                          dialect='standard')
+        tm.assert_frame_equal(df, DataFrame([[["a", "x", "b", "y", "c", "z"]]],
+                              columns=["letters"]))
+
+    def test_array_length_zero(self):
+        query = """WITH t as (
+                   SELECT "a" letter, [""] as array_field
+                   UNION ALL
+                   SELECT "b" letter, [] as array_field)
+
+                   select letter, array_field, array_length(array_field) len
+                   from t
+                   order by letter ASC"""
+        df = gbq.read_gbq(query, project_id=_get_project_id(),
+                          private_key=_get_private_key_path(),
+                          dialect='standard')
+        tm.assert_frame_equal(df, DataFrame([["a", [""], 1], ["b", [], 0]],
+                              columns=["letter", "array_field", "len"]))
+
+    def test_array_agg(self):
+        query = """WITH t as (
+                SELECT "a" letter, 1 num
+                UNION ALL
+                SELECT "b" letter, 2 num
+                UNION ALL
+                SELECT "a" letter, 3 num)
+
+                select letter, array_agg(num order by num ASC) numbers
+                from t
+                group by letter
+                order by letter ASC"""
+        df = gbq.read_gbq(query, project_id=_get_project_id(),
+                          private_key=_get_private_key_path(),
+                          dialect='standard')
+        tm.assert_frame_equal(df, DataFrame([["a", [1, 3]], ["b", [2]]],
+                              columns=["letter", "numbers"]))
+
 
 class TestToGBQIntegrationWithServiceAccountKeyPath(object):
     # Changes to BigQuery table schema may take up to 2 minutes as of May 2015
