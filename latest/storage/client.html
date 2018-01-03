@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Storage &#8212; google-cloud 55df6a2 documentation</title>
+    <title>Storage &#8212; google-cloud 8ca6882 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '55df6a2',
+        VERSION:     '8ca6882',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -212,7 +212,7 @@ no batch is active).</td>
 <code class="descname">get_bucket</code><span class="sig-paren">(</span><em>bucket_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/storage/client.html#Client.get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.storage.client.Client.get_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a bucket by name.</p>
 <p>If the bucket isn’t found, this will raise a
-<code class="xref py py-class docutils literal"><span class="pre">google.cloud.storage.exceptions.NotFound</span></code>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">google.cloud.exceptions.NotFound</span></code>.</p>
 <p>For example:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">try</span><span class="p">:</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket&#39;</span><span class="p">)</span>
