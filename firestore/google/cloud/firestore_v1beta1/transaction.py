@@ -379,6 +379,9 @@ def _commit_with_retry(client, write_pbs, transaction_id):
             is encountered.
     """
     current_sleep = _INITIAL_SLEEP
+    sleep_generator = retry.exponential_sleep_generator(current_sleep,
+                                                        _MAX_SLEEP,
+                                                        _MULTIPLIER)
     while True:
         try:
             return client._firestore_api.commit(
@@ -391,6 +394,4 @@ def _commit_with_retry(client, write_pbs, transaction_id):
                 pass  # Retry
             else:
                 raise
-        current_sleep = retry.exponential_sleep_generator(current_sleep,
-                                                          _MAX_SLEEP,
-                                                          _MULTIPLIER)
+        current_sleep = next(sleep_generator)
