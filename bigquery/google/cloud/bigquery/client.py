@@ -93,7 +93,7 @@ class Project(object):
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
-    Keyword Args:
+    Args:
         project (str):
             Project ID for the project which the client acts on behalf of.
             Will be passed when creating a dataset / job. If not passed,
