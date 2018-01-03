@@ -249,7 +249,7 @@ class Client(ClientWithProject):
         :meth:`~.DocumentReference.update` and
         :meth:`~.DocumentReference.delete`.
 
-        One of the following two keyword arguments must be provided:
+        One of the following keyword arguments must be provided:
 
         * ``last_update_time`` (:class:`google.protobuf.timestamp_pb2.\
            Timestamp`): A timestamp. When set, the target document must exist
