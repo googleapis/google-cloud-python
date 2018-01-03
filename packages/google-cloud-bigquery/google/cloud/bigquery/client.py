@@ -93,25 +93,28 @@ class Project(object):
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
-    :type project: str
-    :param project: the project which the client acts on behalf of. Will be
-                    passed when creating a dataset / job.  If not passed,
-                    falls back to the default inferred from the environment.
+    Args:
+        project (str):
+            Project ID for the project which the client acts on behalf of.
+            Will be passed when creating a dataset / job. If not passed,
+            falls back to the default inferred from the environment.
+        credentials (google.auth.credentials.Credentials):
+            (Optional) The OAuth2 Credentials to use for this client. If not
+            passed (and if no ``_http`` object is passed), falls back to the
+            default inferred from the environment.
+        _http (requests.Session):
+            (Optional) HTTP object to make requests. Can be any object that
+            defines ``request()`` with the same interface as
+            :meth:`requests.Session.request`. If not passed, an ``_http``
+            object is created that is bound to the ``credentials`` for the
+            current object.
+            This parameter should be considered private, and could change in
+            the future.
 
-    :type credentials: :class:`~google.auth.credentials.Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``_http`` object is
-                        passed), falls back to the default inferred from the
-                        environment.
-
-    :type _http: :class:`~requests.Session`
-    :param _http: (Optional) HTTP object to make requests. Can be any object
-                  that defines ``request()`` with the same interface as
-                  :meth:`requests.Session.request`. If not passed, an
-                  ``_http`` object is created that is bound to the
-                  ``credentials`` for the current object.
-                  This parameter should be considered private, and could
-                  change in the future.
+    Raises:
+        google.auth.exceptions.DefaultCredentialsError:
+            Raised if ``credentials`` is not specified and the library fails
+            to acquire default credentials.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/bigquery',
