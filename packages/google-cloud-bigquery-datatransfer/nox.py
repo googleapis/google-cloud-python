@@ -13,24 +13,53 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+
 import os
 
 import nox
 
 
+LOCAL_DEPS = (
+    os.path.join('..', 'api_core'),
+)
+
+
 @nox.session
-@nox.parametrize('python_version', ['2.7', '3.4', '3.5', '3.6'])
-def unit_tests(session, python_version):
-    """Run the unit test suite."""
+def default(session):
+    """Default unit test session.
 
-    session.interpreter = 'python{}'.format(python_version)
-
-    session.virtualenv_dirname = 'unit-' + python_version
-
-    session.install('pytest')
+    This is intended to be run **without** an interpreter set, so
+    that the current ``python`` (on the ``PATH``) or the version of
+    Python corresponding to the ``nox`` binary on the ``PATH`` can
+    run the tests.
+    """
+    # Install all test dependencies, then install this package in-place.
+    session.install('mock', 'pytest', 'pytest-cov', *LOCAL_DEPS)
     session.install('-e', '.')
 
-    session.run('py.test', '--quiet', os.path.join('tests', 'unit'))
+    # Run py.test against the unit tests.
+    session.run(
+        'py.test',
+        '--quiet',
+        '--cov=google.cloud.bigquery_datatransfer',
+        '--cov=google.cloud.bigquery_datatransfer_v1',        
+        '--cov=tests.unit',
+        '--cov-append',
+        '--cov-config=.coveragerc',
+        '--cov-report=',
+        os.path.join('tests', 'unit', 'gapic', 'v1'),
+        *session.posargs
+    )
+
+
+@nox.session
+@nox.parametrize('py', ['2.7', '3.4', '3.5', '3.6'])
+def unit(session, py):
+    """Run the unit test suite."""
+
+    session.interpreter = 'python{}'.format(py)
+    session.virtualenv_dirname = 'unit-' + py
+    default(session)
 
 
 @nox.session
