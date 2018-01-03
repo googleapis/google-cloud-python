@@ -186,7 +186,7 @@ class Client(ClientWithProject):
         """Get a bucket by name.
 
         If the bucket isn't found, this will raise a
-        :class:`google.cloud.storage.exceptions.NotFound`.
+        :class:`google.cloud.exceptions.NotFound`.
 
         For example:
 
