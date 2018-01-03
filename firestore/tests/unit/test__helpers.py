@@ -1218,7 +1218,7 @@ class Test_pbs_for_update(unittest.TestCase):
             'yum': _value_pb(bytes_value=value),
         })
         if isinstance(option, ExistsOption):
-            write_kwargs = {'current_document' : {'exists': option._exists}}
+            write_kwargs.update({'current_document' : {'exists': option._exists}})
 
         expected_update_pb = write_pb2.Write(
             update=document_pb2.Document(

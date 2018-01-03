@@ -207,7 +207,6 @@ def test_update_document(client, cleanup):
     assert document_id in exc_info.value.message
 
     # 1. Try to update before the document exists (now with an option).
-
     option1 = client.write_option(exists=True)
     with pytest.raises(NotFound) as exc_info:
         document.update({'still': 'not-there'}, option=option1)
