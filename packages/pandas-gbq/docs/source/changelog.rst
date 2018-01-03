@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3.0 / 2017-??-??
+0.3.0 / 2018-01-03
 ------------------
 
 - Use the `google-cloud-bigquery <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/usage.html>`__ library for API calls. The ``google-cloud-bigquery`` package is a new dependency, and dependencies on ``google-api-python-client`` and ``httplib2`` are removed. See the `installation guide <https://pandas-gbq.readthedocs.io/en/latest/install.html#dependencies>`__ for more details.  (:issue:`93`)
