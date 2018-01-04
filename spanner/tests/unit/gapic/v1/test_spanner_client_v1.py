@@ -15,7 +15,7 @@
 
 import pytest
 
-from google.cloud import spanner_v1
+import google.cloud.spanner_v1.gapic.spanner_client as spanner_v1
 from google.cloud.spanner_v1.proto import keys_pb2
 from google.cloud.spanner_v1.proto import result_set_pb2
 from google.cloud.spanner_v1.proto import spanner_pb2
