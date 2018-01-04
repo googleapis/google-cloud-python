@@ -18,7 +18,7 @@ from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionSelector
 from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
 
 from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
 from google.cloud.spanner_v1.batch import _BatchBase
 
@@ -86,11 +86,11 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         txn_options = TransactionOptions(
             read_write=TransactionOptions.ReadWrite())
         response = api.begin_transaction(
-            self._session.name, txn_options, options=options)
+            self._session.name, txn_options, metadata=metadata)
         self._transaction_id = response.id
         return self._transaction_id
 
@@ -99,8 +99,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         self._check_state()
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
-        api.rollback(self._session.name, self._transaction_id, options=options)
+        metadata = _metadata_with_prefix(database.name)
+        api.rollback(
+            self._session.name, self._transaction_id, metadata=metadata)
         self._rolled_back = True
         del self._session._transaction
 
@@ -118,10 +119,10 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         response = api.commit(
             self._session.name, self._mutations,
-            transaction_id=self._transaction_id, options=options)
+            transaction_id=self._transaction_id, metadata=metadata)
         self.committed = _pb_timestamp_to_datetime(
             response.commit_timestamp)
         del self._session._transaction

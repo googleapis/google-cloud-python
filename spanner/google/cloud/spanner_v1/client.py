@@ -24,8 +24,6 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner_v1.database.Database`
 """
 
-from google.api_core import page_iterator
-from google.gax import INITIAL_PAGE
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
     DatabaseAdminClient)
@@ -200,15 +198,13 @@ class Client(ClientWithProject):
             :class:`~google.cloud.spanner_v1.instance.InstanceConfig`
             resources within the client's project.
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = _options_with_prefix(self.project_name,
-                                       page_token=page_token)
+        metadata = _options_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instance_configs(
-            path, page_size=page_size, options=options)
-        return page_iterator._GAXIterator(
-            self, page_iter, _item_to_instance_config)
+            path, page_token=page_token, page_size=page_size,
+            metadata=metadata)
+        page_iter._item_to_value = _item_to_instance_config
+        return page_iter
 
     def instance(self, instance_id,
                  configuration_name=None,
@@ -263,15 +259,13 @@ class Client(ClientWithProject):
             Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`
             resources within the client's project.
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = _options_with_prefix(self.project_name,
-                                       page_token=page_token)
+        metadata = _options_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
-            path, filter_=filter_, page_size=page_size, options=options)
-        return page_iterator._GAXIterator(
-            self, page_iter, _item_to_instance)
+            path, page_token=page_token, page_size=page_size,
+            metadata=metadata)
+        page_iter._item_to_value = _item_to_instance
+        return page_iter
 
 
 def _item_to_instance_config(
