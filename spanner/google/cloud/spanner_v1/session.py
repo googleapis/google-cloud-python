@@ -20,7 +20,7 @@ import time
 from google.rpc.error_details_pb2 import RetryInfo
 
 # pylint: disable=ungrouped-imports
-from google.api_core.exceptions import Aborted, NotFound
+from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
@@ -269,6 +269,9 @@ class Session(object):
                 del self._transaction
                 _delay_until_retry(exc, deadline)
                 continue
+            except GoogleAPICallError:
+                del self._transaction
+                raise
             except Exception:
                 txn.rollback()
                 raise
@@ -278,6 +281,9 @@ class Session(object):
             except Aborted as exc:
                 del self._transaction
                 _delay_until_retry(exc, deadline)
+            except GoogleAPICallError:
+                del self._transaction
+                raise
             else:
                 return return_value
 
@@ -297,7 +303,7 @@ def _delay_until_retry(exc, deadline):
     :type deadline: float
     :param deadline: maximum timestamp to continue retrying the transaction.
     """
-    cause = exc.cause
+    cause = exc.errors[0]
 
     now = time.time()
 
