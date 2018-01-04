@@ -33,7 +33,7 @@ from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
 
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    'google-cloud-spanner-admin-instance', ).version
+    'google-cloud-spanner', ).version
 
 
 class InstanceAdminClient(object):
