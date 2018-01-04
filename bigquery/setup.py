@@ -64,7 +64,7 @@ EXTRAS_REQUIREMENTS = {
 
 setup(
     name='google-cloud-bigquery',
-    version='0.28.1.dev1',
+    version='0.29.1.dev1',
     description='Python Client for Google BigQuery',
     long_description=README,
     namespace_packages=[

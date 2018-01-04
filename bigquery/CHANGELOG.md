@@ -4,9 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
-## 0.29.0 (unreleased)
+## 0.29.1 (unreleased)
 
-## Interface changes / additions
+- TBD
+
+## 0.29.0
+
+### Interface changes / additions
 
 -   Add `to_dataframe()` method to row iterators. When Pandas is installed this
     method returns a `DataFrame` containing the query's or table's rows.
@@ -22,7 +26,7 @@
     ([#4393](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4393),
     [#4413](https://github.com/GoogleCloudPlatform/google-cloud-python/pull/4413))
 
-## Interface changes / breaking changes
+### Interface changes / breaking changes
 
 -   Add `Client.insert_rows()` and `Client.insert_rows_json()`, deprecate
     `Client.create_rows()` and `Client.create_rows_json()`.
