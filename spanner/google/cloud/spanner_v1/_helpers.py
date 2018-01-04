@@ -257,7 +257,7 @@ class _SessionWrapper(object):
         self._session = session
 
 
-def _metadata_with_prefx(prefix, **kw):
+def _metadata_with_prefix(prefix, **kw):
     """Create RPC metadata containing a prefix.
 
     Args:

@@ -34,7 +34,7 @@ from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
 from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner_v1.instance import Instance
 
@@ -198,7 +198,7 @@ class Client(ClientWithProject):
             :class:`~google.cloud.spanner_v1.instance.InstanceConfig`
             resources within the client's project.
         """
-        metadata = _options_with_prefix(self.project_name)
+        metadata = _metadata_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instance_configs(
             path, page_token=page_token, page_size=page_size,
@@ -259,7 +259,7 @@ class Client(ClientWithProject):
             Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`
             resources within the client's project.
         """
-        metadata = _options_with_prefix(self.project_name)
+        metadata = _metadata_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
             path, page_token=page_token, page_size=page_size,

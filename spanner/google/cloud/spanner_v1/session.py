@@ -20,7 +20,7 @@ import time
 from google.rpc.error_details_pb2 import RetryInfo
 
 # pylint: disable=ungrouped-imports
-from google.cloud.exceptions import Aborted, NotFound
+from google.api_core.exceptions import Aborted, NotFound
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
