@@ -435,7 +435,8 @@ class SpannerClient(object):
                     resume_token=None,
                     query_mode=None,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT):
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=None):
         """
         Executes an SQL query, returning all rows in a single reply. This
         method cannot be used to return a result set larger than 10 MiB;
@@ -526,7 +527,8 @@ class SpannerClient(object):
             resume_token=resume_token,
             query_mode=query_mode,
         )
-        return self._execute_sql(request, retry=retry, timeout=timeout)
+        return self._execute_sql(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def execute_streaming_sql(self,
                               session,
@@ -537,7 +539,8 @@ class SpannerClient(object):
                               resume_token=None,
                               query_mode=None,
                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT):
+                              timeout=google.api_core.gapic_v1.method.DEFAULT,
+                              metadata=None):
         """
         Like ``ExecuteSql``, except returns the result
         set as a stream. Unlike ``ExecuteSql``, there
@@ -625,7 +628,7 @@ class SpannerClient(object):
             query_mode=query_mode,
         )
         return self._execute_streaming_sql(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def read(self,
              session,
@@ -637,7 +640,8 @@ class SpannerClient(object):
              limit=None,
              resume_token=None,
              retry=google.api_core.gapic_v1.method.DEFAULT,
-             timeout=google.api_core.gapic_v1.method.DEFAULT):
+             timeout=google.api_core.gapic_v1.method.DEFAULT,
+             metadata=None):
         """
         Reads rows from the database using key lookups and scans, as a
         simple key/value style alternative to
@@ -724,7 +728,8 @@ class SpannerClient(object):
             limit=limit,
             resume_token=resume_token,
         )
-        return self._read(request, retry=retry, timeout=timeout)
+        return self._read(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def streaming_read(self,
                        session,
@@ -736,7 +741,8 @@ class SpannerClient(object):
                        limit=None,
                        resume_token=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Like ``Read``, except returns the result set as a
         stream. Unlike ``Read``, there is no limit on the
@@ -817,7 +823,8 @@ class SpannerClient(object):
             limit=limit,
             resume_token=resume_token,
         )
-        return self._streaming_read(request, retry=retry, timeout=timeout)
+        return self._streaming_read(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def begin_transaction(self,
                           session,
