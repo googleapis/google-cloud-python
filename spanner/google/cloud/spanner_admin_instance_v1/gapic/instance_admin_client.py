@@ -1,38 +1,29 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/spanner/admin/instance/v1/spanner_instance_admin.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.spanner.admin.instance.v1 InstanceAdmin API."""
 
-import collections
-import json
-import os
+import functools
 import pkg_resources
-import platform
 
-from google.gapic.longrunning import operations_client
-from google.gax import api_callable
-from google.gax import config
-from google.gax import path_template
-import google.gax
+import google.api_core.gapic_v1.client_info
+import google.api_core.gapic_v1.config
+import google.api_core.gapic_v1.method
+import google.api_core.grpc_helpers
+import google.api_core.operation
+import google.api_core.operations_v1
+import google.api_core.page_iterator
+import google.api_core.path_template
 
 from google.cloud.spanner_admin_instance_v1.gapic import enums
 from google.cloud.spanner_admin_instance_v1.gapic import instance_admin_client_config
@@ -41,7 +32,8 @@ from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.protobuf import field_mask_pb2
 
-_PageDesc = google.gax.PageDescriptor
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-spanner-admin-instance', ).version
 
 
 class InstanceAdminClient(object):
@@ -69,250 +61,182 @@ class InstanceAdminClient(object):
     databases in that instance, and their performance may suffer.
     """
 
-    SERVICE_ADDRESS = 'spanner.googleapis.com'
+    SERVICE_ADDRESS = 'spanner.googleapis.com:443'
     """The default address of the service."""
-
-    DEFAULT_SERVICE_PORT = 443
-    """The default port of the service."""
-
-    _PAGE_DESCRIPTORS = {
-        'list_instance_configs':
-        _PageDesc('page_token', 'next_page_token', 'instance_configs'),
-        'list_instances':
-        _PageDesc('page_token', 'next_page_token', 'instances')
-    }
 
     # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
-    _ALL_SCOPES = (
+    _DEFAULT_SCOPES = (
         'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/spanner.admin', )
+        'https://www.googleapis.com/auth/spanner.admin',
+    )
 
-    _PROJECT_PATH_TEMPLATE = path_template.PathTemplate('projects/{project}')
-    _INSTANCE_CONFIG_PATH_TEMPLATE = path_template.PathTemplate(
-        'projects/{project}/instanceConfigs/{instance_config}')
-    _INSTANCE_PATH_TEMPLATE = path_template.PathTemplate(
-        'projects/{project}/instances/{instance}')
+    # The name of the interface for this client. This is the key used to find
+    # method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.spanner.admin.instance.v1.InstanceAdmin'
 
     @classmethod
     def project_path(cls, project):
-        """Returns a fully-qualified project resource name string."""
-        return cls._PROJECT_PATH_TEMPLATE.render({
-            'project': project,
-        })
+        """Return a fully-qualified project string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}',
+            project=project,
+        )
 
     @classmethod
     def instance_config_path(cls, project, instance_config):
-        """Returns a fully-qualified instance_config resource name string."""
-        return cls._INSTANCE_CONFIG_PATH_TEMPLATE.render({
-            'project':
-            project,
-            'instance_config':
-            instance_config,
-        })
+        """Return a fully-qualified instance_config string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/instanceConfigs/{instance_config}',
+            project=project,
+            instance_config=instance_config,
+        )
 
     @classmethod
     def instance_path(cls, project, instance):
-        """Returns a fully-qualified instance resource name string."""
-        return cls._INSTANCE_PATH_TEMPLATE.render({
-            'project': project,
-            'instance': instance,
-        })
-
-    @classmethod
-    def match_project_from_project_name(cls, project_name):
-        """Parses the project from a project resource.
-
-        Args:
-            project_name (str): A fully-qualified path representing a project
-                resource.
-
-        Returns:
-            A string representing the project.
-        """
-        return cls._PROJECT_PATH_TEMPLATE.match(project_name).get('project')
-
-    @classmethod
-    def match_project_from_instance_config_name(cls, instance_config_name):
-        """Parses the project from a instance_config resource.
-
-        Args:
-            instance_config_name (str): A fully-qualified path representing a instance_config
-                resource.
-
-        Returns:
-            A string representing the project.
-        """
-        return cls._INSTANCE_CONFIG_PATH_TEMPLATE.match(
-            instance_config_name).get('project')
-
-    @classmethod
-    def match_instance_config_from_instance_config_name(
-            cls, instance_config_name):
-        """Parses the instance_config from a instance_config resource.
-
-        Args:
-            instance_config_name (str): A fully-qualified path representing a instance_config
-                resource.
-
-        Returns:
-            A string representing the instance_config.
-        """
-        return cls._INSTANCE_CONFIG_PATH_TEMPLATE.match(
-            instance_config_name).get('instance_config')
-
-    @classmethod
-    def match_project_from_instance_name(cls, instance_name):
-        """Parses the project from a instance resource.
-
-        Args:
-            instance_name (str): A fully-qualified path representing a instance
-                resource.
-
-        Returns:
-            A string representing the project.
-        """
-        return cls._INSTANCE_PATH_TEMPLATE.match(instance_name).get('project')
-
-    @classmethod
-    def match_instance_from_instance_name(cls, instance_name):
-        """Parses the instance from a instance resource.
-
-        Args:
-            instance_name (str): A fully-qualified path representing a instance
-                resource.
-
-        Returns:
-            A string representing the instance.
-        """
-        return cls._INSTANCE_PATH_TEMPLATE.match(instance_name).get('instance')
+        """Return a fully-qualified instance string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/instances/{instance}',
+            project=project,
+            instance=instance,
+        )
 
     def __init__(self,
                  channel=None,
                  credentials=None,
-                 ssl_credentials=None,
-                 scopes=None,
-                 client_config=None,
-                 lib_name=None,
-                 lib_version='',
-                 metrics_headers=()):
+                 client_config=instance_admin_client_config.config,
+                 client_info=None):
         """Constructor.
 
         Args:
-            channel (~grpc.Channel): A ``Channel`` instance through
-                which to make calls.
-            credentials (~google.auth.credentials.Credentials): The authorization
-                credentials to attach to requests. These credentials identify this
-                application to the service.
-            ssl_credentials (~grpc.ChannelCredentials): A
-                ``ChannelCredentials`` instance for use with an SSL-enabled
-                channel.
-            scopes (Sequence[str]): A list of OAuth2 scopes to attach to requests.
-            client_config (dict):
-                A dictionary for call options for each method. See
-                :func:`google.gax.construct_settings` for the structure of
-                this data. Falls back to the default config if not specified
-                or the specified config is missing data points.
-            lib_name (str): The API library software used for calling
-                the service. (Unless you are writing an API client itself,
-                leave this as default.)
-            lib_version (str): The API library software version used
-                for calling the service. (Unless you are writing an API client
-                itself, leave this as default.)
-            metrics_headers (dict): A dictionary of values for tracking
-                client library metrics. Ultimately serializes to a string
-                (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
-                considered private.
+            channel (grpc.Channel): A ``Channel`` instance through
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
+            credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+            client_config (dict): A dictionary of call options for each
+                method. If not specified, the default configuration is used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
         """
-        # Unless the calling application specifically requested
-        # OAuth scopes, request everything.
-        if scopes is None:
-            scopes = self._ALL_SCOPES
+        # If both `channel` and `credentials` are specified, raise an
+        # exception (channels come with credentials baked in already).
+        if channel is not None and credentials is not None:
+            raise ValueError(
+                'The `channel` and `credentials` arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__), )
 
-        # Initialize an empty client config, if none is set.
-        if client_config is None:
-            client_config = {}
+        # Create the channel.
+        if channel is None:
+            channel = google.api_core.grpc_helpers.create_channel(
+                self.SERVICE_ADDRESS,
+                credentials=credentials,
+                scopes=self._DEFAULT_SCOPES,
+            )
 
-        # Initialize metrics_headers as an ordered dictionary
-        # (cuts down on cardinality of the resulting string slightly).
-        metrics_headers = collections.OrderedDict(metrics_headers)
-        metrics_headers['gl-python'] = platform.python_version()
+        # Create the gRPC stubs.
+        self.instance_admin_stub = (
+            spanner_instance_admin_pb2.InstanceAdminStub(channel))
 
-        # The library may or may not be set, depending on what is
-        # calling this client. Newer client libraries set the library name
-        # and version.
-        if lib_name:
-            metrics_headers[lib_name] = lib_version
+        # Operations client for methods that return long-running operations
+        # futures.
+        self.operations_client = (
+            google.api_core.operations_v1.OperationsClient(channel))
 
-        # Finally, track the GAPIC package version.
-        metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'google-cloud-spanner', ).version
+        if client_info is None:
+            client_info = (
+                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
+        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
-        # Load the configuration defaults.
-        defaults = api_callable.construct_settings(
-            'google.spanner.admin.instance.v1.InstanceAdmin',
-            instance_admin_client_config.config,
-            client_config,
-            config.STATUS_CODE_NAMES,
-            metrics_headers=metrics_headers,
-            page_descriptors=self._PAGE_DESCRIPTORS, )
-        self.instance_admin_stub = config.create_stub(
-            spanner_instance_admin_pb2.InstanceAdminStub,
-            channel=channel,
-            service_path=self.SERVICE_ADDRESS,
-            service_port=self.DEFAULT_SERVICE_PORT,
-            credentials=credentials,
-            scopes=scopes,
-            ssl_credentials=ssl_credentials)
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
+        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
-        self.operations_client = operations_client.OperationsClient(
-            service_path=self.SERVICE_ADDRESS,
-            channel=channel,
-            credentials=credentials,
-            ssl_credentials=ssl_credentials,
-            scopes=scopes,
-            client_config=client_config,
-            metrics_headers=metrics_headers, )
-
-        self._list_instance_configs = api_callable.create_api_call(
+        # Write the "inner API call" methods to the class.
+        # These are wrapped versions of the gRPC stub methods, with retry and
+        # timeout configuration applied, called by the public methods on
+        # this class.
+        self._list_instance_configs = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.ListInstanceConfigs,
-            settings=defaults['list_instance_configs'])
-        self._get_instance_config = api_callable.create_api_call(
+            default_retry=method_configs['ListInstanceConfigs'].retry,
+            default_timeout=method_configs['ListInstanceConfigs'].timeout,
+            client_info=client_info,
+        )
+        self._get_instance_config = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.GetInstanceConfig,
-            settings=defaults['get_instance_config'])
-        self._list_instances = api_callable.create_api_call(
+            default_retry=method_configs['GetInstanceConfig'].retry,
+            default_timeout=method_configs['GetInstanceConfig'].timeout,
+            client_info=client_info,
+        )
+        self._list_instances = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.ListInstances,
-            settings=defaults['list_instances'])
-        self._get_instance = api_callable.create_api_call(
+            default_retry=method_configs['ListInstances'].retry,
+            default_timeout=method_configs['ListInstances'].timeout,
+            client_info=client_info,
+        )
+        self._get_instance = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.GetInstance,
-            settings=defaults['get_instance'])
-        self._create_instance = api_callable.create_api_call(
+            default_retry=method_configs['GetInstance'].retry,
+            default_timeout=method_configs['GetInstance'].timeout,
+            client_info=client_info,
+        )
+        self._create_instance = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.CreateInstance,
-            settings=defaults['create_instance'])
-        self._update_instance = api_callable.create_api_call(
+            default_retry=method_configs['CreateInstance'].retry,
+            default_timeout=method_configs['CreateInstance'].timeout,
+            client_info=client_info,
+        )
+        self._update_instance = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.UpdateInstance,
-            settings=defaults['update_instance'])
-        self._delete_instance = api_callable.create_api_call(
+            default_retry=method_configs['UpdateInstance'].retry,
+            default_timeout=method_configs['UpdateInstance'].timeout,
+            client_info=client_info,
+        )
+        self._delete_instance = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.DeleteInstance,
-            settings=defaults['delete_instance'])
-        self._set_iam_policy = api_callable.create_api_call(
+            default_retry=method_configs['DeleteInstance'].retry,
+            default_timeout=method_configs['DeleteInstance'].timeout,
+            client_info=client_info,
+        )
+        self._set_iam_policy = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.SetIamPolicy,
-            settings=defaults['set_iam_policy'])
-        self._get_iam_policy = api_callable.create_api_call(
+            default_retry=method_configs['SetIamPolicy'].retry,
+            default_timeout=method_configs['SetIamPolicy'].timeout,
+            client_info=client_info,
+        )
+        self._get_iam_policy = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.GetIamPolicy,
-            settings=defaults['get_iam_policy'])
-        self._test_iam_permissions = api_callable.create_api_call(
+            default_retry=method_configs['GetIamPolicy'].retry,
+            default_timeout=method_configs['GetIamPolicy'].timeout,
+            client_info=client_info,
+        )
+        self._test_iam_permissions = google.api_core.gapic_v1.method.wrap_method(
             self.instance_admin_stub.TestIamPermissions,
-            settings=defaults['test_iam_permissions'])
+            default_retry=method_configs['TestIamPermissions'].retry,
+            default_timeout=method_configs['TestIamPermissions'].timeout,
+            client_info=client_info,
+        )
 
     # Service calls
-    def list_instance_configs(self, parent, page_size=None, options=None):
+    def list_instance_configs(self,
+                              parent,
+                              page_size=None,
+                              retry=google.api_core.gapic_v1.method.DEFAULT,
+                              timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Lists the supported instance configurations for a given project.
 
         Example:
             >>> from google.cloud import spanner_admin_instance_v1
-            >>> from google.gax import CallOptions, INITIAL_PAGE
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
@@ -339,8 +263,12 @@ class InstanceAdminClient(object):
                 resource, this parameter does not affect the return value. If page
                 streaming is performed per-page, this determines the maximum number
                 of resources in a page.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
@@ -349,14 +277,31 @@ class InstanceAdminClient(object):
             of the response through the `options` parameter.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_instance_admin_pb2.ListInstanceConfigsRequest(
-            parent=parent, page_size=page_size)
-        return self._list_instance_configs(request, options)
+            parent=parent,
+            page_size=page_size,
+        )
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._list_instance_configs, retry=retry, timeout=timeout),
+            request=request,
+            items_field='instance_configs',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
+        )
+        return iterator
 
-    def get_instance_config(self, name, options=None):
+    def get_instance_config(self,
+                            name,
+                            retry=google.api_core.gapic_v1.method.DEFAULT,
+                            timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Gets information about a particular instance configuration.
 
@@ -372,31 +317,38 @@ class InstanceAdminClient(object):
         Args:
             name (str): Required. The name of the requested instance configuration. Values are of
                 the form ``projects/<project>/instanceConfigs/<config>``.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_admin_instance_v1.types.InstanceConfig` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_instance_admin_pb2.GetInstanceConfigRequest(
-            name=name)
-        return self._get_instance_config(request, options)
+            name=name, )
+        return self._get_instance_config(request, retry=retry, timeout=timeout)
 
     def list_instances(self,
                        parent,
                        page_size=None,
                        filter_=None,
-                       options=None):
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Lists all instances in the given project.
 
         Example:
             >>> from google.cloud import spanner_admin_instance_v1
-            >>> from google.gax import CallOptions, INITIAL_PAGE
             >>>
             >>> client = spanner_admin_instance_v1.InstanceAdminClient()
             >>>
@@ -425,24 +377,32 @@ class InstanceAdminClient(object):
             filter_ (str): An expression for filtering the results of the request. Filter rules are
                 case insensitive. The fields eligible for filtering are:
 
-                  * name
-                  * display_name
-                  * labels.key where key is the name of a label
+                  * ``name``
+                  * ``display_name``
+                  * ``labels.key`` where key is the name of a label
 
                 Some examples of using filters are:
 
-                  * name:* --> The instance has a name.
-                  * name:Howl --> The instance's name contains the string \"howl\".
-                  * name:HOWL --> Equivalent to above.
-                  * NAME:howl --> Equivalent to above.
-                  * labels.env:* --> The instance has the label \"env\".
-                  * labels.env:dev --> The instance has the label \"env\" and the value of
-                    the label contains the string \"dev\".
-                  * name:howl labels.env:dev --> The instance's name contains \"howl\" and
-                    it has the label \"env\" with its value containing \"dev\".
+                  * ``name:*`` --> The instance has a name.
+                  * ``name:Howl`` --> The instance's name contains the string \"howl\".
+                  * ``name:HOWL`` --> Equivalent to above.
+                  * ``NAME:howl`` --> Equivalent to above.
+                  * ``labels.env:*`` --> The instance has the label \"env\".
+                  * ``labels.env:dev`` --> The instance has the label \"env\" and the value of
+                ::
 
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+                                       the label contains the string \"dev\".
+                  * ``name:howl labels.env:dev`` --> The instance's name contains \"howl\" and
+                ::
+
+                                                 it has the label \"env\" with its value
+                                                 containing \"dev\".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
@@ -451,14 +411,32 @@ class InstanceAdminClient(object):
             of the response through the `options` parameter.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_instance_admin_pb2.ListInstancesRequest(
-            parent=parent, page_size=page_size, filter=filter_)
-        return self._list_instances(request, options)
+            parent=parent,
+            page_size=page_size,
+            filter=filter_,
+        )
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._list_instances, retry=retry, timeout=timeout),
+            request=request,
+            items_field='instances',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
+        )
+        return iterator
 
-    def get_instance(self, name, options=None):
+    def get_instance(self,
+                     name,
+                     retry=google.api_core.gapic_v1.method.DEFAULT,
+                     timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Gets information about a particular instance.
 
@@ -474,20 +452,32 @@ class InstanceAdminClient(object):
         Args:
             name (str): Required. The name of the requested instance. Values are of the form
                 ``projects/<project>/instances/<instance>``.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_admin_instance_v1.types.Instance` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
-        request = spanner_instance_admin_pb2.GetInstanceRequest(name=name)
-        return self._get_instance(request, options)
+        request = spanner_instance_admin_pb2.GetInstanceRequest(name=name, )
+        return self._get_instance(request, retry=retry, timeout=timeout)
 
-    def create_instance(self, parent, instance_id, instance, options=None):
+    def create_instance(self,
+                        parent,
+                        instance_id,
+                        instance,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Creates an instance and begins preparing it to begin serving. The
         returned ``long-running operation``
@@ -499,19 +489,19 @@ class InstanceAdminClient(object):
         Immediately upon completion of this request:
 
         * The instance is readable via the API, with all requested attributes
-          but no allocated resources. Its state is `CREATING`.
+        but no allocated resources. Its state is `CREATING`.
 
         Until completion of the returned operation:
 
         * Cancelling the operation renders the instance immediately unreadable
-          via the API.
+        via the API.
         * The instance can be deleted.
         * All other attempts to modify the instance are rejected.
 
         Upon completion of the returned operation:
 
         * Billing for all successfully-allocated resources begins (some types
-          may have lower than the requested levels).
+        may have lower than the requested levels).
         * Databases can be created in the instance.
         * The instance's allocated resource levels are readable via the API.
         * The instance's state becomes ``READY``.
@@ -554,24 +544,42 @@ class InstanceAdminClient(object):
                 specified must be ``<parent>/instances/<instance_id>``.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_admin_instance_v1.types._OperationFuture` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_instance_admin_pb2.CreateInstanceRequest(
-            parent=parent, instance_id=instance_id, instance=instance)
-        return google.gax._OperationFuture(
-            self._create_instance(request, options), self.operations_client,
+            parent=parent,
+            instance_id=instance_id,
+            instance=instance,
+        )
+        operation = self._create_instance(
+            request, retry=retry, timeout=timeout)
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.operations_client,
             spanner_instance_admin_pb2.Instance,
-            spanner_instance_admin_pb2.CreateInstanceMetadata, options)
+            metadata_type=spanner_instance_admin_pb2.CreateInstanceMetadata,
+        )
 
-    def update_instance(self, instance, field_mask, options=None):
+    def update_instance(self,
+                        instance,
+                        field_mask,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Updates an instance, and begins allocating or releasing resources
         as requested. The returned [long-running
@@ -582,25 +590,25 @@ class InstanceAdminClient(object):
         Immediately upon completion of this request:
 
         * For resource types for which a decrease in the instance's allocation
-          has been requested, billing is based on the newly-requested level.
+        has been requested, billing is based on the newly-requested level.
 
         Until completion of the returned operation:
 
         * Cancelling the operation sets its metadata's
-          [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time], and begins
-          restoring resources to their pre-request values. The operation
-          is guaranteed to succeed at undoing all resource changes,
-          after which point it terminates with a `CANCELLED` status.
+        [cancel_time][google.spanner.admin.instance.v1.UpdateInstanceMetadata.cancel_time], and begins
+        restoring resources to their pre-request values. The operation
+        is guaranteed to succeed at undoing all resource changes,
+        after which point it terminates with a `CANCELLED` status.
         * All other attempts to modify the instance are rejected.
         * Reading the instance via the API continues to give the pre-request
-          resource levels.
+        resource levels.
 
         Upon completion of the returned operation:
 
         * Billing begins for all successfully-allocated resources (some types
-          may have lower than the requested levels).
+        may have lower than the requested levels).
         * All newly-reserved resources are available for serving the instance's
-          tables.
+        tables.
         * The instance's new resource levels are readable via the API.
 
         The returned ``long-running operation`` will
@@ -644,24 +652,40 @@ class InstanceAdminClient(object):
                 about them.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_admin_instance_v1.types._OperationFuture` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_instance_admin_pb2.UpdateInstanceRequest(
-            instance=instance, field_mask=field_mask)
-        return google.gax._OperationFuture(
-            self._update_instance(request, options), self.operations_client,
+            instance=instance,
+            field_mask=field_mask,
+        )
+        operation = self._update_instance(
+            request, retry=retry, timeout=timeout)
+        return google.api_core.operation.from_gapic(
+            operation,
+            self.operations_client,
             spanner_instance_admin_pb2.Instance,
-            spanner_instance_admin_pb2.UpdateInstanceMetadata, options)
+            metadata_type=spanner_instance_admin_pb2.UpdateInstanceMetadata,
+        )
 
-    def delete_instance(self, name, options=None):
+    def delete_instance(self,
+                        name,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Deletes an instance.
 
@@ -672,8 +696,8 @@ class InstanceAdminClient(object):
         Soon afterward:
 
         * The instance and *all of its databases* immediately and
-          irrevocably disappear from the API. All data in the databases
-          is permanently deleted.
+        irrevocably disappear from the API. All data in the databases
+        is permanently deleted.
 
         Example:
             >>> from google.cloud import spanner_admin_instance_v1
@@ -687,17 +711,28 @@ class InstanceAdminClient(object):
         Args:
             name (str): Required. The name of the instance to be deleted. Values are of the form
                 ``projects/<project>/instances/<instance>``
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
-        request = spanner_instance_admin_pb2.DeleteInstanceRequest(name=name)
-        self._delete_instance(request, options)
+        request = spanner_instance_admin_pb2.DeleteInstanceRequest(name=name, )
+        self._delete_instance(request, retry=retry, timeout=timeout)
 
-    def set_iam_policy(self, resource, policy, options=None):
+    def set_iam_policy(self,
+                       resource,
+                       policy,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Sets the access control policy on an instance resource. Replaces any
         existing policy.
@@ -725,21 +760,33 @@ class InstanceAdminClient(object):
                 might reject them.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_admin_instance_v1.types.Policy`
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_admin_instance_v1.types.Policy` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = iam_policy_pb2.SetIamPolicyRequest(
-            resource=resource, policy=policy)
-        return self._set_iam_policy(request, options)
+            resource=resource,
+            policy=policy,
+        )
+        return self._set_iam_policy(request, retry=retry, timeout=timeout)
 
-    def get_iam_policy(self, resource, options=None):
+    def get_iam_policy(self,
+                       resource,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Gets the access control policy for an instance resource. Returns an empty
         policy if an instance exists but does not have a policy set.
@@ -760,20 +807,31 @@ class InstanceAdminClient(object):
             resource (str): REQUIRED: The resource for which the policy is being requested.
                 ``resource`` is usually specified as a path. For example, a Project
                 resource is specified as ``projects/{project}``.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_admin_instance_v1.types.Policy` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
-        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
-        return self._get_iam_policy(request, options)
+        request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
+        return self._get_iam_policy(request, retry=retry, timeout=timeout)
 
-    def test_iam_permissions(self, resource, permissions, options=None):
+    def test_iam_permissions(self,
+                             resource,
+                             permissions,
+                             retry=google.api_core.gapic_v1.method.DEFAULT,
+                             timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Returns permissions that the caller has on the specified instance resource.
 
@@ -800,16 +858,26 @@ class InstanceAdminClient(object):
                 wildcards (such as '*' or 'storage.*') are not allowed. For more
                 information see
                 `IAM Overview <https://cloud.google.com/iam/docs/overview#permissions>`_.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsResponse` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = iam_policy_pb2.TestIamPermissionsRequest(
-            resource=resource, permissions=permissions)
-        return self._test_iam_permissions(request, options)
+            resource=resource,
+            permissions=permissions,
+        )
+        return self._test_iam_permissions(
+            request, retry=retry, timeout=timeout)

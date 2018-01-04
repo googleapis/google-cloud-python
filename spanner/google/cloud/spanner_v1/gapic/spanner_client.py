@@ -1,38 +1,28 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2017 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/spanner/v1/spanner.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.spanner.v1 Spanner API."""
 
-import collections
-import json
-import os
+import functools
 import pkg_resources
-import platform
 
-from google.gax import api_callable
-from google.gax import config
-from google.gax import path_template
-from google.gax.utils import oneof
-import google.gax
+import google.api_core.gapic_v1.client_info
+import google.api_core.gapic_v1.config
+import google.api_core.gapic_v1.method
+import google.api_core.grpc_helpers
+import google.api_core.page_iterator
+import google.api_core.path_template
+import google.api_core.protobuf_helpers
 
 from google.cloud.spanner_v1.gapic import enums
 from google.cloud.spanner_v1.gapic import spanner_client_config
@@ -41,6 +31,9 @@ from google.cloud.spanner_v1.proto import mutation_pb2
 from google.cloud.spanner_v1.proto import spanner_pb2
 from google.cloud.spanner_v1.proto import transaction_pb2
 from google.protobuf import struct_pb2
+
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    'google-cloud-spanner', ).version
 
 
 class SpannerClient(object):
@@ -51,239 +44,172 @@ class SpannerClient(object):
     transactions on data stored in Cloud Spanner databases.
     """
 
-    SERVICE_ADDRESS = 'spanner.googleapis.com'
+    SERVICE_ADDRESS = 'spanner.googleapis.com:443'
     """The default address of the service."""
-
-    DEFAULT_SERVICE_PORT = 443
-    """The default port of the service."""
 
     # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
-    _ALL_SCOPES = (
+    _DEFAULT_SCOPES = (
         'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/spanner.data', )
-
-    _DATABASE_PATH_TEMPLATE = path_template.PathTemplate(
-        'projects/{project}/instances/{instance}/databases/{database}')
-    _SESSION_PATH_TEMPLATE = path_template.PathTemplate(
-        'projects/{project}/instances/{instance}/databases/{database}/sessions/{session}'
+        'https://www.googleapis.com/auth/spanner.data',
     )
+
+    # The name of the interface for this client. This is the key used to find
+    # method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.spanner.v1.Spanner'
 
     @classmethod
     def database_path(cls, project, instance, database):
-        """Returns a fully-qualified database resource name string."""
-        return cls._DATABASE_PATH_TEMPLATE.render({
-            'project': project,
-            'instance': instance,
-            'database': database,
-        })
+        """Return a fully-qualified database string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/instances/{instance}/databases/{database}',
+            project=project,
+            instance=instance,
+            database=database,
+        )
 
     @classmethod
     def session_path(cls, project, instance, database, session):
-        """Returns a fully-qualified session resource name string."""
-        return cls._SESSION_PATH_TEMPLATE.render({
-            'project': project,
-            'instance': instance,
-            'database': database,
-            'session': session,
-        })
-
-    @classmethod
-    def match_project_from_database_name(cls, database_name):
-        """Parses the project from a database resource.
-
-        Args:
-            database_name (str): A fully-qualified path representing a database
-                resource.
-
-        Returns:
-            A string representing the project.
-        """
-        return cls._DATABASE_PATH_TEMPLATE.match(database_name).get('project')
-
-    @classmethod
-    def match_instance_from_database_name(cls, database_name):
-        """Parses the instance from a database resource.
-
-        Args:
-            database_name (str): A fully-qualified path representing a database
-                resource.
-
-        Returns:
-            A string representing the instance.
-        """
-        return cls._DATABASE_PATH_TEMPLATE.match(database_name).get('instance')
-
-    @classmethod
-    def match_database_from_database_name(cls, database_name):
-        """Parses the database from a database resource.
-
-        Args:
-            database_name (str): A fully-qualified path representing a database
-                resource.
-
-        Returns:
-            A string representing the database.
-        """
-        return cls._DATABASE_PATH_TEMPLATE.match(database_name).get('database')
-
-    @classmethod
-    def match_project_from_session_name(cls, session_name):
-        """Parses the project from a session resource.
-
-        Args:
-            session_name (str): A fully-qualified path representing a session
-                resource.
-
-        Returns:
-            A string representing the project.
-        """
-        return cls._SESSION_PATH_TEMPLATE.match(session_name).get('project')
-
-    @classmethod
-    def match_instance_from_session_name(cls, session_name):
-        """Parses the instance from a session resource.
-
-        Args:
-            session_name (str): A fully-qualified path representing a session
-                resource.
-
-        Returns:
-            A string representing the instance.
-        """
-        return cls._SESSION_PATH_TEMPLATE.match(session_name).get('instance')
-
-    @classmethod
-    def match_database_from_session_name(cls, session_name):
-        """Parses the database from a session resource.
-
-        Args:
-            session_name (str): A fully-qualified path representing a session
-                resource.
-
-        Returns:
-            A string representing the database.
-        """
-        return cls._SESSION_PATH_TEMPLATE.match(session_name).get('database')
-
-    @classmethod
-    def match_session_from_session_name(cls, session_name):
-        """Parses the session from a session resource.
-
-        Args:
-            session_name (str): A fully-qualified path representing a session
-                resource.
-
-        Returns:
-            A string representing the session.
-        """
-        return cls._SESSION_PATH_TEMPLATE.match(session_name).get('session')
+        """Return a fully-qualified session string."""
+        return google.api_core.path_template.expand(
+            'projects/{project}/instances/{instance}/databases/{database}/sessions/{session}',
+            project=project,
+            instance=instance,
+            database=database,
+            session=session,
+        )
 
     def __init__(self,
                  channel=None,
                  credentials=None,
-                 ssl_credentials=None,
-                 scopes=None,
-                 client_config=None,
-                 lib_name=None,
-                 lib_version='',
-                 metrics_headers=()):
+                 client_config=spanner_client_config.config,
+                 client_info=None):
         """Constructor.
 
         Args:
-            channel (~grpc.Channel): A ``Channel`` instance through
-                which to make calls.
-            credentials (~google.auth.credentials.Credentials): The authorization
-                credentials to attach to requests. These credentials identify this
-                application to the service.
-            ssl_credentials (~grpc.ChannelCredentials): A
-                ``ChannelCredentials`` instance for use with an SSL-enabled
-                channel.
-            scopes (Sequence[str]): A list of OAuth2 scopes to attach to requests.
-            client_config (dict):
-                A dictionary for call options for each method. See
-                :func:`google.gax.construct_settings` for the structure of
-                this data. Falls back to the default config if not specified
-                or the specified config is missing data points.
-            lib_name (str): The API library software used for calling
-                the service. (Unless you are writing an API client itself,
-                leave this as default.)
-            lib_version (str): The API library software version used
-                for calling the service. (Unless you are writing an API client
-                itself, leave this as default.)
-            metrics_headers (dict): A dictionary of values for tracking
-                client library metrics. Ultimately serializes to a string
-                (e.g. 'foo/1.2.3 bar/3.14.1'). This argument should be
-                considered private.
+            channel (grpc.Channel): A ``Channel`` instance through
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
+            credentials (google.auth.credentials.Credentials): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+            client_config (dict): A dictionary of call options for each
+                method. If not specified, the default configuration is used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
         """
-        # Unless the calling application specifically requested
-        # OAuth scopes, request everything.
-        if scopes is None:
-            scopes = self._ALL_SCOPES
+        # If both `channel` and `credentials` are specified, raise an
+        # exception (channels come with credentials baked in already).
+        if channel is not None and credentials is not None:
+            raise ValueError(
+                'The `channel` and `credentials` arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__), )
 
-        # Initialize an empty client config, if none is set.
-        if client_config is None:
-            client_config = {}
+        # Create the channel.
+        if channel is None:
+            channel = google.api_core.grpc_helpers.create_channel(
+                self.SERVICE_ADDRESS,
+                credentials=credentials,
+                scopes=self._DEFAULT_SCOPES,
+            )
 
-        # Initialize metrics_headers as an ordered dictionary
-        # (cuts down on cardinality of the resulting string slightly).
-        metrics_headers = collections.OrderedDict(metrics_headers)
-        metrics_headers['gl-python'] = platform.python_version()
+        # Create the gRPC stubs.
+        self.spanner_stub = (spanner_pb2.SpannerStub(channel))
 
-        # The library may or may not be set, depending on what is
-        # calling this client. Newer client libraries set the library name
-        # and version.
-        if lib_name:
-            metrics_headers[lib_name] = lib_version
+        if client_info is None:
+            client_info = (
+                google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
+        client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
-        # Finally, track the GAPIC package version.
-        metrics_headers['gapic'] = pkg_resources.get_distribution(
-            'google-cloud-spanner', ).version
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
+        method_configs = google.api_core.gapic_v1.config.parse_method_configs(
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
-        # Load the configuration defaults.
-        defaults = api_callable.construct_settings(
-            'google.spanner.v1.Spanner',
-            spanner_client_config.config,
-            client_config,
-            config.STATUS_CODE_NAMES,
-            metrics_headers=metrics_headers, )
-        self.spanner_stub = config.create_stub(
-            spanner_pb2.SpannerStub,
-            channel=channel,
-            service_path=self.SERVICE_ADDRESS,
-            service_port=self.DEFAULT_SERVICE_PORT,
-            credentials=credentials,
-            scopes=scopes,
-            ssl_credentials=ssl_credentials)
-
-        self._create_session = api_callable.create_api_call(
+        # Write the "inner API call" methods to the class.
+        # These are wrapped versions of the gRPC stub methods, with retry and
+        # timeout configuration applied, called by the public methods on
+        # this class.
+        self._create_session = google.api_core.gapic_v1.method.wrap_method(
             self.spanner_stub.CreateSession,
-            settings=defaults['create_session'])
-        self._get_session = api_callable.create_api_call(
-            self.spanner_stub.GetSession, settings=defaults['get_session'])
-        self._delete_session = api_callable.create_api_call(
+            default_retry=method_configs['CreateSession'].retry,
+            default_timeout=method_configs['CreateSession'].timeout,
+            client_info=client_info,
+        )
+        self._get_session = google.api_core.gapic_v1.method.wrap_method(
+            self.spanner_stub.GetSession,
+            default_retry=method_configs['GetSession'].retry,
+            default_timeout=method_configs['GetSession'].timeout,
+            client_info=client_info,
+        )
+        self._list_sessions = google.api_core.gapic_v1.method.wrap_method(
+            self.spanner_stub.ListSessions,
+            default_retry=method_configs['ListSessions'].retry,
+            default_timeout=method_configs['ListSessions'].timeout,
+            client_info=client_info,
+        )
+        self._delete_session = google.api_core.gapic_v1.method.wrap_method(
             self.spanner_stub.DeleteSession,
-            settings=defaults['delete_session'])
-        self._execute_sql = api_callable.create_api_call(
-            self.spanner_stub.ExecuteSql, settings=defaults['execute_sql'])
-        self._execute_streaming_sql = api_callable.create_api_call(
+            default_retry=method_configs['DeleteSession'].retry,
+            default_timeout=method_configs['DeleteSession'].timeout,
+            client_info=client_info,
+        )
+        self._execute_sql = google.api_core.gapic_v1.method.wrap_method(
+            self.spanner_stub.ExecuteSql,
+            default_retry=method_configs['ExecuteSql'].retry,
+            default_timeout=method_configs['ExecuteSql'].timeout,
+            client_info=client_info,
+        )
+        self._execute_streaming_sql = google.api_core.gapic_v1.method.wrap_method(
             self.spanner_stub.ExecuteStreamingSql,
-            settings=defaults['execute_streaming_sql'])
-        self._read = api_callable.create_api_call(
-            self.spanner_stub.Read, settings=defaults['read'])
-        self._streaming_read = api_callable.create_api_call(
+            default_retry=method_configs['ExecuteStreamingSql'].retry,
+            default_timeout=method_configs['ExecuteStreamingSql'].timeout,
+            client_info=client_info,
+        )
+        self._read = google.api_core.gapic_v1.method.wrap_method(
+            self.spanner_stub.Read,
+            default_retry=method_configs['Read'].retry,
+            default_timeout=method_configs['Read'].timeout,
+            client_info=client_info,
+        )
+        self._streaming_read = google.api_core.gapic_v1.method.wrap_method(
             self.spanner_stub.StreamingRead,
-            settings=defaults['streaming_read'])
-        self._begin_transaction = api_callable.create_api_call(
+            default_retry=method_configs['StreamingRead'].retry,
+            default_timeout=method_configs['StreamingRead'].timeout,
+            client_info=client_info,
+        )
+        self._begin_transaction = google.api_core.gapic_v1.method.wrap_method(
             self.spanner_stub.BeginTransaction,
-            settings=defaults['begin_transaction'])
-        self._commit = api_callable.create_api_call(
-            self.spanner_stub.Commit, settings=defaults['commit'])
-        self._rollback = api_callable.create_api_call(
-            self.spanner_stub.Rollback, settings=defaults['rollback'])
+            default_retry=method_configs['BeginTransaction'].retry,
+            default_timeout=method_configs['BeginTransaction'].timeout,
+            client_info=client_info,
+        )
+        self._commit = google.api_core.gapic_v1.method.wrap_method(
+            self.spanner_stub.Commit,
+            default_retry=method_configs['Commit'].retry,
+            default_timeout=method_configs['Commit'].timeout,
+            client_info=client_info,
+        )
+        self._rollback = google.api_core.gapic_v1.method.wrap_method(
+            self.spanner_stub.Rollback,
+            default_retry=method_configs['Rollback'].retry,
+            default_timeout=method_configs['Rollback'].timeout,
+            client_info=client_info,
+        )
 
     # Service calls
-    def create_session(self, database, options=None):
+    def create_session(self,
+                       database,
+                       session=None,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Creates a new session. A session can be used to perform
         transactions that read and/or modify data in a Cloud Spanner database.
@@ -316,20 +242,36 @@ class SpannerClient(object):
 
         Args:
             database (str): Required. The database in which the new session is created.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            session (Union[dict, ~google.cloud.spanner_v1.types.Session]): The session to create.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.Session`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.Session` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
-        request = spanner_pb2.CreateSessionRequest(database=database)
-        return self._create_session(request, options)
+        request = spanner_pb2.CreateSessionRequest(
+            database=database,
+            session=session,
+        )
+        return self._create_session(request, retry=retry, timeout=timeout)
 
-    def get_session(self, name, options=None):
+    def get_session(self,
+                    name,
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Gets a session. Returns ``NOT_FOUND`` if the session does not exist.
         This is mainly useful for determining whether a session is still
@@ -346,20 +288,113 @@ class SpannerClient(object):
 
         Args:
             name (str): Required. The name of the session to retrieve.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.Session` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
-        request = spanner_pb2.GetSessionRequest(name=name)
-        return self._get_session(request, options)
+        request = spanner_pb2.GetSessionRequest(name=name, )
+        return self._get_session(request, retry=retry, timeout=timeout)
 
-    def delete_session(self, name, options=None):
+    def list_sessions(self,
+                      database,
+                      page_size=None,
+                      filter_=None,
+                      retry=google.api_core.gapic_v1.method.DEFAULT,
+                      timeout=google.api_core.gapic_v1.method.DEFAULT):
+        """
+        Lists all sessions in a given database.
+
+        Example:
+            >>> from google.cloud import spanner_v1
+            >>>
+            >>> client = spanner_v1.SpannerClient()
+            >>>
+            >>> database = client.database_path('[PROJECT]', '[INSTANCE]', '[DATABASE]')
+            >>>
+            >>>
+            >>> # Iterate over all results
+            >>> for element in client.list_sessions(database):
+            ...     # process element
+            ...     pass
+            >>>
+            >>> # Or iterate over results one page at a time
+            >>> for page in client.list_sessions(database, options=CallOptions(page_token=INITIAL_PAGE)):
+            ...     for element in page:
+            ...         # process element
+            ...         pass
+
+        Args:
+            database (str): Required. The database in which to list sessions.
+            page_size (int): The maximum number of resources contained in the
+                underlying API response. If page streaming is performed per-
+                resource, this parameter does not affect the return value. If page
+                streaming is performed per-page, this determines the maximum number
+                of resources in a page.
+            filter_ (str): An expression for filtering the results of the request. Filter rules are
+                case insensitive. The fields eligible for filtering are:
+
+                  * ``labels.key`` where key is the name of a label
+
+                Some examples of using filters are:
+
+                  * ``labels.env:*`` --> The session has the label \"env\".
+                  * ``labels.env:dev`` --> The session has the label \"env\" and the value of
+                ::
+
+                                       the label contains the string \"dev\".
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+
+        Returns:
+            A :class:`~google.gax.PageIterator` instance. By default, this
+            is an iterable of :class:`~google.cloud.spanner_v1.types.Session` instances.
+            This object can also be configured to iterate over the pages
+            of the response through the `options` parameter.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        request = spanner_pb2.ListSessionsRequest(
+            database=database,
+            page_size=page_size,
+            filter=filter_,
+        )
+        iterator = google.api_core.page_iterator.GRPCIterator(
+            client=None,
+            method=functools.partial(
+                self._list_sessions, retry=retry, timeout=timeout),
+            request=request,
+            items_field='sessions',
+            request_token_field='page_token',
+            response_token_field='next_page_token',
+        )
+        return iterator
+
+    def delete_session(self,
+                       name,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Ends a session, releasing server resources associated with it.
 
@@ -374,15 +409,22 @@ class SpannerClient(object):
 
         Args:
             name (str): Required. The name of the session to delete.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
-        request = spanner_pb2.DeleteSessionRequest(name=name)
-        self._delete_session(request, options)
+        request = spanner_pb2.DeleteSessionRequest(name=name, )
+        self._delete_session(request, retry=retry, timeout=timeout)
 
     def execute_sql(self,
                     session,
@@ -392,7 +434,8 @@ class SpannerClient(object):
                     param_types=None,
                     resume_token=None,
                     query_mode=None,
-                    options=None):
+                    retry=google.api_core.gapic_v1.method.DEFAULT,
+                    timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Executes an SQL query, returning all rows in a single reply. This
         method cannot be used to return a result set larger than 10 MiB;
@@ -430,7 +473,7 @@ class SpannerClient(object):
 
                 Parameters can appear anywhere that a literal value is expected.  The same
                 parameter name can be used more than once, for example:
-                ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+                  ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
 
                 It is an error to execute an SQL query with unbound parameters.
 
@@ -457,15 +500,22 @@ class SpannerClient(object):
                 request that yielded this token.
             query_mode (~google.cloud.spanner_v1.types.QueryMode): Used to control the amount of debugging information returned in
                 ``ResultSetStats``.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.ResultSet` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_pb2.ExecuteSqlRequest(
             session=session,
@@ -474,8 +524,9 @@ class SpannerClient(object):
             params=params,
             param_types=param_types,
             resume_token=resume_token,
-            query_mode=query_mode)
-        return self._execute_sql(request, options)
+            query_mode=query_mode,
+        )
+        return self._execute_sql(request, retry=retry, timeout=timeout)
 
     def execute_streaming_sql(self,
                               session,
@@ -485,7 +536,8 @@ class SpannerClient(object):
                               param_types=None,
                               resume_token=None,
                               query_mode=None,
-                              options=None):
+                              retry=google.api_core.gapic_v1.method.DEFAULT,
+                              timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Like ``ExecuteSql``, except returns the result
         set as a stream. Unlike ``ExecuteSql``, there
@@ -519,7 +571,7 @@ class SpannerClient(object):
 
                 Parameters can appear anywhere that a literal value is expected.  The same
                 parameter name can be used more than once, for example:
-                ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
+                  ``\"WHERE id > @msg_id AND id < @msg_id + 100\"``
 
                 It is an error to execute an SQL query with unbound parameters.
 
@@ -546,15 +598,22 @@ class SpannerClient(object):
                 request that yielded this token.
             query_mode (~google.cloud.spanner_v1.types.QueryMode): Used to control the amount of debugging information returned in
                 ``ResultSetStats``.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             Iterable[~google.cloud.spanner_v1.types.PartialResultSet].
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_pb2.ExecuteSqlRequest(
             session=session,
@@ -563,8 +622,10 @@ class SpannerClient(object):
             params=params,
             param_types=param_types,
             resume_token=resume_token,
-            query_mode=query_mode)
-        return self._execute_streaming_sql(request, options)
+            query_mode=query_mode,
+        )
+        return self._execute_streaming_sql(
+            request, retry=retry, timeout=timeout)
 
     def read(self,
              session,
@@ -575,7 +636,8 @@ class SpannerClient(object):
              index=None,
              limit=None,
              resume_token=None,
-             options=None):
+             retry=google.api_core.gapic_v1.method.DEFAULT,
+             timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Reads rows from the database using key lookups and scans, as a
         simple key/value style alternative to
@@ -635,15 +697,22 @@ class SpannerClient(object):
                 enables the new read to resume where the last read left off. The
                 rest of the request parameters must exactly match the request
                 that yielded this token.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.ResultSet` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_pb2.ReadRequest(
             session=session,
@@ -653,8 +722,9 @@ class SpannerClient(object):
             transaction=transaction,
             index=index,
             limit=limit,
-            resume_token=resume_token)
-        return self._read(request, options)
+            resume_token=resume_token,
+        )
+        return self._read(request, retry=retry, timeout=timeout)
 
     def streaming_read(self,
                        session,
@@ -665,7 +735,8 @@ class SpannerClient(object):
                        index=None,
                        limit=None,
                        resume_token=None,
-                       options=None):
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Like ``Read``, except returns the result set as a
         stream. Unlike ``Read``, there is no limit on the
@@ -719,15 +790,22 @@ class SpannerClient(object):
                 enables the new read to resume where the last read left off. The
                 rest of the request parameters must exactly match the request
                 that yielded this token.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             Iterable[~google.cloud.spanner_v1.types.PartialResultSet].
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_pb2.ReadRequest(
             session=session,
@@ -737,10 +815,15 @@ class SpannerClient(object):
             transaction=transaction,
             index=index,
             limit=limit,
-            resume_token=resume_token)
-        return self._streaming_read(request, options)
+            resume_token=resume_token,
+        )
+        return self._streaming_read(request, retry=retry, timeout=timeout)
 
-    def begin_transaction(self, session, options_, options=None):
+    def begin_transaction(self,
+                          session,
+                          options_,
+                          retry=google.api_core.gapic_v1.method.DEFAULT,
+                          timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Begins a new transaction. This step can often be skipped:
         ``Read``, ``ExecuteSql`` and
@@ -762,26 +845,36 @@ class SpannerClient(object):
             options_ (Union[dict, ~google.cloud.spanner_v1.types.TransactionOptions]): Required. Options for the new transaction.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.Transaction` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_pb2.BeginTransactionRequest(
-            session=session, options=options_)
-        return self._begin_transaction(request, options)
+            session=session,
+            options=options_,
+        )
+        return self._begin_transaction(request, retry=retry, timeout=timeout)
 
     def commit(self,
                session,
                mutations,
                transaction_id=None,
                single_use_transaction=None,
-               options=None):
+               retry=google.api_core.gapic_v1.method.DEFAULT,
+               timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Commits a transaction. The request includes the mutations to be
         applied to rows in the database.
@@ -821,30 +914,43 @@ class SpannerClient(object):
                 ``Commit`` instead.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.TransactionOptions`
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Returns:
             A :class:`~google.cloud.spanner_v1.types.CommitResponse` instance.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         # Sanity check: We have some fields which are mutually exclusive;
         # raise ValueError if more than one is sent.
-        oneof.check_oneof(
+        google.api_core.protobuf_helpers.check_oneof(
             transaction_id=transaction_id,
-            single_use_transaction=single_use_transaction, )
+            single_use_transaction=single_use_transaction,
+        )
 
         request = spanner_pb2.CommitRequest(
             session=session,
             mutations=mutations,
             transaction_id=transaction_id,
-            single_use_transaction=single_use_transaction)
-        return self._commit(request, options)
+            single_use_transaction=single_use_transaction,
+        )
+        return self._commit(request, retry=retry, timeout=timeout)
 
-    def rollback(self, session, transaction_id, options=None):
+    def rollback(self,
+                 session,
+                 transaction_id,
+                 retry=google.api_core.gapic_v1.method.DEFAULT,
+                 timeout=google.api_core.gapic_v1.method.DEFAULT):
         """
         Rolls back a transaction, releasing any locks it holds. It is a good
         idea to call this for any transaction that includes one or more
@@ -868,13 +974,22 @@ class SpannerClient(object):
         Args:
             session (str): Required. The session in which the transaction to roll back is running.
             transaction_id (bytes): Required. The transaction to roll back.
-            options (~google.gax.CallOptions): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
 
         Raises:
-            :exc:`google.gax.errors.GaxError` if the RPC is aborted.
-            :exc:`ValueError` if the parameters are invalid.
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
         """
         request = spanner_pb2.RollbackRequest(
-            session=session, transaction_id=transaction_id)
-        self._rollback(request, options)
+            session=session,
+            transaction_id=transaction_id,
+        )
+        self._rollback(request, retry=retry, timeout=timeout)
