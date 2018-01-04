@@ -4,6 +4,10 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 0.29.1 (unreleased)
+
+- TBD
+
 ## 0.29.0
 
 ### Interface changes / additions
