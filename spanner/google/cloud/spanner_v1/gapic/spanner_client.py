@@ -823,7 +823,8 @@ class SpannerClient(object):
                           session,
                           options_,
                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT):
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
         Begins a new transaction. This step can often be skipped:
         ``Read``, ``ExecuteSql`` and
@@ -866,7 +867,8 @@ class SpannerClient(object):
             session=session,
             options=options_,
         )
-        return self._begin_transaction(request, retry=retry, timeout=timeout)
+        return self._begin_transaction(
+            request, metadata=metadata, retry=retry, timeout=timeout)
 
     def commit(self,
                session,
@@ -874,7 +876,8 @@ class SpannerClient(object):
                transaction_id=None,
                single_use_transaction=None,
                retry=google.api_core.gapic_v1.method.DEFAULT,
-               timeout=google.api_core.gapic_v1.method.DEFAULT):
+               timeout=google.api_core.gapic_v1.method.DEFAULT,
+               metadata=None):
         """
         Commits a transaction. The request includes the mutations to be
         applied to rows in the database.
@@ -944,13 +947,15 @@ class SpannerClient(object):
             transaction_id=transaction_id,
             single_use_transaction=single_use_transaction,
         )
-        return self._commit(request, retry=retry, timeout=timeout)
+        return self._commit(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def rollback(self,
                  session,
                  transaction_id,
                  retry=google.api_core.gapic_v1.method.DEFAULT,
-                 timeout=google.api_core.gapic_v1.method.DEFAULT):
+                 timeout=google.api_core.gapic_v1.method.DEFAULT,
+                 metadata=None):
         """
         Rolls back a transaction, releasing any locks it holds. It is a good
         idea to call this for any transaction that includes one or more
@@ -992,4 +997,5 @@ class SpannerClient(object):
             session=session,
             transaction_id=transaction_id,
         )
-        self._rollback(request, retry=retry, timeout=timeout)
+        self._rollback(
+            request, retry=retry, timeout=timeout, metadata=metadata)
