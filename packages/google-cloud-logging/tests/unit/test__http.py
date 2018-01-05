@@ -334,6 +334,7 @@ class Test_SinksAPI(unittest.TestCase):
     SINK_NAME = 'sink_name'
     SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
     DESTINATION_URI = 'faux.googleapis.com/destination'
+    WRITER_IDENTITY = 'serviceAccount:project-123@example.com'
 
     @staticmethod
     def _get_target_class():
@@ -438,7 +439,7 @@ class Test_SinksAPI(unittest.TestCase):
     def test_sink_create_conflict(self):
         from google.cloud.exceptions import Conflict
 
-        SENT = {
+        sent = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
@@ -453,47 +454,36 @@ class Test_SinksAPI(unittest.TestCase):
                 self.PROJECT, self.SINK_NAME, self.FILTER,
                 self.DESTINATION_URI)
 
-        self.assertEqual(conn._called_with['method'], 'POST')
         path = '/projects/%s/sinks' % (self.PROJECT,)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['data'], SENT)
+        expected = {
+            'method': 'POST',
+            'path': path,
+            'data': sent,
+            'query_params': {'uniqueWriterIdentity': False},
+        }
+        self.assertEqual(conn._called_with, expected)
 
     def test_sink_create_ok(self):
-        SENT = {
-            'name': self.SINK_NAME,
-            'filter': self.FILTER,
-            'destination': self.DESTINATION_URI,
-        }
-        conn = _Connection({})
-        client = _Client(conn)
-        api = self._make_one(client)
-
-        api.sink_create(
-            self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
-
-        self.assertEqual(conn._called_with['method'], 'POST')
-        path = '/projects/%s/sinks' % (self.PROJECT,)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['data'], SENT)
-
-    def test_sink_create_unique_writer_identity(self):
         sent = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-
-        conn = _Connection({})
+        after_create = sent.copy()
+        after_create['writerIdentity'] = self.WRITER_IDENTITY
+        conn = _Connection(after_create)
         client = _Client(conn)
         api = self._make_one(client)
 
-        api.sink_create(
+        returned = api.sink_create(
             self.PROJECT,
             self.SINK_NAME,
             self.FILTER,
             self.DESTINATION_URI,
             unique_writer_identity=True,
         )
+
+        self.assertEqual(returned, after_create)
         path = '/projects/%s/sinks' % (self.PROJECT,)
         expected = {
             'method': 'POST',

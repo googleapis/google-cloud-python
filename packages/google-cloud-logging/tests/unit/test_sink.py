@@ -97,12 +97,22 @@ class TestSink(unittest.TestCase):
     def test_create_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.sinks_api = _DummySinksAPI()
+        api._sink_create_response = {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+            'writerIdentity': self.WRITER_IDENTITY,
+        }
         sink = self._make_one(self.SINK_NAME, self.FILTER,
                               self.DESTINATION_URI,
                               client=client)
 
         sink.create()
 
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_create_called_with,
             (
@@ -121,9 +131,19 @@ class TestSink(unittest.TestCase):
                               self.DESTINATION_URI,
                               client=client1)
         api = client2.sinks_api = _DummySinksAPI()
+        api._sink_create_response = {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+            'writerIdentity': self.WRITER_IDENTITY,
+        }
 
         sink.create(client=client2, unique_writer_identity=True)
 
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_create_called_with,
             (
@@ -273,6 +293,7 @@ class _DummySinksAPI(object):
                     unique_writer_identity=False):
         self._sink_create_called_with = (
             project, sink_name, filter_, destination, unique_writer_identity)
+        return self._sink_create_response
 
     def sink_get(self, project, sink_name):
         from google.cloud.exceptions import NotFound
