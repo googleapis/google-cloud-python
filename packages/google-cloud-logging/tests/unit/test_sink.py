@@ -62,13 +62,12 @@ class TestSink(unittest.TestCase):
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
         RESOURCE = {
             'name': self.SINK_NAME,
-            'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
         klass = self._get_target_class()
         sink = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(sink.name, self.SINK_NAME)
-        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertIsNone(sink.filter_)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
         self.assertIs(sink._client, client)
         self.assertEqual(sink.project, self.PROJECT)
@@ -164,24 +163,20 @@ class TestSink(unittest.TestCase):
                          (self.PROJECT, self.SINK_NAME))
 
     def test_reload_w_bound_client(self):
-        NEW_FILTER = 'logName:syslog AND severity>=INFO'
         NEW_DESTINATION_URI = 'faux.googleapis.com/other'
         RESOURCE = {
             'name': self.SINK_NAME,
-            'filter': NEW_FILTER,
             'destination': NEW_DESTINATION_URI,
         }
         client = _Client(project=self.PROJECT)
         api = client.sinks_api = _DummySinksAPI()
         api._sink_get_response = RESOURCE
-        sink = self._make_one(self.SINK_NAME, self.FILTER,
-                              self.DESTINATION_URI,
-                              client=client)
+        sink = self._make_one(self.SINK_NAME, client=client)
 
         sink.reload()
 
-        self.assertEqual(sink.filter_, NEW_FILTER)
         self.assertEqual(sink.destination, NEW_DESTINATION_URI)
+        self.assertIsNone(sink.filter_)
         self.assertEqual(api._sink_get_called_with,
                          (self.PROJECT, self.SINK_NAME))
 
@@ -197,9 +192,7 @@ class TestSink(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.sinks_api = _DummySinksAPI()
         api._sink_get_response = RESOURCE
-        sink = self._make_one(self.SINK_NAME, self.FILTER,
-                              self.DESTINATION_URI,
-                              client=client1)
+        sink = self._make_one(self.SINK_NAME, client=client1)
 
         sink.reload(client=client2)
 
