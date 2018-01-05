@@ -315,7 +315,6 @@ class HTTPIterator(Iterator):
         super(HTTPIterator, self).__init__(
             client, item_to_value, page_token=page_token,
             max_results=max_results)
-        self.client = client
         self.api_request = api_request
         self.path = path
         self._items_key = items_key
