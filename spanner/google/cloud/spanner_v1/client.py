@@ -201,8 +201,8 @@ class Client(ClientWithProject):
         metadata = _metadata_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instance_configs(
-            path, page_token=page_token, page_size=page_size,
-            metadata=metadata)
+            path, page_size=page_size, metadata=metadata)
+        page_iter.next_page_token = page_token
         page_iter._item_to_value = _item_to_instance_config
         return page_iter
 
@@ -262,10 +262,24 @@ class Client(ClientWithProject):
         metadata = _metadata_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
-            path, page_token=page_token, page_size=page_size,
-            metadata=metadata)
-        page_iter._item_to_value = _item_to_instance
+            path, page_size=page_size, metadata=metadata)
+        page_iter._item_to_value = self._item_to_instance
+        page_iter.next_page_token = page_token
         return page_iter
+
+    def _item_to_instance(self, iterator, instance_pb):
+        """Convert an instance protobuf to the native object.
+
+        :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+        :param iterator: The iterator that is currently in use.
+
+        :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`
+        :param instance_pb: An instance returned from the API.
+
+        :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
+        :returns: The next instance in the page.
+        """
+        return Instance.from_pb(instance_pb, self)
 
 
 def _item_to_instance_config(
@@ -283,18 +297,3 @@ def _item_to_instance_config(
     :returns: The next instance config in the page.
     """
     return InstanceConfig.from_pb(config_pb)
-
-
-def _item_to_instance(iterator, instance_pb):
-    """Convert an instance protobuf to the native object.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`
-    :param instance_pb: An instance returned from the API.
-
-    :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
-    :returns: The next instance in the page.
-    """
-    return Instance.from_pb(instance_pb, iterator.client)

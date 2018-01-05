@@ -231,7 +231,8 @@ class InstanceAdminClient(object):
                               parent,
                               page_size=None,
                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT):
+                              timeout=google.api_core.gapic_v1.method.DEFAULT,
+                              metadata=None):
         """
         Lists the supported instance configurations for a given project.
 
@@ -290,7 +291,8 @@ class InstanceAdminClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_instance_configs, retry=retry, timeout=timeout),
+                self._list_instance_configs, retry=retry, timeout=timeout,
+                metadata=metadata),
             request=request,
             items_field='instance_configs',
             request_token_field='page_token',
@@ -301,7 +303,8 @@ class InstanceAdminClient(object):
     def get_instance_config(self,
                             name,
                             retry=google.api_core.gapic_v1.method.DEFAULT,
-                            timeout=google.api_core.gapic_v1.method.DEFAULT):
+                            timeout=google.api_core.gapic_v1.method.DEFAULT,
+                            metadata=None):
         """
         Gets information about a particular instance configuration.
 
@@ -336,14 +339,16 @@ class InstanceAdminClient(object):
         """
         request = spanner_instance_admin_pb2.GetInstanceConfigRequest(
             name=name, )
-        return self._get_instance_config(request, retry=retry, timeout=timeout)
+        return self._get_instance_config(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_instances(self,
                        parent,
                        page_size=None,
                        filter_=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Lists all instances in the given project.
 
@@ -425,7 +430,8 @@ class InstanceAdminClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_instances, retry=retry, timeout=timeout),
+                self._list_instances, retry=retry, timeout=timeout,
+                metadata=metadata),
             request=request,
             items_field='instances',
             request_token_field='page_token',
@@ -436,7 +442,8 @@ class InstanceAdminClient(object):
     def get_instance(self,
                      name,
                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT):
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Gets information about a particular instance.
 
@@ -470,14 +477,16 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         request = spanner_instance_admin_pb2.GetInstanceRequest(name=name, )
-        return self._get_instance(request, retry=retry, timeout=timeout)
+        return self._get_instance(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_instance(self,
                         parent,
                         instance_id,
                         instance,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT):
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Creates an instance and begins preparing it to begin serving. The
         returned ``long-running operation``
@@ -567,7 +576,7 @@ class InstanceAdminClient(object):
             instance=instance,
         )
         operation = self._create_instance(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
@@ -579,7 +588,8 @@ class InstanceAdminClient(object):
                         instance,
                         field_mask,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT):
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Updates an instance, and begins allocating or releasing resources
         as requested. The returned [long-running
@@ -674,7 +684,7 @@ class InstanceAdminClient(object):
             field_mask=field_mask,
         )
         operation = self._update_instance(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
@@ -685,7 +695,8 @@ class InstanceAdminClient(object):
     def delete_instance(self,
                         name,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT):
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Deletes an instance.
 
@@ -726,13 +737,15 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         request = spanner_instance_admin_pb2.DeleteInstanceRequest(name=name, )
-        self._delete_instance(request, retry=retry, timeout=timeout)
+        self._delete_instance(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_iam_policy(self,
                        resource,
                        policy,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Sets the access control policy on an instance resource. Replaces any
         existing policy.
@@ -781,12 +794,14 @@ class InstanceAdminClient(object):
             resource=resource,
             policy=policy,
         )
-        return self._set_iam_policy(request, retry=retry, timeout=timeout)
+        return self._set_iam_policy(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_iam_policy(self,
                        resource,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Gets the access control policy for an instance resource. Returns an empty
         policy if an instance exists but does not have a policy set.
@@ -825,13 +840,15 @@ class InstanceAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
-        return self._get_iam_policy(request, retry=retry, timeout=timeout)
+        return self._get_iam_policy(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def test_iam_permissions(self,
                              resource,
                              permissions,
                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT):
+                             timeout=google.api_core.gapic_v1.method.DEFAULT,
+                             metadata=None):
         """
         Returns permissions that the caller has on the specified instance resource.
 
@@ -880,4 +897,4 @@ class InstanceAdminClient(object):
             permissions=permissions,
         )
         return self._test_iam_permissions(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
