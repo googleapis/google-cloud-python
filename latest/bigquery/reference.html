@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 8ca6882 documentation</title>
+    <title>API Reference &#8212; google-cloud 90129ef documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '8ca6882',
+        VERSION:     '90129ef',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -66,22 +66,25 @@ collection of tables.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the project which the client acts on behalf of. Will be
-passed when creating a dataset / job.  If not passed,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Project ID for the project which the client acts on behalf of.
+Will be passed when creating a dataset / job. If not passed,
 falls back to the default inferred from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>) – (Optional) The OAuth2 Credentials to use for this
-client. If not passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is
-passed), falls back to the default inferred from the
-environment.</li>
-<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>) – (Optional) HTTP object to make requests. Can be any object
-that defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
-<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an
-<code class="docutils literal"><span class="pre">_http</span></code> object is created that is bound to the
-<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.
-This parameter should be considered private, and could
-change in the future.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.2.1)"><em>google.auth.credentials.Credentials</em></a>) – (Optional) The OAuth2 Credentials to use for this client. If not
+passed (and if no <code class="docutils literal"><span class="pre">_http</span></code> object is passed), falls back to the
+default inferred from the environment.</li>
+<li><strong>_http</strong> (<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session" title="(in Requests v2.18.4)"><em>requests.Session</em></a>) – (Optional) HTTP object to make requests. Can be any object that
+defines <code class="docutils literal"><span class="pre">request()</span></code> with the same interface as
+<a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Session.request" title="(in Requests v2.18.4)"><code class="xref py py-meth docutils literal"><span class="pre">requests.Session.request()</span></code></a>. If not passed, an <code class="docutils literal"><span class="pre">_http</span></code>
+object is created that is bound to the <code class="docutils literal"><span class="pre">credentials</span></code> for the
+current object.
+This parameter should be considered private, and could change in
+the future.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.exceptions.html#google.auth.exceptions.DefaultCredentialsError" title="(in google-auth v1.2.1)"><code class="xref py py-exc docutils literal"><span class="pre">google.auth.exceptions.DefaultCredentialsError</span></code></a> – Raised if <code class="docutils literal"><span class="pre">credentials</span></code> is not specified and the library fails
+to acquire default credentials.</p>
 </td>
 </tr>
 </tbody>
@@ -2340,7 +2343,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'userByEmail', 'groupByEmail', 'domain', 'specialGroup', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'groupByEmail', 'specialGroup', 'userByEmail', 'domain', 'view'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 

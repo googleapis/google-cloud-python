@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.client &#8212; google-cloud 8ca6882 documentation</title>
+    <title>google.cloud.client &#8212; google-cloud 90129ef documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8ca6882',
+        VERSION:     '90129ef',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -136,20 +136,24 @@
 <span class="sd">    Callers and subclasses may seek to use the private key from</span>
 <span class="sd">    ``credentials`` to sign data.</span>
 
-<span class="sd">    :type credentials: :class:`~google.auth.credentials.Credentials`</span>
-<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        client. If not passed (and if no ``_http`` object is</span>
-<span class="sd">                        passed), falls back to the default inferred from the</span>
-<span class="sd">                        environment.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        credentials (google.auth.credentials.Credentials):</span>
+<span class="sd">            (Optional) The OAuth2 Credentials to use for this client. If not</span>
+<span class="sd">            passed (and if no ``_http`` object is passed), falls back to the</span>
+<span class="sd">            default inferred from the environment.</span>
+<span class="sd">        _http (requests.Session):</span>
+<span class="sd">            (Optional) HTTP object to make requests. Can be any object that</span>
+<span class="sd">            defines ``request()`` with the same interface as</span>
+<span class="sd">            :meth:`requests.Session.request`. If not passed, an ``_http``</span>
+<span class="sd">            object is created that is bound to the ``credentials`` for the</span>
+<span class="sd">            current object.</span>
+<span class="sd">            This parameter should be considered private, and could change in</span>
+<span class="sd">            the future.</span>
 
-<span class="sd">    :type _http: :class:`~requests.Session`</span>
-<span class="sd">    :param _http: (Optional) HTTP object to make requests. Can be any object</span>
-<span class="sd">                  that defines ``request()`` with the same interface as</span>
-<span class="sd">                  :meth:`requests.Session.request`. If not passed, an</span>
-<span class="sd">                  ``_http`` object is created that is bound to the</span>
-<span class="sd">                  ``credentials`` for the current object.</span>
-<span class="sd">                  This parameter should be considered private, and could</span>
-<span class="sd">                  change in the future.</span>
+<span class="sd">    Raises:</span>
+<span class="sd">        google.auth.exceptions.DefaultCredentialsError:</span>
+<span class="sd">            Raised if ``credentials`` is not specified and the library fails</span>
+<span class="sd">            to acquire default credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="kc">None</span>
