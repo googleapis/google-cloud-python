@@ -71,6 +71,12 @@ class Sink(object):
         """Identity used for exports via the sink"""
         return self._writer_identity
 
+    def _update_from_api_repr(self, resource):
+        """Helper for API methods returning sink resources."""
+        self.destination = resource['destination']
+        self.filter_ = resource.get('filter')
+        self._writer_identity = resource.get('writerIdentity')
+
     @classmethod
     def from_api_repr(cls, resource, client):
         """Factory:  construct a sink given its API representation
@@ -89,10 +95,8 @@ class Sink(object):
                  from the client.
         """
         sink_name = resource['name']
-        destination = resource['destination']
-        filter_ = resource.get('filter')
-        instance = cls(sink_name, filter_, destination, client=client)
-        instance._writer_identity = resource.get('writerIdentity')
+        instance = cls(sink_name, client=client)
+        instance._update_from_api_repr(resource)
         return instance
 
     def _require_client(self, client):
@@ -127,10 +131,11 @@ class Sink(object):
                                     writer_identity in the new sink.
         """
         client = self._require_client(client)
-        client.sinks_api.sink_create(
+        resource = client.sinks_api.sink_create(
             self.project, self.name, self.filter_, self.destination,
             unique_writer_identity=unique_writer_identity,
         )
+        self._update_from_api_repr(resource)
 
     def exists(self, client=None):
         """API call:  test for the existence of the sink via a GET request
@@ -168,9 +173,7 @@ class Sink(object):
         """
         client = self._require_client(client)
         resource = client.sinks_api.sink_get(self.project, self.name)
-        self.destination = resource['destination']
-        self.filter_ = resource.get('filter')
-        self._writer_identity = resource.get('writerIdentity')
+        self._update_from_api_repr(resource)
 
     def update(self, client=None):
         """API call:  update sink configuration via a PUT request
