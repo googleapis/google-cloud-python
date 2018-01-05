@@ -202,7 +202,8 @@ class DatabaseAdminClient(object):
                        parent,
                        page_size=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Lists Cloud Spanner databases.
 
@@ -260,7 +261,8 @@ class DatabaseAdminClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_databases, retry=retry, timeout=timeout),
+                self._list_databases, retry=retry, timeout=timeout,
+                metadata=metadata),
             request=request,
             items_field='databases',
             request_token_field='page_token',
@@ -273,7 +275,8 @@ class DatabaseAdminClient(object):
                         create_statement,
                         extra_statements=None,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT):
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Creates a new Cloud Spanner database and starts to prepare it for serving.
         The returned ``long-running operation`` will
@@ -338,7 +341,7 @@ class DatabaseAdminClient(object):
             extra_statements=extra_statements,
         )
         operation = self._create_database(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
@@ -349,7 +352,8 @@ class DatabaseAdminClient(object):
     def get_database(self,
                      name,
                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT):
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Gets the state of a Cloud Spanner database.
 
@@ -383,14 +387,16 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         request = spanner_database_admin_pb2.GetDatabaseRequest(name=name, )
-        return self._get_database(request, retry=retry, timeout=timeout)
+        return self._get_database(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def update_database_ddl(self,
                             database,
                             statements,
                             operation_id=None,
                             retry=google.api_core.gapic_v1.method.DEFAULT,
-                            timeout=google.api_core.gapic_v1.method.DEFAULT):
+                            timeout=google.api_core.gapic_v1.method.DEFAULT,
+                            metadata=None):
         """
         Updates the schema of a Cloud Spanner database by
         creating/altering/dropping tables, columns, indexes, etc. The returned
@@ -464,7 +470,7 @@ class DatabaseAdminClient(object):
             operation_id=operation_id,
         )
         operation = self._update_database_ddl(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
@@ -475,7 +481,8 @@ class DatabaseAdminClient(object):
     def drop_database(self,
                       database,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT):
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=None):
         """
         Drops (aka deletes) a Cloud Spanner database.
 
@@ -506,12 +513,14 @@ class DatabaseAdminClient(object):
         """
         request = spanner_database_admin_pb2.DropDatabaseRequest(
             database=database, )
-        self._drop_database(request, retry=retry, timeout=timeout)
+        self._drop_database(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_database_ddl(self,
                          database,
                          retry=google.api_core.gapic_v1.method.DEFAULT,
-                         timeout=google.api_core.gapic_v1.method.DEFAULT):
+                         timeout=google.api_core.gapic_v1.method.DEFAULT,
+                         metadata=None):
         """
         Returns the schema of a Cloud Spanner database as a list of formatted
         DDL statements. This method does not show pending schema updates, those may
@@ -547,13 +556,15 @@ class DatabaseAdminClient(object):
         """
         request = spanner_database_admin_pb2.GetDatabaseDdlRequest(
             database=database, )
-        return self._get_database_ddl(request, retry=retry, timeout=timeout)
+        return self._get_database_ddl(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def set_iam_policy(self,
                        resource,
                        policy,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Sets the access control policy on a database resource. Replaces any
         existing policy.
@@ -602,12 +613,14 @@ class DatabaseAdminClient(object):
             resource=resource,
             policy=policy,
         )
-        return self._set_iam_policy(request, retry=retry, timeout=timeout)
+        return self._set_iam_policy(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_iam_policy(self,
                        resource,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Gets the access control policy for a database resource. Returns an empty
         policy if a database exists but does not have a policy set.
@@ -646,13 +659,15 @@ class DatabaseAdminClient(object):
             ValueError: If the parameters are invalid.
         """
         request = iam_policy_pb2.GetIamPolicyRequest(resource=resource, )
-        return self._get_iam_policy(request, retry=retry, timeout=timeout)
+        return self._get_iam_policy(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def test_iam_permissions(self,
                              resource,
                              permissions,
                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT):
+                             timeout=google.api_core.gapic_v1.method.DEFAULT,
+                             metadata=None):
         """
         Returns permissions that the caller has on the specified database resource.
 
@@ -701,4 +716,4 @@ class DatabaseAdminClient(object):
             permissions=permissions,
         )
         return self._test_iam_permissions(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
