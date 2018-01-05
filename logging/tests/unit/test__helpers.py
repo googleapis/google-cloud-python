@@ -110,7 +110,7 @@ class Test_retrieve_metadata_server(unittest.TestCase):
         metadata_key = 'test_url_cannot_connect'
         metadata_url = 'http://metadata.invalid/'
 
-        requests_get_mock = mock.Mock()
+        requests_get_mock = mock.Mock(spec=['__call__'])
         requests_get_mock.side_effect = requests.exceptions.RequestException
 
         requests_get_patch = mock.patch('requests.get', requests_get_mock)
