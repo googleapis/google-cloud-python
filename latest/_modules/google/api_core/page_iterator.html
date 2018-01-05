@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.page_iterator &#8212; google-cloud 0430848 documentation</title>
+    <title>google.api_core.page_iterator &#8212; google-cloud 813a27e documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0430848',
+        VERSION:     '813a27e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -200,12 +200,25 @@
                  <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span> <span class="o">=</span> <span class="n">item_to_value</span>
+        <span class="sd">&quot;&quot;&quot;Optional[Any]: The client that created this iterator.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">item_to_value</span>
+        <span class="sd">&quot;&quot;&quot;Callable[Iterator, Any]: Callable to convert an item from the type</span>
+<span class="sd">            in the raw API response into the native object. Will be called with</span>
+<span class="sd">            the iterator and a</span>
+<span class="sd">            single item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="o">=</span> <span class="n">max_results</span>
+        <span class="sd">&quot;&quot;&quot;int: The maximum number of results to fetch.&quot;&quot;&quot;</span>
+
         <span class="c1"># The attributes below will change over the life of the iterator.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="sd">&quot;&quot;&quot;int: The current page of results.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
+        <span class="sd">&quot;&quot;&quot;str: The token for the next page of results. If this is set before</span>
+<span class="sd">            the iterator starts, it effectively offsets the iterator to a</span>
+<span class="sd">            specific starting point.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num_results</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="sd">&quot;&quot;&quot;int: The total number of results fetched so far.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pages</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -377,7 +390,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_next_page</span><span class="p">():</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_next_page_response</span><span class="p">()</span>
             <span class="n">items</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items_key</span><span class="p">,</span> <span class="p">())</span>
-            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_to_value</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_page_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_next_token</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">page</span>
@@ -470,7 +483,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">items</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span><span class="p">)</span>
-            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_to_value</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gax_page_iter</span><span class="o">.</span><span class="n">page_token</span> <span class="ow">or</span> <span class="kc">None</span>
             <span class="k">return</span> <span class="n">page</span>
         <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
@@ -542,7 +555,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_token_field</span><span class="p">)</span>
         <span class="n">items</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items_field</span><span class="p">)</span>
-        <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_value</span><span class="p">)</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_to_value</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">page</span>
 
