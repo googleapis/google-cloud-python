@@ -209,7 +209,8 @@ class SpannerClient(object):
                        database,
                        session=None,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Creates a new session. A session can be used to perform
         transactions that read and/or modify data in a Cloud Spanner database.
@@ -266,12 +267,14 @@ class SpannerClient(object):
             database=database,
             session=session,
         )
-        return self._create_session(request, retry=retry, timeout=timeout)
+        return self._create_session(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_session(self,
                     name,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT):
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=metadata):
         """
         Gets a session. Returns ``NOT_FOUND`` if the session does not exist.
         This is mainly useful for determining whether a session is still
@@ -306,14 +309,16 @@ class SpannerClient(object):
             ValueError: If the parameters are invalid.
         """
         request = spanner_pb2.GetSessionRequest(name=name, )
-        return self._get_session(request, retry=retry, timeout=timeout)
+        return self._get_session(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_sessions(self,
                       database,
                       page_size=None,
                       filter_=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                      timeout=google.api_core.gapic_v1.method.DEFAULT):
+                      timeout=google.api_core.gapic_v1.method.DEFAULT,
+                      metadata=metadata):
         """
         Lists all sessions in a given database.
 
@@ -383,7 +388,8 @@ class SpannerClient(object):
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_sessions, retry=retry, timeout=timeout),
+                self._list_sessions, retry=retry, timeout=timeout,
+                metadata=metadata),
             request=request,
             items_field='sessions',
             request_token_field='page_token',
@@ -394,7 +400,8 @@ class SpannerClient(object):
     def delete_session(self,
                        name,
                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
         """
         Ends a session, releasing server resources associated with it.
 
