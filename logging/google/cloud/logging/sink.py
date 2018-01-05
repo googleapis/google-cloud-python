@@ -27,9 +27,8 @@ class Sink(object):
     :param name: the name of the sink
 
     :type filter_: str
-    :param filter_: the advanced logs filter expression defining the entries
-                    exported by the sink.  If not passed, the instance should
-                    already exist, to be refreshed via :meth:`reload`.
+    :param filter_: (optional) the advanced logs filter expression defining
+                    the entries exported by the sink.
 
     :type destination: str
     :param destination: destination URI for the entries exported by the sink.
@@ -91,8 +90,8 @@ class Sink(object):
                  from the client.
         """
         sink_name = resource['name']
-        filter_ = resource['filter']
         destination = resource['destination']
+        filter_ = resource.get('filter')
         return cls(sink_name, filter_, destination, client=client)
 
     def _require_client(self, client):
@@ -163,8 +162,8 @@ class Sink(object):
         """
         client = self._require_client(client)
         data = client.sinks_api.sink_get(self.project, self.name)
-        self.filter_ = data['filter']
         self.destination = data['destination']
+        self.filter_ = data.get('filter')
 
     def update(self, client=None):
         """API call:  update sink configuration via a PUT request
