@@ -80,7 +80,7 @@ def _list_instances():
 
 def setUpModule():
     Config.CLIENT = Client()
-    retry = RetryErrors(exceptions.Unavailable)
+    retry = RetryErrors(exceptions.ServiceUnavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
