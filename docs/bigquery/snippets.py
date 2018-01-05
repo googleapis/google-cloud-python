@@ -447,11 +447,6 @@ def test_load_table_from_file(client, to_delete):
     client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    table_ref = dataset.table(TABLE_ID)
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    table = client.create_table(table)
-    to_delete.insert(0, table)
-
     # [START load_table_from_file]
     csv_file = six.BytesIO(b"""full_name,age
 Phred Phlyntstone,32
@@ -462,11 +457,14 @@ Wylma Phlyntstone,29
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = 'CSV'
     job_config.skip_leading_rows = 1
+    job_config.autodetect = True
     job = client.load_table_from_file(
         csv_file, table_ref, job_config=job_config)  # API request
     job.result()  # Waits for table load to complete.
     # [END load_table_from_file]
 
+    table = client.get_table(table_ref)
+    to_delete.insert(0, table)
     found_rows = []
 
     def do_something(row):
@@ -487,11 +485,13 @@ Wylma Phlyntstone,29
     token = iterator.next_page_token
     # [END table_list_rows_iterator_properties]
 
-    row_tuples = [r.values() for r in rows]
+    expected_rows = [
+        bigquery.Row(('Wylma Phlyntstone', 29), {'full_name': 0, 'age': 1}),
+        bigquery.Row(('Phred Phlyntstone', 32), {'full_name': 0, 'age': 1}),
+    ]
     assert len(rows) == total == 2
     assert token is None
-    assert (u'Phred Phlyntstone', 32) in row_tuples
-    assert (u'Wylma Phlyntstone', 29) in row_tuples
+    assert rows == expected_rows
 
 
 def test_load_table_from_uri(client, to_delete):
