@@ -347,8 +347,8 @@ class Instance(object):
         """
         metadata = _metadata_with_prefix(self.name)
         page_iter = self._client.database_admin_api.list_databases(
-            self.name, page_token=page_token, page_size=page_size,
-            metadata=metadata)
+            self.name, page_size=page_size, metadata=metadata)
+        page_iter.next_page_token = page_token
         page_iter._item_to_value = self._item_to_database
         return page_iter
 
