@@ -178,8 +178,13 @@ class _CallableStub(object):
         self.requests.append(request)
 
         response = self.response
-        if response is None and self.responses is not None:
-            response = next(self.responses)
+        if self.responses is not None:
+            if response is None:
+                response = next(self.responses)
+            else:
+                raise ValueError(
+                    '{method}.response and {method}.responses are mutually '
+                    'exclusive.'.format(method=self._method))
 
         if callable(response):
             return response(request)
@@ -250,7 +255,7 @@ class ChannelStub(grpc.Channel):
         # Use a sequence of responses:
         channel_stub.GetFoo.responses = iter([
             foo_pb2.Foo(name='bar'),
-            foo_pb2.Foo(name='baz')
+            foo_pb2.Foo(name='baz'),
         ])
 
         assert client.get_foo().name == 'bar'

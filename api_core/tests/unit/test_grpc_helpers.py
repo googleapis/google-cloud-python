@@ -238,7 +238,7 @@ class TestChannelStub(object):
         expected_response = operations_pb2.Operation(name='moop')
 
         on_get_operation = mock.Mock(
-            spec=('__call__'), return_value=expected_response)
+            spec=('__call__',), return_value=expected_response)
 
         channel.GetOperation.response = on_get_operation
 
@@ -271,6 +271,15 @@ class TestChannelStub(object):
 
         with pytest.raises(StopIteration):
             stub.GetOperation(expected_request)
+
+    def test_multiple_responses_and_single_response_error(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        channel.GetOperation.responses = []
+        channel.GetOperation.response = mock.sentinel.response
+
+        with pytest.raises(ValueError):
+            stub.GetOperation(operations_pb2.GetOperationRequest())
 
     def test_call_info(self):
         channel = grpc_helpers.ChannelStub()
