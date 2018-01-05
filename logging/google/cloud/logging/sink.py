@@ -51,6 +51,7 @@ class Sink(object):
         self.destination = destination
         self._client = client
         self._unique_writer_identity = unique_writer_identity
+        self._writer_identity = None
 
     @property
     def client(self):
@@ -72,6 +73,11 @@ class Sink(object):
         """URL path for the sink's APIs"""
         return '/%s' % (self.full_name)
 
+    @property
+    def writer_identity(self):
+        """Identity used for exports via the sink"""
+        return self._writer_identity
+
     @classmethod
     def from_api_repr(cls, resource, client):
         """Factory:  construct a sink given its API representation
@@ -92,7 +98,9 @@ class Sink(object):
         sink_name = resource['name']
         destination = resource['destination']
         filter_ = resource.get('filter')
-        return cls(sink_name, filter_, destination, client=client)
+        instance = cls(sink_name, filter_, destination, client=client)
+        instance._writer_identity = resource.get('writerIdentity')
+        return instance
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -161,9 +169,10 @@ class Sink(object):
                        ``client`` stored on the current sink.
         """
         client = self._require_client(client)
-        data = client.sinks_api.sink_get(self.project, self.name)
-        self.destination = data['destination']
-        self.filter_ = data.get('filter')
+        resource = client.sinks_api.sink_get(self.project, self.name)
+        self.destination = resource['destination']
+        self.filter_ = resource.get('filter')
+        self._writer_identity = resource.get('writerIdentity')
 
     def update(self, client=None):
         """API call:  update sink configuration via a PUT request
