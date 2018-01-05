@@ -19,6 +19,7 @@ import pytest
 from google.api_core import exceptions
 from google.api_core import grpc_helpers
 import google.auth.credentials
+from google.longrunning import operations_pb2
 
 
 def test__patch_callable_name():
@@ -186,3 +187,147 @@ def test_create_channel_explicit_scoped(unused_secure_authorized_channel):
         scopes=scopes)
 
     credentials.with_scopes.assert_called_once_with(scopes)
+
+
+class TestChannelStub(object):
+
+    def test_single_response(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        expected_request = operations_pb2.GetOperationRequest(name='meep')
+        expected_response = operations_pb2.Operation(name='moop')
+
+        channel.GetOperation.response = expected_response
+
+        response = stub.GetOperation(expected_request)
+
+        assert response == expected_response
+        assert channel.requests == [('GetOperation', expected_request)]
+        assert channel.GetOperation.requests == [expected_request]
+
+    def test_no_response(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        expected_request = operations_pb2.GetOperationRequest(name='meep')
+
+        with pytest.raises(ValueError) as exc_info:
+            stub.GetOperation(expected_request)
+
+        assert exc_info.match('GetOperation')
+
+    def test_missing_method(self):
+        channel = grpc_helpers.ChannelStub()
+
+        with pytest.raises(AttributeError):
+            channel.DoesNotExist.response
+
+    def test_exception_response(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        expected_request = operations_pb2.GetOperationRequest(name='meep')
+
+        channel.GetOperation.response = RuntimeError()
+
+        with pytest.raises(RuntimeError):
+            stub.GetOperation(expected_request)
+
+    def test_callable_response(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        expected_request = operations_pb2.GetOperationRequest(name='meep')
+        expected_response = operations_pb2.Operation(name='moop')
+
+        on_get_operation = mock.Mock(
+            spec=('__call__',), return_value=expected_response)
+
+        channel.GetOperation.response = on_get_operation
+
+        response = stub.GetOperation(expected_request)
+
+        assert response == expected_response
+        on_get_operation.assert_called_once_with(expected_request)
+
+    def test_multiple_responses(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        expected_request = operations_pb2.GetOperationRequest(name='meep')
+        expected_responses = [
+            operations_pb2.Operation(name='foo'),
+            operations_pb2.Operation(name='bar'),
+            operations_pb2.Operation(name='baz'),
+        ]
+
+        channel.GetOperation.responses = iter(expected_responses)
+
+        response1 = stub.GetOperation(expected_request)
+        response2 = stub.GetOperation(expected_request)
+        response3 = stub.GetOperation(expected_request)
+
+        assert response1 == expected_responses[0]
+        assert response2 == expected_responses[1]
+        assert response3 == expected_responses[2]
+        assert channel.requests == [('GetOperation', expected_request)] * 3
+        assert channel.GetOperation.requests == [expected_request] * 3
+
+        with pytest.raises(StopIteration):
+            stub.GetOperation(expected_request)
+
+    def test_multiple_responses_and_single_response_error(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        channel.GetOperation.responses = []
+        channel.GetOperation.response = mock.sentinel.response
+
+        with pytest.raises(ValueError):
+            stub.GetOperation(operations_pb2.GetOperationRequest())
+
+    def test_call_info(self):
+        channel = grpc_helpers.ChannelStub()
+        stub = operations_pb2.OperationsStub(channel)
+        expected_request = operations_pb2.GetOperationRequest(name='meep')
+        expected_response = operations_pb2.Operation(name='moop')
+        expected_metadata = [('red', 'blue'), ('two', 'shoe')]
+        expected_credentials = mock.sentinel.credentials
+        channel.GetOperation.response = expected_response
+
+        response = stub.GetOperation(
+            expected_request, timeout=42, metadata=expected_metadata,
+            credentials=expected_credentials)
+
+        assert response == expected_response
+        assert channel.requests == [('GetOperation', expected_request)]
+        assert channel.GetOperation.calls == [
+            (expected_request, 42, expected_metadata, expected_credentials)]
+
+    def test_unary_unary(self):
+        channel = grpc_helpers.ChannelStub()
+        method_name = 'GetOperation'
+        callable_stub = channel.unary_unary(method_name)
+        assert callable_stub._method == method_name
+        assert callable_stub._channel == channel
+
+    def test_unary_stream(self):
+        channel = grpc_helpers.ChannelStub()
+        method_name = 'GetOperation'
+        callable_stub = channel.unary_stream(method_name)
+        assert callable_stub._method == method_name
+        assert callable_stub._channel == channel
+
+    def test_stream_unary(self):
+        channel = grpc_helpers.ChannelStub()
+        method_name = 'GetOperation'
+        callable_stub = channel.stream_unary(method_name)
+        assert callable_stub._method == method_name
+        assert callable_stub._channel == channel
+
+    def test_stream_stream(self):
+        channel = grpc_helpers.ChannelStub()
+        method_name = 'GetOperation'
+        callable_stub = channel.stream_stream(method_name)
+        assert callable_stub._method == method_name
+        assert callable_stub._channel == channel
+
+    def test_subscribe_unsubscribe(self):
+        channel = grpc_helpers.ChannelStub()
+        assert channel.subscribe(None) is None
+        assert channel.unsubscribe(None) is None
