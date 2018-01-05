@@ -145,7 +145,7 @@ _ChannelCall = collections.namedtuple(
 
 
 class _CallableStub(object):
-    """Stub for the grpc callable interface."""
+    """Stub for the grpc.*MultiCallable interfaces."""
 
     def __init__(self, method, channel):
         self._method = method
