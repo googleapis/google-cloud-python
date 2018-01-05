@@ -21,6 +21,7 @@ import threading
 import time
 import unittest
 
+from google.api_core import exceptions
 from google.cloud.spanner_v1.proto.type_pb2 import ARRAY
 from google.cloud.spanner_v1.proto.type_pb2 import BOOL
 from google.cloud.spanner_v1.proto.type_pb2 import BYTES
@@ -30,8 +31,6 @@ from google.cloud.spanner_v1.proto.type_pb2 import INT64
 from google.cloud.spanner_v1.proto.type_pb2 import STRING
 from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
 from google.cloud.spanner_v1.proto.type_pb2 import Type
-from google.gax.grpc import exc_to_code
-from google.gax import errors
 from grpc import StatusCode
 
 from google.cloud._helpers import UTC
@@ -393,11 +392,11 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self._db.run_in_transaction(_unit_of_work, name='id_1')
 
-        with self.assertRaises(errors.RetryError) as expected:
+        with self.assertRaises(exceptions.RetryError) as expected:
             self._db.run_in_transaction(_unit_of_work, name='id_1')
 
-        self.assertEqual(
-            exc_to_code(expected.exception.cause), StatusCode.ALREADY_EXISTS)
+        self.assertIsInstance(
+            expected.exception.cause, exceptions.AlreadyExists)
 
         self._db.run_in_transaction(_unit_of_work, name='id_2')
 
@@ -1331,17 +1330,17 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             batch.insert(table, columns, valid_input)
 
         invalid_input = ((0, ''),)
-        with self.assertRaises(errors.RetryError) as exc_info:
+        with self.assertRaises(exceptions.RetryError) as exc_info:
             with session.batch() as batch:
                 batch.delete(table, self.ALL)
                 batch.insert(table, columns, invalid_input)
 
         cause = exc_info.exception.cause
-        self.assertEqual(cause.code(), StatusCode.FAILED_PRECONDITION)
+        self.assertIsInstance(cause, exceptions.FailedPrecondition)
         error_msg = (
             'Invalid value for column value in table '
             'counters: Expected INT64.')
-        self.assertEqual(cause.details(), error_msg)
+        self.assertIn(error_msg, str(cause))
 
     def test_execute_sql_w_query_param(self):
         session = self._db.session()
