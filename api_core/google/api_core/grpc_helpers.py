@@ -278,9 +278,10 @@ class ChannelStub(grpc.Channel):
         return self._method_stubs[method]
 
     def __getattr__(self, key):
-        # Ideally this would only return stubs for known methods, however,
-        # grpc doesn't actually create these methods until they're needed.
-        return self._stub_for_method(key)
+        try:
+            return self._method_stubs[key]
+        except KeyError:
+            raise AttributeError
 
     def unary_unary(
             self, method,

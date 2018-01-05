@@ -215,6 +215,12 @@ class TestChannelStub(object):
 
         assert exc_info.match('GetOperation')
 
+    def test_missing_method(self):
+        channel = grpc_helpers.ChannelStub()
+
+        with pytest.raises(AttributeError):
+            channel.DoesNotExist
+
     def test_exception_response(self):
         channel = grpc_helpers.ChannelStub()
         stub = operations_pb2.OperationsStub(channel)
