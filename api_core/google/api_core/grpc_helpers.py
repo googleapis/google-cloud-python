@@ -141,7 +141,7 @@ def create_channel(target, credentials=None, scopes=None, **kwargs):
 
 
 _MethodCall = collections.namedtuple(
-    '_MethodCall', ['request', 'timeout', 'metadata', 'credentials'])
+    '_MethodCall', ('request', 'timeout', 'metadata', 'credentials'))
 
 _ChannelRequest = collections.namedtuple(
     '_ChannelRequest', ('method', 'request'))
