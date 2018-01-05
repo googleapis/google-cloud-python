@@ -140,8 +140,11 @@ def create_channel(target, credentials=None, scopes=None, **kwargs):
         credentials, request, target, **kwargs)
 
 
-_ChannelCall = collections.namedtuple(
-    '_ChannelCall', ['request', 'timeout', 'metadata', 'credentials'])
+_MethodCall = collections.namedtuple(
+    '_MethodCall', ['request', 'timeout', 'metadata', 'credentials'])
+
+_ChannelRequest = collections.namedtuple(
+    '_ChannelRequest', ('method', 'request'))
 
 
 class _CallableStub(object):
@@ -167,10 +170,11 @@ class _CallableStub(object):
         request, timeout, metadata, and credentials."""
 
     def __call__(self, request, timeout=None, metadata=None, credentials=None):
-        self._channel._requests.append((self._method, request))
-        self.requests.append(request)
+        self._channel._requests.append(
+            _ChannelRequest(self._method, request))
         self.calls.append(
-            _ChannelCall(request, timeout, metadata, credentials))
+            _MethodCall(request, timeout, metadata, credentials))
+        self.requests.append(request)
 
         if self.responses:
             self.response = next(self.responses)
