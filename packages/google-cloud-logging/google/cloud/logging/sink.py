@@ -38,19 +38,12 @@ class Sink(object):
     :type client: :class:`google.cloud.logging.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the sink (which requires a project).
-
-    :type unique_writer_identity: bool
-    :param unique_writer_identity: (Optional) determines the kind of
-                                   IAM identity returned as
-                                   writer_identity in the new sink.
     """
-    def __init__(self, name, filter_=None, destination=None, client=None,
-                 unique_writer_identity=False):
+    def __init__(self, name, filter_=None, destination=None, client=None):
         self.name = name
         self.filter_ = filter_
         self.destination = destination
         self._client = client
-        self._unique_writer_identity = unique_writer_identity
         self._writer_identity = None
 
     @property
@@ -117,7 +110,7 @@ class Sink(object):
             client = self._client
         return client
 
-    def create(self, client=None):
+    def create(self, client=None, unique_writer_identity=False):
         """API call:  create the sink via a PUT request
 
         See
@@ -127,11 +120,16 @@ class Sink(object):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
+
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                    IAM identity returned as
+                                    writer_identity in the new sink.
         """
         client = self._require_client(client)
         client.sinks_api.sink_create(
             self.project, self.name, self.filter_, self.destination,
-            unique_writer_identity=self._unique_writer_identity,
+            unique_writer_identity=unique_writer_identity,
         )
 
     def exists(self, client=None):

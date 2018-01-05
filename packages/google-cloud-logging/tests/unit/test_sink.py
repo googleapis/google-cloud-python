@@ -122,7 +122,7 @@ class TestSink(unittest.TestCase):
                               client=client1)
         api = client2.sinks_api = _DummySinksAPI()
 
-        sink.create(client=client2)
+        sink.create(client=client2, unique_writer_identity=True)
 
         self.assertEqual(
             api._sink_create_called_with,
@@ -131,7 +131,7 @@ class TestSink(unittest.TestCase):
                 self.SINK_NAME,
                 self.FILTER,
                 self.DESTINATION_URI,
-                False,
+                True,
             ),
         )
 
