@@ -735,7 +735,6 @@ class TestSession(unittest.TestCase):
             Transaction as TransactionPB)
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner_v1.transaction import Transaction
         from google.cloud.spanner_v1 import session as MUT
         from google.cloud._testing import _Monkey
 
@@ -771,19 +770,15 @@ class TestSession(unittest.TestCase):
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
         time_module = _FauxTimeModule()
+        time_module._times = [1, 1.5]
 
         with _Monkey(MUT, time=time_module):
             with self.assertRaises(Aborted):
                 session.run_in_transaction(
-                    unit_of_work, 'abc', some_arg='def', timeout_secs=0.01)
+                    unit_of_work, 'abc', timeout_secs=1)
 
         self.assertIsNone(time_module._slept)
         self.assertEqual(len(called_with), 1)
-        txn, args, kw = called_with[0]
-        self.assertIsInstance(txn, Transaction)
-        self.assertIsNone(txn.committed)
-        self.assertEqual(args, ('abc',))
-        self.assertEqual(kw, {'some_arg': 'def'})
 
     def test_run_in_transaction_w_timeout(self):
         from google.api_core.exceptions import Aborted

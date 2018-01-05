@@ -24,6 +24,8 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner_v1.database.Database`
 """
 
+from google.api_core.gapic_v1 import client_info
+
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
     DatabaseAdminClient)
@@ -38,6 +40,8 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner_v1.instance import Instance
 
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
 SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
 
 
@@ -146,8 +150,7 @@ class Client(ClientWithProject):
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
                 credentials=self.credentials,
-                lib_name='gccl',
-                lib_version=__version__,
+                client_info=_CLIENT_INFO,
             )
         return self._instance_admin_api
 
@@ -157,8 +160,7 @@ class Client(ClientWithProject):
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
                 credentials=self.credentials,
-                lib_name='gccl',
-                lib_version=__version__,
+                client_info=_CLIENT_INFO,
             )
         return self._database_admin_api
 

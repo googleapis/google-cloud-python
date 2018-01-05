@@ -571,12 +571,6 @@ class _Client(object):
                 other.timeout_seconds == self.timeout_seconds)
 
 
-class _DatabasePB(object):
-
-    def __init__(self, name):
-        self.name = name
-
-
 class _FauxInstanceAdminAPI(object):
 
     _create_instance_conflict = False
@@ -625,13 +619,6 @@ class _FauxInstanceAdminAPI(object):
         if self._instance_not_found:
             raise NotFound('error')
         return self._delete_instance_response
-
-
-class _FauxDatabaseAdminAPI(object):
-
-    def list_databases(self, name, page_size, metadata=None):
-        self._listed_databases = (name, page_size, metadata)
-        return self._list_databases_response
 
 
 class _FauxOperationFuture(object):

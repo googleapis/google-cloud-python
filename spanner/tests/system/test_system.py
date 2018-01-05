@@ -31,11 +31,8 @@ from google.cloud.spanner_v1.proto.type_pb2 import INT64
 from google.cloud.spanner_v1.proto.type_pb2 import STRING
 from google.cloud.spanner_v1.proto.type_pb2 import TIMESTAMP
 from google.cloud.spanner_v1.proto.type_pb2 import Type
-from grpc import StatusCode
 
 from google.cloud._helpers import UTC
-from google.cloud.exceptions import GrpcRendezvous
-from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1._helpers import TimestampWithNanoseconds
 from google.cloud.spanner import Client
 from google.cloud.spanner import KeyRange
@@ -73,11 +70,6 @@ class Config(object):
     INSTANCE = None
 
 
-def _retry_on_unavailable(exc):
-    """Retry only errors whose status code is 'UNAVAILABLE'."""
-    return exc.code() == StatusCode.UNAVAILABLE
-
-
 def _has_all_ddl(database):
     return len(database.ddl_statements) == len(DDL_STATEMENTS)
 
@@ -88,7 +80,7 @@ def _list_instances():
 
 def setUpModule():
     Config.CLIENT = Client()
-    retry = RetryErrors(GrpcRendezvous, error_predicate=_retry_on_unavailable)
+    retry = RetryErrors(exceptions.Unavailable)
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
@@ -304,7 +296,7 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             ],
         )
         self.to_delete.append(temp_db)
-        with self.assertRaises(NotFound) as exc_info:
+        with self.assertRaises(exceptions.NotFound) as exc_info:
             temp_db.create()
 
         expected = 'Table not found: {0}'.format(incorrect_table)
@@ -392,11 +384,8 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         self._db.run_in_transaction(_unit_of_work, name='id_1')
 
-        with self.assertRaises(exceptions.RetryError) as expected:
+        with self.assertRaises(exceptions.AlreadyExists):
             self._db.run_in_transaction(_unit_of_work, name='id_1')
-
-        self.assertIsInstance(
-            expected.exception.cause, exceptions.AlreadyExists)
 
         self._db.run_in_transaction(_unit_of_work, name='id_2')
 
@@ -540,7 +529,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(snapshot.execute_sql(self.SQL))
         self._check_rows_data(rows)
 
-    @RetryErrors(exception=GrpcRendezvous)
+    @RetryErrors(exception=exceptions.ServerError)
     def test_transaction_read_and_insert_then_rollback(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -574,7 +563,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         transaction.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
         raise CustomException()
 
-    @RetryErrors(exception=GrpcRendezvous)
+    @RetryErrors(exception=exceptions.ServerError)
     def test_transaction_read_and_insert_then_exception(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -593,7 +582,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         rows = list(session.read(self.TABLE, self.COLUMNS, self.ALL))
         self.assertEqual(rows, [])
 
-    @RetryErrors(exception=GrpcRendezvous)
+    @RetryErrors(exception=exceptions.ServerError)
     def test_transaction_read_and_insert_or_update_then_commit(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -1330,17 +1319,15 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             batch.insert(table, columns, valid_input)
 
         invalid_input = ((0, ''),)
-        with self.assertRaises(exceptions.RetryError) as exc_info:
+        with self.assertRaises(exceptions.FailedPrecondition) as exc_info:
             with session.batch() as batch:
                 batch.delete(table, self.ALL)
                 batch.insert(table, columns, invalid_input)
 
-        cause = exc_info.exception.cause
-        self.assertIsInstance(cause, exceptions.FailedPrecondition)
         error_msg = (
             'Invalid value for column value in table '
             'counters: Expected INT64.')
-        self.assertIn(error_msg, str(cause))
+        self.assertIn(error_msg, str(exc_info.exception))
 
     def test_execute_sql_w_query_param(self):
         session = self._db.session()

@@ -274,7 +274,7 @@ class SpannerClient(object):
                     name,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
                     timeout=google.api_core.gapic_v1.method.DEFAULT,
-                    metadata=metadata):
+                    metadata=None):
         """
         Gets a session. Returns ``NOT_FOUND`` if the session does not exist.
         This is mainly useful for determining whether a session is still
@@ -318,7 +318,7 @@ class SpannerClient(object):
                       filter_=None,
                       retry=google.api_core.gapic_v1.method.DEFAULT,
                       timeout=google.api_core.gapic_v1.method.DEFAULT,
-                      metadata=metadata):
+                      metadata=None):
         """
         Lists all sessions in a given database.
 

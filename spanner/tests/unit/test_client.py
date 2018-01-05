@@ -15,7 +15,6 @@
 import unittest
 
 import mock
-import six
 
 
 def _make_credentials():
@@ -105,48 +104,9 @@ class TestClient(unittest.TestCase):
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
 
-    def test_admin_api_lib_name(self):
-        from google.cloud.spanner_v1 import __version__
-        from google.cloud.spanner_admin_database_v1 import gapic as db
-        from google.cloud.spanner_admin_instance_v1 import gapic as inst
-
-        # Get the actual admin client classes.
-        DatabaseAdminClient = db.database_admin_client.DatabaseAdminClient
-        InstanceAdminClient = inst.instance_admin_client.InstanceAdminClient
-
-        # Test that the DatabaseAdminClient is called with the gccl library
-        # name and version.
-        with mock.patch.object(DatabaseAdminClient, '__init__') as mock_dac:
-            mock_dac.return_value = None
-            client = self._make_one(
-                credentials=_make_credentials(),
-                project='foo',
-            )
-            self.assertIsInstance(client.database_admin_api,
-                                  DatabaseAdminClient)
-            mock_dac.assert_called_once()
-            self.assertEqual(mock_dac.mock_calls[0][2]['lib_name'], 'gccl')
-            self.assertEqual(mock_dac.mock_calls[0][2]['lib_version'],
-                             __version__)
-
-        # Test that the InstanceAdminClient is called with the gccl library
-        # name and version.
-        with mock.patch.object(InstanceAdminClient, '__init__') as mock_iac:
-            mock_iac.return_value = None
-            client = self._make_one(
-                credentials=_make_credentials(),
-                project='foo',
-            )
-            self.assertIsInstance(client.instance_admin_api,
-                                  InstanceAdminClient)
-            mock_iac.assert_called_once()
-            self.assertEqual(mock_iac.mock_calls[0][2]['lib_name'], 'gccl')
-            self.assertEqual(mock_iac.mock_calls[0][2]['lib_version'],
-                             __version__)
-
     def test_instance_admin_api(self):
-        from google.cloud.spanner_v1 import __version__
-        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1.client import (
+            _CLIENT_INFO, SPANNER_ADMIN_SCOPE)
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -163,15 +123,14 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         instance_admin_client.assert_called_once_with(
-            lib_name='gccl',
-            lib_version=__version__,
-            credentials=credentials.with_scopes.return_value)
+            credentials=credentials.with_scopes.return_value,
+            client_info=_CLIENT_INFO)
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
 
     def test_database_admin_api(self):
-        from google.cloud.spanner_v1 import __version__
-        from google.cloud.spanner_v1.client import SPANNER_ADMIN_SCOPE
+        from google.cloud.spanner_v1.client import (
+            _CLIENT_INFO, SPANNER_ADMIN_SCOPE)
 
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
@@ -188,9 +147,8 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
         database_admin_client.assert_called_once_with(
-            lib_name='gccl',
-            lib_version=__version__,
-            credentials=credentials.with_scopes.return_value)
+            credentials=credentials.with_scopes.return_value,
+            client_info=_CLIENT_INFO)
 
         credentials.with_scopes.assert_called_once_with(expected_scopes)
 
@@ -406,30 +364,3 @@ class TestClient(unittest.TestCase):
             metadata=[('google-cloud-resource-prefix', client.project_name)],
             retry=mock.ANY,
             timeout=mock.ANY)
-
-
-class _FauxInstanceAdminAPI(object):
-
-    def list_instance_configs(self, name, page_size, options):
-        self._listed_instance_configs = (name, page_size, options)
-        return self._list_instance_configs_response
-
-    def list_instances(self, name, filter_, page_size, options):
-        self._listed_instances = (name, filter_, page_size, options)
-        return self._list_instances_response
-
-
-class _InstanceConfigPB(object):
-
-    def __init__(self, name, display_name):
-        self.name = name
-        self.display_name = display_name
-
-
-class _InstancePB(object):
-
-    def __init__(self, name, config, display_name=None, node_count=None):
-        self.name = name
-        self.config = config
-        self.display_name = display_name
-        self.node_count = node_count

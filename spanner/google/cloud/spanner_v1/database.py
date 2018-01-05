@@ -17,6 +17,7 @@
 import re
 import threading
 
+from google.api_core.gapic_v1 import client_info
 import google.auth.credentials
 from google.cloud.exceptions import NotFound
 import six
@@ -33,6 +34,8 @@ from google.cloud.spanner_v1.snapshot import Snapshot
 # pylint: enable=ungrouped-imports
 
 
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
 SPANNER_DATA_SCOPE = 'https://www.googleapis.com/auth/spanner.data'
 
 
@@ -160,9 +163,8 @@ class Database(object):
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             self._spanner_api = SpannerClient(
-                lib_name='gccl',
-                lib_version=__version__,
                 credentials=credentials,
+                client_info=_CLIENT_INFO,
             )
         return self._spanner_api
 
