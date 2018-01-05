@@ -203,7 +203,7 @@ class Client(ClientWithProject):
         page_iter = self.instance_admin_api.list_instance_configs(
             path, page_size=page_size, metadata=metadata)
         page_iter.next_page_token = page_token
-        page_iter._item_to_value = _item_to_instance_config
+        page_iter.item_to_value = _item_to_instance_config
         return page_iter
 
     def instance(self, instance_id,
@@ -263,7 +263,7 @@ class Client(ClientWithProject):
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
             path, page_size=page_size, metadata=metadata)
-        page_iter._item_to_value = self._item_to_instance
+        page_iter.item_to_value = self._item_to_instance
         page_iter.next_page_token = page_token
         return page_iter
 
