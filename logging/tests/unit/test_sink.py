@@ -231,29 +231,61 @@ class TestSink(unittest.TestCase):
     def test_update_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.sinks_api = _DummySinksAPI()
+        api._sink_update_response = {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+            'writerIdentity': self.WRITER_IDENTITY,
+        }
         sink = self._make_one(self.SINK_NAME, self.FILTER,
                               self.DESTINATION_URI,
                               client=client)
 
         sink.update()
 
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_update_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
+            (
+                self.PROJECT,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                False,
+            ))
 
     def test_update_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.sinks_api = _DummySinksAPI()
+        api._sink_update_response = {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+            'writerIdentity': self.WRITER_IDENTITY,
+        }
         sink = self._make_one(self.SINK_NAME, self.FILTER,
                               self.DESTINATION_URI,
                               client=client1)
 
-        sink.update(client=client2)
+        sink.update(client=client2, unique_writer_identity=True)
 
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_update_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
+            (
+                self.PROJECT,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                True,
+            ))
 
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -304,9 +336,11 @@ class _DummySinksAPI(object):
         except AttributeError:
             raise NotFound('miss')
 
-    def sink_update(self, project, sink_name, filter_, destination):
+    def sink_update(self, project, sink_name, filter_, destination,
+                    unique_writer_identity=False):
         self._sink_update_called_with = (
-            project, sink_name, filter_, destination)
+            project, sink_name, filter_, destination, unique_writer_identity)
+        return self._sink_update_response
 
     def sink_delete(self, project, sink_name):
         self._sink_delete_called_with = (project, sink_name)

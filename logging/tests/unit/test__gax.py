@@ -744,6 +744,12 @@ class Test_SinksAPI(_Base, unittest.TestCase):
         from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
 
         gax_api = _GAXSinksAPI()
+        gax_api._create_sink_response = LogSink(
+            name=self.SINK_NAME,
+            destination=self.DESTINATION_URI,
+            filter=self.FILTER,
+            writer_identity=self.SINK_WRITER_IDENTITY,
+        )
         api = self._make_one(gax_api, None)
 
         returned = api.sink_create(
@@ -824,6 +830,7 @@ class Test_SinksAPI(_Base, unittest.TestCase):
 
     def test_sink_update_miss(self):
         from google.cloud.exceptions import NotFound
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
 
         gax_api = _GAXSinksAPI()
         api = self._make_one(gax_api, None)
@@ -833,25 +840,50 @@ class Test_SinksAPI(_Base, unittest.TestCase):
                 self.PROJECT, self.SINK_NAME, self.FILTER,
                 self.DESTINATION_URI)
 
-    def test_sink_update_hit(self):
-        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
-
-        response = LogSink(name=self.SINK_NAME,
-                           destination=self.DESTINATION_URI,
-                           filter=self.FILTER)
-        gax_api = _GAXSinksAPI(_update_sink_response=response)
-        api = self._make_one(gax_api, None)
-
-        api.sink_update(
-            self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
-
-        sink_name, sink, options = (
+        sink_name, sink, unique_writer_identity, options = (
             gax_api._update_sink_called_with)
         self.assertEqual(sink_name, self.SINK_PATH)
         self.assertIsInstance(sink, LogSink)
         self.assertEqual(sink.name, self.SINK_PATH)
         self.assertEqual(sink.filter, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertFalse(unique_writer_identity)
+        self.assertIsNone(options)
+
+    def test_sink_update_hit(self):
+        from google.cloud.proto.logging.v2.logging_config_pb2 import LogSink
+
+        response = LogSink(
+            name=self.SINK_NAME,
+            destination=self.DESTINATION_URI,
+            filter=self.FILTER,
+            writer_identity=Test_SinksAPI.SINK_WRITER_IDENTITY,
+        )
+        gax_api = _GAXSinksAPI(_update_sink_response=response)
+        api = self._make_one(gax_api, None)
+
+        returned = api.sink_update(
+            self.PROJECT,
+            self.SINK_NAME,
+            self.FILTER,
+            self.DESTINATION_URI,
+            unique_writer_identity=True)
+
+        self.assertEqual(returned, {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+            'writerIdentity': self.SINK_WRITER_IDENTITY,
+        })
+
+        sink_name, sink, unique_writer_identity, options = (
+            gax_api._update_sink_called_with)
+        self.assertEqual(sink_name, self.SINK_PATH)
+        self.assertIsInstance(sink, LogSink)
+        self.assertEqual(sink.name, self.SINK_PATH)
+        self.assertEqual(sink.filter, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertTrue(unique_writer_identity)
         self.assertIsNone(options)
 
     def test_sink_delete_error(self):
@@ -1497,12 +1529,7 @@ class _GAXSinksAPI(_GAXBaseAPI):
             raise GaxError('error')
         if self._create_sink_conflict:
             raise GaxError('conflict', self._make_grpc_failed_precondition())
-        return LogSink(
-            name=sink.name,
-            destination=sink.destination,
-            filter=sink.filter,
-            writer_identity=Test_SinksAPI.SINK_WRITER_IDENTITY,
-        )
+        return self._create_sink_response
 
     def get_sink(self, sink_name, options):
         from google.gax.errors import GaxError
@@ -1515,10 +1542,11 @@ class _GAXSinksAPI(_GAXBaseAPI):
         except AttributeError:
             raise GaxError('notfound', self._make_grpc_not_found())
 
-    def update_sink(self, sink_name, sink, options=None):
+    def update_sink(self, sink_name, sink, unique_writer_identity, options):
         from google.gax.errors import GaxError
 
-        self._update_sink_called_with = sink_name, sink, options
+        self._update_sink_called_with = (
+            sink_name, sink, unique_writer_identity, options)
         if self._random_gax_error:
             raise GaxError('error')
         try:

@@ -265,7 +265,8 @@ class _SinksAPI(object):
         #       so `MessageToDict`` can safely be used.
         return MessageToDict(sink_pb)
 
-    def sink_update(self, project, sink_name, filter_, destination):
+    def sink_update(self, project, sink_name, filter_, destination,
+                    unique_writer_identity=False):
         """API call:  update a sink resource.
 
         :type project: str
@@ -282,15 +283,24 @@ class _SinksAPI(object):
         :param destination: destination URI for the entries exported by
                             the sink.
 
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                       IAM identity returned as
+                                       writer_identity in the new sink.
+
         :rtype: dict
-        :returns: The sink object returned from the API (converted from a
+        :returns: The sink resource returned from the API (converted from a
                   protobuf to a dictionary).
         """
         options = None
         path = 'projects/%s/sinks/%s' % (project, sink_name)
         sink_pb = LogSink(name=path, filter=filter_, destination=destination)
         try:
-            sink_pb = self._gax_api.update_sink(path, sink_pb, options=options)
+            sink_pb = self._gax_api.update_sink(
+                path,
+                sink_pb,
+                unique_writer_identity=unique_writer_identity,
+                options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(path)
