@@ -160,9 +160,10 @@ class _CallableStub(object):
         exception, the exception will be raised when this is invoked.
         """
         self.responses = None
-        """Iterator[protobuf.Message]: A iterator of responses. If specified,
-        self.response will be populated on each invocation by calling
-        ``next(self.responses)``."""
+        """Iterator[
+            Union[protobuf.Message, Callable[protobuf.Message], exception]]:
+        An iterator of responses. If specified, self.response will be populated
+        on each invocation by calling ``next(self.responses)``."""
         self.requests = []
         """List[protobuf.Message]: All requests sent to this callable."""
         self.calls = []
@@ -170,26 +171,27 @@ class _CallableStub(object):
         request, timeout, metadata, and credentials."""
 
     def __call__(self, request, timeout=None, metadata=None, credentials=None):
-        self._channel._requests.append(
+        self._channel.requests.append(
             _ChannelRequest(self._method, request))
         self.calls.append(
             _MethodCall(request, timeout, metadata, credentials))
         self.requests.append(request)
 
-        if self.responses:
-            self.response = next(self.responses)
+        response = self.response
+        if response is None and self.responses is not None:
+            response = next(self.responses)
 
-        if callable(self.response):
-            return self.response(request)
+        if callable(response):
+            return response(request)
 
-        if isinstance(self.response, Exception):
-            raise self.response
+        if isinstance(response, Exception):
+            raise response
 
-        if self.response is not None:
-            return self.response
+        if response is not None:
+            return response
 
         raise ValueError(
-            'Method stub for "{}" has no responses.'.format(self._method))
+            'Method stub for "{}" has no response.'.format(self._method))
 
 
 def _simplify_method_name(method):
@@ -220,9 +222,9 @@ class ChannelStub(grpc.Channel):
     .. code-block:: python
 
         channel_stub = grpc_helpers.ChannelStub()
-        channel_stub.GetFoo.response = foo_pb2.Foo(name='bar')
+        client = FooClient(channel=channel_stub)
 
-        client = FooClient(channel_stub)
+        channel_stub.GetFoo.response = foo_pb2.Foo(name='bar')
 
         foo = client.get_foo(labels=['baz'])
 
@@ -248,7 +250,8 @@ class ChannelStub(grpc.Channel):
         # Use a sequence of responses:
         channel_stub.GetFoo.responses = iter([
             foo_pb2.Foo(name='bar'),
-            foo_pb2.Foo(name='baz')])
+            foo_pb2.Foo(name='baz')
+        ])
 
         assert client.get_foo().name == 'bar'
         assert client.get_foo().name == 'baz'
@@ -264,21 +267,15 @@ class ChannelStub(grpc.Channel):
     """
 
     def __init__(self, responses=[]):
-        self._requests = []
+        self.requests = []
+        """Sequence[Tuple[str, protobuf.Message]]: A list of all requests made
+        on this channel in order. The tuple is of method name, request
+        message."""
         self._method_stubs = {}
-
-    @property
-    def requests(self):
-        """Sequence[Tuple[str, protobuf.Message]]: Returns a list of all
-        requests made on this channel in order. The tuple is of method name,
-        request proto."""
-        return self._requests
 
     def _stub_for_method(self, method):
         method = _simplify_method_name(method)
-        if method not in self._method_stubs:
-            self._method_stubs[method] = _CallableStub(method, self)
-
+        self._method_stubs[method] = _CallableStub(method, self)
         return self._method_stubs[method]
 
     def __getattr__(self, key):
@@ -313,8 +310,8 @@ class ChannelStub(grpc.Channel):
 
     def subscribe(self, callback, try_to_connect=False):
         """grpc.Channel.subscribe implementation."""
-        return
+        pass
 
     def unsubscribe(self, callback):
         """grpc.Channel.unsubscribe implementation."""
-        return
+        pass

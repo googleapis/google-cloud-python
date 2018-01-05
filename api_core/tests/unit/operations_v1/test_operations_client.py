@@ -26,6 +26,7 @@ def test_get_operation():
 
     response = client.get_operation('name')
 
+    assert len(channel.GetOperation.requests) == 1
     assert channel.GetOperation.requests[0].name == 'name'
     assert response == channel.GetOperation.response
 
@@ -45,6 +46,7 @@ def test_list_operations():
     assert isinstance(response, page_iterator.Iterator)
     assert list(response) == operations
 
+    assert len(channel.ListOperations.requests) == 1
     request = channel.ListOperations.requests[0]
     assert isinstance(request, operations_pb2.ListOperationsRequest)
     assert request.name == 'name'
@@ -58,6 +60,7 @@ def test_delete_operation():
 
     client.delete_operation('name')
 
+    assert len(channel.DeleteOperation.requests) == 1
     assert channel.DeleteOperation.requests[0].name == 'name'
 
 
@@ -68,4 +71,5 @@ def test_cancel_operation():
 
     client.cancel_operation('name')
 
+    assert len(channel.CancelOperation.requests) == 1
     assert channel.CancelOperation.requests[0].name == 'name'

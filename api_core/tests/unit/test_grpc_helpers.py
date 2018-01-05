@@ -219,7 +219,7 @@ class TestChannelStub(object):
         channel = grpc_helpers.ChannelStub()
 
         with pytest.raises(AttributeError):
-            channel.DoesNotExist
+            channel.DoesNotExist.response
 
     def test_exception_response(self):
         channel = grpc_helpers.ChannelStub()
@@ -237,14 +237,15 @@ class TestChannelStub(object):
         expected_request = operations_pb2.GetOperationRequest(name='meep')
         expected_response = operations_pb2.Operation(name='moop')
 
-        def on_get_operation(request):
-            return expected_response
+        on_get_operation = mock.Mock(
+            spec=('__call__'), return_value=expected_response)
 
         channel.GetOperation.response = on_get_operation
 
         response = stub.GetOperation(expected_request)
 
         assert response == expected_response
+        on_get_operation.assert_called_once_with(expected_request)
 
     def test_multiple_responses(self):
         channel = grpc_helpers.ChannelStub()
@@ -319,5 +320,5 @@ class TestChannelStub(object):
 
     def test_subscribe_unsubscribe(self):
         channel = grpc_helpers.ChannelStub()
-        channel.subscribe(None)
-        channel.unsubscribe(None)
+        assert channel.subscribe(None) is None
+        assert channel.unsubscribe(None) is None
