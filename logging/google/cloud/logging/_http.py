@@ -254,6 +254,9 @@ class _SinksAPI(object):
         :param unique_writer_identity: (Optional) determines the kind of
                                        IAM identity returned as
                                        writer_identity in the new sink.
+
+        :rtype: dict
+        :returns: The returned (created) resource.
         """
         target = '/projects/%s/sinks' % (project,)
         data = {
@@ -262,7 +265,7 @@ class _SinksAPI(object):
             'destination': destination,
         }
         query_params = {'uniqueWriterIdentity': unique_writer_identity}
-        self.api_request(
+        return self.api_request(
             method='POST',
             path=target,
             data=data,

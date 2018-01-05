@@ -217,13 +217,17 @@ class _SinksAPI(object):
         :param unique_writer_identity: (Optional) determines the kind of
                                        IAM identity returned as
                                        writer_identity in the new sink.
+
+        :rtype: dict
+        :returns: The sink resource returned from the API (converted from a
+                  protobuf to a dictionary).
         """
         options = None
         parent = 'projects/%s' % (project,)
         sink_pb = LogSink(name=sink_name, filter=filter_,
                           destination=destination)
         try:
-            self._gax_api.create_sink(
+            created_pb = self._gax_api.create_sink(
                 parent,
                 sink_pb,
                 unique_writer_identity=unique_writer_identity,
@@ -234,6 +238,7 @@ class _SinksAPI(object):
                 path = 'projects/%s/sinks/%s' % (project, sink_name)
                 raise Conflict(path)
             raise
+        return MessageToDict(created_pb)
 
     def sink_get(self, project, sink_name):
         """API call:  retrieve a sink resource.
