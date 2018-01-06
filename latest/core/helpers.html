@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Helpers &#8212; google-cloud eedbde6 documentation</title>
+    <title>Helpers &#8212; google-cloud e9a5347 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'eedbde6',
+        VERSION:     'e9a5347',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -237,6 +237,104 @@ datetime object is ignored and the datetime is treated as UTC.</li>
 <div class="section" id="module-google.api_core.grpc_helpers">
 <span id="grpc-helpers"></span><h2>gRPC Helpers<a class="headerlink" href="#module-google.api_core.grpc_helpers" title="Permalink to this headline">#</a></h2>
 <p>Helpers for <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#module-grpc" title="(in grpcio v1.8.0)"><code class="xref py py-mod docutils literal"><span class="pre">grpc</span></code></a>.</p>
+<dl class="class">
+<dt id="google.api_core.grpc_helpers.ChannelStub">
+<em class="property">class </em><code class="descclassname">google.api_core.grpc_helpers.</code><code class="descname">ChannelStub</code><span class="sig-paren">(</span><em>responses=[]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#ChannelStub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><code class="xref py py-class docutils literal"><span class="pre">grpc.Channel</span></code></a></p>
+<p>A testing stub for the grpc.Channel interface.</p>
+<p>This can be used to test any client that eventually uses a gRPC channel
+to communicate. By passing in a channel stub, you can configure which
+responses are returned and track which requests are made.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">channel_stub</span> <span class="o">=</span> <span class="n">grpc_helpers</span><span class="o">.</span><span class="n">ChannelStub</span><span class="p">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">FooClient</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">channel_stub</span><span class="p">)</span>
+
+<span class="n">channel_stub</span><span class="o">.</span><span class="n">GetFoo</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">foo_pb2</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+
+<span class="n">foo</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_foo</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;baz&#39;</span><span class="p">])</span>
+
+<span class="k">assert</span> <span class="n">foo</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;bar&#39;</span>
+<span class="k">assert</span> <span class="n">channel_stub</span><span class="o">.</span><span class="n">GetFoo</span><span class="o">.</span><span class="n">requests</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;baz&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Each method on the stub can be accessed and configured on the channel.
+Here’s some examples of various configurations:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Return a basic response:</span>
+
+<span class="n">channel_stub</span><span class="o">.</span><span class="n">GetFoo</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">foo_pb2</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_foo</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;bar&#39;</span>
+
+<span class="c1"># Raise an exception:</span>
+<span class="n">channel_stub</span><span class="o">.</span><span class="n">GetFoo</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">NotFound</span><span class="p">(</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">NotFound</span><span class="p">):</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">get_foo</span><span class="p">()</span>
+
+<span class="c1"># Use a sequence of responses:</span>
+<span class="n">channel_stub</span><span class="o">.</span><span class="n">GetFoo</span><span class="o">.</span><span class="n">responses</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">([</span>
+    <span class="n">foo_pb2</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">),</span>
+    <span class="n">foo_pb2</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;baz&#39;</span><span class="p">),</span>
+<span class="p">])</span>
+
+<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_foo</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;bar&#39;</span>
+<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_foo</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;baz&#39;</span>
+
+<span class="c1"># Use a callable</span>
+
+<span class="k">def</span> <span class="nf">on_get_foo</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">foo_pb2</span><span class="o">.</span><span class="n">Foo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+<span class="n">channel_stub</span><span class="o">.</span><span class="n">GetFoo</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">on_get_foo</span>
+
+<span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get_foo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;123&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;bar123&#39;</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="google.api_core.grpc_helpers.ChannelStub.requests">
+<code class="descname">requests</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub.requests" title="Permalink to this definition">#</a></dt>
+<dd><p><em>Sequence[Tuple[str, protobuf.Message]]</em> – A list of all requests made
+on this channel in order. The tuple is of method name, request
+message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.api_core.grpc_helpers.ChannelStub.stream_stream">
+<code class="descname">stream_stream</code><span class="sig-paren">(</span><em>method</em>, <em>request_serializer=None</em>, <em>response_deserializer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#ChannelStub.stream_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub.stream_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>grpc.Channel.stream_stream implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.api_core.grpc_helpers.ChannelStub.stream_unary">
+<code class="descname">stream_unary</code><span class="sig-paren">(</span><em>method</em>, <em>request_serializer=None</em>, <em>response_deserializer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#ChannelStub.stream_unary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub.stream_unary" title="Permalink to this definition">#</a></dt>
+<dd><p>grpc.Channel.stream_unary implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.api_core.grpc_helpers.ChannelStub.subscribe">
+<code class="descname">subscribe</code><span class="sig-paren">(</span><em>callback</em>, <em>try_to_connect=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#ChannelStub.subscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub.subscribe" title="Permalink to this definition">#</a></dt>
+<dd><p>grpc.Channel.subscribe implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.api_core.grpc_helpers.ChannelStub.unary_stream">
+<code class="descname">unary_stream</code><span class="sig-paren">(</span><em>method</em>, <em>request_serializer=None</em>, <em>response_deserializer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#ChannelStub.unary_stream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub.unary_stream" title="Permalink to this definition">#</a></dt>
+<dd><p>grpc.Channel.unary_stream implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.api_core.grpc_helpers.ChannelStub.unary_unary">
+<code class="descname">unary_unary</code><span class="sig-paren">(</span><em>method</em>, <em>request_serializer=None</em>, <em>response_deserializer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#ChannelStub.unary_unary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub.unary_unary" title="Permalink to this definition">#</a></dt>
+<dd><p>grpc.Channel.unary_unary implementation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="google.api_core.grpc_helpers.ChannelStub.unsubscribe">
+<code class="descname">unsubscribe</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#ChannelStub.unsubscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.ChannelStub.unsubscribe" title="Permalink to this definition">#</a></dt>
+<dd><p>grpc.Channel.unsubscribe implementation.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="google.api_core.grpc_helpers.create_channel">
 <code class="descclassname">google.api_core.grpc_helpers.</code><code class="descname">create_channel</code><span class="sig-paren">(</span><em>target</em>, <em>credentials=None</em>, <em>scopes=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/api_core/grpc_helpers.html#create_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.api_core.grpc_helpers.create_channel" title="Permalink to this definition">#</a></dt>
