@@ -554,19 +554,23 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         # Make sure bucket empty before beginning.
         _empty_bucket(cls.bucket)
 
+        cls.suite_blobs_to_delete = []
         simple_path = cls.FILES['simple']['path']
-        blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
-        blob.upload_from_filename(simple_path)
-        cls.suite_blobs_to_delete = [blob]
-        for filename in cls.FILENAMES[1:]:
-            new_blob = retry_bad_copy(cls.bucket.copy_blob)(
-                blob, cls.bucket, filename)
-            cls.suite_blobs_to_delete.append(new_blob)
+        for filename in cls.FILENAMES:
+            blob = storage.Blob(filename, bucket=cls.bucket)
+            blob.upload_from_filename(simple_path)
+            cls.suite_blobs_to_delete.append(blob)
 
     @classmethod
     def tearDownClass(cls):
         for blob in cls.suite_blobs_to_delete:
             blob.delete()
+
+    @RetryErrors(unittest.TestCase.failureException)
+    def test_blob_get_w_delimiter(self):
+        for filename in self.FILENAMES:
+            blob = self.bucket.blob(filename)
+            self.assertTrue(blob.exists(), filename)
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_root_level_w_delimiter(self):

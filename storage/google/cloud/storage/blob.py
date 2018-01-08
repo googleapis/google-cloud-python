@@ -1706,7 +1706,7 @@ def _quote(value):
     :returns: The encoded value (bytes in Python 2, unicode in Python 3).
     """
     value = _to_bytes(value, encoding='utf-8')
-    return quote(value, safe='')
+    return quote(value)
 
 
 def _maybe_rewind(stream, rewind=False):
