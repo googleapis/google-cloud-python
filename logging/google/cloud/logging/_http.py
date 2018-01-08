@@ -290,7 +290,8 @@ class _SinksAPI(object):
         target = '/projects/%s/sinks/%s' % (project, sink_name)
         return self.api_request(method='GET', path=target)
 
-    def sink_update(self, project, sink_name, filter_, destination):
+    def sink_update(self, project, sink_name, filter_, destination,
+                    unique_writer_identity=False):
         """API call:  update a sink resource.
 
         See
@@ -310,6 +311,11 @@ class _SinksAPI(object):
         :param destination: destination URI for the entries exported by
                             the sink.
 
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                       IAM identity returned as
+                                       writer_identity in the new sink.
+
         :rtype: dict
         :returns: The returned (updated) resource.
         """
@@ -319,7 +325,9 @@ class _SinksAPI(object):
             'filter': filter_,
             'destination': destination,
         }
-        return self.api_request(method='PUT', path=target, data=data)
+        query_params = {'uniqueWriterIdentity': unique_writer_identity}
+        return self.api_request(
+            method='PUT', path=target, query_params=query_params, data=data)
 
     def sink_delete(self, project, sink_name):
         """API call:  delete a sink resource.
