@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.logging.sink &#8212; google-cloud e9a5347 documentation</title>
+    <title>google.cloud.logging.sink &#8212; google-cloud d76cb81 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'e9a5347',
+        VERSION:     'd76cb81',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -217,7 +217,7 @@
         <span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sinks_api</span><span class="o">.</span><span class="n">sink_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Sink.update"><a class="viewcode-back" href="../../../../logging/sink.html#google.cloud.logging.sink.Sink.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Sink.update"><a class="viewcode-back" href="../../../../logging/sink.html#google.cloud.logging.sink.Sink.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unique_writer_identity</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update sink configuration via a PUT request</span>
 
 <span class="sd">        See</span>
@@ -227,10 +227,18 @@
 <span class="sd">                      ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current sink.</span>
+
+<span class="sd">        :type unique_writer_identity: bool</span>
+<span class="sd">        :param unique_writer_identity: (Optional) determines the kind of</span>
+<span class="sd">                                    IAM identity returned as</span>
+<span class="sd">                                    writer_identity in the new sink.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">sinks_api</span><span class="o">.</span><span class="n">sink_update</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">)</span></div>
+        <span class="n">resource</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sinks_api</span><span class="o">.</span><span class="n">sink_update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="p">,</span>
+            <span class="n">unique_writer_identity</span><span class="o">=</span><span class="n">unique_writer_identity</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sink.delete"><a class="viewcode-back" href="../../../../logging/sink.html#google.cloud.logging.sink.Sink.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete a sink via a DELETE request</span>
@@ -324,7 +332,7 @@
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

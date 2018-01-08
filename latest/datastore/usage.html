@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Datastore &#8212; google-cloud e9a5347 documentation</title>
+    <title>Datastore &#8212; google-cloud d76cb81 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'e9a5347',
+        VERSION:     'd76cb81',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -327,6 +327,12 @@ change in the future.</li>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.datastore.Client.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/datastore',)</em><a class="headerlink" href="#google.cloud.datastore.Client.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating as a Cloud Datastore consumer.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.datastore.Client.allocate_ids">
 <code class="descname">allocate_ids</code><span class="sig-paren">(</span><em>incomplete_key</em>, <em>num_ids</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/client.html#Client.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Client.allocate_ids" title="Permalink to this definition">#</a></dt>
@@ -699,6 +705,12 @@ indexed for this entity.</li>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.datastore.Entity.exclude_from_indexes">
+<code class="descname">exclude_from_indexes</code><em class="property"> = None</em><a class="headerlink" href="#google.cloud.datastore.Entity.exclude_from_indexes" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of fields which are <em>not</em> to be indexed for this entity.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="google.cloud.datastore.Entity.id">
 <code class="descname">id</code><a class="headerlink" href="#google.cloud.datastore.Entity.id" title="Permalink to this definition">#</a></dt>
@@ -1075,6 +1087,12 @@ default is set.</p>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="google.cloud.datastore.Query.OPERATORS">
+<code class="descname">OPERATORS</code><em class="property"> = {'&lt;': 1, '&lt;=': 2, '=': 5, '&gt;': 3, '&gt;=': 4}</em><a class="headerlink" href="#google.cloud.datastore.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<dd><p>Mapping of operator strings and their protobuf equivalents.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="google.cloud.datastore.Query.add_filter">
 <code class="descname">add_filter</code><span class="sig-paren">(</span><em>property_name</em>, <em>operator</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/datastore/query.html#Query.add_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.datastore.Query.add_filter" title="Permalink to this definition">#</a></dt>
@@ -1590,7 +1608,7 @@ is marked ReadOnly</td>
       &copy;2014-2017, Google.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
