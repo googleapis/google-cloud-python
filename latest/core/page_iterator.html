@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Page Iterators &#8212; google-cloud d76cb81 documentation</title>
+    <title>Page Iterators &#8212; google-cloud fc31a25 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'd76cb81',
+        VERSION:     'fc31a25',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -252,47 +252,6 @@ fetching results from.</li>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="google.api_core.page_iterator.Iterator.client">
-<code class="descname">client</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.client" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Optional[Any]</em> – The client that created this iterator.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.api_core.page_iterator.Iterator.item_to_value">
-<code class="descname">item_to_value</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.item_to_value" title="Permalink to this definition">#</a></dt>
-<dd><p><em>Callable[Iterator, Any]</em> – Callable to convert an item from the type
-in the raw API response into the native object. Will be called with
-the iterator and a
-single item.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.api_core.page_iterator.Iterator.max_results">
-<code class="descname">max_results</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.max_results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – The maximum number of results to fetch.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.api_core.page_iterator.Iterator.next_page_token">
-<code class="descname">next_page_token</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.next_page_token" title="Permalink to this definition">#</a></dt>
-<dd><p><em>str</em> – The token for the next page of results. If this is set before
-the iterator starts, it effectively offsets the iterator to a
-specific starting point.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.api_core.page_iterator.Iterator.num_results">
-<code class="descname">num_results</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.num_results" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – The total number of results fetched so far.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.api_core.page_iterator.Iterator.page_number">
-<code class="descname">page_number</code><em class="property"> = None</em><a class="headerlink" href="#google.api_core.page_iterator.Iterator.page_number" title="Permalink to this definition">#</a></dt>
-<dd><p><em>int</em> – The current page of results.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="google.api_core.page_iterator.Iterator.pages">
 <code class="descname">pages</code><a class="headerlink" href="#google.api_core.page_iterator.Iterator.pages" title="Permalink to this definition">#</a></dt>
