@@ -527,7 +527,7 @@ class Test_SinksAPI(unittest.TestCase):
     def test_sink_update_miss(self):
         from google.cloud.exceptions import NotFound
 
-        SENT = {
+        sent = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
@@ -541,28 +541,43 @@ class Test_SinksAPI(unittest.TestCase):
                 self.PROJECT, self.SINK_NAME, self.FILTER,
                 self.DESTINATION_URI)
 
-        self.assertEqual(conn._called_with['method'], 'PUT')
         path = '/projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['data'], SENT)
+        expected = {
+            'method': 'PUT',
+            'path': path,
+            'data': sent,
+            'query_params': {'uniqueWriterIdentity': False},
+        }
+        self.assertEqual(conn._called_with, expected)
 
     def test_sink_update_hit(self):
-        SENT = {
+        sent = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-        conn = _Connection({})
+        after_update = sent.copy()
+        after_update['writerIdentity'] = self.WRITER_IDENTITY
+        conn = _Connection(after_update)
         client = _Client(conn)
         api = self._make_one(client)
 
-        api.sink_update(
-            self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
+        returned = api.sink_update(
+            self.PROJECT,
+            self.SINK_NAME,
+            self.FILTER,
+            self.DESTINATION_URI,
+            unique_writer_identity=True)
 
-        self.assertEqual(conn._called_with['method'], 'PUT')
+        self.assertEqual(returned, after_update)
         path = '/projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        self.assertEqual(conn._called_with['path'], path)
-        self.assertEqual(conn._called_with['data'], SENT)
+        expected = {
+            'method': 'PUT',
+            'path': path,
+            'data': sent,
+            'query_params': {'uniqueWriterIdentity': True},
+        }
+        self.assertEqual(conn._called_with, expected)
 
     def test_sink_delete_miss(self):
         from google.cloud.exceptions import NotFound

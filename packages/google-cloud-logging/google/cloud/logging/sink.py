@@ -175,7 +175,7 @@ class Sink(object):
         resource = client.sinks_api.sink_get(self.project, self.name)
         self._update_from_api_repr(resource)
 
-    def update(self, client=None):
+    def update(self, client=None, unique_writer_identity=False):
         """API call:  update sink configuration via a PUT request
 
         See
@@ -185,10 +185,18 @@ class Sink(object):
                       ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current sink.
+
+        :type unique_writer_identity: bool
+        :param unique_writer_identity: (Optional) determines the kind of
+                                    IAM identity returned as
+                                    writer_identity in the new sink.
         """
         client = self._require_client(client)
-        client.sinks_api.sink_update(
-            self.project, self.name, self.filter_, self.destination)
+        resource = client.sinks_api.sink_update(
+            self.project, self.name, self.filter_, self.destination,
+            unique_writer_identity=unique_writer_identity,
+        )
+        self._update_from_api_repr(resource)
 
     def delete(self, client=None):
         """API call:  delete a sink via a DELETE request
