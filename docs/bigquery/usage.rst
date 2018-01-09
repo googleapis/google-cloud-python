@@ -237,6 +237,17 @@ Querying data
     run in the background even if it takes longer the timeout allowed.
 
 
+Writing query results to a destination table
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See BigQuery documentation for more information on
+`writing query results <https://cloud.google.com/bigquery/docs/writing-results>`_.
+
+.. literalinclude:: snippets.py
+  :start-after: [START bigquery_query_destination_table]
+  :end-before: [END bigquery_query_destination_table]
+
+
 Run a query using a named query parameter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
