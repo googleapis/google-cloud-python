@@ -119,16 +119,16 @@
     "result": {"value": [[[
       [
         "abc",
-        "defghi"
+        "2014-09-27T12:30:00.45Z"
       ],
       [
         "123",
-        "456"
+        "2014-09-27T12:30:00.45Z"
       ]
     ]]]},
     "chunks": [
-      "{\n  \"metadata\": {\n    \"rowType\": {\n      \"fields\": [{\n        \"name\": \"f1\",\n        \"type\": {\n          \"code\": \"ARRAY\",\n          \"arrayElementType\": {\n            \"code\": \"STRUCT\",\n            \"structType\": {\n              \"fields\": [{\n                \"name\": \"f11\",\n                \"type\": {\n                  \"code\": \"STRING\"\n                }\n              }, {\n                \"name\": \"f12\",\n                \"type\": {\n                  \"code\": \"STRING\"\n                }\n              }]\n            }\n          }\n        }\n      }]\n    }\n  },\n  \"values\": [[[\"abc\", \"def\"]]],\n  \"chunkedValue\": true\n}",
-      "{\n  \"values\": [[[\"ghi\"], [\"123\", \"456\"]]],\n  \"chunkedValue\": true\n}",
+      "{\n  \"metadata\": {\n    \"rowType\": {\n      \"fields\": [{\n        \"name\": \"f1\",\n        \"type\": {\n          \"code\": \"ARRAY\",\n          \"arrayElementType\": {\n            \"code\": \"STRUCT\",\n            \"structType\": {\n              \"fields\": [{\n                \"name\": \"f11\",\n                \"type\": {\n                  \"code\": \"STRING\"\n                }\n              }, {\n                \"name\": \"f12\",\n                \"type\": {\n                  \"code\": \"TIMESTAMP\"\n                }\n              }]\n            }\n          }\n        }\n      }]\n    }\n  },\n  \"values\": [[[\"abc\", \"2014-09-27T12:30:00\"]]],\n  \"chunkedValue\": true\n}",
+      "{\n  \"values\": [[[\".45Z\"], [\"123\", \"2014-09-27T12:30:00.45Z\"]]],\n  \"chunkedValue\": true\n}",
       "{\n  \"values\": [[[\"\"]]]\n}"
     ],
     "name": "Struct Array Chunking Test"
