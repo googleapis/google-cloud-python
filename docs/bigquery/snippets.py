@@ -706,10 +706,7 @@ def test_client_query_destination_table(client, to_delete):
     to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table]
-    from google.cloud.bigquery import QueryJobConfig
-    from google.cloud.bigquery import SchemaField
-
-    job_config = QueryJobConfig()
+    job_config = bigquery.QueryJobConfig()
 
     # Set the destination table. Here, dataset_id is a string, such as:
     # dataset_id = 'your_dataset_id'
@@ -725,10 +722,7 @@ def test_client_query_destination_table(client, to_delete):
     query_job = client.query(
         'SELECT 17 AS my_col;', job_config=job_config)
 
-    # Waits for the query to finish
-    iterator = query_job.result()
-    rows = list(iterator)
-
+    rows = list(query_job)  # Waits for the query to finish
     assert len(rows) == 1
     row = rows[0]
     assert row[0] == row.my_col == 17
@@ -736,9 +730,9 @@ def test_client_query_destination_table(client, to_delete):
     # In addition to using the results from the query, you can read the rows
     # from the destination table directly.
     iterator = client.list_rows(
-        table_ref, selected_fields=[SchemaField('my_col', 'INT64')])
-    rows = list(iterator)
+        table_ref, selected_fields=[bigquery.SchemaField('my_col', 'INT64')])
 
+    rows = list(iterator)
     assert len(rows) == 1
     row = rows[0]
     assert row[0] == row.my_col == 17
