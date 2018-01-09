@@ -1765,7 +1765,7 @@ class QueryJob(_AsyncJob):
 
     @property
     def cache_hit(self):
-        """Return billing tier from job statistics, if present.
+        """Return whether or not query results were served from cache.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.cacheHit
