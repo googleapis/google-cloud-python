@@ -697,6 +697,54 @@ def test_client_query(client):
     # [END client_query]
 
 
+def test_client_query_destination_table(client, to_delete):
+    """Run a query"""
+    dataset_id = 'query_destination_table_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    to_delete.append(dataset_ref)
+    dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
+    to_delete.insert(0, dataset_ref.table('your_table_id'))
+
+    # [START bigquery_query_destination_table]
+    from google.cloud.bigquery import QueryJobConfig
+    from google.cloud.bigquery import SchemaField
+
+    job_config = QueryJobConfig()
+
+    # Set the destination table. Here, dataset_id is a string, such as:
+    # dataset_id = 'your_dataset_id'
+    table_ref = client.dataset(dataset_id).table('your_table_id')
+    job_config.destination = table_ref
+
+    # The write_disposition specifies the behavior when writing query results
+    # to a table that already exists. With WRITE_TRUNCATE, any existing rows
+    # in the table are overwritten by the query results.
+    job_config.write_disposition = 'WRITE_TRUNCATE'
+
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        'SELECT 17 AS my_col;', job_config=job_config)
+
+    # Waits for the query to finish
+    iterator = query_job.result()
+    rows = list(iterator)
+
+    assert len(rows) == 1
+    row = rows[0]
+    assert row[0] == row.my_col == 17
+
+    # In addition to using the results from the query, you can read the rows
+    # from the destination table directly.
+    iterator = client.list_rows(
+        table_ref, selected_fields=[SchemaField('my_col', 'INT64')])
+    rows = list(iterator)
+
+    assert len(rows) == 1
+    row = rows[0]
+    assert row[0] == row.my_col == 17
+    # [END bigquery_query_destination_table]
+
+
 def test_client_query_w_param(client):
     """Run a query using a query parameter"""
 
