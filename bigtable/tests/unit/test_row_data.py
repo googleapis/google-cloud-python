@@ -204,7 +204,7 @@ class TestPartialRowsData(unittest.TestCase):
         partial_rows_data = self._make_one(response_iterator)
         self.assertIs(partial_rows_data._response_iterator,
                       response_iterator)
-        self.assertEqual(partial_rows_data._rows, {})
+        self.assertEqual(partial_rows_data.rows, {})
 
     def test___eq__(self):
         response_iterator = object()
@@ -233,7 +233,7 @@ class TestPartialRowsData(unittest.TestCase):
 
     def test_rows_getter(self):
         partial_rows_data = self._make_one(None)
-        partial_rows_data._rows = value = object()
+        partial_rows_data.rows = value = object()
         self.assertIs(partial_rows_data.rows, value)
 
 
@@ -603,6 +603,8 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     def test_empty_cell_chunk(self):
         self._match_results('empty cell chunk')
 
+    def test_empty_second_qualifier(self):
+        self._match_results('empty second qualifier')
 
 def _flatten_cells(prd):
     # Match results format from JSON testcases.

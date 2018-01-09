@@ -187,25 +187,26 @@ class PartialRowsData(object):
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
     """
-    START = "Start"                         # No responses yet processed.
-    NEW_ROW = "New row"                     # No cells yet complete for row
-    ROW_IN_PROGRESS = "Row in progress"     # Some cells complete for row
-    CELL_IN_PROGRESS = "Cell in progress"   # Incomplete cell for row
+
+    START = 'Start'                         # No responses yet processed.
+    NEW_ROW = 'New row'                     # No cells yet complete for row
+    ROW_IN_PROGRESS = 'Row in progress'     # Some cells complete for row
+    CELL_IN_PROGRESS = 'Cell in progress'   # Incomplete cell for row
 
     def __init__(self, response_iterator):
         self._response_iterator = response_iterator
-        self.generator = YieldRowsData(response_iterator)
+        self._generator = YieldRowsData(response_iterator)
 
         # Fully-processed rows, keyed by `row_key`
-        self._rows = {}
+        self.rows = {}
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
-            return False
+            return NotImplemented
         return other._response_iterator == self._response_iterator
 
     def __ne__(self, other):
-        return not self.__eq__(other)
+        return not self == other
 
     @property
     def state(self):
@@ -215,18 +216,7 @@ class PartialRowsData(object):
         :returns:  name of state corresponding to currrent row / chunk
                    processing.
         """
-        return self.generator.state
-
-    @property
-    def rows(self):
-        """Property returning all rows accumulated from the stream.
-
-        :rtype: dict
-        :returns: row_key -> :class:`PartialRowData`.
-        """
-        # NOTE: To avoid duplicating large objects, this is just the
-        #       mutable private data.
-        return self._rows
+        return self._generator.state
 
     def consume_all(self, max_loops=None):
         """Consume the streamed responses until there are no more.
@@ -236,8 +226,8 @@ class PartialRowsData(object):
                           an additional ``ReadRowsResponse``. You can use this
                           to avoid long wait times.
         """
-        for row in self.generator.read_rows():
-            self._rows[row.row_key] = row
+        for row in self._generator.read_rows():
+            self.rows[row.row_key] = row
 
 
 class YieldRowsData(object):
@@ -247,10 +237,11 @@ class YieldRowsData(object):
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
     """
-    START = "Start"  # No responses yet processed.
-    NEW_ROW = "New row"  # No cells yet complete for row
-    ROW_IN_PROGRESS = "Row in progress"  # Some cells complete for row
-    CELL_IN_PROGRESS = "Cell in progress"  # Incomplete cell for row
+
+    START = 'Start'  # No responses yet processed.
+    NEW_ROW = 'New row'  # No cells yet complete for row
+    ROW_IN_PROGRESS = 'Row in progress'  # Some cells complete for row
+    CELL_IN_PROGRESS = 'Cell in progress'  # Incomplete cell for row
 
     def __init__(self, response_iterator):
         self._response_iterator = response_iterator
@@ -328,10 +319,14 @@ class YieldRowsData(object):
                     row = self._row = PartialRowData(chunk.row_key)
 
                 if cell is None:
+                    qualifier = None
+                    if chunk.HasField('qualifier'):
+                        qualifier = chunk.qualifier.value
+
                     cell = self._cell = PartialCellData(
                         chunk.row_key,
                         chunk.family_name.value,
-                        chunk.qualifier.value,
+                        qualifier,
                         chunk.timestamp_micros,
                         chunk.labels,
                         chunk.value)
@@ -451,7 +446,8 @@ class YieldRowsData(object):
                 cell.row_key = previous.row_key
             if not cell.family_name:
                 cell.family_name = previous.family_name
-            if not cell.qualifier:
+            # NOTE: ``cell.qualifier`` **can** be empty string.
+            if cell.qualifier is None:
                 cell.qualifier = previous.qualifier
 
 
