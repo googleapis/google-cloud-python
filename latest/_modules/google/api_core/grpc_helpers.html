@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.api_core.grpc_helpers &#8212; google-cloud fc31a25 documentation</title>
+    <title>google.api_core.grpc_helpers &#8212; google-cloud cab1f67 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'fc31a25',
+        VERSION:     'cab1f67',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -55,6 +55,8 @@
 <span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Helpers for :mod:`grpc`.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="kn">import</span> <span class="nn">grpc</span>
 <span class="kn">import</span> <span class="nn">six</span>
@@ -178,6 +180,188 @@
 
     <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">grpc</span><span class="o">.</span><span class="n">secure_authorized_channel</span><span class="p">(</span>
         <span class="n">credentials</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<span class="n">_MethodCall</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s1">&#39;_MethodCall&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">,</span> <span class="s1">&#39;timeout&#39;</span><span class="p">,</span> <span class="s1">&#39;metadata&#39;</span><span class="p">,</span> <span class="s1">&#39;credentials&#39;</span><span class="p">))</span>
+
+<span class="n">_ChannelRequest</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s1">&#39;_ChannelRequest&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;request&#39;</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">_CallableStub</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Stub for the grpc.*MultiCallable interfaces.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">channel</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span> <span class="o">=</span> <span class="n">channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Union[protobuf.Message, Callable[protobuf.Message], exception]:</span>
+<span class="sd">        The response to give when invoking this callable. If this is a</span>
+<span class="sd">        callable, it will be invoked with the request protobuf. If it&#39;s an</span>
+<span class="sd">        exception, the exception will be raised when this is invoked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">responses</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;Iterator[</span>
+<span class="sd">            Union[protobuf.Message, Callable[protobuf.Message], exception]]:</span>
+<span class="sd">        An iterator of responses. If specified, self.response will be populated</span>
+<span class="sd">        on each invocation by calling ``next(self.responses)``.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="sd">&quot;&quot;&quot;List[protobuf.Message]: All requests sent to this callable.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="sd">&quot;&quot;&quot;List[Tuple]: All invocations of this callable. Each tuple is the</span>
+<span class="sd">        request, timeout, metadata, and credentials.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_channel</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">_ChannelRequest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="n">request</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">_MethodCall</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">credentials</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">responses</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">responses</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;</span><span class="si">{method}</span><span class="s1">.response and </span><span class="si">{method}</span><span class="s1">.responses are mutually &#39;</span>
+                    <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">response</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">response</span>
+
+        <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">response</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Method stub for &quot;</span><span class="si">{}</span><span class="s1">&quot; has no response.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_simplify_method_name</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simplifies a gRPC method name.</span>
+
+<span class="sd">    When gRPC invokes the channel to create a callable, it gives a full</span>
+<span class="sd">    method name like &quot;/google.pubsub.v1.Publisher/CreateTopic&quot;. This</span>
+<span class="sd">    returns just the name of the method, in this case &quot;CreateTopic&quot;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        method (str): The name of the method.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The simplified name of the method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">method</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ChannelStub"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub">[docs]</a><span class="k">class</span> <span class="nc">ChannelStub</span><span class="p">(</span><span class="n">grpc</span><span class="o">.</span><span class="n">Channel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A testing stub for the grpc.Channel interface.</span>
+
+<span class="sd">    This can be used to test any client that eventually uses a gRPC channel</span>
+<span class="sd">    to communicate. By passing in a channel stub, you can configure which</span>
+<span class="sd">    responses are returned and track which requests are made.</span>
+
+<span class="sd">    For example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        channel_stub = grpc_helpers.ChannelStub()</span>
+<span class="sd">        client = FooClient(channel=channel_stub)</span>
+
+<span class="sd">        channel_stub.GetFoo.response = foo_pb2.Foo(name=&#39;bar&#39;)</span>
+
+<span class="sd">        foo = client.get_foo(labels=[&#39;baz&#39;])</span>
+
+<span class="sd">        assert foo.name == &#39;bar&#39;</span>
+<span class="sd">        assert channel_stub.GetFoo.requests[0].labels = [&#39;baz&#39;]</span>
+
+<span class="sd">    Each method on the stub can be accessed and configured on the channel.</span>
+<span class="sd">    Here&#39;s some examples of various configurations:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # Return a basic response:</span>
+
+<span class="sd">        channel_stub.GetFoo.response = foo_pb2.Foo(name=&#39;bar&#39;)</span>
+<span class="sd">        assert client.get_foo().name == &#39;bar&#39;</span>
+
+<span class="sd">        # Raise an exception:</span>
+<span class="sd">        channel_stub.GetFoo.response = NotFound(&#39;...&#39;)</span>
+
+<span class="sd">        with pytest.raises(NotFound):</span>
+<span class="sd">            client.get_foo()</span>
+
+<span class="sd">        # Use a sequence of responses:</span>
+<span class="sd">        channel_stub.GetFoo.responses = iter([</span>
+<span class="sd">            foo_pb2.Foo(name=&#39;bar&#39;),</span>
+<span class="sd">            foo_pb2.Foo(name=&#39;baz&#39;),</span>
+<span class="sd">        ])</span>
+
+<span class="sd">        assert client.get_foo().name == &#39;bar&#39;</span>
+<span class="sd">        assert client.get_foo().name == &#39;baz&#39;</span>
+
+<span class="sd">        # Use a callable</span>
+
+<span class="sd">        def on_get_foo(request):</span>
+<span class="sd">            return foo_pb2.Foo(name=&#39;bar&#39; + request.id)</span>
+
+<span class="sd">        channel_stub.GetFoo.response = on_get_foo</span>
+
+<span class="sd">        assert client.get_foo(id=&#39;123&#39;).name == &#39;bar123&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">responses</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="sd">&quot;&quot;&quot;Sequence[Tuple[str, protobuf.Message]]: A list of all requests made</span>
+<span class="sd">        on this channel in order. The tuple is of method name, request</span>
+<span class="sd">        message.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_stubs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_stub_for_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">_simplify_method_name</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method_stubs</span><span class="p">[</span><span class="n">method</span><span class="p">]</span> <span class="o">=</span> <span class="n">_CallableStub</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method_stubs</span><span class="p">[</span><span class="n">method</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method_stubs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span>
+
+<div class="viewcode-block" id="ChannelStub.unary_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_unary">[docs]</a>    <span class="k">def</span> <span class="nf">unary_unary</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
+            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_unary implementation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChannelStub.unary_stream"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unary_stream">[docs]</a>    <span class="k">def</span> <span class="nf">unary_stream</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
+            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.unary_stream implementation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChannelStub.stream_unary"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.stream_unary">[docs]</a>    <span class="k">def</span> <span class="nf">stream_unary</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
+            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_unary implementation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChannelStub.stream_stream"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.stream_stream">[docs]</a>    <span class="k">def</span> <span class="nf">stream_stream</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span>
+            <span class="n">request_serializer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_deserializer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.stream_stream implementation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stub_for_method</span><span class="p">(</span><span class="n">method</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChannelStub.subscribe"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.subscribe">[docs]</a>    <span class="k">def</span> <span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">try_to_connect</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.subscribe implementation.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ChannelStub.unsubscribe"><a class="viewcode-back" href="../../../core/helpers.html#google.api_core.grpc_helpers.ChannelStub.unsubscribe">[docs]</a>    <span class="k">def</span> <span class="nf">unsubscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;grpc.Channel.unsubscribe implementation.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
 </pre></div>
 
           </div>
