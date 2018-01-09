@@ -702,7 +702,7 @@ def test_client_query_destination_table(client, to_delete):
     dataset_id = 'query_destination_table_{}'.format(_millis())
     dataset_ref = client.dataset(dataset_id)
     to_delete.append(dataset_ref)
-    dataset = client.create_dataset(bigquery.Dataset(dataset_ref))
+    client.create_dataset(bigquery.Dataset(dataset_ref))
     to_delete.insert(0, dataset_ref.table('your_table_id'))
 
     # [START bigquery_query_destination_table]
