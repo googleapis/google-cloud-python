@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v1.3.0
+------
+
+- Added ``google.oauth2.credentials.Credentials.from_authorized_user_file`` (#226)
+- Dropped direct pyasn1 dependency in favor of letting ``pyasn1-modules`` specify the right version. (#230)
+- ``default()`` now checks for the project ID environment var before warning about missing project ID. (#227)
+- Fixed the docstrings for ``has_scopes()`` and ``with_scopes()``. (#228)
+- Fixed example in docstring for ``ReadOnlyScoped``. (#219)
+- Made ``transport.requests`` use timeouts and retries to improve reliability. (#220)
+
 v1.2.1
 ------
 
