@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## 0.1.4
+
+### New Features
+
+- Add `ChannelStub` to `grpc_helpers` for testing gRPC-based clients. (#4705)
+
+### Notable Implementation Changes
+
+- Fix handling of gapic metadata when specified as `None`. (#4701)
+
 ## 0.1.3
 
 ### Notable Implementation Changes

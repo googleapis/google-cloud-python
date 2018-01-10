@@ -33,3 +33,4 @@ much of the functionality has been split out into a new package
 * ``0.1.1`` (`PyPI <https://pypi.org/project/google-api-core/0.1.1/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/api-core-0.1.1>`__)
 * ``0.1.2`` (`PyPI <https://pypi.org/project/google-api-core/0.1.2/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/api-core-0.1.2>`__)
 * ``0.1.3`` (`PyPI <https://pypi.org/project/google-api-core/0.1.3/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/api-core-0.1.3>`__)
+* ``0.1.4`` (`PyPI <https://pypi.org/project/google-api-core/0.1.4/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/api-core-0.1.4>`__)
