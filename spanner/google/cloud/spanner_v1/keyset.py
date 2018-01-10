@@ -24,40 +24,28 @@ from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 class KeyRange(object):
     """Identify range of table rows via start / end points.
 
-    .. note::
+    :type start_open: list of scalars
+    :param start_open: keys identifying start of range (this key excluded)
 
-        Exactly one of ``start_open`` and ``start_closed`` must be
-        passed and exactly one of ``end_open`` and ``end_closed`` must be.
-        To "start at the beginning" (i.e. specify no start for the range)
-        pass ``start_closed=[]``. To "go to the end" (i.e. specify no end
-        for the range) pass ``end_closed=[]``.
+    :type start_closed: list of scalars
+    :param start_closed: keys identifying start of range (this key included)
 
-    Args:
-        start_open (List): Keys identifying start of range (this key
-            excluded).
-        start_closed (List): Keys identifying start of range (this key
-            included).
-        end_open (List): Keys identifying end of range (this key
-            excluded).
-        end_closed (List): Keys identifying end of range (this key
-            included).
+    :type end_open: list of scalars
+    :param end_open: keys identifying end of range (this key excluded)
 
-    Raises:
-        ValueError: If **neither** ``start_open`` or ``start_closed`` is
-            passed.
-        ValueError: If **both** ``start_open`` and ``start_closed`` are passed.
-        ValueError: If **neither** ``end_open`` or ``end_closed`` is passed.
-        ValueError: If **both** ``end_open`` and ``end_closed`` are passed.
+    :type end_closed: list of scalars
+    :param end_closed: keys identifying end of range (this key included)
     """
     def __init__(self, start_open=None, start_closed=None,
                  end_open=None, end_closed=None):
-        if ((start_open is None and start_closed is None)
-                or (start_open is not None and start_closed is not None)):
-            raise ValueError('Specify exactly one of start_closed or start_open')
+        if not any([start_open, start_closed, end_open, end_closed]):
+            raise ValueError("Must specify at least a start or end row.")
 
-        if ((end_open is None and end_closed is None)
-                or (end_open is not None and end_closed is not None)):
-            raise ValueError('Specify exactly one of end_closed or end_open')
+        if start_open and start_closed:
+            raise ValueError("Specify one of 'start_open' / 'start_closed'.")
+
+        if end_open and end_closed:
+            raise ValueError("Specify one of 'end_open' / 'end_closed'.")
 
         self.start_open = start_open
         self.start_closed = start_closed
@@ -72,16 +60,16 @@ class KeyRange(object):
         """
         kwargs = {}
 
-        if self.start_open is not None:
+        if self.start_open:
             kwargs['start_open'] = _make_list_value_pb(self.start_open)
 
-        if self.start_closed is not None:
+        if self.start_closed:
             kwargs['start_closed'] = _make_list_value_pb(self.start_closed)
 
-        if self.end_open is not None:
+        if self.end_open:
             kwargs['end_open'] = _make_list_value_pb(self.end_open)
 
-        if self.end_closed is not None:
+        if self.end_closed:
             kwargs['end_closed'] = _make_list_value_pb(self.end_closed)
 
         return KeyRangePB(**kwargs)
