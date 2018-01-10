@@ -207,6 +207,41 @@ class _Base(object):
             self.assertIsNone(job.user_email)
 
 
+class TestLoadJobConfig(unittest.TestCase, _Base):
+    JOB_TYPE = 'load'
+
+    def _make_resource(self, started=False, ended=False):
+        resource = super(TestLoadJobConfig, self)._make_resource(
+            started, ended)
+        config = resource['configuration']['load']
+        config['sourceUris'] = [self.SOURCE1]
+        config['destinationTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_ID,
+            'tableId': self.TABLE_ID,
+        }
+
+        return resource
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import LoadJobConfig
+        return LoadJobConfig
+
+    def test_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+        config = self._get_target_class()()
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        config.schema = [full_name, age]
+        self.assertEqual(config.schema, [full_name, age])
+
+    def test_api_repr(self):
+        resource = self._make_resource()
+        config = self._get_target_class().from_api_repr(resource)
+        self.assertEqual(config.to_api_repr(), resource)
+
+
 class TestLoadJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
 
