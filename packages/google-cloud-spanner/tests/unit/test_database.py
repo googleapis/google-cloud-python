@@ -17,8 +17,6 @@ import unittest
 
 import mock
 
-from google.cloud._testing import _GAXBaseAPI
-
 from google.cloud.spanner_v1 import __version__
 
 
@@ -190,6 +188,8 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database.name, expected_name)
 
     def test_spanner_api_property_w_scopeless_creds(self):
+        from google.cloud.spanner_v1.database import _CLIENT_INFO
+
         client = _Client()
         credentials = client.credentials = object()
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -208,13 +208,13 @@ class TestDatabase(_BaseTest):
         self.assertIs(again, api)
 
         spanner_client.assert_called_once_with(
-            lib_name='gccl',
-            lib_version=__version__,
-            credentials=credentials)
+            credentials=credentials,
+            client_info=_CLIENT_INFO)
 
     def test_spanner_api_w_scoped_creds(self):
         import google.auth.credentials
-        from google.cloud.spanner_v1.database import SPANNER_DATA_SCOPE
+        from google.cloud.spanner_v1.database import (
+            _CLIENT_INFO, SPANNER_DATA_SCOPE)
 
         class _CredentialsWithScopes(
                 google.auth.credentials.Scoped):
@@ -250,8 +250,7 @@ class TestDatabase(_BaseTest):
         self.assertEqual(len(spanner_client.call_args_list), 1)
         called_args, called_kw = spanner_client.call_args
         self.assertEqual(called_args, ())
-        self.assertEqual(called_kw['lib_name'], 'gccl')
-        self.assertEqual(called_kw['lib_version'], __version__)
+        self.assertEqual(called_kw['client_info'], _CLIENT_INFO)
         scoped = called_kw['credentials']
         self.assertEqual(scoped._scopes, expected_scopes)
         self.assertIs(scoped._source, credentials)
@@ -288,7 +287,7 @@ class TestDatabase(_BaseTest):
 
         client = _Client()
         api = client.database_admin_api = _FauxDatabaseAdminAPI(
-            _random_gax_error=True)
+            _rpc_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
@@ -297,13 +296,13 @@ class TestDatabase(_BaseTest):
             database.create()
 
         (parent, create_statement, extra_statements,
-         options) = api._created_database
+         metadata) = api._created_database
         self.assertEqual(parent, self.INSTANCE_NAME)
         self.assertEqual(create_statement,
                          'CREATE DATABASE %s' % self.DATABASE_ID)
         self.assertEqual(extra_statements, [])
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_create_already_exists(self):
         from google.cloud.exceptions import Conflict
@@ -320,13 +319,13 @@ class TestDatabase(_BaseTest):
             database.create()
 
         (parent, create_statement, extra_statements,
-         options) = api._created_database
+         metadata) = api._created_database
         self.assertEqual(parent, self.INSTANCE_NAME)
         self.assertEqual(create_statement,
                          'CREATE DATABASE `%s`' % DATABASE_ID_HYPHEN)
         self.assertEqual(extra_statements, [])
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_create_instance_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -343,13 +342,13 @@ class TestDatabase(_BaseTest):
             database.create()
 
         (parent, create_statement, extra_statements,
-         options) = api._created_database
+         metadata) = api._created_database
         self.assertEqual(parent, self.INSTANCE_NAME)
         self.assertEqual(create_statement,
                          'CREATE DATABASE `%s`' % DATABASE_ID_HYPHEN)
         self.assertEqual(extra_statements, [])
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_create_success(self):
         from tests._fixtures import DDL_STATEMENTS
@@ -369,31 +368,26 @@ class TestDatabase(_BaseTest):
         self.assertIs(future, op_future)
 
         (parent, create_statement, extra_statements,
-         options) = api._created_database
+         metadata) = api._created_database
         self.assertEqual(parent, self.INSTANCE_NAME)
         self.assertEqual(create_statement,
                          'CREATE DATABASE %s' % self.DATABASE_ID)
         self.assertEqual(extra_statements, DDL_STATEMENTS)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_exists_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
         client = _Client()
-        api = client.database_admin_api = _FauxDatabaseAdminAPI(
-            _random_gax_error=True)
+        client.database_admin_api = _FauxDatabaseAdminAPI(
+            _rpc_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             database.exists()
-
-        name, options = api._got_database_ddl
-        self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_exists_not_found(self):
         client = _Client()
@@ -405,10 +399,10 @@ class TestDatabase(_BaseTest):
 
         self.assertFalse(database.exists())
 
-        name, options = api._got_database_ddl
+        name, metadata = api._got_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_exists_success(self):
         from google.cloud.spanner_admin_database_v1.proto import (
@@ -426,28 +420,23 @@ class TestDatabase(_BaseTest):
 
         self.assertTrue(database.exists())
 
-        name, options = api._got_database_ddl
+        name, metadata = api._got_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_reload_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
         client = _Client()
-        api = client.database_admin_api = _FauxDatabaseAdminAPI(
-            _random_gax_error=True)
+        client.database_admin_api = _FauxDatabaseAdminAPI(
+            _rpc_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             database.reload()
-
-        name, options = api._got_database_ddl
-        self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_reload_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -462,10 +451,10 @@ class TestDatabase(_BaseTest):
         with self.assertRaises(NotFound):
             database.reload()
 
-        name, options = api._got_database_ddl
+        name, metadata = api._got_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_reload_success(self):
         from google.cloud.spanner_admin_database_v1.proto import (
@@ -485,31 +474,24 @@ class TestDatabase(_BaseTest):
 
         self.assertEqual(database._ddl_statements, tuple(DDL_STATEMENTS))
 
-        name, options = api._got_database_ddl
+        name, metadata = api._got_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_update_ddl_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
         from tests._fixtures import DDL_STATEMENTS
 
         client = _Client()
-        api = client.database_admin_api = _FauxDatabaseAdminAPI(
-            _random_gax_error=True)
+        client.database_admin_api = _FauxDatabaseAdminAPI(
+            _rpc_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             database.update_ddl(DDL_STATEMENTS)
-
-        name, statements, op_id, options = api._updated_database_ddl
-        self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(statements, DDL_STATEMENTS)
-        self.assertEqual(op_id, '')
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_update_ddl_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -525,12 +507,12 @@ class TestDatabase(_BaseTest):
         with self.assertRaises(NotFound):
             database.update_ddl(DDL_STATEMENTS)
 
-        name, statements, op_id, options = api._updated_database_ddl
+        name, statements, op_id, metadata = api._updated_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
         self.assertEqual(statements, DDL_STATEMENTS)
         self.assertEqual(op_id, '')
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_update_ddl(self):
         from tests._fixtures import DDL_STATEMENTS
@@ -547,30 +529,25 @@ class TestDatabase(_BaseTest):
 
         self.assertIs(future, op_future)
 
-        name, statements, op_id, options = api._updated_database_ddl
+        name, statements, op_id, metadata = api._updated_database_ddl
         self.assertEqual(name, self.DATABASE_NAME)
         self.assertEqual(statements, DDL_STATEMENTS)
         self.assertEqual(op_id, '')
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_drop_grpc_error(self):
-        from google.gax.errors import GaxError
+        from google.api_core.exceptions import Unknown
 
         client = _Client()
-        api = client.database_admin_api = _FauxDatabaseAdminAPI(
-            _random_gax_error=True)
+        client.database_admin_api = _FauxDatabaseAdminAPI(
+            _rpc_error=True)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(Unknown):
             database.drop()
-
-        name, options = api._dropped_database
-        self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_drop_not_found(self):
         from google.cloud.exceptions import NotFound
@@ -585,10 +562,10 @@ class TestDatabase(_BaseTest):
         with self.assertRaises(NotFound):
             database.drop()
 
-        name, options = api._dropped_database
+        name, metadata = api._dropped_database
         self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_drop_success(self):
         from google.protobuf.empty_pb2 import Empty
@@ -602,10 +579,10 @@ class TestDatabase(_BaseTest):
 
         database.drop()
 
-        name, options = api._dropped_database
+        name, metadata = api._dropped_database
         self.assertEqual(name, self.DATABASE_NAME)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_session_factory(self):
         from google.cloud.spanner_v1.session import Session
@@ -776,13 +753,13 @@ class TestBatchCheckout(_BaseTest):
         self.assertIs(pool._session, session)
         self.assertEqual(batch.committed, now)
         (session_name, mutations, single_use_txn,
-         options) = api._committed
+         metadata) = api._committed
         self.assertIs(session_name, self.SESSION_NAME)
         self.assertEqual(mutations, [])
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(single_use_txn.HasField('read_write'))
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_context_mgr_failure(self):
         from google.cloud.spanner_v1.batch import Batch
@@ -944,69 +921,72 @@ class _FauxOperationFuture(object):
     pass
 
 
-class _FauxSpannerClient(_GAXBaseAPI):
+class _FauxSpannerClient(object):
 
     _committed = None
 
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
+
     def commit(self, session, mutations,
-               transaction_id='', single_use_transaction=None, options=None):
+               transaction_id='', single_use_transaction=None, metadata=None):
         assert transaction_id == ''
-        self._committed = (session, mutations, single_use_transaction, options)
+        self._committed = (
+            session, mutations, single_use_transaction, metadata)
         return self._commit_response
 
 
-class _FauxDatabaseAdminAPI(_GAXBaseAPI):
+class _FauxDatabaseAdminAPI(object):
 
     _create_database_conflict = False
     _database_not_found = False
+    _rpc_error = False
 
-    def _make_grpc_already_exists(self):
-        from grpc.beta.interfaces import StatusCode
-
-        return self._make_grpc_error(StatusCode.ALREADY_EXISTS)
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
 
     def create_database(self, parent, create_statement, extra_statements=None,
-                        options=None):
-        from google.gax.errors import GaxError
+                        metadata=None):
+        from google.api_core.exceptions import AlreadyExists, NotFound, Unknown
 
         self._created_database = (
-            parent, create_statement, extra_statements, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+            parent, create_statement, extra_statements, metadata)
+        if self._rpc_error:
+            raise Unknown('error')
         if self._create_database_conflict:
-            raise GaxError('conflict', self._make_grpc_already_exists())
+            raise AlreadyExists('conflict')
         if self._database_not_found:
-            raise GaxError('not found', self._make_grpc_not_found())
+            raise NotFound('not found')
         return self._create_database_response
 
-    def get_database_ddl(self, database, options=None):
-        from google.gax.errors import GaxError
+    def get_database_ddl(self, database, metadata=None):
+        from google.api_core.exceptions import NotFound, Unknown
 
-        self._got_database_ddl = database, options
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._got_database_ddl = database, metadata
+        if self._rpc_error:
+            raise Unknown('error')
         if self._database_not_found:
-            raise GaxError('not found', self._make_grpc_not_found())
+            raise NotFound('not found')
         return self._get_database_ddl_response
 
-    def drop_database(self, database, options=None):
-        from google.gax.errors import GaxError
+    def drop_database(self, database, metadata=None):
+        from google.api_core.exceptions import NotFound, Unknown
 
-        self._dropped_database = database, options
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._dropped_database = database, metadata
+        if self._rpc_error:
+            raise Unknown('error')
         if self._database_not_found:
-            raise GaxError('not found', self._make_grpc_not_found())
+            raise NotFound('not found')
         return self._drop_database_response
 
     def update_database_ddl(self, database, statements, operation_id,
-                            options=None):
-        from google.gax.errors import GaxError
+                            metadata=None):
+        from google.api_core.exceptions import NotFound, Unknown
 
         self._updated_database_ddl = (
-            database, statements, operation_id, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+            database, statements, operation_id, metadata)
+        if self._rpc_error:
+            raise Unknown('error')
         if self._database_not_found:
-            raise GaxError('not found', self._make_grpc_not_found())
+            raise NotFound('not found')
         return self._update_database_ddl_response

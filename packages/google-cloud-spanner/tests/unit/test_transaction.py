@@ -15,7 +15,7 @@
 
 import unittest
 
-from google.cloud._testing import _GAXBaseAPI
+import mock
 
 
 TABLE_NAME = 'citizens'
@@ -47,11 +47,18 @@ class TestTransaction(unittest.TestCase):
         session._transaction = transaction
         return transaction
 
+    def _make_spanner_api(self):
+        import google.cloud.spanner_v1.gapic.spanner_client
+
+        return mock.create_autospec(
+            google.cloud.spanner_v1.gapic.spanner_client.SpannerClient,
+            instance=True)
+
     def test_ctor_session_w_existing_txn(self):
         session = _Session()
         session._transaction = object()
         with self.assertRaises(ValueError):
-            transaction = self._make_one(session)
+            self._make_one(session)
 
     def test_ctor_defaults(self):
         session = _Session()
@@ -118,23 +125,15 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError):
             transaction.begin()
 
-    def test_begin_w_gax_error(self):
-        from google.gax.errors import GaxError
-
+    def test_begin_w_other_error(self):
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _random_gax_error=True)
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.begin_transaction.side_effect = RuntimeError()
         session = _Session(database)
         transaction = self._make_one(session)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(RuntimeError):
             transaction.begin()
-
-        session_id, txn_options, options = api._begun
-        self.assertEqual(session_id, session.name)
-        self.assertTrue(txn_options.HasField('read_write'))
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_begin_ok(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
@@ -152,11 +151,11 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(transaction._transaction_id, self.TRANSACTION_ID)
 
-        session_id, txn_options, options = api._begun
+        session_id, txn_options, metadata = api._begun
         self.assertEqual(session_id, session.name)
         self.assertTrue(txn_options.HasField('read_write'))
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_rollback_not_begun(self):
         session = _Session()
@@ -180,27 +179,19 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError):
             transaction.rollback()
 
-    def test_rollback_w_gax_error(self):
-        from google.gax.errors import GaxError
-
+    def test_rollback_w_other_error(self):
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _random_gax_error=True)
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.rollback.side_effect = RuntimeError('other error')
         session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
         transaction.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(RuntimeError):
             transaction.rollback()
 
         self.assertFalse(transaction._rolled_back)
-
-        session_id, txn_id, options = api._rolled_back
-        self.assertEqual(session_id, session.name)
-        self.assertEqual(txn_id, self.TRANSACTION_ID)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_rollback_ok(self):
         from google.protobuf.empty_pb2 import Empty
@@ -219,11 +210,11 @@ class TestTransaction(unittest.TestCase):
         self.assertTrue(transaction._rolled_back)
         self.assertIsNone(session._transaction)
 
-        session_id, txn_id, options = api._rolled_back
+        session_id, txn_id, metadata = api._rolled_back
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_commit_not_begun(self):
         session = _Session()
@@ -254,28 +245,19 @@ class TestTransaction(unittest.TestCase):
         with self.assertRaises(ValueError):
             transaction.commit()
 
-    def test_commit_w_gax_error(self):
-        from google.gax.errors import GaxError
-
+    def test_commit_w_other_error(self):
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _random_gax_error=True)
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.commit.side_effect = RuntimeError()
         session = _Session(database)
         transaction = self._make_one(session)
         transaction._transaction_id = self.TRANSACTION_ID
         transaction.replace(TABLE_NAME, COLUMNS, VALUES)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(RuntimeError):
             transaction.commit()
 
         self.assertIsNone(transaction.committed)
-
-        session_id, mutations, txn_id, options = api._committed
-        self.assertEqual(session_id, session.name)
-        self.assertEqual(txn_id, self.TRANSACTION_ID)
-        self.assertEqual(mutations, transaction._mutations)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_commit_ok(self):
         import datetime
@@ -302,12 +284,12 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(transaction.committed, now)
         self.assertIsNone(session._transaction)
 
-        session_id, mutations, txn_id, options = api._committed
+        session_id, mutations, txn_id, metadata = api._committed
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_context_mgr_success(self):
         import datetime
@@ -334,12 +316,12 @@ class TestTransaction(unittest.TestCase):
 
         self.assertEqual(transaction.committed, now)
 
-        session_id, mutations, txn_id, options = api._committed
+        session_id, mutations, txn_id, metadata = api._committed
         self.assertEqual(session_id, self.SESSION_NAME)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_context_mgr_failure(self):
         from google.protobuf.empty_pb2 import Empty
@@ -366,11 +348,11 @@ class TestTransaction(unittest.TestCase):
 
         self.assertEqual(api._committed, None)
 
-        session_id, txn_id, options = api._rolled_back
+        session_id, txn_id, metadata = api._rolled_back
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
 
 class _Database(object):
@@ -386,32 +368,23 @@ class _Session(object):
         self.name = name
 
 
-class _FauxSpannerAPI(_GAXBaseAPI):
+class _FauxSpannerAPI(object):
 
     _committed = None
 
-    def begin_transaction(self, session, options_, options=None):
-        from google.gax.errors import GaxError
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
 
-        self._begun = (session, options_, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+    def begin_transaction(self, session, options_, metadata=None):
+        self._begun = (session, options_, metadata)
         return self._begin_transaction_response
 
-    def rollback(self, session, transaction_id, options=None):
-        from google.gax.errors import GaxError
-
-        self._rolled_back = (session, transaction_id, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+    def rollback(self, session, transaction_id, metadata=None):
+        self._rolled_back = (session, transaction_id, metadata)
         return self._rollback_response
 
     def commit(self, session, mutations,
-               transaction_id='', single_use_transaction=None, options=None):
-        from google.gax.errors import GaxError
-
+               transaction_id='', single_use_transaction=None, metadata=None):
         assert single_use_transaction is None
-        self._committed = (session, mutations, transaction_id, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+        self._committed = (session, mutations, transaction_id, metadata)
         return self._commit_response

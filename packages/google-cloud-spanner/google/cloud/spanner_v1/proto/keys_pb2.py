@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/spanner_v1/proto/keys.proto',
   package='google.spanner.v1',
   syntax='proto3',
-  serialized_pb=_b('\n(google/cloud/spanner_v1/proto/keys.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xf4\x01\n\x08KeyRange\x12\x32\n\x0cstart_closed\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x00\x12\x30\n\nstart_open\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x00\x12\x30\n\nend_closed\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x01\x12.\n\x08\x65nd_open\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x01\x42\x10\n\x0estart_key_typeB\x0e\n\x0c\x65nd_key_type\"l\n\x06KeySet\x12(\n\x04keys\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x12+\n\x06ranges\x18\x02 \x03(\x0b\x32\x1b.google.spanner.v1.KeyRange\x12\x0b\n\x03\x61ll\x18\x03 \x01(\x08\x42x\n\x15\x63om.google.spanner.v1B\tKeysProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1b\x06proto3')
+  serialized_pb=_b('\n(google/cloud/spanner_v1/proto/keys.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xf4\x01\n\x08KeyRange\x12\x32\n\x0cstart_closed\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x00\x12\x30\n\nstart_open\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x00\x12\x30\n\nend_closed\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x01\x12.\n\x08\x65nd_open\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.ListValueH\x01\x42\x10\n\x0estart_key_typeB\x0e\n\x0c\x65nd_key_type\"l\n\x06KeySet\x12(\n\x04keys\x18\x01 \x03(\x0b\x32\x1a.google.protobuf.ListValue\x12+\n\x06ranges\x18\x02 \x03(\x0b\x32\x1b.google.spanner.v1.KeyRange\x12\x0b\n\x03\x61ll\x18\x03 \x01(\x08\x42\x92\x01\n\x15\x63om.google.spanner.v1B\tKeysProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -329,7 +329,7 @@ _sym_db.RegisterMessage(KeySet)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\tKeysProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\tKeysProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.

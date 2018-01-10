@@ -19,7 +19,6 @@ import math
 
 import six
 
-from google.gax import CallOptions
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
 from google.cloud.spanner_v1.proto import type_pb2
@@ -258,17 +257,13 @@ class _SessionWrapper(object):
         self._session = session
 
 
-def _options_with_prefix(prefix, **kw):
-    """Create GAPIC options w/ prefix.
+def _metadata_with_prefix(prefix, **kw):
+    """Create RPC metadata containing a prefix.
 
-    :type prefix: str
-    :param prefix: appropriate resource path
+    Args:
+        prefix (str): appropriate resource path.
 
-    :type kw: dict
-    :param kw: other keyword arguments passed to the constructor
-
-    :rtype: :class:`~google.gax.CallOptions`
-    :returns: GAPIC call options with supplied prefix
+    Returns:
+        List[Tuple[str, str]]: RPC metadata with supplied prefix
     """
-    return CallOptions(
-        metadata=[('google-cloud-resource-prefix', prefix)], **kw)
+    return [('google-cloud-resource-prefix', prefix)]

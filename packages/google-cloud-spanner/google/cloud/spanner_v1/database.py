@@ -17,18 +17,14 @@
 import re
 import threading
 
-from google.api_core import exceptions
+from google.api_core.gapic_v1 import client_info
 import google.auth.credentials
-from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
-from grpc import StatusCode
 import six
 
 # pylint: disable=ungrouped-imports
 from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
 from google.cloud.spanner_v1.pool import BurstyPool
@@ -38,6 +34,8 @@ from google.cloud.spanner_v1.snapshot import Snapshot
 # pylint: enable=ungrouped-imports
 
 
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
 SPANNER_DATA_SCOPE = 'https://www.googleapis.com/auth/spanner.data'
 
 
@@ -165,9 +163,8 @@ class Database(object):
             if isinstance(credentials, google.auth.credentials.Scoped):
                 credentials = credentials.with_scopes((SPANNER_DATA_SCOPE,))
             self._spanner_api = SpannerClient(
-                lib_name='gccl',
-                lib_version=__version__,
                 credentials=credentials,
+                client_info=_CLIENT_INFO,
             )
         return self._spanner_api
 
@@ -192,24 +189,19 @@ class Database(object):
         :returns: a future used to poll the status of the create request
         :raises Conflict: if the database already exists
         :raises NotFound: if the instance owning the database does not exist
-        :raises GaxError:
-            for errors other than ``ALREADY_EXISTS`` returned from the call
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
+        metadata = _metadata_with_prefix(self.name)
         db_name = self.database_id
         if '-' in db_name:
             db_name = '`%s`' % (db_name,)
 
-        try:
-            future = api.create_database(
-                parent=self._instance.name,
-                create_statement='CREATE DATABASE %s' % (db_name,),
-                extra_statements=list(self._ddl_statements),
-                options=options,
-            )
-        except GaxError as exc:
-            raise exceptions.from_grpc_error(exc.cause)
+        future = api.create_database(
+            parent=self._instance.name,
+            create_statement='CREATE DATABASE %s' % (db_name,),
+            extra_statements=list(self._ddl_statements),
+            metadata=metadata,
+        )
         return future
 
     def exists(self):
@@ -220,18 +212,14 @@ class Database(object):
 
         :rtype: bool
         :returns: True if the database exists, else false.
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
+        metadata = _metadata_with_prefix(self.name)
 
         try:
-            api.get_database_ddl(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                return False
-            raise
+            api.get_database_ddl(self.name, metadata=metadata)
+        except NotFound:
+            return False
         return True
 
     def reload(self):
@@ -243,18 +231,10 @@ class Database(object):
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDDL
 
         :raises NotFound: if the database does not exist
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
-
-        try:
-            response = api.get_database_ddl(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound(self.name)
-            raise
+        metadata = _metadata_with_prefix(self.name)
+        response = api.get_database_ddl(self.name, metadata=metadata)
         self._ddl_statements = tuple(response.statements)
 
     def update_ddl(self, ddl_statements):
@@ -268,21 +248,13 @@ class Database(object):
         :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance
         :raises NotFound: if the database does not exist
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         client = self._instance._client
         api = client.database_admin_api
-        options = _options_with_prefix(self.name)
+        metadata = _metadata_with_prefix(self.name)
 
-        try:
-            future = api.update_database_ddl(
-                self.name, ddl_statements, '', options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound(self.name)
-            raise
-
+        future = api.update_database_ddl(
+            self.name, ddl_statements, '', metadata=metadata)
         return future
 
     def drop(self):
@@ -292,14 +264,8 @@ class Database(object):
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase
         """
         api = self._instance._client.database_admin_api
-        options = _options_with_prefix(self.name)
-
-        try:
-            api.drop_database(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound(self.name)
-            raise
+        metadata = _metadata_with_prefix(self.name)
+        api.drop_database(self.name, metadata=metadata)
 
     def session(self):
         """Factory to create a session for this database.
