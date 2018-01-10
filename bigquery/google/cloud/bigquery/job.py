@@ -674,6 +674,7 @@ class LoadJobConfig(object):
         config._properties = copy.deepcopy(resource)
         config.schema = _parse_schema_resource(schema)
         config.skip_leading_rows = _int_or_none(slr)
+        return config
 
 
 class LoadJob(_AsyncJob):
