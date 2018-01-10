@@ -131,6 +131,7 @@ class TestTable(unittest.TestCase):
     QUALIFIER = b'qualifier'
     TIMESTAMP_MICROS = 100
     VALUE = b'value'
+    _json_tests = None
 
     @staticmethod
     def _get_target_class():
@@ -522,9 +523,9 @@ class TestTable(unittest.TestCase):
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
     def test_yield_rows(self):
+        from google.cloud.bigtable.row_data import YieldRowsData
         from google.cloud._testing import _Monkey
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable.row_data import YieldRowsData
         from google.cloud.bigtable import table as MUT
 
         client = _Client()
@@ -532,7 +533,7 @@ class TestTable(unittest.TestCase):
         table = self._make_one(self.TABLE_ID, instance)
 
         # Create request_pb
-        request_pb = object()  # Returned by our mock.
+        request_pb = self._call_fut(self.TABLE_ID)  # Returned by our mock.
         mock_created = []
 
         def mock_create_row_request(table_name, **kwargs):
@@ -542,20 +543,31 @@ class TestTable(unittest.TestCase):
         # Create response_iterator
         response_iterator = object()
 
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub(request_pb)
+        _iterator = client._data_stub.ReadRows(request_pb)
+
+        def yield_rows(generator):
+            for row in generator.read_rows():
+                yield row
+
         # Create expected_result.
-        expected_result = YieldRowsData(response_iterator).read_rows()
+        _generator = YieldRowsData(_iterator)
+        expected_result = yield_rows(_generator)
 
         # Perform the method and check the result.
-        start_key = b'start-key'
-        end_key = b'end-key'
-        filter_obj = object()
-        limit = 22
-        with _Monkey(MUT, _create_row_request=mock_create_row_request):
-            result = table.yield_rows(
-                start_key=start_key, end_key=end_key, filter_=filter_obj,
-                limit=limit)
+        with _Monkey(MUT, _create_row_request=self._call_fut(self.TABLE_ID)):
+            result = table.yield_rows()
 
         self.assertEqual(type(result), type(expected_result))
+
+    def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
+                  filter_=None, limit=None, end_inclusive=False):
+        from google.cloud.bigtable.table import _create_row_request
+
+        return _create_row_request(
+            table_name, row_key=row_key, start_key=start_key, end_key=end_key,
+            filter_=filter_, limit=limit, end_inclusive=end_inclusive)
 
     def test_sample_row_keys(self):
         from tests.unit._testing import _FakeStub
@@ -1220,3 +1232,82 @@ class _Instance(object):
     def __init__(self, name, client=None):
         self.name = name
         self._client = client
+
+
+class _MockCancellableIterator(object):
+
+    cancel_calls = 0
+
+    def __init__(self, *values):
+        self.iter_values = iter(values)
+
+    def cancel(self):
+        self.cancel_calls += 1
+
+    def next(self):
+        return next(self.iter_values)
+
+    def __next__(self):  # pragma: NO COVER Py3k
+        return self.next()
+
+
+class _ReadRowsResponseV2(object):
+
+    def __init__(self, chunks, last_scanned_row_key=''):
+        self.chunks = chunks
+        self.last_scanned_row_key = last_scanned_row_key
+
+
+def _flatten_cells(yrd):
+    # Match results format from JSON testcases.
+    # Doesn't handle error cases.
+    from google.cloud._helpers import _bytes_to_unicode
+    from google.cloud._helpers import _microseconds_from_datetime
+
+    for row_key, row in yrd.rows.items():
+        for family_name, family in row.cells.items():
+            for qualifier, column in family.items():
+                for cell in column:
+                    yield {
+                        u'rk': _bytes_to_unicode(row_key),
+                        u'fm': family_name,
+                        u'qual': _bytes_to_unicode(qualifier),
+                        u'ts': _microseconds_from_datetime(cell.timestamp),
+                        u'value': _bytes_to_unicode(cell.value),
+                        u'label': u' '.join(cell.labels),
+                        u'error': False,
+                    }
+
+
+def _generate_cell_chunks(chunk_text_pbs):
+    from google.protobuf.text_format import Merge
+    from google.cloud.bigtable._generated.bigtable_pb2 import ReadRowsResponse
+
+    chunks = []
+
+    for chunk_text_pb in chunk_text_pbs:
+        chunk = ReadRowsResponse.CellChunk()
+        chunks.append(Merge(chunk_text_pb, chunk))
+
+    return chunks
+
+
+def _parse_readrows_acceptance_tests(filename):
+    """Parse acceptance tests from JSON
+
+    See
+    https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/\
+    4d3185662ca61bc9fa1bdf1ec0166f6e5ecf86c6/bigtable-client-core/src/\
+    test/resources/com/google/cloud/bigtable/grpc/scanner/v2/
+    read-rows-acceptance-test.json
+    """
+    import json
+
+    with open(filename) as json_file:
+        test_json = json.load(json_file)
+
+    for test in test_json['tests']:
+        name = test['name']
+        chunks = _generate_cell_chunks(test['chunks'])
+        results = test['results']
+        yield name, chunks, results

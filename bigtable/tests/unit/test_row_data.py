@@ -14,8 +14,8 @@
 
 
 import unittest
-
-import mock
+import timeit
+import csv
 
 
 class TestCell(unittest.TestCase):
@@ -385,6 +385,71 @@ class TestYieldRowsData(unittest.TestCase):
     def _consume_all(self, yrd):
         for row in yrd.read_rows():
             pass
+
+
+class TestPerformanceTestDriver(unittest.TestCase):
+
+    _json_tests = None
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigtable.row_data import PartialRowsData
+
+        return PartialRowsData
+
+    def _make_one(self, *args, **kwargs):
+        return self._get_target_class()(*args, **kwargs)
+
+    def _load_json_test(self, test_name):
+        import os
+
+        if self.__class__._json_tests is None:
+            dirname = os.path.dirname(__file__)
+            filename = os.path.join(dirname, 'read-rows-acceptance-test.json')
+            raw = _parse_readrows_acceptance_tests(filename)
+            tests = self.__class__._json_tests = {}
+            for (name, chunks, results) in raw:
+                tests[name] = chunks, results
+        return self.__class__._json_tests[test_name]
+
+    def _performance_measure_during_consume(self, testcase_name, number_of_iterations):
+
+        chunks, results = self._load_json_test(testcase_name)
+        response = _ReadRowsResponseV2(chunks)
+
+        start_iteration = 1
+        start_time = timeit.default_timer()
+        while start_iteration < number_of_iterations:
+            iterator = _MockCancellableIterator(response)
+            prd = self._make_one(iterator)
+            prd.consume_all()
+            start_iteration += 1
+
+        elapsed = timeit.default_timer() - start_time
+
+        with open('/Users/aneeptandel/Desktop/test_results.csv', 'a') as csv_file:
+            csvwriter = csv.writer(csv_file, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            csvwriter.writerow([number_of_iterations, elapsed, (elapsed/number_of_iterations)])
+
+        expected_result = self._sort_flattend_cells(
+            [result for result in results if not result['error']])
+        flattened = self._sort_flattend_cells(_flatten_cells(prd))
+        self.assertEqual(flattened, expected_result)
+
+    def _sort_flattend_cells(self, flattened):
+        import operator
+
+        key_func = operator.itemgetter('rk', 'fm', 'qual')
+        return sorted(flattened, key=key_func)
+
+    def test_performance_measure_for_100_iterations(self):
+        self._performance_measure_during_consume('scan read performance', 100)
+
+    def test_performance_measure_for_1000_iterations(self):
+        self._performance_measure_during_consume('scan read performance', 1000)
+
+    def test_performance_measure_for_10000_iterations(self):
+        self._performance_measure_during_consume('scan read performance', 10000)
 
 
 class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):

@@ -1200,6 +1200,130 @@
           "error": false
         }
       ]
+    },
+    {
+      "name": "test_yield_rows",
+      "chunks": [
+        "row_key: \"RK\"\nfamily_name: \u003c\n  value: \"A\"\n\u003e\nqualifier: \u003c\n  value: \"C\"\n\u003e\ntimestamp_micros: 101\nvalue: \"value-VAL_1\"\ncommit_row: false\n"
+      ],
+      "results": [
+        {
+          "rk": "RK",
+          "fm": "A",
+          "qual": "C",
+          "ts": 101,
+          "value": "value-VAL_1",
+          "label": "",
+          "error": false
+        }
+      ]
+    },
+    {
+      "name": "scan read performance",
+      "chunks": [
+        "row_key: \"user4991922\"\nfamily_name: \u003c\n value: \"cf\"\n\u003e\nqualifier: \u003c\nvalue: \"field0\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"r5s40vCiMp0DaBKvRno7sUBpFXpHyL4apRyxpxKTlLeCttNwe8joBAPbgM37yh2IP9IvzOKfd1Y7OOSTuxGxQrRn9c9nkk7SjC4N\"\n",
+        "qualifier: \u003c\nvalue: \"field1\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"OSC0g7dFFDvwwipB7i4cJWjACrHDPRn8ztnMkjQs88uDSkRNe2iOqLtGpquHC1rLijpWW5Tu5J5AFg6d5ztnZRcprsLl7GUZlhkY\"\n",
+        "qualifier: \u003c\nvalue: \"field2\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"7A9yPuqZjShcw559ABfaitNeXotL6rnTEqb8QNAgSHSVnYdJtu5LfKSl5jSmqit5VLAKlmyuD0BIbOeVkgKCzBn2QqPZD0LdeugJ\"\n",
+        "qualifier: \u003c\nvalue: \"field3\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"jWtA4uYga70q7ipUOCVpiGelq5pHXWYRVi6EpdD5QuBHSU5YteqkyIUhOyDdPTMWdwzAsURISJraRI2kpYtsAlCW47O48Cixb1cM\"\n",
+        "qualifier: \u003c\nvalue: \"field4\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"JbJbSbELCF6WegHliViPK0ASrueoh7dTSnEnCpxHEvOX6gh0ck8sshAaBE91KVYlYb6m7Mf94j89TB5hWsziHu7LX1htrrohDlLl\"\n",
+        "qualifier: \u003c\nvalue: \"field5\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"vhINVFUAYERwMZgWOjh9wbHsdKkbIaTOJo9LAWWXxIs2B1cXIDB4AknNmTnlzOICB9PAKBBEJG5aWFnqnTKYtiCx47LSmnYBlJ7W\"\n",
+        "qualifier: \u003c\nvalue: \"field6\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"i4kkrNFePtdConYe9iUDKgoPqgb9EAsOOZhcyG3apcaiFuYTSx8uuEnb821jqtu4HF5T146nGffxL6woGv477n9uFdlN57LdXPUm\"\n",
+        "qualifier: \u003c\nvalue: \"field7\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"l1WSTH70RbP1WH6pR1sWfzXkERBMvmwpDNgZsxhc8S6uf3YQl605NPxj5bvXD0DQNgyc0OvTbEy2haQNmNcrn0yGWPdj1Jhou2fO\"\n",
+        "qualifier: \u003c\nvalue: \"field8\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"l1WSTH70RbP1WH6pR1sWfzXkERBMvmwpDNgZsxhc8S6uf3YQl605NPxj5bvXD0DQNgyc0OvTbEy2haQNmNcrn0yGWPdj1Jhou2f1\"\n",
+        "qualifier: \u003c\nvalue: \"field9\"\n\u003e\ntimestamp_micros: 1515187373103000\nvalue: \"8d3cNnEYOeHjzzJbU7HyvR4xk3UeQV04E9EcgW6cBu9srp7WINQVCwzye1OVsd9h4buqiDtf4B2txTYycfvHEUWqGthsDEnWiIwA\"\ncommit_row: true\n"
+      ],
+      "results": [
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field0",
+          "ts": 1515187373103000,
+          "value": "r5s40vCiMp0DaBKvRno7sUBpFXpHyL4apRyxpxKTlLeCttNwe8joBAPbgM37yh2IP9IvzOKfd1Y7OOSTuxGxQrRn9c9nkk7SjC4N",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field1",
+          "ts": 1515187373103000,
+          "value": "OSC0g7dFFDvwwipB7i4cJWjACrHDPRn8ztnMkjQs88uDSkRNe2iOqLtGpquHC1rLijpWW5Tu5J5AFg6d5ztnZRcprsLl7GUZlhkY",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field2",
+          "ts": 1515187373103000,
+          "value": "7A9yPuqZjShcw559ABfaitNeXotL6rnTEqb8QNAgSHSVnYdJtu5LfKSl5jSmqit5VLAKlmyuD0BIbOeVkgKCzBn2QqPZD0LdeugJ",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field3",
+          "ts": 1515187373103000,
+          "value": "jWtA4uYga70q7ipUOCVpiGelq5pHXWYRVi6EpdD5QuBHSU5YteqkyIUhOyDdPTMWdwzAsURISJraRI2kpYtsAlCW47O48Cixb1cM",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field4",
+          "ts": 1515187373103000,
+          "value": "JbJbSbELCF6WegHliViPK0ASrueoh7dTSnEnCpxHEvOX6gh0ck8sshAaBE91KVYlYb6m7Mf94j89TB5hWsziHu7LX1htrrohDlLl",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field5",
+          "ts": 1515187373103000,
+          "value": "vhINVFUAYERwMZgWOjh9wbHsdKkbIaTOJo9LAWWXxIs2B1cXIDB4AknNmTnlzOICB9PAKBBEJG5aWFnqnTKYtiCx47LSmnYBlJ7W",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field6",
+          "ts": 1515187373103000,
+          "value": "i4kkrNFePtdConYe9iUDKgoPqgb9EAsOOZhcyG3apcaiFuYTSx8uuEnb821jqtu4HF5T146nGffxL6woGv477n9uFdlN57LdXPUm",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field7",
+          "ts": 1515187373103000,
+          "value": "l1WSTH70RbP1WH6pR1sWfzXkERBMvmwpDNgZsxhc8S6uf3YQl605NPxj5bvXD0DQNgyc0OvTbEy2haQNmNcrn0yGWPdj1Jhou2fO",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field8",
+          "ts": 1515187373103000,
+          "value": "l1WSTH70RbP1WH6pR1sWfzXkERBMvmwpDNgZsxhc8S6uf3YQl605NPxj5bvXD0DQNgyc0OvTbEy2haQNmNcrn0yGWPdj1Jhou2f1",
+          "label": "",
+          "error": false
+        },
+        {
+          "rk": "user4991922",
+          "fm": "cf",
+          "qual": "field9",
+          "ts": 1515187373103000,
+          "value": "8d3cNnEYOeHjzzJbU7HyvR4xk3UeQV04E9EcgW6cBu9srp7WINQVCwzye1OVsd9h4buqiDtf4B2txTYycfvHEUWqGthsDEnWiIwA",
+          "label": "",
+          "error": false
+        }
+      ]
     }
   ]
 }
