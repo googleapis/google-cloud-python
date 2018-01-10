@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/spanner_v1/proto/transaction.proto',
   package='google.spanner.v1',
   syntax='proto3',
-  serialized_pb=_b('\n/google/cloud/spanner_v1/proto/transaction.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe0\x03\n\x12TransactionOptions\x12\x45\n\nread_write\x18\x01 \x01(\x0b\x32/.google.spanner.v1.TransactionOptions.ReadWriteH\x00\x12\x43\n\tread_only\x18\x02 \x01(\x0b\x32..google.spanner.v1.TransactionOptions.ReadOnlyH\x00\x1a\x0b\n\tReadWrite\x1a\xa8\x02\n\x08ReadOnly\x12\x10\n\x06strong\x18\x01 \x01(\x08H\x00\x12\x38\n\x12min_read_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x32\n\rmax_staleness\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x34\n\x0eread_timestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x34\n\x0f\x65xact_staleness\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x1d\n\x15return_read_timestamp\x18\x06 \x01(\x08\x42\x11\n\x0ftimestamp_boundB\x06\n\x04mode\"M\n\x0bTransaction\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x32\n\x0eread_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xa4\x01\n\x13TransactionSelector\x12;\n\nsingle_use\x18\x01 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12\x0c\n\x02id\x18\x02 \x01(\x0cH\x00\x12\x36\n\x05\x62\x65gin\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x42\n\n\x08selectorB\x7f\n\x15\x63om.google.spanner.v1B\x10TransactionProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1b\x06proto3')
+  serialized_pb=_b('\n/google/cloud/spanner_v1/proto/transaction.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe0\x03\n\x12TransactionOptions\x12\x45\n\nread_write\x18\x01 \x01(\x0b\x32/.google.spanner.v1.TransactionOptions.ReadWriteH\x00\x12\x43\n\tread_only\x18\x02 \x01(\x0b\x32..google.spanner.v1.TransactionOptions.ReadOnlyH\x00\x1a\x0b\n\tReadWrite\x1a\xa8\x02\n\x08ReadOnly\x12\x10\n\x06strong\x18\x01 \x01(\x08H\x00\x12\x38\n\x12min_read_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x32\n\rmax_staleness\x18\x03 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x34\n\x0eread_timestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampH\x00\x12\x34\n\x0f\x65xact_staleness\x18\x05 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x1d\n\x15return_read_timestamp\x18\x06 \x01(\x08\x42\x11\n\x0ftimestamp_boundB\x06\n\x04mode\"M\n\x0bTransaction\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x32\n\x0eread_timestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xa4\x01\n\x13TransactionSelector\x12;\n\nsingle_use\x18\x01 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x12\x0c\n\x02id\x18\x02 \x01(\x0cH\x00\x12\x36\n\x05\x62\x65gin\x18\x03 \x01(\x0b\x32%.google.spanner.v1.TransactionOptionsH\x00\x42\n\n\x08selectorB\x99\x01\n\x15\x63om.google.spanner.v1B\x10TransactionProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -298,7 +298,8 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
     DESCRIPTOR = _TRANSACTIONOPTIONS_READWRITE,
     __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
     ,
-    __doc__ = """Options for read-write transactions.
+    __doc__ = """Message type to initiate a read-write transaction. Currently this
+    transaction type has no options.
     """,
     # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadWrite)
     ))
@@ -308,7 +309,59 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
     DESCRIPTOR = _TRANSACTIONOPTIONS_READONLY,
     __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
     ,
-    __doc__ = """Options for read-only transactions.
+    __doc__ = """Message type to initiate a read-only transaction.
+
+
+    Attributes:
+        timestamp_bound:
+            How to choose the timestamp for the read-only transaction.
+        strong:
+            Read at a timestamp where all previously committed
+            transactions are visible.
+        min_read_timestamp:
+            Executes all reads at a timestamp >= ``min_read_timestamp``.
+            This is useful for requesting fresher data than some previous
+            read, or data that is fresh enough to observe the effects of
+            some previously committed transaction whose timestamp is
+            known.  Note that this option can only be used in single-use
+            transactions.  A timestamp in RFC3339 UTC "Zulu" format,
+            accurate to nanoseconds. Example:
+            ``"2014-10-02T15:01:23.045123456Z"``.
+        max_staleness:
+            Read data at a timestamp >= ``NOW - max_staleness`` seconds.
+            Guarantees that all writes that have committed more than the
+            specified number of seconds ago are visible. Because Cloud
+            Spanner chooses the exact timestamp, this mode works even if
+            the client's local clock is substantially skewed from Cloud
+            Spanner commit timestamps.  Useful for reading the freshest
+            data available at a nearby replica, while bounding the
+            possible staleness if the local replica has fallen behind.
+            Note that this option can only be used in single-use
+            transactions.
+        read_timestamp:
+            Executes all reads at the given timestamp. Unlike other modes,
+            reads at a specific timestamp are repeatable; the same read at
+            the same timestamp always returns the same data. If the
+            timestamp is in the future, the read will block until the
+            specified timestamp, modulo the read's deadline.  Useful for
+            large scale consistent reads such as mapreduces, or for
+            coordinating many reads against a consistent snapshot of the
+            data.  A timestamp in RFC3339 UTC "Zulu" format, accurate to
+            nanoseconds. Example: ``"2014-10-02T15:01:23.045123456Z"``.
+        exact_staleness:
+            Executes all reads at a timestamp that is ``exact_staleness``
+            old. The timestamp is chosen soon after the read is started.
+            Guarantees that all writes that have committed more than the
+            specified number of seconds ago are visible. Because Cloud
+            Spanner chooses the exact timestamp, this mode works even if
+            the client's local clock is substantially skewed from Cloud
+            Spanner commit timestamps.  Useful for reading at nearby
+            replicas without the distributed timestamp negotiation
+            overhead of ``max_staleness``.
+        return_read_timestamp:
+            If true, the Cloud Spanner-selected read timestamp is included
+            in the [Transaction][google.spanner.v1.Transaction] message
+            that describes the transaction.
     """,
     # @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadOnly)
     ))
@@ -316,55 +369,10 @@ TransactionOptions = _reflection.GeneratedProtocolMessageType('TransactionOption
   DESCRIPTOR = _TRANSACTIONOPTIONS,
   __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
   ,
-  __doc__ = """See :ref:`spanner-txn` for more information on these.
+  __doc__ = """
+
 
   Attributes:
-      timestamp_bound:
-          How to choose the timestamp for the read-only transaction.
-      strong:
-          Read at a timestamp where all previously committed
-          transactions are visible.
-      min_read_timestamp:
-          Executes all reads at a timestamp >= ``min_read_timestamp``.
-          This is useful for requesting fresher data than some previous
-          read, or data that is fresh enough to observe the effects of
-          some previously committed transaction whose timestamp is
-          known.  Note that this option can only be used in single-use
-          transactions.
-      max_staleness:
-          Read data at a timestamp >= ``NOW - max_staleness`` seconds.
-          Guarantees that all writes that have committed more than the
-          specified number of seconds ago are visible. Because Cloud
-          Spanner chooses the exact timestamp, this mode works even if
-          the client's local clock is substantially skewed from Cloud
-          Spanner commit timestamps.  Useful for reading the freshest
-          data available at a nearby replica, while bounding the
-          possible staleness if the local replica has fallen behind.
-          Note that this option can only be used in single-use
-          transactions.
-      read_timestamp:
-          Executes all reads at the given timestamp. Unlike other modes,
-          reads at a specific timestamp are repeatable; the same read at
-          the same timestamp always returns the same data. If the
-          timestamp is in the future, the read will block until the
-          specified timestamp, modulo the read's deadline.  Useful for
-          large scale consistent reads such as mapreduces, or for
-          coordinating many reads against a consistent snapshot of the
-          data.
-      exact_staleness:
-          Executes all reads at a timestamp that is ``exact_staleness``
-          old. The timestamp is chosen soon after the read is started.
-          Guarantees that all writes that have committed more than the
-          specified number of seconds ago are visible. Because Cloud
-          Spanner chooses the exact timestamp, this mode works even if
-          the client's local clock is substantially skewed from Cloud
-          Spanner commit timestamps.  Useful for reading at nearby
-          replicas without the distributed timestamp negotiation
-          overhead of ``max_staleness``.
-      return_read_timestamp:
-          If true, the Cloud Spanner-selected read timestamp is included
-          in the [Transaction][google.spanner.v1.Transaction] message
-          that describes the transaction.
       mode:
           Required. The type of transaction.
       read_write:
@@ -388,7 +396,7 @@ Transaction = _reflection.GeneratedProtocolMessageType('Transaction', (_message.
   DESCRIPTOR = _TRANSACTION,
   __module__ = 'google.cloud.spanner_v1.proto.transaction_pb2'
   ,
-  __doc__ = """A transaction.
+  __doc__ = """A transaction. See :ref:`spanner-txn` for more information.
 
 
   Attributes:
@@ -404,7 +412,9 @@ Transaction = _reflection.GeneratedProtocolMessageType('Transaction', (_message.
           For snapshot read-only transactions, the read timestamp chosen
           for the transaction. Not returned by default: see [Transaction
           Options.ReadOnly.return\_read\_timestamp][google.spanner.v1.Tr
-          ansactionOptions.ReadOnly.return\_read\_timestamp].
+          ansactionOptions.ReadOnly.return\_read\_timestamp].  A
+          timestamp in RFC3339 UTC "Zulu" format, accurate to
+          nanoseconds. Example: ``"2014-10-02T15:01:23.045123456Z"``.
   """,
   # @@protoc_insertion_point(class_scope:google.spanner.v1.Transaction)
   ))
@@ -446,7 +456,7 @@ _sym_db.RegisterMessage(TransactionSelector)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\020TransactionProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\020TransactionProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
