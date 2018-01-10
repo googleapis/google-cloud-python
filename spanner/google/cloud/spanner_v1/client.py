@@ -24,8 +24,8 @@ In the hierarchy of API concepts
   :class:`~google.cloud.spanner_v1.database.Database`
 """
 
-from google.api_core import page_iterator
-from google.gax import INITIAL_PAGE
+from google.api_core.gapic_v1 import client_info
+
 # pylint: disable=line-too-long
 from google.cloud.spanner_admin_database_v1.gapic.database_admin_client import (  # noqa
     DatabaseAdminClient)
@@ -36,10 +36,12 @@ from google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client import (
 from google.cloud._http import DEFAULT_USER_AGENT
 from google.cloud.client import ClientWithProject
 from google.cloud.spanner_v1 import __version__
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner_v1.instance import Instance
 
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
 SPANNER_ADMIN_SCOPE = 'https://www.googleapis.com/auth/spanner.admin'
 
 
@@ -148,8 +150,7 @@ class Client(ClientWithProject):
         if self._instance_admin_api is None:
             self._instance_admin_api = InstanceAdminClient(
                 credentials=self.credentials,
-                lib_name='gccl',
-                lib_version=__version__,
+                client_info=_CLIENT_INFO,
             )
         return self._instance_admin_api
 
@@ -159,8 +160,7 @@ class Client(ClientWithProject):
         if self._database_admin_api is None:
             self._database_admin_api = DatabaseAdminClient(
                 credentials=self.credentials,
-                lib_name='gccl',
-                lib_version=__version__,
+                client_info=_CLIENT_INFO,
             )
         return self._database_admin_api
 
@@ -200,15 +200,13 @@ class Client(ClientWithProject):
             :class:`~google.cloud.spanner_v1.instance.InstanceConfig`
             resources within the client's project.
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = _options_with_prefix(self.project_name,
-                                       page_token=page_token)
+        metadata = _metadata_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instance_configs(
-            path, page_size=page_size, options=options)
-        return page_iterator._GAXIterator(
-            self, page_iter, _item_to_instance_config)
+            path, page_size=page_size, metadata=metadata)
+        page_iter.next_page_token = page_token
+        page_iter.item_to_value = _item_to_instance_config
+        return page_iter
 
     def instance(self, instance_id,
                  configuration_name=None,
@@ -263,15 +261,27 @@ class Client(ClientWithProject):
             Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`
             resources within the client's project.
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = _options_with_prefix(self.project_name,
-                                       page_token=page_token)
+        metadata = _metadata_with_prefix(self.project_name)
         path = 'projects/%s' % (self.project,)
         page_iter = self.instance_admin_api.list_instances(
-            path, filter_=filter_, page_size=page_size, options=options)
-        return page_iterator._GAXIterator(
-            self, page_iter, _item_to_instance)
+            path, page_size=page_size, metadata=metadata)
+        page_iter.item_to_value = self._item_to_instance
+        page_iter.next_page_token = page_token
+        return page_iter
+
+    def _item_to_instance(self, iterator, instance_pb):
+        """Convert an instance protobuf to the native object.
+
+        :type iterator: :class:`~google.api_core.page_iterator.Iterator`
+        :param iterator: The iterator that is currently in use.
+
+        :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`
+        :param instance_pb: An instance returned from the API.
+
+        :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
+        :returns: The next instance in the page.
+        """
+        return Instance.from_pb(instance_pb, self)
 
 
 def _item_to_instance_config(
@@ -289,18 +299,3 @@ def _item_to_instance_config(
     :returns: The next instance config in the page.
     """
     return InstanceConfig.from_pb(config_pb)
-
-
-def _item_to_instance(iterator, instance_pb):
-    """Convert an instance protobuf to the native object.
-
-    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-    :param iterator: The iterator that is currently in use.
-
-    :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`
-    :param instance_pb: An instance returned from the API.
-
-    :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
-    :returns: The next instance in the page.
-    """
-    return Instance.from_pb(instance_pb, iterator.client)

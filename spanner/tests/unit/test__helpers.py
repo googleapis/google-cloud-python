@@ -515,29 +515,15 @@ class Test_SessionWrapper(unittest.TestCase):
         self.assertIs(base._session, session)
 
 
-class Test_options_with_prefix(unittest.TestCase):
+class Test_metadata_with_prefix(unittest.TestCase):
 
     def _call_fut(self, *args, **kw):
-        from google.cloud.spanner_v1._helpers import _options_with_prefix
+        from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
-        return _options_with_prefix(*args, **kw)
+        return _metadata_with_prefix(*args, **kw)
 
-    def test_wo_kwargs(self):
-        from google.gax import CallOptions
-
-        PREFIX = 'prefix'
-        options = self._call_fut(PREFIX)
-        self.assertIsInstance(options, CallOptions)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', PREFIX)])
-
-    def test_w_kwargs(self):
-        from google.gax import CallOptions
-
-        PREFIX = 'prefix'
-        TOKEN = 'token'
-        options = self._call_fut('prefix', page_token=TOKEN)
-        self.assertIsInstance(options, CallOptions)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', PREFIX)])
-        self.assertEqual(options.page_token, TOKEN)
+    def test(self):
+        prefix = 'prefix'
+        metadata = self._call_fut(prefix)
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', prefix)])
