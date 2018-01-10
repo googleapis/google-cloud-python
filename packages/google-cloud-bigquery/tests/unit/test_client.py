@@ -1117,6 +1117,22 @@ class TestClient(unittest.TestCase):
             req = conn._requested[0]
             self.assertEqual(req['method'], 'DELETE')
             self.assertEqual(req['path'], '/%s' % PATH)
+            self.assertEqual(req['query_params'], {})
+
+    def test_delete_dataset_delete_contents(self):
+        from google.cloud.bigquery.dataset import Dataset
+
+        PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_ID)
+        creds = _make_credentials()
+        client = self._make_one(project=self.PROJECT, credentials=creds)
+        conn = client._connection = _Connection({}, {})
+        ds_ref = client.dataset(self.DS_ID)
+        for arg in (ds_ref, Dataset(ds_ref)):
+            client.delete_dataset(arg, delete_contents=True)
+            req = conn._requested[0]
+            self.assertEqual(req['method'], 'DELETE')
+            self.assertEqual(req['path'], '/%s' % PATH)
+            self.assertEqual(req['query_params'], {'deleteContents': 'true'})
 
     def test_delete_dataset_wrong_type(self):
         creds = _make_credentials()
