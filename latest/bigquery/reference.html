@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API Reference &#8212; google-cloud 63b7245 documentation</title>
+    <title>API Reference &#8212; google-cloud 879254e documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '63b7245',
+        VERSION:     '879254e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -245,7 +245,7 @@ the project of the client).</li>
 
 <dl class="method">
 <dt id="google.cloud.bigquery.client.Client.delete_dataset">
-<code class="descname">delete_dataset</code><span class="sig-paren">(</span><em>dataset</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.delete_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.delete_dataset" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_dataset</code><span class="sig-paren">(</span><em>dataset</em>, <em>delete_contents=False</em>, <em>retry=&lt;google.api_core.retry.Retry object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/bigquery/client.html#Client.delete_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.bigquery.client.Client.delete_dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete a dataset.</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete">https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/delete</a></p>
@@ -254,10 +254,13 @@ the project of the client).</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
 <li><strong>dataset</strong> (One of:
 <a class="reference internal" href="#google.cloud.bigquery.dataset.Dataset" title="google.cloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code></a>
 <a class="reference internal" href="#google.cloud.bigquery.dataset.DatasetReference" title="google.cloud.bigquery.dataset.DatasetReference"><code class="xref py py-class docutils literal"><span class="pre">DatasetReference</span></code></a>) – the dataset to delete, or a reference to it.</li>
+<li><strong>retry</strong> (<a class="reference internal" href="../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><code class="xref py py-class docutils literal"><span class="pre">google.api_core.retry.Retry</span></code></a>) – (Optional) How to retry the RPC.</li>
+<li><strong>delete_contents</strong> (<em>boolean</em>) – (Optional) If True, delete all the tables
+in the dataset. If False and the dataset contains tables, the
+request will fail. Default is False</li>
 </ul>
 </td>
 </tr>
@@ -2343,7 +2346,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'userByEmail', 'view', 'specialGroup', 'groupByEmail', 'domain'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset({'view', 'groupByEmail', 'specialGroup', 'domain', 'userByEmail'})</em><a class="headerlink" href="#google.cloud.bigquery.dataset.AccessEntry.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 

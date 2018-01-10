@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.bigquery.client &#8212; google-cloud 63b7245 documentation</title>
+    <title>google.cloud.bigquery.client &#8212; google-cloud 879254e documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '63b7245',
+        VERSION:     '879254e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -488,7 +488,8 @@
             <span class="ne">DeprecationWarning</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_tables</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.delete_dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.delete_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.delete_dataset"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.delete_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">delete_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">delete_contents</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a dataset.</span>
 
 <span class="sd">        See</span>
@@ -497,15 +498,27 @@
 <span class="sd">        :type dataset: One of:</span>
 <span class="sd">                       :class:`~google.cloud.bigquery.dataset.Dataset`</span>
 <span class="sd">                       :class:`~google.cloud.bigquery.dataset.DatasetReference`</span>
+<span class="sd">        :param dataset: the dataset to delete, or a reference to it.</span>
 
 <span class="sd">        :type retry: :class:`google.api_core.retry.Retry`</span>
 <span class="sd">        :param retry: (Optional) How to retry the RPC.</span>
 
-<span class="sd">        :param dataset: the dataset to delete, or a reference to it.</span>
+<span class="sd">        :type delete_contents: boolean</span>
+<span class="sd">        :param delete_contents: (Optional) If True, delete all the tables</span>
+<span class="sd">             in the dataset. If False and the dataset contains tables, the</span>
+<span class="sd">             request will fail. Default is False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">(</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">DatasetReference</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;dataset must be a Dataset or a DatasetReference&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">delete_contents</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;deleteContents&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_api</span><span class="p">(</span><span class="n">retry</span><span class="p">,</span>
+                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+                       <span class="n">path</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                       <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.delete_table"><a class="viewcode-back" href="../../../../bigquery/reference.html#google.cloud.bigquery.client.Client.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">DEFAULT_RETRY</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a table</span>
