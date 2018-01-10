@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>BigQuery &#8212; google-cloud cab1f67 documentation</title>
+    <title>BigQuery &#8212; google-cloud 63b7245 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'cab1f67',
+        VERSION:     '63b7245',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -395,6 +395,43 @@ on <a class="reference external" href="https://cloud.google.com/bigquery/docs/ta
 <li>Use of the <code class="docutils literal"><span class="pre">timeout</span></code> parameter is optional. The query will continue to
 run in the background even if it takes longer the timeout allowed.</li>
 </ul>
+</div>
+</div>
+<div class="section" id="writing-query-results-to-a-destination-table">
+<h3>Writing query results to a destination table<a class="headerlink" href="#writing-query-results-to-a-destination-table" title="Permalink to this headline">#</a></h3>
+<p>See BigQuery documentation for more information on
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/writing-results">writing query results</a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">()</span>
+
+    <span class="c1"># Set the destination table. Here, dataset_id is a string, such as:</span>
+    <span class="c1"># dataset_id = &#39;your_dataset_id&#39;</span>
+    <span class="n">table_ref</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;your_table_id&#39;</span><span class="p">)</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">table_ref</span>
+
+    <span class="c1"># The write_disposition specifies the behavior when writing query results</span>
+    <span class="c1"># to a table that already exists. With WRITE_TRUNCATE, any existing rows</span>
+    <span class="c1"># in the table are overwritten by the query results.</span>
+    <span class="n">job_config</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;WRITE_TRUNCATE&#39;</span>
+
+    <span class="c1"># Start the query, passing in the extra configuration.</span>
+    <span class="n">query_job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+        <span class="s1">&#39;SELECT 17 AS my_col;&#39;</span><span class="p">,</span> <span class="n">job_config</span><span class="o">=</span><span class="n">job_config</span><span class="p">)</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">query_job</span><span class="p">)</span>  <span class="c1"># Waits for the query to finish</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">my_col</span> <span class="o">==</span> <span class="mi">17</span>
+
+    <span class="c1"># In addition to using the results from the query, you can read the rows</span>
+    <span class="c1"># from the destination table directly.</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_rows</span><span class="p">(</span>
+        <span class="n">table_ref</span><span class="p">,</span> <span class="n">selected_fields</span><span class="o">=</span><span class="p">[</span><span class="n">bigquery</span><span class="o">.</span><span class="n">SchemaField</span><span class="p">(</span><span class="s1">&#39;my_col&#39;</span><span class="p">,</span> <span class="s1">&#39;INT64&#39;</span><span class="p">)])</span>
+
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">row</span><span class="o">.</span><span class="n">my_col</span> <span class="o">==</span> <span class="mi">17</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="run-a-query-using-a-named-query-parameter">
