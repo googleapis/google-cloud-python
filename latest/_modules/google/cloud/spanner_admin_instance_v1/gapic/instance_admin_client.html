@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client &#8212; google-cloud 00eca14 documentation</title>
+    <title>google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -40,41 +40,32 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.spanner_admin_instance_v1.gapic.instance_admin_client</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2017, Google LLC All rights reserved.</span>
+<span></span><span class="c1"># Copyright 2017 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
 <span class="c1"># You may obtain a copy of the License at</span>
 <span class="c1">#</span>
-<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
 <span class="c1">#</span>
 <span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
 <span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
-<span class="c1">#</span>
-<span class="c1"># EDITING INSTRUCTIONS</span>
-<span class="c1"># This file was generated from the file</span>
-<span class="c1"># https://github.com/google/googleapis/blob/master/google/spanner/admin/instance/v1/spanner_instance_admin.proto,</span>
-<span class="c1"># and updates to that file get reflected here through a refresh process.</span>
-<span class="c1"># For the short term, the refresh process will only be runnable by Google engineers.</span>
-<span class="c1">#</span>
-<span class="c1"># The only allowed edits are to method and file documentation. A 3-way</span>
-<span class="c1"># merge preserves those additions if the generated source changes.</span>
 <span class="sd">&quot;&quot;&quot;Accesses the google.spanner.admin.instance.v1 InstanceAdmin API.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
-<span class="kn">import</span> <span class="nn">platform</span>
 
-<span class="kn">from</span> <span class="nn">google.gapic.longrunning</span> <span class="k">import</span> <span class="n">operations_client</span>
-<span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">api_callable</span>
-<span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">config</span>
-<span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">path_template</span>
-<span class="kn">import</span> <span class="nn">google.gax</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.client_info</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.config</span>
+<span class="kn">import</span> <span class="nn">google.api_core.gapic_v1.method</span>
+<span class="kn">import</span> <span class="nn">google.api_core.grpc_helpers</span>
+<span class="kn">import</span> <span class="nn">google.api_core.operation</span>
+<span class="kn">import</span> <span class="nn">google.api_core.operations_v1</span>
+<span class="kn">import</span> <span class="nn">google.api_core.page_iterator</span>
+<span class="kn">import</span> <span class="nn">google.api_core.path_template</span>
 
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_instance_v1.gapic</span> <span class="k">import</span> <span class="n">enums</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_instance_v1.gapic</span> <span class="k">import</span> <span class="n">instance_admin_client_config</span>
@@ -83,7 +74,8 @@
 <span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">policy_pb2</span>
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">field_mask_pb2</span>
 
-<span class="n">_PageDesc</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">PageDescriptor</span>
+<span class="n">_GAPIC_LIBRARY_VERSION</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
+    <span class="s1">&#39;google-cloud-spanner&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
 
 
 <span class="k">class</span> <span class="nc">InstanceAdminClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -111,250 +103,183 @@
 <span class="sd">    databases in that instance, and their performance may suffer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;spanner.googleapis.com&#39;</span>
+    <span class="n">SERVICE_ADDRESS</span> <span class="o">=</span> <span class="s1">&#39;spanner.googleapis.com:443&#39;</span>
     <span class="sd">&quot;&quot;&quot;The default address of the service.&quot;&quot;&quot;</span>
-
-    <span class="n">DEFAULT_SERVICE_PORT</span> <span class="o">=</span> <span class="mi">443</span>
-    <span class="sd">&quot;&quot;&quot;The default port of the service.&quot;&quot;&quot;</span>
-
-    <span class="n">_PAGE_DESCRIPTORS</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;list_instance_configs&#39;</span><span class="p">:</span>
-        <span class="n">_PageDesc</span><span class="p">(</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span> <span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span> <span class="s1">&#39;instance_configs&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;list_instances&#39;</span><span class="p">:</span>
-        <span class="n">_PageDesc</span><span class="p">(</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span> <span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span> <span class="s1">&#39;instances&#39;</span><span class="p">)</span>
-    <span class="p">}</span>
 
     <span class="c1"># The scopes needed to make gRPC calls to all of the methods defined in</span>
     <span class="c1"># this service</span>
-    <span class="n">_ALL_SCOPES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">_DEFAULT_SCOPES</span> <span class="o">=</span> <span class="p">(</span>
         <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;https://www.googleapis.com/auth/spanner.admin&#39;</span><span class="p">,</span> <span class="p">)</span>
+        <span class="s1">&#39;https://www.googleapis.com/auth/spanner.admin&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="n">_PROJECT_PATH_TEMPLATE</span> <span class="o">=</span> <span class="n">path_template</span><span class="o">.</span><span class="n">PathTemplate</span><span class="p">(</span><span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">_INSTANCE_CONFIG_PATH_TEMPLATE</span> <span class="o">=</span> <span class="n">path_template</span><span class="o">.</span><span class="n">PathTemplate</span><span class="p">(</span>
-        <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/instanceConfigs/</span><span class="si">{instance_config}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">_INSTANCE_PATH_TEMPLATE</span> <span class="o">=</span> <span class="n">path_template</span><span class="o">.</span><span class="n">PathTemplate</span><span class="p">(</span>
-        <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/instances/</span><span class="si">{instance}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># The name of the interface for this client. This is the key used to find</span>
+    <span class="c1"># method configuration in the client_config dictionary.</span>
+    <span class="n">_INTERFACE_NAME</span> <span class="o">=</span> <span class="s1">&#39;google.spanner.admin.instance.v1.InstanceAdmin&#39;</span>
 
 <div class="viewcode-block" id="InstanceAdminClient.project_path"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.project_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">project_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified project resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_PROJECT_PATH_TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">({</span>
-            <span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">,</span>
-        <span class="p">})</span></div>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified project string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="InstanceAdminClient.instance_config_path"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.instance_config_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">instance_config_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">instance_config</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified instance_config resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_INSTANCE_CONFIG_PATH_TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">({</span>
-            <span class="s1">&#39;project&#39;</span><span class="p">:</span>
-            <span class="n">project</span><span class="p">,</span>
-            <span class="s1">&#39;instance_config&#39;</span><span class="p">:</span>
-            <span class="n">instance_config</span><span class="p">,</span>
-        <span class="p">})</span></div>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified instance_config string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/instanceConfigs/</span><span class="si">{instance_config}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">instance_config</span><span class="o">=</span><span class="n">instance_config</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="InstanceAdminClient.instance_path"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.instance_path">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">instance_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a fully-qualified instance resource name string.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_INSTANCE_PATH_TEMPLATE</span><span class="o">.</span><span class="n">render</span><span class="p">({</span>
-            <span class="s1">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">,</span>
-            <span class="s1">&#39;instance&#39;</span><span class="p">:</span> <span class="n">instance</span><span class="p">,</span>
-        <span class="p">})</span></div>
-
-<div class="viewcode-block" id="InstanceAdminClient.match_project_from_project_name"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_project_name">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">match_project_from_project_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">project_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the project from a project resource.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            project_name (str): A fully-qualified path representing a project</span>
-<span class="sd">                resource.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A string representing the project.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_PROJECT_PATH_TEMPLATE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">project_name</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="InstanceAdminClient.match_project_from_instance_config_name"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_instance_config_name">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">match_project_from_instance_config_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance_config_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the project from a instance_config resource.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            instance_config_name (str): A fully-qualified path representing a instance_config</span>
-<span class="sd">                resource.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A string representing the project.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_INSTANCE_CONFIG_PATH_TEMPLATE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-            <span class="n">instance_config_name</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="InstanceAdminClient.match_instance_config_from_instance_config_name"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_instance_config_from_instance_config_name">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">match_instance_config_from_instance_config_name</span><span class="p">(</span>
-            <span class="bp">cls</span><span class="p">,</span> <span class="n">instance_config_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the instance_config from a instance_config resource.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            instance_config_name (str): A fully-qualified path representing a instance_config</span>
-<span class="sd">                resource.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A string representing the instance_config.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_INSTANCE_CONFIG_PATH_TEMPLATE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-            <span class="n">instance_config_name</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instance_config&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="InstanceAdminClient.match_project_from_instance_name"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_project_from_instance_name">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">match_project_from_instance_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the project from a instance resource.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            instance_name (str): A fully-qualified path representing a instance</span>
-<span class="sd">                resource.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A string representing the project.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_INSTANCE_PATH_TEMPLATE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">instance_name</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="InstanceAdminClient.match_instance_from_instance_name"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.match_instance_from_instance_name">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">match_instance_from_instance_name</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Parses the instance from a instance resource.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            instance_name (str): A fully-qualified path representing a instance</span>
-<span class="sd">                resource.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            A string representing the instance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_INSTANCE_PATH_TEMPLATE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">instance_name</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instance&#39;</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Return a fully-qualified instance string.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">path_template</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+            <span class="s1">&#39;projects/</span><span class="si">{project}</span><span class="s1">/instances/</span><span class="si">{instance}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">channel</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">ssl_credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">scopes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">client_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">lib_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">lib_version</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                 <span class="n">metrics_headers</span><span class="o">=</span><span class="p">()):</span>
+                 <span class="n">client_config</span><span class="o">=</span><span class="n">instance_admin_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+                 <span class="n">client_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            channel (~grpc.Channel): A ``Channel`` instance through</span>
-<span class="sd">                which to make calls.</span>
-<span class="sd">            credentials (~google.auth.credentials.Credentials): The authorization</span>
-<span class="sd">                credentials to attach to requests. These credentials identify this</span>
-<span class="sd">                application to the service.</span>
-<span class="sd">            ssl_credentials (~grpc.ChannelCredentials): A</span>
-<span class="sd">                ``ChannelCredentials`` instance for use with an SSL-enabled</span>
-<span class="sd">                channel.</span>
-<span class="sd">            scopes (Sequence[str]): A list of OAuth2 scopes to attach to requests.</span>
-<span class="sd">            client_config (dict):</span>
-<span class="sd">                A dictionary for call options for each method. See</span>
-<span class="sd">                :func:`google.gax.construct_settings` for the structure of</span>
-<span class="sd">                this data. Falls back to the default config if not specified</span>
-<span class="sd">                or the specified config is missing data points.</span>
-<span class="sd">            lib_name (str): The API library software used for calling</span>
-<span class="sd">                the service. (Unless you are writing an API client itself,</span>
-<span class="sd">                leave this as default.)</span>
-<span class="sd">            lib_version (str): The API library software version used</span>
-<span class="sd">                for calling the service. (Unless you are writing an API client</span>
-<span class="sd">                itself, leave this as default.)</span>
-<span class="sd">            metrics_headers (dict): A dictionary of values for tracking</span>
-<span class="sd">                client library metrics. Ultimately serializes to a string</span>
-<span class="sd">                (e.g. &#39;foo/1.2.3 bar/3.14.1&#39;). This argument should be</span>
-<span class="sd">                considered private.</span>
+<span class="sd">            channel (grpc.Channel): A ``Channel`` instance through</span>
+<span class="sd">                which to make calls. This argument is mutually exclusive</span>
+<span class="sd">                with ``credentials``; providing both will raise an exception.</span>
+<span class="sd">            credentials (google.auth.credentials.Credentials): The</span>
+<span class="sd">                authorization credentials to attach to requests. These</span>
+<span class="sd">                credentials identify this application to the service. If none</span>
+<span class="sd">                are specified, the client will attempt to ascertain the</span>
+<span class="sd">                credentials from the environment.</span>
+<span class="sd">            client_config (dict): A dictionary of call options for each</span>
+<span class="sd">                method. If not specified, the default configuration is used.</span>
+<span class="sd">            client_info (google.api_core.gapic_v1.client_info.ClientInfo):</span>
+<span class="sd">                The client info used to send a user-agent string along with</span>
+<span class="sd">                API requests. If ``None``, then default info will be used.</span>
+<span class="sd">                Generally, you only need to set this if you&#39;re developing</span>
+<span class="sd">                your own client library.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Unless the calling application specifically requested</span>
-        <span class="c1"># OAuth scopes, request everything.</span>
-        <span class="k">if</span> <span class="n">scopes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ALL_SCOPES</span>
+        <span class="c1"># If both `channel` and `credentials` are specified, raise an</span>
+        <span class="c1"># exception (channels come with credentials baked in already).</span>
+        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;The `channel` and `credentials` arguments to </span><span class="si">{}</span><span class="s1"> are mutually &#39;</span>
+                <span class="s1">&#39;exclusive.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">),</span> <span class="p">)</span>
 
-        <span class="c1"># Initialize an empty client config, if none is set.</span>
-        <span class="k">if</span> <span class="n">client_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client_config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Create the channel.</span>
+        <span class="k">if</span> <span class="n">channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">channel</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">grpc_helpers</span><span class="o">.</span><span class="n">create_channel</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
+                <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+                <span class="n">scopes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_DEFAULT_SCOPES</span><span class="p">,</span>
+            <span class="p">)</span>
 
-        <span class="c1"># Initialize metrics_headers as an ordered dictionary</span>
-        <span class="c1"># (cuts down on cardinality of the resulting string slightly).</span>
-        <span class="n">metrics_headers</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">metrics_headers</span><span class="p">)</span>
-        <span class="n">metrics_headers</span><span class="p">[</span><span class="s1">&#39;gl-python&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">()</span>
+        <span class="c1"># Create the gRPC stubs.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">InstanceAdminStub</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
 
-        <span class="c1"># The library may or may not be set, depending on what is</span>
-        <span class="c1"># calling this client. Newer client libraries set the library name</span>
-        <span class="c1"># and version.</span>
-        <span class="k">if</span> <span class="n">lib_name</span><span class="p">:</span>
-            <span class="n">metrics_headers</span><span class="p">[</span><span class="n">lib_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">lib_version</span>
+        <span class="c1"># Operations client for methods that return long-running operations</span>
+        <span class="c1"># futures.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operations_v1</span><span class="o">.</span><span class="n">OperationsClient</span><span class="p">(</span><span class="n">channel</span><span class="p">))</span>
 
-        <span class="c1"># Finally, track the GAPIC package version.</span>
-        <span class="n">metrics_headers</span><span class="p">[</span><span class="s1">&#39;gapic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">get_distribution</span><span class="p">(</span>
-            <span class="s1">&#39;google-cloud-spanner&#39;</span><span class="p">,</span> <span class="p">)</span><span class="o">.</span><span class="n">version</span>
+        <span class="k">if</span> <span class="n">client_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_info</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">client_info</span><span class="o">.</span><span class="n">DEFAULT_CLIENT_INFO</span><span class="p">)</span>
+        <span class="n">client_info</span><span class="o">.</span><span class="n">gapic_version</span> <span class="o">=</span> <span class="n">_GAPIC_LIBRARY_VERSION</span>
 
-        <span class="c1"># Load the configuration defaults.</span>
-        <span class="n">defaults</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">construct_settings</span><span class="p">(</span>
-            <span class="s1">&#39;google.spanner.admin.instance.v1.InstanceAdmin&#39;</span><span class="p">,</span>
-            <span class="n">instance_admin_client_config</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
-            <span class="n">client_config</span><span class="p">,</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">STATUS_CODE_NAMES</span><span class="p">,</span>
-            <span class="n">metrics_headers</span><span class="o">=</span><span class="n">metrics_headers</span><span class="p">,</span>
-            <span class="n">page_descriptors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_PAGE_DESCRIPTORS</span><span class="p">,</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">create_stub</span><span class="p">(</span>
-            <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">InstanceAdminStub</span><span class="p">,</span>
-            <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
-            <span class="n">service_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
-            <span class="n">service_port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_SERVICE_PORT</span><span class="p">,</span>
-            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-            <span class="n">scopes</span><span class="o">=</span><span class="n">scopes</span><span class="p">,</span>
-            <span class="n">ssl_credentials</span><span class="o">=</span><span class="n">ssl_credentials</span><span class="p">)</span>
+        <span class="c1"># Parse out the default settings for retry and timeout for each RPC</span>
+        <span class="c1"># from the client configuration.</span>
+        <span class="c1"># (Ordinarily, these are the defaults specified in the `*_config.py`</span>
+        <span class="c1"># file next to this one.)</span>
+        <span class="n">method_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parse_method_configs</span><span class="p">(</span>
+            <span class="n">client_config</span><span class="p">[</span><span class="s1">&#39;interfaces&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_INTERFACE_NAME</span><span class="p">],</span> <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span> <span class="o">=</span> <span class="n">operations_client</span><span class="o">.</span><span class="n">OperationsClient</span><span class="p">(</span>
-            <span class="n">service_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">SERVICE_ADDRESS</span><span class="p">,</span>
-            <span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">,</span>
-            <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
-            <span class="n">ssl_credentials</span><span class="o">=</span><span class="n">ssl_credentials</span><span class="p">,</span>
-            <span class="n">scopes</span><span class="o">=</span><span class="n">scopes</span><span class="p">,</span>
-            <span class="n">client_config</span><span class="o">=</span><span class="n">client_config</span><span class="p">,</span>
-            <span class="n">metrics_headers</span><span class="o">=</span><span class="n">metrics_headers</span><span class="p">,</span> <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_instance_configs</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+        <span class="c1"># Write the &quot;inner API call&quot; methods to the class.</span>
+        <span class="c1"># These are wrapped versions of the gRPC stub methods, with retry and</span>
+        <span class="c1"># timeout configuration applied, called by the public methods on</span>
+        <span class="c1"># this class.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_instance_configs</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">ListInstanceConfigs</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;list_instance_configs&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance_config</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListInstanceConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListInstanceConfigs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance_config</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">GetInstanceConfig</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;get_instance_config&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_list_instances</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetInstanceConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetInstanceConfig&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_instances</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">ListInstances</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;list_instances&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListInstances&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;ListInstances&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">GetInstance</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;get_instance&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_create_instance</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_instance</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">CreateInstance</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;create_instance&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_instance</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;CreateInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_instance</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">UpdateInstance</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;update_instance&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_instance</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;UpdateInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_instance</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">DeleteInstance</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;delete_instance&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;DeleteInstance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">SetIamPolicy</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;set_iam_policy&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;SetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;SetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">GetIamPolicy</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;get_iam_policy&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span> <span class="o">=</span> <span class="n">api_callable</span><span class="o">.</span><span class="n">create_api_call</span><span class="p">(</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;GetIamPolicy&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">wrap_method</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_stub</span><span class="o">.</span><span class="n">TestIamPermissions</span><span class="p">,</span>
-            <span class="n">settings</span><span class="o">=</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;test_iam_permissions&#39;</span><span class="p">])</span>
+            <span class="n">default_retry</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;TestIamPermissions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">retry</span><span class="p">,</span>
+            <span class="n">default_timeout</span><span class="o">=</span><span class="n">method_configs</span><span class="p">[</span><span class="s1">&#39;TestIamPermissions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">client_info</span><span class="o">=</span><span class="n">client_info</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="c1"># Service calls</span>
-<div class="viewcode-block" id="InstanceAdminClient.list_instance_configs"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instance_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_instance_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.list_instance_configs"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instance_configs">[docs]</a>    <span class="k">def</span> <span class="nf">list_instance_configs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">parent</span><span class="p">,</span>
+                              <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                              <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                              <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lists the supported instance configurations for a given project.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_instance_v1</span>
-<span class="sd">            &gt;&gt;&gt; from google.gax import CallOptions, INITIAL_PAGE</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = spanner_admin_instance_v1.InstanceAdminClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
@@ -381,8 +306,12 @@
 <span class="sd">                resource, this parameter does not affect the return value. If page</span>
 <span class="sd">                streaming is performed per-page, this determines the maximum number</span>
 <span class="sd">                of resources in a page.</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
@@ -391,14 +320,33 @@
 <span class="sd">            of the response through the `options` parameter.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">ListInstanceConfigsRequest</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_instance_configs</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_list_instance_configs</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;instance_configs&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.get_instance_config"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_instance_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.get_instance_config"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_instance_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                            <span class="n">name</span><span class="p">,</span>
+                            <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                            <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets information about a particular instance configuration.</span>
 
@@ -414,31 +362,40 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Required. The name of the requested instance configuration. Values are of</span>
 <span class="sd">                the form ``projects/&lt;project&gt;/instanceConfigs/&lt;config&gt;``.</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.spanner_admin_instance_v1.types.InstanceConfig` instance.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">GetInstanceConfigRequest</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance_config</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance_config</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="InstanceAdminClient.list_instances"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instances">[docs]</a>    <span class="k">def</span> <span class="nf">list_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                        <span class="n">parent</span><span class="p">,</span>
                        <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Lists all instances in the given project.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            &gt;&gt;&gt; from google.cloud import spanner_admin_instance_v1</span>
-<span class="sd">            &gt;&gt;&gt; from google.gax import CallOptions, INITIAL_PAGE</span>
 <span class="sd">            &gt;&gt;&gt;</span>
 <span class="sd">            &gt;&gt;&gt; client = spanner_admin_instance_v1.InstanceAdminClient()</span>
 <span class="sd">            &gt;&gt;&gt;</span>
@@ -467,24 +424,26 @@
 <span class="sd">            filter_ (str): An expression for filtering the results of the request. Filter rules are</span>
 <span class="sd">                case insensitive. The fields eligible for filtering are:</span>
 
-<span class="sd">                  * name</span>
-<span class="sd">                  * display_name</span>
-<span class="sd">                  * labels.key where key is the name of a label</span>
+<span class="sd">                  * ``name``</span>
+<span class="sd">                  * ``display_name``</span>
+<span class="sd">                  * ``labels.key`` where key is the name of a label</span>
 
 <span class="sd">                Some examples of using filters are:</span>
 
-<span class="sd">                  * name:* --&gt; The instance has a name.</span>
-<span class="sd">                  * name:Howl --&gt; The instance&#39;s name contains the string \&quot;howl\&quot;.</span>
-<span class="sd">                  * name:HOWL --&gt; Equivalent to above.</span>
-<span class="sd">                  * NAME:howl --&gt; Equivalent to above.</span>
-<span class="sd">                  * labels.env:* --&gt; The instance has the label \&quot;env\&quot;.</span>
-<span class="sd">                  * labels.env:dev --&gt; The instance has the label \&quot;env\&quot; and the value of</span>
-<span class="sd">                    the label contains the string \&quot;dev\&quot;.</span>
-<span class="sd">                  * name:howl labels.env:dev --&gt; The instance&#39;s name contains \&quot;howl\&quot; and</span>
-<span class="sd">                    it has the label \&quot;env\&quot; with its value containing \&quot;dev\&quot;.</span>
+<span class="sd">                  * ``name:*`` --&gt; The instance has a name.</span>
+<span class="sd">                  * ``name:Howl`` --&gt; The instance&#39;s name contains the string \&quot;howl\&quot;.</span>
+<span class="sd">                  * ``name:HOWL`` --&gt; Equivalent to above.</span>
+<span class="sd">                  * ``NAME:howl`` --&gt; Equivalent to above.</span>
+<span class="sd">                  * ``labels.env:*`` --&gt; The instance has the label \&quot;env\&quot;.</span>
+<span class="sd">                  * ``labels.env:dev`` --&gt; The instance has the label \&quot;env\&quot; and the value of the label contains the string \&quot;dev\&quot;.</span>
+<span class="sd">                  * ``name:howl labels.env:dev`` --&gt; The instance&#39;s name contains \&quot;howl\&quot; and it has the label \&quot;env\&quot; with its value containing \&quot;dev\&quot;.</span>
 
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.gax.PageIterator` instance. By default, this</span>
@@ -493,14 +452,34 @@
 <span class="sd">            of the response through the `options` parameter.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">ListInstancesRequest</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_instances</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
+            <span class="nb">filter</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">page_iterator</span><span class="o">.</span><span class="n">GRPCIterator</span><span class="p">(</span>
+            <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_list_instances</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">),</span>
+            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+            <span class="n">items_field</span><span class="o">=</span><span class="s1">&#39;instances&#39;</span><span class="p">,</span>
+            <span class="n">request_token_field</span><span class="o">=</span><span class="s1">&#39;page_token&#39;</span><span class="p">,</span>
+            <span class="n">response_token_field</span><span class="o">=</span><span class="s1">&#39;next_page_token&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">iterator</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.get_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance">[docs]</a>    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.get_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance">[docs]</a>    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">name</span><span class="p">,</span>
+                     <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                     <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                     <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets information about a particular instance.</span>
 
@@ -516,20 +495,34 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Required. The name of the requested instance. Values are of the form</span>
 <span class="sd">                ``projects/&lt;project&gt;/instances/&lt;instance&gt;``.</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.spanner_admin_instance_v1.types.Instance` instance.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">GetInstanceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">GetInstanceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_instance</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.create_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.create_instance">[docs]</a>    <span class="k">def</span> <span class="nf">create_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.create_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.create_instance">[docs]</a>    <span class="k">def</span> <span class="nf">create_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">parent</span><span class="p">,</span>
+                        <span class="n">instance_id</span><span class="p">,</span>
+                        <span class="n">instance</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates an instance and begins preparing it to begin serving. The</span>
 <span class="sd">        returned ``long-running operation``</span>
@@ -596,24 +589,43 @@
 <span class="sd">                specified must be ``&lt;parent&gt;/instances/&lt;instance_id&gt;``.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.spanner_admin_instance_v1.types._OperationFuture` instance.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">CreateInstanceRequest</span><span class="p">(</span>
-            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">instance_id</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">_OperationFuture</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_create_instance</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span><span class="p">,</span>
+            <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span>
+            <span class="n">instance_id</span><span class="o">=</span><span class="n">instance_id</span><span class="p">,</span>
+            <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_instance</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span><span class="p">,</span>
             <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">,</span>
-            <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">CreateInstanceMetadata</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">CreateInstanceMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.update_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.update_instance">[docs]</a>    <span class="k">def</span> <span class="nf">update_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">field_mask</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.update_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.update_instance">[docs]</a>    <span class="k">def</span> <span class="nf">update_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">instance</span><span class="p">,</span>
+                        <span class="n">field_mask</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates an instance, and begins allocating or releasing resources</span>
 <span class="sd">        as requested. The returned [long-running</span>
@@ -686,24 +698,41 @@
 <span class="sd">                about them.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_instance_v1.types.FieldMask`</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.spanner_admin_instance_v1.types._OperationFuture` instance.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">UpdateInstanceRequest</span><span class="p">(</span>
-            <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span> <span class="n">field_mask</span><span class="o">=</span><span class="n">field_mask</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">gax</span><span class="o">.</span><span class="n">_OperationFuture</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_update_instance</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span><span class="p">,</span>
+            <span class="n">instance</span><span class="o">=</span><span class="n">instance</span><span class="p">,</span>
+            <span class="n">field_mask</span><span class="o">=</span><span class="n">field_mask</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">operation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_instance</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">from_gapic</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operations_client</span><span class="p">,</span>
             <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">Instance</span><span class="p">,</span>
-            <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">UpdateInstanceMetadata</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+            <span class="n">metadata_type</span><span class="o">=</span><span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">UpdateInstanceMetadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.delete_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.delete_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.delete_instance"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.delete_instance">[docs]</a>    <span class="k">def</span> <span class="nf">delete_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">name</span><span class="p">,</span>
+                        <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deletes an instance.</span>
 
@@ -729,17 +758,30 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Required. The name of the instance to be deleted. Values are of the form</span>
 <span class="sd">                ``projects/&lt;project&gt;/instances/&lt;instance&gt;``</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">DeleteInstanceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_instance</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">spanner_instance_admin_pb2</span><span class="o">.</span><span class="n">DeleteInstanceRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_instance</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.set_iam_policy"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.set_iam_policy"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">resource</span><span class="p">,</span>
+                       <span class="n">policy</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets the access control policy on an instance resource. Replaces any</span>
 <span class="sd">        existing policy.</span>
@@ -767,21 +809,35 @@
 <span class="sd">                might reject them.</span>
 <span class="sd">                If a dict is provided, it must be of the same form as the protobuf</span>
 <span class="sd">                message :class:`~google.cloud.spanner_admin_instance_v1.types.Policy`</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.spanner_admin_instance_v1.types.Policy` instance.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">SetIamPolicyRequest</span><span class="p">(</span>
-            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+            <span class="n">policy</span><span class="o">=</span><span class="n">policy</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_iam_policy</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.get_iam_policy"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.get_iam_policy"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">resource</span><span class="p">,</span>
+                       <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                       <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets the access control policy for an instance resource. Returns an empty</span>
 <span class="sd">        policy if an instance exists but does not have a policy set.</span>
@@ -802,20 +858,33 @@
 <span class="sd">            resource (str): REQUIRED: The resource for which the policy is being requested.</span>
 <span class="sd">                ``resource`` is usually specified as a path. For example, a Project</span>
 <span class="sd">                resource is specified as ``projects/{project}``.</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.spanner_admin_instance_v1.types.Policy` instance.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">GetIamPolicyRequest</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">GetIamPolicyRequest</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_policy</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="InstanceAdminClient.test_iam_permissions"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="InstanceAdminClient.test_iam_permissions"><a class="viewcode-back" href="../../../../../spanner/gapic/v1/admin_instance_api.html#google.cloud.spanner_admin_instance_v1.InstanceAdminClient.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">resource</span><span class="p">,</span>
+                             <span class="n">permissions</span><span class="p">,</span>
+                             <span class="n">retry</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                             <span class="n">timeout</span><span class="o">=</span><span class="n">google</span><span class="o">.</span><span class="n">api_core</span><span class="o">.</span><span class="n">gapic_v1</span><span class="o">.</span><span class="n">method</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">,</span>
+                             <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns permissions that the caller has on the specified instance resource.</span>
 
@@ -842,19 +911,29 @@
 <span class="sd">                wildcards (such as &#39;*&#39; or &#39;storage.*&#39;) are not allowed. For more</span>
 <span class="sd">                information see</span>
 <span class="sd">                `IAM Overview &lt;https://cloud.google.com/iam/docs/overview#permissions&gt;`_.</span>
-<span class="sd">            options (~google.gax.CallOptions): Overrides the default</span>
-<span class="sd">                settings for this call, e.g, timeout, retries etc.</span>
+<span class="sd">            retry (Optional[google.api_core.retry.Retry]):  A retry object used</span>
+<span class="sd">                to retry requests. If ``None`` is specified, requests will not</span>
+<span class="sd">                be retried.</span>
+<span class="sd">            timeout (Optional[float]): The amount of time, in seconds, to wait</span>
+<span class="sd">                for the request to complete. Note that if ``retry`` is</span>
+<span class="sd">                specified, the timeout applies to each individual attempt.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A :class:`~google.cloud.spanner_admin_instance_v1.types.TestIamPermissionsResponse` instance.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            :exc:`google.gax.errors.GaxError` if the RPC is aborted.</span>
-<span class="sd">            :exc:`ValueError` if the parameters are invalid.</span>
+<span class="sd">            google.api_core.exceptions.GoogleAPICallError: If the request</span>
+<span class="sd">                    failed for any reason.</span>
+<span class="sd">            google.api_core.exceptions.RetryError: If the request failed due</span>
+<span class="sd">                    to a retryable error and retry attempts failed.</span>
+<span class="sd">            ValueError: If the parameters are invalid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">iam_policy_pb2</span><span class="o">.</span><span class="n">TestIamPermissionsRequest</span><span class="p">(</span>
-            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span></div>
+            <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+            <span class="n">permissions</span><span class="o">=</span><span class="n">permissions</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_iam_permissions</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="n">retry</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

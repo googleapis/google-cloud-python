@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.session &#8212; google-cloud 00eca14 documentation</title>
+    <title>google.cloud.spanner_v1.session &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -59,15 +59,11 @@
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">total_ordering</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">from</span> <span class="nn">google.gax.errors</span> <span class="k">import</span> <span class="n">GaxError</span>
-<span class="kn">from</span> <span class="nn">google.gax.grpc</span> <span class="k">import</span> <span class="n">exc_to_code</span>
 <span class="kn">from</span> <span class="nn">google.rpc.error_details_pb2</span> <span class="k">import</span> <span class="n">RetryInfo</span>
-<span class="kn">from</span> <span class="nn">grpc</span> <span class="k">import</span> <span class="n">StatusCode</span>
 
 <span class="c1"># pylint: disable=ungrouped-imports</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">google.cloud.exceptions</span> <span class="k">import</span> <span class="n">GrpcRendezvous</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.api_core.exceptions</span> <span class="k">import</span> <span class="n">Aborted</span><span class="p">,</span> <span class="n">GoogleAPICallError</span><span class="p">,</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.batch</span> <span class="k">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.snapshot</span> <span class="k">import</span> <span class="n">Snapshot</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.transaction</span> <span class="k">import</span> <span class="n">Transaction</span>
@@ -138,8 +134,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Session ID already set by back-end&#39;</span><span class="p">)</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">spanner_api</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">session_pb</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">create_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">session_pb</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">create_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="o">=</span> <span class="n">session_pb</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Session.exists"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -150,21 +146,17 @@
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if the session exists on the back-end, else False.</span>
-<span class="sd">        :raises GaxError:</span>
-<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">spanner_api</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">api</span><span class="o">.</span><span class="n">get_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-            <span class="k">raise</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="n">api</span><span class="o">.</span><span class="n">get_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="Session.delete"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this session.</span>
@@ -174,19 +166,13 @@
 
 <span class="sd">        :raises ValueError: if :attr:`session_id` is not already set.</span>
 <span class="sd">        :raises NotFound: if the session does not exist</span>
-<span class="sd">        :raises GaxError:</span>
-<span class="sd">            for errors other than ``NOT_FOUND`` returned from the call</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Session ID not set by back-end&#39;</span><span class="p">)</span>
         <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">spanner_api</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">api</span><span class="o">.</span><span class="n">delete_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">exc_to_code</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">cause</span><span class="p">)</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">NOT_FOUND</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">NotFound</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">raise</span></div>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">api</span><span class="o">.</span><span class="n">delete_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.snapshot"><a class="viewcode-back" href="../../../../spanner/session-api.html#google.cloud.spanner_v1.session.Session.snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a snapshot to perform a set of reads with shared staleness.</span>
@@ -321,19 +307,25 @@
                 <span class="n">txn</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">return_value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">txn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-            <span class="k">except</span> <span class="p">(</span><span class="n">GaxError</span><span class="p">,</span> <span class="n">GrpcRendezvous</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">except</span> <span class="n">Aborted</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
                 <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
                 <span class="k">continue</span>
+            <span class="k">except</span> <span class="n">GoogleAPICallError</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
+                <span class="k">raise</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
                 <span class="k">raise</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">txn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-            <span class="k">except</span> <span class="n">GaxError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">except</span> <span class="n">Aborted</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
                 <span class="n">_delay_until_retry</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">deadline</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">GoogleAPICallError</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction</span>
+                <span class="k">raise</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">return_value</span></div></div>
 
@@ -347,19 +339,13 @@
 
 <span class="sd">    Detect retryable abort, and impose server-supplied delay.</span>
 
-<span class="sd">    :type exc: :class:`google.gax.errors.GaxError`</span>
+<span class="sd">    :type exc: :class:`google.api_core.exceptions.Aborted`</span>
 <span class="sd">    :param exc: exception for aborted transaction</span>
 
 <span class="sd">    :type deadline: float</span>
 <span class="sd">    :param deadline: maximum timestamp to continue retrying the transaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="n">GrpcRendezvous</span><span class="p">):</span>  <span class="c1"># pragma: NO COVER  see #3663</span>
-        <span class="n">cause</span> <span class="o">=</span> <span class="n">exc</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">cause</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">cause</span>
-
-    <span class="k">if</span> <span class="n">exc_to_code</span><span class="p">(</span><span class="n">cause</span><span class="p">)</span> <span class="o">!=</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">ABORTED</span><span class="p">:</span>
-        <span class="k">raise</span>
+    <span class="n">cause</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="n">now</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
@@ -379,7 +365,7 @@
 <span class="k">def</span> <span class="nf">_get_retry_delay</span><span class="p">(</span><span class="n">cause</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper for :func:`_delay_until_retry`.</span>
 
-<span class="sd">    :type exc: :class:`google.gax.errors.GaxError`</span>
+<span class="sd">    :type exc: :class:`grpc.Call`</span>
 <span class="sd">    :param exc: exception for aborted transaction</span>
 
 <span class="sd">    :rtype: float</span>

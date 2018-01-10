@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.proto.query_plan_pb2 &#8212; google-cloud 00eca14 documentation</title>
+    <title>google.cloud.spanner_v1.proto.query_plan_pb2 &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -63,7 +63,7 @@
   <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/spanner_v1/proto/query_plan.proto&#39;</span><span class="p">,</span>
   <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1&#39;</span><span class="p">,</span>
   <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">.google/cloud/spanner_v1/proto/query_plan.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/protobuf/struct.proto</span><span class="se">\&quot;\xf8\x04\n\x08</span><span class="s1">PlanNode</span><span class="se">\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">kind</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1"> .google.spanner.v1.PlanNode.Kind</span><span class="se">\x12\x14\n\x0c\x64</span><span class="s1">isplay_name</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">:</span><span class="se">\n\x0b\x63</span><span class="s1">hild_links</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.PlanNode.ChildLink</span><span class="se">\x12</span><span class="s1">M</span><span class="se">\n\x14</span><span class="s1">short_representation</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.PlanNode.ShortRepresentation</span><span class="se">\x12</span><span class="s1">)</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12\x30\n\x0f\x65</span><span class="s1">xecution_stats</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x1a</span><span class="s1">@</span><span class="se">\n\t</span><span class="s1">ChildLink</span><span class="se">\x12\x13\n\x0b\x63</span><span class="s1">hild_index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0c\n\x04</span><span class="s1">type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">variable</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a\xb2\x01\n\x13</span><span class="s1">ShortRepresentation</span><span class="se">\x12\x13\n\x0b\x64\x65</span><span class="s1">scription</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">S</span><span class="se">\n\n</span><span class="s1">subqueries</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">?.google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry</span><span class="se">\x1a\x31\n\x0f</span><span class="s1">SubqueriesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;</span><span class="s1">8</span><span class="se">\n\x04</span><span class="s1">Kind</span><span class="se">\x12\x14\n\x10</span><span class="s1">KIND_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">RELATIONAL</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">SCALAR</span><span class="se">\x10\x02\&quot;</span><span class="s1">&lt;</span><span class="se">\n\t</span><span class="s1">QueryPlan</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\n</span><span class="s1">plan_nodes</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1b</span><span class="s1">.google.spanner.v1.PlanNodeB}</span><span class="se">\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x0e</span><span class="s1">QueryPlanProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
+  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">.google/cloud/spanner_v1/proto/query_plan.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1c</span><span class="s1">google/protobuf/struct.proto</span><span class="se">\&quot;\xf8\x04\n\x08</span><span class="s1">PlanNode</span><span class="se">\x12\r\n\x05</span><span class="s1">index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12</span><span class="s1">.</span><span class="se">\n\x04</span><span class="s1">kind</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0e\x32</span><span class="s1"> .google.spanner.v1.PlanNode.Kind</span><span class="se">\x12\x14\n\x0c\x64</span><span class="s1">isplay_name</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">:</span><span class="se">\n\x0b\x63</span><span class="s1">hild_links</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.PlanNode.ChildLink</span><span class="se">\x12</span><span class="s1">M</span><span class="se">\n\x14</span><span class="s1">short_representation</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.PlanNode.ShortRepresentation</span><span class="se">\x12</span><span class="s1">)</span><span class="se">\n\x08</span><span class="s1">metadata</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x12\x30\n\x0f\x65</span><span class="s1">xecution_stats</span><span class="se">\x18\x07</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x17</span><span class="s1">.google.protobuf.Struct</span><span class="se">\x1a</span><span class="s1">@</span><span class="se">\n\t</span><span class="s1">ChildLink</span><span class="se">\x12\x13\n\x0b\x63</span><span class="s1">hild_index</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05\x12\x0c\n\x04</span><span class="s1">type</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\x10\n\x08</span><span class="s1">variable</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x1a\xb2\x01\n\x13</span><span class="s1">ShortRepresentation</span><span class="se">\x12\x13\n\x0b\x64\x65</span><span class="s1">scription</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12</span><span class="s1">S</span><span class="se">\n\n</span><span class="s1">subqueries</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">?.google.spanner.v1.PlanNode.ShortRepresentation.SubqueriesEntry</span><span class="se">\x1a\x31\n\x0f</span><span class="s1">SubqueriesEntry</span><span class="se">\x12\x0b\n\x03</span><span class="s1">key</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\t\x12\r\n\x05</span><span class="s1">value</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x05</span><span class="s1">:</span><span class="se">\x02\x38\x01\&quot;</span><span class="s1">8</span><span class="se">\n\x04</span><span class="s1">Kind</span><span class="se">\x12\x14\n\x10</span><span class="s1">KIND_UNSPECIFIED</span><span class="se">\x10\x00\x12\x0e\n\n</span><span class="s1">RELATIONAL</span><span class="se">\x10\x01\x12\n\n\x06</span><span class="s1">SCALAR</span><span class="se">\x10\x02\&quot;</span><span class="s1">&lt;</span><span class="se">\n\t</span><span class="s1">QueryPlan</span><span class="se">\x12</span><span class="s1">/</span><span class="se">\n\n</span><span class="s1">plan_nodes</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x03</span><span class="s1">(</span><span class="se">\x0b\x32\x1b</span><span class="s1">.google.spanner.v1.PlanNodeB</span><span class="se">\x97\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x0e</span><span class="s1">QueryPlanProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
   <span class="p">,</span>
   <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_struct__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
@@ -341,6 +341,26 @@
     <span class="p">,</span>
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Metadata associated with a parent-child relationship appearing in a</span>
 <span class="s2">    [PlanNode][google.spanner.v1.PlanNode].</span>
+<span class="s2">    </span>
+<span class="s2">    </span>
+<span class="s2">    Attributes:</span>
+<span class="s2">        child_index:</span>
+<span class="s2">            The node to which the link points.</span>
+<span class="s2">        type:</span>
+<span class="s2">            The type of the link. For example, in Hash Joins this could be</span>
+<span class="s2">            used to distinguish between the build child and the probe</span>
+<span class="s2">            child, or in the case of the child being an output variable,</span>
+<span class="s2">            to represent the tag associated with the output variable.</span>
+<span class="s2">        variable:</span>
+<span class="s2">            Only present if the child node is</span>
+<span class="s2">            [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] and</span>
+<span class="s2">            corresponds to an output variable of the parent node. The</span>
+<span class="s2">            field carries the name of the output variable. For example, a</span>
+<span class="s2">            ``TableScan`` operator that reads rows from a table will have</span>
+<span class="s2">            child links to the ``SCALAR`` nodes representing the output</span>
+<span class="s2">            variables created for each column that is read by the</span>
+<span class="s2">            operator. The corresponding ``variable`` fields will be set to</span>
+<span class="s2">            the variable names assigned to the columns.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ChildLink)</span>
     <span class="p">))</span>
@@ -359,6 +379,18 @@
     <span class="p">,</span>
     <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Condensed representation of a node and its subtree. Only present for</span>
 <span class="s2">    ``SCALAR`` [PlanNode(s)][google.spanner.v1.PlanNode].</span>
+<span class="s2">    </span>
+<span class="s2">    </span>
+<span class="s2">    Attributes:</span>
+<span class="s2">        description:</span>
+<span class="s2">            A string representation of the expression subtree rooted at</span>
+<span class="s2">            this node.</span>
+<span class="s2">        subqueries:</span>
+<span class="s2">            A mapping of (subquery variable name) -&gt; (subquery node id)</span>
+<span class="s2">            for cases where the ``description`` string of this node</span>
+<span class="s2">            references a ``SCALAR`` subquery contained in the expression</span>
+<span class="s2">            subtree rooted at this node. The referenced ``SCALAR``</span>
+<span class="s2">            subquery may not necessarily be a direct child of this node.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.PlanNode.ShortRepresentation)</span>
     <span class="p">))</span>
@@ -371,32 +403,6 @@
 <span class="s2">  </span>
 <span class="s2">  </span>
 <span class="s2">  Attributes:</span>
-<span class="s2">      child_index:</span>
-<span class="s2">          The node to which the link points.</span>
-<span class="s2">      type:</span>
-<span class="s2">          The type of the link. For example, in Hash Joins this could be</span>
-<span class="s2">          used to distinguish between the build child and the probe</span>
-<span class="s2">          child, or in the case of the child being an output variable,</span>
-<span class="s2">          to represent the tag associated with the output variable.</span>
-<span class="s2">      variable:</span>
-<span class="s2">          Only present if the child node is</span>
-<span class="s2">          [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] and</span>
-<span class="s2">          corresponds to an output variable of the parent node. The</span>
-<span class="s2">          field carries the name of the output variable. For example, a</span>
-<span class="s2">          ``TableScan`` operator that reads rows from a table will have</span>
-<span class="s2">          child links to the ``SCALAR`` nodes representing the output</span>
-<span class="s2">          variables created for each column that is read by the</span>
-<span class="s2">          operator. The corresponding ``variable`` fields will be set to</span>
-<span class="s2">          the variable names assigned to the columns.</span>
-<span class="s2">      description:</span>
-<span class="s2">          A string representation of the expression subtree rooted at</span>
-<span class="s2">          this node.</span>
-<span class="s2">      subqueries:</span>
-<span class="s2">          A mapping of (subquery variable name) -&gt; (subquery node id)</span>
-<span class="s2">          for cases where the ``description`` string of this node</span>
-<span class="s2">          references a ``SCALAR`` subquery contained in the expression</span>
-<span class="s2">          subtree rooted at this node. The referenced ``SCALAR``</span>
-<span class="s2">          subquery may not necessarily be a direct child of this node.</span>
 <span class="s2">      index:</span>
 <span class="s2">          The ``PlanNode``&#39;s index in [node</span>
 <span class="s2">          list][google.spanner.v1.QueryPlan.plan\_nodes].</span>
@@ -454,7 +460,7 @@
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\025</span><span class="s1">com.google.spanner.v1B</span><span class="se">\016</span><span class="s1">QueryPlanProtoP</span><span class="se">\001</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s1">Google.Cloud.Spanner.V1&#39;</span><span class="p">))</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\025</span><span class="s1">com.google.spanner.v1B</span><span class="se">\016</span><span class="s1">QueryPlanProtoP</span><span class="se">\001</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\312\002\027</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1&#39;</span><span class="p">))</span>
 <span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">_PLANNODE_SHORTREPRESENTATION_SUBQUERIESENTRY</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">MessageOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;8</span><span class="se">\001</span><span class="s1">&#39;</span><span class="p">))</span>
 <span class="k">try</span><span class="p">:</span>

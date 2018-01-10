@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.snapshot &#8212; google-cloud 00eca14 documentation</title>
+    <title>google.cloud.spanner_v1.snapshot &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -66,7 +66,7 @@
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_pb_timestamp</span>
 <span class="kn">from</span> <span class="nn">google.cloud._helpers</span> <span class="k">import</span> <span class="n">_timedelta_to_duration_pb</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_make_value_pb</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_SessionWrapper</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.streamed</span> <span class="k">import</span> <span class="n">StreamedResultSet</span>
 
@@ -157,14 +157,14 @@
 
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_txn_selector</span><span class="p">()</span>
 
         <span class="n">restart</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
             <span class="n">api</span><span class="o">.</span><span class="n">streaming_read</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keyset</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
             <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
-            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
 
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">_restart_on_unavailable</span><span class="p">(</span><span class="n">restart</span><span class="p">)</span>
 
@@ -217,7 +217,7 @@
             <span class="n">params_pb</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_txn_selector</span><span class="p">()</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
 
@@ -225,7 +225,7 @@
             <span class="n">api</span><span class="o">.</span><span class="n">execute_streaming_sql</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">sql</span><span class="p">,</span>
             <span class="n">transaction</span><span class="o">=</span><span class="n">transaction</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params_pb</span><span class="p">,</span> <span class="n">param_types</span><span class="o">=</span><span class="n">param_types</span><span class="p">,</span>
-            <span class="n">query_mode</span><span class="o">=</span><span class="n">query_mode</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">query_mode</span><span class="o">=</span><span class="n">query_mode</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
 
         <span class="n">iterator</span> <span class="o">=</span> <span class="n">_restart_on_unavailable</span><span class="p">(</span><span class="n">restart</span><span class="p">)</span>
 
@@ -342,10 +342,10 @@
 
         <span class="n">database</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_database</span>
         <span class="n">api</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">spanner_api</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="n">database</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">txn_selector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_txn_selector</span><span class="p">()</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">txn_selector</span><span class="o">.</span><span class="n">begin</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">txn_selector</span><span class="o">.</span><span class="n">begin</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">id</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_id</span></div></div>
 </pre></div>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Session API &#8212; google-cloud 00eca14 documentation</title>
+    <title>Session API &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -116,7 +116,6 @@
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
 <li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><strong>ValueError</strong></a> – if <a class="reference internal" href="#google.cloud.spanner_v1.session.Session.session_id" title="google.cloud.spanner_v1.session.Session.session_id"><code class="xref py py-attr docutils literal"><span class="pre">session_id</span></code></a> is not already set.</li>
 <li><a class="reference internal" href="../core/exceptions.html#google.api_core.exceptions.NotFound" title="google.api_core.exceptions.NotFound"><strong>NotFound</strong></a> – if the session does not exist</li>
-<li><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</li>
 </ul>
 </td>
 </tr>
@@ -167,8 +166,6 @@ back-end.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)">bool</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the session exists on the back-end, else False.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><strong>GaxError</strong> – for errors other than <code class="docutils literal"><span class="pre">NOT_FOUND</span></code> returned from the call</td>
 </tr>
 </tbody>
 </table>

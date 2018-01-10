@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.client &#8212; google-cloud 00eca14 documentation</title>
+    <title>google.cloud.spanner_v1.client &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -66,8 +66,8 @@
 <span class="sd">  :class:`~google.cloud.spanner_v1.database.Database`</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">google.api_core</span> <span class="k">import</span> <span class="n">page_iterator</span>
-<span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">INITIAL_PAGE</span>
+<span class="kn">from</span> <span class="nn">google.api_core.gapic_v1</span> <span class="k">import</span> <span class="n">client_info</span>
+
 <span class="c1"># pylint: disable=line-too-long</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_database_v1.gapic.database_admin_client</span> <span class="k">import</span> <span class="p">(</span>  <span class="c1"># noqa</span>
     <span class="n">DatabaseAdminClient</span><span class="p">)</span>
@@ -78,10 +78,12 @@
 <span class="kn">from</span> <span class="nn">google.cloud._http</span> <span class="k">import</span> <span class="n">DEFAULT_USER_AGENT</span>
 <span class="kn">from</span> <span class="nn">google.cloud.client</span> <span class="k">import</span> <span class="n">ClientWithProject</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1</span> <span class="k">import</span> <span class="n">__version__</span>
-<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_options_with_prefix</span>
+<span class="kn">from</span> <span class="nn">google.cloud.spanner_v1._helpers</span> <span class="k">import</span> <span class="n">_metadata_with_prefix</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.instance</span> <span class="k">import</span> <span class="n">DEFAULT_NODE_COUNT</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_v1.instance</span> <span class="k">import</span> <span class="n">Instance</span>
 
+<span class="n">_CLIENT_INFO</span> <span class="o">=</span> <span class="n">client_info</span><span class="o">.</span><span class="n">ClientInfo</span><span class="p">(</span>
+    <span class="n">client_library_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">)</span>
 <span class="n">SPANNER_ADMIN_SCOPE</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/spanner.admin&#39;</span>
 
 
@@ -190,8 +192,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span> <span class="o">=</span> <span class="n">InstanceAdminClient</span><span class="p">(</span>
                 <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
-                <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_admin_api</span>
 
@@ -201,8 +202,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span> <span class="o">=</span> <span class="n">DatabaseAdminClient</span><span class="p">(</span>
                 <span class="n">credentials</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
-                <span class="n">lib_name</span><span class="o">=</span><span class="s1">&#39;gccl&#39;</span><span class="p">,</span>
-                <span class="n">lib_version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+                <span class="n">client_info</span><span class="o">=</span><span class="n">_CLIENT_INFO</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_admin_api</span>
 
@@ -242,15 +242,13 @@
 <span class="sd">            :class:`~google.cloud.spanner_v1.instance.InstanceConfig`</span>
 <span class="sd">            resources within the client&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">page_token</span> <span class="o">=</span> <span class="n">INITIAL_PAGE</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
-                                       <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instance_configs</span><span class="p">(</span>
-            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">_GAXIterator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance_config</span><span class="p">)</span></div>
+            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">page_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
+        <span class="n">page_iter</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="n">_item_to_instance_config</span>
+        <span class="k">return</span> <span class="n">page_iter</span></div>
 
 <div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../../spanner/gapic/v1/api.html#google.cloud.spanner_v1.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span>
                  <span class="n">configuration_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -305,15 +303,27 @@
 <span class="sd">            Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`</span>
 <span class="sd">            resources within the client&#39;s project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">page_token</span> <span class="o">=</span> <span class="n">INITIAL_PAGE</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">_options_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">,</span>
-                                       <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata_with_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">page_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance_admin_api</span><span class="o">.</span><span class="n">list_instances</span><span class="p">(</span>
-            <span class="n">path</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">page_iterator</span><span class="o">.</span><span class="n">_GAXIterator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">page_iter</span><span class="p">,</span> <span class="n">_item_to_instance</span><span class="p">)</span></div></div>
+            <span class="n">path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">page_iter</span><span class="o">.</span><span class="n">item_to_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_item_to_instance</span>
+        <span class="n">page_iter</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
+        <span class="k">return</span> <span class="n">page_iter</span></div>
+
+    <span class="k">def</span> <span class="nf">_item_to_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iterator</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert an instance protobuf to the native object.</span>
+
+<span class="sd">        :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
+<span class="sd">        :param iterator: The iterator that is currently in use.</span>
+
+<span class="sd">        :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`</span>
+<span class="sd">        :param instance_pb: An instance returned from the API.</span>
+
+<span class="sd">        :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`</span>
+<span class="sd">        :returns: The next instance in the page.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Instance</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_item_to_instance_config</span><span class="p">(</span>
@@ -331,21 +341,6 @@
 <span class="sd">    :returns: The next instance config in the page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">InstanceConfig</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">config_pb</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_item_to_instance</span><span class="p">(</span><span class="n">iterator</span><span class="p">,</span> <span class="n">instance_pb</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert an instance protobuf to the native object.</span>
-
-<span class="sd">    :type iterator: :class:`~google.api_core.page_iterator.Iterator`</span>
-<span class="sd">    :param iterator: The iterator that is currently in use.</span>
-
-<span class="sd">    :type instance_pb: :class:`~google.spanner.admin.instance.v1.Instance`</span>
-<span class="sd">    :param instance_pb: An instance returned from the API.</span>
-
-<span class="sd">    :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`</span>
-<span class="sd">    :returns: The next instance in the page.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">Instance</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">,</span> <span class="n">iterator</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
 </pre></div>
 
           </div>

@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Admin Database Client API &#8212; google-cloud 00eca14 documentation</title>
+    <title>Spanner Admin Database Client API &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -45,7 +45,7 @@
 <span id="spanner-admin-database-client-api"></span><h1>Spanner Admin Database Client API<a class="headerlink" href="#module-google.cloud.spanner_admin_database_v1" title="Permalink to this headline">#</a></h1>
 <dl class="class">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient">
-<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.</code><code class="descname">DatabaseAdminClient</code><span class="sig-paren">(</span><em>channel=None</em>, <em>credentials=None</em>, <em>ssl_credentials=None</em>, <em>scopes=None</em>, <em>client_config=None</em>, <em>lib_name=None</em>, <em>lib_version=''</em>, <em>metrics_headers=()</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1.html#DatabaseAdminClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_admin_database_v1.</code><code class="descname">DatabaseAdminClient</code><span class="sig-paren">(</span><em>channel=None, credentials=None, client_config={'interfaces': {'google.spanner.admin.database.v1.DatabaseAdmin': {'retry_codes': {'idempotent': ['DEADLINE_EXCEEDED', 'UNAVAILABLE'], 'non_idempotent': []}, 'retry_params': {'default': {'initial_retry_delay_millis': 1000, 'retry_delay_multiplier': 1.3, 'max_retry_delay_millis': 32000, 'initial_rpc_timeout_millis': 60000, 'rpc_timeout_multiplier': 1.0, 'max_rpc_timeout_millis': 60000, 'total_timeout_millis': 600000}}, 'methods': {'ListDatabases': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'CreateDatabase': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetDatabase': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'UpdateDatabaseDdl': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'DropDatabase': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'GetDatabaseDdl': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'SetIamPolicy': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}, 'GetIamPolicy': {'timeout_millis': 30000, 'retry_codes_name': 'idempotent', 'retry_params_name': 'default'}, 'TestIamPermissions': {'timeout_millis': 30000, 'retry_codes_name': 'non_idempotent', 'retry_params_name': 'default'}}}}}, client_info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1.html#DatabaseAdminClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient" title="Permalink to this definition">#</a></dt>
 <dd><p>Cloud Spanner Database Admin API</p>
 <p>The Cloud Spanner Database Admin API can be used to create, drop, and
 list databases. It also enables updating the schema of pre-existing
@@ -56,29 +56,20 @@ databases.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
-which to make calls.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.3.0)"><em>Credentials</em></a>) – The authorization
-credentials to attach to requests. These credentials identify this
-application to the service.</li>
-<li><strong>ssl_credentials</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.ChannelCredentials" title="(in grpcio v1.8.0)"><em>ChannelCredentials</em></a>) – A
-<code class="docutils literal"><span class="pre">ChannelCredentials</span></code> instance for use with an SSL-enabled
-channel.</li>
-<li><strong>scopes</strong> (<em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – A list of OAuth2 scopes to attach to requests.</li>
-<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary for call options for each method. See
-<code class="xref py py-func docutils literal"><span class="pre">google.gax.construct_settings()</span></code> for the structure of
-this data. Falls back to the default config if not specified
-or the specified config is missing data points.</li>
-<li><strong>lib_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The API library software used for calling
-the service. (Unless you are writing an API client itself,
-leave this as default.)</li>
-<li><strong>lib_version</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The API library software version used
-for calling the service. (Unless you are writing an API client
-itself, leave this as default.)</li>
-<li><strong>metrics_headers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of values for tracking
-client library metrics. Ultimately serializes to a string
-(e.g. ‘foo/1.2.3 bar/3.14.1’). This argument should be
-considered private.</li>
+<li><strong>channel</strong> (<a class="reference external" href="https://grpc.io/grpc/python/grpc.html#grpc.Channel" title="(in grpcio v1.8.0)"><em>grpc.Channel</em></a>) – A <code class="docutils literal"><span class="pre">Channel</span></code> instance through
+which to make calls. This argument is mutually exclusive
+with <code class="docutils literal"><span class="pre">credentials</span></code>; providing both will raise an exception.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="https://google-auth.readthedocs.io/en/stable/reference/google.auth.credentials.html#google.auth.credentials.Credentials" title="(in google-auth v1.3.0)"><em>google.auth.credentials.Credentials</em></a>) – The
+authorization credentials to attach to requests. These
+credentials identify this application to the service. If none
+are specified, the client will attempt to ascertain the
+credentials from the environment.</li>
+<li><strong>client_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – A dictionary of call options for each
+method. If not specified, the default configuration is used.</li>
+<li><strong>client_info</strong> (<em>google.api_core.gapic_v1.client_info.ClientInfo</em>) – The client info used to send a user-agent string along with
+API requests. If <code class="docutils literal"><span class="pre">None</span></code>, then default info will be used.
+Generally, you only need to set this if you’re developing
+your own client library.</li>
 </ul>
 </td>
 </tr>
@@ -86,7 +77,7 @@ considered private.</li>
 </table>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.create_database">
-<code class="descname">create_database</code><span class="sig-paren">(</span><em>parent</em>, <em>create_statement</em>, <em>extra_statements=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.create_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.create_database" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_database</code><span class="sig-paren">(</span><em>parent</em>, <em>create_statement</em>, <em>extra_statements=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.create_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.create_database" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a new Cloud Spanner database and starts to prepare it for serving.
 The returned <code class="docutils literal"><span class="pre">long-running</span> <span class="pre">operation</span></code> will
 have a name of the format <code class="docutils literal"><span class="pre">&lt;database_name&gt;/operations/&lt;operation_id&gt;</span></code> and
@@ -124,13 +115,19 @@ can be used to track preparation of the database. The
 Values are of the form <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;</span></code>.</li>
 <li><strong>create_statement</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. A <code class="docutils literal"><span class="pre">CREATE</span> <span class="pre">DATABASE</span></code> statement, which specifies the ID of the
 new database.  The database ID must conform to the regular expression
-<code class="docutils literal"><span class="pre">[a-z][a-z0-9_\-]*[a-z0-9]</span></code> and be between 2 and 30 characters in length.</li>
+<code class="docutils literal"><span class="pre">[a-z][a-z0-9_\-]*[a-z0-9]</span></code> and be between 2 and 30 characters in length.
+If the database ID is a reserved word or if it contains a hyphen, the
+database ID must be enclosed in backticks (“`”).</li>
 <li><strong>extra_statements</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em>) – An optional list of DDL statements to run inside the newly created
 database. Statements can create tables, indexes, etc. These
 statements execute atomically with the creation of the database:
 if there is an error in any statement, the database is not created.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -138,8 +135,11 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -150,12 +150,12 @@ settings for this call, e.g, timeout, retries etc.</li>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.database_path">
 <code class="descname">database_path</code><span class="sig-paren">(</span><em>project</em>, <em>instance</em>, <em>database</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.database_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.database_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified database resource name string.</p>
+<dd><p>Return a fully-qualified database string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.drop_database">
-<code class="descname">drop_database</code><span class="sig-paren">(</span><em>database</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.drop_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.drop_database" title="Permalink to this definition">#</a></dt>
+<code class="descname">drop_database</code><span class="sig-paren">(</span><em>database</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.drop_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.drop_database" title="Permalink to this definition">#</a></dt>
 <dd><p>Drops (aka deletes) a Cloud Spanner database.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_database_v1</span>
@@ -173,14 +173,21 @@ settings for this call, e.g, timeout, retries etc.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>database</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The database to be dropped.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -195,7 +202,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database">
-<code class="descname">get_database</code><span class="sig-paren">(</span><em>name</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.get_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_database</code><span class="sig-paren">(</span><em>name</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.get_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the state of a Cloud Spanner database.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_database_v1</span>
@@ -214,8 +221,12 @@ settings for this call, e.g, timeout, retries etc.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The name of the requested database. Values are of the form
 <code class="docutils literal"><span class="pre">projects/&lt;project&gt;/instances/&lt;instance&gt;/databases/&lt;database&gt;</span></code>.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -223,8 +234,11 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -234,7 +248,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database_ddl">
-<code class="descname">get_database_ddl</code><span class="sig-paren">(</span><em>database</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.get_database_ddl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database_ddl" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_database_ddl</code><span class="sig-paren">(</span><em>database</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.get_database_ddl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_database_ddl" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns the schema of a Cloud Spanner database as a list of formatted
 DDL statements. This method does not show pending schema updates, those may
 be queried using the <code class="docutils literal"><span class="pre">Operations</span></code> API.</p>
@@ -254,8 +268,12 @@ be queried using the <code class="docutils literal"><span class="pre">Operations
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>database</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Required. The database whose schema we wish to get.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -263,8 +281,11 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -274,7 +295,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_iam_policy">
-<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_iam_policy" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.get_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets the access control policy for a database resource. Returns an empty
 policy if a database exists but does not have a policy set.</p>
 <p>Authorization requires <code class="docutils literal"><span class="pre">spanner.databases.getIamPolicy</span></code> permission on
@@ -297,8 +318,12 @@ policy if a database exists but does not have a policy set.</p>
 <li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – REQUIRED: The resource for which the policy is being requested.
 <code class="docutils literal"><span class="pre">resource</span></code> is usually specified as a path. For example, a Project
 resource is specified as <code class="docutils literal"><span class="pre">projects/{project}</span></code>.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -306,8 +331,11 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -318,16 +346,15 @@ settings for this call, e.g, timeout, retries etc.</li>
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.instance_path">
 <code class="descname">instance_path</code><span class="sig-paren">(</span><em>project</em>, <em>instance</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.instance_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.instance_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns a fully-qualified instance resource name string.</p>
+<dd><p>Return a fully-qualified instance string.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.list_databases">
-<code class="descname">list_databases</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.list_databases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.list_databases" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_databases</code><span class="sig-paren">(</span><em>parent</em>, <em>page_size=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.list_databases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.list_databases" title="Permalink to this definition">#</a></dt>
 <dd><p>Lists Cloud Spanner databases.</p>
 <p class="rubric">Example</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.cloud</span> <span class="k">import</span> <span class="n">spanner_admin_database_v1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">google.gax</span> <span class="k">import</span> <span class="n">CallOptions</span><span class="p">,</span> <span class="n">INITIAL_PAGE</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">spanner_admin_database_v1</span><span class="o">.</span><span class="n">DatabaseAdminClient</span><span class="p">()</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -358,8 +385,12 @@ underlying API response. If page streaming is performed per-
 resource, this parameter does not affect the return value. If page
 streaming is performed per-page, this determines the maximum number
 of resources in a page.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -370,8 +401,11 @@ of the response through the <cite>options</cite> parameter.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -380,93 +414,8 @@ of the response through the <cite>options</cite> parameter.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_database_from_database_name">
-<code class="descname">match_database_from_database_name</code><span class="sig-paren">(</span><em>database_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.match_database_from_database_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_database_from_database_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Parses the database from a database resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a database
-resource.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the database.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_instance_from_database_name">
-<code class="descname">match_instance_from_database_name</code><span class="sig-paren">(</span><em>database_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.match_instance_from_database_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_instance_from_database_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Parses the instance from a database resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a database
-resource.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the instance.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_instance_from_instance_name">
-<code class="descname">match_instance_from_instance_name</code><span class="sig-paren">(</span><em>instance_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.match_instance_from_instance_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_instance_from_instance_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Parses the instance from a instance resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a instance
-resource.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the instance.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_project_from_database_name">
-<code class="descname">match_project_from_database_name</code><span class="sig-paren">(</span><em>database_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.match_project_from_database_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_project_from_database_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Parses the project from a database resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>database_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a database
-resource.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the project.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_project_from_instance_name">
-<code class="descname">match_project_from_instance_name</code><span class="sig-paren">(</span><em>instance_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.match_project_from_instance_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.match_project_from_instance_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Parses the project from a instance resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – A fully-qualified path representing a instance
-resource.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string representing the project.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.set_iam_policy">
-<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>policy</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.set_iam_policy" title="Permalink to this definition">#</a></dt>
+<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>resource</em>, <em>policy</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.set_iam_policy" title="Permalink to this definition">#</a></dt>
 <dd><p>Sets the access control policy on a database resource. Replaces any
 existing policy.</p>
 <p>Authorization requires <code class="docutils literal"><span class="pre">spanner.databases.setIamPolicy</span></code> permission on
@@ -496,8 +445,12 @@ valid policy but certain Cloud Platform services (such as Projects)
 might reject them.
 If a dict is provided, it must be of the same form as the protobuf
 message <a class="reference internal" href="admin_database_types.html#google.cloud.spanner_admin_database_v1.types.Policy" title="google.cloud.spanner_admin_database_v1.types.Policy"><code class="xref py py-class docutils literal"><span class="pre">Policy</span></code></a></li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -505,8 +458,11 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -516,7 +472,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.test_iam_permissions">
-<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
+<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>resource</em>, <em>permissions</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.test_iam_permissions" title="Permalink to this definition">#</a></dt>
 <dd><p>Returns permissions that the caller has on the specified database resource.</p>
 <p>Attempting this RPC on a non-existent Cloud Spanner database will result in
 a NOT_FOUND error if the user has <code class="docutils literal"><span class="pre">spanner.databases.list</span></code> permission on
@@ -545,8 +501,12 @@ resource is specified as <code class="docutils literal"><span class="pre">projec
 wildcards (such as ‘*’ or ‘storage.*’) are not allowed. For more
 information see
 <a class="reference external" href="https://cloud.google.com/iam/docs/overview#permissions">IAM Overview</a>.</li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -554,8 +514,11 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>
@@ -565,7 +528,7 @@ settings for this call, e.g, timeout, retries etc.</li>
 
 <dl class="method">
 <dt id="google.cloud.spanner_admin_database_v1.DatabaseAdminClient.update_database_ddl">
-<code class="descname">update_database_ddl</code><span class="sig-paren">(</span><em>database</em>, <em>statements</em>, <em>operation_id=None</em>, <em>options=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.update_database_ddl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.update_database_ddl" title="Permalink to this definition">#</a></dt>
+<code class="descname">update_database_ddl</code><span class="sig-paren">(</span><em>database</em>, <em>statements</em>, <em>operation_id=None</em>, <em>retry=&lt;object object&gt;</em>, <em>timeout=&lt;object object&gt;</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/google/cloud/spanner_admin_database_v1/gapic/database_admin_client.html#DatabaseAdminClient.update_database_ddl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_admin_database_v1.DatabaseAdminClient.update_database_ddl" title="Permalink to this definition">#</a></dt>
 <dd><p>Updates the schema of a Cloud Spanner database by
 creating/altering/dropping tables, columns, indexes, etc. The returned
 <code class="docutils literal"><span class="pre">long-running</span> <span class="pre">operation</span></code> will have a name of
@@ -618,8 +581,12 @@ underscore. If the named operation already exists,
 <code class="docutils literal"><span class="pre">UpdateDatabaseDdl</span></code> returns
 <code class="docutils literal"><span class="pre">ALREADY_EXISTS</span></code>.</p>
 </li>
-<li><strong>options</strong> (<a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.html#google.gax.CallOptions" title="(in google-gax v0.15.16)"><em>CallOptions</em></a>) – Overrides the default
-settings for this call, e.g, timeout, retries etc.</li>
+<li><strong>retry</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../../../core/retry.html#google.api_core.retry.Retry" title="google.api_core.retry.Retry"><em>google.api_core.retry.Retry</em></a><em>]</em>) – A retry object used
+to retry requests. If <code class="docutils literal"><span class="pre">None</span></code> is specified, requests will not
+be retried.</li>
+<li><strong>timeout</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em>) – The amount of time, in seconds, to wait
+for the request to complete. Note that if <code class="docutils literal"><span class="pre">retry</span></code> is
+specified, the timeout applies to each individual attempt.</li>
 </ul>
 </td>
 </tr>
@@ -627,8 +594,11 @@ settings for this call, e.g, timeout, retries etc.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://gax-python.readthedocs.io/en/latest/generated/google.gax.errors.html#google.gax.errors.GaxError" title="(in google-gax v0.15.16)"><code class="xref py py-exc docutils literal"><span class="pre">google.gax.errors.GaxError</span></code></a> if the RPC is aborted.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> if the parameters are invalid.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.GoogleAPICallError</span></code></a> – If the request
+failed for any reason.</li>
+<li><a class="reference internal" href="../../../core/exceptions.html#google.api_core.exceptions.RetryError" title="google.api_core.exceptions.RetryError"><code class="xref py py-exc docutils literal"><span class="pre">google.api_core.exceptions.RetryError</span></code></a> – If the request failed due
+to a retryable error and retry attempts failed.</li>
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If the parameters are invalid.</li>
 </ul>
 </td>
 </tr>

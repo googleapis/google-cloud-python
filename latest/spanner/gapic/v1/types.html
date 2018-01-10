@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Client Types &#8212; google-cloud 00eca14 documentation</title>
+    <title>Spanner Client Types &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -131,6 +131,12 @@ committed.</p>
 <dt id="google.cloud.spanner_v1.types.CreateSessionRequest.database">
 <code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CreateSessionRequest.database" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The database in which the new session is created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.CreateSessionRequest.session">
+<code class="descname">session</code><a class="headerlink" href="#google.cloud.spanner_v1.types.CreateSessionRequest.session" title="Permalink to this definition">#</a></dt>
+<dd><p>The session to create.</p>
 </dd></dl>
 
 </dd></dl>
@@ -406,50 +412,71 @@ only yielded once.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="google.cloud.spanner_v1.types.ListSessionsRequest">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ListSessionsRequest</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>The request for [ListSessions][google.spanner.v1.Spanner.ListSessions].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ListSessionsRequest.database">
+<code class="descname">database</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsRequest.database" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The database in which to list sessions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ListSessionsRequest.page_size">
+<code class="descname">page_size</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsRequest.page_size" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of sessions to be returned in the response. If 0 or
+less, defaults to the server’s maximum allowed page size.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ListSessionsRequest.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsRequest.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>If non-empty, <code class="docutils literal"><span class="pre">page_token</span></code> should contain a [next_page_tok
+en][google.spanner.v1.ListSessionsResponse.next_page_token]
+from a previous [ListSessionsResponse][google.spanner.v1.ListS
+essionsResponse].</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ListSessionsRequest.filter">
+<code class="descname">filter</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsRequest.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>An expression for filtering the results of the request. Filter
+rules are case insensitive. The fields eligible for filtering
+are:  -  <code class="docutils literal"><span class="pre">labels.key</span></code> where key is the name of a label  Some
+examples of using filters are:  -  <code class="docutils literal"><span class="pre">labels.env:*</span></code> –&gt; The
+session has the label “env”. -  <code class="docutils literal"><span class="pre">labels.env:dev</span></code> –&gt; The
+session has the label “env” and the value    of the label
+contains the string “dev”.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="google.cloud.spanner_v1.types.ListSessionsResponse">
+<em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">ListSessionsResponse</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsResponse" title="Permalink to this definition">#</a></dt>
+<dd><p>The response for [ListSessions][google.spanner.v1.Spanner.ListSessions].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ListSessionsResponse.sessions">
+<code class="descname">sessions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsResponse.sessions" title="Permalink to this definition">#</a></dt>
+<dd><p>The list of requested sessions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.ListSessionsResponse.next_page_token">
+<code class="descname">next_page_token</code><a class="headerlink" href="#google.cloud.spanner_v1.types.ListSessionsResponse.next_page_token" title="Permalink to this definition">#</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">next_page_token</span></code> can be sent in a subsequent
+[ListSessions][google.spanner.v1.Spanner.ListSessions] call to
+fetch more of the matching sessions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="google.cloud.spanner_v1.types.Mutation">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Mutation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation" title="Permalink to this definition">#</a></dt>
 <dd><p>A modification to one or more Cloud Spanner rows. Mutations can be
 applied to a Cloud Spanner database by sending them in a
 [Commit][google.spanner.v1.Spanner.Commit] call.</p>
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.Mutation.table">
-<code class="descname">table</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.table" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The table whose rows will be deleted.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.Mutation.columns">
-<code class="descname">columns</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.columns" title="Permalink to this definition">#</a></dt>
-<dd><p>The names of the columns in
-[table][google.spanner.v1.Mutation.Write.table] to be written.
-The list of columns must contain enough columns to allow Cloud
-Spanner to derive values for all primary key columns in the
-row(s) to be modified.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.Mutation.values">
-<code class="descname">values</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.values" title="Permalink to this definition">#</a></dt>
-<dd><p>The values to be written. <code class="docutils literal"><span class="pre">values</span></code> can contain more than one
-list of values. If it does, then multiple rows are written,
-one for each entry in <code class="docutils literal"><span class="pre">values</span></code>. Each list in <code class="docutils literal"><span class="pre">values</span></code> must
-have exactly as many entries as there are entries in
-[columns][google.spanner.v1.Mutation.Write.columns] above.
-Sending multiple lists is equivalent to sending multiple
-<code class="docutils literal"><span class="pre">Mutation</span></code>s, each containing one <code class="docutils literal"><span class="pre">values</span></code> entry and
-repeating [table][google.spanner.v1.Mutation.Write.table] and
-[columns][google.spanner.v1.Mutation.Write.columns].
-Individual values in each list are encoded as described
-[here][google.spanner.v1.TypeCode].</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.Mutation.key_set">
-<code class="descname">key_set</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.key_set" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The primary keys of the rows within
-[table][google.spanner.v1.Mutation.Delete.table] to delete.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="google.cloud.spanner_v1.types.Mutation.operation">
 <code class="descname">operation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.operation" title="Permalink to this definition">#</a></dt>
@@ -500,6 +527,19 @@ rows were present.</p>
 <dt id="google.cloud.spanner_v1.types.Mutation.Delete">
 <em class="property">class </em><code class="descname">Delete</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Arguments to [delete][google.spanner.v1.Mutation.delete] operations.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.Delete.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Delete.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The table whose rows will be deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.Delete.key_set">
+<code class="descname">key_set</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Delete.key_set" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The primary keys of the rows within
+[table][google.spanner.v1.Mutation.Delete.table] to delete.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -509,6 +549,38 @@ rows were present.</p>
 [update][google.spanner.v1.Mutation.update],
 [insert_or_update][google.spanner.v1.Mutation.insert_or_update], and
 [replace][google.spanner.v1.Mutation.replace] operations.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.Write.table">
+<code class="descname">table</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Write.table" title="Permalink to this definition">#</a></dt>
+<dd><p>Required. The table whose rows will be written.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.Write.columns">
+<code class="descname">columns</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Write.columns" title="Permalink to this definition">#</a></dt>
+<dd><p>The names of the columns in
+[table][google.spanner.v1.Mutation.Write.table] to be written.
+The list of columns must contain enough columns to allow Cloud
+Spanner to derive values for all primary key columns in the
+row(s) to be modified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Mutation.Write.values">
+<code class="descname">values</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Mutation.Write.values" title="Permalink to this definition">#</a></dt>
+<dd><p>The values to be written. <code class="docutils literal"><span class="pre">values</span></code> can contain more than one
+list of values. If it does, then multiple rows are written,
+one for each entry in <code class="docutils literal"><span class="pre">values</span></code>. Each list in <code class="docutils literal"><span class="pre">values</span></code> must
+have exactly as many entries as there are entries in
+[columns][google.spanner.v1.Mutation.Write.columns] above.
+Sending multiple lists is equivalent to sending multiple
+<code class="docutils literal"><span class="pre">Mutation</span></code>s, each containing one <code class="docutils literal"><span class="pre">values</span></code> entry and
+repeating [table][google.spanner.v1.Mutation.Write.table] and
+[columns][google.spanner.v1.Mutation.Write.columns].
+Individual values in each list are encoded as described
+[here][google.spanner.v1.TypeCode].</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -613,52 +685,6 @@ last response in the stream.</p>
 <dd><p>Node information for nodes appearing in a
 [QueryPlan.plan_nodes][google.spanner.v1.QueryPlan.plan_nodes].</p>
 <dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.PlanNode.child_index">
-<code class="descname">child_index</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.child_index" title="Permalink to this definition">#</a></dt>
-<dd><p>The node to which the link points.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.PlanNode.type">
-<code class="descname">type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.type" title="Permalink to this definition">#</a></dt>
-<dd><p>The type of the link. For example, in Hash Joins this could be
-used to distinguish between the build child and the probe
-child, or in the case of the child being an output variable,
-to represent the tag associated with the output variable.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.PlanNode.variable">
-<code class="descname">variable</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.variable" title="Permalink to this definition">#</a></dt>
-<dd><p>Only present if the child node is
-[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] and
-corresponds to an output variable of the parent node. The
-field carries the name of the output variable. For example, a
-<code class="docutils literal"><span class="pre">TableScan</span></code> operator that reads rows from a table will have
-child links to the <code class="docutils literal"><span class="pre">SCALAR</span></code> nodes representing the output
-variables created for each column that is read by the
-operator. The corresponding <code class="docutils literal"><span class="pre">variable</span></code> fields will be set to
-the variable names assigned to the columns.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.PlanNode.description">
-<code class="descname">description</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.description" title="Permalink to this definition">#</a></dt>
-<dd><p>A string representation of the expression subtree rooted at
-this node.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.PlanNode.subqueries">
-<code class="descname">subqueries</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.subqueries" title="Permalink to this definition">#</a></dt>
-<dd><p>A mapping of (subquery variable name) -&gt; (subquery node id)
-for cases where the <code class="docutils literal"><span class="pre">description</span></code> string of this node
-references a <code class="docutils literal"><span class="pre">SCALAR</span></code> subquery contained in the expression
-subtree rooted at this node. The referenced <code class="docutils literal"><span class="pre">SCALAR</span></code>
-subquery may not necessarily be a direct child of this node.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="google.cloud.spanner_v1.types.PlanNode.index">
 <code class="descname">index</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.index" title="Permalink to this definition">#</a></dt>
 <dd><p>The <code class="docutils literal"><span class="pre">PlanNode</span></code>’s index in [node
@@ -720,6 +746,35 @@ of executions, number of rows/time per execution etc.</p>
 <em class="property">class </em><code class="descname">ChildLink</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ChildLink" title="Permalink to this definition">#</a></dt>
 <dd><p>Metadata associated with a parent-child relationship appearing in a
 [PlanNode][google.spanner.v1.PlanNode].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ChildLink.child_index">
+<code class="descname">child_index</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ChildLink.child_index" title="Permalink to this definition">#</a></dt>
+<dd><p>The node to which the link points.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ChildLink.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ChildLink.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the link. For example, in Hash Joins this could be
+used to distinguish between the build child and the probe
+child, or in the case of the child being an output variable,
+to represent the tag associated with the output variable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ChildLink.variable">
+<code class="descname">variable</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ChildLink.variable" title="Permalink to this definition">#</a></dt>
+<dd><p>Only present if the child node is
+[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] and
+corresponds to an output variable of the parent node. The
+field carries the name of the output variable. For example, a
+<code class="docutils literal"><span class="pre">TableScan</span></code> operator that reads rows from a table will have
+child links to the <code class="docutils literal"><span class="pre">SCALAR</span></code> nodes representing the output
+variables created for each column that is read by the
+operator. The corresponding <code class="docutils literal"><span class="pre">variable</span></code> fields will be set to
+the variable names assigned to the columns.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -727,6 +782,23 @@ of executions, number of rows/time per execution etc.</p>
 <em class="property">class </em><code class="descname">ShortRepresentation</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ShortRepresentation" title="Permalink to this definition">#</a></dt>
 <dd><p>Condensed representation of a node and its subtree. Only present for
 <code class="docutils literal"><span class="pre">SCALAR</span></code> [PlanNode(s)][google.spanner.v1.PlanNode].</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.description">
+<code class="descname">description</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.description" title="Permalink to this definition">#</a></dt>
+<dd><p>A string representation of the expression subtree rooted at
+this node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.subqueries">
+<code class="descname">subqueries</code><a class="headerlink" href="#google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.subqueries" title="Permalink to this definition">#</a></dt>
+<dd><p>A mapping of (subquery variable name) -&gt; (subquery node id)
+for cases where the <code class="docutils literal"><span class="pre">description</span></code> string of this node
+references a <code class="docutils literal"><span class="pre">SCALAR</span></code> subquery contained in the expression
+subtree rooted at this node. The referenced <code class="docutils literal"><span class="pre">SCALAR</span></code>
+subquery may not necessarily be a direct child of this node.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -939,7 +1011,36 @@ running.</p>
 <dl class="attribute">
 <dt id="google.cloud.spanner_v1.types.Session.name">
 <code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The name of the session.</p>
+<dd><p>The name of the session. This is always system-assigned;
+values provided when creating a session are ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Session.labels">
+<code class="descname">labels</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.labels" title="Permalink to this definition">#</a></dt>
+<dd><p>The labels for the session.  -  Label keys must be between 1
+and 63 characters long and must conform    to the following
+regular expression: <code class="docutils literal"><span class="pre">[a-z]([-a-z0-9]*[a-z0-9])?</span></code>. -  Label
+values must be between 0 and 63 characters long and must
+conform to the regular expression
+<code class="docutils literal"><span class="pre">([a-z]([-a-z0-9]*[a-z0-9])?)?</span></code>. -  No more than 64 labels
+can be associated with a given session.  See
+<a class="reference external" href="https://goo.gl/xmQnxf">https://goo.gl/xmQnxf</a> for more information on and examples of
+labels.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Session.create_time">
+<code class="descname">create_time</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.create_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The timestamp when the session is created.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.Session.approximate_last_use_time">
+<code class="descname">approximate_last_use_time</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Session.approximate_last_use_time" title="Permalink to this definition">#</a></dt>
+<dd><p>Output only. The approximate timestamp when the session is
+last used. It is typically earlier than the actual last use
+time.</p>
 </dd></dl>
 
 </dd></dl>
@@ -949,24 +1050,6 @@ running.</p>
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">StructType</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType" title="Permalink to this definition">#</a></dt>
 <dd><p><code class="docutils literal"><span class="pre">StructType</span></code> defines the fields of a
 [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.</p>
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.StructType.name">
-<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.name" title="Permalink to this definition">#</a></dt>
-<dd><p>The name of the field. For reads, this is the column name. For
-SQL queries, it is the column alias (e.g., <code class="docutils literal"><span class="pre">&quot;Word&quot;</span></code> in the
-query <code class="docutils literal"><span class="pre">&quot;SELECT</span> <span class="pre">'hello'</span> <span class="pre">AS</span> <span class="pre">Word&quot;</span></code>), or the column name (e.g.,
-<code class="docutils literal"><span class="pre">&quot;ColName&quot;</span></code> in the query <code class="docutils literal"><span class="pre">&quot;SELECT</span> <span class="pre">ColName</span> <span class="pre">FROM</span> <span class="pre">Table&quot;</span></code>).
-Some columns might have an empty name (e.g., !”SELECT
-UPPER(ColName)”`). Note that a query result can contain
-multiple fields with the same name.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.StructType.type">
-<code class="descname">type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.type" title="Permalink to this definition">#</a></dt>
-<dd><p>The type of the field.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="google.cloud.spanner_v1.types.StructType.fields">
 <code class="descname">fields</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.fields" title="Permalink to this definition">#</a></dt>
@@ -983,6 +1066,24 @@ the order of fields in the <code class="docutils literal"><span class="pre">SELE
 <dt id="google.cloud.spanner_v1.types.StructType.Field">
 <em class="property">class </em><code class="descname">Field</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.Field" title="Permalink to this definition">#</a></dt>
 <dd><p>Message representing a single field of a struct.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.StructType.Field.name">
+<code class="descname">name</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.Field.name" title="Permalink to this definition">#</a></dt>
+<dd><p>The name of the field. For reads, this is the column name. For
+SQL queries, it is the column alias (e.g., <code class="docutils literal"><span class="pre">&quot;Word&quot;</span></code> in the
+query <code class="docutils literal"><span class="pre">&quot;SELECT</span> <span class="pre">'hello'</span> <span class="pre">AS</span> <span class="pre">Word&quot;</span></code>), or the column name (e.g.,
+<code class="docutils literal"><span class="pre">&quot;ColName&quot;</span></code> in the query <code class="docutils literal"><span class="pre">&quot;SELECT</span> <span class="pre">ColName</span> <span class="pre">FROM</span> <span class="pre">Table&quot;</span></code>).
+Some columns might have an empty name (e.g., !”SELECT
+UPPER(ColName)”`). Note that a query result can contain
+multiple fields with the same name.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.StructType.Field.type">
+<code class="descname">type</code><a class="headerlink" href="#google.cloud.spanner_v1.types.StructType.Field.type" title="Permalink to this definition">#</a></dt>
+<dd><p>The type of the field.</p>
+</dd></dl>
+
 </dd></dl>
 
 </dd></dl>
@@ -990,7 +1091,7 @@ the order of fields in the <code class="docutils literal"><span class="pre">SELE
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.Transaction">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">Transaction</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>A transaction.</p>
+<dd><p>A transaction. See <a class="reference internal" href="transactions.html#spanner-txn"><span class="std std-ref">Transactions</span></a> for more information.</p>
 <dl class="attribute">
 <dt id="google.cloud.spanner_v1.types.Transaction.id">
 <code class="descname">id</code><a class="headerlink" href="#google.cloud.spanner_v1.types.Transaction.id" title="Permalink to this definition">#</a></dt>
@@ -1009,7 +1110,9 @@ transactions do not support multiple requests.</p>
 <dd><p>For snapshot read-only transactions, the read timestamp chosen
 for the transaction. Not returned by default: see [Transaction
 Options.ReadOnly.return_read_timestamp][google.spanner.v1.Tr
-ansactionOptions.ReadOnly.return_read_timestamp].</p>
+ansactionOptions.ReadOnly.return_read_timestamp].  A
+timestamp in RFC3339 UTC “Zulu” format, accurate to
+nanoseconds. Example: <code class="docutils literal"><span class="pre">&quot;2014-10-02T15:01:23.045123456Z&quot;</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1017,82 +1120,7 @@ ansactionOptions.ReadOnly.return_read_timestamp].</p>
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.TransactionOptions">
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.types.</code><code class="descname">TransactionOptions</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions" title="Permalink to this definition">#</a></dt>
-<dd><p>See <a class="reference internal" href="transactions.html#spanner-txn"><span class="std std-ref">Transactions</span></a> for more information on these.</p>
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.TransactionOptions.timestamp_bound">
-<code class="descname">timestamp_bound</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.timestamp_bound" title="Permalink to this definition">#</a></dt>
-<dd><p>How to choose the timestamp for the read-only transaction.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.TransactionOptions.strong">
-<code class="descname">strong</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.strong" title="Permalink to this definition">#</a></dt>
-<dd><p>Read at a timestamp where all previously committed
-transactions are visible.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.TransactionOptions.min_read_timestamp">
-<code class="descname">min_read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.min_read_timestamp" title="Permalink to this definition">#</a></dt>
-<dd><p>Executes all reads at a timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.
-This is useful for requesting fresher data than some previous
-read, or data that is fresh enough to observe the effects of
-some previously committed transaction whose timestamp is
-known.  Note that this option can only be used in single-use
-transactions.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.TransactionOptions.max_staleness">
-<code class="descname">max_staleness</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.max_staleness" title="Permalink to this definition">#</a></dt>
-<dd><p>Read data at a timestamp &gt;= <code class="docutils literal"><span class="pre">NOW</span> <span class="pre">-</span> <span class="pre">max_staleness</span></code> seconds.
-Guarantees that all writes that have committed more than the
-specified number of seconds ago are visible. Because Cloud
-Spanner chooses the exact timestamp, this mode works even if
-the client’s local clock is substantially skewed from Cloud
-Spanner commit timestamps.  Useful for reading the freshest
-data available at a nearby replica, while bounding the
-possible staleness if the local replica has fallen behind.
-Note that this option can only be used in single-use
-transactions.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.TransactionOptions.read_timestamp">
-<code class="descname">read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.read_timestamp" title="Permalink to this definition">#</a></dt>
-<dd><p>Executes all reads at the given timestamp. Unlike other modes,
-reads at a specific timestamp are repeatable; the same read at
-the same timestamp always returns the same data. If the
-timestamp is in the future, the read will block until the
-specified timestamp, modulo the read’s deadline.  Useful for
-large scale consistent reads such as mapreduces, or for
-coordinating many reads against a consistent snapshot of the
-data.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.TransactionOptions.exact_staleness">
-<code class="descname">exact_staleness</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.exact_staleness" title="Permalink to this definition">#</a></dt>
-<dd><p>Executes all reads at a timestamp that is <code class="docutils literal"><span class="pre">exact_staleness</span></code>
-old. The timestamp is chosen soon after the read is started.
-Guarantees that all writes that have committed more than the
-specified number of seconds ago are visible. Because Cloud
-Spanner chooses the exact timestamp, this mode works even if
-the client’s local clock is substantially skewed from Cloud
-Spanner commit timestamps.  Useful for reading at nearby
-replicas without the distributed timestamp negotiation
-overhead of <code class="docutils literal"><span class="pre">max_staleness</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="google.cloud.spanner_v1.types.TransactionOptions.return_read_timestamp">
-<code class="descname">return_read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.return_read_timestamp" title="Permalink to this definition">#</a></dt>
-<dd><p>If true, the Cloud Spanner-selected read timestamp is included
-in the [Transaction][google.spanner.v1.Transaction] message
-that describes the transaction.</p>
-</dd></dl>
-
-<dl class="attribute">
+<dd><dl class="attribute">
 <dt id="google.cloud.spanner_v1.types.TransactionOptions.mode">
 <code class="descname">mode</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.mode" title="Permalink to this definition">#</a></dt>
 <dd><p>Required. The type of transaction.</p>
@@ -1119,13 +1147,91 @@ the <code class="docutils literal"><span class="pre">session</span></code> resou
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly">
 <em class="property">class </em><code class="descname">ReadOnly</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly" title="Permalink to this definition">#</a></dt>
-<dd><p>Options for read-only transactions.</p>
+<dd><p>Message type to initiate a read-only transaction.</p>
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.timestamp_bound">
+<code class="descname">timestamp_bound</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.timestamp_bound" title="Permalink to this definition">#</a></dt>
+<dd><p>How to choose the timestamp for the read-only transaction.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.strong">
+<code class="descname">strong</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.strong" title="Permalink to this definition">#</a></dt>
+<dd><p>Read at a timestamp where all previously committed
+transactions are visible.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.min_read_timestamp">
+<code class="descname">min_read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.min_read_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes all reads at a timestamp &gt;= <code class="docutils literal"><span class="pre">min_read_timestamp</span></code>.
+This is useful for requesting fresher data than some previous
+read, or data that is fresh enough to observe the effects of
+some previously committed transaction whose timestamp is
+known.  Note that this option can only be used in single-use
+transactions.  A timestamp in RFC3339 UTC “Zulu” format,
+accurate to nanoseconds. Example:
+<code class="docutils literal"><span class="pre">&quot;2014-10-02T15:01:23.045123456Z&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.max_staleness">
+<code class="descname">max_staleness</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.max_staleness" title="Permalink to this definition">#</a></dt>
+<dd><p>Read data at a timestamp &gt;= <code class="docutils literal"><span class="pre">NOW</span> <span class="pre">-</span> <span class="pre">max_staleness</span></code> seconds.
+Guarantees that all writes that have committed more than the
+specified number of seconds ago are visible. Because Cloud
+Spanner chooses the exact timestamp, this mode works even if
+the client’s local clock is substantially skewed from Cloud
+Spanner commit timestamps.  Useful for reading the freshest
+data available at a nearby replica, while bounding the
+possible staleness if the local replica has fallen behind.
+Note that this option can only be used in single-use
+transactions.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.read_timestamp">
+<code class="descname">read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.read_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes all reads at the given timestamp. Unlike other modes,
+reads at a specific timestamp are repeatable; the same read at
+the same timestamp always returns the same data. If the
+timestamp is in the future, the read will block until the
+specified timestamp, modulo the read’s deadline.  Useful for
+large scale consistent reads such as mapreduces, or for
+coordinating many reads against a consistent snapshot of the
+data.  A timestamp in RFC3339 UTC “Zulu” format, accurate to
+nanoseconds. Example: <code class="docutils literal"><span class="pre">&quot;2014-10-02T15:01:23.045123456Z&quot;</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.exact_staleness">
+<code class="descname">exact_staleness</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.exact_staleness" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes all reads at a timestamp that is <code class="docutils literal"><span class="pre">exact_staleness</span></code>
+old. The timestamp is chosen soon after the read is started.
+Guarantees that all writes that have committed more than the
+specified number of seconds ago are visible. Because Cloud
+Spanner chooses the exact timestamp, this mode works even if
+the client’s local clock is substantially skewed from Cloud
+Spanner commit timestamps.  Useful for reading at nearby
+replicas without the distributed timestamp negotiation
+overhead of <code class="docutils literal"><span class="pre">max_staleness</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.return_read_timestamp">
+<code class="descname">return_read_timestamp</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadOnly.return_read_timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>If true, the Cloud Spanner-selected read timestamp is included
+in the [Transaction][google.spanner.v1.Transaction] message
+that describes the transaction.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="google.cloud.spanner_v1.types.TransactionOptions.ReadWrite">
 <em class="property">class </em><code class="descname">ReadWrite</code><a class="headerlink" href="#google.cloud.spanner_v1.types.TransactionOptions.ReadWrite" title="Permalink to this definition">#</a></dt>
-<dd><p>Options for read-write transactions.</p>
+<dd><p>Message type to initiate a read-write transaction. Currently this
+transaction type has no options.</p>
 </dd></dl>
 
 </dd></dl>

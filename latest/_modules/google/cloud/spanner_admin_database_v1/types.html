@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_admin_database_v1.types &#8212; google-cloud 00eca14 documentation</title>
+    <title>google.cloud.spanner_admin_database_v1.types &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -40,13 +40,13 @@
           <div class="body" role="main">
             
   <h1>Source code for google.cloud.spanner_admin_database_v1.types</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2017, Google LLC All rights reserved.</span>
+<span></span><span class="c1"># Copyright 2017 Google LLC</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
 <span class="c1"># You may obtain a copy of the License at</span>
 <span class="c1">#</span>
-<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#     https://www.apache.org/licenses/LICENSE-2.0</span>
 <span class="c1">#</span>
 <span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
 <span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
@@ -57,9 +57,8 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="kn">from</span> <span class="nn">google.gax.utils.messages</span> <span class="k">import</span> <span class="n">get_messages</span>
+<span class="kn">from</span> <span class="nn">google.api_core.protobuf_helpers</span> <span class="k">import</span> <span class="n">get_messages</span>
 
-<span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">auth_pb2</span>
 <span class="kn">from</span> <span class="nn">google.api</span> <span class="k">import</span> <span class="n">http_pb2</span>
 <span class="kn">from</span> <span class="nn">google.cloud.spanner_admin_database_v1.proto</span> <span class="k">import</span> <span class="n">spanner_database_admin_pb2</span>
 <span class="kn">from</span> <span class="nn">google.iam.v1</span> <span class="k">import</span> <span class="n">iam_policy_pb2</span>
@@ -74,7 +73,6 @@
 
 <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="p">(</span>
-        <span class="n">auth_pb2</span><span class="p">,</span>
         <span class="n">http_pb2</span><span class="p">,</span>
         <span class="n">spanner_database_admin_pb2</span><span class="p">,</span>
         <span class="n">iam_policy_pb2</span><span class="p">,</span>
@@ -85,7 +83,8 @@
         <span class="n">descriptor_pb2</span><span class="p">,</span>
         <span class="n">empty_pb2</span><span class="p">,</span>
         <span class="n">timestamp_pb2</span><span class="p">,</span>
-        <span class="n">status_pb2</span><span class="p">,</span> <span class="p">):</span>
+        <span class="n">status_pb2</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">get_messages</span><span class="p">(</span><span class="n">module</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">message</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_admin_database_v1.types&#39;</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span> <span class="n">name</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>

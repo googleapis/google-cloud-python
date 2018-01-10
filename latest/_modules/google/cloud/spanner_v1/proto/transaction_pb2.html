@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>google.cloud.spanner_v1.proto.transaction_pb2 &#8212; google-cloud 00eca14 documentation</title>
+    <title>google.cloud.spanner_v1.proto.transaction_pb2 &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -64,7 +64,7 @@
   <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google/cloud/spanner_v1/proto/transaction.proto&#39;</span><span class="p">,</span>
   <span class="n">package</span><span class="o">=</span><span class="s1">&#39;google.spanner.v1&#39;</span><span class="p">,</span>
   <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;proto3&#39;</span><span class="p">,</span>
-  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">/google/cloud/spanner_v1/proto/transaction.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\&quot;\xe0\x03\n\x12</span><span class="s1">TransactionOptions</span><span class="se">\x12\x45\n\n</span><span class="s1">read_write</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.TransactionOptions.ReadWriteH</span><span class="se">\x00\x12\x43\n\t</span><span class="s1">read_only</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.spanner.v1.TransactionOptions.ReadOnlyH</span><span class="se">\x00\x1a\x0b\n\t</span><span class="s1">ReadWrite</span><span class="se">\x1a\xa8\x02\n\x08</span><span class="s1">ReadOnly</span><span class="se">\x12\x10\n\x06</span><span class="s1">strong</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08</span><span class="s1">H</span><span class="se">\x00\x12\x38\n\x12</span><span class="s1">min_read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x32\n\r</span><span class="s1">max_staleness</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x34\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x34\n\x0f\x65</span><span class="s1">xact_staleness</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x1d\n\x15</span><span class="s1">return_read_timestamp</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x42\x11\n\x0f</span><span class="s1">timestamp_boundB</span><span class="se">\x06\n\x04</span><span class="s1">mode</span><span class="se">\&quot;</span><span class="s1">M</span><span class="se">\n\x0b</span><span class="s1">Transaction</span><span class="se">\x12\n\n\x02</span><span class="s1">id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x32\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\&quot;\xa4\x01\n\x13</span><span class="s1">TransactionSelector</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\n</span><span class="s1">single_use</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x12\x0c\n\x02</span><span class="s1">id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">H</span><span class="se">\x00\x12\x36\n\x05\x62\x65</span><span class="s1">gin</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x42\n\n\x08</span><span class="s1">selectorB</span><span class="se">\x7f\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x10</span><span class="s1">TransactionProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
+  <span class="n">serialized_pb</span><span class="o">=</span><span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">/google/cloud/spanner_v1/proto/transaction.proto</span><span class="se">\x12\x11</span><span class="s1">google.spanner.v1</span><span class="se">\x1a\x1c</span><span class="s1">google/api/annotations.proto</span><span class="se">\x1a\x1e</span><span class="s1">google/protobuf/duration.proto</span><span class="se">\x1a\x1f</span><span class="s1">google/protobuf/timestamp.proto</span><span class="se">\&quot;\xe0\x03\n\x12</span><span class="s1">TransactionOptions</span><span class="se">\x12\x45\n\n</span><span class="s1">read_write</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">/.google.spanner.v1.TransactionOptions.ReadWriteH</span><span class="se">\x00\x12\x43\n\t</span><span class="s1">read_only</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">..google.spanner.v1.TransactionOptions.ReadOnlyH</span><span class="se">\x00\x1a\x0b\n\t</span><span class="s1">ReadWrite</span><span class="se">\x1a\xa8\x02\n\x08</span><span class="s1">ReadOnly</span><span class="se">\x12\x10\n\x06</span><span class="s1">strong</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08</span><span class="s1">H</span><span class="se">\x00\x12\x38\n\x12</span><span class="s1">min_read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x32\n\r</span><span class="s1">max_staleness</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x34\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x04</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.TimestampH</span><span class="se">\x00\x12\x34\n\x0f\x65</span><span class="s1">xact_staleness</span><span class="se">\x18\x05</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x19</span><span class="s1">.google.protobuf.DurationH</span><span class="se">\x00\x12\x1d\n\x15</span><span class="s1">return_read_timestamp</span><span class="se">\x18\x06</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x08\x42\x11\n\x0f</span><span class="s1">timestamp_boundB</span><span class="se">\x06\n\x04</span><span class="s1">mode</span><span class="se">\&quot;</span><span class="s1">M</span><span class="se">\n\x0b</span><span class="s1">Transaction</span><span class="se">\x12\n\n\x02</span><span class="s1">id</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c\x12\x32\n\x0e</span><span class="s1">read_timestamp</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32\x1a</span><span class="s1">.google.protobuf.Timestamp</span><span class="se">\&quot;\xa4\x01\n\x13</span><span class="s1">TransactionSelector</span><span class="se">\x12</span><span class="s1">;</span><span class="se">\n\n</span><span class="s1">single_use</span><span class="se">\x18\x01</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x12\x0c\n\x02</span><span class="s1">id</span><span class="se">\x18\x02</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0c</span><span class="s1">H</span><span class="se">\x00\x12\x36\n\x05\x62\x65</span><span class="s1">gin</span><span class="se">\x18\x03</span><span class="s1"> </span><span class="se">\x01</span><span class="s1">(</span><span class="se">\x0b\x32</span><span class="s1">%.google.spanner.v1.TransactionOptionsH</span><span class="se">\x00\x42\n\n\x08</span><span class="s1">selectorB</span><span class="se">\x99\x01\n\x15\x63</span><span class="s1">om.google.spanner.v1B</span><span class="se">\x10</span><span class="s1">TransactionProtoP</span><span class="se">\x01</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\xaa\x02\x17</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\xca\x02\x17</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1b</span><span class="se">\x06</span><span class="s1">proto3&#39;</span><span class="p">)</span>
   <span class="p">,</span>
   <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">google_dot_api_dot_annotations__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_duration__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,</span><span class="n">google_dot_protobuf_dot_timestamp__pb2</span><span class="o">.</span><span class="n">DESCRIPTOR</span><span class="p">,])</span>
 <span class="n">_sym_db</span><span class="o">.</span><span class="n">RegisterFileDescriptor</span><span class="p">(</span><span class="n">DESCRIPTOR</span><span class="p">)</span>
@@ -340,7 +340,8 @@
     <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READWRITE</span><span class="p">,</span>
     <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
     <span class="p">,</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Options for read-write transactions.</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Message type to initiate a read-write transaction. Currently this</span>
+<span class="s2">    transaction type has no options.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadWrite)</span>
     <span class="p">))</span>
@@ -350,7 +351,59 @@
     <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS_READONLY</span><span class="p">,</span>
     <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
     <span class="p">,</span>
-    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Options for read-only transactions.</span>
+    <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Message type to initiate a read-only transaction.</span>
+
+
+<span class="s2">    Attributes:</span>
+<span class="s2">        timestamp_bound:</span>
+<span class="s2">            How to choose the timestamp for the read-only transaction.</span>
+<span class="s2">        strong:</span>
+<span class="s2">            Read at a timestamp where all previously committed</span>
+<span class="s2">            transactions are visible.</span>
+<span class="s2">        min_read_timestamp:</span>
+<span class="s2">            Executes all reads at a timestamp &gt;= ``min_read_timestamp``.</span>
+<span class="s2">            This is useful for requesting fresher data than some previous</span>
+<span class="s2">            read, or data that is fresh enough to observe the effects of</span>
+<span class="s2">            some previously committed transaction whose timestamp is</span>
+<span class="s2">            known.  Note that this option can only be used in single-use</span>
+<span class="s2">            transactions.  A timestamp in RFC3339 UTC &quot;Zulu&quot; format,</span>
+<span class="s2">            accurate to nanoseconds. Example:</span>
+<span class="s2">            ``&quot;2014-10-02T15:01:23.045123456Z&quot;``.</span>
+<span class="s2">        max_staleness:</span>
+<span class="s2">            Read data at a timestamp &gt;= ``NOW - max_staleness`` seconds.</span>
+<span class="s2">            Guarantees that all writes that have committed more than the</span>
+<span class="s2">            specified number of seconds ago are visible. Because Cloud</span>
+<span class="s2">            Spanner chooses the exact timestamp, this mode works even if</span>
+<span class="s2">            the client&#39;s local clock is substantially skewed from Cloud</span>
+<span class="s2">            Spanner commit timestamps.  Useful for reading the freshest</span>
+<span class="s2">            data available at a nearby replica, while bounding the</span>
+<span class="s2">            possible staleness if the local replica has fallen behind.</span>
+<span class="s2">            Note that this option can only be used in single-use</span>
+<span class="s2">            transactions.</span>
+<span class="s2">        read_timestamp:</span>
+<span class="s2">            Executes all reads at the given timestamp. Unlike other modes,</span>
+<span class="s2">            reads at a specific timestamp are repeatable; the same read at</span>
+<span class="s2">            the same timestamp always returns the same data. If the</span>
+<span class="s2">            timestamp is in the future, the read will block until the</span>
+<span class="s2">            specified timestamp, modulo the read&#39;s deadline.  Useful for</span>
+<span class="s2">            large scale consistent reads such as mapreduces, or for</span>
+<span class="s2">            coordinating many reads against a consistent snapshot of the</span>
+<span class="s2">            data.  A timestamp in RFC3339 UTC &quot;Zulu&quot; format, accurate to</span>
+<span class="s2">            nanoseconds. Example: ``&quot;2014-10-02T15:01:23.045123456Z&quot;``.</span>
+<span class="s2">        exact_staleness:</span>
+<span class="s2">            Executes all reads at a timestamp that is ``exact_staleness``</span>
+<span class="s2">            old. The timestamp is chosen soon after the read is started.</span>
+<span class="s2">            Guarantees that all writes that have committed more than the</span>
+<span class="s2">            specified number of seconds ago are visible. Because Cloud</span>
+<span class="s2">            Spanner chooses the exact timestamp, this mode works even if</span>
+<span class="s2">            the client&#39;s local clock is substantially skewed from Cloud</span>
+<span class="s2">            Spanner commit timestamps.  Useful for reading at nearby</span>
+<span class="s2">            replicas without the distributed timestamp negotiation</span>
+<span class="s2">            overhead of ``max_staleness``.</span>
+<span class="s2">        return_read_timestamp:</span>
+<span class="s2">            If true, the Cloud Spanner-selected read timestamp is included</span>
+<span class="s2">            in the [Transaction][google.spanner.v1.Transaction] message</span>
+<span class="s2">            that describes the transaction.</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
     <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.TransactionOptions.ReadOnly)</span>
     <span class="p">))</span>
@@ -358,55 +411,10 @@
   <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTIONOPTIONS</span><span class="p">,</span>
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
   <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;See :ref:`spanner-txn` for more information on these.</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+
 
 <span class="s2">  Attributes:</span>
-<span class="s2">      timestamp_bound:</span>
-<span class="s2">          How to choose the timestamp for the read-only transaction.</span>
-<span class="s2">      strong:</span>
-<span class="s2">          Read at a timestamp where all previously committed</span>
-<span class="s2">          transactions are visible.</span>
-<span class="s2">      min_read_timestamp:</span>
-<span class="s2">          Executes all reads at a timestamp &gt;= ``min_read_timestamp``.</span>
-<span class="s2">          This is useful for requesting fresher data than some previous</span>
-<span class="s2">          read, or data that is fresh enough to observe the effects of</span>
-<span class="s2">          some previously committed transaction whose timestamp is</span>
-<span class="s2">          known.  Note that this option can only be used in single-use</span>
-<span class="s2">          transactions.</span>
-<span class="s2">      max_staleness:</span>
-<span class="s2">          Read data at a timestamp &gt;= ``NOW - max_staleness`` seconds.</span>
-<span class="s2">          Guarantees that all writes that have committed more than the</span>
-<span class="s2">          specified number of seconds ago are visible. Because Cloud</span>
-<span class="s2">          Spanner chooses the exact timestamp, this mode works even if</span>
-<span class="s2">          the client&#39;s local clock is substantially skewed from Cloud</span>
-<span class="s2">          Spanner commit timestamps.  Useful for reading the freshest</span>
-<span class="s2">          data available at a nearby replica, while bounding the</span>
-<span class="s2">          possible staleness if the local replica has fallen behind.</span>
-<span class="s2">          Note that this option can only be used in single-use</span>
-<span class="s2">          transactions.</span>
-<span class="s2">      read_timestamp:</span>
-<span class="s2">          Executes all reads at the given timestamp. Unlike other modes,</span>
-<span class="s2">          reads at a specific timestamp are repeatable; the same read at</span>
-<span class="s2">          the same timestamp always returns the same data. If the</span>
-<span class="s2">          timestamp is in the future, the read will block until the</span>
-<span class="s2">          specified timestamp, modulo the read&#39;s deadline.  Useful for</span>
-<span class="s2">          large scale consistent reads such as mapreduces, or for</span>
-<span class="s2">          coordinating many reads against a consistent snapshot of the</span>
-<span class="s2">          data.</span>
-<span class="s2">      exact_staleness:</span>
-<span class="s2">          Executes all reads at a timestamp that is ``exact_staleness``</span>
-<span class="s2">          old. The timestamp is chosen soon after the read is started.</span>
-<span class="s2">          Guarantees that all writes that have committed more than the</span>
-<span class="s2">          specified number of seconds ago are visible. Because Cloud</span>
-<span class="s2">          Spanner chooses the exact timestamp, this mode works even if</span>
-<span class="s2">          the client&#39;s local clock is substantially skewed from Cloud</span>
-<span class="s2">          Spanner commit timestamps.  Useful for reading at nearby</span>
-<span class="s2">          replicas without the distributed timestamp negotiation</span>
-<span class="s2">          overhead of ``max_staleness``.</span>
-<span class="s2">      return_read_timestamp:</span>
-<span class="s2">          If true, the Cloud Spanner-selected read timestamp is included</span>
-<span class="s2">          in the [Transaction][google.spanner.v1.Transaction] message</span>
-<span class="s2">          that describes the transaction.</span>
 <span class="s2">      mode:</span>
 <span class="s2">          Required. The type of transaction.</span>
 <span class="s2">      read_write:</span>
@@ -430,7 +438,7 @@
   <span class="n">DESCRIPTOR</span> <span class="o">=</span> <span class="n">_TRANSACTION</span><span class="p">,</span>
   <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;google.cloud.spanner_v1.proto.transaction_pb2&#39;</span>
   <span class="p">,</span>
-  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A transaction.</span>
+  <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A transaction. See :ref:`spanner-txn` for more information.</span>
 
 
 <span class="s2">  Attributes:</span>
@@ -446,7 +454,9 @@
 <span class="s2">          For snapshot read-only transactions, the read timestamp chosen</span>
 <span class="s2">          for the transaction. Not returned by default: see [Transaction</span>
 <span class="s2">          Options.ReadOnly.return\_read\_timestamp][google.spanner.v1.Tr</span>
-<span class="s2">          ansactionOptions.ReadOnly.return\_read\_timestamp].</span>
+<span class="s2">          ansactionOptions.ReadOnly.return\_read\_timestamp].  A</span>
+<span class="s2">          timestamp in RFC3339 UTC &quot;Zulu&quot; format, accurate to</span>
+<span class="s2">          nanoseconds. Example: ``&quot;2014-10-02T15:01:23.045123456Z&quot;``.</span>
 <span class="s2">  &quot;&quot;&quot;</span><span class="p">,</span>
   <span class="c1"># @@protoc_insertion_point(class_scope:google.spanner.v1.Transaction)</span>
   <span class="p">))</span>
@@ -488,7 +498,7 @@
 
 
 <span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">has_options</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\025</span><span class="s1">com.google.spanner.v1B</span><span class="se">\020</span><span class="s1">TransactionProtoP</span><span class="se">\001</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s1">Google.Cloud.Spanner.V1&#39;</span><span class="p">))</span>
+<span class="n">DESCRIPTOR</span><span class="o">.</span><span class="n">_options</span> <span class="o">=</span> <span class="n">_descriptor</span><span class="o">.</span><span class="n">_ParseOptions</span><span class="p">(</span><span class="n">descriptor_pb2</span><span class="o">.</span><span class="n">FileOptions</span><span class="p">(),</span> <span class="n">_b</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\025</span><span class="s1">com.google.spanner.v1B</span><span class="se">\020</span><span class="s1">TransactionProtoP</span><span class="se">\001</span><span class="s1">Z8google.golang.org/genproto/googleapis/spanner/v1;spanner</span><span class="se">\252\002\027</span><span class="s1">Google.Cloud.Spanner.V1</span><span class="se">\312\002\027</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Cloud</span><span class="se">\\</span><span class="s1">Spanner</span><span class="se">\\</span><span class="s1">V1&#39;</span><span class="p">))</span>
 <span class="k">try</span><span class="p">:</span>
   <span class="c1"># THESE ELEMENTS WILL BE DEPRECATED.</span>
   <span class="c1"># Please use the generated *_pb2_grpc.py files instead.</span>

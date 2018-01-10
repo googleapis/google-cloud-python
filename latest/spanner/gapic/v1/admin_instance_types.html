@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Spanner Admin Instance Client Types &#8212; google-cloud 00eca14 documentation</title>
+    <title>Spanner Admin Instance Client Types &#8212; google-cloud d2ff0b9 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '00eca14',
+        VERSION:     'd2ff0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -280,7 +280,10 @@ characters in length.</p>
 <dl class="attribute">
 <dt id="google.cloud.spanner_admin_instance_v1.types.Instance.node_count">
 <code class="descname">node_count</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.Instance.node_count" title="Permalink to this definition">#</a></dt>
-<dd><p>Required. The number of nodes allocated to this instance.</p>
+<dd><p>Required. The number of nodes allocated to this instance. This
+may be zero in API responses for instances that are not yet in
+state <code class="docutils literal"><span class="pre">READY</span></code>.  See <a class="reference external" href="https://cloud.google.com/spanner/docs/instances#node_count">the documentation</a> for more
+information about nodes.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -432,16 +435,17 @@ t_page_token] from a previous [ListInstancesResponse][google
 <code class="descname">filter</code><a class="headerlink" href="#google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>An expression for filtering the results of the request. Filter
 rules are case insensitive. The fields eligible for filtering
-are:  -  name -  display_name -  labels.key where key is the
-name of a label  Some examples of using filters are:  -
-name:* –&gt; The instance has a name. -  name:Howl –&gt; The
-instance’s name contains the string “howl”. -  name:HOWL –&gt;
-Equivalent to above. -  NAME:howl –&gt; Equivalent to above. -
-labels.env:* –&gt; The instance has the label “env”. -
-labels.env:dev –&gt; The instance has the label “env” and the
-value of    the label contains the string “dev”. -  name:howl
-labels.env:dev –&gt; The instance’s name contains “howl” and
-it has the label “env” with its value containing “dev”.</p>
+are:  -  <code class="docutils literal"><span class="pre">name</span></code> -  <code class="docutils literal"><span class="pre">display_name</span></code> -  <code class="docutils literal"><span class="pre">labels.key</span></code> where
+key is the name of a label  Some examples of using filters
+are:  -  <code class="docutils literal"><span class="pre">name:*</span></code> –&gt; The instance has a name. -
+<code class="docutils literal"><span class="pre">name:Howl</span></code> –&gt; The instance’s name contains the string
+“howl”. -  <code class="docutils literal"><span class="pre">name:HOWL</span></code> –&gt; Equivalent to above. -
+<code class="docutils literal"><span class="pre">NAME:howl</span></code> –&gt; Equivalent to above. -  <code class="docutils literal"><span class="pre">labels.env:*</span></code> –&gt;
+The instance has the label “env”. -  <code class="docutils literal"><span class="pre">labels.env:dev</span></code> –&gt;
+The instance has the label “env” and the value    of the label
+contains the string “dev”. -  <code class="docutils literal"><span class="pre">name:howl</span> <span class="pre">labels.env:dev</span></code> –&gt;
+The instance’s name contains “howl”    and it has the label
+“env” with its value containing “dev”.</p>
 </dd></dl>
 
 </dd></dl>
