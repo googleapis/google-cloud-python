@@ -215,6 +215,31 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_table_exists(table))
         self.assertEqual(table.table_id, table_id)
 
+    def test_delete_dataset_delete_contents_true(self):
+        dataset_id = _make_dataset_id('delete_table_true')
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+            Dataset(Config.CLIENT.dataset(dataset_id)))
+
+        table_id = 'test_table'
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        Config.CLIENT.delete_dataset(dataset, delete_contents=True)
+
+        self.assertFalse(_table_exists(table))
+
+    def test_delete_dataset_delete_contents_false(self):
+        from google.api_core import exceptions
+        dataset_id = _make_dataset_id('delete_table_false')
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+            Dataset(Config.CLIENT.dataset(dataset_id)))
+
+        table_id = 'test_table'
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
+
+        retry_403(Config.CLIENT.create_table)(table_arg)
+        with self.assertRaises(exceptions.BadRequest):
+            Config.CLIENT.delete_dataset(dataset)
+
     def test_get_table_w_public_dataset(self):
         PUBLIC = 'bigquery-public-data'
         DATASET_ID = 'samples'

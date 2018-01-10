@@ -446,7 +446,8 @@ class Client(ClientWithProject):
             DeprecationWarning)
         return self.list_tables(*args, **kwargs)
 
-    def delete_dataset(self, dataset, retry=DEFAULT_RETRY):
+    def delete_dataset(self, dataset, delete_contents=False,
+                       retry=DEFAULT_RETRY):
         """Delete a dataset.
 
         See
@@ -455,15 +456,27 @@ class Client(ClientWithProject):
         :type dataset: One of:
                        :class:`~google.cloud.bigquery.dataset.Dataset`
                        :class:`~google.cloud.bigquery.dataset.DatasetReference`
+        :param dataset: the dataset to delete, or a reference to it.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :param dataset: the dataset to delete, or a reference to it.
+        :type delete_contents: boolean
+        :param delete_contents: (Optional) If True, delete all the tables
+             in the dataset. If False and the dataset contains tables, the
+             request will fail. Default is False
         """
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
-        self._call_api(retry, method='DELETE', path=dataset.path)
+
+        params = {}
+        if delete_contents:
+            params['deleteContents'] = 'true'
+
+        self._call_api(retry,
+                       method='DELETE',
+                       path=dataset.path,
+                       query_params=params)
 
     def delete_table(self, table, retry=DEFAULT_RETRY):
         """Delete a table
