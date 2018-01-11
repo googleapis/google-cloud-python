@@ -15,7 +15,7 @@ Starting a Batch
 
 .. code:: python
 
-    batch = session.batch()
+    batch = client.batch()
 
 
 Inserting records using a Batch

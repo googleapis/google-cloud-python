@@ -32,7 +32,7 @@ result set is too large,
         table='table-name', columns=['first_name', 'last_name', 'age'],
         key_set=['phred@example.com', 'bharney@example.com'])
 
-    for row in result.rows:
+    for row in list(result):
         print(row)
 
 .. note::
@@ -57,7 +57,7 @@ fails if the result set is too large,
         'WHERE p.employee_id == e.employee_id')
     result = transaction.execute_sql(QUERY)
 
-    for row in result.rows:
+    for row in list(result):
         print(row)
 
 
@@ -214,7 +214,7 @@ If an exception is raised inside the ``with`` block, the transaction's
 
 .. code:: python
 
-    with database.transaction() as transaction
+    with database.transaction() as transaction:
 
         transaction.insert(
             'citizens', columns=['email', 'first_name', 'last_name', 'age'],
