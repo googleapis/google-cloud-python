@@ -361,6 +361,7 @@ class TestIterator(unittest.TestCase):
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
+        self.assertIsNotNone(iterator._item_to_value)
         self.assertIsNone(iterator.max_results)
         self.assertEqual(iterator.page_number, 0)
         self.assertIsNone(iterator.next_page_token,)
@@ -383,6 +384,7 @@ class TestIterator(unittest.TestCase):
 
         self.assertFalse(iterator._started)
         self.assertIs(iterator.client, client)
+        self.assertIsNotNone(iterator._item_to_value)
         self.assertEqual(iterator.max_results, limit)
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, start_cursor)
