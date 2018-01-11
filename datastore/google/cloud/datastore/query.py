@@ -515,7 +515,7 @@ class Iterator(page_iterator.Iterator):
             query=query_pb,
         )
         entity_pbs = self._process_query_results(response_pb)
-        return page_iterator.Page(self, entity_pbs, self.item_to_value)
+        return page_iterator.Page(self, entity_pbs, self._item_to_value)
 
 
 def _pb_from_query(query):

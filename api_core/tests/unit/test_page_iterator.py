@@ -88,7 +88,7 @@ class TestIterator(object):
 
         assert not iterator._started
         assert iterator.client is client
-        assert iterator.item_to_value == item_to_value
+        assert iterator._item_to_value == item_to_value
         assert iterator.max_results == max_results
         # Changing attributes.
         assert iterator.page_number == 0
@@ -214,7 +214,7 @@ class TestHTTPIterator(object):
         assert not iterator._started
         assert iterator.client is client
         assert iterator.path == path
-        assert iterator.item_to_value is mock.sentinel.item_to_value
+        assert iterator._item_to_value is mock.sentinel.item_to_value
         assert iterator._items_key == 'items'
         assert iterator.max_results is None
         assert iterator.extra_params == {}
@@ -419,10 +419,10 @@ class TestGRPCIterator(object):
         assert not iterator._started
         assert iterator.client is client
         assert iterator.max_results is None
-        assert iterator.item_to_value is page_iterator._item_to_value_identity
         assert iterator._method == mock.sentinel.method
         assert iterator._request == mock.sentinel.request
         assert iterator._items_field == items_field
+        assert iterator._item_to_value is page_iterator._item_to_value_identity
         assert (iterator._request_token_field ==
                 page_iterator.GRPCIterator._DEFAULT_REQUEST_TOKEN_FIELD)
         assert (iterator._response_token_field ==
@@ -446,10 +446,10 @@ class TestGRPCIterator(object):
 
         assert iterator.client is client
         assert iterator.max_results == 42
-        assert iterator.item_to_value is mock.sentinel.item_to_value
         assert iterator._method == mock.sentinel.method
         assert iterator._request == mock.sentinel.request
         assert iterator._items_field == items_field
+        assert iterator._item_to_value is mock.sentinel.item_to_value
         assert iterator._request_token_field == request_field
         assert iterator._response_token_field == response_field
 
@@ -517,7 +517,7 @@ class TestGAXIterator(object):
 
         assert not iterator._started
         assert iterator.client is client
-        assert iterator.item_to_value is item_to_value
+        assert iterator._item_to_value is item_to_value
         assert iterator.max_results == max_results
         assert iterator._gax_page_iter is page_iter
         # Changing attributes.
