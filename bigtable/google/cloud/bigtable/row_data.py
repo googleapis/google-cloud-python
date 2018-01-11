@@ -28,8 +28,8 @@ class Cell(object):
     :type value: bytes
     :param value: The value stored in the cell.
 
-    :type timestamp: :class:`datetime.datetime`
-    :param timestamp: The timestamp when the cell was stored.
+    :type timestamp_micros: int
+    :param timestamp_micros: The timestamp_micros when the cell was stored.
 
     :type labels: list
     :param labels: (Optional) List of strings. Labels applied to the cell.

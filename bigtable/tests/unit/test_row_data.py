@@ -42,15 +42,16 @@ class TestCell(unittest.TestCase):
         if labels is None:
             cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros)
-            cell_expected = self._make_one(value, timestamp)
+            cell_expected = self._make_one(value, timestamp_micros)
         else:
             cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros, labels=labels)
-            cell_expected = self._make_one(value, timestamp, labels=labels)
+            cell_expected = self._make_one(value, timestamp_micros, labels=labels)
 
         klass = self._get_target_class()
         result = klass.from_pb(cell_pb)
         self.assertEqual(result, cell_expected)
+        self.assertEqual(result.timestamp, timestamp)
 
     def test_from_pb(self):
         self._from_pb_test_helper()
