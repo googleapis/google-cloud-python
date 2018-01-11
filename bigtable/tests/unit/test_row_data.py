@@ -19,6 +19,7 @@ import mock
 
 
 class TestCell(unittest.TestCase):
+    timestamp_micros = 18738724000  # Make sure millis granularity
 
     @staticmethod
     def _get_target_class():
@@ -35,7 +36,7 @@ class TestCell(unittest.TestCase):
         from google.cloud.bigtable._generated import (
             data_pb2 as data_v2_pb2)
 
-        timestamp_micros = 18738724000  # Make sure millis granularity
+        timestamp_micros = TestCell.timestamp_micros
         timestamp = _EPOCH + datetime.timedelta(microseconds=timestamp_micros)
         value = b'value-bytes'
 
@@ -62,16 +63,13 @@ class TestCell(unittest.TestCase):
 
     def test_constructor(self):
         value = object()
-        timestamp = object()
-        cell = self._make_one(value, timestamp)
+        cell = self._make_one(value, TestCell.timestamp_micros)
         self.assertEqual(cell.value, value)
-        self.assertEqual(cell.timestamp, timestamp)
 
     def test___eq__(self):
         value = object()
-        timestamp = object()
-        cell1 = self._make_one(value, timestamp)
-        cell2 = self._make_one(value, timestamp)
+        cell1 = self._make_one(value, TestCell.timestamp_micros)
+        cell2 = self._make_one(value, TestCell.timestamp_micros)
         self.assertEqual(cell1, cell2)
 
     def test___eq__type_differ(self):
@@ -81,18 +79,16 @@ class TestCell(unittest.TestCase):
 
     def test___ne__same_value(self):
         value = object()
-        timestamp = object()
-        cell1 = self._make_one(value, timestamp)
-        cell2 = self._make_one(value, timestamp)
+        cell1 = self._make_one(value, TestCell.timestamp_micros)
+        cell2 = self._make_one(value, TestCell.timestamp_micros)
         comparison_val = (cell1 != cell2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
         value1 = 'value1'
         value2 = 'value2'
-        timestamp = object()
-        cell1 = self._make_one(value1, timestamp)
-        cell2 = self._make_one(value2, timestamp)
+        cell1 = self._make_one(value1, TestCell.timestamp_micros)
+        cell2 = self._make_one(value2, TestCell.timestamp_micros)
         self.assertNotEqual(cell1, cell2)
 
 
