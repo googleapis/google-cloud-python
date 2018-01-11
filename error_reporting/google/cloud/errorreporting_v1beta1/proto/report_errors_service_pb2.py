@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.devtools.clouderrorreporting_v1beta1.proto import common_pb2 as google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2
+from google.cloud.errorreporting_v1beta1.proto import common_pb2 as google_dot_devtools_dot_clouderrorreporting__v1beta1_dot_proto_dot_common__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
