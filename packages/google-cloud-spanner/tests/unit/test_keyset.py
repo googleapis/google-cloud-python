@@ -48,7 +48,7 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange.start_open, KEY_1)
         self.assertEqual(krange.start_closed, None)
         self.assertEqual(krange.end_open, None)
-        self.assertEqual(krange.end_closed, None)
+        self.assertEqual(krange.end_closed, [])
 
     def test_ctor_w_only_start_closed(self):
         KEY_1 = [u'key_1']
@@ -56,13 +56,13 @@ class TestKeyRange(unittest.TestCase):
         self.assertEqual(krange.start_open, None)
         self.assertEqual(krange.start_closed, KEY_1)
         self.assertEqual(krange.end_open, None)
-        self.assertEqual(krange.end_closed, None)
+        self.assertEqual(krange.end_closed, [])
 
     def test_ctor_w_only_end_open(self):
         KEY_1 = [u'key_1']
         krange = self._make_one(end_open=KEY_1)
         self.assertEqual(krange.start_open, None)
-        self.assertEqual(krange.start_closed, None)
+        self.assertEqual(krange.start_closed, [])
         self.assertEqual(krange.end_open, KEY_1)
         self.assertEqual(krange.end_closed, None)
 
@@ -70,7 +70,7 @@ class TestKeyRange(unittest.TestCase):
         KEY_1 = [u'key_1']
         krange = self._make_one(end_closed=KEY_1)
         self.assertEqual(krange.start_open, None)
-        self.assertEqual(krange.start_closed, None)
+        self.assertEqual(krange.start_closed, [])
         self.assertEqual(krange.end_open, None)
         self.assertEqual(krange.end_closed, KEY_1)
 

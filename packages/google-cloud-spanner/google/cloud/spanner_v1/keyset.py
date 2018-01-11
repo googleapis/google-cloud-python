@@ -24,6 +24,11 @@ from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 class KeyRange(object):
     """Identify range of table rows via start / end points.
 
+    Specify either a `start_open` or `start_closed` key, or defaults to
+    `start_closed = []`.  Specify either an `end_open` or `end_closed` key,
+    or defaults to `end_closed = []`.  However, at least one key has to be
+    specified.  If no keys are specified, ValueError is raised.
+
     :type start_open: list of scalars
     :param start_open: keys identifying start of range (this key excluded)
 
@@ -35,6 +40,8 @@ class KeyRange(object):
 
     :type end_closed: list of scalars
     :param end_closed: keys identifying end of range (this key included)
+
+    :raises ValueError: if no keys are specified
     """
     def __init__(self, start_open=None, start_closed=None,
                  end_open=None, end_closed=None):
@@ -43,9 +50,13 @@ class KeyRange(object):
 
         if start_open and start_closed:
             raise ValueError("Specify one of 'start_open' / 'start_closed'.")
+        elif start_open is None and start_closed is None:
+            start_closed = []
 
         if end_open and end_closed:
             raise ValueError("Specify one of 'end_open' / 'end_closed'.")
+        elif end_open is None and end_closed is None:
+            end_closed = []
 
         self.start_open = start_open
         self.start_closed = start_closed
