@@ -158,25 +158,12 @@ class Iterator(object):
                  page_token=None, max_results=None):
         self._started = False
         self.client = client
-        """Optional[Any]: The client that created this iterator."""
-        self.item_to_value = item_to_value
-        """Callable[Iterator, Any]: Callable to convert an item from the type
-            in the raw API response into the native object. Will be called with
-            the iterator and a
-            single item.
-        """
+        self._item_to_value = item_to_value
         self.max_results = max_results
-        """int: The maximum number of results to fetch."""
-
         # The attributes below will change over the life of the iterator.
         self.page_number = 0
-        """int: The current page of results."""
         self.next_page_token = page_token
-        """str: The token for the next page of results. If this is set before
-            the iterator starts, it effectively offsets the iterator to a
-            specific starting point."""
         self.num_results = 0
-        """int: The total number of results fetched so far."""
 
     @property
     def pages(self):
@@ -348,7 +335,7 @@ class HTTPIterator(Iterator):
         if self._has_next_page():
             response = self._get_next_page_response()
             items = response.get(self._items_key, ())
-            page = Page(self, items, self.item_to_value)
+            page = Page(self, items, self._item_to_value)
             self._page_start(self, page, response)
             self.next_page_token = response.get(self._next_token)
             return page
@@ -441,7 +428,7 @@ class _GAXIterator(Iterator):
         """
         try:
             items = six.next(self._gax_page_iter)
-            page = Page(self, items, self.item_to_value)
+            page = Page(self, items, self._item_to_value)
             self.next_page_token = self._gax_page_iter.page_token or None
             return page
         except StopIteration:
@@ -513,7 +500,7 @@ class GRPCIterator(Iterator):
 
         self.next_page_token = getattr(response, self._response_token_field)
         items = getattr(response, self._items_field)
-        page = Page(self, items, self.item_to_value)
+        page = Page(self, items, self._item_to_value)
 
         return page
 
