@@ -17,9 +17,9 @@ import operator
 import unittest
 
 from google.cloud import error_reporting
-from google.cloud.gapic.errorreporting.v1beta1 import (
+from google.cloud.errorreporting_v1beta1.gapic import (
     error_stats_service_client)
-from google.cloud.proto.devtools.clouderrorreporting.v1beta1 import (
+from google.cloud.errorreporting_v1beta1.proto import (
     error_stats_service_pb2)
 from google.protobuf.duration_pb2 import Duration
 
