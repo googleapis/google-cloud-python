@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Keyset API &#8212; google-cloud d2ff0b9 documentation</title>
+    <title>Keyset API &#8212; google-cloud 36c7a16 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     'd2ff0b9',
+        VERSION:     '36c7a16',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -49,36 +49,15 @@
 <em class="property">class </em><code class="descclassname">google.cloud.spanner_v1.keyset.</code><code class="descname">KeyRange</code><span class="sig-paren">(</span><em>start_open=None</em>, <em>start_closed=None</em>, <em>end_open=None</em>, <em>end_closed=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/google/cloud/spanner_v1/keyset.html#KeyRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#google.cloud.spanner_v1.keyset.KeyRange" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Identify range of table rows via start / end points.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Exactly one of <code class="docutils literal"><span class="pre">start_open</span></code> and <code class="docutils literal"><span class="pre">start_closed</span></code> must be
-passed and exactly one of <code class="docutils literal"><span class="pre">end_open</span></code> and <code class="docutils literal"><span class="pre">end_closed</span></code> must be.
-To “start at the beginning” (i.e. specify no start for the range)
-pass <code class="docutils literal"><span class="pre">start_closed=[]</span></code>. To “go to the end” (i.e. specify no end
-for the range) pass <code class="docutils literal"><span class="pre">end_closed=[]</span></code>.</p>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>start_open</strong> (<em>List</em>) – Keys identifying start of range (this key
-excluded).</li>
-<li><strong>start_closed</strong> (<em>List</em>) – Keys identifying start of range (this key
-included).</li>
-<li><strong>end_open</strong> (<em>List</em>) – Keys identifying end of range (this key
-excluded).</li>
-<li><strong>end_closed</strong> (<em>List</em>) – Keys identifying end of range (this key
-included).</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If <strong>neither</strong> <code class="docutils literal"><span class="pre">start_open</span></code> or <code class="docutils literal"><span class="pre">start_closed</span></code> is
-passed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If <strong>both</strong> <code class="docutils literal"><span class="pre">start_open</span></code> and <code class="docutils literal"><span class="pre">start_closed</span></code> are passed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If <strong>neither</strong> <code class="docutils literal"><span class="pre">end_open</span></code> or <code class="docutils literal"><span class="pre">end_closed</span></code> is passed.</li>
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code></a> – If <strong>both</strong> <code class="docutils literal"><span class="pre">end_open</span></code> and <code class="docutils literal"><span class="pre">end_closed</span></code> are passed.</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>start_open</strong> (<em>list of scalars</em>) – keys identifying start of range (this key excluded)</li>
+<li><strong>start_closed</strong> (<em>list of scalars</em>) – keys identifying start of range (this key included)</li>
+<li><strong>end_open</strong> (<em>list of scalars</em>) – keys identifying end of range (this key excluded)</li>
+<li><strong>end_closed</strong> (<em>list of scalars</em>) – keys identifying end of range (this key included)</li>
 </ul>
 </td>
 </tr>
