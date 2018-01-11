@@ -76,27 +76,6 @@ fails if the result set is too large,
    Perform all iteration within the context of the ``with database.snapshot()``
    block.
 
-.. note::
-
-   If streaming a chunk raises an exception, the application can
-   retry the ``read``, passing the ``resume_token`` from ``StreamingResultSet``
-   which raised the error.  E.g.:
-
-   .. code:: python
-
-      result = snapshot.read(table, columns, keys)
-      while True:
-          try:
-              for row in result.rows:
-                  print row
-          except Exception:
-               result = snapshot.read(
-                  table, columns, keys, resume_token=result.resume_token)
-               continue
-          else:
-              break
-
-
 
 Execute a SQL Select Statement
 ------------------------------
@@ -114,33 +93,13 @@ fails if the result set is too large,
             'WHERE p.employee_id == e.employee_id')
         result = snapshot.execute_sql(QUERY)
 
-        for row in result.rows:
+        for row in list(result):
             print(row)
 
 .. note::
 
    Perform all iteration within the context of the ``with database.snapshot()``
    block.
-
-.. note::
-
-   If streaming a chunk raises an exception, the application can
-   retry the query, passing the ``resume_token`` from ``StreamingResultSet``
-   which raised the error.  E.g.:
-
-   .. code:: python
-
-      result = snapshot.execute_sql(QUERY)
-      while True:
-          try:
-              for row in result.rows:
-                  print row
-          except Exception:
-               result = snapshot.execute_sql(
-                  QUERY, resume_token=result.resume_token)
-               continue
-          else:
-              break
 
 
 Next Step
