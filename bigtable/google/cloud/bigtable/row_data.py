@@ -51,7 +51,8 @@ class Cell(object):
         :returns: The cell corresponding to the protobuf.
         """
         if cell_pb.labels:
-            return cls(cell_pb.value, cell_pb.timestamp_micros, labels=cell_pb.labels)
+            return cls(cell_pb.value, cell_pb.timestamp_micros,
+                       labels=cell_pb.labels)
         else:
             return cls(cell_pb.value, cell_pb.timestamp_micros)
 
