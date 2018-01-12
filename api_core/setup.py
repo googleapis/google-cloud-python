@@ -68,7 +68,7 @@ EXTRAS_REQUIREMENTS = {
 
 setup(
     name='google-api-core',
-    version='0.1.4',
+    version='0.1.5.dev1',
     description='Core Google API Client Library',
     long_description=README,
     namespace_packages=['google'],
