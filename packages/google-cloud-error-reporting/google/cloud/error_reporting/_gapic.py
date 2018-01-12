@@ -14,53 +14,50 @@
 
 """GAX wrapper for Error Reporting API requests."""
 
-from google.cloud._helpers import make_secure_channel
-from google.cloud._http import DEFAULT_USER_AGENT
+from google.api_core.gapic_v1 import client_info
 
-from google.cloud.gapic.errorreporting.v1beta1 import (
+from google.cloud.error_reporting import __version__
+from google.cloud.errorreporting_v1beta1.gapic import (
     report_errors_service_client)
-from google.cloud.proto.devtools.clouderrorreporting.v1beta1 import (
+from google.cloud.errorreporting_v1beta1.proto import (
     report_errors_service_pb2)
 from google.protobuf.json_format import ParseDict
 
-from google.cloud.error_reporting import __version__
+_CLIENT_INFO = client_info.ClientInfo(
+    client_library_version=__version__)
 
 
 def make_report_error_api(client):
-    """Create an instance of the GAX Logging API.
+    """Create an instance of the gapic Logging API.
 
     :type client::class:`google.cloud.error_reporting.Client`
     :param client: Error Reporting client.
 
-    :rtype: :class:_ErrorReportingGaxApi
+    :rtype: :class:_ErrorReportingGapicApi
     :returns: An Error Reporting API instance.
     """
-    channel = make_secure_channel(
-        client._credentials,
-        DEFAULT_USER_AGENT,
-        report_errors_service_client.ReportErrorsServiceClient.SERVICE_ADDRESS)
     gax_client = report_errors_service_client.ReportErrorsServiceClient(
-        channel=channel, lib_name='gccl', lib_version=__version__)
-    return _ErrorReportingGaxApi(gax_client, client.project)
+        credentials=client._credentials, client_info=_CLIENT_INFO)
+    return _ErrorReportingGapicApi(gax_client, client.project)
 
 
-class _ErrorReportingGaxApi(object):
+class _ErrorReportingGapicApi(object):
     """Helper mapping Error Reporting-related APIs
 
-    :type gax_api:
-        :class:`v1beta1.report_errors_service_client.ReportErrorsServiceClient`
-    :param gax_api: API object used to make GAX requests.
+    :type gapic:
+        :class:`report_errors_service_client.ReportErrorsServiceClient`
+    :param gapic: API object used to make RPCs.
 
     :type project: str
     :param project: Google Cloud Project ID
     """
 
-    def __init__(self, gax_api, project):
-        self._gax_api = gax_api
+    def __init__(self, gapic_api, project):
+        self._gapic_api = gapic_api
         self._project = project
 
     def report_error_event(self, error_report):
-        """Uses the GAX client to report the error.
+        """Uses the gapic client to report the error.
 
         :type error_report: dict
         :param error_report:
@@ -70,7 +67,7 @@ class _ErrorReportingGaxApi(object):
             Use
             :meth:~`google.cloud.error_reporting.client._build_error_report`
         """
-        project_name = self._gax_api.project_path(self._project)
+        project_name = self._gapic_api.project_path(self._project)
         error_report_payload = report_errors_service_pb2.ReportedErrorEvent()
         ParseDict(error_report, error_report_payload)
-        self._gax_api.report_error_event(project_name, error_report_payload)
+        self._gapic_api.report_error_event(project_name, error_report_payload)
