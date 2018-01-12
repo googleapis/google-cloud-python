@@ -1,5 +1,7 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# A YCSB-like executable that can be integrated into PerfKitBenchmarker.
+
+Dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 python ${DIR}/../ycsb.py "${@:1}"
