@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-write Transactions &#8212; google-cloud 55fd0ff documentation</title>
+    <title>Read-write Transactions &#8212; google-cloud ddaa9a0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '55fd0ff',
+        VERSION:     'ddaa9a0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -64,7 +64,7 @@ result set is too large,</p>
     <span class="n">table</span><span class="o">=</span><span class="s1">&#39;table-name&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
     <span class="n">key_set</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;phred@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;bharney@example.com&#39;</span><span class="p">])</span>
 
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -86,7 +86,7 @@ fails if the result set is too large,</p>
     <span class="s1">&#39;WHERE p.employee_id == e.employee_id&#39;</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -182,39 +182,17 @@ Non-existent rows do not cause errors.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="commit-changes-for-a-transaction">
-<h2>Commit changes for a Transaction<a class="headerlink" href="#commit-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
-<p>After describing the modifications to be made to table data via the
-<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.update()</span></code>,
-<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert_or_update()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.replace()</span></code>, and
-<code class="xref py py-meth docutils literal"><span class="pre">Transaction.delete()</span></code> methods above, send them to
-the back-end by calling <code class="xref py py-meth docutils literal"><span class="pre">Transaction.commit()</span></code>, which makes the <code class="docutils literal"><span class="pre">Commit</span></code>
-API call.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="roll-back-changes-for-a-transaction">
-<h2>Roll back changes for a Transaction<a class="headerlink" href="#roll-back-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
-<p>After describing the modifications to be made to table data via the
-<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.update()</span></code>,
-<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert_or_update()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.replace()</span></code>, and
-<code class="xref py py-meth docutils literal"><span class="pre">Transaction.delete()</span></code> methods above, cancel the transaction on the
-the back-end by calling <code class="xref py py-meth docutils literal"><span class="pre">Transaction.rollback()</span></code>, which makes the
-<code class="docutils literal"><span class="pre">Rollback</span></code> API call.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="use-a-transaction-as-a-context-manager">
-<h2>Use a Transaction as a Context Manager<a class="headerlink" href="#use-a-transaction-as-a-context-manager" title="Permalink to this headline">#</a></h2>
-<p>Rather than calling <code class="xref py py-meth docutils literal"><span class="pre">Transaction.commit()</span></code> or <code class="xref py py-meth docutils literal"><span class="pre">Transaction.rollback()</span></code>
-manually, you should use the <code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code> instance as a context manager.
-The transaction’s <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> method will be called automatically
-if the <code class="docutils literal"><span class="pre">with</span></code> block exits without raising an exception.</p>
-<p>If an exception is raised inside the <code class="docutils literal"><span class="pre">with</span></code> block, the transaction’s
-<code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code> method will automatically be called.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span>
+<div class="section" id="using-run-in-transaction">
+<h2>Using <code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code><a class="headerlink" href="#using-run-in-transaction" title="Permalink to this headline">#</a></h2>
+<p>Rather than calling <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> or <code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code>
+manually, you should use <code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code> to run the
+function that you need.  The transaction’s <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> method
+will be called automatically if the <code class="docutils literal"><span class="pre">with</span></code> block exits without raising an
+exception.  The function will automatically be retried for
+<a class="reference internal" href="../core/exceptions.html#google.api_core.exceptions.Aborted" title="google.api_core.exceptions.Aborted"><code class="xref py py-class docutils literal"><span class="pre">Aborted</span></code></a> errors, but will raise on
+<a class="reference internal" href="../core/exceptions.html#google.api_core.exceptions.GoogleAPICallError" title="google.api_core.exceptions.GoogleAPICallError"><code class="xref py py-class docutils literal"><span class="pre">GoogleAPICallError</span></code></a> and
+<code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code> will be called on all others.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_unit_of_work</span><span class="p">(</span><span class="n">transaction</span><span class="p">):</span>
 
     <span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
         <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
@@ -234,6 +212,68 @@ if the <code class="docutils literal"><span class="pre">with</span></code> block
 
     <span class="n">transaction</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;citizens&#39;</span><span class="p">,</span>
         <span class="n">keyset</span><span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;nonesuch@example.com&#39;</span><span class="p">])</span>
+
+<span class="n">db</span><span class="o">.</span><span class="n">run_in_transaction</span><span class="p">(</span><span class="n">_unit_of_work</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-a-transaction-as-a-context-manager">
+<h2>Use a Transaction as a Context Manager<a class="headerlink" href="#use-a-transaction-as-a-context-manager" title="Permalink to this headline">#</a></h2>
+<p>Alternatively, you can use the <code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code> instance as a context
+manager.  The transaction’s <code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code> method will be called
+automatically if the <code class="docutils literal"><span class="pre">with</span></code> block exits without raising an exception.</p>
+<p>If an exception is raised inside the <code class="docutils literal"><span class="pre">with</span></code> block, the transaction’s
+<code class="xref py py-meth docutils literal"><span class="pre">rollback()</span></code> method will automatically be called.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">database</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">transaction</span><span class="p">:</span>
+
+    <span class="n">transaction</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+        <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+        <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Phred&#39;</span><span class="p">,</span> <span class="s1">&#39;Phlyntstone&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;Bharney&#39;</span><span class="p">,</span> <span class="s1">&#39;Rhubble&#39;</span><span class="p">,</span> <span class="mi">31</span><span class="p">],</span>
+        <span class="p">])</span>
+
+    <span class="n">transaction</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="s1">&#39;citizens&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">],</span>
+        <span class="n">values</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">[</span><span class="s1">&#39;phred@exammple.com&#39;</span><span class="p">,</span> <span class="mi">33</span><span class="p">],</span>
+            <span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+        <span class="p">])</span>
+
+    <span class="o">...</span>
+
+    <span class="n">transaction</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;citizens&#39;</span><span class="p">,</span>
+        <span class="n">keyset</span><span class="p">[</span><span class="s1">&#39;bharney@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;nonesuch@example.com&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="commit-changes-for-a-transaction">
+<h2>Commit changes for a Transaction<a class="headerlink" href="#commit-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
+<p>This function should not be used manually.  Rather, should consider using
+<code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code> or the context manager as described
+above.</p>
+<p>After  modifications to be made to table data via the
+<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.update()</span></code>,
+<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert_or_update()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.replace()</span></code>, and
+<code class="xref py py-meth docutils literal"><span class="pre">Transaction.delete()</span></code> methods above, send them to
+the back-end by calling <code class="xref py py-meth docutils literal"><span class="pre">Transaction.commit()</span></code>, which makes the <code class="docutils literal"><span class="pre">Commit</span></code>
+API call.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="roll-back-changes-for-a-transaction">
+<h2>Roll back changes for a Transaction<a class="headerlink" href="#roll-back-changes-for-a-transaction" title="Permalink to this headline">#</a></h2>
+<p>This function should not be used manually.  Rather, should consider using
+<code class="xref py py-meth docutils literal"><span class="pre">run_in_transaction()</span></code> or the context manager as described
+above.</p>
+<p>After describing the modifications to be made to table data via the
+<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.update()</span></code>,
+<code class="xref py py-meth docutils literal"><span class="pre">Transaction.insert_or_update()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">Transaction.replace()</span></code>, and
+<code class="xref py py-meth docutils literal"><span class="pre">Transaction.delete()</span></code> methods above, cancel the transaction on the
+the back-end by calling <code class="xref py py-meth docutils literal"><span class="pre">Transaction.rollback()</span></code>, which makes the
+<code class="docutils literal"><span class="pre">Rollback</span></code> API call.</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

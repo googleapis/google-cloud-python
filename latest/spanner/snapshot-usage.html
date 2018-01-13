@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Read-only Transactions via Snapshots &#8212; google-cloud 55fd0ff documentation</title>
+    <title>Read-only Transactions via Snapshots &#8212; google-cloud ddaa9a0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '55fd0ff',
+        VERSION:     'ddaa9a0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -103,25 +103,6 @@ fails if the result set is too large,</p>
 <p class="last">Perform all iteration within the context of the <code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
 block.</p>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>If streaming a chunk raises an exception, the application can
-retry the <code class="docutils literal"><span class="pre">read</span></code>, passing the <code class="docutils literal"><span class="pre">resume_token</span></code> from <code class="docutils literal"><span class="pre">StreamingResultSet</span></code>
-which raised the error.  E.g.:</p>
-<div class="code python last highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="n">row</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-         <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">read</span><span class="p">(</span>
-            <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">resume_token</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">resume_token</span><span class="p">)</span>
-         <span class="k">continue</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">break</span>
-</pre></div>
-</div>
-</div>
 </div>
 <div class="section" id="execute-a-sql-select-statement">
 <h2>Execute a SQL Select Statement<a class="headerlink" href="#execute-a-sql-select-statement" title="Permalink to this headline">#</a></h2>
@@ -135,7 +116,7 @@ fails if the result set is too large,</p>
         <span class="s1">&#39;WHERE p.employee_id == e.employee_id&#39;</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -143,25 +124,6 @@ fails if the result set is too large,</p>
 <p class="first admonition-title">Note</p>
 <p class="last">Perform all iteration within the context of the <code class="docutils literal"><span class="pre">with</span> <span class="pre">database.snapshot()</span></code>
 block.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>If streaming a chunk raises an exception, the application can
-retry the query, passing the <code class="docutils literal"><span class="pre">resume_token</span></code> from <code class="docutils literal"><span class="pre">StreamingResultSet</span></code>
-which raised the error.  E.g.:</p>
-<div class="code python last highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span><span class="n">QUERY</span><span class="p">)</span>
-<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
-            <span class="nb">print</span> <span class="n">row</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-         <span class="n">result</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">execute_sql</span><span class="p">(</span>
-            <span class="n">QUERY</span><span class="p">,</span> <span class="n">resume_token</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">resume_token</span><span class="p">)</span>
-         <span class="k">continue</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">break</span>
-</pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="next-step">

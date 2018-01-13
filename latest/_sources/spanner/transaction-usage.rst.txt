@@ -32,7 +32,7 @@ result set is too large,
         table='table-name', columns=['first_name', 'last_name', 'age'],
         key_set=['phred@example.com', 'bharney@example.com'])
 
-    for row in result.rows:
+    for row in list(result):
         print(row)
 
 .. note::
@@ -57,7 +57,7 @@ fails if the result set is too large,
         'WHERE p.employee_id == e.employee_id')
     result = transaction.execute_sql(QUERY)
 
-    for row in result.rows:
+    for row in list(result):
         print(row)
 
 
@@ -171,50 +171,21 @@ Non-existent rows do not cause errors.
         'citizens', keyset=['bharney@example.com', 'nonesuch@example.com'])
 
 
-Commit changes for a Transaction
---------------------------------
+Using :meth:`~Database.run_in_transaction`
+------------------------------------------
 
-After describing the modifications to be made to table data via the
-:meth:`Transaction.insert`, :meth:`Transaction.update`,
-:meth:`Transaction.insert_or_update`, :meth:`Transaction.replace`, and
-:meth:`Transaction.delete` methods above, send them to
-the back-end by calling :meth:`Transaction.commit`, which makes the ``Commit``
-API call.
-
-.. code:: python
-
-    transaction.commit()
-
-
-Roll back changes for a Transaction
------------------------------------
-
-After describing the modifications to be made to table data via the
-:meth:`Transaction.insert`, :meth:`Transaction.update`,
-:meth:`Transaction.insert_or_update`, :meth:`Transaction.replace`, and
-:meth:`Transaction.delete` methods above, cancel the transaction on the
-the back-end by calling :meth:`Transaction.rollback`, which makes the
-``Rollback`` API call.
+Rather than calling :meth:`~Transaction.commit` or :meth:`~Transaction.rollback`
+manually, you should use :meth:`~Database.run_in_transaction` to run the
+function that you need.  The transaction's :meth:`~Transaction.commit` method
+will be called automatically if the ``with`` block exits without raising an
+exception.  The function will automatically be retried for
+:class:`~google.api_core.exceptions.Aborted` errors, but will raise on
+:class:`~google.api_core.exceptions.GoogleAPICallError` and
+:meth:`~Transaction.rollback` will be called on all others.
 
 .. code:: python
 
-    transaction.rollback()
-
-
-Use a Transaction as a Context Manager
---------------------------------------
-
-Rather than calling :meth:`Transaction.commit` or :meth:`Transaction.rollback`
-manually, you should use the :class:`Transaction` instance as a context manager.  
-The transaction's :meth:`~Transaction.commit` method will be called automatically
-if the ``with`` block exits without raising an exception.
-
-If an exception is raised inside the ``with`` block, the transaction's
-:meth:`~Transaction.rollback` method will automatically be called.
-
-.. code:: python
-
-    with database.transaction() as transaction
+    def _unit_of_work(transaction):
 
         transaction.insert(
             'citizens', columns=['email', 'first_name', 'last_name', 'age'],
@@ -234,3 +205,77 @@ If an exception is raised inside the ``with`` block, the transaction's
 
         transaction.delete('citizens',
             keyset['bharney@example.com', 'nonesuch@example.com'])
+ 
+    db.run_in_transaction(_unit_of_work)
+
+
+Use a Transaction as a Context Manager
+--------------------------------------
+
+Alternatively, you can use the :class:`Transaction` instance as a context
+manager.  The transaction's :meth:`~Transaction.commit` method will be called
+automatically if the ``with`` block exits without raising an exception.
+
+If an exception is raised inside the ``with`` block, the transaction's
+:meth:`~Transaction.rollback` method will automatically be called.
+
+.. code:: python
+
+    with database.transaction() as transaction:
+
+        transaction.insert(
+            'citizens', columns=['email', 'first_name', 'last_name', 'age'],
+            values=[
+                ['phred@exammple.com', 'Phred', 'Phlyntstone', 32],
+                ['bharney@example.com', 'Bharney', 'Rhubble', 31],
+            ])
+
+        transaction.update(
+            'citizens', columns=['email', 'age'],
+            values=[
+                ['phred@exammple.com', 33],
+                ['bharney@example.com', 32],
+            ])
+
+        ...
+
+        transaction.delete('citizens',
+            keyset['bharney@example.com', 'nonesuch@example.com'])
+
+
+Commit changes for a Transaction
+--------------------------------
+
+This function should not be used manually.  Rather, should consider using
+:meth:`~Database.run_in_transaction` or the context manager as described
+above.
+
+After  modifications to be made to table data via the
+:meth:`Transaction.insert`, :meth:`Transaction.update`,
+:meth:`Transaction.insert_or_update`, :meth:`Transaction.replace`, and
+:meth:`Transaction.delete` methods above, send them to
+the back-end by calling :meth:`Transaction.commit`, which makes the ``Commit``
+API call.
+
+.. code:: python
+
+    transaction.commit()
+
+
+Roll back changes for a Transaction
+-----------------------------------
+
+This function should not be used manually.  Rather, should consider using
+:meth:`~Database.run_in_transaction` or the context manager as described
+above.
+
+After describing the modifications to be made to table data via the
+:meth:`Transaction.insert`, :meth:`Transaction.update`,
+:meth:`Transaction.insert_or_update`, :meth:`Transaction.replace`, and
+:meth:`Transaction.delete` methods above, cancel the transaction on the
+the back-end by calling :meth:`Transaction.rollback`, which makes the
+``Rollback`` API call.
+
+.. code:: python
+
+    transaction.rollback()
