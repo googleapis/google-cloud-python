@@ -56,10 +56,13 @@ class SchemaField(object):
             google.cloud.biquery.schema.SchemaField:
                 The ``SchemaField`` object.
         """
+        # Handle optional properties with default values
+        mode = api_repr.get('mode', 'NULLABLE')
+        fields = api_repr.get('fields', ())
         return cls(
             field_type=api_repr['type'].upper(),
-            fields=[cls.from_api_repr(f) for f in api_repr.get('fields', ())],
-            mode=api_repr['mode'].upper(),
+            fields=[cls.from_api_repr(f) for f in fields],
+            mode=mode.upper(),
             name=api_repr['name'],
         )
 
