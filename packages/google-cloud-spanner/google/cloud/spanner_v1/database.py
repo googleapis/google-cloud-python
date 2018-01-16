@@ -245,6 +245,9 @@ class Database(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabase
 
+        :type ddl_statements: Sequence[str]
+        :param ddl_statements: a list of DDL statements to use on this database
+
         :rtype: :class:`google.api_core.operation.Operation`
         :returns: an operation instance
         :raises NotFound: if the database does not exist
