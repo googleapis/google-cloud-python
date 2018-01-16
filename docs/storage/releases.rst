@@ -17,6 +17,7 @@
 * ``1.4.0`` (`PyPI <https://pypi.org/project/google-cloud-storage/1.4.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/storage-1.4.0>`__)
 * ``1.5.0`` (`PyPI <https://pypi.org/project/google-cloud-storage/1.5.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/storage-1.5.0>`__)
 * ``1.6.0`` (`PyPI <https://pypi.org/project/google-cloud-storage/1.6.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/storage-1.6.0>`__)
+* ``1.7.0`` (`PyPI <https://pypi.org/project/google-cloud-storage/1.7.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/storage-1.7.0>`__)
 
 ***********************************
 ``google-resumable-media`` Releases
