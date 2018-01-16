@@ -56,6 +56,7 @@ class TestVariable(unittest.TestCase):
 
     def test_ctor(self):
         from google.cloud.runtimeconfig.config import Config
+        from google.cloud.runtimeconfig.variable import STATE_UNSPECIFIED
 
         client = _Client(project=self.PROJECT)
         config = Config(name=self.CONFIG_NAME, client=client)
@@ -63,6 +64,7 @@ class TestVariable(unittest.TestCase):
         self.assertEqual(variable.name, self.VARIABLE_NAME)
         self.assertEqual(variable.full_name, self.PATH)
         self.assertEqual(variable.path, '/%s' % (self.PATH,))
+        self.assertEqual(variable.state, STATE_UNSPECIFIED)
         self.assertIs(variable.client, client)
 
     def test_ctor_w_no_name(self):
