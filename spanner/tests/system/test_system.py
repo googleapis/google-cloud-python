@@ -59,6 +59,43 @@ COUNTERS_TABLE = 'counters'
 COUNTERS_COLUMNS = ('name', 'value')
 
 
+def _process(databases):
+    table = 'contacts'
+    columns = ('contact_id', 'first_name', 'last_name', 'email')
+    
+    client = Client()
+    pool = BurstyPool()
+    retry = RetryErrors(exceptions.ServiceUnavailable)    
+    configs = list(retry(client.list_instance_configs)())
+
+    # Defend against back-end returning configs for regions we aren't
+    # actually allowed to use.
+    configs = [config for config in configs if '-us-' in config.name]
+
+    if len(configs) < 1:
+        raise ValueError('List instance configs failed in module set up.')
+
+    config_name = configs[0].name
+    instance = client.instance(INSTANCE_ID, config_name)
+    database = instance.database(
+        databases, ddl_statements=DDL_STATEMENTS, pool=pool)
+
+    #removed a row here
+    row_data = (
+        (1, u'Phred', u'Phlyntstone', u'phred@example.com'),
+        (2, u'Bharney', u'Rhubble', u'bharney@example.com'),
+    )
+
+    with database.batch() as batch:
+        batch.delete(table, KeySet(all_=True))
+        batch.insert(table, columns, row_data)
+        
+    with database.snapshot() as snapshot:
+        rows = list(snapshot.read(table, columns, KeySet(all_=True)))
+
+    return rows
+
+
 class Config(object):
     """Run-time configuration to be modified at set-up.
 
@@ -393,6 +430,94 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
             rows = list(after.read(
                 COUNTERS_TABLE, COUNTERS_COLUMNS, self.ALL))
         self.assertEqual(len(rows), 2)
+
+    def test_multi_processing_map_transaction(self):
+        from multiprocessing import Pool
+        client = Client()
+        retry = RetryErrors(exceptions.ServiceUnavailable)
+        configs = list(retry(client.list_instance_configs)())
+
+        # Defend against back-end returning configs for regions we aren't
+        # actually allowed to use.
+        configs = [config for config in configs if '-us-' in config.name]
+        if len(configs) < 1:
+            raise ValueError('List instance configs failed in module set up.')
+
+        config_name = configs[0].name
+        instance = client.instance(INSTANCE_ID, config_name)
+        database_name = 'test_database' + unique_resource_id('_')
+        bursty_pool = BurstyPool()
+        database = instance.database(
+            database_name, ddl_statements=DDL_STATEMENTS, pool=bursty_pool)
+        try:
+            operation = database.create()
+            operation.result(30)  # raises on failure / timeout.
+            with database.batch() as batch:
+                batch.delete(self.TABLE, self.ALL)
+                batch.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
+            with database.snapshot() as snapshot:
+                rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
+            self._check_rows_data(rows, self.ROW_DATA)
+
+            processes = 3
+            pool = Pool(processes)
+            batches = [database_name] * processes
+            rows_list = pool.map(_process, batches)
+            pool.close()
+            pool.join()
+            self.assertEqual(len(rows_list), processes)
+            for rows in rows_list:
+                # removed a row in _process
+                self._check_rows_data(rows, self.ROW_DATA[:-1])
+        finally:
+            self.to_delete.append(database)
+
+    def test_multi_processing_starmap_transaction(self):
+        # python 3 only
+        import six
+        if six.PY2:
+            return
+
+        from multiprocessing import Pool
+        client = Client()
+        retry = RetryErrors(exceptions.ServiceUnavailable)
+        configs = list(retry(client.list_instance_configs)())
+
+        # Defend against back-end returning configs for regions we aren't
+        # actually allowed to use.
+        configs = [config for config in configs if '-us-' in config.name]
+
+        if len(configs) < 1:
+            raise ValueError('List instance configs failed in module set up.')
+
+        config_name = configs[0].name
+        instance = client.instance(INSTANCE_ID, config_name)
+        database_name = 'test_database' + unique_resource_id('_')
+        bursty_pool = BurstyPool()
+        database = instance.database(
+            database_name, ddl_statements=DDL_STATEMENTS, pool=bursty_pool)
+        try:
+            operation = database.create()
+            operation.result(30)  # raises on failure / timeout.
+            with database.batch() as batch:
+                batch.delete(self.TABLE, self.ALL)
+                batch.insert(self.TABLE, self.COLUMNS, self.ROW_DATA)
+            with database.snapshot() as snapshot:
+                rows = list(snapshot.read(self.TABLE, self.COLUMNS, self.ALL))
+            self._check_rows_data(rows, self.ROW_DATA)
+
+            processes = 3
+            pool = Pool(processes)
+            batches = [[database_name]] * processes
+            rows_list = pool.starmap(_process, batches)
+            pool.close()
+            pool.join()
+            self.assertEqual(len(rows_list), processes)
+            for rows in rows_list:
+                # removed a row in _process
+                self._check_rows_data(rows, self.ROW_DATA[:-1])
+        finally:
+            self.to_delete.append(database)
 
 
 class TestSessionAPI(unittest.TestCase, _TestData):
