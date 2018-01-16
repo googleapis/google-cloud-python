@@ -973,16 +973,16 @@ class Test_StructQueryParameter(unittest.TestCase):
         self.assertIn("'field1': 'hello'", got)
 
 
-class TestQueryResults(unittest.TestCase):
+class Test_QueryResults(unittest.TestCase):
     PROJECT = 'project'
     JOB_ID = 'test-synchronous-query'
     TOKEN = 'TOKEN'
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.query import QueryResults
+        from google.cloud.bigquery.query import _QueryResults
 
-        return QueryResults
+        return _QueryResults
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)

@@ -18,7 +18,7 @@ from six.moves import http_client
 import unittest
 try:
     import pandas
-except ImportError:  # pragma: NO COVER
+except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
 
 from google.cloud.bigquery.job import ExtractJobConfig, CopyJobConfig
@@ -92,7 +92,7 @@ class _Base(object):
 
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
-    DS_ID = 'datset_id'
+    DS_ID = 'dataset_id'
     DS_REF = DatasetReference(PROJECT, DS_ID)
     TABLE_ID = 'table_id'
     TABLE_REF = TableReference(DS_REF, TABLE_ID)
@@ -205,6 +205,41 @@ class _Base(object):
             self.assertEqual(job.user_email, self.USER_EMAIL)
         else:
             self.assertIsNone(job.user_email)
+
+
+class TestLoadJobConfig(unittest.TestCase, _Base):
+    JOB_TYPE = 'load'
+
+    def _make_resource(self, started=False, ended=False):
+        resource = super(TestLoadJobConfig, self)._make_resource(
+            started, ended)
+        config = resource['configuration']['load']
+        config['sourceUris'] = [self.SOURCE1]
+        config['destinationTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_ID,
+            'tableId': self.TABLE_ID,
+        }
+
+        return resource
+
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import LoadJobConfig
+        return LoadJobConfig
+
+    def test_schema(self):
+        from google.cloud.bigquery.schema import SchemaField
+        config = self._get_target_class()()
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        config.schema = [full_name, age]
+        self.assertEqual(config.schema, [full_name, age])
+
+    def test_api_repr(self):
+        resource = self._make_resource()
+        config = self._get_target_class().from_api_repr(resource)
+        self.assertEqual(config.to_api_repr(), resource)
 
 
 class TestLoadJob(unittest.TestCase, _Base):
@@ -2022,7 +2057,7 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(remote.dataset_id, 'other-dataset')
         self.assertEqual(remote.project, 'other-project-123')
 
-    def test_undeclared_query_paramters(self):
+    def test_undeclared_query_parameters(self):
         from google.cloud.bigquery.query import ArrayQueryParameter
         from google.cloud.bigquery.query import ScalarQueryParameter
         from google.cloud.bigquery.query import StructQueryParameter
@@ -2070,17 +2105,17 @@ class TestQueryJob(unittest.TestCase, _Base):
         }]
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, self.QUERY, client)
-        self.assertEqual(job.undeclared_query_paramters, [])
+        self.assertEqual(job.undeclared_query_parameters, [])
 
         statistics = job._properties['statistics'] = {}
-        self.assertEqual(job.undeclared_query_paramters, [])
+        self.assertEqual(job.undeclared_query_parameters, [])
 
         query_stats = statistics['query'] = {}
-        self.assertEqual(job.undeclared_query_paramters, [])
+        self.assertEqual(job.undeclared_query_parameters, [])
 
-        query_stats['undeclaredQueryParamters'] = undeclared
+        query_stats['undeclaredQueryParameters'] = undeclared
 
-        scalar, array, struct = job.undeclared_query_paramters
+        scalar, array, struct = job.undeclared_query_parameters
 
         self.assertIsInstance(scalar, ScalarQueryParameter)
         self.assertEqual(scalar.name, 'my_scalar')
@@ -2096,40 +2131,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         self.assertEqual(struct.name, 'my_struct')
         self.assertEqual(struct.struct_types, {'count': 'INT64'})
         self.assertEqual(struct.struct_values, {'count': 123})
-
-    def test_query_results(self):
-        from google.cloud.bigquery.query import QueryResults
-
-        query_resource = {
-            'jobComplete': True,
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-        }
-        connection = _Connection(query_resource)
-        client = _make_client(self.PROJECT, connection=connection)
-        job = self._make_one(self.JOB_ID, self.QUERY, client)
-        results = job.query_results()
-        self.assertIsInstance(results, QueryResults)
-
-    def test_query_results_w_cached_value(self):
-        from google.cloud.bigquery.query import QueryResults
-
-        client = _make_client(project=self.PROJECT)
-        job = self._make_one(self.JOB_ID, self.QUERY, client)
-        resource = {
-            'jobReference': {
-                'projectId': self.PROJECT,
-                'jobId': self.JOB_ID,
-            },
-        }
-        query_results = QueryResults(resource)
-        job._query_results = query_results
-
-        results = job.query_results()
-
-        self.assertIs(results, query_results)
 
     def test_result(self):
         query_resource = {

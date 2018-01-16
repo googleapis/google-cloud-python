@@ -18,6 +18,8 @@ import logging
 import threading
 import time
 
+import six
+
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher import futures
@@ -25,13 +27,17 @@ from google.cloud.pubsub_v1.publisher.batch import base
 
 
 _LOGGER = logging.getLogger(__name__)
+_CAN_COMMIT = (
+    base.BatchStatus.ACCEPTING_MESSAGES,
+    base.BatchStatus.STARTING,
+)
 
 
 class Batch(base.Batch):
     """A batch of messages.
 
     The batch is the internal group of messages which are either awaiting
-    publication or currently in-flight.
+    publication or currently in progress.
 
     A batch is automatically created by the PublisherClient when the first
     message to be published is received; subsequent messages are added to
@@ -63,26 +69,35 @@ class Batch(base.Batch):
     """
     def __init__(self, client, topic, settings, autocommit=True):
         self._client = client
+        self._topic = topic
+        self._settings = settings
 
-        # These objects are all communicated between threads; ensure that
-        # any writes to them are atomic.
+        self._state_lock = threading.Lock()
+        # These members are all communicated between threads; ensure that
+        # any writes to them use the "state lock" to remain atomic.
         self._futures = []
         self._messages = []
         self._size = 0
-        self._settings = settings
         self._status = base.BatchStatus.ACCEPTING_MESSAGES
-        self._topic = topic
 
         # If max latency is specified, start a thread to monitor the batch and
         # commit when the max latency is reached.
         self._thread = None
-        self._commit_lock = threading.Lock()
         if autocommit and self._settings.max_latency < float('inf'):
             self._thread = threading.Thread(
                 name='Thread-MonitorBatchPublisher',
                 target=self.monitor,
             )
             self._thread.start()
+
+    @staticmethod
+    def make_lock():
+        """Return a threading lock.
+
+        Returns:
+            _thread.Lock: A newly created lock.
+        """
+        return threading.Lock()
 
     @property
     def client(self):
@@ -127,20 +142,24 @@ class Batch(base.Batch):
     def commit(self):
         """Actually publish all of the messages on the active batch.
 
-        This synchronously sets the batch status to in-flight, and then opens
-        a new thread, which handles actually sending the messages to Pub/Sub.
-
         .. note::
 
             This method is non-blocking. It opens a new thread, which calls
             :meth:`_commit`, which does block.
+
+        This synchronously sets the batch status to "starting", and then opens
+        a new thread, which handles actually sending the messages to Pub/Sub.
+
+        If the current batch is **not** accepting messages, this method
+        does nothing.
         """
-        # Set the status to in-flight synchronously, to ensure that
+        # Set the status to "starting" synchronously, to ensure that
         # this batch will necessarily not accept new messages.
-        #
-        # Yes, this is repeated in `_commit`, because that method is called
-        # directly by `monitor`.
-        self._status = 'in-flight'
+        with self._state_lock:
+            if self._status == base.BatchStatus.ACCEPTING_MESSAGES:
+                self._status = base.BatchStatus.STARTING
+            else:
+                return
 
         # Start a new thread to actually handle the commit.
         commit_thread = threading.Thread(
@@ -152,7 +171,7 @@ class Batch(base.Batch):
     def _commit(self):
         """Actually publish all of the messages on the active batch.
 
-        This moves the batch out from being the active batch to an in-flight
+        This moves the batch out from being the active batch to an in progress
         batch on the publisher, and then the batch is discarded upon
         completion.
 
@@ -161,49 +180,48 @@ class Batch(base.Batch):
             This method blocks. The :meth:`commit` method is the non-blocking
             version, which calls this one.
         """
-        with self._commit_lock:
-            # If, in the intervening period, the batch started to be committed,
-            # or completed a commit, then no-op at this point.
-            if self._status != base.BatchStatus.ACCEPTING_MESSAGES:
+        with self._state_lock:
+            if self._status in _CAN_COMMIT:
+                self._status = base.BatchStatus.IN_PROGRESS
+            else:
+                # If, in the intervening period between when this method was
+                # called and now, the batch started to be committed, or
+                # completed a commit, then no-op at this point.
+                _LOGGER.debug('Batch is already in progress, exiting commit')
                 return
-
-            # Update the status.
-            self._status = 'in-flight'
 
             # Sanity check: If there are no messages, no-op.
             if not self._messages:
+                _LOGGER.debug('No messages to publish, exiting commit')
+                self._status = base.BatchStatus.SUCCESS
                 return
 
             # Begin the request to publish these messages.
             # Log how long the underlying request takes.
             start = time.time()
-            response = self.client.api.publish(
+            response = self._client.api.publish(
                 self._topic,
-                self.messages,
+                self._messages,
             )
             end = time.time()
-            _LOGGER.debug('gRPC Publish took {s} seconds.'.format(
-                s=end - start,
-            ))
+            _LOGGER.debug('gRPC Publish took %s seconds.', end - start)
 
-            # We got a response from Pub/Sub; denote that we are processing.
-            self._status = 'processing results'
-
-            # Sanity check: If the number of message IDs is not equal to the
-            # number of futures I have, then something went wrong.
-            if len(response.message_ids) != len(self._futures):
+            if len(response.message_ids) == len(self._futures):
+                # Iterate over the futures on the queue and return the response
+                # IDs. We are trusting that there is a 1:1 mapping, and raise
+                # an exception if not.
+                self._status = base.BatchStatus.SUCCESS
+                zip_iter = six.moves.zip(response.message_ids, self._futures)
+                for message_id, future in zip_iter:
+                    future.set_result(message_id)
+            else:
+                # Sanity check: If the number of message IDs is not equal to
+                # the number of futures I have, then something went wrong.
+                self._status = base.BatchStatus.ERROR
+                exception = exceptions.PublishError(
+                    'Some messages were not successfully published.')
                 for future in self._futures:
-                    future.set_exception(exceptions.PublishError(
-                        'Some messages were not successfully published.',
-                    ))
-                return
-
-            # Iterate over the futures on the queue and return the response
-            # IDs. We are trusting that there is a 1:1 mapping, and raise an
-            # exception if not.
-            self._status = base.BatchStatus.SUCCESS
-            for message_id, future in zip(response.message_ids, self._futures):
-                future.set_result(message_id)
+                    future.set_exception(exception)
 
     def monitor(self):
         """Commit this batch after sufficient time has elapsed.
@@ -211,13 +229,13 @@ class Batch(base.Batch):
         This simply sleeps for ``self._settings.max_latency`` seconds,
         and then calls commit unless the batch has already been committed.
         """
-        # Note: This thread blocks; it is up to the calling code to call it
-        # in a separate thread.
-        #
+        # NOTE: This blocks; it is up to the calling code to call it
+        #       in a separate thread.
+
         # Sleep for however long we should be waiting.
         time.sleep(self._settings.max_latency)
 
-        # Commit.
+        _LOGGER.debug('Monitor is waking up')
         return self._commit()
 
     def publish(self, message):
@@ -233,24 +251,34 @@ class Batch(base.Batch):
             message (~.pubsub_v1.types.PubsubMessage): The Pub/Sub message.
 
         Returns:
-            ~google.api_core.future.Future: An object conforming to
-                the :class:`concurrent.futures.Future` interface.
+            Optional[~google.api_core.future.Future]: An object conforming to
+            the :class:`~concurrent.futures.Future` interface or :data:`None`.
+            If :data:`None` is returned, that signals that the batch cannot
+            accept a message.
         """
         # Coerce the type, just in case.
         if not isinstance(message, types.PubsubMessage):
             message = types.PubsubMessage(**message)
 
-        # Add the size to the running total of the size, so we know
-        # if future messages need to be rejected.
-        self._size += message.ByteSize()
+        with self._state_lock:
+            if not self.will_accept(message):
+                return None
 
-        # Store the actual message in the batch's message queue.
-        self._messages.append(message)
-        if len(self._messages) >= self.settings.max_messages:
+            # Add the size to the running total of the size, so we know
+            # if future messages need to be rejected.
+            self._size += message.ByteSize()
+            # Store the actual message in the batch's message queue.
+            self._messages.append(message)
+            # Track the future on this batch (so that the result of the
+            # future can be set).
+            future = futures.Future(completed=threading.Event())
+            self._futures.append(future)
+            # Determine the number of messages before releasing the lock.
+            num_messages = len(self._messages)
+
+        # Try to commit, but it must be **without** the lock held, since
+        # ``commit()`` will try to obtain the lock.
+        if num_messages >= self._settings.max_messages:
             self.commit()
 
-        # Return a Future. That future needs to be aware of the status
-        # of this batch.
-        f = futures.Future()
-        self._futures.append(f)
-        return f
+        return future

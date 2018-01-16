@@ -17,7 +17,6 @@ from __future__ import absolute_import
 import copy
 import os
 import pkg_resources
-import threading
 
 import grpc
 import six
@@ -44,16 +43,21 @@ class Client(object):
     Args:
         batch_settings (~google.cloud.pubsub_v1.types.BatchSettings): The
             settings for batch publishing.
-        batch_class (class): A class that describes how to handle
+        batch_class (Optional[Type]): A class that describes how to handle
             batches. You may subclass the
             :class:`.pubsub_v1.publisher.batch.base.BaseBatch` class in
             order to define your own batcher. This is primarily provided to
             allow use of different concurrency models; the default
-            is based on :class:`threading.Thread`.
+            is based on :class:`threading.Thread`. This class should also have
+            a class method (or static method) that takes no arguments and
+            produces a lock that can be used as a context manager.
         kwargs (dict): Any additional arguments provided are sent as keyword
             arguments to the underlying
             :class:`~.gapic.pubsub.v1.publisher_client.PublisherClient`.
             Generally, you should not need to set additional keyword arguments.
+            Before being passed along to the GAPIC constructor, a channel may
+            be added if ``credentials`` are passed explicitly or if the
+            Pub / Sub emulator is detected as running.
     """
     def __init__(self, batch_settings=(), batch_class=thread.Batch, **kwargs):
         # Sanity check: Is our goal to use the emulator?
@@ -86,7 +90,7 @@ class Client(object):
         # The batches on the publisher client are responsible for holding
         # messages. One batch exists for each topic.
         self._batch_class = batch_class
-        self._batch_lock = threading.Lock()
+        self._batch_lock = batch_class.make_lock()
         self._batches = {}
 
     @property
@@ -98,19 +102,21 @@ class Client(object):
         """
         return publisher_client.PublisherClient.SERVICE_ADDRESS
 
-    def batch(self, topic, message, create=True, autocommit=True):
+    def batch(self, topic, create=False, autocommit=True):
         """Return the current batch for the provided topic.
 
-        This will create a new batch only if no batch currently exists.
+        This will create a new batch if ``create=True`` or if no batch
+        currently exists.
 
         Args:
             topic (str): A string representing the topic.
-            message (~google.cloud.pubsub_v1.types.PubsubMessage): The message
-                that will be committed.
-            create (bool): Whether to create a new batch if no batch is
-                found. Defaults to True.
-            autocommit (bool): Whether to autocommit this batch.
-                This is primarily useful for debugging.
+            create (bool): Whether to create a new batch. Defaults to
+                :data:`False`. If :data:`True`, this will create a new batch
+                even if one already exists.
+            autocommit (bool): Whether to autocommit this batch. This is
+                primarily useful for debugging and testing, since it allows
+                the caller to avoid some side effects that batch creation
+                might have (e.g. spawning a worker to publish a batch).
 
         Returns:
             ~.pubsub_v1.batch.Batch: The batch object.
@@ -118,10 +124,12 @@ class Client(object):
         # If there is no matching batch yet, then potentially create one
         # and place it on the batches dictionary.
         with self._batch_lock:
-            batch = self._batches.get(topic, None)
-            if batch is None or not batch.will_accept(message):
-                if not create:
-                    return None
+            if not create:
+                batch = self._batches.get(topic)
+                if batch is None:
+                    create = True
+
+            if create:
                 batch = self._batch_class(
                     autocommit=autocommit,
                     client=self,
@@ -130,7 +138,6 @@ class Client(object):
                 )
                 self._batches[topic] = batch
 
-        # Simply return the appropriate batch.
         return batch
 
     def publish(self, topic, data, **attrs):
@@ -190,4 +197,11 @@ class Client(object):
         message = types.PubsubMessage(data=data, attributes=attrs)
 
         # Delegate the publishing to the batch.
-        return self.batch(topic, message=message).publish(message)
+        batch = self.batch(topic)
+        future = None
+        while future is None:
+            future = batch.publish(message)
+            if future is None:
+                batch = self.batch(topic, create=True)
+
+        return future

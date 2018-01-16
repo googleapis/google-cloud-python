@@ -674,6 +674,9 @@ class LoadJobConfig(object):
         config._properties = copy.deepcopy(resource)
         config.schema = _parse_schema_resource(schema)
         config.skip_leading_rows = _int_or_none(slr)
+        if config.skip_leading_rows is None:
+            del config.skip_leading_rows
+        return config
 
 
 class LoadJob(_AsyncJob):
@@ -1765,7 +1768,7 @@ class QueryJob(_AsyncJob):
 
     @property
     def cache_hit(self):
-        """Return billing tier from job statistics, if present.
+        """Return whether or not query results were served from cache.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.cacheHit
@@ -1835,11 +1838,11 @@ class QueryJob(_AsyncJob):
         return tables
 
     @property
-    def undeclared_query_paramters(self):
+    def undeclared_query_parameters(self):
         """Return undeclared query parameters from job statistics, if present.
 
         See:
-        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParamters
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.undeclaredQueryParameters
 
         :rtype:
             list of
@@ -1850,7 +1853,8 @@ class QueryJob(_AsyncJob):
                   not yet completed.
         """
         parameters = []
-        undeclared = self._job_statistics().get('undeclaredQueryParamters', ())
+        undeclared = self._job_statistics().get(
+            'undeclaredQueryParameters', ())
 
         for parameter in undeclared:
             p_type = parameter['parameterType']
@@ -1865,20 +1869,6 @@ class QueryJob(_AsyncJob):
             parameters.append(klass.from_api_repr(parameter))
 
         return parameters
-
-    def query_results(self, retry=DEFAULT_RETRY):
-        """Construct a QueryResults instance, bound to this job.
-
-        :type retry: :class:`google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-        :rtype: :class:`~google.cloud.bigquery.QueryResults`
-        :returns: results instance
-        """
-        if not self._query_results:
-            self._query_results = self._client._get_query_results(
-                self.job_id, retry, project=self.project)
-        return self._query_results
 
     def done(self, retry=DEFAULT_RETRY):
         """Refresh the job and checks if it is complete.
@@ -1944,7 +1934,10 @@ class QueryJob(_AsyncJob):
         """
         super(QueryJob, self).result(timeout=timeout)
         # Return an iterator instead of returning the job.
-        schema = self.query_results().schema
+        if not self._query_results:
+            self._query_results = self._client._get_query_results(
+                self.job_id, retry, project=self.project)
+        schema = self._query_results.schema
         dest_table = self.destination
         return self._client.list_rows(dest_table, selected_fields=schema,
                                       retry=retry)
@@ -2013,25 +2006,25 @@ class QueryPlanEntry(object):
     :param wait_ratio_avg: average wait ratio
 
     :type wait_ratio_max: float
-    :param wait_ratio_avg: maximum wait ratio
+    :param wait_ratio_max: maximum wait ratio
 
     :type read_ratio_avg: float
     :param read_ratio_avg: average read ratio
 
     :type read_ratio_max: float
-    :param read_ratio_avg: maximum read ratio
+    :param read_ratio_max: maximum read ratio
 
-    :type copute_ratio_avg: float
-    :param copute_ratio_avg: average copute ratio
+    :type compute_ratio_avg: float
+    :param compute_ratio_avg: average compute ratio
 
-    :type copute_ratio_max: float
-    :param copute_ratio_avg: maximum copute ratio
+    :type compute_ratio_max: float
+    :param compute_ratio_max: maximum compute ratio
 
     :type write_ratio_avg: float
     :param write_ratio_avg: average write ratio
 
     :type write_ratio_max: float
-    :param write_ratio_avg: maximum write ratio
+    :param write_ratio_max: maximum write ratio
 
     :type records_read: int
     :param records_read: number of records read

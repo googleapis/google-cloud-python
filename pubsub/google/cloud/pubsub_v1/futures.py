@@ -15,6 +15,7 @@
 from __future__ import absolute_import
 
 import threading
+import uuid
 
 import google.api_core.future
 from google.cloud.pubsub_v1.publisher import exceptions
@@ -28,14 +29,29 @@ class Future(google.api_core.future.Future):
 
     This object should not be created directly, but is returned by other
     methods in this library.
-    """
-    _SENTINEL = object()
 
-    def __init__(self):
+    Args:
+        completed (Optional[Any]): An event, with the same interface as
+            :class:`threading.Event`. This is provided so that callers
+            with different concurrency models (e.g. ``threading`` or
+            ``multiprocessing``) can supply an event that is compatible
+            with that model. The ``wait()`` and ``set()`` methods will be
+            used. If this argument is not provided, then a new
+            :class:`threading.Event` will be created and used.
+    """
+
+    # This could be a sentinel object or None, but the sentinel object's ID
+    # can change if the process is forked, and None has the possibility of
+    # actually being a result.
+    _SENTINEL = uuid.uuid4()
+
+    def __init__(self, completed=None):
         self._result = self._SENTINEL
         self._exception = self._SENTINEL
         self._callbacks = []
-        self._completed = threading.Event()
+        if completed is None:
+            completed = threading.Event()
+        self._completed = completed
 
     def cancel(self):
         """Actions in Pub/Sub generally may not be canceled.
@@ -68,8 +84,8 @@ class Future(google.api_core.future.Future):
         This still returns True in failure cases; checking :meth:`result` or
         :meth:`exception` is the canonical way to assess success or failure.
         """
-        return (self._exception is not self._SENTINEL or
-                self._result is not self._SENTINEL)
+        return (self._exception != self._SENTINEL or
+                self._result != self._SENTINEL)
 
     def result(self, timeout=None):
         """Return the message ID, or raise an exception.
@@ -118,7 +134,7 @@ class Future(google.api_core.future.Future):
             raise exceptions.TimeoutError('Timed out waiting for result.')
 
         # If the batch completed successfully, this should return None.
-        if self._result is not self._SENTINEL:
+        if self._result != self._SENTINEL:
             return None
 
         # Okay, this batch had an error; this should return it.

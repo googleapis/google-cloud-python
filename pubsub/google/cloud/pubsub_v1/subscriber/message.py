@@ -14,8 +14,35 @@
 
 from __future__ import absolute_import
 
+import json
 import math
 import time
+
+
+_MESSAGE_REPR = """\
+Message {{
+  data: {!r}
+  attributes: {}
+}}"""
+
+
+def _indent(lines, prefix='  '):
+    """Indent some text.
+
+    Note that this is present as ``textwrap.indent``, but not in Python 2.
+
+    Args:
+        lines (str): The newline delimited string to be indented.
+        prefix (Optional[str]): The prefix to indent each line with. Default
+            to two spaces.
+
+    Returns:
+        str: The newly indented content.
+    """
+    indented = []
+    for line in lines.split('\n'):
+        indented.append(prefix + line)
+    return '\n'.join(indented)
 
 
 class Message(object):
@@ -26,14 +53,15 @@ class Message(object):
     them in callbacks on subscriptions; most users should never have a need
     to instantiate them by hand. (The exception to this is if you are
     implementing a custom subclass to
-    :class:`~.pubsub_v1.subscriber.consumer.BaseConsumer`.)
+    :class:`~.pubsub_v1.subscriber._consumer.Consumer`.)
 
     Attributes:
         message_id (str): The message ID. In general, you should not need
             to use this directly.
         data (bytes): The data in the message. Note that this will be a
             :class:`bytes`, not a text string.
-        attributes (dict): The attributes sent along with the message.
+        attributes (.ScalarMapContainer): The attributes sent along with the
+            message. See :attr:`attributes` for more information on this type.
         publish_time (datetime): The time that this message was originally
             published.
     """
@@ -72,21 +100,35 @@ class Message(object):
         # Get an abbreviated version of the data.
         abbv_data = self._message.data
         if len(abbv_data) > 50:
-            abbv_data = abbv_data[0:50] + b'...'
+            abbv_data = abbv_data[:50] + b'...'
 
-        # Return a useful representation.
-        answer = 'Message {\n'
-        answer += '    data: {0!r}\n'.format(abbv_data)
-        answer += '    attributes: {0!r}\n'.format(self.attributes)
-        answer += '}'
-        return answer
+        pretty_attrs = json.dumps(
+            dict(self.attributes),
+            indent=2,
+            separators=(',', ': '),
+            sort_keys=True,
+        )
+        pretty_attrs = _indent(pretty_attrs)
+        # We don't actually want the first line indented.
+        pretty_attrs = pretty_attrs.lstrip()
+        return _MESSAGE_REPR.format(abbv_data, pretty_attrs)
 
     @property
     def attributes(self):
         """Return the attributes of the underlying Pub/Sub Message.
 
+        .. warning::
+
+            A ``ScalarMapContainer`` behaves slightly differently than a
+            ``dict``. For a Pub / Sub message this is a ``string->string`` map.
+            When trying to access a value via ``map['key']``, if the key is
+            not in the map, then the default value for the string type will
+            be returned, which is an empty string. It may be more intuitive
+            to just cast the map to a ``dict`` or to one use ``map.get``.
+
         Returns:
-            dict: The message's attributes.
+            .ScalarMapContainer: The message's attributes. This is a
+            ``dict``-like object provided by ``google.protobuf``.
         """
         return self._message.attributes
 
@@ -186,7 +228,7 @@ class Message(object):
         The default implementation handles this for you; you should not need
         to manually deal with setting ack deadlines. The exception case is
         if you are implementing your own custom subclass of
-        :class:`~.pubsub_v1.subcriber.consumer.BaseConsumer`.
+        :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
 
         .. note::
             This is not an extension; it *sets* the deadline to the given

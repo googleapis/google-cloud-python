@@ -4,6 +4,109 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## 0.30.1
+
+### Notable Implementation Changes
+
+- Moving lock factory used in publisher client to the Batch
+  implementation (#4628).
+- Use a UUID (rather than a sentinel object) on `Future` (#4634).
+- Apply scopes to explicitly provided credentials if needed (#4594).
+  Fixes #4479. This feature comes as part of `google-api-core==0.1.3`.
+
+### Dependencies
+
+- Upgrading to `google-api-core==0.1.3` which depends on the latest
+  `grpcio==1.8.2` (#4642). This fixes #4600. For details, see related
+  gRPC [bug](https://github.com/grpc/grpc/issues/9688) and
+  [fix](https://github.com/grpc/grpc/pull/13665).
+
+PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.1/
+
+## 0.30.0
+
+### Notable Implementation Changes
+
+- Dropping redundant `Policy._paused` data member (#4568).
+- Removing redundant "active" check in policy (#4603).
+- Adding a `Consumer.active` property (#4604).
+- Making it impossible to call `Policy.open()` on an already opened
+  policy (#4606).
+- **Bug fix** (#4575): Fix bug with async publish for batches. There
+  were two related bugs. The first: if a batch exceeds the `max_messages`
+  from the batch settings, then the `commit()` will fail. The second:
+  when a "monitor" worker calls `commit()` after `max_latency` seconds,
+  a failure can occur if a new message is added to the batch **during**
+  the commit. To fix, the following changes were implemented:
+  - Adding a "STARTING" status for `Batch.commit()` (#4614). This
+    fixes the issue when the batch exceeds `max_messages`.
+  - Adding extra check in `Batch.will_accept` for the number of
+    messages (#4612).
+  - Moving `will_accept()` check out of `PublisherClient.batch()`
+    factory (#4613).
+  - Checking `Batch.will_accept` in thread-safe way (#4616).
+- **Breaking API change**: As part of #4613, changing `PublisherClient.batch()`
+  to no longer accept a `message` (since the `will_accept` check needs to
+  happen in a more concurrency friendly way). In addition, changing the
+  `create` argument so that it means "create even if batch already exists"
+  rather than "create if missing".
+
+### Documentation
+
+- Add more explicit documentation for `Message.attributes` (#4601).
+- Make `Message.__repr__` a bit prettier / more useful (#4602).
+
+PyPI: https://pypi.org/project/google-cloud-pubsub/0.30.0/
+
+## 0.29.4
+
+### Notable Implementation Changes
+
+- **Bug fix**: Restore previous behavior of the subscription lease
+  maintenance worker. This was accidentally "stopped" in `0.29.3`
+  due to a change in implementation that went from an `active`
+  boolean to an "inactive" / `stopped` boolean, so `True` became
+  `False` and vice-versa (#4564).
+
+PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.4/
+
+## 0.29.3
+
+### Notable Implementation Changes
+
+- In subscription consumer thread: Making sure the request generator
+  attached to an inactive bidirectional streaming pull is stopped before
+  spawning a new request generator. This way we have a (fairly strong)
+  guarantee that requests in the queue don't get sent into an inactive
+  stream (#4503, #4554).
+- Adding `pause` / `resume` to subscription consumer thread and using these
+  methods during flow control. The previous implementation tried to close the
+  subscription (which involved 3 worker threads and 10 executors in a thread
+  pool) and then re-open a new subscription. But, this was not entirely
+  possible to shut down correctly from **within** one of the worker threads.
+  Instead, we only pause the worker (of the 3) that is pulling new responses
+  from the bidirectional streaming pull (#4558).
+- **Bug fix** (#4516): Using `max` where `min` was used by mistake to
+  ensure the number of bytes tracked for subscription flow control
+  remained non-negative (#4514).
+- Raising `TypeError` if `SubscriberClient.subscribe` receives a
+  non-callable callback (#4497).
+- Shutting down thread pool executor when closing a subscriber
+  policy (#4522).
+- Renaming `Policy.on_callback_request` to `Policy.dispatch_callback`
+  and making the behavior much less dynamic (#4511).
+- Make sure subscription consumer thread doesn't try to join itself
+  when exiting in error (#4540).
+
+### Dependencies
+
+- Upgrading `google-api-core` dependency to latest revision (`0.1.2`)
+  since we rely on the latest version of the `concurrent.futures` backport
+  to provide the `thread_name_prefix` argument for thread pool
+  executor (#4521, #4559).
+
+PyPI: https://pypi.org/project/google-cloud-pubsub/0.29.3/
+
 ## 0.29.2
 
 ### Notable Implementation Changes

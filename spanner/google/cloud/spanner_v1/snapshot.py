@@ -24,7 +24,7 @@ from google.api_core.exceptions import ServiceUnavailable
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud._helpers import _timedelta_to_duration_pb
 from google.cloud.spanner_v1._helpers import _make_value_pb
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1.streamed import StreamedResultSet
 
@@ -115,14 +115,14 @@ class _SnapshotBase(_SessionWrapper):
 
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
 
         restart = functools.partial(
             api.streaming_read,
             self._session.name, table, columns, keyset.to_pb(),
             transaction=transaction, index=index, limit=limit,
-            options=options)
+            metadata=metadata)
 
         iterator = _restart_on_unavailable(restart)
 
@@ -175,7 +175,7 @@ class _SnapshotBase(_SessionWrapper):
             params_pb = None
 
         database = self._session._database
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
         api = database.spanner_api
 
@@ -183,7 +183,7 @@ class _SnapshotBase(_SessionWrapper):
             api.execute_streaming_sql,
             self._session.name, sql,
             transaction=transaction, params=params_pb, param_types=param_types,
-            query_mode=query_mode, options=options)
+            query_mode=query_mode, metadata=metadata)
 
         iterator = _restart_on_unavailable(restart)
 
@@ -290,7 +290,7 @@ class Snapshot(_SnapshotBase):
             if the transaction is already begun, committed, or rolled back.
         """
         if not self._multi_use:
-            raise ValueError("Cannot call 'begin' single-use snapshots")
+            raise ValueError("Cannot call 'begin' on single-use snapshots")
 
         if self._transaction_id is not None:
             raise ValueError("Read-only transaction already begun")
@@ -300,9 +300,9 @@ class Snapshot(_SnapshotBase):
 
         database = self._session._database
         api = database.spanner_api
-        options = _options_with_prefix(database.name)
+        metadata = _metadata_with_prefix(database.name)
         txn_selector = self._make_txn_selector()
         response = api.begin_transaction(
-            self._session.name, txn_selector.begin, options=options)
+            self._session.name, txn_selector.begin, metadata=metadata)
         self._transaction_id = response.id
         return self._transaction_id

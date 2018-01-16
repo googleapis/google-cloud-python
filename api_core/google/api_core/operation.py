@@ -53,8 +53,8 @@ class Operation(polling.PollingFuture):
     Args:
         operation (google.longrunning.operations_pb2.Operation): The
             initial operation.
-        refresh (Callable[[], Operation]): A callable that returns the
-            latest state of the operation.
+        refresh (Callable[[], ~.api_core.operation.Operation]): A callable that
+            returns the latest state of the operation.
         cancel (Callable[[], None]): A callable that tries to cancel
             the operation.
         result_type (func:`type`): The protobuf type for the operation's
@@ -205,7 +205,8 @@ def from_http_json(operation, api_request, result_type, **kwargs):
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
-        Operation: The operation future to track the given operation.
+        ~.api_core.operation.Operation: The operation future to track the given
+            operation.
     """
     operation_proto = json_format.ParseDict(
         operation, operations_pb2.Operation())
@@ -261,7 +262,8 @@ def from_grpc(operation, operations_stub, result_type, **kwargs):
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
-        Operation: The operation future to track the given operation.
+        ~.api_core.operation.Operation: The operation future to track the given
+            operation.
     """
     refresh = functools.partial(
         _refresh_grpc, operations_stub, operation.name)
@@ -288,7 +290,8 @@ def from_gapic(operation, operations_client, result_type, **kwargs):
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
-        Operation: The operation future to track the given operation.
+        ~.api_core.operation.Operation: The operation future to track the given
+            operation.
     """
     refresh = functools.partial(
         operations_client.get_operation, operation.name)

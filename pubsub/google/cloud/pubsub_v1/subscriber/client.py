@@ -97,7 +97,7 @@ class Client(object):
         """Return a representation of an individual subscription.
 
         This method creates and returns a ``Consumer`` object (that is, a
-        :class:`~.pubsub_v1.subscriber.consumer.base.BaseConsumer`)
+        :class:`~.pubsub_v1.subscriber._consumer.Consumer`)
         subclass) bound to the topic. It does `not` create the subcription
         on the backend (or do any API call at all); it simply returns an
         object capable of doing these things.
@@ -122,7 +122,7 @@ class Client(object):
                 inundated with too many messages at once.
 
         Returns:
-            ~.pubsub_v1.subscriber.consumer.base.BaseConsumer: An instance
+            ~.pubsub_v1.subscriber._consumer.Consumer: An instance
                 of the defined ``consumer_class`` on the client.
 
         Raises:

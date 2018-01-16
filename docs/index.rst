@@ -5,7 +5,10 @@
   releases
   core/index
   bigquery/usage
+  bigquery_datatransfer/index
   bigtable/usage
+  container/index
+  dataproc/index
   datastore/usage
   dns/usage
   firestore/index

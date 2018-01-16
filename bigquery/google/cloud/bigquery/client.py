@@ -20,6 +20,7 @@ import collections
 import functools
 import os
 import uuid
+import warnings
 
 import six
 
@@ -42,7 +43,7 @@ from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import QueryJob, QueryJobConfig
-from google.cloud.bigquery.query import QueryResults
+from google.cloud.bigquery.query import _QueryResults
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
@@ -92,25 +93,28 @@ class Project(object):
 class Client(ClientWithProject):
     """Client to bundle configuration needed for API requests.
 
-    :type project: str
-    :param project: the project which the client acts on behalf of. Will be
-                    passed when creating a dataset / job.  If not passed,
-                    falls back to the default inferred from the environment.
+    Args:
+        project (str):
+            Project ID for the project which the client acts on behalf of.
+            Will be passed when creating a dataset / job. If not passed,
+            falls back to the default inferred from the environment.
+        credentials (google.auth.credentials.Credentials):
+            (Optional) The OAuth2 Credentials to use for this client. If not
+            passed (and if no ``_http`` object is passed), falls back to the
+            default inferred from the environment.
+        _http (requests.Session):
+            (Optional) HTTP object to make requests. Can be any object that
+            defines ``request()`` with the same interface as
+            :meth:`requests.Session.request`. If not passed, an ``_http``
+            object is created that is bound to the ``credentials`` for the
+            current object.
+            This parameter should be considered private, and could change in
+            the future.
 
-    :type credentials: :class:`~google.auth.credentials.Credentials`
-    :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        client. If not passed (and if no ``_http`` object is
-                        passed), falls back to the default inferred from the
-                        environment.
-
-    :type _http: :class:`~requests.Session`
-    :param _http: (Optional) HTTP object to make requests. Can be any object
-                  that defines ``request()`` with the same interface as
-                  :meth:`requests.Session.request`. If not passed, an
-                  ``_http`` object is created that is bound to the
-                  ``credentials`` for the current object.
-                  This parameter should be considered private, and could
-                  change in the future.
+    Raises:
+        google.auth.exceptions.DefaultCredentialsError:
+            Raised if ``credentials`` is not specified and the library fails
+            to acquire default credentials.
     """
 
     SCOPE = ('https://www.googleapis.com/auth/bigquery',
@@ -389,8 +393,8 @@ class Client(ClientWithProject):
             method='PATCH', path=table.path, data=partial, headers=headers)
         return Table.from_api_repr(api_response)
 
-    def list_dataset_tables(self, dataset, max_results=None, page_token=None,
-                            retry=DEFAULT_RETRY):
+    def list_tables(self, dataset, max_results=None, page_token=None,
+                    retry=DEFAULT_RETRY):
         """List tables in the dataset.
 
         See
@@ -432,7 +436,18 @@ class Client(ClientWithProject):
         result.dataset = dataset
         return result
 
-    def delete_dataset(self, dataset, retry=DEFAULT_RETRY):
+    def list_dataset_tables(self, *args, **kwargs):
+        """DEPRECATED: List tables in the dataset.
+
+        Use :func:`~google.cloud.bigquery.client.Client.list_tables` instead.
+        """
+        warnings.warn(
+            'list_dataset_tables is deprecated, use list_tables instead.',
+            DeprecationWarning)
+        return self.list_tables(*args, **kwargs)
+
+    def delete_dataset(self, dataset, delete_contents=False,
+                       retry=DEFAULT_RETRY):
         """Delete a dataset.
 
         See
@@ -441,15 +456,27 @@ class Client(ClientWithProject):
         :type dataset: One of:
                        :class:`~google.cloud.bigquery.dataset.Dataset`
                        :class:`~google.cloud.bigquery.dataset.DatasetReference`
+        :param dataset: the dataset to delete, or a reference to it.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
 
-        :param dataset: the dataset to delete, or a reference to it.
+        :type delete_contents: boolean
+        :param delete_contents: (Optional) If True, delete all the tables
+             in the dataset. If False and the dataset contains tables, the
+             request will fail. Default is False
         """
         if not isinstance(dataset, (Dataset, DatasetReference)):
             raise TypeError('dataset must be a Dataset or a DatasetReference')
-        self._call_api(retry, method='DELETE', path=dataset.path)
+
+        params = {}
+        if delete_contents:
+            params['deleteContents'] = 'true'
+
+        self._call_api(retry,
+                       method='DELETE',
+                       path=dataset.path,
+                       query_params=params)
 
     def delete_table(self, table, retry=DEFAULT_RETRY):
         """Delete a table
@@ -488,8 +515,8 @@ class Client(ClientWithProject):
             (Optional) number of milliseconds the the API call should wait for
             the query to complete before the request times out.
 
-        :rtype: :class:`google.cloud.bigquery.query.QueryResults`
-        :returns: a new ``QueryResults`` instance
+        :rtype: :class:`google.cloud.bigquery.query._QueryResults`
+        :returns: a new ``_QueryResults`` instance
         """
 
         extra_params = {'maxResults': 0}
@@ -507,7 +534,7 @@ class Client(ClientWithProject):
         # QueryJob.result()). So we don't need to poll here.
         resource = self._call_api(
             retry, method='GET', path=path, query_params=extra_params)
-        return QueryResults.from_api_repr(resource)
+        return _QueryResults.from_api_repr(resource)
 
     def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
@@ -996,8 +1023,8 @@ class Client(ClientWithProject):
         job._begin(retry=retry)
         return job
 
-    def create_rows(self, table, rows, selected_fields=None, **kwargs):
-        """API call:  insert table data via a POST request
+    def insert_rows(self, table, rows, selected_fields=None, **kwargs):
+        """Insert rows into a table via the streaming API.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
@@ -1062,12 +1089,12 @@ class Client(ClientWithProject):
 
             json_rows.append(json_row)
 
-        return self.create_rows_json(table, json_rows, **kwargs)
+        return self.insert_rows_json(table, json_rows, **kwargs)
 
-    def create_rows_json(self, table, json_rows, row_ids=None,
+    def insert_rows_json(self, table, json_rows, row_ids=None,
                          skip_invalid_rows=None, ignore_unknown_values=None,
                          template_suffix=None, retry=DEFAULT_RETRY):
-        """API call:  insert table data via a POST request
+        """Insert rows into a table without applying local type conversions.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tabledata/insertAll
@@ -1150,6 +1177,27 @@ class Client(ClientWithProject):
                            'errors': error['errors']})
 
         return errors
+
+    def create_rows(self, *args, **kwargs):
+        """DEPRECATED: Insert rows into a table via the streaming API.
+
+        Use :func:`~google.cloud.bigquery.client.Client.insert_rows` instead.
+        """
+        warnings.warn(
+            'create_rows is deprecated, use insert_rows instead.',
+            DeprecationWarning)
+        return self.insert_rows(*args, **kwargs)
+
+    def create_rows_json(self, *args, **kwargs):
+        """DEPRECATED: Insert rows into a table without type conversions.
+
+        Use :func:`~google.cloud.bigquery.client.Client.insert_rows_json`
+        instead.
+        """
+        warnings.warn(
+            'create_rows_json is deprecated, use insert_rows_json instead.',
+            DeprecationWarning)
+        return self.insert_rows_json(*args, **kwargs)
 
     def list_rows(self, table, selected_fields=None, max_results=None,
                   page_token=None, start_index=None, retry=DEFAULT_RETRY):

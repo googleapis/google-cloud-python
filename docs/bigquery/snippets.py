@@ -23,6 +23,7 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
+import json
 import time
 
 import pytest
@@ -64,9 +65,9 @@ def to_delete(client):
     doomed = []
     yield doomed
     for item in doomed:
-        if isinstance(item, bigquery.Dataset):
+        if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
             client.delete_dataset(item)
-        elif isinstance(item, bigquery.Table):
+        elif isinstance(item, (bigquery.Table, bigquery.TableReference)):
             client.delete_table(item)
         else:
             item.delete()
@@ -128,6 +129,41 @@ def test_get_dataset(client, to_delete):
     dataset = client.get_dataset(dataset)  # API request
     assert dataset.description == ORIGINAL_DESCRIPTION
     # [END get_dataset]
+
+
+# [START bigquery_dataset_exists]
+def dataset_exists(client, dataset_reference):
+    """Return if a dataset exists.
+
+    Args:
+        client (google.cloud.bigquery.client.Client):
+            A client to connect to the BigQuery API.
+        dataset_reference (google.cloud.bigquery.dataset.DatasetReference):
+            A reference to the dataset to look for.
+
+    Returns:
+        bool: ``True`` if the dataset exists, ``False`` otherwise.
+    """
+    from google.cloud.exceptions import NotFound
+
+    try:
+        client.get_dataset(dataset_reference)
+        return True
+    except NotFound:
+        return False
+# [END bigquery_dataset_exists]
+
+
+def test_dataset_exists(client, to_delete):
+    """Determine if a dataset exists."""
+    DATASET_ID = 'get_table_dataset_{}'.format(_millis())
+    dataset_ref = client.dataset(DATASET_ID)
+    dataset = bigquery.Dataset(dataset_ref)
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    assert dataset_exists(client, dataset_ref)
+    assert not dataset_exists(client, client.dataset('i_dont_exist'))
 
 
 def test_update_dataset_simple(client, to_delete):
@@ -212,26 +248,26 @@ def test_delete_dataset(client):
     # [END delete_dataset]
 
 
-def test_list_dataset_tables(client, to_delete):
+def test_list_tables(client, to_delete):
     """List tables within a dataset."""
-    DATASET_ID = 'list_dataset_tables_dataset_{}'.format(_millis())
+    DATASET_ID = 'list_tables_dataset_{}'.format(_millis())
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    # [START list_dataset_tables]
-    tables = list(client.list_dataset_tables(dataset))  # API request(s)
+    # [START list_tables]
+    tables = list(client.list_tables(dataset))  # API request(s)
     assert len(tables) == 0
 
     table_ref = dataset.table('my_table')
     table = bigquery.Table(table_ref)
     table.view_query = QUERY
     client.create_table(table)                          # API request
-    tables = list(client.list_dataset_tables(dataset))  # API request(s)
+    tables = list(client.list_tables(dataset))  # API request(s)
 
     assert len(tables) == 1
     assert tables[0].table_id == 'my_table'
-    # [END list_dataset_tables]
+    # [END list_tables]
 
     to_delete.insert(0, table)
 
@@ -277,6 +313,46 @@ def test_get_table(client, to_delete):
     table = client.get_table(table)  # API request
     assert table.description == ORIGINAL_DESCRIPTION
     # [END get_table]
+
+
+# [START bigquery_table_exists]
+def table_exists(client, table_reference):
+    """Return if a table exists.
+
+    Args:
+        client (google.cloud.bigquery.client.Client):
+            A client to connect to the BigQuery API.
+        table_reference (google.cloud.bigquery.table.TableReference):
+            A reference to the table to look for.
+
+    Returns:
+        bool: ``True`` if the table exists, ``False`` otherwise.
+    """
+    from google.cloud.exceptions import NotFound
+
+    try:
+        client.get_table(table_reference)
+        return True
+    except NotFound:
+        return False
+# [END bigquery_table_exists]
+
+
+def test_table_exists(client, to_delete):
+    """Determine if a table exists."""
+    DATASET_ID = 'get_table_dataset_{}'.format(_millis())
+    TABLE_ID = 'get_table_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset = client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    table_ref = dataset.table(TABLE_ID)
+    table = bigquery.Table(table_ref, schema=SCHEMA)
+    table = client.create_table(table)
+    to_delete.insert(0, table)
+
+    assert table_exists(client, table_ref)
+    assert not table_exists(client, dataset.table('i_dont_exist'))
 
 
 def test_update_table_simple(client, to_delete):
@@ -339,28 +415,28 @@ def test_update_table_multiple_properties(client, to_delete):
     # [END update_table_multiple_properties]
 
 
-def test_table_create_rows(client, to_delete):
+def test_table_insert_rows(client, to_delete):
     """Insert / fetch table data."""
-    DATASET_ID = 'table_create_rows_dataset_{}'.format(_millis())
-    TABLE_ID = 'table_create_rows_table_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset_id = 'table_insert_rows_dataset_{}'.format(_millis())
+    table_id = 'table_insert_rows_table_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     dataset = client.create_dataset(dataset)
     to_delete.append(dataset)
 
-    table = bigquery.Table(dataset.table(TABLE_ID), schema=SCHEMA)
+    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
     to_delete.insert(0, table)
 
-    # [START table_create_rows]
-    ROWS_TO_INSERT = [
+    # [START table_insert_rows]
+    rows_to_insert = [
         (u'Phred Phlyntstone', 32),
         (u'Wylma Phlyntstone', 29),
     ]
 
-    errors = client.create_rows(table, ROWS_TO_INSERT)  # API request
+    errors = client.insert_rows(table, rows_to_insert)  # API request
 
     assert errors == []
-    # [END table_create_rows]
+    # [END table_insert_rows]
 
 
 def test_load_table_from_file(client, to_delete):
@@ -370,11 +446,6 @@ def test_load_table_from_file(client, to_delete):
     dataset = bigquery.Dataset(client.dataset(DATASET_ID))
     client.create_dataset(dataset)
     to_delete.append(dataset)
-
-    table_ref = dataset.table(TABLE_ID)
-    table = bigquery.Table(table_ref, schema=SCHEMA)
-    table = client.create_table(table)
-    to_delete.insert(0, table)
 
     # [START load_table_from_file]
     csv_file = six.BytesIO(b"""full_name,age
@@ -386,11 +457,14 @@ Wylma Phlyntstone,29
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = 'CSV'
     job_config.skip_leading_rows = 1
+    job_config.autodetect = True
     job = client.load_table_from_file(
         csv_file, table_ref, job_config=job_config)  # API request
     job.result()  # Waits for table load to complete.
     # [END load_table_from_file]
 
+    table = client.get_table(table_ref)
+    to_delete.insert(0, table)
     found_rows = []
 
     def do_something(row):
@@ -411,11 +485,13 @@ Wylma Phlyntstone,29
     token = iterator.next_page_token
     # [END table_list_rows_iterator_properties]
 
-    row_tuples = [r.values() for r in rows]
+    expected_rows = [
+        bigquery.Row(('Wylma Phlyntstone', 29), {'full_name': 0, 'age': 1}),
+        bigquery.Row(('Phred Phlyntstone', 32), {'full_name': 0, 'age': 1}),
+    ]
     assert len(rows) == total == 2
     assert token is None
-    assert (u'Phred Phlyntstone', 32) in row_tuples
-    assert (u'Wylma Phlyntstone', 29) in row_tuples
+    assert rows == expected_rows
 
 
 def test_load_table_from_uri(client, to_delete):
@@ -525,9 +601,20 @@ def test_extract_table(client, to_delete):
     to_delete.append(dataset)
 
     table_ref = dataset.table('person_ages')
-    table = client.create_table(bigquery.Table(table_ref, schema=SCHEMA))
-    to_delete.insert(0, table)
-    client.create_rows(table, ROWS)
+    to_insert = [
+        {'full_name': name, 'age': age}
+        for name, age in ROWS
+    ]
+    rows = [json.dumps(row) for row in to_insert]
+    body = six.StringIO('{}\n'.format('\n'.join(rows)))
+    job_config = bigquery.LoadJobConfig()
+    job_config.write_disposition = 'WRITE_TRUNCATE'
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.schema = SCHEMA
+    to_delete.insert(0, table_ref)
+    # Load a table using a local JSON file from memory.
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
 
     bucket_name = 'extract_person_ages_job_{}'.format(_millis())
     # [START extract_table]
@@ -608,6 +695,48 @@ def test_client_query(client):
     row = rows[0]
     assert row[0] == row.name == row['name']
     # [END client_query]
+
+
+def test_client_query_destination_table(client, to_delete):
+    """Run a query"""
+    dataset_id = 'query_destination_table_{}'.format(_millis())
+    dataset_ref = client.dataset(dataset_id)
+    to_delete.append(dataset_ref)
+    client.create_dataset(bigquery.Dataset(dataset_ref))
+    to_delete.insert(0, dataset_ref.table('your_table_id'))
+
+    # [START bigquery_query_destination_table]
+    job_config = bigquery.QueryJobConfig()
+
+    # Set the destination table. Here, dataset_id is a string, such as:
+    # dataset_id = 'your_dataset_id'
+    table_ref = client.dataset(dataset_id).table('your_table_id')
+    job_config.destination = table_ref
+
+    # The write_disposition specifies the behavior when writing query results
+    # to a table that already exists. With WRITE_TRUNCATE, any existing rows
+    # in the table are overwritten by the query results.
+    job_config.write_disposition = 'WRITE_TRUNCATE'
+
+    # Start the query, passing in the extra configuration.
+    query_job = client.query(
+        'SELECT 17 AS my_col;', job_config=job_config)
+
+    rows = list(query_job)  # Waits for the query to finish
+    assert len(rows) == 1
+    row = rows[0]
+    assert row[0] == row.my_col == 17
+
+    # In addition to using the results from the query, you can read the rows
+    # from the destination table directly.
+    iterator = client.list_rows(
+        table_ref, selected_fields=[bigquery.SchemaField('my_col', 'INT64')])
+
+    rows = list(iterator)
+    assert len(rows) == 1
+    row = rows[0]
+    assert row[0] == row.my_col == 17
+    # [END bigquery_query_destination_table]
 
 
 def test_client_query_w_param(client):

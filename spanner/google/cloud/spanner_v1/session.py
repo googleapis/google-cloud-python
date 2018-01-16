@@ -17,15 +17,11 @@
 from functools import total_ordering
 import time
 
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
 from google.rpc.error_details_pb2 import RetryInfo
-from grpc import StatusCode
 
 # pylint: disable=ungrouped-imports
-from google.cloud.exceptions import NotFound
-from google.cloud.exceptions import GrpcRendezvous
-from google.cloud.spanner_v1._helpers import _options_with_prefix
+from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
+from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
@@ -96,8 +92,8 @@ class Session(object):
         if self._session_id is not None:
             raise ValueError('Session ID already set by back-end')
         api = self._database.spanner_api
-        options = _options_with_prefix(self._database.name)
-        session_pb = api.create_session(self._database.name, options=options)
+        metadata = _metadata_with_prefix(self._database.name)
+        session_pb = api.create_session(self._database.name, metadata=metadata)
         self._session_id = session_pb.name.split('/')[-1]
 
     def exists(self):
@@ -108,21 +104,17 @@ class Session(object):
 
         :rtype: bool
         :returns: True if the session exists on the back-end, else False.
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         if self._session_id is None:
             return False
         api = self._database.spanner_api
-        options = _options_with_prefix(self._database.name)
+        metadata = _metadata_with_prefix(self._database.name)
         try:
-            api.get_session(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                return False
-            raise
-        else:
-            return True
+            api.get_session(self.name, metadata=metadata)
+        except NotFound:
+            return False
+
+        return True
 
     def delete(self):
         """Delete this session.
@@ -132,19 +124,13 @@ class Session(object):
 
         :raises ValueError: if :attr:`session_id` is not already set.
         :raises NotFound: if the session does not exist
-        :raises GaxError:
-            for errors other than ``NOT_FOUND`` returned from the call
         """
         if self._session_id is None:
             raise ValueError('Session ID not set by back-end')
         api = self._database.spanner_api
-        options = _options_with_prefix(self._database.name)
-        try:
-            api.delete_session(self.name, options=options)
-        except GaxError as exc:
-            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
-                raise NotFound(self.name)
-            raise
+        metadata = _metadata_with_prefix(self._database.name)
+
+        api.delete_session(self.name, metadata=metadata)
 
     def snapshot(self, **kw):
         """Create a snapshot to perform a set of reads with shared staleness.
@@ -182,7 +168,7 @@ class Session(object):
                       table's primary key
 
         :type limit: int
-        :param limit: (Optional) maxiumn number of rows to return
+        :param limit: (Optional) maximum number of rows to return
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -279,19 +265,25 @@ class Session(object):
                 txn.begin()
             try:
                 return_value = func(txn, *args, **kw)
-            except (GaxError, GrpcRendezvous) as exc:
+            except Aborted as exc:
                 del self._transaction
                 _delay_until_retry(exc, deadline)
                 continue
+            except GoogleAPICallError:
+                del self._transaction
+                raise
             except Exception:
                 txn.rollback()
                 raise
 
             try:
                 txn.commit()
-            except GaxError as exc:
+            except Aborted as exc:
                 del self._transaction
                 _delay_until_retry(exc, deadline)
+            except GoogleAPICallError:
+                del self._transaction
+                raise
             else:
                 return return_value
 
@@ -305,19 +297,13 @@ def _delay_until_retry(exc, deadline):
 
     Detect retryable abort, and impose server-supplied delay.
 
-    :type exc: :class:`google.gax.errors.GaxError`
+    :type exc: :class:`google.api_core.exceptions.Aborted`
     :param exc: exception for aborted transaction
 
     :type deadline: float
     :param deadline: maximum timestamp to continue retrying the transaction.
     """
-    if isinstance(exc, GrpcRendezvous):  # pragma: NO COVER  see #3663
-        cause = exc
-    else:
-        cause = exc.cause
-
-    if exc_to_code(cause) != StatusCode.ABORTED:
-        raise
+    cause = exc.errors[0]
 
     now = time.time()
 
@@ -337,7 +323,7 @@ def _delay_until_retry(exc, deadline):
 def _get_retry_delay(cause):
     """Helper for :func:`_delay_until_retry`.
 
-    :type exc: :class:`google.gax.errors.GaxError`
+    :type exc: :class:`grpc.Call`
     :param exc: exception for aborted transaction
 
     :rtype: float

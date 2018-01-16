@@ -124,9 +124,9 @@ class TestBigQuery(unittest.TestCase):
         for doomed in self.to_delete:
             if isinstance(doomed, Bucket):
                 retry_409(doomed.delete)(force=True)
-            elif isinstance(doomed, Dataset):
+            elif isinstance(doomed, (Dataset, bigquery.DatasetReference)):
                 retry_in_use(Config.CLIENT.delete_dataset)(doomed)
-            elif isinstance(doomed, Table):
+            elif isinstance(doomed, (Table, bigquery.TableReference)):
                 retry_in_use(Config.CLIENT.delete_table)(doomed)
             else:
                 doomed.delete()
@@ -215,6 +215,31 @@ class TestBigQuery(unittest.TestCase):
         self.assertTrue(_table_exists(table))
         self.assertEqual(table.table_id, table_id)
 
+    def test_delete_dataset_delete_contents_true(self):
+        dataset_id = _make_dataset_id('delete_table_true')
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+            Dataset(Config.CLIENT.dataset(dataset_id)))
+
+        table_id = 'test_table'
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
+        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        Config.CLIENT.delete_dataset(dataset, delete_contents=True)
+
+        self.assertFalse(_table_exists(table))
+
+    def test_delete_dataset_delete_contents_false(self):
+        from google.api_core import exceptions
+        dataset_id = _make_dataset_id('delete_table_false')
+        dataset = retry_403(Config.CLIENT.create_dataset)(
+            Dataset(Config.CLIENT.dataset(dataset_id)))
+
+        table_id = 'test_table'
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA)
+
+        retry_403(Config.CLIENT.create_table)(table_arg)
+        with self.assertRaises(exceptions.BadRequest):
+            Config.CLIENT.delete_dataset(dataset)
+
     def test_get_table_w_public_dataset(self):
         PUBLIC = 'bigquery-public-data'
         DATASET_ID = 'samples'
@@ -230,11 +255,11 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(
             schema_names, ['word', 'word_count', 'corpus', 'corpus_date'])
 
-    def test_list_dataset_tables(self):
+    def test_list_tables(self):
         DATASET_ID = _make_dataset_id('list_tables')
         dataset = self.temp_dataset(DATASET_ID)
         # Retrieve tables before any are created for the dataset.
-        iterator = Config.CLIENT.list_dataset_tables(dataset)
+        iterator = Config.CLIENT.list_tables(dataset)
         all_tables = list(iterator)
         self.assertEqual(all_tables, [])
         self.assertIsNone(iterator.next_page_token)
@@ -251,7 +276,7 @@ class TestBigQuery(unittest.TestCase):
             self.to_delete.insert(0, created_table)
 
         # Retrieve the tables.
-        iterator = Config.CLIENT.list_dataset_tables(dataset)
+        iterator = Config.CLIENT.list_tables(dataset)
         all_tables = list(iterator)
         self.assertIsNone(iterator.next_page_token)
         created = [table for table in all_tables
@@ -327,7 +352,7 @@ class TestBigQuery(unittest.TestCase):
         page = six.next(iterator.pages)
         return list(page)
 
-    def test_create_rows_then_dump_table(self):
+    def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
         NOW = datetime.datetime.utcfromtimestamp(
             NOW_SECONDS).replace(tzinfo=UTC)
@@ -339,7 +364,7 @@ class TestBigQuery(unittest.TestCase):
         ]
         ROW_IDS = range(len(ROWS))
 
-        dataset = self.temp_dataset(_make_dataset_id('create_rows_then_dump'))
+        dataset = self.temp_dataset(_make_dataset_id('insert_rows_then_dump'))
         TABLE_ID = 'test_table'
         schema = [
             bigquery.SchemaField('full_name', 'STRING', mode='REQUIRED'),
@@ -352,7 +377,7 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, table)
         self.assertTrue(_table_exists(table))
 
-        errors = Config.CLIENT.create_rows(table, ROWS, row_ids=ROW_IDS)
+        errors = Config.CLIENT.insert_rows(table, ROWS, row_ids=ROW_IDS)
         self.assertEqual(len(errors), 0)
 
         rows = ()
@@ -1315,7 +1340,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_age),
                          sorted(ROWS, key=by_age))
 
-    def test_create_rows_nested_nested(self):
+    def test_insert_rows_nested_nested(self):
         # See #2951
         SF = bigquery.SchemaField
         schema = [
@@ -1342,14 +1367,14 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        Config.CLIENT.create_rows(table, to_insert)
+        Config.CLIENT.insert_rows(table, to_insert)
 
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
         row_tuples = [r.values() for r in rows]
         self.assertEqual(row_tuples, to_insert)
 
-    def test_create_rows_nested_nested_dictionary(self):
+    def test_insert_rows_nested_nested_dictionary(self):
         # See #2951
         SF = bigquery.SchemaField
         schema = [
@@ -1376,7 +1401,7 @@ class TestBigQuery(unittest.TestCase):
         table = retry_403(Config.CLIENT.create_table)(table_arg)
         self.to_delete.insert(0, table)
 
-        Config.CLIENT.create_rows(table, to_insert)
+        Config.CLIENT.insert_rows(table, to_insert)
 
         retry = RetryResult(_has_rows, max_tries=8)
         rows = retry(self._fetch_single_page)(table)
@@ -1402,7 +1427,7 @@ class TestBigQuery(unittest.TestCase):
             for line in rows_file:
                 to_insert.append(json.loads(line))
 
-        errors = Config.CLIENT.create_rows_json(table, to_insert)
+        errors = Config.CLIENT.insert_rows_json(table, to_insert)
         self.assertEqual(len(errors), 0)
 
         retry = RetryResult(_has_rows, max_tries=8)
@@ -1467,19 +1492,24 @@ class TestBigQuery(unittest.TestCase):
             'nested_record': {'nested_nested_string': 'some deep insight'},
         }
         to_insert = [
-            ('Some value', record)
+            {'string_col': 'Some value', 'record_col': record},
         ]
+        rows = [json.dumps(row) for row in to_insert]
+        body = six.StringIO('{}\n'.format('\n'.join(rows)))
         table_id = 'test_table'
         dataset = self.temp_dataset(_make_dataset_id('nested_df'))
-        table_arg = Table(dataset.table(table_id), schema=schema)
-        table = retry_403(Config.CLIENT.create_table)(table_arg)
+        table = dataset.table(table_id)
         self.to_delete.insert(0, table)
-        Config.CLIENT.create_rows(table, to_insert)
-        QUERY = 'SELECT * from `{}.{}.{}`'.format(
-            Config.CLIENT.project, dataset.dataset_id, table_id)
+        job_config = bigquery.LoadJobConfig()
+        job_config.write_disposition = 'WRITE_TRUNCATE'
+        job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+        job_config.schema = schema
+        # Load a table using a local JSON file from memory.
+        Config.CLIENT.load_table_from_file(
+            body, table, job_config=job_config).result()
 
-        retry = RetryResult(_has_rows, max_tries=8)
-        df = retry(self._fetch_dataframe)(QUERY)
+        df = Config.CLIENT.list_rows(
+            table, selected_fields=schema).to_dataframe()
 
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 1)  # verify the number of rows

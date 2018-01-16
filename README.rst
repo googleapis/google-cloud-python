@@ -58,8 +58,10 @@ against beta libraries are addressed with a higher priority.
 This client library has **alpha** support for the following Google
 Cloud Platform services:
 
+-  `Google BigQuery Data Transfer`_ (`BigQuery Data Transfer README`_)
 -  `Google Cloud Bigtable`_ (`Bigtable README`_)
 -  `Google Cloud Bigtable - HappyBase`_ (`HappyBase README`_)
+-  `Google Cloud Container`_ (`Container README`_)
 -  `Google Cloud DNS`_ (`DNS README`_)
 -  `Google Cloud Resource Manager`_ (`Resource Manager README`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_)
@@ -78,6 +80,10 @@ updates. See `versioning`_ for more details.
 .. _Pub/Sub README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/pubsub
 .. _Google BigQuery: https://pypi.org/project/google-cloud-bigquery/
 .. _BigQuery README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery
+.. _Google BigQuery Data Transfer: https://pypi.org/project/google-cloud-bigquery-datatransfer/
+.. _BigQuery Data Transfer README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/bigquery_datatransfer
+.. _Google Cloud Container: https://pypi.org/project/google-cloud-container/
+.. _Container README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/container
 .. _Google Cloud Resource Manager: https://pypi.org/project/google-cloud-resource-manager/
 .. _Resource Manager README: https://github.com/GoogleCloudPlatform/google-cloud-python/tree/master/resource_manager
 .. _Stackdriver Logging: https://pypi.org/project/google-cloud-logging/

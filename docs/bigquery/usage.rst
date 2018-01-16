@@ -134,8 +134,8 @@ Table operations
 List tables for the dataset:
 
 .. literalinclude:: snippets.py
-   :start-after: [START list_dataset_tables]
-   :end-before: [END list_dataset_tables]
+   :start-after: [START list_tables]
+   :end-before: [END list_tables]
 
 Create a table:
 
@@ -176,8 +176,8 @@ Utilize iterator properties returned with row data:
 Insert rows into a table's data:
 
 .. literalinclude:: snippets.py
-   :start-after: [START table_create_rows]
-   :end-before: [END table_create_rows]
+   :start-after: [START table_insert_rows]
+   :end-before: [END table_insert_rows]
 
 Upload table data from a file:
 
@@ -235,6 +235,17 @@ Querying data
 
   - Use of the ``timeout`` parameter is optional. The query will continue to
     run in the background even if it takes longer the timeout allowed.
+
+
+Writing query results to a destination table
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See BigQuery documentation for more information on
+`writing query results <https://cloud.google.com/bigquery/docs/writing-results>`_.
+
+.. literalinclude:: snippets.py
+  :start-after: [START bigquery_query_destination_table]
+  :end-before: [END bigquery_query_destination_table]
 
 
 Run a query using a named query parameter

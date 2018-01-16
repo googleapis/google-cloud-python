@@ -291,7 +291,7 @@ class Instance(object):
         :param serve_nodes: (Optional) The number of nodes in the cluster.
                             Defaults to 3.
 
-        :rtype: :class:`.Cluster`
+        :rtype: :class:`~.bigtable.cluster.Cluster`
         :returns: The cluster owned by this client.
         """
         return Cluster(cluster_id, self, serve_nodes=serve_nodes)
@@ -300,9 +300,10 @@ class Instance(object):
         """Lists clusters in this instance.
 
         :rtype: tuple
-        :returns: A pair of results, the first is a list of :class:`.Cluster` s
-                  returned and the second is a list of strings (the failed
-                  locations in the request).
+        :returns: A pair of results, the first is a list of
+                  :class:`~.bigtable.cluster.Cluster` objects returned and the
+                  second is a list of strings (the failed locations in the
+                  request).
         """
         request_pb = messages_v2_pb2.ListClustersRequest(parent=self.name)
         # We expect a `.cluster_messages_v1_pb2.ListClustersResponse`

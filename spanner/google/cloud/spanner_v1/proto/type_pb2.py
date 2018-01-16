@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/cloud/spanner_v1/proto/type.proto',
   package='google.spanner.v1',
   syntax='proto3',
-  serialized_pb=_b('\n(google/cloud/spanner_v1/proto/type.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\"\x9a\x01\n\x04Type\x12)\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x1b.google.spanner.v1.TypeCode\x12\x33\n\x12\x61rray_element_type\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type\x12\x32\n\x0bstruct_type\x18\x03 \x01(\x0b\x32\x1d.google.spanner.v1.StructType\"\x7f\n\nStructType\x12\x33\n\x06\x66ields\x18\x01 \x03(\x0b\x32#.google.spanner.v1.StructType.Field\x1a<\n\x05\x46ield\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type*\x8e\x01\n\x08TypeCode\x12\x19\n\x15TYPE_CODE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x46LOAT64\x10\x03\x12\r\n\tTIMESTAMP\x10\x04\x12\x08\n\x04\x44\x41TE\x10\x05\x12\n\n\x06STRING\x10\x06\x12\t\n\x05\x42YTES\x10\x07\x12\t\n\x05\x41RRAY\x10\x08\x12\n\n\x06STRUCT\x10\tBx\n\x15\x63om.google.spanner.v1B\tTypeProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1b\x06proto3')
+  serialized_pb=_b('\n(google/cloud/spanner_v1/proto/type.proto\x12\x11google.spanner.v1\x1a\x1cgoogle/api/annotations.proto\"\x9a\x01\n\x04Type\x12)\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x1b.google.spanner.v1.TypeCode\x12\x33\n\x12\x61rray_element_type\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type\x12\x32\n\x0bstruct_type\x18\x03 \x01(\x0b\x32\x1d.google.spanner.v1.StructType\"\x7f\n\nStructType\x12\x33\n\x06\x66ields\x18\x01 \x03(\x0b\x32#.google.spanner.v1.StructType.Field\x1a<\n\x05\x46ield\x12\x0c\n\x04name\x18\x01 \x01(\t\x12%\n\x04type\x18\x02 \x01(\x0b\x32\x17.google.spanner.v1.Type*\x8e\x01\n\x08TypeCode\x12\x19\n\x15TYPE_CODE_UNSPECIFIED\x10\x00\x12\x08\n\x04\x42OOL\x10\x01\x12\t\n\x05INT64\x10\x02\x12\x0b\n\x07\x46LOAT64\x10\x03\x12\r\n\tTIMESTAMP\x10\x04\x12\x08\n\x04\x44\x41TE\x10\x05\x12\n\n\x06STRING\x10\x06\x12\t\n\x05\x42YTES\x10\x07\x12\t\n\x05\x41RRAY\x10\x08\x12\n\n\x06STRUCT\x10\tB\x92\x01\n\x15\x63om.google.spanner.v1B\tTypeProtoP\x01Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\xaa\x02\x17Google.Cloud.Spanner.V1\xca\x02\x17Google\\Cloud\\Spanner\\V1b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -249,6 +249,19 @@ StructType = _reflection.GeneratedProtocolMessageType('StructType', (_message.Me
     __module__ = 'google.cloud.spanner_v1.proto.type_pb2'
     ,
     __doc__ = """Message representing a single field of a struct.
+    
+    
+    Attributes:
+        name:
+            The name of the field. For reads, this is the column name. For
+            SQL queries, it is the column alias (e.g., ``"Word"`` in the
+            query ``"SELECT 'hello' AS Word"``), or the column name (e.g.,
+            ``"ColName"`` in the query ``"SELECT ColName FROM Table"``).
+            Some columns might have an empty name (e.g., !"SELECT
+            UPPER(ColName)"\`). Note that a query result can contain
+            multiple fields with the same name.
+        type:
+            The type of the field.
     """,
     # @@protoc_insertion_point(class_scope:google.spanner.v1.StructType.Field)
     ))
@@ -261,16 +274,6 @@ StructType = _reflection.GeneratedProtocolMessageType('StructType', (_message.Me
   
   
   Attributes:
-      name:
-          The name of the field. For reads, this is the column name. For
-          SQL queries, it is the column alias (e.g., ``"Word"`` in the
-          query ``"SELECT 'hello' AS Word"``), or the column name (e.g.,
-          ``"ColName"`` in the query ``"SELECT ColName FROM Table"``).
-          Some columns might have an empty name (e.g., !"SELECT
-          UPPER(ColName)"\`). Note that a query result can contain
-          multiple fields with the same name.
-      type:
-          The type of the field.
       fields:
           The list of fields that make up this struct. Order is
           significant, because values of this struct type are
@@ -287,7 +290,7 @@ _sym_db.RegisterMessage(StructType.Field)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\tTypeProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\025com.google.spanner.v1B\tTypeProtoP\001Z8google.golang.org/genproto/googleapis/spanner/v1;spanner\252\002\027Google.Cloud.Spanner.V1\312\002\027Google\\Cloud\\Spanner\\V1'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.

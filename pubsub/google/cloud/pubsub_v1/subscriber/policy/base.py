@@ -75,7 +75,7 @@ class BasePolicy(object):
                  flow_control=types.FlowControl(), histogram_data=None):
         self._client = client
         self._subscription = subscription
-        self._consumer = _consumer.Consumer(self)
+        self._consumer = _consumer.Consumer()
         self._ack_deadline = 10
         self._last_histogram_size = 0
         self._future = None
@@ -86,7 +86,6 @@ class BasePolicy(object):
         # They should not need to be used by subclasses.
         self._bytes = 0
         self._ack_on_resume = set()
-        self._paused = False
 
     @property
     def ack_deadline(self):
@@ -173,14 +172,14 @@ class BasePolicy(object):
         if time_to_ack is not None:
             self.histogram.add(int(time_to_ack))
 
-        # Send the request to ack the message.
-        # However, if the consumer is inactive, then queue the ack_id here
-        # instead; it will be acked as part of the initial request when the
-        # consumer is started again.
         if self._consumer.active:
+            # Send the request to ack the message.
             request = types.StreamingPullRequest(ack_ids=[ack_id])
             self._consumer.send_request(request)
         else:
+            # If the consumer is inactive, then queue the ack_id here; it
+            # will be acked as part of the initial request when the consumer
+            # is started again.
             self._ack_on_resume.add(ack_id)
 
         # Remove the message from lease management.
@@ -223,9 +222,9 @@ class BasePolicy(object):
         # In order to not thrash too much, require us to have passed below
         # the resume threshold (80% by default) of each flow control setting
         # before restarting.
-        if self._paused and self._load < self.flow_control.resume_threshold:
-            self._paused = False
-            self.open(self._callback)
+        if (self._consumer.paused and
+                self._load < self.flow_control.resume_threshold):
+            self._consumer.resume()
 
     def get_initial_request(self, ack_queue=False):
         """Return the initial request.
@@ -290,8 +289,7 @@ class BasePolicy(object):
         # Sanity check: Do we have too many things in our inventory?
         # If we do, we need to stop the stream.
         if self._load >= 1.0:
-            self._paused = True
-            self.close()
+            self._consumer.pause()
 
     def maintain_leases(self):
         """Maintain all of the leases being managed by the policy.
@@ -326,11 +324,16 @@ class BasePolicy(object):
             # because it is more efficient to make a single request.
             ack_ids = list(self.managed_ack_ids)
             _LOGGER.debug('Renewing lease for %d ack IDs.', len(ack_ids))
-            if ack_ids and self._consumer.active:
+            if ack_ids:
                 request = types.StreamingPullRequest(
                     modify_deadline_ack_ids=ack_ids,
                     modify_deadline_seconds=[p99] * len(ack_ids),
                 )
+                # NOTE: This may not work as expected if ``consumer.active``
+                #       has changed since we checked it. An implementation
+                #       without any sort of race condition would require a
+                #       way for ``send_request`` to fail when the consumer
+                #       is inactive.
                 self._consumer.send_request(request)
 
             # Now wait an appropriate period of time and do this again.

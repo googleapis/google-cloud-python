@@ -17,8 +17,6 @@ import unittest
 
 import mock
 
-from google.cloud._testing import _GAXBaseAPI
-
 
 TABLE_NAME = 'citizens'
 COLUMNS = ['email', 'first_name', 'last_name', 'age']
@@ -151,6 +149,13 @@ class Test_SnapshotBase(unittest.TestCase):
 
         return _Derived(session)
 
+    def _make_spanner_api(self):
+        import google.cloud.spanner_v1.gapic.spanner_client
+
+        return mock.create_autospec(
+            google.cloud.spanner_v1.gapic.spanner_client.SpannerClient,
+            instance=True)
+
     def test_ctor(self):
         session = _Session()
         base = self._make_one(session)
@@ -162,36 +167,20 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             base._make_txn_selector()
 
-    def test_read_grpc_error(self):
+    def test_read_other_error(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionSelector)
-        from google.gax.errors import GaxError
         from google.cloud.spanner_v1.keyset import KeySet
 
         KEYSET = KeySet(all_=True)
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _random_gax_error=True)
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.streaming_read.side_effect = RuntimeError()
         session = _Session(database)
         derived = self._makeDerived(session)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(RuntimeError):
             list(derived.read(TABLE_NAME, COLUMNS, KEYSET))
-
-        (r_session, table, columns, key_set, transaction, index,
-         limit, resume_token, options) = api._streaming_read_with
-
-        self.assertEqual(r_session, self.SESSION_NAME)
-        self.assertTrue(transaction.single_use.read_only.strong)
-        self.assertEqual(table, TABLE_NAME)
-        self.assertEqual(columns, COLUMNS)
-        self.assertEqual(key_set, KEYSET.to_pb())
-        self.assertIsInstance(transaction, TransactionSelector)
-        self.assertEqual(index, '')
-        self.assertEqual(limit, 0)
-        self.assertEqual(resume_token, b'')
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def _read_helper(self, multi_use, first=True, count=0):
         from google.protobuf.struct_pb2 import Struct
@@ -252,14 +241,12 @@ class Test_SnapshotBase(unittest.TestCase):
         else:
             self.assertIsNone(result_set._source)
 
-        result_set.consume_all()
-
-        self.assertEqual(list(result_set.rows), VALUES)
+        self.assertEqual(list(result_set), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
 
         (r_session, table, columns, key_set, transaction, index,
-         limit, resume_token, options) = api._streaming_read_with
+         limit, resume_token, metadata) = api._streaming_read_with
 
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(table, TABLE_NAME)
@@ -276,8 +263,8 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(index, INDEX)
         self.assertEqual(limit, LIMIT)
         self.assertEqual(resume_token, b'')
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_read_wo_multi_use(self):
         self._read_helper(multi_use=False)
@@ -299,33 +286,18 @@ class Test_SnapshotBase(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._read_helper(multi_use=True, first=True, count=1)
 
-    def test_execute_sql_grpc_error(self):
+    def test_execute_sql_other_error(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
             TransactionSelector)
-        from google.gax.errors import GaxError
 
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _random_gax_error=True)
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.execute_streaming_sql.side_effect = RuntimeError()
         session = _Session(database)
         derived = self._makeDerived(session)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(RuntimeError):
             list(derived.execute_sql(SQL_QUERY))
-
-        (r_session, sql, transaction, params, param_types,
-         resume_token, query_mode, options) = api._executed_streaming_sql_with
-
-        self.assertEqual(r_session, self.SESSION_NAME)
-        self.assertEqual(sql, SQL_QUERY)
-        self.assertIsInstance(transaction, TransactionSelector)
-        self.assertTrue(transaction.single_use.read_only.strong)
-        self.assertEqual(params, None)
-        self.assertEqual(param_types, None)
-        self.assertEqual(resume_token, b'')
-        self.assertEqual(query_mode, None)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_execute_sql_w_params_wo_param_types(self):
         database = _Database()
@@ -392,14 +364,12 @@ class Test_SnapshotBase(unittest.TestCase):
         else:
             self.assertIsNone(result_set._source)
 
-        result_set.consume_all()
-
-        self.assertEqual(list(result_set.rows), VALUES)
+        self.assertEqual(list(result_set), VALUES)
         self.assertEqual(result_set.metadata, metadata_pb)
         self.assertEqual(result_set.stats, stats_pb)
 
         (r_session, sql, transaction, params, param_types,
-         resume_token, query_mode, options) = api._executed_streaming_sql_with
+         resume_token, query_mode, metadata) = api._executed_streaming_sql_with
 
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(sql, SQL_QUERY_WITH_PARAM)
@@ -417,8 +387,8 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(param_types, PARAM_TYPES)
         self.assertEqual(query_mode, MODE)
         self.assertEqual(resume_token, b'')
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_execute_sql_wo_multi_use(self):
         self._execute_sql_helper(multi_use=False)
@@ -458,6 +428,13 @@ class TestSnapshot(unittest.TestCase):
 
     def _make_one(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
+
+    def _make_spanner_api(self):
+        import google.cloud.spanner_v1.gapic.spanner_client
+
+        return mock.create_autospec(
+            google.cloud.spanner_v1.gapic.spanner_client.SpannerClient,
+            instance=True)
 
     def _makeTimestamp(self):
         import datetime
@@ -696,28 +673,17 @@ class TestSnapshot(unittest.TestCase):
         with self.assertRaises(ValueError):
             snapshot.begin()
 
-    def test_begin_w_gax_error(self):
-        from google.gax.errors import GaxError
-        from google.cloud._helpers import _pb_timestamp_to_datetime
-
+    def test_begin_w_other_error(self):
         database = _Database()
-        api = database.spanner_api = _FauxSpannerAPI(
-            _random_gax_error=True)
+        database.spanner_api = self._make_spanner_api()
+        database.spanner_api.begin_transaction.side_effect = RuntimeError()
         timestamp = self._makeTimestamp()
         session = _Session(database)
         snapshot = self._make_one(
             session, read_timestamp=timestamp, multi_use=True)
 
-        with self.assertRaises(GaxError):
+        with self.assertRaises(RuntimeError):
             snapshot.begin()
-
-        session_id, txn_options, options = api._begun
-        self.assertEqual(session_id, session.name)
-        self.assertEqual(
-            _pb_timestamp_to_datetime(txn_options.read_only.read_timestamp),
-            timestamp)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
 
     def test_begin_ok_exact_staleness(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
@@ -737,13 +703,13 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
 
-        session_id, txn_options, options = api._begun
+        session_id, txn_options, metadata = api._begun
         self.assertEqual(session_id, session.name)
         read_only = txn_options.read_only
         self.assertEqual(read_only.exact_staleness.seconds, 3)
         self.assertEqual(read_only.exact_staleness.nanos, 123456000)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
     def test_begin_ok_exact_strong(self):
         from google.cloud.spanner_v1.proto.transaction_pb2 import (
@@ -761,11 +727,11 @@ class TestSnapshot(unittest.TestCase):
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(snapshot._transaction_id, self.TRANSACTION_ID)
 
-        session_id, txn_options, options = api._begun
+        session_id, txn_options, metadata = api._begun
         self.assertEqual(session_id, session.name)
         self.assertTrue(txn_options.read_only.strong)
-        self.assertEqual(options.kwargs['metadata'],
-                         [('google-cloud-resource-prefix', database.name)])
+        self.assertEqual(
+            metadata, [('google-cloud-resource-prefix', database.name)])
 
 
 class _Session(object):
@@ -779,42 +745,34 @@ class _Database(object):
     name = 'testing'
 
 
-class _FauxSpannerAPI(_GAXBaseAPI):
+class _FauxSpannerAPI(object):
 
     _read_with = _begin = None
 
-    def begin_transaction(self, session, options_, options=None):
-        from google.gax.errors import GaxError
+    def __init__(self, **kwargs):
+        self.__dict__.update(**kwargs)
 
-        self._begun = (session, options_, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+    def begin_transaction(self, session, options_, metadata=None):
+        self._begun = (session, options_, metadata)
         return self._begin_transaction_response
 
     # pylint: disable=too-many-arguments
     def streaming_read(self, session, table, columns, key_set,
                        transaction=None, index='', limit=0,
-                       resume_token=b'', options=None):
-        from google.gax.errors import GaxError
-
+                       resume_token=b'', metadata=None):
         self._streaming_read_with = (
             session, table, columns, key_set, transaction, index,
-            limit, resume_token, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+            limit, resume_token, metadata)
         return self._streaming_read_response
     # pylint: enable=too-many-arguments
 
     def execute_streaming_sql(self, session, sql, transaction=None,
                               params=None, param_types=None,
-                              resume_token=b'', query_mode=None, options=None):
-        from google.gax.errors import GaxError
-
+                              resume_token=b'', query_mode=None,
+                              metadata=None):
         self._executed_streaming_sql_with = (
             session, sql, transaction, params, param_types, resume_token,
-            query_mode, options)
-        if self._random_gax_error:
-            raise GaxError('error')
+            query_mode, metadata)
         return self._execute_streaming_sql_response
 
 

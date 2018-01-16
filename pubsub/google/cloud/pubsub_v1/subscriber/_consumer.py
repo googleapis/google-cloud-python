@@ -176,19 +176,22 @@ class Consumer(object):
     low. The Consumer and end-user can configure any sort of executor they want
     for the actual processing of the responses, which may be CPU intensive.
     """
-    def __init__(self, policy):
-        """
-        Args:
-            policy (Consumer): The consumer policy, which defines how
-                requests and responses are handled.
-        """
-        self._policy = policy
+    def __init__(self):
         self._request_queue = queue.Queue()
-        self._exiting = threading.Event()
+        self._stopped = threading.Event()
+        self._can_consume = threading.Event()
         self._put_lock = threading.Lock()
-
-        self.active = False
         self._consumer_thread = None
+
+    @property
+    def active(self):
+        """bool: Indicates if the consumer is active.
+
+        This is intended to be an implementation independent way of indicating
+        that the consumer is stopped. (E.g. so a policy that owns a consumer
+        doesn't need to know what a ``threading.Event`` is.)
+        """
+        return not self._stopped.is_set()
 
     def send_request(self, request):
         """Queue a request to be sent to gRPC.
@@ -199,18 +202,24 @@ class Consumer(object):
         with self._put_lock:
             self._request_queue.put(request)
 
-    def _request_generator_thread(self):
+    def _request_generator_thread(self, policy):
         """Generate requests for the stream.
 
         This blocks for new requests on the request queue and yields them to
         gRPC.
+
+        Args:
+            policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy
+                that owns this consumer. A policy is used to create the
+                initial request used to open the streaming pull bidirectional
+                stream.
 
         Yields:
             google.cloud.pubsub_v1.types.StreamingPullRequest: Requests
         """
         # First, yield the initial request. This occurs on every new
         # connection, fundamentally including a resumed connection.
-        initial_request = self._policy.get_initial_request(ack_queue=True)
+        initial_request = policy.get_initial_request(ack_queue=True)
         _LOGGER.debug('Sending initial request:\n%r', initial_request)
         yield initial_request
 
@@ -225,7 +234,7 @@ class Consumer(object):
             _LOGGER.debug('Sending request:\n%r', request)
             yield request
 
-    def _stop_request_generator(self, request_generator):
+    def _stop_request_generator(self, request_generator, response_generator):
         """Ensure a request generator is closed.
 
         This **must** be done when recovering from a retry-able exception.
@@ -239,12 +248,23 @@ class Consumer(object):
         Args:
             request_generator (Generator): A streaming pull request generator
                 returned from :meth:`_request_generator_thread`.
+            response_generator (grpc.Future): The gRPC bidirectional stream
+                object that **was** consuming the ``request_generator``. (It
+                will actually spawn a thread to consume the requests, but
+                that thread will stop once the rendezvous has a status code
+                set.)
 
         Returns:
             bool: Indicates if the generator was successfully stopped. Will
             be :data:`True` unless the queue is not empty and the generator
             is running.
         """
+        if not response_generator.done():
+            _LOGGER.debug(
+                'Response generator must be done before stopping '
+                'request generator.')
+            return False
+
         with self._put_lock:
             try:
                 request_generator.close()
@@ -292,23 +312,30 @@ class Consumer(object):
         _LOGGER.debug('Successfully closed request generator.')
         return True
 
-    def _blocking_consume(self):
-        """Consume the stream indefinitely."""
+    def _blocking_consume(self, policy):
+        """Consume the stream indefinitely.
+
+        Args:
+            policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy,
+                which defines how requests and responses are handled.
+        """
         while True:
             # It is possible that a timeout can cause the stream to not
             # exit cleanly when the user has called stop_consuming(). This
             # checks to make sure we're not exiting before opening a new
             # stream.
-            if self._exiting.is_set():
+            if self._stopped.is_set():
                 _LOGGER.debug('Event signalled consumer exit.')
                 break
 
-            request_generator = self._request_generator_thread()
-            response_generator = self._policy.call_rpc(request_generator)
+            request_generator = self._request_generator_thread(policy)
+            response_generator = policy.call_rpc(request_generator)
+            responses = _pausable_iterator(
+                response_generator, self._can_consume)
             try:
-                for response in response_generator:
+                for response in responses:
                     _LOGGER.debug('Received response:\n%r', response)
-                    self._policy.on_response(response)
+                    policy.on_response(response)
 
                 # If the loop above exits without an exception, then the
                 # request stream terminated cleanly, which should only happen
@@ -317,30 +344,119 @@ class Consumer(object):
                 _LOGGER.debug('Clean RPC loop exit signalled consumer exit.')
                 break
             except Exception as exc:
-                recover = self._policy.on_exception(exc)
+                recover = policy.on_exception(exc)
                 if recover:
-                    recover = self._stop_request_generator(request_generator)
+                    recover = self._stop_request_generator(
+                        request_generator, response_generator)
                 if not recover:
-                    self.stop_consuming()
+                    self._stop_no_join()
+                    return
 
-    def start_consuming(self):
-        """Start consuming the stream."""
-        self.active = True
-        self._exiting.clear()
+    @property
+    def paused(self):
+        """bool: Check if the current consumer is paused."""
+        return not self._can_consume.is_set()
+
+    def pause(self):
+        """Pause the current consumer.
+
+        This method is idempotent by design.
+
+        This will clear the ``_can_consume`` event which is checked
+        every time :meth:`_blocking_consume` consumes a response from the
+        bidirectional streaming pull.
+
+        Complement to :meth:`resume`.
+        """
+        _LOGGER.debug('Pausing consumer')
+        self._can_consume.clear()
+
+    def resume(self):
+        """Resume the current consumer.
+
+        This method is idempotent by design.
+
+        This will set the ``_can_consume`` event which is checked
+        every time :meth:`_blocking_consume` consumes a response from the
+        bidirectional streaming pull.
+
+        Complement to :meth:`pause`.
+        """
+        _LOGGER.debug('Resuming consumer')
+        self._can_consume.set()
+
+    def start_consuming(self, policy):
+        """Start consuming the stream.
+
+        Sets the ``_consumer_thread`` member on the current consumer with
+        a newly started thread.
+
+        Args:
+            policy (~.pubsub_v1.subscriber.policy.base.BasePolicy): The policy
+                that owns this consumer. A policy defines how requests and
+                responses are handled.
+        """
+        self._stopped.clear()
+        self.resume()  # Make sure we aren't paused.
         thread = threading.Thread(
             name=_BIDIRECTIONAL_CONSUMER_NAME,
             target=self._blocking_consume,
+            args=(policy,),
         )
         thread.daemon = True
         thread.start()
         _LOGGER.debug('Started helper thread %s', thread.name)
         self._consumer_thread = thread
 
-    def stop_consuming(self):
-        """Signal the stream to stop and block until it completes."""
-        self.active = False
-        self._exiting.set()
+    def _stop_no_join(self):
+        """Signal the request stream to stop.
+
+        To actually stop the worker ("consumer thread"), a ``STOP`` is
+        sent to the request queue.
+
+        The ``_consumer_thread`` member is removed from the current instance
+        and returned.
+
+        Returns:
+            threading.Thread: The worker ("consumer thread") that is being
+            stopped.
+        """
+        self.resume()  # Make sure we aren't paused.
+        self._stopped.set()
         _LOGGER.debug('Stopping helper thread %s', self._consumer_thread.name)
         self.send_request(_helper_threads.STOP)
-        self._consumer_thread.join()
+        thread = self._consumer_thread
         self._consumer_thread = None
+        return thread
+
+    def stop_consuming(self):
+        """Signal the stream to stop and block until it completes.
+
+        To actually stop the worker ("consumer thread"), a ``STOP`` is
+        sent to the request queue.
+
+        This **assumes** that the caller is not in the same thread
+        (since a thread cannot ``join()`` itself).
+        """
+        thread = self._stop_no_join()
+        thread.join()
+
+
+def _pausable_iterator(iterator, can_continue):
+    """Converts a standard iterator into one that can be paused.
+
+    The ``can_continue`` event can be used by an independent, concurrent
+    worker to pause and resume the iteration over ``iterator``.
+
+    Args:
+        iterator (Iterator): Any iterator to be iterated over.
+        can_continue (threading.Event): An event which determines if we
+            can advance to the next iteration. Will be ``wait()``-ed on
+            before
+
+    Yields:
+        Any: The items from ``iterator``.
+    """
+    while True:
+        can_continue.wait()
+        yield next(iterator)

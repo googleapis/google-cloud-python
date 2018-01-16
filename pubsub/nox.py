@@ -99,7 +99,8 @@ def lint(session):
     serious code quality issues.
     """
     session.interpreter = 'python3.6'
-    session.install('flake8', 'pylint', 'gcp-devrel-py-tools', *LOCAL_DEPS)
+    session.install(
+        'flake8', 'pylint==1.7.5', 'gcp-devrel-py-tools', *LOCAL_DEPS)
     session.install('.')
     session.run('flake8', 'google/cloud/pubsub')
     session.run(

@@ -35,6 +35,24 @@ or as of a given duration in the past:
     DURATION = datetime.timedelta(seconds=5)
     snapshot = database.snapshot(exact_staleness=DURATION)
 
+Single Use and Multiple Use Snapshots
+-------------------------------------
+
+In the context of read only transactions, ``read`` and ``execute_sql``
+methods can be used multiple times if you specify ``multi_use=True``
+in the constructor of the snapshot.  However, ``multi_use=True`` is
+incompatible with either ``max_staleness`` and/or ``min_read_timestamp``.
+
+Otherwise ``multi_use`` defaults to ``False`` and the snapshot cannot be
+reused.
+
+.. code:: python
+
+    snapshot = database.snapshot(multi_use=True)
+
+:meth:`~.spanner_v1.snapshot.Snapshot.begin` can only be used on a
+snapshot with ``multi_use=True``.  In which case it is also necessary
+to call if you need to have multiple pending operations.
 
 Read Table Data
 ---------------
@@ -55,29 +73,8 @@ fails if the result set is too large,
 
 .. note::
 
-   Perform all iteration within the context of the ``with database.snapshot()`` 
-   block.  
-
-.. note::
-
-   If streaming a chunk raises an exception, the application can
-   retry the ``read``, passing the ``resume_token`` from ``StreamingResultSet``
-   which raised the error.  E.g.:
-
-   .. code:: python
-
-      result = snapshot.read(table, columns, keys)
-      while True:
-          try:
-              for row in result.rows:
-                  print row
-          except Exception:
-               result = snapshot.read(
-                  table, columns, keys, resume_token=result.resume_token)
-               continue
-          else:
-              break
-
+   Perform all iteration within the context of the ``with database.snapshot()``
+   block.
 
 
 Execute a SQL Select Statement
@@ -96,33 +93,13 @@ fails if the result set is too large,
             'WHERE p.employee_id == e.employee_id')
         result = snapshot.execute_sql(QUERY)
 
-        for row in result.rows:
+        for row in list(result):
             print(row)
 
 .. note::
 
    Perform all iteration within the context of the ``with database.snapshot()``
    block.
-
-.. note::
-
-   If streaming a chunk raises an exception, the application can
-   retry the query, passing the ``resume_token`` from ``StreamingResultSet``
-   which raised the error.  E.g.:
-
-   .. code:: python
-
-      result = snapshot.execute_sql(QUERY)
-      while True:
-          try:
-              for row in result.rows:
-                  print row
-          except Exception:
-               result = snapshot.execute_sql(
-                  QUERY, resume_token=result.resume_token)
-               continue
-          else:
-              break
 
 
 Next Step
