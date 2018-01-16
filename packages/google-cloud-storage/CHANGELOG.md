@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## 1.7.0
+
+### Features
+
+- Enable anonymous access to blobs in public buckets (#4315)
+- Make project optional / overridable for storage client (#4381)
+- Relax regex used to test for valid project IDs (#4543)
+- Add support for `source_generation` parameter to `Bucket.copy_blob` (#4546)
+
 ## 1.6.0
 
 ### Documentation
