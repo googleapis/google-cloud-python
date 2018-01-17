@@ -408,6 +408,29 @@ class TestStorageWriteFiles(TestStorageFiles):
         acl.save()
         self.assertFalse(acl.has_entity('allUsers'))
 
+    def test_upload_blob_acl(self):
+        control = self.bucket.blob('logo')
+        control_data = self.FILES['logo']        
+
+        blob = self.bucket.blob('SmallFile')
+        file_data = self.FILES['simple']
+
+        try:
+            control.upload_from_filename(control_data['path'])            
+            blob.upload_from_filename(file_data['path'],
+                                      predefined_acl='publicRead')
+        finally:
+            self.case_blobs_to_delete.append(blob)
+            self.case_blobs_to_delete.append(control)            
+
+        control_acl = control.acl
+        self.assertNotIn('READER', control_acl.all().get_roles())
+        acl = blob.acl
+        self.assertIn('READER', acl.all().get_roles())
+        acl.all().revoke_read()
+        self.assertSequenceEqual(acl.all().get_roles(), set([]))
+        self.assertEqual(control_acl.all().get_roles(), acl.all().get_roles())
+
     def test_write_metadata(self):
         filename = self.FILES['logo']['path']
         blob_name = os.path.basename(filename)

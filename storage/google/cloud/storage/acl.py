@@ -208,6 +208,23 @@ class ACL(object):
         if not self.loaded:
             self.reload()
 
+    @classmethod
+    def validate_predefined(cls, predefined):
+        """Ensures predefined is in list of predefined json values
+
+        :type predefined: str
+        :param predefined: name of a predefined acl
+
+        :type predefined: str
+        :param predefined: validated JSON name of predefined acl
+
+        :raises: :exc: `ValueError`: If predefined is not a valid acl
+        """
+        predefined = cls.PREDEFINED_XML_ACLS.get(predefined, predefined)
+        if predefined and predefined not in cls.PREDEFINED_JSON_ACLS:
+            raise ValueError("Invalid predefined ACL: %s" % (predefined,))
+        return predefined
+
     def reset(self):
         """Remove all entities from the ACL, and clear the ``loaded`` flag."""
         self.entities.clear()
@@ -502,11 +519,7 @@ class ACL(object):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """
-        predefined = self.PREDEFINED_XML_ACLS.get(predefined, predefined)
-
-        if predefined not in self.PREDEFINED_JSON_ACLS:
-            raise ValueError("Invalid predefined ACL: %s" % (predefined,))
-
+        predefined = self.validate_predefined(predefined)
         self._save(None, predefined, client)
 
     def clear(self, client=None):
