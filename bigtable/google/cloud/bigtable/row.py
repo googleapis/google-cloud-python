@@ -18,6 +18,7 @@
 import struct
 
 import six
+import functools
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
@@ -28,20 +29,12 @@ from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 from google.api_core import retry
 from google.cloud import exceptions
-from functools import partial, update_wrapper
 
 
 _PACK_I64 = struct.Struct('>q').pack
 
 MAX_MUTATIONS = 100000
 """The maximum number of mutations that a row can accumulate."""
-
-
-def wrapped_partial(func, *args, **kwargs):
-    """Create partial wrapper for a function"""
-    partial_func = partial(func, *args, **kwargs)
-    update_wrapper(partial_func, func)
-    return partial_func
 
 
 class Row(object):
@@ -244,6 +237,13 @@ class _SetDeleteRow(Row):
             # We don't add the mutations until all columns have been
             # processed without error.
             mutations_list.extend(to_append)
+
+
+def wrapped_partial(func, *args, **kwargs):
+    """Create partial wrapper for a function"""
+    partial_func = functools.partial(func, *args, **kwargs)
+    functools.update_wrapper(partial_func, func)
+    return partial_func
 
 
 def call_mutate_row(table, request_pb):
