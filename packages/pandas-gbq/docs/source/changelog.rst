@@ -1,6 +1,13 @@
 Changelog
 =========
 
+
+0.3.1 / [TBD]
+------------------
+
+- Fix an issue where Unicode couldn't be uploaded in Python 2 (:issue:`93`)
+
+
 0.3.0 / 2018-01-03
 ------------------
 
