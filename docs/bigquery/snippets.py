@@ -485,15 +485,13 @@ Wylma Phlyntstone,29
     token = iterator.next_page_token
     # [END table_list_rows_iterator_properties]
 
-    expected_rows = [
-        bigquery.Row(('Wylma Phlyntstone', 29), {'full_name': 0, 'age': 1}),
-        bigquery.Row(('Phred Phlyntstone', 32), {'full_name': 0, 'age': 1}),
-    ]
     assert len(rows) == total == 2
     assert token is None
     # Order is not preserved, so compare individually
-    for row in expected_rows:
-        assert row in rows
+    row1 = bigquery.Row(('Wylma Phlyntstone', 29), {'full_name': 0, 'age': 1})
+    assert row1 in rows
+    row2 = bigquery.Row(('Phred Phlyntstone', 32), {'full_name': 0, 'age': 1})
+    assert row2 in rows
 
 
 def test_load_table_from_uri(client, to_delete):
