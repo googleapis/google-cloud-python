@@ -48,7 +48,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.PROJECT, credentials=creds)
         self.assertEqual(client.project, self.PROJECT)
 
-    def test_logging_api_wo_gapi(self):
+    def test_logging_api_wo_gapic(self):
         from google.cloud.logging._http import _LoggingAPI
 
         client = self._make_one(self.PROJECT,
