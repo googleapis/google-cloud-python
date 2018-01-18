@@ -491,7 +491,9 @@ Wylma Phlyntstone,29
     ]
     assert len(rows) == total == 2
     assert token is None
-    assert rows == expected_rows
+    # Order is not preserved, so compare individually
+    for row in expected_rows:
+        assert row in rows
 
 
 def test_load_table_from_uri(client, to_delete):
