@@ -102,6 +102,16 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.fields[0].field_type, 'INTEGER')
         self.assertEqual(field.fields[0].mode, 'NULLABLE')
 
+    def test_from_api_repr_defaults(self):
+        field = self._get_target_class().from_api_repr({
+            'name': 'foo',
+            'type': 'record',
+        })
+        self.assertEqual(field.name, 'foo')
+        self.assertEqual(field.field_type, 'RECORD')
+        self.assertEqual(field.mode, 'NULLABLE')
+        self.assertEqual(len(field.fields), 0)
+
     def test_name_property(self):
         name = 'lemon-ness'
         schema_field = self._make_one(name, 'INTEGER')
