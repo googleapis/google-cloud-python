@@ -222,7 +222,7 @@ class PartialRowsData(object):
         """State machine state.
 
         :rtype: str
-        :returns:  name of state corresponding to currrent row / chunk
+        :returns:  name of state corresponding to current row / chunk
                    processing.
         """
         if self._last_scanned_row_key is None:
