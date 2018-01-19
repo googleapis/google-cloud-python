@@ -112,8 +112,9 @@ def system(session, py):
         'py.test',
         '-vvv',
         '-s',
-        'tests/system.py',
+        'tests/system',
         *session.posargs,
+        # Currently allowed to fail due to very high flakiness.
         success_codes=range(0, 100)
     )
 

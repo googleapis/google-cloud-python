@@ -16,14 +16,11 @@ import datetime
 import logging
 import unittest
 
-from google.gax.errors import GaxError
-from google.gax.grpc import exc_to_code
-from grpc import StatusCode
-
 from google.cloud._helpers import UTC
 from google.cloud.exceptions import Conflict
 from google.cloud.exceptions import NotFound
 from google.cloud.exceptions import TooManyRequests
+from google.cloud.exceptions import ServiceUnavailable
 import google.cloud.logging
 import google.cloud.logging.handlers.handlers
 from google.cloud.logging.handlers.handlers import CloudLoggingHandler
@@ -39,18 +36,6 @@ _RESOURCE_ID = unique_resource_id('-')
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
 retry_429 = RetryErrors(TooManyRequests)
-
-
-def _retry_on_unavailable(exc):
-    """Retry only errors whose status code is 'UNAVAILABLE'.
-
-    :type exc: :class:`~google.gax.errors.GaxError`
-    :param exc: The exception that was caught.
-
-    :rtype: bool
-    :returns: Boolean indicating if the exception was UNAVAILABLE.
-    """
-    return exc_to_code(exc) == StatusCode.UNAVAILABLE
 
 
 def _consume_entries(logger):
@@ -78,7 +63,7 @@ def _list_entries(logger):
     :returns: List of all entries consumed.
     """
     inner = RetryResult(_has_entries)(_consume_entries)
-    outer = RetryErrors(GaxError, _retry_on_unavailable)(inner)
+    outer = RetryErrors(ServiceUnavailable)(inner)
     return outer(logger)
 
 
