@@ -78,19 +78,24 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
     def test_worker(self):
         client = _Client(self.PROJECT)
-        name = 'python_logger'        
+        name = 'python_logger'
         batch_size = 30
         grace_period = 20.
+        min_wait_time = 0.1
         transport, worker = self._make_one(client,
                                            name,
                                            grace_period=grace_period,
-                                           batch_size=batch_size)
+                                           batch_size=batch_size,
+                                           min_wait_time=min_wait_time)
         worker_grace_period = worker.call_args[1]['grace_period']  # **kwargs.
         worker_batch_size = worker.call_args[1]['max_batch_size']
+        worker_min_wait_time = worker.call_args[1]['min_wait_time']
         self.assertEqual(worker_grace_period,
                          grace_period)
         self.assertEqual(worker_batch_size,
                          batch_size)
+        self.assertEqual(worker_min_wait_time,
+                         min_wait_time)
 
 
 class Test_Worker(unittest.TestCase):
@@ -115,13 +120,16 @@ class Test_Worker(unittest.TestCase):
         logger = _Logger(self.NAME)
         grace_period = 50
         max_batch_size = 50
+        min_wait_time = 0.1
 
         worker = self._make_one(
-            logger, grace_period=grace_period, max_batch_size=max_batch_size)
+            logger, grace_period=grace_period, max_batch_size=max_batch_size,
+            min_wait_time=min_wait_time)
 
         self.assertEqual(worker._cloud_logger, logger)
         self.assertEqual(worker._grace_period, grace_period)
         self.assertEqual(worker._max_batch_size, max_batch_size)
+        self.assertEqual(worker._min_wait_time, min_wait_time)
         self.assertFalse(worker.is_alive)
         self.assertIsNone(worker._thread)
 
@@ -263,6 +271,34 @@ class Test_Worker(unittest.TestCase):
         # The last batch should not have been executed because it had no items.
         self.assertFalse(worker._cloud_logger._batch.commit_called)
         self.assertEqual(worker._queue.qsize(), 0)
+
+    def test__thread_main_wait_time(self):
+        from google.cloud.logging.handlers.transports import background_thread
+        import time
+
+        worker = self._make_one(_Logger(self.NAME), min_wait_time=0.1)
+
+        # enqueue some records, start main thread, check that they were consumed
+        # but the batch wasn't sent yet
+        self._enqueue_record(worker, '1')
+        worker._queue.put_nowait(background_thread._WORKER_TERMINATOR)
+
+        worker.start()
+
+        # wait a short amount to give thread time to start
+        time.sleep(0.05)
+
+        try:
+            self.assertFalse(worker._cloud_logger._batch.commit_called)
+            self.assertEqual(worker._queue.qsize(), 0)
+
+            # wait until min_wait_time has passed, then check that batch was sent
+            time.sleep(0.06)
+
+            self.assertTrue(worker._cloud_logger._batch.commit_called)
+            self.assertEqual(worker._queue.qsize(), 0)
+        finally:
+            worker.stop()
 
     def test_flush(self):
         worker = self._make_one(_Logger(self.NAME))
