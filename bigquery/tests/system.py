@@ -748,6 +748,8 @@ class TestBigQuery(unittest.TestCase):
 
     def test_get_failed_job(self):
         # issue 4246
+        from google.api_core.exceptions import BadRequest
+
         JOB_ID = 'invalid_{}'.format(str(uuid.uuid4()))
         QUERY = 'SELECT TIMESTAMP_ADD(@ts_value, INTERVAL 1 HOUR);'
         PARAM = bigquery.ScalarQueryParameter(
@@ -756,11 +758,14 @@ class TestBigQuery(unittest.TestCase):
         job_config = bigquery.QueryJobConfig()
         job_config.query_parameters = [PARAM]
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(BadRequest):
             Config.CLIENT.query(
                 QUERY, job_id=JOB_ID, job_config=job_config).result()
 
         job = Config.CLIENT.get_job(JOB_ID)
+
+        with self.assertRaises(ValueError):
+            job.query_parameters
 
     def test_query_w_legacy_sql_types(self):
         naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
