@@ -35,11 +35,6 @@ PROJECT_PATH = 'projects/%s' % (PROJECT,)
 FILTER = 'logName:syslog AND severity>=ERROR'
 
 
-def make_credentials():
-    return mock.create_autospec(
-        google.auth.credentials.Credentials, instance=True)
-
-
 class Test_LoggingAPI(object):
     LOG_NAME = 'log_name'
     LOG_PATH = 'projects/%s/logs/%s' % (PROJECT, LOG_NAME)
