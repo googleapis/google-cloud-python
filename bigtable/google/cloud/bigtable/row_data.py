@@ -221,6 +221,69 @@ class PartialRowsData(object):
     def __ne__(self, other):
         return not self == other
 
+    def __iter__(self):
+        return self._consume_next(True)
+
+    def _consume_next(self, yield_=False):
+        """ Helper for consume_next.
+
+        :type yield_: bool
+        :param yield_: if True, yields rows as they complete,
+                       else finish iteration of the response_iterator
+        """
+        while True:
+            response = six.next(self._response_iterator)
+            self._counter += 1
+
+            if self._last_scanned_row_key is None:  # first response
+                if response.last_scanned_row_key:
+                    raise InvalidReadRowsResponse()
+
+            self._last_scanned_row_key = response.last_scanned_row_key
+
+            row = self._row
+            cell = self._cell
+
+            for chunk in response.chunks:
+
+                self._validate_chunk(chunk)
+
+                if chunk.reset_row:
+                    row = self._row = None
+                    cell = self._cell = self._previous_cell = None
+                    continue
+
+                if row is None:
+                    row = self._row = PartialRowData(chunk.row_key)
+
+                if cell is None:
+                    qualifier = None
+                    if chunk.HasField('qualifier'):
+                        qualifier = chunk.qualifier.value
+
+                    cell = self._cell = PartialCellData(
+                        chunk.row_key,
+                        chunk.family_name.value,
+                        qualifier,
+                        chunk.timestamp_micros,
+                        chunk.labels,
+                        chunk.value)
+                    self._copy_from_previous(cell)
+                else:
+                    cell.append_value(chunk.value)
+
+                if chunk.commit_row:
+                    self._save_current_row()
+                    if yield_:
+                        yield self._previous_row
+                    row = cell = None
+                    continue
+
+                if chunk.value_size == 0:
+                    self._save_current_cell()
+                    cell = None
+            break
+
     @property
     def state(self):
         """State machine state.
@@ -262,54 +325,10 @@ class PartialRowsData(object):
         Parse the response and its chunks into a new/existing row in
         :attr:`_rows`. Rows are returned in order by row key.
         """
-        response = six.next(self._response_iterator)
-        self._counter += 1
-
-        if self._last_scanned_row_key is None:  # first response
-            if response.last_scanned_row_key:
-                raise InvalidReadRowsResponse()
-
-        self._last_scanned_row_key = response.last_scanned_row_key
-
-        row = self._row
-        cell = self._cell
-
-        for chunk in response.chunks:
-
-            self._validate_chunk(chunk)
-
-            if chunk.reset_row:
-                row = self._row = None
-                cell = self._cell = self._previous_cell = None
-                continue
-
-            if row is None:
-                row = self._row = PartialRowData(chunk.row_key)
-
-            if cell is None:
-                qualifier = None
-                if chunk.HasField('qualifier'):
-                    qualifier = chunk.qualifier.value
-
-                cell = self._cell = PartialCellData(
-                    chunk.row_key,
-                    chunk.family_name.value,
-                    qualifier,
-                    chunk.timestamp_micros,
-                    chunk.labels,
-                    chunk.value)
-                self._copy_from_previous(cell)
-            else:
-                cell.append_value(chunk.value)
-
-            if chunk.commit_row:
-                self._save_current_row()
-                row = cell = None
-                continue
-
-            if chunk.value_size == 0:
-                self._save_current_cell()
-                cell = None
+        try:
+            next(self._consume_next(False))
+        except StopIteration:
+            return False
 
     def consume_all(self, max_loops=None):
         """Consume the streamed responses until there are no more.
@@ -324,13 +343,12 @@ class PartialRowsData(object):
         """
         curr_loop = 0
         if max_loops is None:
-            max_loops = float('inf')
+            while True:
+                if self.consume_next() is False:  # guard against None
+                    return
         while curr_loop < max_loops:
             curr_loop += 1
-            try:
-                self.consume_next()
-            except StopIteration:
-                break
+            self.consume_next()
 
     @staticmethod
     def _validate_chunk_status(chunk):

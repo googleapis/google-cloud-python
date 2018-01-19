@@ -203,9 +203,12 @@ class TestPartialRowsData(unittest.TestCase):
                 self._consumed = []
 
             def consume_next(self):
-                value = self._response_iterator.next()
-                self._consumed.append(value)
-                return value
+                try:
+                    value = self._response_iterator.next()
+                    self._consumed.append(value)
+                    return value                    
+                except StopIteration:
+                    return False
 
         return FakePartialRowsData
 
@@ -522,6 +525,21 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     # Non-error cases
 
+    def test_iter(self):
+        values = [mock.Mock()] * 3
+        chunks, results = self._load_json_test('two rows')
+
+        for value in values:
+            value.chunks = chunks
+        response_iterator = _MockCancellableIterator(*values)
+
+        partial_rows = self._make_one(response_iterator)
+        partial_rows._last_scanned_row_key = 'BEFORE'
+
+        for data, value in zip(partial_rows, results):
+            flattened = self._sort_flattend_cells(_flatten_cells(data))
+            self.assertEqual(flattened[0], value)
+
     _marker = object()
 
     def _match_results(self, testcase_name, expected_result=_marker):
@@ -641,12 +659,28 @@ def _flatten_cells(prd):
     from google.cloud._helpers import _bytes_to_unicode
     from google.cloud._helpers import _microseconds_from_datetime
 
-    for row_key, row in prd.rows.items():
-        for family_name, family in row.cells.items():
+    try:
+        # Flatten PartialRowsData
+        for row_key, row in prd.rows.items():
+            for family_name, family in row.cells.items():
+                for qualifier, column in family.items():
+                    for cell in column:
+                        yield {
+                            u'rk': _bytes_to_unicode(row_key),
+                            u'fm': family_name,
+                            u'qual': _bytes_to_unicode(qualifier),
+                            u'ts': _microseconds_from_datetime(cell.timestamp),
+                            u'value': _bytes_to_unicode(cell.value),
+                            u'label': u' '.join(cell.labels),
+                            u'error': False,
+                        }
+    except AttributeError:
+        # Flatten PartialRowData
+        for family_name, family in prd.cells.items():
             for qualifier, column in family.items():
                 for cell in column:
                     yield {
-                        u'rk': _bytes_to_unicode(row_key),
+                        u'rk': _bytes_to_unicode(prd.row_key),
                         u'fm': family_name,
                         u'qual': _bytes_to_unicode(qualifier),
                         u'ts': _microseconds_from_datetime(cell.timestamp),

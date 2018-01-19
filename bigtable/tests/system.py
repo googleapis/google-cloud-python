@@ -405,6 +405,23 @@ class TestDataAPI(unittest.TestCase):
         }
         self.assertEqual(partial_row_data.cells, expected_row_contents)
 
+    def test_read_rows_iter(self):
+        row = self._table.row(ROW_KEY)
+        row_alt = self._table.row(ROW_KEY_ALT)
+        self.rows_to_delete.extend([row, row_alt])
+
+        cell1, cell2, cell3, cell4 = self._write_to_row(row, row_alt,
+                                                        row, row_alt)
+        row.commit()
+        row_alt.commit()
+        keys = [ROW_KEY, ROW_KEY_ALT]
+        rows_data = self._table.read_rows()
+        self.assertEqual(rows_data.rows, {})
+        for data, key in zip(rows_data, keys):
+            self.assertEqual(data.row_key, key)
+            self.assertEqual(data, self._table.read_row(key))
+            self.assertEqual(data.cells, self._table.read_row(key).cells)
+
     def test_read_rows(self):
         row = self._table.row(ROW_KEY)
         row_alt = self._table.row(ROW_KEY_ALT)
