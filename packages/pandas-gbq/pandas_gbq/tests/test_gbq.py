@@ -1164,18 +1164,21 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
                        columns=list('ABCD'))
         df['s'] = u'信用卡'
 
-        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000)
+        gbq.to_gbq(
+            df, self.destination_table + test_id,
+            _get_project_id(),
+            private_key=_get_private_key_path(),
+            chunksize=10000)
 
-        result_df = gbq.read_gbq("SELECT * FROM {0}".format(
-            self.destination_table + test_id),
-            project_id=_get_project_id())
+        result_df = gbq.read_gbq(
+            "SELECT * FROM {0}".format(self.destination_table + test_id),
+            project_id=_get_project_id(),
+            private_key=_get_private_key_path())
 
         assert len(result_df) == test_size
 
-        pytest.skipif(
-            sys.version_info.major < 3,
-            reason='Unicode comparison in Py2 not working')
+        if sys.version_info.major < 3:
+            pytest.skip(msg='Unicode comparison in Py2 not working')
 
         result = result_df['s'].sort_values()
         expected = df['s'].sort_values()
@@ -1194,18 +1197,21 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
             ]
         })
 
-        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000)
+        gbq.to_gbq(
+            df, self.destination_table + test_id,
+            _get_project_id(),
+            private_key=_get_private_key_path(),
+            chunksize=10000)
 
         result_df = gbq.read_gbq("SELECT * FROM {0}".format(
             self.destination_table + test_id),
-            project_id=_get_project_id())
+            project_id=_get_project_id(),
+            private_key=_get_private_key_path())
 
         assert len(result_df) == test_size
 
-        pytest.skipif(
-            sys.version_info.major < 3,
-            reason='Unicode comparison in Py2 not working')
+        if sys.version_info.major < 3:
+            pytest.skip(msg='Unicode comparison in Py2 not working')
 
         result = result_df['s'].sort_values()
         expected = df['s'].sort_values()
@@ -1524,59 +1530,6 @@ class TestToGBQIntegrationWithLocalUserAccountAuth(object):
             project_id=_get_project_id())
 
         assert result['num_rows'][0] == test_size
-
-    def test_upload_chinese_unicode_data(self):
-        test_id = "2"
-        test_size = 6
-        df = DataFrame(np.random.randn(6, 4), index=range(6),
-                       columns=list('ABCD'))
-        df['s'] = u'信用卡'
-
-        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000)
-
-        result_df = gbq.read_gbq("SELECT * FROM {0}".format(
-            self.destination_table + test_id),
-            project_id=_get_project_id())
-
-        assert len(result_df) == test_size
-
-        if sys.version_info.major < 3:
-            pytest.skip(msg='Unicode comparison in Py2 not working')
-
-        result = result_df['s'].sort_values()
-        expected = df['s'].sort_values()
-
-        tm.assert_numpy_array_equal(expected.values, result.values)
-
-    def test_upload_other_unicode_data(self):
-        test_id = "3"
-        test_size = 3
-        df = DataFrame({
-            's': ['Skywalker™', 'lego', 'hülle'],
-            'i': [200, 300, 400],
-            'd': [
-                '2017-12-13 17:40:39', '2017-12-13 17:40:39',
-                '2017-12-13 17:40:39'
-            ]
-        })
-
-        gbq.to_gbq(df, self.destination_table + test_id, _get_project_id(),
-                   chunksize=10000)
-
-        result_df = gbq.read_gbq("SELECT * FROM {0}".format(
-            self.destination_table + test_id),
-            project_id=_get_project_id())
-
-        assert len(result_df) == test_size
-
-        if sys.version_info.major < 3:
-            pytest.skip(msg='Unicode comparison in Py2 not working')
-
-        result = result_df['s'].sort_values()
-        expected = df['s'].sort_values()
-
-        tm.assert_numpy_array_equal(expected.values, result.values)
 
 
 class TestToGBQIntegrationWithServiceAccountKeyContents(object):
