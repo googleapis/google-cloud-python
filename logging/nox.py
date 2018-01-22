@@ -113,10 +113,7 @@ def system(session, py):
         '-vvv',
         '-s',
         'tests/system',
-        *session.posargs,
-        # Currently allowed to fail due to very high flakiness.
-        success_codes=range(0, 100)
-    )
+        *session.posargs)
 
 
 @nox.session

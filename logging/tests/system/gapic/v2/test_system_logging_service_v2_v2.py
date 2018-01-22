@@ -15,6 +15,7 @@
 import os
 import time
 
+import google.auth
 from google.api import monitored_resource_pb2
 from google.cloud import logging_v2
 from google.cloud.logging_v2.proto import log_entry_pb2
@@ -23,7 +24,7 @@ from google.cloud.logging_v2.proto import logging_pb2
 
 class TestSystemLoggingServiceV2(object):
     def test_write_log_entries(self):
-        project_id = os.environ['PROJECT_ID']
+        _, project_id = google.auth.default()
 
         client = logging_v2.LoggingServiceV2Client()
         log_name = client.log_path(project_id, 'test-{0}'.format(time.time()))
