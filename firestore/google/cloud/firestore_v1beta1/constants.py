@@ -15,8 +15,24 @@
 """Helpful constants to use for Google Cloud Firestore."""
 
 
-DELETE_FIELD = object()  # Sentinel object.
+class sentinel(object):
+    """Class for sentinel values, so they print nicely."""
+
+    def __init__(self, name):
+        self._name = name
+
+    def __str__(self):
+        return self._name
+
+    def __eq__(self, other):
+        raise NotImplementedError('use "is" to compare sentinels')
+
+    def __ne__(self, other):
+        raise NotImplementedError('use "is" to compare sentinels')
+
+
+DELETE_FIELD = sentinel('DELETE_FIELD')  # Sentinel object.
 """Sentinel value used to delete a field in a document."""
 
-SERVER_TIMESTAMP = object()  # Sentinel object.
+SERVER_TIMESTAMP = sentinel('SERVER_TIMESTAMP')  # Sentinel object.
 """Sentinel value: set a document field to the server timestamp."""
