@@ -27,6 +27,7 @@ from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1.streamed import StreamedResultSet
+from google.cloud.spanner_v1.types import PartitionOptions
 
 
 def _restart_on_unavailable(restart):
@@ -82,7 +83,7 @@ class _SnapshotBase(_SessionWrapper):
         """
         raise NotImplementedError
 
-    def read(self, table, columns, keyset, index='', limit=0):
+    def read(self, table, columns, keyset, index='', limit=0, partition=None):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -99,7 +100,13 @@ class _SnapshotBase(_SessionWrapper):
                       table's primary key
 
         :type limit: int
-        :param limit: (Optional) maximum number of rows to return
+        :param limit: (Optional) maximum number of rows to return.
+                      Incompatible with ``partition``.
+
+        :type partition: bytes
+        :param partition: (Optional) one of the partition tokens returned
+                          from :meth:`partition_read`.  Incompatible with
+                          ``limit``.
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -122,7 +129,7 @@ class _SnapshotBase(_SessionWrapper):
             api.streaming_read,
             self._session.name, table, columns, keyset._to_pb(),
             transaction=transaction, index=index, limit=limit,
-            metadata=metadata)
+            partition_token=partition, metadata=metadata)
 
         iterator = _restart_on_unavailable(restart)
 
@@ -193,6 +200,74 @@ class _SnapshotBase(_SessionWrapper):
             return StreamedResultSet(iterator, source=self)
         else:
             return StreamedResultSet(iterator)
+
+    def partition_read(
+            self,
+            table,
+            columns,
+            keyset,
+            index='',
+            partition_size_bytes=None,
+            max_partitions=None,
+        ):
+        """Perform a ``ParitionRead`` API request for rows in a table.
+
+        :type table: str
+        :param table: name of the table from which to fetch data
+
+        :type columns: list of str
+        :param columns: names of columns to be retrieved
+
+        :type keyset: :class:`~google.cloud.spanner_v1.keyset.KeySet`
+        :param keyset: keys / ranges identifying rows to be retrieved
+
+        :type index: str
+        :param index: (Optional) name of index to use, rather than the
+                      table's primary key
+
+        :type partition_size_bytes: int
+        :param partition_size_bytes: (Optional) desired size for each
+                                     partition generated.  Hint only.
+
+        :type max_partitions: int
+        :param max_partitions: (Optional) desired maximum number of
+                               partitions generated.  Hint only.
+
+        :rtype: iterable of bytes
+        :returns: a sequence of partition tokens
+        :raises ValueError:
+            for single-use snapshots, or if a transaction ID is
+            already associtated with the snapshot.
+        """
+        if not self._multi_use:
+            raise ValueError("Cannot use single-use snapshot.")
+
+        if self._transaction_id is not None:
+            raise ValueError("Transaction already started.")
+
+        database = self._session._database
+        api = database.spanner_api
+        metadata = _metadata_with_prefix(database.name)
+        transaction = self._make_txn_selector()
+        partition_options = PartitionOptions(
+            partition_size_bytes=partition_size_bytes,
+            max_partitions=max_partitions,
+        )
+
+        response = api.partition_read(
+            session=self._session.name,
+            table=table,
+            columns=columns,
+            key_set=keyset.to_pb(),
+            transaction=transaction,
+            index=index,
+            partition_options=partition_options,
+            metadata=metadata,
+        )
+        self._transaction_id = response.transaction.id
+
+        for partition in response.partitions:
+            yield partition.partition_token
 
 
 class Snapshot(_SnapshotBase):

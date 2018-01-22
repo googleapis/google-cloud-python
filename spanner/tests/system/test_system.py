@@ -84,20 +84,21 @@ def setUpModule():
 
     configs = list(retry(Config.CLIENT.list_instance_configs)())
 
-    # Defend against back-end returning configs for regions we aren't
-    # actually allowed to use.
-    configs = [config for config in configs if '-us-' in config.name]
-
-    if len(configs) < 1:
-        raise ValueError('List instance configs failed in module set up.')
-
-    Config.INSTANCE_CONFIG = configs[0]
-    config_name = configs[0].name
-
     instances = retry(_list_instances)()
     EXISTING_INSTANCES[:] = instances
 
     if CREATE_INSTANCE:
+
+        # Defend against back-end returning configs for regions we aren't
+        # actually allowed to use.
+        configs = [config for config in configs if '-us-' in config.name]
+
+        if not configs:
+            raise ValueError('List instance configs failed in module set up.')
+
+        Config.INSTANCE_CONFIG = configs[0]
+        config_name = configs[0].name
+
         Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, config_name)
         created_op = Config.INSTANCE.create()
         created_op.result(30)  # block until completion
@@ -134,8 +135,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
     def test_reload_instance(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(
-            INSTANCE_ID, Config.INSTANCE_CONFIG.name)
+        instance = Config.CLIENT.instance(INSTANCE_ID)
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
@@ -1265,6 +1265,31 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             )
             expected = ([data[keyrow]] + data[start+1:end])
             self.assertEqual(rows, expected)
+
+    def test_partition_read_w_index(self):
+        row_count = 10
+        columns = self.COLUMNS[1], self.COLUMNS[2]
+        committed = self._set_up_table(row_count)
+
+        expected = [[row[1], row[2]] for row in self._row_data(row_count)]
+        row = 5
+        keyset = [[expected[row][0], expected[row][1]]]
+        union = []
+
+        with self._db.snapshot(multi_use=True) as snapshot:
+            partitions = snapshot.partition_read(
+                self.TABLE, columns, KeySet(all_=True), index='name')
+            for partition in partitions:
+                p_results_iter = snapshot.read(
+                    self.TABLE,
+                    columns,
+                    KeySet(all_=True),
+                    index='name',
+                    partition=partition,
+                )
+                union.extend(list(p_results_iter))
+
+        self.assertEqual(union, expected)
 
     def test_execute_sql_w_manual_consume(self):
         ROW_COUNT = 3000
