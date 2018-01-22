@@ -103,7 +103,11 @@ class TestLogging(unittest.TestCase):
     def tearDown(self):
         retry = RetryErrors(NotFound, max_tries=9)
         for doomed in self.to_delete:
-            retry(doomed.delete)()
+            try:
+                retry(doomed.delete)()
+            except AttributeError:
+                client, dataset = doomed
+                retry(client.delete_dataset)(dataset)
         logging.getLogger().handlers = self._handlers_cache[:]
 
     @staticmethod
@@ -427,25 +431,24 @@ class TestLogging(unittest.TestCase):
 
     def _init_bigquery_dataset(self):
         from google.cloud import bigquery
-        from google.cloud.bigquery.dataset import AccessGrant
-        DATASET_NAME = (
+        from google.cloud.bigquery.dataset import AccessEntry
+        dataset_name = (
             'system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
-        DATASET_URI = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
-            Config.CLIENT.project, DATASET_NAME,)
+        dataset_uri = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
+            Config.CLIENT.project, dataset_name,)
 
         # Create the destination dataset, and set up the ACL to allow
         # Stackdriver Logging to write into it.
         bigquery_client = bigquery.Client()
-        dataset = bigquery_client.dataset(DATASET_NAME)
-        dataset.create()
-        self.to_delete.append(dataset)
-        dataset.reload()
-        grants = dataset.access_grants
-        grants.append(AccessGrant(
-            'WRITER', 'groupByEmail', 'cloud-logs@google.com'))
-        dataset.access_grants = grants
-        dataset.update()
-        return DATASET_URI
+        dataset_ref = bigquery_client.dataset(dataset_name)
+        dataset = bigquery_client.create_dataset(bigquery.Dataset(dataset_ref))
+        self.to_delete.append((bigquery_client, dataset))
+        bigquery_client.get_dataset(dataset)
+        access = AccessEntry(
+            'WRITER', 'groupByEmail', 'cloud-logs@google.com')
+        dataset.access_entries.append(access)
+        bigquery_client.update_dataset(dataset, ['access_entries'])
+        return dataset_uri
 
     def test_create_sink_bigquery_dataset(self):
         SINK_NAME = 'test-create-sink-dataset%s' % (_RESOURCE_ID,)
