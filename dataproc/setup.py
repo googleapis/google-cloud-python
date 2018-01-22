@@ -34,7 +34,7 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 
 setup(
     name='google-cloud-dataproc',
-    version='0.1.0.dev1',
+    version='0.1.0',
     author='Google LLC',
     author_email='googleapis-packages@google.com',
     classifiers=[
