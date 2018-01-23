@@ -13,6 +13,10 @@
 # limitations under the License.
 
 
+import datetime
+import json
+import operator
+import os
 import unittest
 
 import mock
@@ -31,7 +35,6 @@ class TestCell(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def _from_pb_test_helper(self, labels=None):
-        import datetime
         from google.cloud._helpers import _EPOCH
         from google.cloud.bigtable._generated import (
             data_pb2 as data_v2_pb2)
@@ -170,6 +173,138 @@ class TestPartialRowData(unittest.TestCase):
             b'name2:col3': cell3,
         }
         self.assertEqual(result, expected_result)
+
+    def test_get_cell_defaults(self):
+        family_name = u'name1'
+        qual = b'col1'
+        cell = _make_cell(b'')
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qual: [cell],
+            },
+        }
+
+        result = partial_row_data.get_cell(family_name, qual)
+        # Make sure we get a copy, not the original.
+        self.assertIsNot(result, cell)
+        self.assertEqual(result, cell)
+
+    def test_get_cell_explicit_index(self):
+        family_name = u'name1'
+        qual = b'col1'
+        cell1 = _make_cell(b'1')
+        cell2 = _make_cell(b'2')
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qual: [cell1, cell2],
+            },
+        }
+
+        result = partial_row_data.get_cell(family_name, qual, index=1)
+        # Make sure we get a copy, not the original.
+        self.assertIsNot(result, cell2)
+        self.assertEqual(result, cell2)
+
+    def test_get_cell_bad_family(self):
+        from google.cloud.bigtable import row_data
+
+        family_name = u'name1'
+        partial_row_data = self._make_one(None)
+        self.assertEqual(partial_row_data._cells, {})
+
+        with self.assertRaises(KeyError) as exc_info:
+            partial_row_data.get_cell(family_name, None)
+
+        expected_arg = row_data._MISSING_COLUMN_FAMILY.format(family_name)
+        self.assertEqual(exc_info.exception.args, (expected_arg,))
+
+    def test_get_cell_bad_column(self):
+        from google.cloud.bigtable import row_data
+
+        family_name = u'name1'
+        qual = b'col1'
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {family_name: {}}
+
+        with self.assertRaises(KeyError) as exc_info:
+            partial_row_data.get_cell(family_name, qual)
+
+        expected_arg = row_data._MISSING_COLUMN.format(qual, family_name)
+        self.assertEqual(exc_info.exception.args, (expected_arg,))
+
+    def test_get_cell_bad_index(self):
+        from google.cloud.bigtable import row_data
+
+        family_name = u'name1'
+        qual = b'col1'
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {
+            family_name: {
+                qual: [],
+            },
+        }
+
+        for index in (5, 'not-int'):
+            with self.assertRaises(IndexError) as exc_info:
+                partial_row_data.get_cell(family_name, qual, index=index)
+
+            expected_arg = row_data._MISSING_INDEX.format(
+                index, qual, family_name, 0)
+            self.assertEqual(exc_info.exception.args, (expected_arg,))
+
+    def test_get_cells(self):
+        family_name = u'name1'
+        qual = b'col1'
+        cell = _make_cell(b'hi-mom')
+
+        partial_row_data = self._make_one(None)
+        cells = [cell]
+        partial_row_data._cells = {
+            family_name: {
+                qual: cells,
+            },
+        }
+
+        result = partial_row_data.get_cells(family_name, qual)
+        # Make sure we get a copy, not the original.
+        self.assertIsNot(result, cells)
+        self.assertEqual(result, cells)
+        self.assertIsNot(result[0], cell)
+        self.assertEqual(result[0], cell)
+
+    def test_get_cells_bad_family(self):
+        from google.cloud.bigtable import row_data
+
+        family_name = u'name1'
+        partial_row_data = self._make_one(None)
+        self.assertEqual(partial_row_data._cells, {})
+
+        with self.assertRaises(KeyError) as exc_info:
+            partial_row_data.get_cells(family_name, None)
+
+        expected_arg = row_data._MISSING_COLUMN_FAMILY.format(family_name)
+        self.assertEqual(exc_info.exception.args, (expected_arg,))
+
+    def test_get_cells_bad_column(self):
+        from google.cloud.bigtable import row_data
+
+        family_name = u'name1'
+        qual = b'col1'
+
+        partial_row_data = self._make_one(None)
+        partial_row_data._cells = {family_name: {}}
+
+        with self.assertRaises(KeyError) as exc_info:
+            partial_row_data.get_cells(family_name, qual)
+
+        expected_arg = row_data._MISSING_COLUMN.format(qual, family_name)
+        self.assertEqual(exc_info.exception.args, (expected_arg,))
 
     def test_cells_property(self):
         partial_row_data = self._make_one(None)
@@ -430,8 +565,6 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
         return self._get_target_class()(*args, **kwargs)
 
     def _load_json_test(self, test_name):
-        import os
-
         if self.__class__._json_tests is None:
             dirname = os.path.dirname(__file__)
             filename = os.path.join(dirname, 'read-rows-acceptance-test.json')
@@ -497,8 +630,6 @@ class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
     # JSON Error cases:  incomplete final row
 
     def _sort_flattend_cells(self, flattened):
-        import operator
-
         key_func = operator.itemgetter('rk', 'fm', 'qual')
         return sorted(flattened, key=key_func)
 
@@ -714,8 +845,6 @@ def _parse_readrows_acceptance_tests(filename):
     test/resources/com/google/cloud/bigtable/grpc/scanner/v2/
     read-rows-acceptance-test.json
     """
-    import json
-
     with open(filename) as json_file:
         test_json = json.load(json_file)
 
@@ -724,3 +853,9 @@ def _parse_readrows_acceptance_tests(filename):
         chunks = _generate_cell_chunks(test['chunks'])
         results = test['results']
         yield name, chunks, results
+
+
+def _make_cell(value):
+    from google.cloud.bigtable import row_data
+
+    return row_data.Cell(value, datetime.datetime.utcnow())
