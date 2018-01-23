@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from google.cloud.oslogin.common import common_pb2 as google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2
+from google.cloud.oslogin_v1.proto import common_pb2 as google_dot_cloud_dot_oslogin_dot_common_dot_common__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import field_mask_pb2 as google_dot_protobuf_dot_field__mask__pb2
 
@@ -394,8 +394,8 @@ LoginProfile = _reflection.GeneratedProtocolMessageType('LoginProfile', (_messag
   ,
   __doc__ = """The user profile information used for logging in to a virtual machine on
   Google Compute Engine.
-  
-  
+
+
   Attributes:
       name:
           The primary email address that uniquely identifies the user.
@@ -418,8 +418,8 @@ DeletePosixAccountRequest = _reflection.GeneratedProtocolMessageType('DeletePosi
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for deleting a POSIX account entry.
-  
-  
+
+
   Attributes:
       name:
           A reference to the POSIX account to update. POSIX accounts are
@@ -436,8 +436,8 @@ DeleteSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('DeleteSshP
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for deleting an SSH public key.
-  
-  
+
+
   Attributes:
       name:
           The fingerprint of the public key to update. Public keys are
@@ -455,8 +455,8 @@ GetLoginProfileRequest = _reflection.GeneratedProtocolMessageType('GetLoginProfi
   ,
   __doc__ = """A request message for retrieving the login profile information for a
   user.
-  
-  
+
+
   Attributes:
       name:
           The unique ID for the user in format ``users/{user}``.
@@ -470,8 +470,8 @@ GetSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('GetSshPublicK
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for retrieving an SSH public key.
-  
-  
+
+
   Attributes:
       name:
           The fingerprint of the public key to retrieve. Public keys are
@@ -488,8 +488,8 @@ ImportSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('ImportSshP
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for importing an SSH public key.
-  
-  
+
+
   Attributes:
       parent:
           The unique ID for the user in format ``users/{user}``.
@@ -507,8 +507,8 @@ ImportSshPublicKeyResponse = _reflection.GeneratedProtocolMessageType('ImportSsh
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A response message for importing an SSH public key.
-  
-  
+
+
   Attributes:
       login_profile:
           The login profile information for the user.
@@ -522,8 +522,8 @@ UpdateSshPublicKeyRequest = _reflection.GeneratedProtocolMessageType('UpdateSshP
   __module__ = 'google.cloud.oslogin_v1.proto.oslogin_pb2'
   ,
   __doc__ = """A request message for updating an SSH public key.
-  
-  
+
+
   Attributes:
       name:
           The fingerprint of the public key to update. Public keys are
