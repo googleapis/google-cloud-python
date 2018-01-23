@@ -238,6 +238,11 @@ class TestPartialRowsData(unittest.TestCase):
 
 
 class TestYieldRowsData(unittest.TestCase):
+    ROW_KEY = b'row-key'
+    FAMILY_NAME = u'family'
+    QUALIFIER = b'qualifier'
+    TIMESTAMP_MICROS = 100
+    VALUE = b'value'
 
     @staticmethod
     def _get_target_class():
@@ -382,9 +387,36 @@ class TestYieldRowsData(unittest.TestCase):
         with self.assertRaises(InvalidChunk):
             self._consume_all(yrd)
 
-    def _consume_all(self, yrd):
+    def test_yield_rows_data(self):
+        from google.cloud.bigtable.row_data import YieldRowsData
+
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunks = [chunk]
+
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        yrd = YieldRowsData(iterator)
+
+        rows = []
         for row in yrd.read_rows():
-            pass
+            rows.append(row)
+        result = rows[0]
+
+        self.assertEqual(result.row_key, self.ROW_KEY)
+
+    def _consume_all(self, yrd):
+        row_count = 0
+        for row in yrd.read_rows():
+            row_count += 1
+
+        return row_count
 
 
 class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
@@ -695,3 +727,15 @@ def _parse_readrows_acceptance_tests(filename):
         chunks = _generate_cell_chunks(test['chunks'])
         results = test['results']
         yield name, chunks, results
+
+
+def _ReadRowsResponseCellChunkPB(*args, **kw):
+    from google.cloud.bigtable._generated import (
+        bigtable_pb2 as messages_v2_pb2)
+
+    family_name = kw.pop('family_name')
+    qualifier = kw.pop('qualifier')
+    message = messages_v2_pb2.ReadRowsResponse.CellChunk(*args, **kw)
+    message.family_name.value = family_name
+    message.qualifier.value = qualifier
+    return message

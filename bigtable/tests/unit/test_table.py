@@ -553,30 +553,6 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(result.row_key, self.ROW_KEY)
 
-    def test_yield_rows_data(self):
-        from google.cloud.bigtable.row_data import YieldRowsData
-
-        chunk = _ReadRowsResponseCellChunkPB(
-            row_key=self.ROW_KEY,
-            family_name=self.FAMILY_NAME,
-            qualifier=self.QUALIFIER,
-            timestamp_micros=self.TIMESTAMP_MICROS,
-            value=self.VALUE,
-            commit_row=True,
-        )
-        chunks = [chunk]
-
-        response = _ReadRowsResponseV2(chunks)
-        iterator = _MockCancellableIterator(response)
-        yrd = YieldRowsData(iterator)
-
-        rows = []
-        for row in yrd.read_rows():
-            rows.append(row)
-        result = rows[0]
-
-        self.assertEqual(result.row_key, self.ROW_KEY)
-
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
                   filter_=None, limit=None, end_inclusive=False):
         from google.cloud.bigtable.table import _create_row_request
