@@ -60,7 +60,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'google-cloud-os-login'
-copyright = u'2017, Google'
+copyright = u'2018 Google LLC'
 author = u'Google APIs'
 
 # The version info for the project you're documenting, acts as replacement for
