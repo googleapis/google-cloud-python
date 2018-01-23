@@ -523,43 +523,59 @@ class TestTable(unittest.TestCase):
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
     def test_yield_rows(self):
-        from google.cloud.bigtable.row_data import YieldRowsData
-        from google.cloud._testing import _Monkey
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable import table as MUT
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         table = self._make_one(self.TABLE_ID, instance)
 
-        # Create request_pb
-        request_pb = self._call_fut(self.TABLE_ID)  # Returned by our mock.
-        mock_created = []
-
-        def mock_create_row_request(table_name, **kwargs):
-            mock_created.append((table_name, kwargs))
-            return request_pb
-
         # Create response_iterator
-        response_iterator = object()
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunks = [chunk]
+
+        response = _ReadRowsResponseV2(chunks)
+        response_iterator = _MockCancellableIterator(response)
 
         # Patch the stub used by the API method.
-        client._data_stub = _FakeStub(request_pb)
-        _iterator = client._data_stub.ReadRows(request_pb)
+        client._data_stub = _FakeStub(response_iterator)
 
-        def yield_rows(generator):
-            for row in generator.read_rows():
-                yield row
+        rows = []
+        for row in table.yield_rows():
+            rows.append(row)
+        result = rows[0]
 
-        # Create expected_result.
-        _generator = YieldRowsData(_iterator)
-        expected_result = yield_rows(_generator)
+        self.assertEqual(result.row_key, self.ROW_KEY)
 
-        # Perform the method and check the result.
-        with _Monkey(MUT, _create_row_request=self._call_fut(self.TABLE_ID)):
-            result = table.yield_rows()
+    def test_yield_rows_data(self):
+        from google.cloud.bigtable.row_data import YieldRowsData
 
-        self.assertEqual(type(result), type(expected_result))
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunks = [chunk]
+
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        yrd = YieldRowsData(iterator)
+
+        rows = []
+        for row in yrd.read_rows():
+            rows.append(row)
+        result = rows[0]
+
+        self.assertEqual(result.row_key, self.ROW_KEY)
 
     def _call_fut(self, table_name, row_key=None, start_key=None, end_key=None,
                   filter_=None, limit=None, end_inclusive=False):
