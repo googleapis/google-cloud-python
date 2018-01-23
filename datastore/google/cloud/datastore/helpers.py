@@ -135,15 +135,17 @@ def entity_from_protobuf(pb):
         # special-cased and we require all ``exclude_from_indexes`` values
         # in a list agree.
         if is_list:
-            exclude_values = set(value_pb.exclude_from_indexes
-                                 for value_pb in value_pb.array_value.values)
-            if len(exclude_values) != 1:
-                raise ValueError('For an array_value, subvalues must either '
-                                 'all be indexed or all excluded from '
-                                 'indexes.')
+            if len(value) > 0:
+                exclude_values = set(value_pb.exclude_from_indexes
+                                     for value_pb
+                                     in value_pb.array_value.values)
+                if len(exclude_values) != 1:
+                    raise ValueError('For an array_value, subvalues must '
+                                     'either all be indexed or all excluded '
+                                     'from indexes.')
 
-            if exclude_values.pop():
-                exclude_from_indexes.append(prop_name)
+                if exclude_values.pop():
+                    exclude_from_indexes.append(prop_name)
         else:
             if value_pb.exclude_from_indexes:
                 exclude_from_indexes.append(prop_name)

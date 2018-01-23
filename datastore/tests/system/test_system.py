@@ -425,6 +425,21 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(entities[0]['name'], 'Catelyn')
         self.assertEqual(entities[1]['name'], 'Arya')
 
+    def test_empty_array_value(self):
+        from google.cloud import datastore
+        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.proto import entity_pb2
+        client = self.CLIENT
+        key = client.key('Foo', 'Bar')
+        entity = datastore.Entity(key=key)
+        with client.batch() as batch:
+            batch.put(entity)
+            mutations = batch.mutations
+            mutation = mutations[0]
+            value_pb = mutation.upsert.properties.get_or_create('name-name')
+            value_pb.array_value.CopyFrom(entity_pb2.ArrayValue(values=[]))
+        client.get(key)
+
 
 class TestDatastoreTransaction(TestDatastore):
 
