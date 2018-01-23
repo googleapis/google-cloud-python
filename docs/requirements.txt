@@ -17,6 +17,7 @@ logging/
 error_reporting/
 monitoring/
 pubsub/
+oslogin/
 resource_manager/
 runtimeconfig/
 spanner/
