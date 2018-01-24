@@ -7,12 +7,10 @@ Stackdriver Monitoring
 
   releases
   client
-  metric
-  resource
   group
   query
-  timeseries
-  label
+  types
+  enums
 
 Introduction
 ------------
