@@ -1232,7 +1232,7 @@ class Client(ClientWithProject):
                            table's rows.
 
         :type start_index: int
-        :param page_token: (Optional) The zero-based index of the starting
+        :param start_index: (Optional) The zero-based index of the starting
                            row to read.
 
         :type retry: :class:`google.api_core.retry.Retry`
