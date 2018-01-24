@@ -412,11 +412,7 @@ class TestYieldRowsData(unittest.TestCase):
         self.assertEqual(result.row_key, self.ROW_KEY)
 
     def _consume_all(self, yrd):
-        row_count = 0
-        for row in yrd.read_rows():
-            row_count += 1
-
-        return row_count
+        return [row.row_key for row in yrd.read_rows()]
 
 
 class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
