@@ -38,7 +38,6 @@ from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import _build_schema_resource
 from google.cloud.bigquery.table import _parse_schema_resource
 from google.cloud.bigquery._helpers import _EnumApiResourceProperty
-from google.cloud.bigquery._helpers import _ListApiResourceProperty
 from google.cloud.bigquery._helpers import _TypedApiResourceProperty
 from google.cloud.bigquery._helpers import DEFAULT_RETRY
 from google.cloud.bigquery._helpers import _int_or_none
@@ -1390,9 +1389,6 @@ class QueryJobConfig(object):
     server defaults.
     """
 
-    _QUERY_PARAMETERS_KEY = 'queryParameters'
-    _UDF_RESOURCES_KEY = 'userDefinedFunctionResources'
-
     def __init__(self):
         self._properties = {}
 
@@ -1420,27 +1416,21 @@ class QueryJobConfig(object):
         self._properties['destinationEncryptionConfiguration'] = api_repr
 
     def to_api_repr(self):
-        """Build an API representation of the copy job config.
+        """Build an API representation of the query job config.
 
-        :rtype: dict
-        :returns: A dictionary in the format used by the BigQuery API.
+        Returns:
+            dict: A dictionary in the format used by the BigQuery API.
         """
         resource = copy.deepcopy(self._properties)
 
         # Query parameters have an addition property associated with them
         # to indicate if the query is using named or positional parameters.
-        query_parameters = resource.get(self._QUERY_PARAMETERS_KEY)
+        query_parameters = resource.get('queryParameters')
         if query_parameters:
-            if query_parameters[0].name is None:
+            if query_parameters[0].get('name') is None:
                 resource['parameterMode'] = 'POSITIONAL'
             else:
                 resource['parameterMode'] = 'NAMED'
-
-        for prop, convert in self._NESTED_PROPERTIES.items():
-            _, to_resource = convert
-            nested_resource = resource.get(prop)
-            if nested_resource is not None:
-                resource[prop] = to_resource(nested_resource)
 
         return resource
 
@@ -1448,22 +1438,16 @@ class QueryJobConfig(object):
     def from_api_repr(cls, resource):
         """Factory: construct a job configuration given its API representation
 
-        :type resource: dict
-        :param resource:
-            An extract job configuration in the same representation as is
-            returned from the API.
+        Args:
+            resource (dict): A query job configuration in the same
+                representation as is returned from the API.
 
-        :rtype: :class:`google.cloud.bigquery.job.QueryJobConfig`
-        :returns: Configuration parsed from ``resource``.
+        Returns:
+            :class:`~google.cloud.bigquery.job.QueryJobConfig`: Configuration
+                parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
-
-        for prop, convert in cls._NESTED_PROPERTIES.items():
-            from_resource, _ = convert
-            nested_resource = resource.get(prop)
-            if nested_resource is not None:
-                config._properties[prop] = from_resource(nested_resource)
 
         return config
 
@@ -1481,20 +1465,45 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.createDisposition
     """
 
-    default_dataset = _TypedApiResourceProperty(
-        'default_dataset', 'defaultDataset', DatasetReference)
-    """See
-    https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
-    """
+    @property
+    def default_dataset(self):
+        """:class:`~google.cloud.bigquery.dataset.DatasetReference`: the
+        default dataset to use for unqualified table names in the query.
 
-    destination = _TypedApiResourceProperty(
-        'destination', 'destinationTable', TableReference)
-    """
-    google.cloud.bigquery.table.TableReference: table where results are written
+        See
+        https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
+        """
+        prop = self._properties.get('defaultDataset')
+        if prop is not None:
+            prop = DatasetReference.from_api_repr(prop)
+        return prop
 
-    See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
-    """
+    @default_dataset.setter
+    def default_dataset(self, value):
+        if value is not None and not isinstance(value, DatasetReference):
+            raise ValueError('Required type: DatasetReference')
+        self._properties['defaultDataset'] = DatasetReference.to_api_repr(
+            value)
+
+    @property
+    def destination(self):
+        """:class:`~google.cloud.bigquery.table.TableReference`: table where results
+        are written
+
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
+        """
+        prop = self._properties.get('destinationTable')
+        if prop is not None:
+            prop = TableReference.from_api_repr(prop)
+        return prop
+
+    @destination.setter
+    def destination(self, value):
+        if value is not None and not isinstance(value, TableReference):
+            raise ValueError('Required type: TableReference')
+        self._properties['destinationTable'] = TableReference.to_api_repr(
+            value)
 
     dry_run = _TypedApiResourceProperty('dry_run', 'dryRun', bool)
     """
@@ -1516,39 +1525,78 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBillingTier
     """
 
-    maximum_bytes_billed = _TypedApiResourceProperty(
-        'maximum_bytes_billed', 'maximumBytesBilled', int)
-    """See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
-    """
+    @property
+    def maximum_bytes_billed(self):
+        """`int`: Maximum bytes to be billed for this job.
+
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
+        """
+        prop = self._properties.get('maximumBytesBilled')
+        if prop is not None:
+            prop = int(prop)
+        return prop
+
+    @maximum_bytes_billed.setter
+    def maximum_bytes_billed(self, value):
+        if value is not None and not isinstance(value, int):
+            raise ValueError('Required type: int')
+        self._properties['maximumBytesBilled'] = str(value)
 
     priority = QueryPriority('priority', 'priority')
     """See
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.priority
     """
 
-    query_parameters = _ListApiResourceProperty(
-        'query_parameters', _QUERY_PARAMETERS_KEY, _AbstractQueryParameter)
-    """
-    A list of
-    :class:`google.cloud.bigquery.ArrayQueryParameter`,
-    :class:`google.cloud.bigquery.ScalarQueryParameter`, or
-    :class:`google.cloud.bigquery.StructQueryParameter`
-    (empty by default)
+    @property
+    def query_parameters(self):
+        """list(:class:`~google.cloud.bigquery.query.ArrayQueryParameter`,
+        :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
+        or :class:`~google.cloud.bigquery.query.StructQueryParameter`): list
+        of parameters for parameterized query (empty by default)
 
-    See:
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
-    """
+        See:
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
+        """
+        prop = self._properties.get('queryParameters', [])
+        return _from_api_repr_query_parameters(prop)
 
-    udf_resources = _ListApiResourceProperty(
-        'udf_resources', _UDF_RESOURCES_KEY, UDFResource)
-    """
-    A list of :class:`google.cloud.bigquery.UDFResource` (empty
-    by default)
+    @query_parameters.setter
+    def query_parameters(self, value):
+        value_error_message = (
+            'Required type: list of ArrayQueryParameter, '
+            'ScalarQueryParameter, or StructQueryParameter. To unset, use '
+            'del or set to empty list')
+        if value is None:
+            raise ValueError(value_error_message)
+        if not all(
+                isinstance(item, _AbstractQueryParameter) for item in value):
+            raise ValueError(value_error_message)
+        self._properties['queryParameters'] = _to_api_repr_query_parameters(
+            value)
 
-    See:
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources
-    """
+    @property
+    def udf_resources(self):
+        """list(:class:`~google.cloud.bigquery.query.UDFResource`): user
+        defined function resources (empty by default)
+
+        See:
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.userDefinedFunctionResources
+        """
+        prop = self._properties.get('userDefinedFunctionResources', [])
+        return _from_api_repr_udf_resources(prop)
+
+    @udf_resources.setter
+    def udf_resources(self, value):
+        value_error_message = (
+            'Required type: list of UDFResource. To unset, use del or set to '
+            'empty list')
+        if value is None:
+            raise ValueError(value_error_message)
+        if not all(isinstance(item, UDFResource) for item in value):
+            raise ValueError(value_error_message)
+        self._properties['userDefinedFunctionResources'] = (
+            _to_api_repr_udf_resources(value))
 
     use_legacy_sql = _TypedApiResourceProperty(
         'use_legacy_sql', 'useLegacySql', bool)
@@ -1568,32 +1616,28 @@ class QueryJobConfig(object):
     https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.writeDisposition
     """
 
-    table_definitions = _TypedApiResourceProperty(
-        'table_definitions', 'tableDefinitions', dict)
-    """
-    Definitions for external tables. A dictionary from table names (strings)
-    to :class:`google.cloud.bigquery.ExternalConfig`.
+    @property
+    def table_definitions(self):
+        """dict{`str`,
+        :class:`~google.cloud.bigquery.external_config.ExternalConfig`}:
+        Definitions for external tables.
 
-    See
-    https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
-    """
+        See
+        https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
+        """
+        prop = self._properties.get('tableDefinitions')
+        if prop is not None:
+            prop = _from_api_repr_table_defs(prop)
+        return prop
+
+    @table_definitions.setter
+    def table_definitions(self, value):
+        if value is not None and not isinstance(value, dict):
+            raise ValueError('Required type: dict')
+        self._properties['tableDefinitions'] = _to_api_repr_table_defs(value)
 
     _maximum_billing_tier = None
     _maximum_bytes_billed = None
-
-    _NESTED_PROPERTIES = {
-        'defaultDataset': (
-            DatasetReference.from_api_repr, DatasetReference.to_api_repr),
-        'destinationTable': (
-            TableReference.from_api_repr, TableReference.to_api_repr),
-        'maximumBytesBilled': (int, str),
-        'tableDefinitions': (_from_api_repr_table_defs,
-                             _to_api_repr_table_defs),
-        _QUERY_PARAMETERS_KEY: (
-            _from_api_repr_query_parameters, _to_api_repr_query_parameters),
-        _UDF_RESOURCES_KEY: (
-            _from_api_repr_udf_resources, _to_api_repr_udf_resources),
-    }
 
 
 class QueryJob(_AsyncJob):
