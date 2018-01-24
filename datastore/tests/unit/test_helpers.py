@@ -147,10 +147,8 @@ class Test_entity_from_protobuf(unittest.TestCase):
         entity_pb.key.path.add(kind=_KIND, id=_ID)
 
         array_val_pb = _new_value_pb(entity_pb, 'baz')
-        array_pb = array_val_pb.array_value.values
         array_val_pb.array_value.CopyFrom(entity_pb2.ArrayValue(values=[]))
-        
-        unindexed_value_pb1 = array_pb.add()
+
         entity = self._call_fut(entity_pb)
         entity_dict = dict(entity)
         self.assertEqual(entity_dict['baz'], [])
