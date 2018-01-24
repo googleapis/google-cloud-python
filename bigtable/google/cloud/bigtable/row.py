@@ -239,13 +239,6 @@ class _SetDeleteRow(Row):
             mutations_list.extend(to_append)
 
 
-def wrapped_partial(func, *args, **kwargs):
-    """Create partial wrapper for a function"""
-    partial_func = functools.partial(func, *args, **kwargs)
-    functools.update_wrapper(partial_func, func)
-    return partial_func
-
-
 def call_mutate_row(table, request_pb):
     """Call the MutateRow"""
     client = table._instance._client
@@ -429,9 +422,10 @@ class DirectRow(_SetDeleteRow):
             mutations=mutations_list,
         )
 
-        retry_commit = wrapped_partial(call_mutate_row,
-                                       self._table,
-                                       request_pb)
+        retry_commit = functools.partial(
+            call_mutate_row,
+            table=self._table,
+            request_pb=request_pb)
         retry_ = retry.Retry(
             predicate=retry.if_exception_type(exceptions.GrpcRendezvous),
             deadline=30)
