@@ -65,7 +65,8 @@ but you can also use a ``virtualenv`` of your own creation.
 Use ``nox``, not ``virtualenv``
 ===========================
 
-- To install dependencies into a virtual environment, run the unit test via nox.
+- To install dependencies into a virtual environment, run the unit test via
+  `nox <https://https://nox.readthedocs.io/en/latest/>`__.
   For example, to work on the storage library do:
 
     $ cd storage
@@ -98,8 +99,7 @@ Use ``nox``, not ``virtualenv``
   above will be referred to as ``${VENV}``. To use the instructions in the steps
   that follow literally, use::
 
-    $ export VENV=${HOME}/hack-on-google-cloud-python/storage/.nox/unit-2-7
-    ${ENV_NAME}
+    $ export VENV=${HOME}/hack-on-google-cloud-python/storage/.nox/${ENV_NAME}
 
 - To install ``google-cloud-python`` from your source checkout into
   ``${VENV}``, run::
@@ -114,7 +114,7 @@ Use ``nox``, not ``virtualenv``
 Using ``nox``
 =============
 
-We use `nox`_ to instrument our tests.
+We use `nox <https://https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
 
