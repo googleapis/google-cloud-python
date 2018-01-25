@@ -134,13 +134,17 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/projects/list
 
         :type max_results: int
-        :param max_results: maximum number of projects to return, If not
-                            passed, defaults to a value set by the API.
+        :param max_results: (Optional) maximum number of projects to return,
+                            If not passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of projects. If
-                           not passed, the API will return the first page of
-                           projects.
+        :param page_token:
+            (Optional) Token representing a cursor into the projects. If
+            not passed, the API will return the first page of projects.
+            The token marks the beginning of the iterator to be returned
+            and the value of the ``page_token`` can be accessed at
+            ``next_page_token`` of the
+            :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
@@ -169,18 +173,22 @@ class Client(ClientWithProject):
         :param include_all: True if results include hidden datasets.
 
         :type filter: str
-        :param filter: an expression for filtering the results by label.
-                       For syntax, see
+        :param filter: (Optional) an expression for filtering the results by
+                       label. For syntax, see
                        https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets/list#filter.
 
         :type max_results: int
-        :param max_results: maximum number of datasets to return, If not
-                            passed, defaults to a value set by the API.
+        :param max_results: (Optional) maximum number of datasets to return,
+                            if not passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of datasets. If
-                           not passed, the API will return the first page of
-                           datasets.
+        :param page_token:
+            (Optional) Token representing a cursor into the datasets. If
+            not passed, the API will return the first page of datasets.
+            The token marks the beginning of the iterator to be returned
+            and the value of the ``page_token`` can be accessed at
+            ``next_page_token`` of the
+            :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
@@ -410,9 +418,13 @@ class Client(ClientWithProject):
                             If not passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: (Optional) Opaque marker for the next "page" of
-                           datasets. If not passed, the API will return the
-                           first page of datasets.
+        :param page_token:
+            (Optional) Token representing a cursor into the tables. If not
+            passed, the API will return the first page of tables. The
+            token marks the beginning of the iterator to be returned and
+            the value of the ``page_token`` can be accessed at
+            ``next_page_token`` of the
+            :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry: (Optional) How to retry the RPC.
@@ -644,9 +656,13 @@ class Client(ClientWithProject):
                             passed, defaults to a value set by the API.
 
         :type page_token: str
-        :param page_token: opaque marker for the next "page" of jobs. If
-                           not passed, the API will return the first page of
-                           jobs.
+        :param page_token:
+             (Optional) Opaque marker for the next "page" of jobs. If not
+             passed, the API will return the first page of jobs. The token
+             marks the beginning of the iterator to be returned and the
+             value of the ``page_token`` can be accessed at
+             ``next_page_token`` of
+             :class:`~google.api_core.page_iterator.HTTPIterator`.
 
         :type all_users: bool
         :param all_users: if true, include jobs owned by all users in the
@@ -1225,11 +1241,16 @@ class Client(ClientWithProject):
             :class:`~google.cloud.bigquery.table.TableReference`.
 
         :type max_results: int
-        :param max_results: maximum number of rows to return.
+        :param max_results: (Optional) maximum number of rows to return.
 
         :type page_token: str
         :param page_token: (Optional) Token representing a cursor into the
-                           table's rows.
+                           table's rows. If not passed, the API will return
+                           the first page of the rows. The token marks the
+                           beginning of the iterator to be returned and the
+                           value of the ``page_token`` can be accessed at
+                           ``next_page_token`` of the
+                           :class:`~google.cloud.bigquery.table.RowIterator`.
 
         :type start_index: int
         :param start_index: (Optional) The zero-based index of the starting
