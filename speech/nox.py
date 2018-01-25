@@ -21,7 +21,6 @@ import nox
 
 LOCAL_DEPS = (
     os.path.join('..', 'api_core'),
-    os.path.join('..', 'core'),
 )
 
 
@@ -41,9 +40,8 @@ def default(session):
     # Run py.test against the unit tests.
     session.run(
         'py.test', '--quiet',
-        '--cov=google.cloud.speech',
         '--cov=google.cloud.speech_v1',
-        '--cov=tests.unit'
+        '--cov=tests.unit',
         '--cov-append',
         '--cov-config=.coveragerc',
         '--cov-report=',
@@ -88,7 +86,7 @@ def system(session, py):
     session.install('.')
 
     # Run py.test against the system tests.
-    session.run('py.test', '--quiet', 'tests/system.py')
+    session.run('py.test', '--quiet', os.path.join('tests', 'system'))
 
 
 @nox.session
