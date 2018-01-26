@@ -1154,13 +1154,13 @@ class TestClient(unittest.TestCase):
 
     def test_can_instantiate_without_project_when_datastore_emulator_host_is_set(self):
         # Set DATASTORE_EMULATOR_HOST to something testable
-        with mock.patch.dict('os.environ', {'DATASTORE_EMULATOR_HOST': 'something-testable'}):
-            client = self._get_target_class()()
+        with mock.patch.object(os, 'environ', {'DATASTORE_EMULATOR_HOST': 'something-testable'}):
+            self._get_target_class()()
 
     def test_can_instantiate_without_project_when_gcd_host_is_set(self):
         # Set GCD_HOST to something testable
-        with mock.patch.dict('os.environ', {'GCD_HOST': 'something-testable'}):
-            client = self._get_target_class()()
+        with mock.patch.object(os, 'environ', {'GCD_HOST': 'something-testable'}):
+            self._get_target_class()()
 
 
 class _NoCommitBatch(object):
