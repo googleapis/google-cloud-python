@@ -31,6 +31,7 @@ from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
 from google.cloud.bigtable.row import DirectRow
 from google.cloud.bigtable.row_data import PartialRowsData
+from google.cloud.bigtable.row_data import YieldRowsData
 from grpc import StatusCode
 
 
@@ -314,6 +315,43 @@ class Table(object):
         response_iterator = client._data_stub.ReadRows(request_pb)
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
+
+    def yield_rows(self, start_key=None, end_key=None, limit=None,
+                   filter_=None):
+        """Read rows from this table.
+
+        :type start_key: bytes
+        :param start_key: (Optional) The beginning of a range of row keys to
+                          read from. The range will include ``start_key``. If
+                          left empty, will be interpreted as the empty string.
+
+        :type end_key: bytes
+        :param end_key: (Optional) The end of a range of row keys to read from.
+                        The range will not include ``end_key``. If left empty,
+                        will be interpreted as an infinite string.
+
+        :type limit: int
+        :param limit: (Optional) The read will terminate after committing to N
+                      rows' worth of results. The default (zero) is to return
+                      all results.
+
+        :type filter_: :class:`.RowFilter`
+        :param filter_: (Optional) The filter to apply to the contents of the
+                        specified row(s). If unset, reads every column in
+                        each row.
+
+        :rtype: :class:`.PartialRowData`
+        :returns: A :class:`.PartialRowData` for each row returned
+        """
+        request_pb = _create_row_request(
+            self.name, start_key=start_key, end_key=end_key, filter_=filter_,
+            limit=limit)
+        client = self._instance._client
+        response_iterator = client._data_stub.ReadRows(request_pb)
+        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
+        generator = YieldRowsData(response_iterator)
+        for row in generator.read_rows():
+            yield row
 
     def mutate_rows(self, rows, retry=DEFAULT_RETRY):
         """Mutates multiple rows in bulk.
