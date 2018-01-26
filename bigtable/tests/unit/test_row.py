@@ -367,6 +367,49 @@ class TestDirectRow(unittest.TestCase):
         )])
         self.assertEqual(row._pb_mutations, [])
 
+    def test_commit_retry_on_failure(self):
+        import threading
+        import grpc
+        from grpc._channel import _Rendezvous
+        from google.api_core import retry
+        from google.cloud.bigtable.row import _retry_commit_exception
+        from google.api_core import exceptions
+
+        klass = self._get_target_class()
+
+        class State:
+            condition = threading.Condition()
+            code = grpc.StatusCode.UNAVAILABLE
+            details = 'Endpoint read failed'
+
+        class MockRow(klass):
+
+            def __call__(self, *args, **kwargs):
+                self.commit()
+
+            def __init__(self, *args, **kwargs):
+                super(MockRow, self).__init__(*args, **kwargs)
+                self._args = []
+                self._kwargs = []
+
+            # Replace the called method with one that logs arguments.
+            def commit(self, *args, **kwargs):
+                self._args.append(args)
+                self._kwargs.append(kwargs)
+                raise _Rendezvous(State, None, None, 0)
+
+        row_key = b'row_key'
+        table = object()
+        mock_row = MockRow(row_key, table)
+
+        # After retrying for 10 seconds, raise a RetryError exception
+        retry_ = retry.Retry(
+            predicate=_retry_commit_exception,
+            deadline=10)
+
+        with self.assertRaises(exceptions.RetryError):
+            retry_(mock_row)()
+
     def test_commit_too_many_mutations(self):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
