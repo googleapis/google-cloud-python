@@ -1439,12 +1439,13 @@ class QueryJobConfig(object):
         """Factory: construct a job configuration given its API representation
 
         Args:
-            resource (dict): A query job configuration in the same
-                representation as is returned from the API.
+            resource (dict):
+                A query job configuration in the same representation as is
+                returned from the API.
 
         Returns:
-            :class:`~google.cloud.bigquery.job.QueryJobConfig`: Configuration
-                parsed from ``resource``.
+            ~google.cloud.bigquery.job.QueryJobConfig:
+                Configuration parsed from ``resource``.
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
@@ -1467,8 +1468,8 @@ class QueryJobConfig(object):
 
     @property
     def default_dataset(self):
-        """:class:`~google.cloud.bigquery.dataset.DatasetReference`: the
-        default dataset to use for unqualified table names in the query.
+        """google.cloud.bigquery.dataset.DatasetReference: the default dataset
+        to use for unqualified table names in the query.
 
         See
         https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
@@ -1487,8 +1488,8 @@ class QueryJobConfig(object):
 
     @property
     def destination(self):
-        """:class:`~google.cloud.bigquery.table.TableReference`: table where results
-        are written
+        """google.cloud.bigquery.table.TableReference: table where results are
+        written
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
@@ -1527,7 +1528,7 @@ class QueryJobConfig(object):
 
     @property
     def maximum_bytes_billed(self):
-        """`int`: Maximum bytes to be billed for this job.
+        """int: Maximum bytes to be billed for this job.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
@@ -1550,10 +1551,10 @@ class QueryJobConfig(object):
 
     @property
     def query_parameters(self):
-        """list(:class:`~google.cloud.bigquery.query.ArrayQueryParameter`,
-        :class:`~google.cloud.bigquery.query.ScalarQueryParameter`,
-        or :class:`~google.cloud.bigquery.query.StructQueryParameter`): list
-        of parameters for parameterized query (empty by default)
+        """List[Union[google.cloud.bigquery.query.ArrayQueryParameter, \
+        google.cloud.bigquery.query.ScalarQueryParameter, \
+        google.cloud.bigquery.query.StructQueryParameter]]: list of parameters
+        for parameterized query (empty by default)
 
         See:
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.queryParameters
@@ -1577,7 +1578,7 @@ class QueryJobConfig(object):
 
     @property
     def udf_resources(self):
-        """list(:class:`~google.cloud.bigquery.query.UDFResource`): user
+        """List[google.cloud.bigquery.query.UDFResource]: user
         defined function resources (empty by default)
 
         See:
@@ -1618,8 +1619,7 @@ class QueryJobConfig(object):
 
     @property
     def table_definitions(self):
-        """dict{`str`,
-        :class:`~google.cloud.bigquery.external_config.ExternalConfig`}:
+        """Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:
         Definitions for external tables.
 
         See
