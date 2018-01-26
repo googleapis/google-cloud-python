@@ -1562,18 +1562,18 @@ class QueryJobConfig(object):
         return _from_api_repr_query_parameters(prop)
 
     @query_parameters.setter
-    def query_parameters(self, value):
+    def query_parameters(self, values):
         value_error_message = (
             'Required type: list of ArrayQueryParameter, '
             'ScalarQueryParameter, or StructQueryParameter. To unset, use '
             'del or set to empty list')
-        if value is None:
+        if values is None:
             raise ValueError(value_error_message)
         if not all(
-                isinstance(item, _AbstractQueryParameter) for item in value):
+                isinstance(item, _AbstractQueryParameter) for item in values):
             raise ValueError(value_error_message)
         self._properties['queryParameters'] = _to_api_repr_query_parameters(
-            value)
+            values)
 
     @property
     def udf_resources(self):
@@ -1587,16 +1587,16 @@ class QueryJobConfig(object):
         return _from_api_repr_udf_resources(prop)
 
     @udf_resources.setter
-    def udf_resources(self, value):
+    def udf_resources(self, values):
         value_error_message = (
             'Required type: list of UDFResource. To unset, use del or set to '
             'empty list')
-        if value is None:
+        if values is None:
             raise ValueError(value_error_message)
-        if not all(isinstance(item, UDFResource) for item in value):
+        if not all(isinstance(item, UDFResource) for item in values):
             raise ValueError(value_error_message)
         self._properties['userDefinedFunctionResources'] = (
-            _to_api_repr_udf_resources(value))
+            _to_api_repr_udf_resources(values))
 
     use_legacy_sql = _TypedApiResourceProperty(
         'use_legacy_sql', 'useLegacySql', bool)
@@ -1631,10 +1631,10 @@ class QueryJobConfig(object):
         return prop
 
     @table_definitions.setter
-    def table_definitions(self, value):
-        if value is not None and not isinstance(value, dict):
+    def table_definitions(self, values):
+        if values is not None and not isinstance(values, dict):
             raise ValueError('Required type: dict')
-        self._properties['tableDefinitions'] = _to_api_repr_table_defs(value)
+        self._properties['tableDefinitions'] = _to_api_repr_table_defs(values)
 
     _maximum_billing_tier = None
     _maximum_bytes_billed = None
