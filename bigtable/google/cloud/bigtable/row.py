@@ -19,6 +19,7 @@ import struct
 
 import six
 import functools
+import grpc
 
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _microseconds_from_datetime
@@ -28,7 +29,7 @@ from google.cloud.bigtable._generated import (
 from google.cloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 from google.api_core import retry
-from google.cloud import exceptions
+from google.api_core import exceptions
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -239,8 +240,13 @@ class _SetDeleteRow(Row):
             mutations_list.extend(to_append)
 
 
-def call_mutate_row(table, request_pb):
-    """Call the MutateRow"""
+def _retry_commit_exception(exc):
+    if isinstance(exc, grpc.RpcError):
+        exc = exceptions.from_grpc_error(exc)
+    return isinstance(exc, exceptions.ServiceUnavailable)
+
+
+def _call_mutate_row(table, request_pb):
     client = table._instance._client
     client._data_stub.MutateRow(request_pb)
 
@@ -423,11 +429,11 @@ class DirectRow(_SetDeleteRow):
         )
 
         retry_commit = functools.partial(
-            call_mutate_row,
+            _call_mutate_row,
             table=self._table,
             request_pb=request_pb)
         retry_ = retry.Retry(
-            predicate=retry.if_exception_type(exceptions.GrpcRendezvous),
+            predicate=_retry_commit_exception,
             deadline=30)
         retry_(retry_commit)()
 
