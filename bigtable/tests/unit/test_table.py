@@ -131,6 +131,7 @@ class TestTable(unittest.TestCase):
     QUALIFIER = b'qualifier'
     TIMESTAMP_MICROS = 100
     VALUE = b'value'
+    _json_tests = None
 
     @staticmethod
     def _get_target_class():
@@ -520,6 +521,37 @@ class TestTable(unittest.TestCase):
             'end_inclusive': False,
         }
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
+
+    def test_yield_rows(self):
+        from tests.unit._testing import _FakeStub
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        # Create response_iterator
+        chunk = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunks = [chunk]
+
+        response = _ReadRowsResponseV2(chunks)
+        response_iterator = _MockCancellableIterator(response)
+
+        # Patch the stub used by the API method.
+        client._data_stub = _FakeStub(response_iterator)
+
+        rows = []
+        for row in table.yield_rows():
+            rows.append(row)
+        result = rows[0]
+
+        self.assertEqual(result.row_key, self.ROW_KEY)
 
     def test_sample_row_keys(self):
         from tests.unit._testing import _FakeStub
@@ -1184,3 +1216,24 @@ class _Instance(object):
     def __init__(self, name, client=None):
         self.name = name
         self._client = client
+
+
+class _MockCancellableIterator(object):
+
+    cancel_calls = 0
+
+    def __init__(self, *values):
+        self.iter_values = iter(values)
+
+    def next(self):
+        return next(self.iter_values)
+
+    def __next__(self):  # pragma: NO COVER Py3k
+        return self.next()
+
+
+class _ReadRowsResponseV2(object):
+
+    def __init__(self, chunks, last_scanned_row_key=''):
+        self.chunks = chunks
+        self.last_scanned_row_key = last_scanned_row_key
