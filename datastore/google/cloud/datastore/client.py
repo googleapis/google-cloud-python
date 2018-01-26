@@ -28,7 +28,6 @@ from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_DATASET
-from google.cloud.environment_vars import GCD_HOST
 
 try:
     from google.cloud.datastore._gax import make_datastore_api

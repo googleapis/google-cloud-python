@@ -1153,26 +1153,14 @@ class TestClient(unittest.TestCase):
                 client, project=self.PROJECT, namespace=namespace2, kind=kind)
 
     def test_can_instantiate_without_project_when_datastore_emulator_host_is_set(self):
-        from google.cloud.datastore import Client
-        from google.auth.exceptions import DefaultCredentialsError
         # Set DATASTORE_EMULATOR_HOST to something testable
         with mock.patch.dict('os.environ', {'DATASTORE_EMULATOR_HOST': 'something-testable'}):
-            try:
-                client = Client()
-            except DefaultCredentialsError as e:
-                raise AssertionError('datastore client failed to instantiate. {}'.format('DefaultCredentialsError'))
-        # os.environ = old_env
+            client = self._get_target_class()()
 
     def test_can_instantiate_without_project_when_gcd_host_is_set(self):
-        from google.cloud.datastore import Client
-        from google.auth.exceptions import DefaultCredentialsError
-
         # Set GCD_HOST to something testable
         with mock.patch.dict('os.environ', {'GCD_HOST': 'something-testable'}):
-            try:
-                client = Client()
-            except DefaultCredentialsError as e:
-                raise AssertionError('datastore client failed to instantiate. {}'.format('DefaultCredentialsError'))
+            client = self._get_target_class()()
 
 
 class _NoCommitBatch(object):
