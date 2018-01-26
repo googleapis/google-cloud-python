@@ -335,8 +335,7 @@ class YieldRowsData(object):
                     cell.append_value(chunk.value)
 
                 if chunk.commit_row:
-                    if self._cell:
-                        self._save_current_cell()
+                    self._save_current_cell()
 
                     yield self._row
 
