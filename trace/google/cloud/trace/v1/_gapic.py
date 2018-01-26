@@ -12,13 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""GAX Wrapper for interacting with the Stackdriver Trace API."""
+"""Wrapper for interacting with the Stackdriver Trace API."""
 
-from google.api_core import page_iterator
 from google.cloud.trace_v1.gapic import trace_service_client
 from google.cloud.trace_v1.proto import trace_pb2
-from google.gax import CallOptions
-from google.gax import INITIAL_PAGE
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import ParseDict
 
@@ -32,50 +29,40 @@ class _TraceAPI(object):
     cloudtrace.v1
 
     Args:
-        gax_api (~google.cloud.trace_v1.gapic.trace_service_client.
-            TraceServiceClient): Required. API object used to make GAX
-            requests.
-
+        gapic_api (~google.cloud.trace_v1.gapic.trace_service_client.
+            TraceServiceClient): Required. API object used to make RPCs.
         client (~google.cloud.trace.client.Client): The client that owns this
             API object.
     """
-    def __init__(self, gax_api, client):
-        self._gax_api = gax_api
+    def __init__(self, gapic_api, client):
+        self._gapic_api = gapic_api
         self.client = client
 
-    def patch_traces(self, project_id, traces, options=None):
+    def patch_traces(self, project_id, traces):
         """
         Sends new traces to Stackdriver Trace or updates existing traces.
 
         Args:
             project_id (Optional[str]): ID of the Cloud project where the trace
                 data is stored.
-
             traces (dict): Required. The traces to be patched in the API call.
-
-            options (Optional[~google.gax.CallOptions]): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
         """
         traces_pb = _traces_mapping_to_pb(traces)
-        self._gax_api.patch_traces(project_id, traces_pb, options)
+        self._gapic_api.patch_traces(project_id, traces_pb)
 
-    def get_trace(self, project_id, trace_id, options=None):
+    def get_trace(self, project_id, trace_id):
         """
         Gets a single trace by its ID.
 
         Args:
             trace_id (str): ID of the trace to return.
-
             project_id (str): Required. ID of the Cloud project where the trace
                 data is stored.
-
-            options (Optional[~google.gax.CallOptions]): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
 
         Returns:
             A Trace dict.
         """
-        trace_pb = self._gax_api.get_trace(project_id, trace_id, options)
+        trace_pb = self._gapic_api.get_trace(project_id, trace_id)
         trace_mapping = _parse_trace_pb(trace_pb)
         return trace_mapping
 
@@ -125,21 +112,17 @@ class _TraceAPI(object):
             A  :class:`~google.api_core.page_iterator.Iterator` of traces that
             match the specified filter conditions.
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = CallOptions(page_token=page_token)
-        page_iter = self._gax_api.list_traces(
+        page_iter = self._gapic_api.list_traces(
             project_id=project_id,
             view=view,
             page_size=page_size,
             start_time=start_time,
             end_time=end_time,
             filter_=filter_,
-            order_by=order_by,
-            options=options)
-        item_to_value = _item_to_mapping
-        return page_iterator._GAXIterator(
-            self.client, page_iter, item_to_value)
+            order_by=order_by)
+        page_iter._item_to_value = _item_to_mapping
+        page_iter.next_page_token = page_token
+        return page_iter
 
 
 def _parse_trace_pb(trace_pb):
@@ -161,7 +144,7 @@ def _parse_trace_pb(trace_pb):
 
 def _item_to_mapping(iterator, trace_pb):
     """
-    Helper callable function for the GAXIterator
+    Helper callable function for the page iterator
 
     Args:
         iterator(~google.api_core.page_iterator.Iterator): The iterator that is
@@ -174,16 +157,16 @@ def _item_to_mapping(iterator, trace_pb):
     return mapping
 
 
-def make_gax_trace_api(client):
+def make_trace_api(client):
     """
-    Create an instance of the GAX Trace API.
+    Create an instance of the gapic Trace API.
 
     Args:
         client (~google.cloud.trace.client.Client): The client that holds
             configuration details.
 
     Returns:
-        A :class:`~google.cloud.trace._gax._TraceAPI` instance with the proper
+        A :class:`~google.cloud.trace._gapic._TraceAPI` instance with the proper
         configurations.
     """
     generated = trace_service_client.TraceServiceClient()
