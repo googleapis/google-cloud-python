@@ -17,8 +17,8 @@
 
 import struct
 
-import six
 import functools
+import six
 import grpc
 
 from google.cloud._helpers import _datetime_from_microseconds

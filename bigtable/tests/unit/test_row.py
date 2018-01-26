@@ -367,14 +367,14 @@ class TestDirectRow(unittest.TestCase):
         )])
         self.assertEqual(row._pb_mutations, [])
 
-    def test_commit_retry_on_failure(self):
+    def test_retry_commit_exception(self):
         import threading
         import grpc
         import functools
         from grpc._channel import _Rendezvous
         from google.api_core import retry
-        from google.cloud.bigtable.row import _retry_commit_exception
         from google.api_core import exceptions
+        from google.cloud.bigtable.row import _retry_commit_exception
 
         klass = self._get_target_class()
 
