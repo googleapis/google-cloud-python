@@ -55,16 +55,17 @@ REQUIREMENTS = [
     'google-api-core >= 0.1.1, < 0.2.0dev',
 ]
 
-setup(
-    name='google-cloud-translate',
-    version='1.3.1.dev1',
-    description='Python Client for Google Cloud Translation API',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-translate',
+        version='1.3.1.dev1',
+        description='Python Client for Google Cloud Translation API',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )

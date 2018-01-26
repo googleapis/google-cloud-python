@@ -53,11 +53,12 @@ REQUIREMENTS = [
     'six',
 ]
 
-setup(
-    name='google-cloud-testutils',
-    version='0.24.0',
-    description='System test utilities for google-cloud-python',
-    packages=find_packages(),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-testutils',
+        version='0.24.0',
+        description='System test utilities for google-cloud-python',
+        packages=find_packages(),
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )

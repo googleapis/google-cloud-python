@@ -62,17 +62,18 @@ EXTRAS_REQUIREMENTS = {
     'pandas': ['pandas >= 0.17.1'],
 }
 
-setup(
-    name='google-cloud-bigquery',
-    version='0.29.1.dev1',
-    description='Python Client for Google BigQuery',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    extras_require=EXTRAS_REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-bigquery',
+        version='0.29.1.dev1',
+        description='Python Client for Google BigQuery',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        extras_require=EXTRAS_REQUIREMENTS,
+        **SETUP_BASE
+    )

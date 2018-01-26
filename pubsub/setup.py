@@ -57,16 +57,17 @@ REQUIREMENTS = [
     'psutil >= 5.2.2, < 6.0dev',
 ]
 
-setup(
-    name='google-cloud-pubsub',
-    version='0.30.2.dev1',
-    description='Python Client for Google Cloud Pub/Sub',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-pubsub',
+        version='0.30.2.dev1',
+        description='Python Client for Google Cloud Pub/Sub',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )

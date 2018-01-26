@@ -74,11 +74,12 @@ REQUIREMENTS = [
     'google-cloud-vision >= 0.29.0, < 0.30dev',
 ]
 
-setup(
-    name='google-cloud',
-    version='0.32.1.dev1',
-    description='API Client library for Google Cloud',
-    long_description=README,
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud',
+        version='0.32.1.dev1',
+        description='API Client library for Google Cloud',
+        long_description=README,
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )

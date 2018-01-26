@@ -55,16 +55,17 @@ REQUIREMENTS = [
     'google-api-core >= 0.1.1, < 0.2.0dev',
 ]
 
-setup(
-    name='google-cloud-resource-manager',
-    version='0.28.1.dev1',
-    description='Python Client for Google Cloud Resource Manager',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-resource-manager',
+        version='0.28.1.dev1',
+        description='Python Client for Google Cloud Resource Manager',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )
