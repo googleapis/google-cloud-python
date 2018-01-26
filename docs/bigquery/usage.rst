@@ -9,6 +9,8 @@ BigQuery
   reference
   dbapi
 
+.. contents:: :local:
+
 Authentication / Configuration
 ------------------------------
 
@@ -179,18 +181,6 @@ Insert rows into a table's data:
    :start-after: [START table_insert_rows]
    :end-before: [END table_insert_rows]
 
-Upload table data from a file:
-
-.. literalinclude:: snippets.py
-   :start-after: [START load_table_from_file]
-   :end-before: [END load_table_from_file]
-
-Load table data from Google Cloud Storage:
-
-.. literalinclude:: snippets.py
-   :start-after: [START load_table_from_uri]
-   :end-before: [END load_table_from_uri]
-
 Copy a table:
 
 .. literalinclude:: snippets.py
@@ -208,6 +198,42 @@ Delete a table:
 .. literalinclude:: snippets.py
    :start-after: [START delete_table]
    :end-before: [END delete_table]
+
+Upload table data from a file:
+
+.. literalinclude:: snippets.py
+   :start-after: [START load_table_from_file]
+   :end-before: [END load_table_from_file]
+
+Load table data from Google Cloud Storage
+*****************************************
+
+See also: `Loading JSON data from Cloud Storage
+<https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json>`_.
+
+Load a JSON file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json]
+   :end-before: [END bigquery_load_table_gcs_json]
+
+Load a JSON file from Cloud Storage, using an autodetected schema:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json_autodetect]
+   :end-before: [END bigquery_load_table_gcs_json_autodetect]
+
+Append a JSON file from Cloud Storage to an existing table:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json_append]
+   :end-before: [END bigquery_load_table_gcs_json_append]
+
+Overwrite / replace an existing table with a JSON file from Cloud Storage:
+
+.. literalinclude:: snippets.py
+   :start-after: [START bigquery_load_table_gcs_json_truncate]
+   :end-before: [END bigquery_load_table_gcs_json_truncate]
 
 
 Queries
