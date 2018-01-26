@@ -185,11 +185,13 @@ Upload table data from a file:
    :start-after: [START load_table_from_file]
    :end-before: [END load_table_from_file]
 
-Load table data from Google Cloud Storage:
+Load table data from Google Cloud Storage (See also: `Loading JSON data from
+Google Cloud Storage
+<https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-json>`_):
 
 .. literalinclude:: snippets.py
-   :start-after: [START load_table_from_uri]
-   :end-before: [END load_table_from_uri]
+   :start-after: [START bigquery_load_table_gcs_json]
+   :end-before: [END bigquery_load_table_gcs_json]
 
 Copy a table:
 

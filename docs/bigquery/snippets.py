@@ -66,7 +66,7 @@ def to_delete(client):
     yield doomed
     for item in doomed:
         if isinstance(item, (bigquery.Dataset, bigquery.DatasetReference)):
-            client.delete_dataset(item)
+            client.delete_dataset(item, delete_contents=True)
         elif isinstance(item, (bigquery.Table, bigquery.TableReference)):
             client.delete_table(item)
         else:
@@ -495,42 +495,25 @@ Wylma Phlyntstone,29
 
 
 def test_load_table_from_uri(client, to_delete):
-    ROWS = [
-        ('Phred Phlyntstone', 32),
-        ('Bharney Rhubble', 33),
-        ('Wylma Phlyntstone', 29),
-        ('Bhettye Rhubble', 27),
-    ]
-    HEADER_ROW = ('Full Name', 'Age')
-    bucket_name = 'gs_bq_load_test_{}'.format(_millis())
-    blob_name = 'person_ages.csv'
-    bucket, blob = _write_csv_to_storage(
-        bucket_name, blob_name, HEADER_ROW, ROWS)
-    to_delete.extend((blob, bucket))
-    DATASET_ID = 'delete_table_dataset_{}'.format(_millis())
-    dataset = bigquery.Dataset(client.dataset(DATASET_ID))
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
     client.create_dataset(dataset)
     to_delete.append(dataset)
-    table_ref = dataset.table('my_table')
-    table = bigquery.Table(table_ref)
-    table.schema = [
-        bigquery.SchemaField('full_name', 'STRING', mode='required'),
-        bigquery.SchemaField('age', 'INTEGER', mode='required')
-    ]
-    client.create_table(table)
 
-    # [START load_table_from_uri]
-    table_ref = dataset.table('my_table')
-    GS_URL = 'gs://{}/{}'.format(bucket_name, blob_name)
-    job_id_prefix = "my_job"
+    # [START bigquery_load_table_gcs_json]
+    # dataset_id = 'my_dataset'
+    dataset_ref = client.dataset(dataset_id)
     job_config = bigquery.LoadJobConfig()
-    job_config.create_disposition = 'NEVER'
-    job_config.skip_leading_rows = 1
-    job_config.source_format = 'CSV'
-    job_config.write_disposition = 'WRITE_EMPTY'
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+
     load_job = client.load_table_from_uri(
-        GS_URL, table_ref, job_config=job_config,
-        job_id_prefix=job_id_prefix)  # API request
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
 
     assert load_job.state == 'RUNNING'
     assert load_job.job_type == 'load'
@@ -538,10 +521,114 @@ def test_load_table_from_uri(client, to_delete):
     load_job.result()  # Waits for table load to complete.
 
     assert load_job.state == 'DONE'
-    assert load_job.job_id.startswith(job_id_prefix)
-    # [END load_table_from_uri]
+    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    # [END bigquery_load_table_gcs_json]
 
-    to_delete.insert(0, table)
+
+def test_load_table_from_uri_autodetect(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    # [START bigquery_load_table_gcs_json_autodetect]
+    # dataset_id = 'my_dataset'
+    dataset_ref = client.dataset(dataset_id)
+    job_config = bigquery.LoadJobConfig()
+    job_config.autodetect = True
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        dataset_ref.table('us_states'),
+        job_config=job_config)  # API request
+
+    assert load_job.state == 'RUNNING'
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(dataset_ref.table('us_states')).num_rows > 0
+    # [END bigquery_load_table_gcs_json_autodetect]
+
+
+def test_load_table_from_uri_append(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table_ref = dataset.table('us_states')
+    body = six.StringIO('Washington,WA')
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
+
+    # [START bigquery_load_table_gcs_json_append]
+    # table_ref = client.dataset('my_dataset').table('existing_table')
+    previous_rows = client.get_table(table_ref).num_rows
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.write_disposition = 'WRITE_APPEND'
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        table_ref,
+        job_config=job_config)  # API request
+
+    assert load_job.state == 'RUNNING'
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(table_ref).num_rows == previous_rows + 50
+    # [END bigquery_load_table_gcs_json_append]
+
+
+def test_load_table_from_uri_truncate(client, to_delete):
+    dataset_id = 'load_table_dataset_{}'.format(_millis())
+    dataset = bigquery.Dataset(client.dataset(dataset_id))
+    client.create_dataset(dataset)
+    to_delete.append(dataset)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.schema = [
+        bigquery.SchemaField('name', 'STRING'),
+        bigquery.SchemaField('post_abbr', 'STRING')
+    ]
+    table_ref = dataset.table('us_states')
+    body = six.StringIO('Washington,WA')
+    client.load_table_from_file(
+        body, table_ref, job_config=job_config).result()
+
+    # [START bigquery_load_table_gcs_json_append]
+    # table_ref = client.dataset('my_dataset').table('existing_table')
+    previous_rows = client.get_table(table_ref).num_rows
+    assert previous_rows > 0
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+    job_config.write_disposition = 'WRITE_TRUNCATE'
+
+    load_job = client.load_table_from_uri(
+        'gs://cloud-samples-data/bigquery/us-states/us-states.json',
+        table_ref,
+        job_config=job_config)  # API request
+
+    assert load_job.state == 'RUNNING'
+    assert load_job.job_type == 'load'
+
+    load_job.result()  # Waits for table load to complete.
+
+    assert load_job.state == 'DONE'
+    assert client.get_table(table_ref).num_rows == 50
+    # [END bigquery_load_table_gcs_json_append]
 
 
 def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
