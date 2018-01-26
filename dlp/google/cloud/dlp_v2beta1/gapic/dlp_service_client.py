@@ -1,25 +1,16 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/privacy/dlp/v2beta1/dlp.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.privacy.dlp.v2beta1 DlpService API."""
 
 import pkg_resources
@@ -59,15 +50,16 @@ class DlpServiceClient(object):
     _DEFAULT_SCOPES = ('https://www.googleapis.com/auth/cloud-platform', )
 
     # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary
-    _INTERFACE_NAME = ('google.privacy.dlp.v2beta1.DlpService')
+    # method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.privacy.dlp.v2beta1.DlpService'
 
     @classmethod
     def result_path(cls, result):
-        """Returns a fully-qualified result resource name string."""
+        """Return a fully-qualified result string."""
         return google.api_core.path_template.expand(
             'inspect/results/{result}',
-            result=result, )
+            result=result,
+        )
 
     def __init__(self,
                  channel=None,
@@ -78,34 +70,37 @@ class DlpServiceClient(object):
 
         Args:
             channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. If specified, then the ``credentials``
-                argument is ignored.
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict):
-                A dictionary of call options for each method. If not specified
-                the default configuration is used. Generally, you only need
-                to set this if you're developing your own client library.
+            client_config (dict): A dictionary of call options for each
+                method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
+        # If both `channel` and `credentials` are specified, raise an
+        # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'channel and credentials arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__))
+                'The `channel` and `credentials` arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__), )
 
+        # Create the channel.
         if channel is None:
             channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES)
+                scopes=self._DEFAULT_SCOPES,
+            )
 
+        # Create the gRPC stubs.
         self.dlp_service_stub = (dlp_pb2.DlpServiceStub(channel))
 
         # Operations client for methods that return long-running operations
@@ -116,61 +111,218 @@ class DlpServiceClient(object):
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
-        interface_config = client_config['interfaces'][self._INTERFACE_NAME]
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
         method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            interface_config)
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
-        self._deidentify_content = google.api_core.gapic_v1.method.wrap_method(
-            self.dlp_service_stub.DeidentifyContent,
-            default_retry=method_configs['DeidentifyContent'].retry,
-            default_timeout=method_configs['DeidentifyContent'].timeout,
-            client_info=client_info)
-        self._analyze_data_source_risk = google.api_core.gapic_v1.method.wrap_method(
-            self.dlp_service_stub.AnalyzeDataSourceRisk,
-            default_retry=method_configs['AnalyzeDataSourceRisk'].retry,
-            default_timeout=method_configs['AnalyzeDataSourceRisk'].timeout,
-            client_info=client_info)
+        # Write the "inner API call" methods to the class.
+        # These are wrapped versions of the gRPC stub methods, with retry and
+        # timeout configuration applied, called by the public methods on
+        # this class.
         self._inspect_content = google.api_core.gapic_v1.method.wrap_method(
             self.dlp_service_stub.InspectContent,
             default_retry=method_configs['InspectContent'].retry,
             default_timeout=method_configs['InspectContent'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._redact_content = google.api_core.gapic_v1.method.wrap_method(
             self.dlp_service_stub.RedactContent,
             default_retry=method_configs['RedactContent'].retry,
             default_timeout=method_configs['RedactContent'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
+        self._deidentify_content = google.api_core.gapic_v1.method.wrap_method(
+            self.dlp_service_stub.DeidentifyContent,
+            default_retry=method_configs['DeidentifyContent'].retry,
+            default_timeout=method_configs['DeidentifyContent'].timeout,
+            client_info=client_info,
+        )
+        self._analyze_data_source_risk = google.api_core.gapic_v1.method.wrap_method(
+            self.dlp_service_stub.AnalyzeDataSourceRisk,
+            default_retry=method_configs['AnalyzeDataSourceRisk'].retry,
+            default_timeout=method_configs['AnalyzeDataSourceRisk'].timeout,
+            client_info=client_info,
+        )
         self._create_inspect_operation = google.api_core.gapic_v1.method.wrap_method(
             self.dlp_service_stub.CreateInspectOperation,
             default_retry=method_configs['CreateInspectOperation'].retry,
             default_timeout=method_configs['CreateInspectOperation'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._list_inspect_findings = google.api_core.gapic_v1.method.wrap_method(
             self.dlp_service_stub.ListInspectFindings,
             default_retry=method_configs['ListInspectFindings'].retry,
             default_timeout=method_configs['ListInspectFindings'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._list_info_types = google.api_core.gapic_v1.method.wrap_method(
             self.dlp_service_stub.ListInfoTypes,
             default_retry=method_configs['ListInfoTypes'].retry,
             default_timeout=method_configs['ListInfoTypes'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._list_root_categories = google.api_core.gapic_v1.method.wrap_method(
             self.dlp_service_stub.ListRootCategories,
             default_retry=method_configs['ListRootCategories'].retry,
             default_timeout=method_configs['ListRootCategories'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
 
     # Service calls
+    def inspect_content(self,
+                        inspect_config,
+                        items,
+                        retry=google.api_core.gapic_v1.method.DEFAULT,
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
+        """
+        Finds potentially sensitive info in a list of strings.
+        This method has limits on input size, processing time, and output size.
+
+        Example:
+            >>> from google.cloud import dlp_v2beta1
+            >>>
+            >>> client = dlp_v2beta1.DlpServiceClient()
+            >>>
+            >>> name = 'EMAIL_ADDRESS'
+            >>> info_types_element = {'name': name}
+            >>> info_types = [info_types_element]
+            >>> inspect_config = {'info_types': info_types}
+            >>> type_ = 'text/plain'
+            >>> value = 'My email is example@example.com.'
+            >>> items_element = {'type': type_, 'value': value}
+            >>> items = [items_element]
+            >>>
+            >>> response = client.inspect_content(inspect_config, items)
+
+        Args:
+            inspect_config (Union[dict, ~google.cloud.dlp_v2beta1.types.InspectConfig]): Configuration for the inspector.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2beta1.types.InspectConfig`
+            items (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ContentItem]]): The list of items to inspect. Items in a single request are
+                considered \"related\" unless inspect_config.independent_inputs is true.
+                Up to 100 are allowed per request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2beta1.types.ContentItem`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dlp_v2beta1.types.InspectContentResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        request = dlp_pb2.InspectContentRequest(
+            inspect_config=inspect_config,
+            items=items,
+        )
+        return self._inspect_content(
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
+    def redact_content(self,
+                       inspect_config,
+                       items,
+                       replace_configs=None,
+                       image_redaction_configs=None,
+                       retry=google.api_core.gapic_v1.method.DEFAULT,
+                       timeout=google.api_core.gapic_v1.method.DEFAULT,
+                       metadata=None):
+        """
+        Redacts potentially sensitive info from a list of strings.
+        This method has limits on input size, processing time, and output size.
+
+        Example:
+            >>> from google.cloud import dlp_v2beta1
+            >>>
+            >>> client = dlp_v2beta1.DlpServiceClient()
+            >>>
+            >>> name = 'EMAIL_ADDRESS'
+            >>> info_types_element = {'name': name}
+            >>> info_types = [info_types_element]
+            >>> inspect_config = {'info_types': info_types}
+            >>> type_ = 'text/plain'
+            >>> value = 'My email is example@example.com.'
+            >>> items_element = {'type': type_, 'value': value}
+            >>> items = [items_element]
+            >>> name_2 = 'EMAIL_ADDRESS'
+            >>> info_type = {'name': name_2}
+            >>> replace_with = 'REDACTED'
+            >>> replace_configs_element = {'info_type': info_type, 'replace_with': replace_with}
+            >>> replace_configs = [replace_configs_element]
+            >>>
+            >>> response = client.redact_content(inspect_config, items, replace_configs=replace_configs)
+
+        Args:
+            inspect_config (Union[dict, ~google.cloud.dlp_v2beta1.types.InspectConfig]): Configuration for the inspector.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2beta1.types.InspectConfig`
+            items (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ContentItem]]): The list of items to inspect. Up to 100 are allowed per request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2beta1.types.ContentItem`
+            replace_configs (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ReplaceConfig]]): The strings to replace findings text findings with. Must specify at least
+                one of these or one ImageRedactionConfig if redacting images.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2beta1.types.ReplaceConfig`
+            image_redaction_configs (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ImageRedactionConfig]]): The configuration for specifying what content to redact from images.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.dlp_v2beta1.types.ImageRedactionConfig`
+            retry (Optional[google.api_core.retry.Retry]):  A retry object used
+                to retry requests. If ``None`` is specified, requests will not
+                be retried.
+            timeout (Optional[float]): The amount of time, in seconds, to wait
+                for the request to complete. Note that if ``retry`` is
+                specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
+
+        Returns:
+            A :class:`~google.cloud.dlp_v2beta1.types.RedactContentResponse` instance.
+
+        Raises:
+            google.api_core.exceptions.GoogleAPICallError: If the request
+                    failed for any reason.
+            google.api_core.exceptions.RetryError: If the request failed due
+                    to a retryable error and retry attempts failed.
+            ValueError: If the parameters are invalid.
+        """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        request = dlp_pb2.RedactContentRequest(
+            inspect_config=inspect_config,
+            items=items,
+            replace_configs=replace_configs,
+            image_redaction_configs=image_redaction_configs,
+        )
+        return self._redact_content(
+            request, retry=retry, timeout=timeout, metadata=metadata)
+
     def deidentify_content(self,
                            deidentify_config,
                            inspect_config,
                            items,
                            retry=google.api_core.gapic_v1.method.DEFAULT,
-                           timeout=google.api_core.gapic_v1.method.DEFAULT):
+                           timeout=google.api_core.gapic_v1.method.DEFAULT,
+                           metadata=None):
         """
         De-identifies potentially sensitive info from a list of strings.
         This method has limits on input size and output size.
@@ -203,6 +355,8 @@ class DlpServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.dlp_v2beta1.types.DeidentifyContentResponse` instance.
@@ -214,18 +368,24 @@ class DlpServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = dlp_pb2.DeidentifyContentRequest(
             deidentify_config=deidentify_config,
             inspect_config=inspect_config,
-            items=items)
-        return self._deidentify_content(request, retry=retry, timeout=timeout)
+            items=items,
+        )
+        return self._deidentify_content(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def analyze_data_source_risk(
             self,
             privacy_metric,
             source_table,
             retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT):
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Schedules a job to compute risk analysis metrics over content in a Google
         Cloud Platform repository.
@@ -262,6 +422,8 @@ class DlpServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.dlp_v2beta1.types._OperationFuture` instance.
@@ -273,140 +435,21 @@ class DlpServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = dlp_pb2.AnalyzeDataSourceRiskRequest(
-            privacy_metric=privacy_metric, source_table=source_table)
+            privacy_metric=privacy_metric,
+            source_table=source_table,
+        )
         operation = self._analyze_data_source_risk(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
             dlp_pb2.RiskAnalysisOperationResult,
-            metadata_type=dlp_pb2.RiskAnalysisOperationMetadata)
-
-    def inspect_content(self,
-                        inspect_config,
-                        items,
-                        retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT):
-        """
-        Finds potentially sensitive info in a list of strings.
-        This method has limits on input size, processing time, and output size.
-
-        Example:
-            >>> from google.cloud import dlp_v2beta1
-            >>>
-            >>> client = dlp_v2beta1.DlpServiceClient()
-            >>>
-            >>> name = 'EMAIL_ADDRESS'
-            >>> info_types_element = {'name': name}
-            >>> info_types = [info_types_element]
-            >>> inspect_config = {'info_types': info_types}
-            >>> type_ = 'text/plain'
-            >>> value = 'My email is example@example.com.'
-            >>> items_element = {'type': type_, 'value': value}
-            >>> items = [items_element]
-            >>>
-            >>> response = client.inspect_content(inspect_config, items)
-
-        Args:
-            inspect_config (Union[dict, ~google.cloud.dlp_v2beta1.types.InspectConfig]): Configuration for the inspector.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dlp_v2beta1.types.InspectConfig`
-            items (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ContentItem]]): The list of items to inspect. Items in a single request are
-                considered \"related\" unless inspect_config.independent_inputs is true.
-                Up to 100 are allowed per request.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dlp_v2beta1.types.ContentItem`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-
-        Returns:
-            A :class:`~google.cloud.dlp_v2beta1.types.InspectContentResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        request = dlp_pb2.InspectContentRequest(
-            inspect_config=inspect_config, items=items)
-        return self._inspect_content(request, retry=retry, timeout=timeout)
-
-    def redact_content(self,
-                       inspect_config,
-                       items,
-                       replace_configs,
-                       image_redaction_configs=None,
-                       retry=google.api_core.gapic_v1.method.DEFAULT,
-                       timeout=google.api_core.gapic_v1.method.DEFAULT):
-        """
-        Redacts potentially sensitive info from a list of strings.
-        This method has limits on input size, processing time, and output size.
-
-        Example:
-            >>> from google.cloud import dlp_v2beta1
-            >>>
-            >>> client = dlp_v2beta1.DlpServiceClient()
-            >>>
-            >>> name = 'EMAIL_ADDRESS'
-            >>> info_types_element = {'name': name}
-            >>> info_types = [info_types_element]
-            >>> inspect_config = {'info_types': info_types}
-            >>> type_ = 'text/plain'
-            >>> value = 'My email is example@example.com.'
-            >>> items_element = {'type': type_, 'value': value}
-            >>> items = [items_element]
-            >>> name_2 = 'EMAIL_ADDRESS'
-            >>> info_type = {'name': name_2}
-            >>> replace_with = 'REDACTED'
-            >>> replace_configs_element = {'info_type': info_type, 'replace_with': replace_with}
-            >>> replace_configs = [replace_configs_element]
-            >>>
-            >>> response = client.redact_content(inspect_config, items, replace_configs)
-
-        Args:
-            inspect_config (Union[dict, ~google.cloud.dlp_v2beta1.types.InspectConfig]): Configuration for the inspector.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dlp_v2beta1.types.InspectConfig`
-            items (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ContentItem]]): The list of items to inspect. Up to 100 are allowed per request.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dlp_v2beta1.types.ContentItem`
-            replace_configs (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ReplaceConfig]]): The strings to replace findings text findings with. Must specify at least
-                one of these or one ImageRedactionConfig if redacting images.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dlp_v2beta1.types.ReplaceConfig`
-            image_redaction_configs (list[Union[dict, ~google.cloud.dlp_v2beta1.types.ImageRedactionConfig]]): The configuration for specifying what content to redact from images.
-                If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.dlp_v2beta1.types.ImageRedactionConfig`
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
-
-        Returns:
-            A :class:`~google.cloud.dlp_v2beta1.types.RedactContentResponse` instance.
-
-        Raises:
-            google.api_core.exceptions.GoogleAPICallError: If the request
-                    failed for any reason.
-            google.api_core.exceptions.RetryError: If the request failed due
-                    to a retryable error and retry attempts failed.
-            ValueError: If the parameters are invalid.
-        """
-        request = dlp_pb2.RedactContentRequest(
-            inspect_config=inspect_config,
-            items=items,
-            replace_configs=replace_configs,
-            image_redaction_configs=image_redaction_configs)
-        return self._redact_content(request, retry=retry, timeout=timeout)
+            metadata_type=dlp_pb2.RiskAnalysisOperationMetadata,
+        )
 
     def create_inspect_operation(
             self,
@@ -415,7 +458,8 @@ class DlpServiceClient(object):
             output_config,
             operation_config=None,
             retry=google.api_core.gapic_v1.method.DEFAULT,
-            timeout=google.api_core.gapic_v1.method.DEFAULT):
+            timeout=google.api_core.gapic_v1.method.DEFAULT,
+            metadata=None):
         """
         Schedules a job scanning content in a Google Cloud Platform data
         repository.
@@ -465,6 +509,8 @@ class DlpServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.dlp_v2beta1.types._OperationFuture` instance.
@@ -476,18 +522,23 @@ class DlpServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = dlp_pb2.CreateInspectOperationRequest(
             inspect_config=inspect_config,
             storage_config=storage_config,
             output_config=output_config,
-            operation_config=operation_config)
+            operation_config=operation_config,
+        )
         operation = self._create_inspect_operation(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
         return google.api_core.operation.from_gapic(
             operation,
             self.operations_client,
             dlp_pb2.InspectOperationResult,
-            metadata_type=dlp_pb2.InspectOperationMetadata)
+            metadata_type=dlp_pb2.InspectOperationMetadata,
+        )
 
     def list_inspect_findings(self,
                               name,
@@ -495,7 +546,8 @@ class DlpServiceClient(object):
                               page_token=None,
                               filter_=None,
                               retry=google.api_core.gapic_v1.method.DEFAULT,
-                              timeout=google.api_core.gapic_v1.method.DEFAULT):
+                              timeout=google.api_core.gapic_v1.method.DEFAULT,
+                              metadata=None):
         """
         Returns list of results for given inspect operation result set id.
 
@@ -532,6 +584,8 @@ class DlpServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.dlp_v2beta1.types.ListInspectFindingsResponse` instance.
@@ -543,19 +597,24 @@ class DlpServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = dlp_pb2.ListInspectFindingsRequest(
             name=name,
             page_size=page_size,
             page_token=page_token,
-            filter=filter_)
+            filter=filter_,
+        )
         return self._list_inspect_findings(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_info_types(self,
                         category,
                         language_code,
                         retry=google.api_core.gapic_v1.method.DEFAULT,
-                        timeout=google.api_core.gapic_v1.method.DEFAULT):
+                        timeout=google.api_core.gapic_v1.method.DEFAULT,
+                        metadata=None):
         """
         Returns sensitive information types for given category.
 
@@ -580,6 +639,8 @@ class DlpServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.dlp_v2beta1.types.ListInfoTypesResponse` instance.
@@ -591,14 +652,21 @@ class DlpServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = dlp_pb2.ListInfoTypesRequest(
-            category=category, language_code=language_code)
-        return self._list_info_types(request, retry=retry, timeout=timeout)
+            category=category,
+            language_code=language_code,
+        )
+        return self._list_info_types(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_root_categories(self,
                              language_code,
                              retry=google.api_core.gapic_v1.method.DEFAULT,
-                             timeout=google.api_core.gapic_v1.method.DEFAULT):
+                             timeout=google.api_core.gapic_v1.method.DEFAULT,
+                             metadata=None):
         """
         Returns the list of root categories of sensitive information.
 
@@ -621,6 +689,8 @@ class DlpServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.dlp_v2beta1.types.ListRootCategoriesResponse` instance.
@@ -632,7 +702,10 @@ class DlpServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = dlp_pb2.ListRootCategoriesRequest(
-            language_code=language_code)
+            language_code=language_code, )
         return self._list_root_categories(
-            request, retry=retry, timeout=timeout)
+            request, retry=retry, timeout=timeout, metadata=metadata)

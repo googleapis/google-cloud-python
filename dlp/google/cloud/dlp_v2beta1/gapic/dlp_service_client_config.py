@@ -17,16 +17,6 @@ config = {
                 }
             },
             "methods": {
-                "DeidentifyContent": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default"
-                },
-                "AnalyzeDataSourceRisk": {
-                    "timeout_millis": 60000,
-                    "retry_codes_name": "idempotent",
-                    "retry_params_name": "default"
-                },
                 "InspectContent": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
@@ -35,6 +25,16 @@ config = {
                 "RedactContent": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "non_idempotent",
+                    "retry_params_name": "default"
+                },
+                "DeidentifyContent": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
+                    "retry_params_name": "default"
+                },
+                "AnalyzeDataSourceRisk": {
+                    "timeout_millis": 60000,
+                    "retry_codes_name": "idempotent",
                     "retry_params_name": "default"
                 },
                 "CreateInspectOperation": {

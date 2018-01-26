@@ -1,10 +1,10 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -63,6 +63,118 @@ class CustomException(Exception):
 
 
 class TestDlpServiceClient(object):
+    def test_inspect_content(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = dlp_pb2.InspectContentResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = dlp_v2beta1.DlpServiceClient(channel=channel)
+
+        # Setup Request
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
+
+        response = client.inspect_content(inspect_config, items)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.InspectContentRequest(
+            inspect_config=inspect_config, items=items)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_inspect_content_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = dlp_v2beta1.DlpServiceClient(channel=channel)
+
+        # Setup request
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
+
+        with pytest.raises(CustomException):
+            client.inspect_content(inspect_config, items)
+
+    def test_redact_content(self):
+        # Setup Expected Response
+        expected_response = {}
+        expected_response = dlp_pb2.RedactContentResponse(**expected_response)
+
+        # Mock the API response
+        channel = ChannelStub(responses=[expected_response])
+        client = dlp_v2beta1.DlpServiceClient(channel=channel)
+
+        # Setup Request
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
+        name_2 = 'EMAIL_ADDRESS'
+        info_type = {'name': name_2}
+        replace_with = 'REDACTED'
+        replace_configs_element = {
+            'info_type': info_type,
+            'replace_with': replace_with
+        }
+        replace_configs = [replace_configs_element]
+
+        response = client.redact_content(
+            inspect_config, items, replace_configs=replace_configs)
+        assert expected_response == response
+
+        assert len(channel.requests) == 1
+        expected_request = dlp_pb2.RedactContentRequest(
+            inspect_config=inspect_config,
+            items=items,
+            replace_configs=replace_configs)
+        actual_request = channel.requests[0][1]
+        assert expected_request == actual_request
+
+    def test_redact_content_exception(self):
+        # Mock the API response
+        channel = ChannelStub(responses=[CustomException()])
+        client = dlp_v2beta1.DlpServiceClient(channel=channel)
+
+        # Setup request
+        name = 'EMAIL_ADDRESS'
+        info_types_element = {'name': name}
+        info_types = [info_types_element]
+        inspect_config = {'info_types': info_types}
+        type_ = 'text/plain'
+        value = 'My email is example@example.com.'
+        items_element = {'type': type_, 'value': value}
+        items = [items_element]
+        name_2 = 'EMAIL_ADDRESS'
+        info_type = {'name': name_2}
+        replace_with = 'REDACTED'
+        replace_configs_element = {
+            'info_type': info_type,
+            'replace_with': replace_with
+        }
+        replace_configs = [replace_configs_element]
+
+        with pytest.raises(CustomException):
+            client.redact_content(
+                inspect_config, items, replace_configs=replace_configs)
+
     def test_deidentify_content(self):
         # Setup Expected Response
         expected_response = {}
@@ -151,117 +263,6 @@ class TestDlpServiceClient(object):
                                                    source_table)
         exception = response.exception()
         assert exception.errors[0] == error
-
-    def test_inspect_content(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = dlp_pb2.InspectContentResponse(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2beta1.DlpServiceClient(channel=channel)
-
-        # Setup Request
-        name = 'EMAIL_ADDRESS'
-        info_types_element = {'name': name}
-        info_types = [info_types_element]
-        inspect_config = {'info_types': info_types}
-        type_ = 'text/plain'
-        value = 'My email is example@example.com.'
-        items_element = {'type': type_, 'value': value}
-        items = [items_element]
-
-        response = client.inspect_content(inspect_config, items)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = dlp_pb2.InspectContentRequest(
-            inspect_config=inspect_config, items=items)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_inspect_content_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2beta1.DlpServiceClient(channel=channel)
-
-        # Setup request
-        name = 'EMAIL_ADDRESS'
-        info_types_element = {'name': name}
-        info_types = [info_types_element]
-        inspect_config = {'info_types': info_types}
-        type_ = 'text/plain'
-        value = 'My email is example@example.com.'
-        items_element = {'type': type_, 'value': value}
-        items = [items_element]
-
-        with pytest.raises(CustomException):
-            client.inspect_content(inspect_config, items)
-
-    def test_redact_content(self):
-        # Setup Expected Response
-        expected_response = {}
-        expected_response = dlp_pb2.RedactContentResponse(**expected_response)
-
-        # Mock the API response
-        channel = ChannelStub(responses=[expected_response])
-        client = dlp_v2beta1.DlpServiceClient(channel=channel)
-
-        # Setup Request
-        name = 'EMAIL_ADDRESS'
-        info_types_element = {'name': name}
-        info_types = [info_types_element]
-        inspect_config = {'info_types': info_types}
-        type_ = 'text/plain'
-        value = 'My email is example@example.com.'
-        items_element = {'type': type_, 'value': value}
-        items = [items_element]
-        name_2 = 'EMAIL_ADDRESS'
-        info_type = {'name': name_2}
-        replace_with = 'REDACTED'
-        replace_configs_element = {
-            'info_type': info_type,
-            'replace_with': replace_with
-        }
-        replace_configs = [replace_configs_element]
-
-        response = client.redact_content(inspect_config, items,
-                                         replace_configs)
-        assert expected_response == response
-
-        assert len(channel.requests) == 1
-        expected_request = dlp_pb2.RedactContentRequest(
-            inspect_config=inspect_config,
-            items=items,
-            replace_configs=replace_configs)
-        actual_request = channel.requests[0][1]
-        assert expected_request == actual_request
-
-    def test_redact_content_exception(self):
-        # Mock the API response
-        channel = ChannelStub(responses=[CustomException()])
-        client = dlp_v2beta1.DlpServiceClient(channel=channel)
-
-        # Setup request
-        name = 'EMAIL_ADDRESS'
-        info_types_element = {'name': name}
-        info_types = [info_types_element]
-        inspect_config = {'info_types': info_types}
-        type_ = 'text/plain'
-        value = 'My email is example@example.com.'
-        items_element = {'type': type_, 'value': value}
-        items = [items_element]
-        name_2 = 'EMAIL_ADDRESS'
-        info_type = {'name': name_2}
-        replace_with = 'REDACTED'
-        replace_configs_element = {
-            'info_type': info_type,
-            'replace_with': replace_with
-        }
-        replace_configs = [replace_configs_element]
-
-        with pytest.raises(CustomException):
-            client.redact_content(inspect_config, items, replace_configs)
 
     def test_create_inspect_operation(self):
         # Setup Expected Response

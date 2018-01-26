@@ -7,6 +7,7 @@
   bigquery/usage
   bigtable/usage
   datastore/usage
+  dlp/index
   dns/usage
   firestore/index
   language/usage
