@@ -607,7 +607,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
     client.load_table_from_file(
         body, table_ref, job_config=job_config).result()
 
-    # [START bigquery_load_table_gcs_json_append]
+    # [START bigquery_load_table_gcs_json_truncate]
     # table_ref = client.dataset('my_dataset').table('existing_table')
     previous_rows = client.get_table(table_ref).num_rows
     assert previous_rows > 0
@@ -628,7 +628,7 @@ def test_load_table_from_uri_truncate(client, to_delete):
 
     assert load_job.state == 'DONE'
     assert client.get_table(table_ref).num_rows == 50
-    # [END bigquery_load_table_gcs_json_append]
+    # [END bigquery_load_table_gcs_json_truncate]
 
 
 def _write_csv_to_storage(bucket_name, blob_name, header_row, data_rows):
