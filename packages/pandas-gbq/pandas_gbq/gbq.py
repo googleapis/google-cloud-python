@@ -21,9 +21,8 @@ def _check_google_client_version():
     except ImportError:
         raise ImportError('Could not import pkg_resources (setuptools).')
 
-    # Version 0.28.0 includes many changes compared to previous versions
     # https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/bigquery/CHANGELOG.md
-    bigquery_client_minimum_version = '0.28.0'
+    bigquery_client_minimum_version = '0.29.0'
 
     _BIGQUERY_CLIENT_VERSION = pkg_resources.get_distribution(
         'google-cloud-bigquery').version
@@ -1241,7 +1240,7 @@ class _Dataset(GbqConnector):
         table_list = []
 
         try:
-            table_response = self.client.list_dataset_tables(
+            table_response = self.client.list_tables(
                 self.client.dataset(dataset_id))
 
             for row in table_response:
