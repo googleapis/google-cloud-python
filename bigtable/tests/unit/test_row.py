@@ -369,47 +369,24 @@ class TestDirectRow(unittest.TestCase):
 
     def test_retry_commit_exception(self):
         import threading
-        import grpc
-        import functools
-        from grpc._channel import _Rendezvous
-        from google.api_core import retry
-        from google.api_core import exceptions
+        import grpc._channel
         from google.cloud.bigtable.row import _retry_commit_exception
-
-        klass = self._get_target_class()
 
         class State:
             condition = threading.Condition()
             code = grpc.StatusCode.UNAVAILABLE
             details = 'Endpoint read failed'
 
-        class MockRow(klass):
+        def _check_rendezvous_exception(exc):
+            return _retry_commit_exception(exc)
 
-            def __call__(self, *args, **kwargs):
-                self.commit()
+        expected_result = True
+        result = _check_rendezvous_exception(
+            grpc._channel._Rendezvous(State, None, None, 0))
+        self.assertEqual(result, expected_result)
 
-            def __init__(self, *args, **kwargs):
-                super(MockRow, self).__init__(*args, **kwargs)
-                self._args = []
-                self._kwargs = []
-
-            # Replace the called method with one that logs arguments.
-            def commit(self, *args, **kwargs):
-                self._args.append(args)
-                self._kwargs.append(kwargs)
-                raise _Rendezvous(State, None, None, 0)
-
-        row_key = b'row_key'
-        table = object()
-        mock_row = functools.partial(MockRow(row_key, table))
-
-        # After retrying for 10 seconds, raise a RetryError exception
-        retry_ = retry.Retry(
-            predicate=_retry_commit_exception,
-            deadline=10)
-
-        with self.assertRaises(exceptions.RetryError):
-            retry_(mock_row)()
+        result = _check_rendezvous_exception(ValueError)
+        self.assertNotEqual(result, expected_result)
 
     def test_commit_too_many_mutations(self):
         from google.cloud._testing import _Monkey
