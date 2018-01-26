@@ -370,6 +370,7 @@ class TestDirectRow(unittest.TestCase):
     def test_commit_retry_on_failure(self):
         import threading
         import grpc
+        import functools
         from grpc._channel import _Rendezvous
         from google.api_core import retry
         from google.cloud.bigtable.row import _retry_commit_exception
@@ -400,7 +401,7 @@ class TestDirectRow(unittest.TestCase):
 
         row_key = b'row_key'
         table = object()
-        mock_row = MockRow(row_key, table)
+        mock_row = functools.partial(MockRow(row_key, table))
 
         # After retrying for 10 seconds, raise a RetryError exception
         retry_ = retry.Retry(
