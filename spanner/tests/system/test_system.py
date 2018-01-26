@@ -1535,6 +1535,21 @@ class TestSessionAPI(unittest.TestCase, _TestData):
             # NaNs cannot be searched for by equality.
             self.assertTrue(math.isnan(float_array[2]))
 
+    def test_partition_query(self):
+        row_count = 40
+        sql = 'SELECT * FROM {}'.format(self.TABLE)
+        committed = self._set_up_table(row_count)
+        all_data_rows = list(self._row_data(row_count))
+
+        union = []
+
+        with self._db.snapshot(multi_use=True) as snapshot:
+            for partition in snapshot.partition_query(sql):
+                p_results_iter = snapshot.execute_sql(sql, partition=partition)
+                union.extend(list(p_results_iter))
+
+        self.assertEqual(union, all_data_rows)
+
 
 class TestStreamingChunking(unittest.TestCase, _TestData):
 
