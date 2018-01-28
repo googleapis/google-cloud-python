@@ -3,7 +3,9 @@ coverage:
     project:
       default:
         target: '0'
+        enabled: no
     patch:
       default:
+        enabled: no
         target: '50'
         branches: null
