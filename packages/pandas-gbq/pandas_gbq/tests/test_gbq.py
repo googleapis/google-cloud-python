@@ -174,7 +174,7 @@ def make_mixed_dataframe_v2(test_size):
 
 def test_generate_bq_schema_deprecated():
     # 11121 Deprecation of generate_bq_schema
-    with tm.assert_produces_warning(FutureWarning):
+    with pytest.warns(FutureWarning):
         df = make_mixed_dataframe_v2(10)
         gbq.generate_bq_schema(df)
 
@@ -1421,6 +1421,48 @@ class TestToGBQIntegrationWithServiceAccountKeyPath(object):
 
         assert self.sut.schema_is_subset(
             dataset, table_name, tested_schema) is False
+
+    def test_upload_data_with_valid_user_schema(self):
+        # Issue #46; tests test scenarios with user-provided
+        # schemas
+        df = tm.makeMixedDataFrame()
+        test_id = "18"
+        test_schema = [{'name': 'A', 'type': 'FLOAT'},
+                       {'name': 'B', 'type': 'FLOAT'},
+                       {'name': 'C', 'type': 'STRING'},
+                       {'name': 'D', 'type': 'TIMESTAMP'}]
+        destination_table = self.destination_table + test_id
+        gbq.to_gbq(df, destination_table, _get_project_id(),
+                   private_key=_get_private_key_path(),
+                   table_schema=test_schema)
+        dataset, table = destination_table.split('.')
+        assert self.table.verify_schema(dataset, table,
+                                        dict(fields=test_schema))
+
+    def test_upload_data_with_invalid_user_schema_raises_error(self):
+        df = tm.makeMixedDataFrame()
+        test_id = "19"
+        test_schema = [{'name': 'A', 'type': 'FLOAT'},
+                       {'name': 'B', 'type': 'FLOAT'},
+                       {'name': 'C', 'type': 'FLOAT'},
+                       {'name': 'D', 'type': 'FLOAT'}]
+        destination_table = self.destination_table + test_id
+        with pytest.raises(gbq.GenericGBQException):
+            gbq.to_gbq(df, destination_table, _get_project_id(),
+                       private_key=_get_private_key_path(),
+                       table_schema=test_schema)
+
+    def test_upload_data_with_missing_schema_fields_raises_error(self):
+        df = tm.makeMixedDataFrame()
+        test_id = "20"
+        test_schema = [{'name': 'A', 'type': 'FLOAT'},
+                       {'name': 'B', 'type': 'FLOAT'},
+                       {'name': 'C', 'type': 'FLOAT'}]
+        destination_table = self.destination_table + test_id
+        with pytest.raises(gbq.GenericGBQException):
+            gbq.to_gbq(df, destination_table, _get_project_id(),
+                       private_key=_get_private_key_path(),
+                       table_schema=test_schema)
 
     def test_list_dataset(self):
         dataset_id = self.dataset_prefix + "1"

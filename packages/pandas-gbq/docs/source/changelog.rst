@@ -6,6 +6,7 @@ Changelog
 ------------------
 
 - Fix an issue where Unicode couldn't be uploaded in Python 2 (:issue:`93`)
+- Add support for a passed schema in :func:``to_gbq`` instead inferring the schema from the passed ``DataFrame`` with ``DataFrame.dtypes`` (:issue:`46`)
 
 
 0.3.0 / 2018-01-03
