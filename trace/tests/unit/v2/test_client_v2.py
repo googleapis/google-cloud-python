@@ -53,7 +53,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.project, credentials=credentials)
 
         patch = mock.patch(
-            'google.cloud.trace.client.make_gax_trace_api',
+            'google.cloud.trace.client.make_trace_api',
             new=make_api)
 
         with patch:
@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(clients, [client])
 
     def test_batch_write_spans(self):
-        from google.cloud.trace._gax import _TraceAPI
+        from google.cloud.trace._gapic import _TraceAPI
 
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
@@ -73,7 +73,7 @@ class TestClient(unittest.TestCase):
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
         patch = mock.patch(
-            'google.cloud.trace.client.make_gax_trace_api',
+            'google.cloud.trace.client.make_trace_api',
             return_value=mock_trace_api)
 
         with patch:
@@ -86,7 +86,7 @@ class TestClient(unittest.TestCase):
             timeout=None)
 
     def test_create_span(self):
-        from google.cloud.trace._gax import _TraceAPI
+        from google.cloud.trace._gapic import _TraceAPI
 
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
@@ -107,7 +107,7 @@ class TestClient(unittest.TestCase):
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
         patch = mock.patch(
-            'google.cloud.trace.client.make_gax_trace_api',
+            'google.cloud.trace.client.make_trace_api',
             return_value=mock_trace_api)
 
         with patch:

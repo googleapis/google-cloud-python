@@ -166,8 +166,8 @@ def make_trace_api(client):
             configuration details.
 
     Returns:
-        A :class:`~google.cloud.trace._gapic._TraceAPI` instance with the proper
-        configurations.
+        A :class:`~google.cloud.trace._gapic._TraceAPI` instance with the
+        proper configurations.
     """
     generated = trace_service_client.TraceServiceClient()
     return _TraceAPI(generated, client)

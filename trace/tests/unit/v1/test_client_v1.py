@@ -53,7 +53,7 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=self.project, credentials=credentials)
 
         patch = mock.patch(
-            'google.cloud.trace.v1.client.make_gax_trace_api',
+            'google.cloud.trace.v1.client.make_trace_api',
             new=make_api)
 
         with patch:
@@ -63,7 +63,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(clients, [client])
 
     def test_patch_traces_default(self):
-        from google.cloud.trace.v1._gax import _TraceAPI
+        from google.cloud.trace.v1._gapic import _TraceAPI
 
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
@@ -71,18 +71,17 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
-        patch = mock.patch('google.cloud.trace.v1.client.make_gax_trace_api', return_value=mock_trace_api)
+        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api', return_value=mock_trace_api)
 
         with patch:
             client.patch_traces(traces=traces)
 
         mock_trace_api.patch_traces.assert_called_with(
-            options=None,
             project_id='PROJECT',
             traces='fake_traces_for_test')
 
     def test_patch_traces_explicit(self):
-        from google.cloud.trace.v1._gax import _TraceAPI
+        from google.cloud.trace.v1._gapic import _TraceAPI
 
         credentials = _make_credentials()
         client = self._make_one(project=self.project, credentials=credentials)
@@ -90,7 +89,7 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.patch_traces = mock.Mock()
-        patch = mock.patch('google.cloud.trace.v1.client.make_gax_trace_api', return_value=mock_trace_api)
+        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api', return_value=mock_trace_api)
 
         with patch:
             client.patch_traces(
@@ -98,12 +97,11 @@ class TestClient(unittest.TestCase):
                 traces=traces)
 
         mock_trace_api.patch_traces.assert_called_with(
-            options=None,
             project_id='PROJECT',
             traces='fake_traces_for_test')
 
     def test_get_trace_default(self):
-        from google.cloud.trace.v1._gax import _TraceAPI
+        from google.cloud.trace.v1._gapic import _TraceAPI
 
         def get_trace(trace_id, project_id=None, options=None):
             _get_trace_called_with = (trace_id, project_id, options)
@@ -115,7 +113,7 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.get_trace = get_trace
-        patch = mock.patch('google.cloud.trace.v1.client.make_gax_trace_api',
+        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api',
                            return_value=mock_trace_api)
 
         with patch:
@@ -125,7 +123,7 @@ class TestClient(unittest.TestCase):
                          (trace_id, self.project, None))
 
     def test_get_trace_explicit(self):
-        from google.cloud.trace.v1._gax import _TraceAPI
+        from google.cloud.trace.v1._gapic import _TraceAPI
 
         def get_trace(trace_id, project_id=None, options=None):
             _get_trace_called_with = (trace_id, project_id, options)
@@ -137,7 +135,7 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.get_trace = get_trace
-        patch = mock.patch('google.cloud.trace.v1.client.make_gax_trace_api',
+        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api',
                            return_value=mock_trace_api)
 
         with patch:
@@ -149,7 +147,7 @@ class TestClient(unittest.TestCase):
                          (trace_id, self.project, None))
 
     def test_list_traces_default(self):
-        from google.cloud.trace.v1._gax import _TraceAPI
+        from google.cloud.trace.v1._gapic import _TraceAPI
 
         def list_traces(
                 project_id,
@@ -176,7 +174,7 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.list_traces = list_traces
-        patch = mock.patch('google.cloud.trace.v1.client.make_gax_trace_api',
+        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api',
                            return_value=mock_trace_api)
 
         with patch:
@@ -189,7 +187,7 @@ class TestClient(unittest.TestCase):
     def test_list_traces_explicit(self):
         from google.cloud._helpers import _datetime_to_pb_timestamp
         from google.cloud.trace_v1.gapic.enums import ListTracesRequest as Enum
-        from google.cloud.trace.v1._gax import _TraceAPI
+        from google.cloud.trace.v1._gapic import _TraceAPI
 
         from datetime import datetime
 
@@ -218,7 +216,7 @@ class TestClient(unittest.TestCase):
 
         mock_trace_api = mock.Mock(spec=_TraceAPI)
         mock_trace_api.list_traces = list_traces
-        patch = mock.patch('google.cloud.trace.v1.client.make_gax_trace_api',
+        patch = mock.patch('google.cloud.trace.v1.client.make_trace_api',
                            return_value=mock_trace_api)
 
         view = Enum.ViewType.COMPLETE
