@@ -58,17 +58,18 @@ EXTRAS_REQUIRE = {
     ':python_version<"3.4"': ['enum34'],
 }
 
-setup(
-    name='google-cloud-language',
-    version='1.0.1.dev1',
-    description='Python Client for Google Cloud Natural Language',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    extras_require=EXTRAS_REQUIRE,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-language',
+        version='1.0.1.dev1',
+        description='Python Client for Google Cloud Natural Language',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        extras_require=EXTRAS_REQUIRE,
+        **SETUP_BASE
+    )

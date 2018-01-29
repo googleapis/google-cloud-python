@@ -59,16 +59,17 @@ REQUIREMENTS = [
     'requests >= 2.18.4, < 3.0dev',
 ]
 
-setup(
-    name='google-cloud-datastore',
-    version='1.4.1.dev1',
-    description='Python Client for Google Cloud Datastore',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-datastore',
+        version='1.4.1.dev1',
+        description='Python Client for Google Cloud Datastore',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )

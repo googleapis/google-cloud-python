@@ -66,14 +66,15 @@ EXTRAS_REQUIREMENTS = {
     'grpc': ['grpcio >= 1.8.2'],
 }
 
-setup(
-    name='google-api-core',
-    version='0.1.5.dev1',
-    description='Core Google API Client Library',
-    long_description=README,
-    namespace_packages=['google'],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    extras_require=EXTRAS_REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-api-core',
+        version='0.1.5.dev1',
+        description='Core Google API Client Library',
+        long_description=README,
+        namespace_packages=['google'],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        extras_require=EXTRAS_REQUIREMENTS,
+        **SETUP_BASE
+    )

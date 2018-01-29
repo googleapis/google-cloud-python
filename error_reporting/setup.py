@@ -56,16 +56,17 @@ REQUIREMENTS = [
     'google-cloud-logging >= 1.4.0, < 1.5dev',
 ]
 
-setup(
-    name='google-cloud-error-reporting',
-    version='0.29.0',
-    description='Python Client for Stackdriver Error Reporting',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-error-reporting',
+        version='0.29.0',
+        description='Python Client for Stackdriver Error Reporting',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )

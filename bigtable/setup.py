@@ -56,16 +56,17 @@ REQUIREMENTS = [
     'google-gax >= 0.15.7, < 0.16dev',
 ]
 
-setup(
-    name='google-cloud-bigtable',
-    version='0.28.2.dev1',
-    description='Python Client for Google Cloud Bigtable',
-    long_description=README,
-    namespace_packages=[
-        'google',
-        'google.cloud',
-    ],
-    packages=find_packages(exclude=('tests*',)),
-    install_requires=REQUIREMENTS,
-    **SETUP_BASE
-)
+if __name__ == '__main__':
+    setup(
+        name='google-cloud-bigtable',
+        version='0.28.2.dev1',
+        description='Python Client for Google Cloud Bigtable',
+        long_description=README,
+        namespace_packages=[
+            'google',
+            'google.cloud',
+        ],
+        packages=find_packages(exclude=('tests*',)),
+        install_requires=REQUIREMENTS,
+        **SETUP_BASE
+    )
