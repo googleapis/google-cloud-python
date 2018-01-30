@@ -52,23 +52,20 @@ SETUP_BASE = {
 }
 
 REQUIREMENTS = [
-    'google-cloud-core[grpc] >= 0.28.0, < 0.29dev',
-    'google-api-core >= 0.1.1, < 0.2.0dev',
-    'google-gax >= 0.15.14, < 0.16dev',
+    'google-auth>=1.0.2, <2.0dev',
+    'google-api-core >= 0.1.4, < 0.2.0dev',
+    'googleapis-common-protos[grpc]>=1.5.2, <2.0dev',
+    'requests>=2.18.4, <3.0dev',
 ]
 
 setup(
     name='google-cloud-speech',
-    version='0.30.1.dev1',
+    version='0.31.0',
     description='Python Client for Google Cloud Speech',
     long_description=README,
     namespace_packages=[
         'google',
         'google.cloud',
-        'google.cloud.gapic',
-        'google.cloud.gapic.speech',
-        'google.cloud.proto',
-        'google.cloud.proto.speech',
     ],
     packages=find_packages(exclude=('tests*',)),
     install_requires=REQUIREMENTS,
