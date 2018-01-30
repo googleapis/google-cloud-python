@@ -40,10 +40,12 @@ class TestSpeechClient(unittest.TestCase):
             client.recognize(config, audio)
 
             # Assert that the underlying GAPIC method was called as expected.
-            recognize.assert_called_once_with(types.RecognizeRequest(
+            assert recognize.call_count == 1
+            _, args, _ = recognize.mock_calls[0]
+            assert args[0] == types.RecognizeRequest(
                 config=config,
                 audio=audio,
-            ), None)
+            )
 
     def test_streaming_recognize(self):
         from google.cloud.speech_v1 import types
