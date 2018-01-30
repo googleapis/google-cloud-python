@@ -368,24 +368,24 @@ class TestDirectRow(unittest.TestCase):
         self.assertEqual(row._pb_mutations, [])
 
     def test_retry_commit_exception(self):
-        import threading
-        import grpc._channel
+        import grpc
+        import mock
+
+        from google.api_core import exceptions
         from google.cloud.bigtable.row import _retry_commit_exception
 
-        class State:
-            condition = threading.Condition()
-            code = grpc.StatusCode.UNAVAILABLE
-            details = 'Endpoint read failed'
+        message = 'Endpoint read failed'
+        error = mock.create_autospec(grpc.Call, instance=True)
+        error.code.return_value = grpc.StatusCode.UNAVAILABLE
+        error.details.return_value = message
 
-        def _check_rendezvous_exception(exc):
-            return _retry_commit_exception(exc)
+        exception = exceptions.from_grpc_error(error)
 
         expected_result = True
-        result = _check_rendezvous_exception(
-            grpc._channel._Rendezvous(State, None, None, 0))
+        result = _retry_commit_exception(exception)
         self.assertEqual(result, expected_result)
 
-        result = _check_rendezvous_exception(ValueError)
+        result = _retry_commit_exception(ValueError)
         self.assertNotEqual(result, expected_result)
 
     def test_commit_too_many_mutations(self):
