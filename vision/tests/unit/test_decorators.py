@@ -65,12 +65,15 @@ class SingleFeatureMethodTests(unittest.TestCase):
             credentials=mock.Mock(spec=Credentials),
         )
         image = {'source': {'image_uri': 'gs://my-test-bucket/image.jpg'}}
-        response = client.face_detection(image, image_context=SENTINEL)
+        max_results = 30
+        response = client.face_detection(image, image_context=SENTINEL,
+                                         max_results=max_results)
         assert isinstance(response, vision.types.AnnotateImageResponse)
 
         # Assert that the single-image method was called as expected.
         ai.assert_called_once_with({
-            'features': [{'type': vision.enums.Feature.Type.FACE_DETECTION}],
+            'features': [{'type': vision.enums.Feature.Type.FACE_DETECTION,
+                          'max_results': max_results}],
             'image': image,
             'image_context': SENTINEL,
         }, retry=None, timeout=None)
