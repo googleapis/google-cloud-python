@@ -371,22 +371,21 @@ class TestDirectRow(unittest.TestCase):
         import grpc
         import mock
 
-        from google.api_core import exceptions
         from google.cloud.bigtable.row import _retry_commit_exception
 
+        class MockRendevouz(grpc.RpcError, grpc.Call):
+            """Rendevouz exception"""
+
         message = 'Endpoint read failed'
-        error = mock.create_autospec(grpc.Call, instance=True)
-        error.code.return_value = grpc.StatusCode.UNAVAILABLE
-        error.details.return_value = message
+        mock_rendevouz = mock.create_autospec(MockRendevouz, instance=True)
+        mock_rendevouz.code.return_value = grpc.StatusCode.UNAVAILABLE
+        mock_rendevouz.details.return_value = message
 
-        exception = exceptions.from_grpc_error(error)
-
-        expected_result = True
-        result = _retry_commit_exception(exception)
-        self.assertEqual(result, expected_result)
+        result = _retry_commit_exception(mock_rendevouz)
+        self.assertEqual(result, True)
 
         result = _retry_commit_exception(ValueError)
-        self.assertNotEqual(result, expected_result)
+        self.assertNotEqual(result, True)
 
     def test_commit_too_many_mutations(self):
         from google.cloud._testing import _Monkey
