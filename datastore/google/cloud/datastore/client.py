@@ -163,10 +163,12 @@ class EmulatorCreds(Credentials):
     """
     A mock credential object.
 
-    Used to avoid unnecessary token refreshing or reliance on the network when using an emulator.
+    Used to avoid unnecessary token refreshing or reliance on the network
+    when using an emulator.
     """
     # Credit to https://github.com/patrick91.
-    # Taken from https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3920#issuecomment-327315159
+    # Taken from https://github.com/GoogleCloudPlatform/google-cloud-python
+    # /issues/3920#issuecomment-327315159
 
     def __init__(self):
         super(EmulatorCreds, self).__init__()

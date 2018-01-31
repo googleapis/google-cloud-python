@@ -1067,6 +1067,19 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_transaction)
 
 
+class TestEmulatorCreds(unittest.TestCase):
+
+    def setUp(self):
+        from google.cloud.datastore.client import EmulatorCreds
+        self.creds = EmulatorCreds()
+
+    def test_valid_always_returns_true(self):
+        self.assertTrue(self.creds.valid)
+
+    def test_refresh_raises(self):
+        self.assertRaises(RuntimeError, self.creds.refresh, None)
+
+
 class _NoCommitBatch(object):
 
     def __init__(self, client):
