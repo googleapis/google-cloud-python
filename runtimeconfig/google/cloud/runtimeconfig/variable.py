@@ -37,7 +37,7 @@
 
 import base64
 
-from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
 from google.cloud.runtimeconfig._helpers import variable_name_from_full_name
 
@@ -157,7 +157,7 @@ class Variable(object):
         """
         value = self._properties.get('updateTime')
         if value is not None:
-            value = _rfc3339_to_datetime(value)
+            value = _rfc3339_nanos_to_datetime(value)
         return value
 
     def _require_client(self, client):
