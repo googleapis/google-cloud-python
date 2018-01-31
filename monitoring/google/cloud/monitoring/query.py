@@ -151,7 +151,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._end_time = end_time
         new_query._start_time = start_time
         return new_query
@@ -169,7 +169,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.group_id = group_id
         return new_query
 
@@ -191,7 +191,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.projects = args
         return new_query
 
@@ -249,7 +249,7 @@ class Query(object):
         .. _defined resource types:
             https://cloud.google.com/monitoring/api/v3/monitored-resources
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.select_resources(*args, **kwargs)
         return new_query
 
@@ -308,7 +308,7 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._filter.select_metrics(*args, **kwargs)
         return new_query
 
@@ -350,7 +350,7 @@ class Query(object):
             https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
             projects.timeSeries/list#Aligner
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._per_series_aligner = per_series_aligner
         new_query._alignment_period_seconds = seconds + 60 * (minutes +
                                                               60 * hours)
@@ -390,7 +390,7 @@ class Query(object):
             https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
             projects.timeSeries/list#Reducer
         """
-        new_query = self.copy()
+        new_query = copy.deepcopy(self)
         new_query._cross_series_reducer = cross_series_reducer
         new_query._group_by_fields = group_by_fields
         return new_query
@@ -450,12 +450,14 @@ class Query(object):
         if self._start_time:
           params['interval'].start_time.FromDatetime(self._start_time)
 
-        params['aggregation'] = types.Aggregation(
-            per_series_aligner=self._per_series_aligner,
-            cross_series_reducer=self._cross_series_reducer,
-            group_by_fields=self._group_by_fields,
-            alignment_period={'seconds': self._alignment_period_seconds},
-        )
+        if (self._per_series_aligner or self._alignment_period_seconds or
+                self._cross_series_reducer or self._group_by_fields):
+            params['aggregation'] = types.Aggregation(
+                per_series_aligner=self._per_series_aligner,
+                cross_series_reducer=self._cross_series_reducer,
+                group_by_fields=self._group_by_fields,
+                alignment_period={'seconds': self._alignment_period_seconds},
+            )
 
         if headers_only:
             params['view'] = enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS
@@ -510,16 +512,20 @@ class Query(object):
         """
         return _build_dataframe(self, label, labels)  # pragma: NO COVER
 
-    def copy(self):
-        """Copy the query object.
+    def __deepcopy__(self, memo):
+        """Create a deepcopy of the query object.
+
+        The `client` attribute is copied by reference only.
+
+        :type memo: dict
+        :param memo: the memo dict to avoid excess copying in case  the object
+            is referenced from its member.
 
         :rtype: :class:`Query`
         :returns: The new query object.
         """
-        # Using copy.deepcopy() would be appropriate, except that we want
-        # to copy self._client only as a reference.
         new_query = copy.copy(self)
-        new_query._filter = copy.copy(self._filter)
+        new_query._filter = copy.deepcopy(self._filter, memo)
         return new_query
 
 
