@@ -13,7 +13,8 @@
 # limitations under the License.
 
 import unittest
-
+import os
+import copy
 import mock
 
 
@@ -135,6 +136,10 @@ class TestClient(unittest.TestCase):
                                         _use_grpc=_use_grpc)
 
     def test_constructor_w_project_no_environ(self):
+        # Get rid of any environment overrides to the datastore base url
+        old_env = copy.deepcopy(os.environ)
+        os.environ = {k: v for k, v in os.environ.items() if k not in ['GCD_HOST', 'DATASTORE_EMULATOR_HOST']}
+
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
         patch = mock.patch(
@@ -143,53 +148,152 @@ class TestClient(unittest.TestCase):
         with patch:
             self.assertRaises(EnvironmentError, self._make_one, None)
 
+        os.environ = old_env
+
     def test_constructor_w_implicit_inputs(self):
         from google.cloud.datastore.client import _DATASTORE_BASE_URL
 
-        other = 'other'
-        creds = _make_credentials()
+        with mock.patch.dict('os.environ', {}):
+            other = 'other'
+            creds = _make_credentials()
 
-        klass = self._get_target_class()
-        patch1 = mock.patch(
-            'google.cloud.datastore.client._determine_default_project',
-            return_value=other)
-        patch2 = mock.patch(
-            'google.auth.default', return_value=(creds, None))
+            klass = self._get_target_class()
+            patch1 = mock.patch(
+                'google.cloud.datastore.client._determine_default_project',
+                return_value=other)
+            patch2 = mock.patch(
+                'google.auth.default', return_value=(creds, None))
 
-        with patch1 as _determine_default_project:
-            with patch2 as default:
-                client = klass()
+            with patch1 as _determine_default_project:
+                with patch2 as default:
+                    client = klass()
 
-        self.assertEqual(client.project, other)
-        self.assertIsNone(client.namespace)
-        self.assertIs(client._credentials, creds)
-        self.assertIsNone(client._http_internal)
-        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
+            self.assertEqual(client.project, other)
+            self.assertIsNone(client.namespace)
+            self.assertIs(client._credentials, creds)
+            self.assertIsNone(client._http_internal)
+            self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
 
-        self.assertIsNone(client.current_batch)
-        self.assertIsNone(client.current_transaction)
+            self.assertIsNone(client.current_batch)
+            self.assertIsNone(client.current_transaction)
 
-        default.assert_called_once_with()
-        _determine_default_project.assert_called_once_with(None)
+            default.assert_called_once_with()
+            _determine_default_project.assert_called_once_with(None)
+
+    def test_constructor_w_implicit_inputs_and_gcd_host(self):
+        # Re-assign GCD_HOST with something testable
+        with mock.patch.dict('os.environ', {'GCD_HOST': 'something-testable'}):
+            other = 'other'
+            creds = _make_credentials()
+
+            klass = self._get_target_class()
+            patch1 = mock.patch(
+                'google.cloud.datastore.client._determine_default_project',
+                return_value=other)
+            patch2 = mock.patch(
+                'google.auth.default', return_value=(creds, None))
+
+            with patch1 as _determine_default_project:
+                with patch2 as default:
+                    client = klass()
+
+            self.assertEqual(client.project, other)
+            self.assertIsNone(client.namespace)
+            self.assertIs(client._credentials, creds)
+            self.assertIsNone(client._http_internal)
+            self.assertEqual(client._base_url, 'http://something-testable')
+
+            self.assertIsNone(client.current_batch)
+            self.assertIsNone(client.current_transaction)
+
+            default.assert_called_once_with()
+            _determine_default_project.assert_called_once_with('emulated')
+
+    def test_constructor_w_implicit_inputs_and_datastore_emulator_host(self):
+        # Set DATASTORE_EMULATOR_HOST with something testable
+        with mock.patch.dict('os.environ', {'DATASTORE_EMULATOR_HOST': 'something-testable'}):
+            other = 'other'
+            creds = _make_credentials()
+
+            klass = self._get_target_class()
+            patch1 = mock.patch(
+                'google.cloud.datastore.client._determine_default_project',
+                return_value=other)
+            patch2 = mock.patch(
+                'google.auth.default', return_value=(creds, None))
+
+            with patch1 as _determine_default_project:
+                with patch2 as default:
+                    client = klass()
+
+            self.assertEqual(client.project, other)
+            self.assertIsNone(client.namespace)
+            self.assertIs(client._credentials, creds)
+            self.assertIsNone(client._http_internal)
+            self.assertEqual(client._base_url, 'http://something-testable')
+
+            self.assertIsNone(client.current_batch)
+            self.assertIsNone(client.current_transaction)
+
+            default.assert_called_once_with()
+            _determine_default_project.assert_called_once_with('emulated')
 
     def test_constructor_w_explicit_inputs(self):
         from google.cloud.datastore.client import _DATASTORE_BASE_URL
+        with mock.patch.dict('os.environ', {}):
+            other = 'other'
+            namespace = 'namespace'
+            creds = _make_credentials()
+            http = object()
+            client = self._make_one(project=other,
+                                    namespace=namespace,
+                                    credentials=creds,
+                                    _http=http)
+            self.assertEqual(client.project, other)
+            self.assertEqual(client.namespace, namespace)
+            self.assertIs(client._credentials, creds)
+            self.assertIs(client._http_internal, http)
+            self.assertIsNone(client.current_batch)
+            self.assertEqual(list(client._batch_stack), [])
+            self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
 
-        other = 'other'
-        namespace = 'namespace'
-        creds = _make_credentials()
-        http = object()
-        client = self._make_one(project=other,
-                                namespace=namespace,
-                                credentials=creds,
-                                _http=http)
-        self.assertEqual(client.project, other)
-        self.assertEqual(client.namespace, namespace)
-        self.assertIs(client._credentials, creds)
-        self.assertIs(client._http_internal, http)
-        self.assertIsNone(client.current_batch)
-        self.assertEqual(list(client._batch_stack), [])
-        self.assertEqual(client._base_url, _DATASTORE_BASE_URL)
+    def test_constructor_w_explicit_inputs_and_gcd_host(self):
+        # Re-assign GCD_HOST to something testable
+        with mock.patch.dict('os.environ', {'GCD_HOST': 'something-testable'}):
+            other = 'other'
+            namespace = 'namespace'
+            creds = _make_credentials()
+            http = object()
+            client = self._make_one(project=other,
+                                    namespace=namespace,
+                                    credentials=creds,
+                                    _http=http)
+            self.assertEqual(client.project, other)
+            self.assertEqual(client.namespace, namespace)
+            self.assertIs(client._credentials, creds)
+            self.assertIs(client._http_internal, http)
+            self.assertIsNone(client.current_batch)
+            self.assertEqual(list(client._batch_stack), [])
+            self.assertEqual(client._base_url, 'http://something-testable')
+
+    def test_constructor_w_explicit_inputs_and_datastore_emulator_host(self):
+        # Set DATASTORE_EMULATOR_HOST to something testable
+        with mock.patch.dict('os.environ', {'DATASTORE_EMULATOR_HOST': 'something-testable'}):
+            other = 'other'
+            namespace = 'namespace'
+            creds = _make_credentials()
+            http = object()
+            client = self._make_one(project=other,
+                                    namespace=namespace,
+                                    credentials=creds,
+                                    _http=http)
+            self.assertEqual(client.project, other)
+            self.assertEqual(client.namespace, namespace)
+            self.assertIs(client._credentials, creds)
+            self.assertIs(client._http_internal, http)
+            self.assertIsNone(client.current_batch)
+            self.assertEqual(list(client._batch_stack), [])
+            self.assertEqual(client._base_url, 'http://something-testable')
 
     def test_constructor_use_grpc_default(self):
         import google.cloud.datastore.client as MUT
@@ -1047,6 +1151,16 @@ class TestClient(unittest.TestCase):
             self.assertIs(query, mock_klass.return_value)
             mock_klass.assert_called_once_with(
                 client, project=self.PROJECT, namespace=namespace2, kind=kind)
+
+    def test_can_instantiate_without_project_when_datastore_emulator_host_is_set(self):
+        # Set DATASTORE_EMULATOR_HOST to something testable
+        with mock.patch.object(os, 'environ', {'DATASTORE_EMULATOR_HOST': 'something-testable'}):
+            self._get_target_class()()
+
+    def test_can_instantiate_without_project_when_gcd_host_is_set(self):
+        # Set GCD_HOST to something testable
+        with mock.patch.object(os, 'environ', {'GCD_HOST': 'something-testable'}):
+            self._get_target_class()()
 
 
 class _NoCommitBatch(object):

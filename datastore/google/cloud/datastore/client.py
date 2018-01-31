@@ -28,7 +28,6 @@ from google.cloud.datastore.query import Query
 from google.cloud.datastore.transaction import Transaction
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.environment_vars import GCD_DATASET
-from google.cloud.environment_vars import GCD_HOST
 
 try:
     from google.cloud.datastore._gax import make_datastore_api
@@ -201,8 +200,16 @@ class Client(ClientWithProject):
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, _http=None, _use_grpc=None):
+
+        gcd_host = os.environ.get('GCD_HOST')
+        datastore_emulator_host = os.environ.get('DATASTORE_EMULATOR_HOST')
+
+        if gcd_host or datastore_emulator_host:
+            project = project or 'emulated'
+
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
+
         self.namespace = namespace
         self._batch_stack = _LocalStack()
         self._datastore_api_internal = None
@@ -210,10 +217,12 @@ class Client(ClientWithProject):
             self._use_grpc = _USE_GRPC
         else:
             self._use_grpc = _use_grpc
-        try:
-            host = os.environ[GCD_HOST]
-            self._base_url = 'http://' + host
-        except KeyError:
+
+        if gcd_host:
+            self._base_url = 'http://{}'.format(gcd_host)
+        elif datastore_emulator_host:
+            self._base_url = 'http://{}'.format(datastore_emulator_host)
+        else:
             self._base_url = _DATASTORE_BASE_URL
 
     @staticmethod
