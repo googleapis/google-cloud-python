@@ -15,6 +15,10 @@
 """Time series as :mod:`pandas` dataframes."""
 
 import itertools
+try:
+    import pandas
+except ImportError:
+    pandas = None
 
 from google.cloud.monitoring_v3.types import TimeSeries
 
@@ -80,14 +84,16 @@ def _build_dataframe(time_series_iterable,
 
     :rtype: :class:`pandas.DataFrame`
     :returns: A dataframe where each column represents one time series.
-    """
-    import pandas   # pylint: disable=import-error
 
-    if labels is not None:
-        if label is not None:
-            raise ValueError('Cannot specify both "label" and "labels".')
-        elif not labels:
-            raise ValueError('"labels" must be non-empty or None.')
+    :raises: :exc:`RuntimeError` if `pandas` is not installed.
+    """
+    if pandas is None:
+        raise RuntimeError('This method requires `pandas` to be installed.')
+
+    if label is not None:
+        if labels:
+            raise ValueError('Cannot specify both `label` and `labels`.')
+        labels = (label,)
 
     columns = []
     headers = []
@@ -101,7 +107,7 @@ def _build_dataframe(time_series_iterable,
         headers.append(_extract_header(time_series))
 
     # Implement a smart default of using all available labels.
-    if label is None and labels is None:
+    if labels is None:
         resource_labels = set(itertools.chain.from_iterable(
             header.resource.labels for header in headers))
         metric_labels = set(itertools.chain.from_iterable(
@@ -119,7 +125,7 @@ def _build_dataframe(time_series_iterable,
     # Build a multi-level stack of column headers. Some labels may
     # be undefined for some time series.
     levels = []
-    for key in labels or [label]:
+    for key in labels:
         level = [_extract_labels(header).get(key, '') for header in headers]
         levels.append(level)
 
@@ -128,7 +134,7 @@ def _build_dataframe(time_series_iterable,
     # by specifying "label".
     dataframe.columns = pandas.MultiIndex.from_arrays(
         levels,
-        names=labels or None)
+        names=labels if not label else None)
 
     # Sort the rows just in case (since the API doesn't guarantee the
     # ordering), and sort the columns lexicographically.
