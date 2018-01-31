@@ -373,15 +373,15 @@ class TestDirectRow(unittest.TestCase):
 
         from google.cloud.bigtable.row import _retry_commit_exception
 
-        class MockRendevouz(grpc.RpcError, grpc.Call):
-            """Rendevouz exception"""
+        class ErrorUnavailable(grpc.RpcError, grpc.Call):
+            """ErrorUnavailable exception"""
 
         message = 'Endpoint read failed'
-        mock_rendevouz = mock.create_autospec(MockRendevouz, instance=True)
-        mock_rendevouz.code.return_value = grpc.StatusCode.UNAVAILABLE
-        mock_rendevouz.details.return_value = message
+        error = mock.create_autospec(ErrorUnavailable, instance=True)
+        error.code.return_value = grpc.StatusCode.UNAVAILABLE
+        error.details.return_value = message
 
-        result = _retry_commit_exception(mock_rendevouz)
+        result = _retry_commit_exception(error)
         self.assertEqual(result, True)
 
         result = _retry_commit_exception(ValueError)
