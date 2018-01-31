@@ -18,6 +18,7 @@ import os
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import (_determine_default_project as
                                    _base_default_project)
+from google.auth.credentials import Credentials
 from google.cloud.client import ClientWithProject
 from google.cloud.datastore import helpers
 from google.cloud.datastore._http import HTTPDatastoreAPI
@@ -158,6 +159,28 @@ def _extended_lookup(datastore_api, project, key_pbs,
     return results
 
 
+class EmulatorCreds(Credentials):
+    """
+    A mock credential object.
+
+    Used to avoid unnecessary token refreshing or reliance on the network when using an emulator.
+    """
+    # Credit to https://github.com/patrick91.
+    # Taken from https://github.com/GoogleCloudPlatform/google-cloud-python/issues/3920#issuecomment-327315159
+
+    def __init__(self):
+        super(EmulatorCreds, self).__init__()
+        self.token = b'token'
+        self.expiry = None
+
+    @property
+    def valid(self):
+        return True
+
+    def refresh(self, request):
+        raise RuntimeError('Should never be refreshed')
+
+
 class Client(ClientWithProject):
     """Convenience wrapper for invoking APIs/factories w/ a project.
 
@@ -201,6 +224,12 @@ class Client(ClientWithProject):
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, _http=None, _use_grpc=None):
+
+        host = os.getenv(GCD_HOST)
+        if host:
+            project = project or 'other'
+            credentials = credentials or EmulatorCreds()
+
         super(Client, self).__init__(
             project=project, credentials=credentials, _http=_http)
         self.namespace = namespace
@@ -210,15 +239,17 @@ class Client(ClientWithProject):
             self._use_grpc = _USE_GRPC
         else:
             self._use_grpc = _use_grpc
-        try:
-            host = os.environ[GCD_HOST]
+
+        if host:
             self._base_url = 'http://' + host
-        except KeyError:
+        else:
             self._base_url = _DATASTORE_BASE_URL
 
     @staticmethod
     def _determine_default(project):
         """Helper:  override default project detection."""
+        if os.getenv(GCD_HOST):
+            return 'other'
         return _determine_default_project(project)
 
     @property
