@@ -1048,6 +1048,37 @@ class TestClient(unittest.TestCase):
             mock_klass.assert_called_once_with(
                 client, project=self.PROJECT, namespace=namespace2, kind=kind)
 
+    def test_can_instantiate_client_with_gcd_host(self):
+        import os
+        from google.cloud.datastore.client import EmulatorCreds
+
+        klass = self._get_target_class()
+
+        with mock.patch.object(os, 'environ', {'DATASTORE_EMULATOR_HOST': 'localhost:8081'}):
+            client = klass()
+
+        self.assertEqual(client.project, 'other')
+        self.assertIsNone(client.namespace)
+        self.assertIsInstance(client._credentials, EmulatorCreds)
+        self.assertIsNone(client._http_internal)
+        self.assertEqual(client._base_url, 'http://localhost:8081')
+
+        self.assertIsNone(client.current_batch)
+        self.assertIsNone(client.current_transaction)
+
+
+class TestEmulatorCreds(unittest.TestCase):
+
+    def setUp(self):
+        from google.cloud.datastore.client import EmulatorCreds
+        self.creds = EmulatorCreds()
+
+    def test_valid_always_returns_true(self):
+        self.assertTrue(self.creds.valid)
+
+    def test_refresh_raises(self):
+        self.assertRaises(RuntimeError, self.creds.refresh, None)
+
 
 class _NoCommitBatch(object):
 
