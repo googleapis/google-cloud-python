@@ -464,6 +464,41 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(sorted(row_tuples, key=by_wavelength),
                          sorted(ROWS, key=by_wavelength))
 
+    def test_load_avro_from_uri_then_dump_table(self):
+        table_name = 'test_table'
+        rows = [
+            ("violet", 400),
+            ("indigo", 445),
+            ("blue", 475),
+            ("green", 510),
+            ("yellow", 570),
+            ("orange", 590),
+            ("red", 650)
+        ]
+        with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as f:
+            GS_URL = self._write_avro_to_storage(
+                'bq_load_test' + unique_resource_id(), 'colors.avro', f)
+
+        dataset = self.temp_dataset(_make_dataset_id('bq_load_test'))
+        table_arg = dataset.table(table_name)
+        table = retry_403(Config.CLIENT.create_table)(Table(table_arg))
+        self.to_delete.insert(0, table)
+
+        config = bigquery.LoadJobConfig()
+        config.create_disposition = 'CREATE_NEVER'
+        config.source_format = 'AVRO'
+        config.write_disposition = 'WRITE_EMPTY'
+        job = Config.CLIENT.load_table_from_uri(
+            GS_URL, table_arg, job_config=config)
+        job.result(timeout=JOB_TIMEOUT)
+        self.assertEqual(job.output_rows, len(rows))
+
+        table = Config.CLIENT.get_table(table)
+        fetched = self._fetch_single_page(table)
+        row_tuples = [r.values() for r in fetched]
+        self.assertEqual(sorted(row_tuples, key=lambda x: x[1]),
+                         sorted(rows, key=lambda x: x[1]))
+
     def test_load_table_from_uri_then_dump_table(self):
         TABLE_ID = 'test_table'
         GS_URL = self._write_csv_to_storage(
@@ -540,9 +575,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(fetched_job.job_id, JOB_ID)
         self.assertEqual(fetched_job.autodetect, True)
 
-    def _write_csv_to_storage(self, bucket_name, blob_name, header_row,
-                              data_rows):
-        from google.cloud._testing import _NamedTemporaryFile
+    def _create_storage(self, bucket_name, blob_name):
         from google.cloud.storage import Client as StorageClient
 
         storage_client = StorageClient()
@@ -552,8 +585,13 @@ class TestBigQuery(unittest.TestCase):
         bucket = storage_client.create_bucket(bucket_name)
         self.to_delete.append(bucket)
 
-        blob = bucket.blob(blob_name)
+        return bucket.blob(blob_name)
 
+    def _write_csv_to_storage(self, bucket_name, blob_name, header_row,
+                              data_rows):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        blob = self._create_storage(bucket_name, blob_name)
         with _NamedTemporaryFile() as temp:
             with open(temp.name, 'w') as csv_write:
                 writer = csv.writer(csv_write)
@@ -564,7 +602,13 @@ class TestBigQuery(unittest.TestCase):
                 blob.upload_from_file(csv_read, content_type='text/csv')
 
         self.to_delete.insert(0, blob)
+        return 'gs://{}/{}'.format(bucket_name, blob_name)
 
+    def _write_avro_to_storage(self, bucket_name, blob_name, avro_file):
+        blob = self._create_storage(bucket_name, blob_name)
+        blob.upload_from_file(avro_file,
+                              content_type='application/x-avro-binary')
+        self.to_delete.insert(0, blob)
         return 'gs://{}/{}'.format(bucket_name, blob_name)
 
     def _load_table_for_extract_table(
