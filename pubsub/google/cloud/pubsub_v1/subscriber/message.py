@@ -223,17 +223,13 @@ class Message(object):
         )
 
     def modify_ack_deadline(self, seconds):
-        """Set the deadline for acknowledgement to the given value.
+        """Resets the deadline for acknowledgement to the given value of
+	seconds from now.
 
         The default implementation handles this for you; you should not need
         to manually deal with setting ack deadlines. The exception case is
         if you are implementing your own custom subclass of
         :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
-
-        .. note::
-            This is not an extension; it *sets* the deadline to the given
-            number of seconds from right now. It is even possible to use this
-            method to make a deadline shorter.
 
         Args:
             seconds (int): The number of seconds to set the lease deadline
