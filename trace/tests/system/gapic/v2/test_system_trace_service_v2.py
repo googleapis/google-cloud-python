@@ -12,20 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
+import os
+import time
 
-from google.cloud.trace_v1 import types
-from google.cloud.trace_v1.gapic import enums
-from google.cloud.trace_v1.gapic import trace_service_client
-
-
-class TraceServiceClient(trace_service_client.TraceServiceClient):
-    __doc__ = trace_service_client.TraceServiceClient.__doc__
-    enums = enums
+from google.cloud import trace_v2
+from google.cloud.trace_v2.proto import trace_pb2
+from google.cloud.trace_v2.proto import tracing_pb2
 
 
-__all__ = (
-    'enums',
-    'types',
-    'TraceServiceClient',
-)
+class TestSystemTraceService(object):
+    def test_batch_write_spans(self):
+        project_id = os.environ['PROJECT_ID']
+
+        client = trace_v2.TraceServiceClient()
+        name = client.project_path(project_id)
+        spans = []
+        client.batch_write_spans(name, spans)

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""GAX Wrapper for interacting with the Stackdriver Trace API."""
+"""Wrapper for interacting with the Stackdriver Trace API."""
 
 from google.api_core.gapic_v1 import method
 from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -33,16 +33,15 @@ class _TraceAPI(object):
     cloudtrace.v2
 
     Args:
-        gax_api (~google.cloud.trace_v2.gapic.trace_service_client.
-            TraceServiceClient): Required. API object used to make GAX
-            requests.
+        gapic (~google.cloud.trace_v2.gapic.trace_service_client.
+            TraceServiceClient): Required. API object used to make RPCs.
 
         client (~google.cloud.trace_v2.client.Client): Required. The
             client that owns this API object.
     """
 
-    def __init__(self, gax_api, client):
-        self._gax_api = gax_api
+    def __init__(self, gapic_api, client):
+        self._gapic_api = gapic_api
         self.client = client
 
     def batch_write_spans(self,
@@ -84,7 +83,7 @@ class _TraceAPI(object):
             span_pb = _dict_mapping_to_pb(span_mapping, 'Span')
             spans_pb_list.append(span_pb)
 
-        self._gax_api.batch_write_spans(
+        self._gapic_api.batch_write_spans(
             name=name,
             spans=spans_pb_list,
             retry=retry,
@@ -225,7 +224,7 @@ class _TraceAPI(object):
             child_span_count = _value_to_pb(
                 child_span_count, 'Int32Value')
 
-        return self._gax_api.create_span(
+        return self._gapic_api.create_span(
             name=name,
             span_id=span_id,
             display_name=display_name,
@@ -305,16 +304,16 @@ def _value_to_pb(value, proto_type):
     return data_type_pb
 
 
-def make_gax_trace_api(client):
+def make_trace_api(client):
     """
-    Create an instance of the GAX Trace API.
+    Create an instance of the gapic Trace API.
 
     Args:
         client (:class:`~google.cloud.trace_v2.client.Client`): The client
             that holds configuration details.
 
     Returns:
-        A :class:`~google.cloud.trace_v2._gax._TraceAPI` instance with the
+        A :class:`~google.cloud.trace_v2._gapic._TraceAPI` instance with the
         proper configurations.
     """
     generated = trace_service_client.TraceServiceClient()
