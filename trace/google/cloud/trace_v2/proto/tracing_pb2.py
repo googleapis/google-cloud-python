@@ -23,9 +23,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/devtools/cloudtrace_v2/proto/tracing.proto',
   package='google.devtools.cloudtrace.v2',
   syntax='proto3',
-  serialized_pb=_b('\n1google/devtools/cloudtrace_v2/proto/tracing.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a/google/devtools/cloudtrace_v2/proto/trace.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"Z\n\x16\x42\x61tchWriteSpansRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x05spans\x18\x02 \x03(\x0b\x32#.google.devtools.cloudtrace.v2.Span2\xb1\x02\n\x0cTraceService\x12\x94\x01\n\x0f\x42\x61tchWriteSpans\x12\x35.google.devtools.cloudtrace.v2.BatchWriteSpansRequest\x1a\x16.google.protobuf.Empty\"2\x82\xd3\xe4\x93\x02,\"\'/v2/{name=projects/*}/traces:batchWrite:\x01*\x12\x89\x01\n\nCreateSpan\x12#.google.devtools.cloudtrace.v2.Span\x1a#.google.devtools.cloudtrace.v2.Span\"1\x82\xd3\xe4\x93\x02+\x1a&/v2/{name=projects/*/traces/*/spans/*}:\x01*B\x94\x01\n!com.google.devtools.cloudtrace.v2B\x0cTracingProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2b\x06proto3')
+  serialized_pb=_b('\n1google/devtools/cloudtrace_v2/proto/tracing.proto\x12\x1dgoogle.devtools.cloudtrace.v2\x1a\x1cgoogle/api/annotations.proto\x1a/google/devtools/cloudtrace_v2/proto/trace.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"Z\n\x16\x42\x61tchWriteSpansRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x05spans\x18\x02 \x03(\x0b\x32#.google.devtools.cloudtrace.v2.Span2\xaf\x02\n\x0cTraceService\x12\x94\x01\n\x0f\x42\x61tchWriteSpans\x12\x35.google.devtools.cloudtrace.v2.BatchWriteSpansRequest\x1a\x16.google.protobuf.Empty\"2\x82\xd3\xe4\x93\x02,\"\'/v2/{name=projects/*}/traces:batchWrite:\x01*\x12\x87\x01\n\nCreateSpan\x12#.google.devtools.cloudtrace.v2.Span\x1a#.google.devtools.cloudtrace.v2.Span\"/\x82\xd3\xe4\x93\x02)\"$/v2/{name=projects/*/traces/*}/spans:\x01*B\xac\x01\n!com.google.devtools.cloudtrace.v2B\x0cTracingProtoP\x01ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\xaa\x02\x15Google.Cloud.Trace.V2\xca\x02\x15Google\\Cloud\\Trace\\V2b\x06proto3')
   ,
   dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
@@ -69,21 +70,21 @@ _BATCHWRITESPANSREQUEST = _descriptor.Descriptor(
 
 _BATCHWRITESPANSREQUEST.fields_by_name['spans'].message_type = google_dot_devtools_dot_cloudtrace__v2_dot_proto_dot_trace__pb2._SPAN
 DESCRIPTOR.message_types_by_name['BatchWriteSpansRequest'] = _BATCHWRITESPANSREQUEST
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 BatchWriteSpansRequest = _reflection.GeneratedProtocolMessageType('BatchWriteSpansRequest', (_message.Message,), dict(
   DESCRIPTOR = _BATCHWRITESPANSREQUEST,
   __module__ = 'google.devtools.cloudtrace_v2.proto.tracing_pb2'
   ,
   __doc__ = """The request message for the ``BatchWriteSpans`` method.
-
-
+  
+  
   Attributes:
       name:
-          Required. Name of the project where the spans belong. The
-          format is ``projects/PROJECT_ID``.
+          Required. The name of the project where the spans belong. The
+          format is ``projects/[PROJECT_ID]``.
       spans:
-          A collection of spans.
+          A list of new spans. The span names must not match existing
+          spans, or the results are undefined.
   """,
   # @@protoc_insertion_point(class_scope:google.devtools.cloudtrace.v2.BatchWriteSpansRequest)
   ))
@@ -91,7 +92,7 @@ _sym_db.RegisterMessage(BatchWriteSpansRequest)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n!com.google.devtools.cloudtrace.v2B\014TracingProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n!com.google.devtools.cloudtrace.v2B\014TracingProtoP\001ZGgoogle.golang.org/genproto/googleapis/devtools/cloudtrace/v2;cloudtrace\252\002\025Google.Cloud.Trace.V2\312\002\025Google\\Cloud\\Trace\\V2'))
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
   # Please use the generated *_pb2_grpc.py files instead.
@@ -137,18 +138,15 @@ try:
     """
 
     def BatchWriteSpans(self, request, context):
-      """Sends new spans to Stackdriver Trace or updates existing traces. If the
-      name of a trace that you send matches that of an existing trace, new spans
-      are added to the existing trace. Attempt to update existing spans results
-      undefined behavior. If the name does not match, a new trace is created
-      with given set of spans.
+      """Sends new spans to new or existing traces. You cannot update
+      existing spans.
       """
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
 
     def CreateSpan(self, request, context):
-      """Creates a new Span.
+      """Creates a new span.
       """
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
@@ -186,15 +184,12 @@ try:
     contain span(s) from multiple services.
     """
     def BatchWriteSpans(self, request, context):
-      """Sends new spans to Stackdriver Trace or updates existing traces. If the
-      name of a trace that you send matches that of an existing trace, new spans
-      are added to the existing trace. Attempt to update existing spans results
-      undefined behavior. If the name does not match, a new trace is created
-      with given set of spans.
+      """Sends new spans to new or existing traces. You cannot update
+      existing spans.
       """
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def CreateSpan(self, request, context):
-      """Creates a new Span.
+      """Creates a new span.
       """
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
@@ -212,16 +207,13 @@ try:
     contain span(s) from multiple services.
     """
     def BatchWriteSpans(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Sends new spans to Stackdriver Trace or updates existing traces. If the
-      name of a trace that you send matches that of an existing trace, new spans
-      are added to the existing trace. Attempt to update existing spans results
-      undefined behavior. If the name does not match, a new trace is created
-      with given set of spans.
+      """Sends new spans to new or existing traces. You cannot update
+      existing spans.
       """
       raise NotImplementedError()
     BatchWriteSpans.future = None
     def CreateSpan(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-      """Creates a new Span.
+      """Creates a new span.
       """
       raise NotImplementedError()
     CreateSpan.future = None

@@ -14,7 +14,7 @@
 
 """Client for interacting with the Stackdriver Trace API."""
 
-from google.cloud.trace.v1._gax import make_gax_trace_api
+from google.cloud.trace.v1._gapic import make_trace_api
 from google.cloud.client import ClientWithProject
 from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -51,10 +51,10 @@ class Client(ClientWithProject):
         https://cloud.google.com/trace/docs/reference/v1/rpc/google.devtools.
         cloudtrace.v1
         """
-        self._trace_api = make_gax_trace_api(self)
+        self._trace_api = make_trace_api(self)
         return self._trace_api
 
-    def patch_traces(self, traces, project_id=None, options=None):
+    def patch_traces(self, traces, project_id=None):
         """Sends new traces to Stackdriver Trace or updates existing traces.
 
         Args:
@@ -62,19 +62,15 @@ class Client(ClientWithProject):
 
             project_id (Optional[str]): ID of the Cloud project where the trace
                 data is stored.
-
-            options (Optional[~google.gax.CallOptions]): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
         """
         if project_id is None:
             project_id = self.project
 
         self.trace_api.patch_traces(
             project_id=project_id,
-            traces=traces,
-            options=options)
+            traces=traces)
 
-    def get_trace(self, trace_id, project_id=None, options=None):
+    def get_trace(self, trace_id, project_id=None):
         """
         Gets a single trace by its ID.
 
@@ -84,9 +80,6 @@ class Client(ClientWithProject):
             project_id (str): Required. ID of the Cloud project where the trace
                 data is stored.
 
-            options (Optional[~google.gax.CallOptions]): Overrides the default
-                settings for this call, e.g, timeout, retries etc.
-
         Returns:
             A Trace dict.
         """
@@ -95,8 +88,7 @@ class Client(ClientWithProject):
 
         return self.trace_api.get_trace(
             project_id=project_id,
-            trace_id=trace_id,
-            options=options)
+            trace_id=trace_id)
 
     def list_traces(
             self,
