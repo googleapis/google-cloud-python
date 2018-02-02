@@ -145,21 +145,21 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.trace._gax import _TraceAPI
+        from google.cloud.trace._gapic import _TraceAPI
 
         return _TraceAPI
 
     def test_constructor(self):
-        gax_api = object()
+        gapic_api = object()
         client = object()
-        api = self._make_one(gax_api, client)
-        self.assertIs(api._gax_api, gax_api)
+        api = self._make_one(gapic_api, client)
+        self.assertIs(api._gapic_api, gapic_api)
         self.assertIs(api.client, client)
 
     def test_batch_write_spans(self):
         from google.cloud.trace_v2.gapic import trace_service_client
         from google.cloud.trace_v2.proto.trace_pb2 import Span
-        from google.cloud.trace._gax import _dict_mapping_to_pb
+        from google.cloud.trace._gapic import _dict_mapping_to_pb
 
         spans = {
             'spans': [
@@ -185,13 +185,13 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         spans_pb_list = [_dict_mapping_to_pb(spans['spans'][0], 'Span')]
         project_name = 'projects/{}'.format(self.project)
 
-        gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
-        api = self._make_one(gax_api, None)
+        gapic_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
+        api = self._make_one(gapic_api, None)
         retry = mock.Mock()
         timeout = mock.Mock()
         api.batch_write_spans(project_name, spans, retry, timeout)
 
-        gax_api.batch_write_spans.assert_called_with(
+        gapic_api.batch_write_spans.assert_called_with(
             name=project_name,
             spans=spans_pb_list,
             retry=retry,
@@ -199,11 +199,11 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     def test_create_span_default(self):
         from google.cloud.trace_v2.gapic import trace_service_client
-        from google.cloud.trace._gax import _dict_mapping_to_pb
+        from google.cloud.trace._gapic import _dict_mapping_to_pb
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
-        gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
-        api = self._make_one(gax_api, None)
+        gapic_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
+        api = self._make_one(gapic_api, None)
         api.create_span(
             name=self.span_name,
             span_id=self.span_id,
@@ -216,7 +216,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         start_time_pb = _datetime_to_pb_timestamp(self.start_time)
         end_time_pb = _datetime_to_pb_timestamp(self.end_time)
 
-        gax_api.create_span.assert_called_with(
+        gapic_api.create_span.assert_called_with(
             name=self.span_name,
             span_id=self.span_id,
             display_name=display_name_pb,
@@ -233,15 +233,15 @@ class Test__TraceAPI(_Base, unittest.TestCase):
 
     def test_create_span_explicit(self):
         from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.trace._gax import (
+        from google.cloud.trace._gapic import (
             _dict_mapping_to_pb,
             _span_attrs_to_pb,
             _status_mapping_to_pb,
             _value_to_pb)
         from google.cloud.trace_v2.gapic import trace_service_client
 
-        gax_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
-        api = self._make_one(gax_api, None)
+        gapic_api = mock.Mock(spec=trace_service_client.TraceServiceClient)
+        api = self._make_one(gapic_api, None)
         api.create_span(
             name=self.span_name,
             span_id=self.span_id,
@@ -271,7 +271,7 @@ class Test__TraceAPI(_Base, unittest.TestCase):
         child_span_count_pb = _value_to_pb(
             self.child_span_count, 'Int32Value')
 
-        gax_api.create_span.assert_called_with(
+        gapic_api.create_span.assert_called_with(
             name=self.span_name,
             span_id=self.span_id,
             display_name=display_name_pb,
@@ -287,15 +287,15 @@ class Test__TraceAPI(_Base, unittest.TestCase):
             child_span_count=child_span_count_pb)
 
 
-class Test_make_gax_trace_api(unittest.TestCase):
+class Test_make_trace_api(unittest.TestCase):
 
     def _call_fut(self, client):
-        from google.cloud.trace._gax import make_gax_trace_api
+        from google.cloud.trace._gapic import make_trace_api
 
-        return make_gax_trace_api(client)
+        return make_trace_api(client)
 
     def test_it(self):
-        from google.cloud.trace._gax import _TraceAPI
+        from google.cloud.trace._gapic import _TraceAPI
         from google.cloud._http import DEFAULT_USER_AGENT
 
         credentials = object()
@@ -311,7 +311,7 @@ class Test_make_gax_trace_api(unittest.TestCase):
         generated_api.SERVICE_ADDRESS = host
 
         patch_api = mock.patch(
-            'google.cloud.trace._gax.trace_service_client.TraceServiceClient',
+            'google.cloud.trace._gapic.trace_service_client.TraceServiceClient',
             new=generated_api)
 
         with patch_api:
@@ -320,5 +320,5 @@ class Test_make_gax_trace_api(unittest.TestCase):
         self.assertEqual(len(generated_api_kwargs), 1)
 
         self.assertIsInstance(trace_api, _TraceAPI)
-        self.assertIs(trace_api._gax_api, generated)
+        self.assertIs(trace_api._gapic_api, generated)
         self.assertIs(trace_api.client, client)

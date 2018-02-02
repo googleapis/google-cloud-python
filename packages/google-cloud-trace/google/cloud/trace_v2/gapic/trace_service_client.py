@@ -1,25 +1,16 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/devtools/cloudtrace/v2/tracing.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.devtools.cloudtrace.v2 TraceService API."""
 
 import pkg_resources
@@ -58,27 +49,30 @@ class TraceServiceClient(object):
     # this service
     _DEFAULT_SCOPES = (
         'https://www.googleapis.com/auth/cloud-platform',
-        'https://www.googleapis.com/auth/trace.append', )
+        'https://www.googleapis.com/auth/trace.append',
+    )
 
     # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary
-    _INTERFACE_NAME = ('google.devtools.cloudtrace.v2.TraceService')
+    # method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.devtools.cloudtrace.v2.TraceService'
 
     @classmethod
     def project_path(cls, project):
-        """Returns a fully-qualified project resource name string."""
+        """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
             'projects/{project}',
-            project=project, )
+            project=project,
+        )
 
     @classmethod
     def span_path(cls, project, trace, span):
-        """Returns a fully-qualified span resource name string."""
+        """Return a fully-qualified span string."""
         return google.api_core.path_template.expand(
             'projects/{project}/traces/{trace}/spans/{span}',
             project=project,
             trace=trace,
-            span=span, )
+            span=span,
+        )
 
     def __init__(self,
                  channel=None,
@@ -89,69 +83,78 @@ class TraceServiceClient(object):
 
         Args:
             channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. If specified, then the ``credentials``
-                argument is ignored.
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict):
-                A dictionary of call options for each method. If not specified
-                the default configuration is used. Generally, you only need
-                to set this if you're developing your own client library.
+            client_config (dict): A dictionary of call options for each
+                method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
+        # If both `channel` and `credentials` are specified, raise an
+        # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'channel and credentials arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__))
+                'The `channel` and `credentials` arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__), )
 
+        # Create the channel.
         if channel is None:
             channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES)
+                scopes=self._DEFAULT_SCOPES,
+            )
 
+        # Create the gRPC stubs.
         self.trace_service_stub = (tracing_pb2.TraceServiceStub(channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
-        interface_config = client_config['interfaces'][self._INTERFACE_NAME]
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
         method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            interface_config)
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
+        # Write the "inner API call" methods to the class.
+        # These are wrapped versions of the gRPC stub methods, with retry and
+        # timeout configuration applied, called by the public methods on
+        # this class.
         self._batch_write_spans = google.api_core.gapic_v1.method.wrap_method(
             self.trace_service_stub.BatchWriteSpans,
             default_retry=method_configs['BatchWriteSpans'].retry,
             default_timeout=method_configs['BatchWriteSpans'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._create_span = google.api_core.gapic_v1.method.wrap_method(
             self.trace_service_stub.CreateSpan,
             default_retry=method_configs['CreateSpan'].retry,
             default_timeout=method_configs['CreateSpan'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
 
     # Service calls
     def batch_write_spans(self,
                           name,
                           spans,
                           retry=google.api_core.gapic_v1.method.DEFAULT,
-                          timeout=google.api_core.gapic_v1.method.DEFAULT):
+                          timeout=google.api_core.gapic_v1.method.DEFAULT,
+                          metadata=None):
         """
-        Sends new spans to Stackdriver Trace or updates existing traces. If the
-        name of a trace that you send matches that of an existing trace, new spans
-        are added to the existing trace. Attempt to update existing spans results
-        undefined behavior. If the name does not match, a new trace is created
-        with given set of spans.
+        Sends new spans to new or existing traces. You cannot update
+        existing spans.
 
         Example:
             >>> from google.cloud import trace_v2
@@ -164,9 +167,10 @@ class TraceServiceClient(object):
             >>> client.batch_write_spans(name, spans)
 
         Args:
-            name (str): Required. Name of the project where the spans belong. The format is
-                ``projects/PROJECT_ID``.
-            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): A collection of spans.
+            name (str): Required. The name of the project where the spans belong. The format is
+                ``projects/[PROJECT_ID]``.
+            spans (list[Union[dict, ~google.cloud.trace_v2.types.Span]]): A list of new spans. The span names must not match existing
+                spans, or the results are undefined.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Span`
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
@@ -175,6 +179,8 @@ class TraceServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -183,8 +189,15 @@ class TraceServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
-        request = tracing_pb2.BatchWriteSpansRequest(name=name, spans=spans)
-        self._batch_write_spans(request, retry=retry, timeout=timeout)
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
+        request = tracing_pb2.BatchWriteSpansRequest(
+            name=name,
+            spans=spans,
+        )
+        self._batch_write_spans(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def create_span(self,
                     name,
@@ -201,9 +214,10 @@ class TraceServiceClient(object):
                     same_process_as_parent_span=None,
                     child_span_count=None,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT):
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=None):
         """
-        Creates a new Span.
+        Creates a new span.
 
         Example:
             >>> from google.cloud import trace_v2
@@ -225,11 +239,12 @@ class TraceServiceClient(object):
 
                     projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
 
-                [TRACE_ID] is a unique identifier for a trace within a project.
-                [SPAN_ID] is a unique identifier for a span within a trace,
-                assigned when the span is created.
+                [TRACE_ID] is a unique identifier for a trace within a project;
+                it is a 32-character hexadecimal encoding of a 16-byte array.
+
+                [SPAN_ID] is a unique identifier for a span within a trace; it
+                is a 16-character hexadecimal encoding of an 8-byte array.
             span_id (str): The [SPAN_ID] portion of the span's resource name.
-                The ID is a 16-character hexadecimal encoding of an 8-byte array.
             display_name (Union[dict, ~google.cloud.trace_v2.types.TruncatableString]): A description of the span's operation (up to 128 bytes).
                 Stackdriver Trace displays the description in the
                 {% dynamic print site_values.console_name %}.
@@ -251,26 +266,27 @@ class TraceServiceClient(object):
                 message :class:`~google.cloud.trace_v2.types.Timestamp`
             parent_span_id (str): The [SPAN_ID] of this span's parent span. If this is a root span,
                 then this field must be empty.
-            attributes (Union[dict, ~google.cloud.trace_v2.types.Attributes]): A set of attributes on the span. There is a limit of 32 attributes per
+            attributes (Union[dict, ~google.cloud.trace_v2.types.Attributes]): A set of attributes on the span. You can have up to 32 attributes per
                 span.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Attributes`
             stack_trace (Union[dict, ~google.cloud.trace_v2.types.StackTrace]): Stack trace captured at the start of the span.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.StackTrace`
-            time_events (Union[dict, ~google.cloud.trace_v2.types.TimeEvents]): The included time events. There can be up to 32 annotations and 128 message
+            time_events (Union[dict, ~google.cloud.trace_v2.types.TimeEvents]): A set of time events. You can have up to 32 annotations and 128 message
                 events per span.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.TimeEvents`
-            links (Union[dict, ~google.cloud.trace_v2.types.Links]): A maximum of 128 links are allowed per Span.
+            links (Union[dict, ~google.cloud.trace_v2.types.Links]): Links associated with the span. You can have up to 128 links per Span.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Links`
             status (Union[dict, ~google.cloud.trace_v2.types.Status]): An optional final status for this span.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.Status`
-            same_process_as_parent_span (Union[dict, ~google.cloud.trace_v2.types.BoolValue]): A highly recommended but not required flag that identifies when a trace
-                crosses a process boundary. True when the parent_span belongs to the
-                same process as the current span.
+            same_process_as_parent_span (Union[dict, ~google.cloud.trace_v2.types.BoolValue]): (Optional) Set this parameter to indicate whether this span is in
+                the same process as its parent. If you do not set this parameter,
+                Stackdriver Trace is unable to take advantage of this helpful
+                information.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.trace_v2.types.BoolValue`
             child_span_count (Union[dict, ~google.cloud.trace_v2.types.Int32Value]): An optional number of child spans that were generated while this span
@@ -283,6 +299,8 @@ class TraceServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.trace_v2.types.Span` instance.
@@ -294,6 +312,9 @@ class TraceServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = trace_pb2.Span(
             name=name,
             span_id=span_id,
@@ -307,5 +328,7 @@ class TraceServiceClient(object):
             links=links,
             status=status,
             same_process_as_parent_span=same_process_as_parent_span,
-            child_span_count=child_span_count)
-        return self._create_span(request, retry=retry, timeout=timeout)
+            child_span_count=child_span_count,
+        )
+        return self._create_span(
+            request, retry=retry, timeout=timeout, metadata=metadata)

@@ -14,7 +14,7 @@
 
 """Client for interacting with the Stackdriver Trace API."""
 
-from google.cloud.trace._gax import make_gax_trace_api
+from google.cloud.trace._gapic import make_trace_api
 from google.cloud.client import ClientWithProject
 
 
@@ -49,7 +49,7 @@ class Client(ClientWithProject):
         https://cloud.google.com/trace/docs/reference/v2/rpc/google.devtools.
         cloudtrace.v2
         """
-        self._trace_api = make_gax_trace_api(self)
+        self._trace_api = make_trace_api(self)
         return self._trace_api
 
     def batch_write_spans(self,
