@@ -1,25 +1,16 @@
-# Copyright 2017, Google LLC All rights reserved.
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     https://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# EDITING INSTRUCTIONS
-# This file was generated from the file
-# https://github.com/google/googleapis/blob/master/google/devtools/cloudtrace/v1/trace.proto,
-# and updates to that file get reflected here through a refresh process.
-# For the short term, the refresh process will only be runnable by Google engineers.
-#
-# The only allowed edits are to method and file documentation. A 3-way
-# merge preserves those additions if the generated source changes.
 """Accesses the google.devtools.cloudtrace.v1 TraceService API."""
 
 import functools
@@ -57,11 +48,12 @@ class TraceServiceClient(object):
     _DEFAULT_SCOPES = (
         'https://www.googleapis.com/auth/cloud-platform',
         'https://www.googleapis.com/auth/trace.append',
-        'https://www.googleapis.com/auth/trace.readonly', )
+        'https://www.googleapis.com/auth/trace.readonly',
+    )
 
     # The name of the interface for this client. This is the key used to find
-    # method configuration in the client_config dictionary
-    _INTERFACE_NAME = ('google.devtools.cloudtrace.v1.TraceService')
+    # method configuration in the client_config dictionary.
+    _INTERFACE_NAME = 'google.devtools.cloudtrace.v1.TraceService'
 
     def __init__(self,
                  channel=None,
@@ -72,68 +64,81 @@ class TraceServiceClient(object):
 
         Args:
             channel (grpc.Channel): A ``Channel`` instance through
-                which to make calls. If specified, then the ``credentials``
-                argument is ignored.
+                which to make calls. This argument is mutually exclusive
+                with ``credentials``; providing both will raise an exception.
             credentials (google.auth.credentials.Credentials): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_config (dict):
-                A dictionary of call options for each method. If not specified
-                the default configuration is used. Generally, you only need
-                to set this if you're developing your own client library.
+            client_config (dict): A dictionary of call options for each
+                method. If not specified, the default configuration is used.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
                 The client info used to send a user-agent string along with
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
         """
+        # If both `channel` and `credentials` are specified, raise an
+        # exception (channels come with credentials baked in already).
         if channel is not None and credentials is not None:
             raise ValueError(
-                'channel and credentials arguments to {} are mutually '
-                'exclusive.'.format(self.__class__.__name__))
+                'The `channel` and `credentials` arguments to {} are mutually '
+                'exclusive.'.format(self.__class__.__name__), )
 
+        # Create the channel.
         if channel is None:
             channel = google.api_core.grpc_helpers.create_channel(
                 self.SERVICE_ADDRESS,
                 credentials=credentials,
-                scopes=self._DEFAULT_SCOPES)
+                scopes=self._DEFAULT_SCOPES,
+            )
 
+        # Create the gRPC stubs.
         self.trace_service_stub = (trace_pb2.TraceServiceStub(channel))
 
         if client_info is None:
             client_info = (
                 google.api_core.gapic_v1.client_info.DEFAULT_CLIENT_INFO)
-
         client_info.gapic_version = _GAPIC_LIBRARY_VERSION
 
-        interface_config = client_config['interfaces'][self._INTERFACE_NAME]
+        # Parse out the default settings for retry and timeout for each RPC
+        # from the client configuration.
+        # (Ordinarily, these are the defaults specified in the `*_config.py`
+        # file next to this one.)
         method_configs = google.api_core.gapic_v1.config.parse_method_configs(
-            interface_config)
+            client_config['interfaces'][self._INTERFACE_NAME], )
 
+        # Write the "inner API call" methods to the class.
+        # These are wrapped versions of the gRPC stub methods, with retry and
+        # timeout configuration applied, called by the public methods on
+        # this class.
         self._patch_traces = google.api_core.gapic_v1.method.wrap_method(
             self.trace_service_stub.PatchTraces,
             default_retry=method_configs['PatchTraces'].retry,
             default_timeout=method_configs['PatchTraces'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._get_trace = google.api_core.gapic_v1.method.wrap_method(
             self.trace_service_stub.GetTrace,
             default_retry=method_configs['GetTrace'].retry,
             default_timeout=method_configs['GetTrace'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
         self._list_traces = google.api_core.gapic_v1.method.wrap_method(
             self.trace_service_stub.ListTraces,
             default_retry=method_configs['ListTraces'].retry,
             default_timeout=method_configs['ListTraces'].timeout,
-            client_info=client_info)
+            client_info=client_info,
+        )
 
     # Service calls
     def patch_traces(self,
                      project_id,
                      traces,
                      retry=google.api_core.gapic_v1.method.DEFAULT,
-                     timeout=google.api_core.gapic_v1.method.DEFAULT):
+                     timeout=google.api_core.gapic_v1.method.DEFAULT,
+                     metadata=None):
         """
         Sends new traces to Stackdriver Trace or updates existing traces. If the ID
         of a trace that you send matches that of an existing trace, any fields
@@ -162,6 +167,8 @@ class TraceServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Raises:
             google.api_core.exceptions.GoogleAPICallError: If the request
@@ -170,15 +177,22 @@ class TraceServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = trace_pb2.PatchTracesRequest(
-            project_id=project_id, traces=traces)
-        self._patch_traces(request, retry=retry, timeout=timeout)
+            project_id=project_id,
+            traces=traces,
+        )
+        self._patch_traces(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def get_trace(self,
                   project_id,
                   trace_id,
                   retry=google.api_core.gapic_v1.method.DEFAULT,
-                  timeout=google.api_core.gapic_v1.method.DEFAULT):
+                  timeout=google.api_core.gapic_v1.method.DEFAULT,
+                  metadata=None):
         """
         Gets a single trace by its ID.
 
@@ -201,6 +215,8 @@ class TraceServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.cloud.trace_v1.types.Trace` instance.
@@ -212,9 +228,15 @@ class TraceServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = trace_pb2.GetTraceRequest(
-            project_id=project_id, trace_id=trace_id)
-        return self._get_trace(request, retry=retry, timeout=timeout)
+            project_id=project_id,
+            trace_id=trace_id,
+        )
+        return self._get_trace(
+            request, retry=retry, timeout=timeout, metadata=metadata)
 
     def list_traces(self,
                     project_id,
@@ -225,7 +247,8 @@ class TraceServiceClient(object):
                     filter_=None,
                     order_by=None,
                     retry=google.api_core.gapic_v1.method.DEFAULT,
-                    timeout=google.api_core.gapic_v1.method.DEFAULT):
+                    timeout=google.api_core.gapic_v1.method.DEFAULT,
+                    metadata=None):
         """
         Returns of a list of traces that match the specified filter conditions.
 
@@ -330,6 +353,8 @@ class TraceServiceClient(object):
             timeout (Optional[float]): The amount of time, in seconds, to wait
                 for the request to complete. Note that if ``retry`` is
                 specified, the timeout applies to each individual attempt.
+            metadata (Optional[Sequence[Tuple[str, str]]]): Additional metadata
+                that is provided to the method.
 
         Returns:
             A :class:`~google.gax.PageIterator` instance. By default, this
@@ -344,6 +369,9 @@ class TraceServiceClient(object):
                     to a retryable error and retry attempts failed.
             ValueError: If the parameters are invalid.
         """
+        if metadata is None:
+            metadata = []
+        metadata = list(metadata)
         request = trace_pb2.ListTracesRequest(
             project_id=project_id,
             view=view,
@@ -351,13 +379,18 @@ class TraceServiceClient(object):
             start_time=start_time,
             end_time=end_time,
             filter=filter_,
-            order_by=order_by)
+            order_by=order_by,
+        )
         iterator = google.api_core.page_iterator.GRPCIterator(
             client=None,
             method=functools.partial(
-                self._list_traces, retry=retry, timeout=timeout),
+                self._list_traces,
+                retry=retry,
+                timeout=timeout,
+                metadata=metadata),
             request=request,
             items_field='traces',
             request_token_field='page_token',
-            response_token_field='next_page_token')
+            response_token_field='next_page_token',
+        )
         return iterator
