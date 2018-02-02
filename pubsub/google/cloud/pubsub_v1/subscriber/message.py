@@ -223,8 +223,9 @@ class Message(object):
         )
 
     def modify_ack_deadline(self, seconds):
-        """Resets the deadline for acknowledgement to the given value of
-	seconds from now.
+        """Resets the deadline for acknowledgement.
+	
+	New deadline will be the given value of seconds from now.
 
         The default implementation handles this for you; you should not need
         to manually deal with setting ack deadlines. The exception case is
