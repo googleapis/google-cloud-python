@@ -36,7 +36,8 @@ class TestSpeechClient(unittest.TestCase):
 
         config = types.RecognitionConfig(encoding='FLAC')
         audio = types.RecognitionAudio(uri='http://foo.com/bar.wav')
-        with mock.patch.object(client, '_recognize') as recognize:
+        patch = mock.patch.object(client, '_recognize', autospec=True)
+        with patch as recognize:
             client.recognize(config, audio)
 
             # Assert that the underlying GAPIC method was called as expected.
@@ -54,7 +55,9 @@ class TestSpeechClient(unittest.TestCase):
 
         config = types.StreamingRecognitionConfig()
         requests = [types.StreamingRecognizeRequest(audio_content=b'...')]
-        with mock.patch.object(client, '_streaming_recognize') as sr:
+        patch = mock.patch.object(
+            client, '_streaming_recognize', autospec=True)
+        with patch as sr:
             client.streaming_recognize(config, requests)
 
             # Assert that we called streaming recognize with an iterable
