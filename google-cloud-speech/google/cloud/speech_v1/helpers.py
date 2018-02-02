@@ -14,6 +14,8 @@
 
 from __future__ import absolute_import
 
+import google.api_core.gapic_v1.method
+
 
 class SpeechHelpers(object):
     """A set of convenience methods to make the Speech client easier to use.
@@ -22,7 +24,10 @@ class SpeechHelpers(object):
     in a multiple-inheritance construction alongside the applicable GAPIC.
     See the :class:`~google.cloud.speech_v1.SpeechClient`.
     """
-    def streaming_recognize(self, config, requests, options=None):
+    def streaming_recognize(
+            self, config, requests,
+            retry=google.api_core.gapic_v1.method.DEFAULT,
+            timeout=google.api_core.gapic_v1.method.DEFAULT):
         """Perform bi-directional speech recognition.
 
         This method allows you to receive results while sending audio;
@@ -66,7 +71,7 @@ class SpeechHelpers(object):
         """
         return self._streaming_recognize(
             self._streaming_request_iterable(config, requests),
-            options,
+            retry=retry, timeout=timeout
         )
 
     def _streaming_request_iterable(self, config, requests):
