@@ -394,6 +394,9 @@ class TestBigQuery(unittest.TestCase):
 
     def test_load_table_from_local_file_then_dump_table(self):
         from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
 
         TABLE_NAME = 'test_table'
 
@@ -411,10 +414,10 @@ class TestBigQuery(unittest.TestCase):
 
             with open(temp.name, 'rb') as csv_read:
                 config = bigquery.LoadJobConfig()
-                config.source_format = 'CSV'
+                config.source_format = SourceFormat.CSV
                 config.skip_leading_rows = 1
-                config.create_disposition = 'CREATE_NEVER'
-                config.write_disposition = 'WRITE_EMPTY'
+                config.create_disposition = CreateDisposition.CREATE_NEVER
+                config.write_disposition = WriteDisposition.WRITE_EMPTY
                 config.schema = table.schema
                 job = Config.CLIENT.load_table_from_file(
                     csv_read, table_ref, job_config=config)
@@ -431,6 +434,8 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_age))
 
     def test_load_table_from_local_avro_file_then_dump_table(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
         TABLE_NAME = 'test_table_avro'
         ROWS = [
             ("violet", 400),
@@ -448,8 +453,8 @@ class TestBigQuery(unittest.TestCase):
 
         with open(os.path.join(WHERE, 'data', 'colors.avro'), 'rb') as avrof:
             config = bigquery.LoadJobConfig()
-            config.source_format = 'AVRO'
-            config.write_disposition = 'WRITE_TRUNCATE'
+            config.source_format = SourceFormat.AVRO
+            config.write_disposition = WriteDisposition.WRITE_TRUNCATE
             job = Config.CLIENT.load_table_from_file(
                 avrof, table_ref, job_config=config)
         # Retry until done.
@@ -465,6 +470,9 @@ class TestBigQuery(unittest.TestCase):
                          sorted(ROWS, key=by_wavelength))
 
     def test_load_avro_from_uri_then_dump_table(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
         table_name = 'test_table'
         rows = [
             ("violet", 400),
@@ -485,9 +493,9 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, table)
 
         config = bigquery.LoadJobConfig()
-        config.create_disposition = 'CREATE_NEVER'
-        config.source_format = 'AVRO'
-        config.write_disposition = 'WRITE_EMPTY'
+        config.create_disposition = CreateDisposition.CREATE_NEVER
+        config.source_format = SourceFormat.AVRO
+        config.write_disposition = WriteDisposition.WRITE_EMPTY
         job = Config.CLIENT.load_table_from_uri(
             GS_URL, table_arg, job_config=config)
         job.result(timeout=JOB_TIMEOUT)
@@ -500,6 +508,10 @@ class TestBigQuery(unittest.TestCase):
                          sorted(rows, key=lambda x: x[1]))
 
     def test_load_table_from_uri_then_dump_table(self):
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
         TABLE_ID = 'test_table'
         GS_URL = self._write_csv_to_storage(
             'bq_load_test' + unique_resource_id(), 'person_ages.csv',
@@ -512,10 +524,10 @@ class TestBigQuery(unittest.TestCase):
         self.to_delete.insert(0, table)
 
         config = bigquery.LoadJobConfig()
-        config.create_disposition = 'CREATE_NEVER'
+        config.create_disposition = CreateDisposition.CREATE_NEVER
         config.skip_leading_rows = 1
-        config.source_format = 'CSV'
-        config.write_disposition = 'WRITE_EMPTY'
+        config.source_format = SourceFormat.CSV
+        config.write_disposition = WriteDisposition.WRITE_EMPTY
         job = Config.CLIENT.load_table_from_uri(
             GS_URL, dataset.table(TABLE_ID), job_config=config)
 
@@ -674,6 +686,7 @@ class TestBigQuery(unittest.TestCase):
 
     def test_extract_table_w_job_config(self):
         from google.cloud.storage import Client as StorageClient
+        from google.cloud.bigquery.job import DestinationFormat
 
         storage_client = StorageClient()
         local_id = unique_resource_id()
@@ -691,10 +704,10 @@ class TestBigQuery(unittest.TestCase):
         destination = bucket.blob(destination_blob_name)
         destination_uri = 'gs://{}/person_ages_out.csv'.format(bucket_name)
 
-        job_config = bigquery.ExtractJobConfig()
-        job_config.destination_format = 'NEWLINE_DELIMITED_JSON'
+        config = bigquery.ExtractJobConfig()
+        config.destination_format = DestinationFormat.NEWLINE_DELIMITED_JSON
         job = Config.CLIENT.extract_table(
-            table, destination_uri, job_config=job_config)
+            table, destination_uri, job_config=config)
         job.result()
 
         self.to_delete.insert(0, destination)
@@ -926,6 +939,9 @@ class TestBigQuery(unittest.TestCase):
 
     def _load_table_for_dml(self, rows, dataset_id, table_id):
         from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
 
         dataset = self.temp_dataset(dataset_id)
         greeting = bigquery.SchemaField(
@@ -943,10 +959,10 @@ class TestBigQuery(unittest.TestCase):
 
             with open(temp.name, 'rb') as csv_read:
                 config = bigquery.LoadJobConfig()
-                config.source_format = 'CSV'
+                config.source_format = SourceFormat.CSV
                 config.skip_leading_rows = 1
-                config.create_disposition = 'CREATE_NEVER'
-                config.write_disposition = 'WRITE_EMPTY'
+                config.create_disposition = CreateDisposition.CREATE_NEVER
+                config.write_disposition = WriteDisposition.WRITE_EMPTY
                 job = Config.CLIENT.load_table_from_file(
                     csv_read, table_ref, job_config=config)
 
@@ -1519,6 +1535,9 @@ class TestBigQuery(unittest.TestCase):
 
     @unittest.skipIf(pandas is None, 'Requires `pandas`')
     def test_nested_table_to_dataframe(self):
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
         SF = bigquery.SchemaField
         schema = [
             SF('string_col', 'STRING', mode='NULLABLE'),
@@ -1545,8 +1564,8 @@ class TestBigQuery(unittest.TestCase):
         table = dataset.table(table_id)
         self.to_delete.insert(0, table)
         job_config = bigquery.LoadJobConfig()
-        job_config.write_disposition = 'WRITE_TRUNCATE'
-        job_config.source_format = 'NEWLINE_DELIMITED_JSON'
+        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        job_config.source_format = SourceFormat.NEWLINE_DELIMITED_JSON
         job_config.schema = schema
         # Load a table using a local JSON file from memory.
         Config.CLIENT.load_table_from_file(
