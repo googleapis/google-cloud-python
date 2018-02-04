@@ -87,6 +87,15 @@ Configuration
 
     Be sure to use the **Project ID**, not the **Project Number**.
 
+Warnings about Multithreading and Multiprocessing
+-------------------------------------------------
+- Multiprocessing has been known to hang if ``client`` creation is before fork()
+  in the ProcessingPool().  The issue is under investigation, but may be only
+  happening on Macintosh and not Linux.  See `GRPC/GRPC#12455 <https://github.com/grpc/grpc/issues/12455#issuecomment-348578950>`_ for more information.
+
+- It is also possible that multithreading creates a segmentation fault.
+  See `GRPC/GRPC#13327 <https://github.com/grpc/grpc/issues/13327#issuecomment-358415223>`_
+  for more information.
 
 Next Step
 ---------
