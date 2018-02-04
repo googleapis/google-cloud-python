@@ -1781,13 +1781,13 @@ class QueryJob(_AsyncJob):
 
     @property
     def num_dml_affected_rows(self):
-        """Return the number of DML rows affectd by the job.
+        """Return the number of DML rows affected by the job.
 
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#statistics.query.numDmlAffectedRows
 
         :rtype: int or None
-        :returns: number of DML rows affectd by the job, or None if job is not
+        :returns: number of DML rows affected by the job, or None if job is not
                   yet complete.
         """
         result = self._job_statistics().get('numDmlAffectedRows')
