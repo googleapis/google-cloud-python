@@ -119,7 +119,6 @@ class _LoggingAPI(object):
         """
         partial_success = False
         entry_pbs = [_log_entry_mapping_to_pb(entry) for entry in entries]
-        print(entry_pbs)
         self._gapic_api.write_log_entries(
             entry_pbs, log_name=logger_name, resource=resource, labels=labels,
             partial_success=partial_success)
