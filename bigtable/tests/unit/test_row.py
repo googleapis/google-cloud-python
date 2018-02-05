@@ -367,6 +367,26 @@ class TestDirectRow(unittest.TestCase):
         )])
         self.assertEqual(row._pb_mutations, [])
 
+    def test_retry_commit_exception(self):
+        import grpc
+        import mock
+
+        from google.cloud.bigtable.row import _retry_commit_exception
+
+        class ErrorUnavailable(grpc.RpcError, grpc.Call):
+            """ErrorUnavailable exception"""
+
+        message = 'Endpoint read failed'
+        error = mock.create_autospec(ErrorUnavailable, instance=True)
+        error.code.return_value = grpc.StatusCode.UNAVAILABLE
+        error.details.return_value = message
+
+        result = _retry_commit_exception(error)
+        self.assertEqual(result, True)
+
+        result = _retry_commit_exception(ValueError)
+        self.assertNotEqual(result, True)
+
     def test_commit_too_many_mutations(self):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
