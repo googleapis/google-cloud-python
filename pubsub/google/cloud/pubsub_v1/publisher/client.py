@@ -67,6 +67,10 @@ class Client(object):
             kwargs['channel'] = grpc.insecure_channel(
                 target=os.environ.get('PUBSUB_EMULATOR_HOST'),
             )
+            # We can either provide a channel or credentials but not
+            # both when creating a publisher_client.PublisherClient
+            kwargs.pop('credentials', None)
+
 
         # Use a custom channel.
         # We need this in order to set appropriate default message size and

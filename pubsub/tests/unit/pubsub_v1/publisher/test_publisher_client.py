@@ -51,6 +51,20 @@ def test_init_emulator(monkeypatch):
     assert channel.target().decode('utf8') == '/foo/bar/'
 
 
+def test_init_emulator_ignore_credentials(monkeypatch):
+    monkeypatch.setenv('PUBSUB_EMULATOR_HOST', '/foo/bar/')
+    # NOTE: throw away credentials if given while using emulator
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+
+    # Establish that a gRPC request would attempt to hit the emulator host.
+    #
+    # Sadly, there seems to be no good way to do this without poking at
+    # the private API of gRPC.
+    channel = client.api.publisher_stub.Publish._channel
+    assert channel.target().decode('utf8') == '/foo/bar/'
+
+
 def test_batch_create():
     creds = mock.Mock(spec=credentials.Credentials)
     client = publisher.Client(credentials=creds)
