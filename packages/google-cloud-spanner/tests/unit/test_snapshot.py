@@ -251,7 +251,7 @@ class Test_SnapshotBase(unittest.TestCase):
         self.assertEqual(r_session, self.SESSION_NAME)
         self.assertEqual(table, TABLE_NAME)
         self.assertEqual(columns, COLUMNS)
-        self.assertEqual(key_set, KEYSET.to_pb())
+        self.assertEqual(key_set, KEYSET._to_pb())
         self.assertIsInstance(transaction, TransactionSelector)
         if multi_use:
             if first:

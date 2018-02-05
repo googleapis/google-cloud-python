@@ -63,7 +63,7 @@ class KeyRange(object):
         self.end_open = end_open
         self.end_closed = end_closed
 
-    def to_pb(self):
+    def _to_pb(self):
         """Construct a KeyRange protobuf.
 
         :rtype: :class:`~google.cloud.spanner_v1.proto.keys_pb2.KeyRange`
@@ -105,7 +105,7 @@ class KeySet(object):
         self.ranges = list(ranges)
         self.all_ = all_
 
-    def to_pb(self):
+    def _to_pb(self):
         """Construct a KeySet protobuf.
 
         :rtype: :class:`~google.cloud.spanner_v1.proto.keys_pb2.KeySet`
@@ -119,6 +119,6 @@ class KeySet(object):
             kwargs['keys'] = _make_list_value_pbs(self.keys)
 
         if self.ranges:
-            kwargs['ranges'] = [krange.to_pb() for krange in self.ranges]
+            kwargs['ranges'] = [krange._to_pb() for krange in self.ranges]
 
         return KeySetPB(**kwargs)

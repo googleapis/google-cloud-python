@@ -120,7 +120,7 @@ class _SnapshotBase(_SessionWrapper):
 
         restart = functools.partial(
             api.streaming_read,
-            self._session.name, table, columns, keyset.to_pb(),
+            self._session.name, table, columns, keyset._to_pb(),
             transaction=transaction, index=index, limit=limit,
             metadata=metadata)
 

@@ -116,7 +116,7 @@ class _BatchBase(_SessionWrapper):
         """
         delete = Mutation.Delete(
             table=table,
-            key_set=keyset.to_pb(),
+            key_set=keyset._to_pb(),
         )
         self._mutations.append(Mutation(
             delete=delete))
