@@ -26,7 +26,6 @@ from google.cloud.exceptions import NotFound
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.external_config import ExternalConfig
-from google.cloud.bigquery.query import _AbstractQueryParameter
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
@@ -1481,8 +1480,6 @@ class QueryJobConfig(object):
 
     @default_dataset.setter
     def default_dataset(self, value):
-        if value is not None and not isinstance(value, DatasetReference):
-            raise ValueError('Required type: DatasetReference')
         self._properties['defaultDataset'] = DatasetReference.to_api_repr(
             value)
 
@@ -1501,8 +1498,6 @@ class QueryJobConfig(object):
 
     @destination.setter
     def destination(self, value):
-        if value is not None and not isinstance(value, TableReference):
-            raise ValueError('Required type: TableReference')
         self._properties['destinationTable'] = TableReference.to_api_repr(
             value)
 
@@ -1540,8 +1535,6 @@ class QueryJobConfig(object):
 
     @maximum_bytes_billed.setter
     def maximum_bytes_billed(self, value):
-        if value is not None and not isinstance(value, int):
-            raise ValueError('Required type: int')
         self._properties['maximumBytesBilled'] = str(value)
 
     priority = QueryPriority('priority', 'priority')
@@ -1564,15 +1557,6 @@ class QueryJobConfig(object):
 
     @query_parameters.setter
     def query_parameters(self, values):
-        value_error_message = (
-            'Required type: list of ArrayQueryParameter, '
-            'ScalarQueryParameter, or StructQueryParameter. To unset, use '
-            'del or set to empty list')
-        if values is None:
-            raise ValueError(value_error_message)
-        if not all(
-                isinstance(item, _AbstractQueryParameter) for item in values):
-            raise ValueError(value_error_message)
         self._properties['queryParameters'] = _to_api_repr_query_parameters(
             values)
 
@@ -1589,13 +1573,6 @@ class QueryJobConfig(object):
 
     @udf_resources.setter
     def udf_resources(self, values):
-        value_error_message = (
-            'Required type: list of UDFResource. To unset, use del or set to '
-            'empty list')
-        if values is None:
-            raise ValueError(value_error_message)
-        if not all(isinstance(item, UDFResource) for item in values):
-            raise ValueError(value_error_message)
         self._properties['userDefinedFunctionResources'] = (
             _to_api_repr_udf_resources(values))
 
@@ -1632,8 +1609,6 @@ class QueryJobConfig(object):
 
     @table_definitions.setter
     def table_definitions(self, values):
-        if values is not None and not isinstance(values, dict):
-            raise ValueError('Required type: dict')
         self._properties['tableDefinitions'] = _to_api_repr_table_defs(values)
 
     _maximum_billing_tier = None

@@ -1762,33 +1762,6 @@ class TestQueryJobConfig(unittest.TestCase, _Base):
             config.destination_encryption_configuration.kms_key_name,
             self.KMS_KEY_NAME)
 
-    def test_validation_on_property_setters(self):
-        config = self._make_one()
-
-        with self.assertRaises(ValueError):
-            config.default_dataset = 'foo'
-
-        with self.assertRaises(ValueError):
-            config.destination = 'foo'
-
-        with self.assertRaises(ValueError):
-            config.maximum_bytes_billed = 'foo'
-
-        with self.assertRaises(ValueError):
-            config.table_definitions = 'foo'
-
-        with self.assertRaises(ValueError):
-            config.query_parameters = None
-
-        with self.assertRaises(ValueError):
-            config.query_parameters = ['foo']
-
-        with self.assertRaises(ValueError):
-            config.udf_resources = None
-
-        with self.assertRaises(ValueError):
-            config.udf_resources = ['foo']
-
 
 class TestQueryJob(unittest.TestCase, _Base):
     JOB_TYPE = 'query'
