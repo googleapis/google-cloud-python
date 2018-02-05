@@ -35,6 +35,8 @@ class CloudLoggingHandler(logging.StreamHandler):
     route Python standard logging messages directly to the Stackdriver
     Logging API.
 
+    This handler is used when not in GAE or GKE environment.
+
     This handler supports both an asynchronous and synchronous transport.
 
     :type client: :class:`google.cloud.logging.client`
