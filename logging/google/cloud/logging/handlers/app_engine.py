@@ -18,10 +18,10 @@ Sends logs to the Stackdriver Logging API with the appropriate resource
 and labels for App Engine logs.
 """
 
+import logging
 import os
 
 from google.cloud.logging.handlers._helpers import get_trace_id
-from google.cloud.logging.handlers.handlers import CloudLoggingHandler
 from google.cloud.logging.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging.resource import Resource
 
@@ -34,7 +34,7 @@ _GAE_VERSION_ENV = 'GAE_VERSION'
 _TRACE_ID_LABEL = 'appengine.googleapis.com/trace_id'
 
 
-class AppEngineHandler(CloudLoggingHandler):
+class AppEngineHandler(logging.StreamHandler):
     """A logging handler that sends App Engine-formatted logs to Stackdriver.
 
     :type client: :class:`~google.cloud.logging.client.Client`
@@ -48,13 +48,13 @@ class AppEngineHandler(CloudLoggingHandler):
     """
 
     def __init__(self, client,
+                 name=_DEFAULT_GAE_LOGGER_NAME,
                  transport=BackgroundThreadTransport):
-        super(AppEngineHandler, self).__init__(
-            client,
-            name=_DEFAULT_GAE_LOGGER_NAME,
-            transport=transport,
-            resource=self.get_gae_resource(),
-            labels=self.get_gae_labels())
+        super(AppEngineHandler, self).__init__()
+        self.name = name
+        self.client = client
+        self.transport = transport(client, name)
+        self.resource = self.get_gae_resource()
 
     def get_gae_resource(self):
         """Return the GAE resource using the environment variables.
@@ -88,3 +88,20 @@ class AppEngineHandler(CloudLoggingHandler):
             gae_labels[_TRACE_ID_LABEL] = trace_id
 
         return gae_labels
+
+    def emit(self, record):
+        """Actually log the specified logging record.
+
+        Overrides the default emit behavior of ``StreamHandler``.
+
+        See https://docs.python.org/2/library/logging.html#handler-objects
+
+        :type record: :class:`logging.LogRecord`
+        :param record: The record to be logged.
+        """
+        message = super(AppEngineHandler, self).format(record)
+        self.transport.send(
+            record,
+            message,
+            resource=self.resource,
+            labels=self.get_gae_labels())
