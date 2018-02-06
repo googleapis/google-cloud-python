@@ -36,8 +36,8 @@ from test_utils.system import unique_resource_id
 
 FIRESTORE_CREDS = os.environ.get('FIRESTORE_APPLICATION_CREDENTIALS')
 RANDOM_ID_REGEX = re.compile('^[a-zA-Z0-9]{20}$')
-MISSING_ENTITY = 'no entity to update: '
-ALREADY_EXISTS = 'entity already exists: '
+MISSING_DOCUMENT = 'No document to update: '
+DOCUMENT_EXISTS = 'Document already exists: '
 
 
 @pytest.fixture(scope=u'module')
@@ -80,7 +80,7 @@ def test_create_document(client, cleanup):
     with pytest.raises(Conflict) as exc_info:
         document.create({})
 
-    assert exc_info.value.message.startswith(ALREADY_EXISTS)
+    assert exc_info.value.message.startswith(DOCUMENT_EXISTS)
     assert document_id in exc_info.value.message
 
     # Verify the server times.
@@ -143,7 +143,7 @@ def test_document_set(client, cleanup):
     with pytest.raises(NotFound) as exc_info:
         document.set({'no': 'way'}, option=option0)
 
-    assert exc_info.value.message.startswith(MISSING_ENTITY)
+    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
     # 1. Use ``set()`` to create the document (using an option).
@@ -203,14 +203,14 @@ def test_update_document(client, cleanup):
     # 0. Try to update before the document exists.
     with pytest.raises(NotFound) as exc_info:
         document.update({'not': 'there'})
-    assert exc_info.value.message.startswith(MISSING_ENTITY)
+    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
     # 1. Try to update before the document exists (now with an option).
     option1 = client.write_option(create_if_missing=False)
     with pytest.raises(NotFound) as exc_info:
         document.update({'still': 'not-there'}, option=option1)
-    assert exc_info.value.message.startswith(MISSING_ENTITY)
+    assert exc_info.value.message.startswith(MISSING_DOCUMENT)
     assert document_id in exc_info.value.message
 
     # 2. Update and create the document (with an option).
