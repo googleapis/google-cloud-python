@@ -368,7 +368,8 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         if 'destinationEncryptionConfiguration' in config:
             self.assertEqual(job.kms_key_name,
-                             config['destinationEncryptionConfiguration']['kmsKeyName'])
+                             config['destinationEncryptionConfiguration'][
+                                 'kmsKeyName'])
         else:
             self.assertIsNone(job.kms_key_name)
 
@@ -952,7 +953,8 @@ class TestCopyJob(unittest.TestCase, _Base):
 
         if 'destinationEncryptionConfiguration' in config:
             self.assertEqual(job.kms_key_name,
-                             config['destinationEncryptionConfiguration']['kmsKeyName'])
+                             config['destinationEncryptionConfiguration'][
+                                 'kmsKeyName'])
         else:
             self.assertIsNone(job.kms_key_name)
 
@@ -1838,7 +1840,8 @@ class TestQueryJob(unittest.TestCase, _Base):
             self.assertIsNone(job.write_disposition)
         if 'destinationEncryptionConfiguration' in query_config:
             self.assertEqual(job.kms_key_name,
-                             query_config['destinationEncryptionConfiguration']['kmsKeyName'])
+                             query_config['destinationEncryptionConfiguration'][
+                                 'kmsKeyName'])
         else:
             self.assertIsNone(job.kms_key_name)
 
