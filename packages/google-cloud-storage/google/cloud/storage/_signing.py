@@ -143,7 +143,12 @@ def generate_signed_url(credentials, resource, expiration,
 
     :type method: str
     :param method: The HTTP verb that will be used when requesting the URL.
-                   Defaults to ``'GET'``.
+                   Defaults to ``'GET'``. If method is ``'RESUMABLE'`` then the
+                   signature will additionally contain the `x-goog-resumable`
+                   header, and the method changed to POST. See the signed URL
+                   docs regarding this flow:
+                   https://cloud.google.com/storage/docs/access-control/signed-urls
+
 
     :type content_md5: str
     :param content_md5: (Optional) The MD5 hash of the object referenced by
@@ -172,13 +177,20 @@ def generate_signed_url(credentials, resource, expiration,
     """
     expiration = get_expiration_seconds(expiration)
 
+    if method == 'RESUMABLE':
+        method = 'POST'
+        canonicalized_resource = \
+            'x-goog-resumable:start\n{0}'.format(resource)
+    else:
+        canonicalized_resource = '{0}'.format(resource)
+
     # Generate the string to sign.
     string_to_sign = '\n'.join([
         method,
         content_md5 or '',
         content_type or '',
         str(expiration),
-        resource,
+        canonicalized_resource,
     ])
 
     # Set the right query parameters.

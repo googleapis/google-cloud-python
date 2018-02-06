@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import base64
+import calendar
 import datetime
 import hashlib
 import io
@@ -311,6 +312,32 @@ class Test_Blob(unittest.TestCase):
             'generation': None,
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+
+    @mock.patch('google.cloud.storage._signing.get_signed_query_params',
+                return_value={
+                    'GoogleAccessId': 'service-account-name',
+                    'Expires': 12345,
+                    'Signature': 'signed-data',
+                })
+    def test_generate_resumable_signed_url(self, mock_get_signed_query_params):
+        """
+        Verify correct behavior of resumable upload URL generation
+        """
+        from google.cloud.storage._signing import get_expiration_seconds
+        from google.cloud.storage._signing import generate_signed_url
+
+        expiry = get_expiration_seconds(datetime.timedelta(hours=1))
+
+        signed_url = generate_signed_url(
+            _make_credentials(), 'a-bucket', expiry, method='RESUMABLE'
+        )
+
+        self.assertTrue(mock_get_signed_query_params.called)
+        self.assertGreater(len(signed_url), 0)
+        self.assertIn('a-bucket', signed_url)
+        self.assertIn('GoogleAccessId', signed_url)
+        self.assertIn('Expires', signed_url)
+        self.assertIn('Signature', signed_url)
 
     def test_exists_miss(self):
         NONESUCH = 'nonesuch'
