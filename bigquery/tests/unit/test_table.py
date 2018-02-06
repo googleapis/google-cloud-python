@@ -156,6 +156,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
     PROJECT = 'prahj-ekt'
     DS_ID = 'dataset-name'
     TABLE_NAME = 'table-name'
+    KMS_KEY_NAME = 'projects/1/locations/global/keyRings/1/cryptoKeys/1'
 
     @staticmethod
     def _get_target_class():
@@ -290,6 +291,12 @@ class TestTable(unittest.TestCase, _SchemaBase):
         else:
             self.assertEqual(table.labels, {})
 
+        if 'encryptionConfiguration' in resource:
+            self.assertEqual(table.kms_key_name,
+                             resource['encryptionConfiguration']['kmsKeyName'])
+        else:
+            self.assertIsNone(table.kms_key_name)
+
     def test_ctor(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
         table_ref = dataset.table(self.TABLE_NAME)
@@ -323,6 +330,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertIsNone(table.view_use_legacy_sql)
         self.assertIsNone(table.external_data_configuration)
         self.assertEquals(table.labels, {})
+        self.assertIsNone(table.kms_key_name)
 
     def test_ctor_w_schema(self):
         from google.cloud.bigquery.table import SchemaField
@@ -594,6 +602,24 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = klass.from_api_repr(RESOURCE)
         self._verifyResourceProperties(table, RESOURCE)
 
+    def test_from_api_with_encryption(self):
+        self._setUpConstants()
+        RESOURCE = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_ID, self.TABLE_NAME),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_ID,
+                'tableId': self.TABLE_NAME,
+            },
+            'encryptionConfiguration': {
+                'kmsKeyName': self.KMS_KEY_NAME
+            },
+            'type': 'TABLE',
+        }
+        klass = self._get_target_class()
+        table = klass.from_api_repr(RESOURCE)
+        self._verifyResourceProperties(table, RESOURCE)
+
     def test_partition_type_setter_bad_type(self):
         from google.cloud.bigquery.table import SchemaField
 
@@ -694,6 +720,27 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table.partition_expiration = None
         self.assertIsNone(table.partitioning_type)
         self.assertIsNone(table.partition_expiration)
+
+    def test_kms_key_name_setter(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table.kms_key_name = self.KMS_KEY_NAME
+        self.assertEqual(table.kms_key_name, self.KMS_KEY_NAME)
+
+    def test_kms_key_name_setter_none(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        table.kms_key_name = None
+        self.assertIsNone(table.kms_key_name)
+
+    def test_kms_key_name_setter_invalid_type(self):
+        dataset = DatasetReference(self.PROJECT, self.DS_ID)
+        table_ref = dataset.table(self.TABLE_NAME)
+        table = self._make_one(table_ref)
+        with self.assertRaises(ValueError):
+            table.kms_key_name = {self.KMS_KEY_NAME}
 
 
 class Test_row_from_mapping(unittest.TestCase, _SchemaBase):

@@ -551,6 +551,7 @@ class LoadJobConfig(object):
     def __init__(self):
         self._properties = {}
         self._schema = ()
+        self._kms_key_name = None
 
     allow_jagged_rows = _TypedApiResourceProperty(
         'allow_jagged_rows', 'allowJaggedRows', bool)
@@ -640,6 +641,19 @@ class LoadJobConfig(object):
             raise ValueError('Schema items must be fields')
         self._schema = tuple(value)
 
+    @property
+    def kms_key_name(self):
+        """See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration.kmsKeyName
+        """
+        return self._kms_key_name
+
+    @kms_key_name.setter
+    def kms_key_name(self, value):
+        if not isinstance(value, six.string_types) and value is not None:
+            raise ValueError("Pass a string, or None")
+        self._kms_key_name = value
+
     def to_api_repr(self):
         """Build an API representation of the load job config.
 
@@ -654,6 +668,9 @@ class LoadJobConfig(object):
         slr = config.get('skipLeadingRows')
         if slr is not None:
             config['skipLeadingRows'] = str(slr)
+        if self._kms_key_name is not None:
+            config['destinationEncryptionConfiguration'] = {
+                'kmsKeyName': self._kms_key_name}
         return config
 
     @classmethod
@@ -676,6 +693,10 @@ class LoadJobConfig(object):
         config.skip_leading_rows = _int_or_none(slr)
         if config.skip_leading_rows is None:
             del config.skip_leading_rows
+        if 'destinationEncryptionConfiguration' in resource:
+            key = resource['destinationEncryptionConfiguration']['kmsKeyName']
+            if key is not None:
+                config.kms_key_name = str(key)
         return config
 
 
@@ -813,6 +834,13 @@ class LoadJob(_AsyncJob):
         return self._configuration.schema
 
     @property
+    def kms_key_name(self):
+        """See
+        :attr:`google.cloud.bigquery.job.LoadJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
+        """
+        return self._configuration.kms_key_name
+
+    @property
     def input_file_bytes(self):
         """Count of bytes loaded from source files.
 
@@ -918,6 +946,7 @@ class CopyJobConfig(object):
 
     def __init__(self):
         self._properties = {}
+        self._kms_key_name = None
 
     create_disposition = CreateDisposition('create_disposition',
                                            'createDisposition')
@@ -931,13 +960,30 @@ class CopyJobConfig(object):
     https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.writeDisposition
     """
 
+    @property
+    def kms_key_name(self):
+        """See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration.kmsKeyName
+        """
+        return self._kms_key_name
+
+    @kms_key_name.setter
+    def kms_key_name(self, value):
+        if not isinstance(value, six.string_types) and value is not None:
+            raise ValueError("Pass a string, or None")
+        self._kms_key_name = value
+
     def to_api_repr(self):
         """Build an API representation of the copy job config.
 
         :rtype: dict
         :returns: A dictionary in the format used by the BigQuery API.
         """
-        return copy.deepcopy(self._properties)
+        config = copy.deepcopy(self._properties)
+        if self._kms_key_name is not None:
+            config['destinationEncryptionConfiguration'] = {
+                'kmsKeyName': self._kms_key_name}
+        return config
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -953,6 +999,10 @@ class CopyJobConfig(object):
         """
         config = cls()
         config._properties = copy.deepcopy(resource)
+        if 'destinationEncryptionConfiguration' in resource:
+            key = resource['destinationEncryptionConfiguration']['kmsKeyName']
+            if key is not None:
+                config.kms_key_name = str(key)
         return config
 
 
@@ -1001,6 +1051,13 @@ class CopyJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.CopyJobConfig.write_disposition`.
         """
         return self._configuration.write_disposition
+
+    @property
+    def kms_key_name(self):
+        """See
+        :attr:`google.cloud.bigquery.job.CopyJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
+        """
+        return self._configuration.kms_key_name
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
@@ -1321,6 +1378,20 @@ class QueryJobConfig(object):
 
     def __init__(self):
         self._properties = {}
+        self._kms_key_name = None
+
+    @property
+    def kms_key_name(self):
+        """See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration.kmsKeyName
+        """
+        return self._kms_key_name
+
+    @kms_key_name.setter
+    def kms_key_name(self, value):
+        if not isinstance(value, six.string_types) and value is not None:
+            raise ValueError("Pass a string, or None")
+        self._kms_key_name = value
 
     def to_api_repr(self):
         """Build an API representation of the copy job config.
@@ -1345,6 +1416,10 @@ class QueryJobConfig(object):
             if nested_resource is not None:
                 resource[prop] = to_resource(nested_resource)
 
+        if self._kms_key_name is not None:
+            resource['destinationEncryptionConfiguration'] = {
+                'kmsKeyName': self._kms_key_name}
+
         return resource
 
     @classmethod
@@ -1367,6 +1442,12 @@ class QueryJobConfig(object):
             nested_resource = resource.get(prop)
             if nested_resource is not None:
                 config._properties[prop] = from_resource(nested_resource)
+
+        if 'destinationEncryptionConfiguration' in resource:
+            key = resource['destinationEncryptionConfiguration']['kmsKeyName']
+            print key
+            if key is not None:
+                config.kms_key_name = str(key)
 
         return config
 
@@ -1559,6 +1640,13 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.destination`.
         """
         return self._configuration.destination
+
+    @property
+    def kms_key_name(self):
+        """See
+        :attr:`google.cloud.bigquery.job.QueryJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
+        """
+        return self._configuration.kms_key_name
 
     @property
     def dry_run(self):

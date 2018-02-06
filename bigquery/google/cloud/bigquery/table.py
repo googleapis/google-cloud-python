@@ -207,7 +207,7 @@ class Table(object):
     all_fields = [
         'description', 'friendly_name', 'expires', 'location',
         'partitioning_type', 'view_use_legacy_sql', 'view_query', 'schema',
-        'external_data_configuration', 'labels',
+        'external_data_configuration', 'labels', 'kms_key_name'
     ]
 
     def __init__(self, table_ref, schema=()):
@@ -216,6 +216,7 @@ class Table(object):
         self._dataset_id = table_ref.dataset_id
         self._external_config = None
         self._properties = {'labels': {}}
+        self._kms_key_name = None
         # Let the @property do validation.
         self.schema = schema
 
@@ -309,6 +310,26 @@ class Table(object):
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
         self._properties['labels'] = value
+
+    @property
+    def kms_key_name(self):
+        """Tables encryption configuration.
+
+        :rtype: str or None
+        :returns: the resource ID of Cloud KMS key
+        """
+        return self._kms_key_name
+
+    @kms_key_name.setter
+    def kms_key_name(self, value):
+        """Updates encryption configuration of a table
+
+        :type value: str
+        :param value: the resource ID of Cloud KMS key
+        """
+        if not isinstance(value, six.string_types) and value is not None:
+            raise ValueError("Pass a string, or None")
+        self._kms_key_name = value
 
     @property
     def created(self):
@@ -656,6 +677,10 @@ class Table(object):
 
         table = cls(dataset_ref.table(table_id))
         table._set_properties(resource)
+        if 'encryptionConfiguration' in resource:
+            key = resource['encryptionConfiguration']['kmsKeyName']
+            if key is not None:
+                table.kms_key_name = str(key)
         return table
 
     def _set_properties(self, api_response):
@@ -708,6 +733,10 @@ class Table(object):
                 'fields': _build_schema_resource(self._schema),
             }
 
+    def _populate_encryption_configuration(self, resource):
+        if self.kms_key_name is not None:
+            resource['encryptionConfiguration'] = {'kmsKeyName': self.kms_key_name}
+
     def _populate_external_config(self, resource):
         if not self.external_data_configuration:
             resource['externalDataConfiguration'] = None
@@ -722,6 +751,7 @@ class Table(object):
         'view_use_legacy_sql': _populate_view_use_legacy_sql_resource,
         'schema': _populate_schema_resource,
         'external_data_configuration': _populate_external_config,
+        'kms_key_name': _populate_encryption_configuration
     }
 
     def _build_resource(self, filter_fields):
