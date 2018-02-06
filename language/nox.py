@@ -48,6 +48,7 @@ def default(session):
         '--cov-report=',
         '--cov-fail-under=97',
         'tests/unit',
+        *session.posargs
     )
 
 
