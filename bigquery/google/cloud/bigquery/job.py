@@ -1445,7 +1445,6 @@ class QueryJobConfig(object):
 
         if 'destinationEncryptionConfiguration' in resource:
             key = resource['destinationEncryptionConfiguration']['kmsKeyName']
-            print key
             if key is not None:
                 config.kms_key_name = str(key)
 
