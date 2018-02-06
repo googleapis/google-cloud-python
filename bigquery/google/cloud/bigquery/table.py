@@ -735,7 +735,8 @@ class Table(object):
 
     def _populate_encryption_configuration(self, resource):
         if self.kms_key_name is not None:
-            resource['encryptionConfiguration'] = {'kmsKeyName': self.kms_key_name}
+            resource['encryptionConfiguration'] = {
+                'kmsKeyName': self.kms_key_name}
 
     def _populate_external_config(self, resource):
         if not self.external_data_configuration:
