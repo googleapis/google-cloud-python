@@ -1480,8 +1480,7 @@ class QueryJobConfig(object):
 
     @default_dataset.setter
     def default_dataset(self, value):
-        self._properties['defaultDataset'] = DatasetReference.to_api_repr(
-            value)
+        self._properties['defaultDataset'] = value.to_api_repr()
 
     @property
     def destination(self):
@@ -1498,8 +1497,7 @@ class QueryJobConfig(object):
 
     @destination.setter
     def destination(self, value):
-        self._properties['destinationTable'] = TableReference.to_api_repr(
-            value)
+        self._properties['destinationTable'] = value.to_api_repr()
 
     dry_run = _TypedApiResourceProperty('dry_run', 'dryRun', bool)
     """
