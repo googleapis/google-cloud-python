@@ -1468,7 +1468,7 @@ class QueryJobConfig(object):
     @property
     def default_dataset(self):
         """google.cloud.bigquery.dataset.DatasetReference: the default dataset
-        to use for unqualified table names in the query.
+        to use for unqualified table names in the query or ``None`` if not set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
@@ -1485,7 +1485,7 @@ class QueryJobConfig(object):
     @property
     def destination(self):
         """google.cloud.bigquery.table.TableReference: table where results are
-        written
+        written or ``None`` if not set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationTable
@@ -1521,7 +1521,7 @@ class QueryJobConfig(object):
 
     @property
     def maximum_bytes_billed(self):
-        """int: Maximum bytes to be billed for this job.
+        """int: Maximum bytes to be billed for this job or ``None`` if not set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.maximumBytesBilled
@@ -1595,7 +1595,7 @@ class QueryJobConfig(object):
     @property
     def table_definitions(self):
         """Dict[str, google.cloud.bigquery.external_config.ExternalConfig]:
-        Definitions for external tables.
+        Definitions for external tables or ``None`` if not set.
 
         See
         https://g.co/cloud/bigquery/docs/reference/rest/v2/jobs#configuration.query.tableDefinitions
