@@ -547,6 +547,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         raise CustomException()
 
     @RetryErrors(exception=exceptions.ServerError)
+    @RetryErrors(exception=exceptions.Conflict)    
     def test_transaction_read_and_insert_then_exception(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
@@ -563,6 +564,7 @@ class TestSessionAPI(unittest.TestCase, _TestData):
         self.assertEqual(rows, [])
 
     @RetryErrors(exception=exceptions.ServerError)
+    @RetryErrors(exception=exceptions.Conflict)    
     def test_transaction_read_and_insert_or_update_then_commit(self):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
