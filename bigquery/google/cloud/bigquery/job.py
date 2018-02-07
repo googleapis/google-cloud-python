@@ -643,25 +643,18 @@ class LoadJobConfig(object):
 
     @property
     def kms_key_name(self):
-        """Resource ID of Cloud KMS key
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key to encrypt destination table or ``None``
+        if using default encryption.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration.kmsKeyName
-
-        :rtype: str or None
-        :returns: Resource ID of Cloud KMS key to encrypt destination table
-                  or ``None`` if using default encryption.
         """
         return self._kms_key_name
 
     @kms_key_name.setter
     def kms_key_name(self, value):
-        """
-        :type value: str or None
-        :param value: Resource ID of Cloud KMS key to encrypt destination table
-                      or ``None`` if using default encryption.
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")
         self._kms_key_name = value
@@ -848,14 +841,13 @@ class LoadJob(_AsyncJob):
 
     @property
     def kms_key_name(self):
-        """Resource ID of Cloud KMS key
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key to encrypt destination table
+        or ``None`` if using default encryption.
 
         See
         :attr:`google.cloud.bigquery.job.LoadJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
-
-        :rtype str or None
-        :returns Resource ID of Cloud KMS key to encrypt destination table
-                 or ``None`` if using default encryption.
         """
         return self._configuration.kms_key_name
 
@@ -982,25 +974,18 @@ class CopyJobConfig(object):
 
     @property
     def kms_key_name(self):
-        """Resource ID of Cloud KMS key
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key to encrypt destination table or ``None``
+        if using default encryption.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration.kmsKeyName
-
-        :rtype: str or None
-        :returns: Resource ID of Cloud KMS key to encrypt destination table
-                  or ``None`` if using default encryption.
         """
         return self._kms_key_name
 
     @kms_key_name.setter
     def kms_key_name(self, value):
-        """
-        :type value: str or None
-        :param value: Resource ID of Cloud KMS key to encrypt destination table
-                      or ``None`` if using default encryption.
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")
         self._kms_key_name = value
@@ -1087,14 +1072,13 @@ class CopyJob(_AsyncJob):
 
     @property
     def kms_key_name(self):
-        """Resource ID of Cloud KMS key
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key to encrypt destination table or ``None``
+        if using default encryption.
 
         See
         :attr:`google.cloud.bigquery.job.CopyJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
-
-        :rtype: str or None
-        :returns: Resource ID of Cloud KMS key to encrypt destination table
-                  or ``None`` if using default encryption.
         """
         return self._configuration.kms_key_name
 
@@ -1421,25 +1405,18 @@ class QueryJobConfig(object):
 
     @property
     def kms_key_name(self):
-        """Resource ID of Cloud KMS key
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key to encrypt destination table or ``None``
+        if using default encryption.
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration.kmsKeyName
-
-        :rtype: str or None
-        :returns: Resource ID of Cloud KMS key to encrypt destination table
-                  or ``None`` if using default encryption.
         """
         return self._kms_key_name
 
     @kms_key_name.setter
     def kms_key_name(self, value):
-        """
-        :type value: str or None
-        :param value: Resource ID of Cloud KMS key to encrypt destination table
-                      or ``None`` if using default encryption.
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")
         self._kms_key_name = value
@@ -1694,14 +1671,13 @@ class QueryJob(_AsyncJob):
 
     @property
     def kms_key_name(self):
-        """Resource ID of Cloud KMS key
+        """str: Resource ID of Cloud KMS key
+
+        Resource ID of Cloud KMS key to encrypt destination table or ``None``
+        if using default encryption.
 
         See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
-
-        :rtype: str or None
-        :returns: Resource ID of Cloud KMS key to encrypt destination table
-                  or ``None`` if using default encryption.
         """
         return self._configuration.kms_key_name
 
