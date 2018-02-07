@@ -627,6 +627,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
         self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
         self.assertEqual(job.kms_key_name, self.KMS_KEY_NAME)
 
     def test_from_api_repr_w_properties(self):

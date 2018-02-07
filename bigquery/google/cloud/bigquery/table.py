@@ -326,6 +326,7 @@ class Table(object):
 
         :type value: str
         :param value: the resource ID of Cloud KMS key
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")

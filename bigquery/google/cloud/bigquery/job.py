@@ -660,6 +660,7 @@ class LoadJobConfig(object):
         :type value: str or None
         :param value: Resource ID of Cloud KMS key to encrypt destination table
                       or ``None`` if using default encryption.
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")
@@ -705,7 +706,7 @@ class LoadJobConfig(object):
         if config.skip_leading_rows is None:
             del config.skip_leading_rows
         if ('destinationEncryptionConfiguration' in resource
-            and 'kmsKeyName' in resource[
+                and 'kmsKeyName' in resource[
                 'destinationEncryptionConfiguration']):
             config.kms_key_name = str(
                 resource['destinationEncryptionConfiguration']['kmsKeyName'])
@@ -864,6 +865,7 @@ class LoadJob(_AsyncJob):
 
         :rtype: int, or ``NoneType``
         :returns: the count (None until set from the server).
+        :raises: ValueError for invalid value types.
         """
         statistics = self._properties.get('statistics')
         if statistics is not None:
@@ -997,6 +999,7 @@ class CopyJobConfig(object):
         :type value: str or None
         :param value: Resource ID of Cloud KMS key to encrypt destination table
                       or ``None`` if using default encryption.
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")
@@ -1029,7 +1032,7 @@ class CopyJobConfig(object):
         config = cls()
         config._properties = copy.deepcopy(resource)
         if ('destinationEncryptionConfiguration' in resource
-            and 'kmsKeyName' in resource[
+                and 'kmsKeyName' in resource[
                 'destinationEncryptionConfiguration']):
             config.kms_key_name = str(
                 resource['destinationEncryptionConfiguration']['kmsKeyName'])
@@ -1435,6 +1438,7 @@ class QueryJobConfig(object):
         :type value: str or None
         :param value: Resource ID of Cloud KMS key to encrypt destination table
                       or ``None`` if using default encryption.
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")
@@ -1491,7 +1495,7 @@ class QueryJobConfig(object):
                 config._properties[prop] = from_resource(nested_resource)
 
         if ('destinationEncryptionConfiguration' in resource
-            and 'kmsKeyName' in resource[
+                and 'kmsKeyName' in resource[
                 'destinationEncryptionConfiguration']):
             config.kms_key_name = str(
                 resource['destinationEncryptionConfiguration']['kmsKeyName'])
