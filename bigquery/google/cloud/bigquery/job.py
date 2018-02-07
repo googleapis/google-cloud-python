@@ -643,7 +643,7 @@ class LoadJobConfig(object):
 
     @property
     def kms_key_name(self):
-        """ Resource ID of Cloud KMS key
+        """Resource ID of Cloud KMS key
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.load.destinationEncryptionConfiguration.kmsKeyName
@@ -847,7 +847,7 @@ class LoadJob(_AsyncJob):
 
     @property
     def kms_key_name(self):
-        """ Resource ID of Cloud KMS key
+        """Resource ID of Cloud KMS key
 
         See
         :attr:`google.cloud.bigquery.job.LoadJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
@@ -980,7 +980,7 @@ class CopyJobConfig(object):
 
     @property
     def kms_key_name(self):
-        """ Resource ID of Cloud KMS key
+        """Resource ID of Cloud KMS key
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.copy.destinationEncryptionConfiguration.kmsKeyName
@@ -1084,7 +1084,7 @@ class CopyJob(_AsyncJob):
 
     @property
     def kms_key_name(self):
-        """ Resource ID of Cloud KMS key
+        """Resource ID of Cloud KMS key
 
         See
         :attr:`google.cloud.bigquery.job.CopyJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
@@ -1418,7 +1418,7 @@ class QueryJobConfig(object):
 
     @property
     def kms_key_name(self):
-        """ Resource ID of Cloud KMS key
+        """Resource ID of Cloud KMS key
 
         See
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs#configuration.query.destinationEncryptionConfiguration.kmsKeyName
@@ -1690,7 +1690,7 @@ class QueryJob(_AsyncJob):
 
     @property
     def kms_key_name(self):
-        """ Resource ID of Cloud KMS key
+        """Resource ID of Cloud KMS key
 
         See
         :attr:`google.cloud.bigquery.job.QueryJobConfig.destinationEncryptionConfiguration.kmsKeyName`.
