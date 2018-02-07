@@ -313,21 +313,15 @@ class Table(object):
 
     @property
     def kms_key_name(self):
-        """Tables encryption configuration.
+        """str: Resource ID of Cloud KMS key
 
-        :rtype: str or None
-        :returns: the resource ID of Cloud KMS key
+        Resource ID of Cloud KMS key to encrypt the table or ``None`` if
+        using default encryption.
         """
         return self._kms_key_name
 
     @kms_key_name.setter
     def kms_key_name(self, value):
-        """Updates encryption configuration of a table
-
-        :type value: str
-        :param value: the resource ID of Cloud KMS key
-        :raises: ValueError for invalid value types.
-        """
         if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("kms_key_name should be a string, or None")
         self._kms_key_name = value
