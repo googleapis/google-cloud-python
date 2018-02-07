@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## 1.0.0
+
+### Breaking Changes
+
+- `to_pb` has now been made private (`_to_pb`) in `KeySet`
+  and `KeyRange` (#4740)
+
+### Implementation Changes
+
+- Updated GAPIC code (#4695)
+- Removed dependency on deprecated GAX library (#4695)
+- New `api_core` (#4730)
+
+### Documentation Changes
+- Database update_ddl missing param in documentation (#4749)
+
 ## 0.30.0
 
 ### Breaking Changes
