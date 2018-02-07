@@ -13,3 +13,4 @@
 * ``0.28.0`` (`PyPI <https://pypi.org/project/google-cloud-spanner/0.28.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/spanner-0.28.0>`__)
 * ``0.29.0`` (`PyPI <https://pypi.org/project/google-cloud-spanner/0.29.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/spanner-0.29.0>`__)
 * ``0.30.0`` (`PyPI <https://pypi.org/project/google-cloud-spanner/0.30.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/spanner-0.30.0>`__)
+* ``1.0.0`` (`PyPI <https://pypi.org/project/google-cloud-spanner/1.0.0/>`__, `Release Notes <https://github.com/GoogleCloudPlatform/google-cloud-python/releases/tag/spanner-1.0.0>`__)
